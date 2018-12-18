@@ -2,7 +2,8 @@
 \usepackage{physics}
 \usepackage{amsmath}
 \usepackage{authblk}
-
+\usepackage{amsfonts}
+\usepackage{esint}
 
 \begin{document}
 \begin{titlepage}\centering
@@ -124,14 +125,87 @@ One might ask: ``How do we view falling objects on Earth as due to the curvature
 \end{align*}
 
 \subsection{Versions of the Equivalence Principle}
-
+There are two versions of the equivalence principle, referred to as the \textit{strong equivalence principle}, SEP, and the \textit{weak equivalence principle}, WEP. 
 \subsubsection{The Strong Equivalence Principle}
-
+The strong equivalence principle states that \textbf{all} of physics reduces to special relativity in a freely falling frame.
 \subsubsection{The Weak Equivalence Principle}
+The weak equivalence principle states that all point particles fall at the same rate in a gravitational field ($m_G = m_I$). We notice that WEP only applies to gravity, which makes it sufficient to develop general relativity, but not quantum mechanics. For this remaining of this note, we will rely on the WEP. 
 
 \newpage
 
 \section{Review of Multivariable and Vector Calculus}
+Recall that a path in 3-dimensional space can by parameterized a single variable, which we will call $t$, as
+\begin{align*}
+\vec{r}(t) = x(t)\hat{i} + y(t)\hat{j} + z(t)\hat{k},
+\end{align*}
+where the tangent to this path is given by
+\begin{align*}
+\dot{\vec{r}}(t) = \frac{d \vec{r}}{dt}.
+\end{align*}
+The length of the underlying curve of this path is the integral over the line element $ds = \vert\vert \vec{r} \vert\vert = \vert\vert \dot{\vec{r}} \vert\vert\,dt$:
+\begin{align*}
+L = \int_{a}^{b} dS = \int_{a}^{b} \vert\vert \dot{\vec{r}} \vert\vert\,dt.
+\end{align*} 
+For example, consider a path in $\mathbb{R}^2$ defined as $\vec{r}(t) = (t, \sin t)$, with $t \in [-2\pi, 2\pi]$. We instantly recognize that the underlying curve of this path is nothing but a sine curve in the $xy$-plane. The length of this curve is
+\begin{align*}
+L = \int_{-2\pi}^{2\pi}\vert\vert  (1,\cos t)\vert\vert\,dt  = \int_{-2\pi}^{2\pi} \sqrt{1+\cos^2 t}\,dt \approx 15.28.
+\end{align*}
+Next, we consider a vector-valued function $\vec{F} : \mathbb{R}^3 \rightarrow \mathbb{R}^3$ defined as $\vec{F}(\vec{r}) = (F_x(x,y,z), F_y(x,y,z),F_z(x,y,z))$. Recall the two ``del operators'' from vector calculus: the \textbf{curl} and the \textbf{div}, whose definitions are
+\begin{align*}
+\text{curl}(\vec{F}) = \vec{\nabla} \times \vec{F} = \det
+\begin{pmatrix}
+\hat{i} & \hat{j} & \hat{k} \\
+\frac{\partial}{\partial x} & \frac{\partial }{\partial y} & \frac{\partial}{\partial z}\\
+F_x & F_y & F_z
+\end{pmatrix}
+\end{align*}
+and 
+\begin{align*}
+\text{div}(\vec{F}) = \vec{\nabla} \cdot \vec{F} = 
+\frac{\partial F_x}{\partial x} + \frac{\partial F_y }{\partial y} + \frac{\partial F_z}{\partial z}.
+\end{align*}
+where the ``nabla'' symbol represents the operator
+\begin{align*}
+\vec{\nabla} = \left( \frac{\partial }{\partial x} , \frac{\partial }{\partial y} , \frac{\partial }{\partial z} \right). 
+\end{align*}
+We have also seen the \textbf{gradient} of a scalar field (or potential) $f : \mathbb{R}^3 \rightarrow \mathbb{R}$. The gradient is defined as
+\begin{align*}
+\vec{\nabla}f = \left( \frac{\partial f}{\partial x} , \frac{\partial f }{\partial y} , \frac{\partial f}{\partial z}\right) .
+\end{align*}
+There are two kinds of potential functions in vector calculus: scalar potential and vector potential. While we are more familiar with the scalar potential (e.g. the gravitational potential or the electric potential in electromagnetism), there isn't as strong a connection between vector potentials and any physical meaning. However, we should still look at some examples. In electromagnetism, an electric field $\vec{E}$ is defined as the negative gradient of the electric potential $\phi$, measured in Volts:
+\begin{align*}
+\vec{E} = -\vec{\nabla}\phi.
+\end{align*}
+On the other hand, an magnetic field $\vec{B}$ is defined as the curl of the magnetic potential $\vec{A}$.
+\begin{align*}
+\vec{B} = \vec{\nabla}\times\vec{A}.
+\end{align*}
+In this case, $A$ is a vector potential. Note that we don't often talk about a vector potential of an electric field. This is simply because for a point charge, which produces an inverse-square field, the vector potential simply does not exist. The proof is straightforward. For curious readers, this proof can be an interesting exercise (the solution should be a one-liner). Or else, please refer to my vector calculus notes on my website. Hint: we need one of the two following fundamental theorems of vector calculus: Stokes' and Gauss' (or Ostrogradsky's).\\
+
+\textbf{Stokes' theorem} states that, the circulation around a closed curved in $\mathbb{R}^3$ by a vector field $\vec{F}$ is the flux of $\vec{\nabla}\times\vec{F}$ through the surface $S$ whose boundary $C = \partial S$ is the curve $C$.
+\begin{align*}\boxed{
+\oint_{C = \partial S} \vec{F}\cdot\,d\vec{s} = \iint_{S} \vec{\nabla}\times \vec{F} \cdot\,d\vec{S}.}
+\end{align*}
+
+\textbf{Gauss' theorem} states that, if $S$ is closed surface, oriented outward, and if $\vec{F}$ is defined throughout the solid region $W$ enclosed by $S$, then the flux of $\vec{F}$ through $S$ is the total divergence of $S$ through the region $W$.
+\begin{align*}
+\boxed{
+\oiint_{S=\partial W}\vec{F}\cdot\,d\vec{S} = \iiint \vec{\nabla}\cdot\vec{F}\,dV.}
+\end{align*}
+\textbf{Line integrals} are one of a few important operations in vector calculus. In the context of undergraduate or high school physics, we often use the line integral to calculate the work done by a force $\vec{F}$ over some path $\vec{r}$. The integral in general is simply an accumulation of the component of the vector field along the path. 
+\begin{align*}
+\int_{a}^{b}\vec{F}\cdot\,d\vec{r}.
+\end{align*} 
+If $\vec{F}$ is a conservative field, then the line integral along $\vec{F}$ between two point $A$ and $B$ only depends on where $A$ and $B$ are, i.e., the line integral is path-independent. A good illustration of this fact is the way we compute the change in electric potential:
+\begin{align*}
+W = -\int \vec{E}\cdot\,d\vec{r} = \Delta \phi
+\end{align*}
+
+To actually compute a line integral, we often look for symmetry first (or whether $\vec{F}$ is conservative), then parameterize $\vec{r} = \vec{r}(s)$ if we must. Then, the line integral becomes
+\begin{align*}
+\int_{a}^{b}\vec{F}\cdot\,d\vec{r} = \int_{a}^{b}\vec{F}(\vec{r}(s))\cdot \frac{d\vec{r}}{ds}\,ds
+\end{align*}
+\textbf{Surface integrals}
 
 \newpage
 
