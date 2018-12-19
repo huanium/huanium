@@ -4,6 +4,7 @@
 \usepackage{authblk}
 \usepackage{amsfonts}
 \usepackage{esint}
+\usepackage{mathtools}
 
 \begin{document}
 \begin{titlepage}\centering
@@ -133,7 +134,8 @@ The weak equivalence principle states that all point particles fall at the same 
 
 \newpage
 
-\section{Review of Multivariable and Vector Calculus}
+\section{Review of Vector Calculus}
+\subsection{Operations \& Theorems}
 Recall that a path in 3-dimensional space can by parameterized a single variable, which we will call $t$, as
 \begin{align*}
 \vec{r}(t) = x(t)\hat{i} + y(t)\hat{j} + z(t)\hat{k},
@@ -205,7 +207,165 @@ To actually compute a line integral, we often look for symmetry first (or whethe
 \begin{align*}
 \int_{a}^{b}\vec{F}\cdot\,d\vec{r} = \int_{a}^{b}\vec{F}(\vec{r}(s))\cdot \frac{d\vec{r}}{ds}\,ds
 \end{align*}
-\textbf{Surface integrals}
+\textbf{Surface integrals} give the flux of a vector field through a surface:
+\begin{align*}
+\int \vec{F}\cdot\,d\vec{S} = \int\vec{F}\cdot\vec{n}\,dS = \pm\int\vec{F}\cdot\vec{N}\,d\phi,d\theta,
+\end{align*}
+where $\vec{F}$ is the vector field, and $\vec{n}$ is the unit normal vector to the surface. The last expression denotes the surface integral in terms of a parameterization $\vec{S}(\phi, \theta) = (x(\phi, \theta),y(\phi, \theta),z(\phi, \theta))$. $\vec{N}$ is the standard normal to the surface, which is not necessarily a unit vector (with norm of 1) and not necessarily in the same direction as $\vec{n}$, which is intrinsic to the surface. An example of surface integrals we often see in physics is the electric flux through a sphere:
+\begin{align*}
+\Phi_E = \oiint\vec{E}\cdot\,d\vec{a} = \frac{q}{\epsilon_0}.
+\end{align*}
+The last expression comes from Gauss' (or Ostrogradsky's) theorem, equivalently the divergence theorem, where $q$ is the charge enclosed. \\
+
+We should introduce the Maxwell's equations as they ``bring together'' the concepts we have touched on so far. To see how, we consider the Maxwell's equations in integral form:
+\begin{align*}
+\text{Gauss' law:  } \Aboxed{&\oiint\vec{E}\cdot\,d\vec{a} = \frac{q}{\epsilon_0}}\\
+\text{No magnetic monopole:  } \Aboxed{&\oint\vec{B}\cdot\,d\vec{a} = 0}\\
+\text{Faraday's law:  } 
+\Aboxed{&\oint \vec{E}\cdot\,d\vec{s} = -\frac{d}{dt}\Phi_B = \frac{\partial}{\partial t}\int_A\vec{B}\cdot\,d\vec{a}}\\  
+\text{Ampere-Maxwell's law:  } 
+\Aboxed{&\oiint \vec{B}\cdot\,d\vec{s} = \mu_0I + \mu_0\epsilon_0\frac{\partial}{\partial t}\int_A\vec{E}\cdot\,d\vec{a}}
+\end{align*}
+Using the theorems and facts we have discussed, we can convert the above equations into differential form. First, we can use Gauss' theorem on Gauss' law, with
+\begin{align*}
+q = \int_V \rho\,d^3r
+\end{align*}
+where $\rho$ is the charge volume density. So, Gauss' law becomes
+\begin{align*}
+\oint \vec{E}\cdot\,d\vec{a} = \int_V \vec{\nabla}\cdot\vec{E}\,d^3r = \frac{1}{\epsilon_0}\int_V\rho\,d^3r,
+\end{align*}
+which implies that the divergence of any electric field $\vec{E}$ is proportional to the charge enclosed $q$.
+\begin{align*}
+\Aboxed{\vec{\nabla}\cdot\vec{E} = \frac{\rho}{\epsilon_0}}
+\end{align*}
+Applying Gauss' theorem to the second equation,
+\begin{align*}
+\oiint \vec{B}\cdot\d,\vec{a} = \int_V \vec{\nabla}\cdot\vec{B}\,d^3r = 0
+\end{align*}
+we immediately see that the divergence of any magnetic field $\vec{B}$ is 0, i.e., there is no such thing as a ``magnetic monopole.''
+\begin{align*}
+\Aboxed{\vec{\nabla}\cdot\vec{B} = 0}
+\end{align*}
+We can apply Stokes' theorem on the other two equations to turn them into differential form. Converting the third equation is as simple as bookkeeping:
+\begin{align*}
+\oint \vec{E}\cdot\,d\vec{s} = \int_A\vec{\nabla}\times\vec{E}\cdot\,d\vec{a} = -\frac{\partial}{\partial t}\int_A\vec{B}\cdot\,d\vec{a},
+\end{align*}
+which says the curl of any electric field $\vec{E}$ is negatively proportional to the change in the magnetic field. 
+\begin{align*}
+\Aboxed{\vec{\nabla}\times\vec{E} = -\frac{\partial\vec{B}}{\partial t}}
+\end{align*}
+To convert the fourth equation into differential form, we define a new quantity, $\vec{J}$, as current (area) density, such that
+\begin{align*}
+I = \int_A \vec{J}\cdot\,d\vec{a}.
+\end{align*} 
+Again, applying Stokes' theorem to the last equation, 
+\begin{align*}
+\oint \vec{B}\cdot\,d\vec{s} = \int_A \vec{\nabla}\times\vec{B}\cdot\,d\vec{a} = \mu_0I+\mu_0\epsilon_0\frac{\partial}{\partial t}\int_A\vec{E}\cdot\,d\vec{a} = \mu_0\int_A\left( \vec{J} + \epsilon_0\frac{\partial \vec{E}}{\partial t}\right) \cdot\,d\vec{a}.
+\end{align*}
+So, in differential form:
+\begin{align*}
+\Aboxed{\vec{\nabla}\times\vec{B} = \mu_0\vec{J} + \mu_0\epsilon_0\frac{\partial \vec{E}}{\partial t}}
+\end{align*}
+In a later chapter, we will see how to make these equations fully relativistic. For the curious reader wanting more information regarding this subsection, please refer to a standard textbook on vector calculus, or feel free to use my Vector Calculus lecture notes for a more formal treatment of this subject.
+
+\subsection{Coordinate Systems}
+There are numerous coordinate systems to describe 3-dimensional space. However, we are most familiar with the Cartesian coordinates ($x,y,z$), the Spherical coordinates ($r,\theta,\phi$), and the Cylindrical coordinates ($\rho, \phi, z$). The Cartesian coordinate system is the most simple, elegant, and ``nice'' of the three systems, since the $(x,y,z)$ coordinates can also be coefficients of the vector pointing from the origin to any point in space. We will see that this is not the case in general coordinate systems. One such coordinate system is the \textbf{spherical coordinate system} (illustrated in Fig. ???), where
+\begin{align*}
+x &= r\sin\theta\cos\phi\\
+y &= r\sin\theta\sin\phi\\
+z &= r\cos\theta
+\end{align*}
+and the inverse relations are
+\begin{align*}
+r &= \sqrt{x^2+y^2+z^2}\\
+\theta &= \cos^{-1}\left( \frac{z}{r}\right) = \cos^{-1}\left( \frac{z}{\sqrt{x^2+y^2+z^2}}\right) \\
+\phi &= \tan^{-1}\left( \frac{y}{x} \right) 
+\end{align*}
+where $0 \leq r$, $0 \leq \theta \leq \pi$, and $0 \leq \phi \leq 2\pi$.
+\begin{align*}
+\text{insert figure here!!!!}
+\end{align*}
+The \textbf{volume element} is given by
+\begin{align*}
+dV = dx\,dy\,dz = r^2\sin\theta\,dr\,d\theta\,d\phi.
+\end{align*}
+Consider a sphere of radius $R$. The \textbf{area element} is given by
+\begin{align*}
+dA = R\,d\theta\,d\phi.
+\end{align*}
+In \textbf{cylindrical coordinates},
+\begin{align*}
+x &= \rho\cos\phi\\
+y &= \rho\sin\phi\\
+z &= z
+\end{align*}
+and the inversion relations are
+\begin{align*}
+\rho &= \sqrt{x^2+y^2}\\
+z &= z\\
+\phi &= \tan^{-1}\left(\frac{y}{x}\right) 
+\end{align*}
+The \textbf{volume element} is given by
+\begin{align*}
+dV = r\,dt\,dz\,d\phi.
+\end{align*}
+Consider a cylinder of radius $R$, the \textbf{area element} is given by 
+\begin{align*}
+dA = R\,dz\,d\phi.
+\end{align*}
+\begin{align*}
+\text{Insert figure here!!!}
+\end{align*}
+The purpose of having the area and volume elements is so that we could integrate over regions, parameterized in spherical or cylindrical coordinates. While it seems like these quantities appear out of the blue, there is a general procedure to find them, given any arbitrary coordinate system. This ``procedure'' is called the \textbf{Jacobian}, which essentially gives the scaling factor as we move from one coordinate system into another. For example, we know that the area element in polar coordinate is $dA = r\,dr\,d\theta$. We can see this is true, using the Jacobian. First, the Jacobian matrix, which is characteristic of a transformation from coordinate system $u^i$ into $u^{j'}$ is defined as
+\begin{align*}
+\boxed{[U^{j'}_{i}] = \left[ \frac{\partial u^{j'}}{\partial u^{i}} \right] = 
+\begin{pmatrix}
+\frac{\partial u^1}{\partial u^{1'}} & \dots & \frac{\partial u^1}{\partial u^{n'}}\\
+\vdots & \ddots & \vdots\\
+\frac{\partial u^n}{\partial u^{1'}} & \dots & \frac{\partial u^n}{\partial u^{n'}}
+\end{pmatrix}}
+\end{align*}
+Note that $i$ and $j'$ are indices, not powers. Now, the general \textbf{scaling factor} is defined by the following equality
+\begin{align*}
+\Aboxed{N = du^{1'}\,du^{2'}\dots\,du^{n'} = \left| \det([U^{j}_{i}])\right| \,du^1\,du^2\dots\,du^{n}}
+\end{align*}
+For example, the scaling factor as we move from 2-dimensional Cartesian coordinates into polar coordinates is
+\begin{align*}
+N = \det\begin{pmatrix}
+\frac{\partial x}{\partial r} & \frac{\partial x}{\partial \theta}\\
+\frac{\partial y}{\partial r} & \frac{\partial y}{\partial \theta}
+\end{pmatrix}
+=
+\det\begin{pmatrix}
+\cos\theta & -r\sin\theta\\
+\sin\theta & r\cos\theta
+\end{pmatrix}
+=
+r.
+\end{align*}
+So, we get $dA = dx\,dy = rdr\,d\theta$, as expected. We can try repeating the same procedure to get the volume element for spherical coordinates, which we have said before to be $dV = r^2\sin\theta\,dr\,d\theta\,d\phi$. First, define the Jacobian matrix:
+\begin{align*}
+[U^{j'}_{i}] = \begin{pmatrix}
+\frac{\partial x}{\partial r} & \frac{\partial x}{\partial \theta} & \frac{\partial x}{\partial \phi}\\
+\frac{\partial y}{\partial r} & \frac{\partial y}{\partial \theta} & \frac{\partial y}{\partial \phi}\\
+\frac{\partial z}{\partial r} & \frac{\partial z}{\partial \theta} & \frac{\partial z}{\partial \phi}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\sin\theta\cos\phi & r\cos\theta\cos\phi & -r\sin\theta\sin\phi \\
+\sin\theta\sin\phi & r\cos\theta\sin\phi & r\sin\theta\cos\phi \\
+\cos\theta & -r\sin\theta & 0
+\end{pmatrix}
+\end{align*}
+After some bookkeeping-type rearrangements and computation, we find that
+\begin{align*}
+N = \left|\det[U^{j'}_{i}]\right|= r^2\sin\theta,
+\end{align*}
+as expected. As a check, we can integrate this volume element over a region defined by $x^2+y^2+z^2 = R^2$ to find its volume
+\begin{align*}
+\int_{0}^{R}\int_{0}^{\pi}\int_{0}^{2\pi}r^2\sin\theta\,dr\,d\theta\,d\phi = \frac{4}{3}\pi R^3,
+\end{align*}
+which is not surprisingly the volume of the sphere of radius $R$. 
 
 \newpage
 
