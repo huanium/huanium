@@ -412,11 +412,143 @@ We will often use $\{\hat{i}, \hat{j}, \hat{k} \}$ as a reference basis, i.e., w
 \begin{align*}
 \vec{\epsilon_u} = (e_u)_x\hat{i} + (e_u)_y\hat{j} + (e_u)_z\hat{k}.
 \end{align*}
-For example, we can look at the basis set for the spherical coordinate system, $\{\vec{e}_r, \vec{e}_\theta, \vec{e}_\phi \}$.
+For example, we can look at the basis set for the spherical coordinate system, $\{\vec{e}_r, \vec{e}_\theta, \vec{e}_\phi \}$. First, let the coordinates $(u,v,w)$ be $(r,\theta,\phi)$, the spherical coordinates. A vector $\vec{r}$, expressed in spherical coordinates, has the form:
+\begin{align*}
+\vec{r} = 
+\begin{pmatrix}
+r\sin\theta\cos\phi\\
+r\sin\theta\sin\phi\\
+r\cos\theta
+\end{pmatrix},
+\end{align*}
+where $r \geq 0$, $0 \leq \theta \leq \pi$, and $0 \leq \phi \leq 2\pi$. To obtain the basis vectors, we simply take $\partial \vec{r}/\partial r$, $\partial \vec{r}/\partial \theta$, and $\partial \vec{r}/\partial \phi$. We expect that our resulting vectors should form the column vectors of the Jacobian matrix $[U^{j'}_i]$, which, as we have discussed previously, has the following form:
+\begin{align*}
+[U^{j'}_i] = 
+\begin{pmatrix}
+\sin\theta\cos\phi & r\cos\theta\cos\phi & -r\sin\theta\sin\phi \\
+\sin\theta\sin\phi & r\cos\theta\sin\phi & r\sin\theta\cos\phi \\
+\cos\theta & -r\sin\theta & 0
+\end{pmatrix}.
+\end{align*}
+What we're doing now, in terms of linear algebra, is essentially constructing $[U^{j'}_i]$ - the change-of-basis matrix. Let's see if our described procedure works:
+\begin{align*}
+\vec{e}_r &= \frac{\partial \vec{r}}{\partial r} = \begin{pmatrix}
+\sin\theta\cos\phi\\
+\sin\theta\sin\phi\\
+\cos\theta
+\end{pmatrix}\\
+\vec{e}_\theta &= \frac{\partial \vec{r}}{\partial \theta} = 
+\begin{pmatrix}
+r\cos\theta\cos\phi\\
+r\cos\theta\sin\phi\\
+-r\sin\theta
+\end{pmatrix}\\
+\vec{e}_\phi &= \frac{\partial \vec{r}}{\partial \phi}=
+\begin{pmatrix}
+-r\sin\theta\sin\phi\\
+r\sin\theta\cos\phi\\
+0
+\end{pmatrix}
+\end{align*} 
+Not surprisingly,
+\begin{align*}
+[U^{j'}_i] = 
+\begin{pmatrix}
+\sin\theta\cos\phi & r\cos\theta\cos\phi & -r\sin\theta\sin\phi \\
+\sin\theta\sin\phi & r\cos\theta\sin\phi & r\sin\theta\cos\phi \\
+\cos\theta & -r\sin\theta & 0
+\end{pmatrix}
+=
+\left( \vec{e}_r \vert \vec{e}_\theta \vert \vec{e}_\phi \right).
+\end{align*}
+Next, we can check if ${\vec{e}_r, \vec{e}_\theta, \vec{e}_\phi}$ is mutually-perpendicular set. (Note that I avoid the word ''orthogonal'' here, since it carries different meanings in physics and in linear algebra). We can also check whether the three vectors are unit vectors. It suffices to take the dot products of ${\vec{e}_r, \vec{e}_\theta, \vec{e}_\phi}$ among themselves:
+\begin{align*}
+\vec{e}_r\cdot\vec{e}_r &= \sin^2\theta(\cos^2\phi + \sin^2\phi) + \cos^2\theta = 1\\
+\vec{e}_r\cdot\vec{e}_\theta &= r\cos^2\phi\sin\theta\cos\theta + r\sin^2\phi\sin\theta\cos\theta - r\sin\theta\cos\theta = 0\\
+\vec{e}_r\cdot\vec{e}_\phi &= -r\sin^2\theta\sin\phi\cos\phi + r\sin^2\theta\sin\phi\cos\phi = 0\\ 
+\vec{e}_\theta\cdot\vec{e}_\theta &= r^2\cos^2\phi\cos^2\theta + r^2\cos^2\phi\sin^2\theta + r^2\sin^2\theta = r^2\\ 
+\vec{e}_\theta\cdot\vec{e}_\phi &= 0 \\
+\vec{e}_\phi\cdot\vec{e}_\phi &= r^2\sin^2\phi\sin^2\theta + r^2\sin^2\theta\cos^2\phi = r^2\sin^2\theta.
+\end{align*}
+We notice that all dot products of cross-coordinates result in 0, which means the basis vectors we found are mutually perpendicular (we can also see this fat geometrically, based on how the spherical coordinates are defined). But we also find that these basis vectors are not unit vectors, since their norms are not necessarily 1:
+\begin{align*}
+\vert\vert \vec{e}_r \vert\vert &= 1\\
+\vert\vert \vec{e}_\theta \vert\vert &= r\\
+\vert\vert \vec{e}_\phi \vert\vert &= r\sin\theta.
+\end{align*}
 
 \subsection{Dual basis}
+The procedure we have described in the previous subsection allows us to find a \textbf{natural basis} set of vectors for a coordinate system. However, basis sets are not unique. In this section, we look at an alternative basis set of vectors, called the \textbf{dual basis} set, denoted $\{ \vec{e}^{\,u}, \vec{e}^{\,v}, \vec{e}^{\,w},\dots \}$. Instead of deriving these from the finding the tangent vectors, we find the normal of surfaces of constant $u,v,w,\dots$.\\
+
+Recall that the \textbf{gradient} operator $\vec{\nabla}$, when applied to a scalar field $f$, gives the normal vectors to surfaces of constant $f$. Since curvilinear coordinates are given by coordinate lines where $u,v$, or $w$ is constant, we can let
+\begin{align*}
+\vec{e}^{\,u} &= \vec{\nabla}u\\
+\vec{e}^{\,v} &= \vec{\nabla}v\\
+\vec{e}^{\,w} &= \vec{\nabla}w,
+\end{align*}  
+and so on, where $\vec{e}^{\,u}$ is a normal vector to the surface of constant $u$. Or more generally, 
+\begin{align*}
+\boxed{\vec{e}^{\,u^i} = \vec{\nabla}u^i}
+\end{align*} 
+Now, we might wonder what the dual basis in Cartesian coordinates is. It turns out the dual and natural basis sets in Cartesian coordinates are the same:
+\begin{align*}
+\vec{e}^{\,x} &= \vec{\nabla}x=(1,0,0)^\top=\hat{i} = \vec{e}_x \\
+\vec{e}^{\,y} &= \vec{\nabla}y=(0,1,0)^\top=\hat{j} = \vec{e}_y \\
+\vec{e}^{\,z} &= \vec{\nabla}z=(0,1,0)^\top=\hat{k} = \vec{e}_z.
+\end{align*}
+There's actually no magic behind this ``coincidence.'' The reason the basis sets are the same is simply that the direction of increasing/decreasing $x$ is the same as the normal vector to the surface of constant $x$, i.e., the $yz$-plane. 
+\begin{align*}
+\text{insert figure here!!!}
+\end{align*}
+However, we suspect that this is not the case in general curvilinear coordinates, since the direction of increasing $u$, for instance, should not necessarily be the same as the normal vector to the surface of constant $u$, as illustrated here:
+\begin{align*}
+\text{insert figure here!!!}
+\end{align*}
+For example, we can look at the dual basis set for the spherical coordinate system. Based on what we have established so far, we can compute the dual basis set, using the inverse relations $(x,y,z) \rightarrow (r,\theta,\phi)$.
+\begin{align*}
+\vec{e}^{\,r} &= \vec{\nabla}r = \vec{\nabla}(x^2+y^2+z^2)^{1/2} = (x^2+y^2+z^2)^{-1/2}\begin{pmatrix}x\\y\\z\end{pmatrix} = \begin{pmatrix}\sin\theta\cos\phi\\ \sin\theta\sin\phi\\ \cos\theta\end{pmatrix}.
+\end{align*}
+Tedious and painstaking computations give us the other two vectors:
+\begin{align*}
+\vec{e}^{\,\theta} &= \frac{1}{r}\begin{pmatrix} \cos\theta\cos\phi \\ \cos\theta\sin\phi \\ -\sin\theta \end{pmatrix}\\
+\vec{e}^{\,\phi} &= \frac{1}{r}\begin{pmatrix} -\frac{\sin\phi}{\sin\theta} \\ \frac{\cos\phi}{\sin\theta} \\ 0\end{pmatrix}
+\end{align*}
+We can readily compare $\{ \vec{e}^{\,r}, \vec{e}^{\,\theta}, \vec{e}^{\,\phi} \}$ to $\{ \vec{e}_{r}, \vec{e}_\theta, \vec{e}_\phi \}$ and find that while $\vec{e}^{\,r} = \vec{e}_{r}$, $\vec{e}^{\,\theta} \neq \vec{e}_{\theta}$ and $\vec{e}^{\,\phi} \neq \vec{e}_{\phi}$.\\
+
+Let's consider a non-familiar example with paraboloidal surfaces $(u,v,w)$, a non-orthogonal set, where
+\begin{align*}
+x &= u+v\\y&=u-v\\z=2uyv+w,
+\end{align*}
+which gives the inverse relations
+\begin{align*}
+u&=\frac{1}{2}(x+y)\\
+v&=\frac{1}{2}(x-y)\\
+&w=z-\frac{1}{2}(x^2-y^2).
+\end{align*}
+Let $\vec{r} = (x,y,z)^\top = (u+v, u-v, 2uv + w)^\top$. We first obtain the natural basis set:
+\begin{align*}
+\vec{e}_u &= \frac{\partial \vec{r}}{\partial u} = (1,1,2v)^\top \\
+\vec{e}_v &= \frac{\partial \vec{r}}{\partial v} = (1,1,2u)^\top \\
+\vec{e}_w &= \frac{\partial \vec{r}}{\partial w} = (0,0,1)^\top, 
+\end{align*}
+which is an mutually perpendicular set, by inspection (i.e., all cross-dot product terms are zero). Next, we obtain the dual basis set:
+\begin{align*}
+\vec{e}^{\,u} &= \vec{\nabla}u = \frac{1}{2}\vec{\nabla}(x+y) = \left( \frac{1}{2}, \frac{1}{2},0\right) ^\top\\
+\vec{e}^{\,v} &= \vec{\nabla}v = \frac{1}{2}\vec{\nabla}(x-y) = \left( \frac{1}{2}, -\frac{1}{2},0\right) ^\top\\
+\vec{e}^{\,w} &= \vec{\nabla}w = \vec{\nabla}\left( z-\frac{1}{2}(x^2-y^2)\right)  = (-x,y,1)^\top = (-u-v,u-v,1)^\top\\
+\end{align*}
+But notice that we get non-zero cross-dot product terms:
+\begin{align*}
+\vec{e}^{\,u}\cdot\vec{e}^{\,w} &= -v \\
+\vec{e}^{\,u}\cdot\vec{e}^{\,v} &= 0 \\
+\vec{e}^{\,v}\cdot\vec{e}^{\,w} &= -u. 
+\end{align*}
+The reason for observing the dot products are the basis vectors when become clear when we talk about the \textbf{metric tensor} in the next subsections.
 
 \subsection{Contravariant and covariant vectors}
+\subsubsection{The suffix notation (vector calculus)}
+\subsubsection{The Einstein summation notation}
+\subsubsection{Contravariant and covariant vectors}
 \subsection{Metric tensor}
 \subsection{Coordinate transformation}
 \subsection{Tensors}
