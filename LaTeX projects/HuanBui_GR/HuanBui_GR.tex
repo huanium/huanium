@@ -9,6 +9,7 @@
 \theoremstyle{definition}
 \newtheorem{exmp}{Example}[section]
 \usepackage{empheq}
+\usepackage{hyperref}
 
 \begin{document}
 \begin{titlepage}\centering
@@ -21,6 +22,20 @@
  \thispagestyle{empty}
 \end{titlepage}
 
+\subsection*{Preface}
+\addcontentsline{toc}{subsection}{Preface}
+
+Greetings,\\
+
+\textit{General Relativity \& Cosmology - A Quick Guide to} is compiled from my PH335: General Relativity and Cosmology with professor Robert Bluhm at Colby College. The course is based on \textit{A Short Course in General Relativity}, 3$^{\text{th}}$ Edition, by James Foster and J. David Nightingale.\\
+
+One of my favorite things to do is to transfer my handwritten lecture notes into nice \LaTeX documents. I started working on these documents last year with \textit{Special Relativity - A Quick Guide to}, which was based on (part of) my PH241: Modern Physics I with professor Charles Conover. I am still working on it, along with another one on Linear Algebra (based on MA253 with Otto Bretscher), and of course General Relativity - the one you are reading now. All of these .pdf files can be found on my \href{www.huanqbui.com}{website}, under the ``A Quick Guide to...'' tab. For the ``raw'' content, i.e., my handwritten lecture notes, feel free to visit the ``Lecture Notes'' tab.\\
+
+Today is Dec 22, 2018. In the spring I will be doing an independent study on Classical Fields Theory with prof. Bluhm. I will also be taking Matrix Analysis with prof. Leo Livshits. I'm excited to be taking these advanced physics and mathematics courses, and I look forward to sharing my journey with you through my lecture notes.  \\
+
+Enjoy!
+
+\newpage
 \tableofcontents
 \newpage
 
@@ -675,7 +690,7 @@ Since dot products are commutative, i.e, $\vec{e}^{\,i}\cdot\vec{e}^{\,j} = \vec
 \begin{align*}
 \boxed{g_{ij} = g_{ji} \text{ and }  g^{ij} = g^{ji}}
 \end{align*}
-In other words, the matrices $[g_{ij}]$ and $[g^{ij}]$ are \textbf{symmetric}. Just for sanity check, we can look at $[g_{ij}]$ for Cartesian coordinates, which (not surprisingly), turns out to be the identity matrix, i.e., $[g_{ij}] = [g^{ij}] = [\delta^i_j] = I$, which is symmetric.\\
+In other words, the matrices $[g_{ij}]$ and $[g^{ij}]$ are \textbf{symmetric}. Just for sanity check, we can look at $[g_{ij}]$ for Cartesian coordinates, which (not surprisingly), turns out to be the identity matrix, i.e., $[g_{ij}] = [g^{ij}] = [\delta^i_j] = I$, which is symmetric. However, $[g_{ij}]$ are not \textbf{diagonal}, in general. A counter-example is $[g_{ij}]$ in paraboloidal coordinates. \\
 
 We are of course not limited to looking only at dot products of the basis vectors among themselves. Consider the dot product of two vectors $\vec{\mu} = \mu^i\vec{e}_i=\mu_i\vec{e}^{\,i}$ and $\vec{\lambda} = \lambda^i\vec{e}_i = \lambda_i\vec{e}^{\,i}$. We immediately see that there are more than one way to express $\vec{\mu}\cdot\vec{\lambda}$, all of which are equivalent. Now, we have to be careful with writing the dot product with indices, because $\lambda^i\vec{e}^{\,i}\mu^i\cdot\vec{e}^{\,i}$ is not defined in the Einstein summation convention. We have to realize that the indices of $\vec{\mu}$ and $\vec{\lambda}$ should be independent, so it suffices to replace $i$ with $j$ as indices for one of the vectors. We are now safe to proceed. 
 \begin{align*}
@@ -717,6 +732,31 @@ We obtain a similar equality if we start with the covariant component $\mu_i$:
 \boxed{g_{ij}g^{jk} = \delta^k_i}
 \end{align*}
 The above two equalities imply that the matrices $[g^{ij}]$ and $[g_{ij}]$ are \textbf{inverses} of each other. Hence, we call $g_{ij}$ the \textbf{metric tensor} and $g^{ij}$ the \textbf{inverse metric tensor}. 
+\begin{exmp}
+Consider $\vec{a} = \vec{e}_\theta$ in spherical coordinates. Express $\vec{a}$ with contravariant components, covariant components, and find the norm of $\vec{a}$, with and without the metric $g_{ij}$.\\
+
+Since $\vec{a} = \vec{e}_\theta$, a single natural basis vector, we can easily write $\vec{a}$ as a contravariant vector as 
+\begin{align*}
+a^i = (a^1, a^2, a^3)^\top = (0,1,0)^\top. 
+\end{align*}
+We can calculate the covariant components of $\vec{a}$ using the metric tensor $g_{ij}$:
+\begin{align*}
+a_1 &= g_{1j}a^j = g_{11}a^1 = 0\\
+a_2 &= g_{2j}a^j = g_{22}a^2 = r^2\\
+a_3 &= g_{3j}a^j = g_{33}a^3 = 0.
+\end{align*}
+So, $\vec{a}$, with covariant components, is
+\begin{align*}
+a_i = (0, r^2, 0)^\top
+\end{align*}
+Next, we can calculate $\vert\vert \vec{a} \vert\vert$ in two ways, and both will give the same answer:
+\begin{align*}
+\vert\vert \vec{a} \vert\vert^2 &= a^ia_i = a^1a_1 + a^2a_2+a^3a_3 = r^2\\
+\vert\vert \vec{a} \vert\vert^2 &= g_{ij}a^ia^j = g_{11}a^1a^1 +g_{22}a^2a^2 + g_{33}a^3a^3 = r^2.
+\end{align*}
+So, $\vert\vert \vec{a} \vert\vert  = r$.
+
+\end{exmp}
 \subsection{Metric tensor}
 In the previous subsection we have defined the metric tensor and the inverse metric tensor. In this subsection, we will discuss their physical significance and related properties.\\
 
@@ -748,14 +788,142 @@ Bringing the $dt$ into the square root, and squaring both sides, we get
 \end{align*}
 Even though $ds^2$ has units of length squared, we still shall refer to this quantity as the \textbf{line element}. Let us look at a few examples to see how the above equality manifests in geometries we are familiar with.
 \begin{exmp}
-In Cartesian coordinates
+In Cartesian coordinates, the natural basis vectors are $\{\vec{e}_i\} \{ \hat{i}, \hat{j}, \hat{k}\}$. Observe that $g_{ij} = \vec{e}_i \cdot \vec{e}_j = \delta_{ij}$, since the $\vec{e}_i$'s are both unit vectors and mutually perpendicular. So, as a matrix:
+\begin{align*}
+[g_{ij}] = 
+\begin{pmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{pmatrix}.
+\end{align*}
+The line element, $ds^2 = g_{ij}\,du^i\,du^j$, is a sum of nine terms. However, we notice that $g_{ij} = 0 $ if $i\neq j$ and $1$ otherwise. Therefore the line element is:
+\begin{align*}
+ds^2 = g_{ij}\,du^i\,du^j = dx^2+dy^2+dz^2,
+\end{align*}
+which we are very familiar with. Indeed, the moral of this example is to show that while the form of the line element can be derived geometrically, a rigorous way to obtain the line element is actually through the metric. For Cartesian coordinates, deriving the line element is more or less trivial, because we realize that the above equality is simply Pythagorean theorem in the three dimensions. However, as we will see in the next two examples, it is more difficult to obtain the line element by ``inspection,'' and that realizing the line element from the metric is more reliable.   
 \end{exmp}
 \begin{exmp}
-In spherical coordinates
+We have shown that, in spherical coordinates:
+\begin{align*}
+\vec{e}_r\cdot\vec{e}_r &= 1\\
+\vec{e}_\theta\cdot\vec{e}_\theta &= r^2\\
+\vec{e}_\phi\cdot\vec{e}_\phi &= r^2\sin^2\theta\\
+\vec{e}_r\cdot\vec{e}_\theta &= \vec{e}_r\cdot\vec{e}_\phi = \vec{e}_\theta\cdot\vec{e}_\phi = 0, 
+\end{align*}
+which give the metric, in matrix form, as:
+\begin{align*}
+[g_{ij}] = 
+\begin{pmatrix}
+1 & 0 & 0\\
+0 & r^2 & 0 \\
+0 & 0 & r^2\sin^2\theta
+\end{pmatrix}.
+\end{align*}
+Therefore, the line element in spherical coordinates is:
+\begin{align*}
+ds^2 = g_{ij}\,du^i\,du^j = dr^2 + r^2\,d\theta^2 + r^2\sin^2\theta\,d\phi^2.
+\end{align*}
+While one can certainly derive this expression geometrically, it is no doubt more challenging to do than in Cartesian coordinates.
 \end{exmp}
 \begin{exmp}
-Find the length of a curve in spherical coordinates with the parameterization $\vec{r}(t) = (r(t), \theta(t),\phi(t)) = (t,\pi/4,4t)$, where $0\leq t \leq \pi$.
+Find the length of a curve in spherical coordinates with the parameterization $\vec{r}(t) = (r(t), \theta(t),\phi(t)) = (t,\pi/4,4t)$, where $0\leq t \leq \pi$.\\
+
+It is possible to proceed without knowing what the underlying curve of this path is. However, it certainly does not harm to know what length we are trying to find here. First, notice that $\theta$ is fixed, so we are limited to a cone, oriented vertically along the $z$-axis. Now, since $0 \leq t \leq \pi$, and that $\phi = 4t$, we know that the curve makes two revolutions around the $z$-axis. So we can imagine the curve looking something like this:
+\begin{align*}
+\text{Insert figure here!!!}
+\end{align*}
+Find the length of a curve is only ``mechanical'' once we already know the line element $ds^2$, which we have derived in the previous example. Plus, we know that $d\theta = 0$ since $\theta$ is constant. So,
+\begin{align*}
+L &= \int\,ds\\ 
+&= \int_{0}^{\pi}\sqrt{\frac{dr^2}{dt^2} + r^2\frac{d\theta^2}{dt^2} + r^2\sin^2\theta\frac{d\phi^2}{dt^2}}\,dt\\
+&= \int_{0}^{\pi}\sqrt{1 + 0 + \left( 4t\sin\left(\frac{\pi}{4} \right) \right) ^2}\,dt\\
+&= \int_{0}^{\pi}\sqrt{1 + 8t^2}\,dt\\
+&\approx 14.55. 
+\end{align*}
 \end{exmp}
+As we have seen before in the earlier sections, the metric tensor does not just encode physical lengths. $g_{ij}$ are also ubiquitous in calculating norms of vectors and inner products (or dot products). As a reminder:
+\begin{align*}
+&\text{\textbf{Norm:} } \vert\vert \vec{\lambda} \vert\vert^2 = \vec{\lambda}\cdot\vec{\lambda} = g_{ij}\lambda^i\lambda^j\\
+&\text{\textbf{Inner product:} } \vec{\lambda}\cdot\vec{\mu} = g_{ij}\lambda^i\mu^j.
+\end{align*}
+They can also be used to raise/lower indices, as we have seen. 
+\subsubsection{Summations as matrix products}
+As a little ``aside,'' writing vectors and 2-component tensors (such as $g_{ij}$) as matrices can be more convenient for us. But note that more general tensors (with three or more indices) can no longer be written as matrices.\\
+
+Suppose that we have two square matrices $\tilde{A} = [a_{ij}]$ and $\tilde{B} = [b_{ij}]$. Let matrix $\tilde{C} = \tilde{A}\tilde{B}$. In matrix multiplication,
+\begin{align*}
+\boxed{
+\tilde{C} = 
+\begin{pmatrix}
+&\vdots&\\
+\dots&c_{ij}&\dots\\
+&\vdots&
+\end{pmatrix}
+=
+\begin{pmatrix}
+\vdots&&\vdots\\
+a_{i1} & \dots & a_{in}\\
+\vdots&&\vdots
+\end{pmatrix}
+\begin{pmatrix}
+\dots&b_{1j}&\dots\\
+&\vdots&\\
+\dots&b_{nj}&\dots
+\end{pmatrix}
+}
+\end{align*} 
+i.e., the $ij^{th}$ element of $\tilde{C}$ is 
+\begin{align*}
+\boxed{c_{ij} = \sum_{k=1}^na_{ik}b_{kj}}
+\end{align*}
+where $k$ on the $a$ term indicates a column, while $k$ on the $b$ term indicates a row. Notice that the summed index ($k$) goes as ``column-row,'' whereas $i-j$ go as row-column.\\
+
+Similarly, we can multiply vectors in matrix notations. Let two vectors $\vec{F}, \vec{G} \in \mathbb{R}^n$ be given. Assuming that the metric is the identity, their inner product is given by:
+\begin{align*}
+\boxed{
+\vec{F}\cdot\vec{G} = 
+\begin{pmatrix}
+f_1\\
+\vdots\\
+f_n
+\end{pmatrix}\cdot
+\begin{pmatrix}
+g_1\\
+\vdots\\
+g_n
+\end{pmatrix}
+=
+\vec{F}^\top\vec{G} 
+=
+\sum_{k=1}^{n}f_kg_k.
+}
+\end{align*}
+With a general metric $g_{ij}$, we want to express $\vec{\lambda}\cdot\vec{\mu} = g_{ij}\lambda^i\mu^j$ as a matrix multiplication. We have to make sure that the matrix multiplication is defined, i.e., the rows of the right-multiplying element is equal to the columns of the left-multiplying element. There are two things we can do: ordering the $ij$ indices, and transposing.
+\paragraph{For contravariant vectors:\\}
+Let $\tilde{G} = [g_{ij}]$, where $i$ is the row indicator and $j$ is the column indicator. This means that the index of $\vec{\lambda}$ has to be a column indicator, so we transpose $\vec{\lambda}$. The index of $\mu$ is a row indicator, which matches with $j$-the column indicator of $\tilde{G}$, so we are good to proceed: 
+\begin{align*}
+\boxed{
+\vec{\lambda}\cdot\vec{\mu} = 
+\lambda^ig_{ij}\mu^j
+=
+\begin{pmatrix}
+\lambda_1 & \dots & \lambda_n
+\end{pmatrix}
+\begin{pmatrix}
+g_{11} & \dots & g{1n}\\
+\vdots & \ddots & \vdots \\
+g{n1} & \dots & g{nn}
+\end{pmatrix}
+\begin{pmatrix}
+\mu_1 \\
+\vdots\\
+\mu_n
+\end{pmatrix}
+=
+\mathbf{\lambda}^\top G \mathbf{\mu}}
+\end{align*}
+\paragraph{For covariant vectors:\\}
 \subsection{Coordinate transformation}
 \subsection{Tensors}
 
