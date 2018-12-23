@@ -1195,16 +1195,104 @@ Since components of a vector must transform according to the rules above under g
 	Properly speaking we can define vectors with respect to a particular class of transformations. It is possible for something to be a vector with respect to a class of transformation, but not a vector with respect to another. Such a class of transformation (default) is the general coordinate transformations. 
 \end{rmk}
 \begin{exmp}
-	Can differentials of coordinates ($du^i$) form a vector?
-\end{exmp}
-\begin{exmp}
-	Find $U^{j'}_i$ for a coordinate transformation from Cartesian to spherical in flat 3-dimensional space. 
-\end{exmp}
-\begin{exmp}
+	Can differentials of coordinates ($du^i$) form a vector?\\
 	
+	The solution is actually quite simple. Without loss of generality, let us consider a hypothetical vector $\{ du^i \}$ in 3-dimensional space. $\{du^1, du^2, du^3 \}$. Applying the chain rule:
+	\begin{align*}
+	du^{i'} = \frac{\partial u^{i'}}{\partial u^{j}}\,du^j = U^{i'}_j\,du^j.
+	\end{align*}
+	We see that $du^i$ transform correctly under general coordinate transformations. Therefore, $du^i$ can make a vector. 
 \end{exmp}
 \begin{exmp}
+	Find $[U^{j'}_i]$ for a coordinate transformation from Cartesian to spherical in flat 3-dimensional space. Let $\{u^j\} = \{ x,y,z\}$ and $\{u^{j'} \} = \{ r, \theta, \phi\} $. We find the Jacobian matrix:
+	\begin{align*}
+	[U^{j'}_i] = 
+	\begin{pmatrix}
+	\frac{\partial r}{\partial x} & \frac{\partial r}{\partial y} & \frac{\partial r}{\partial z}\\
+	\frac{\partial \theta}{\partial x} & \frac{\partial \theta}{\partial y} & \frac{\partial \theta}{\partial z}\\
+	\frac{\partial \phi}{\partial x} & \frac{\partial \phi}{\partial y} & \frac{\partial \phi}{\partial z}
+	\end{pmatrix}
+	=\frac{1}{r}
+	\begin{pmatrix}
+	r\sin\theta\cos\phi & r\sin\theta\sin\phi & r\cos\theta\\
+	\cos\theta\cos\phi & \cos\theta\sin\phi & -\sin\theta\\
+	\frac{-\sin\phi}{\sin\theta} & \frac{\cos\phi}{\sin\theta} & 0
+	\end{pmatrix}
+	\end{align*}
+\end{exmp}
+\begin{exmp}
+	Consider $\vec{\lambda} = (1,0,0)^\top = \{\lambda^{i'}\}$ in Cartesian coordinates. What are the components of $\vec{\lambda}$ in spherical coordinates? \\
 	
+	With our developed procedure, we should be able to obtain the answer with little thinking:
+	\begin{align*}
+	\vec{\lambda} = \{ \lambda^{i'} \} = 
+	\begin{pmatrix}
+	\lambda^{1'} \\ \lambda^{2'} \\ \lambda^{3'}
+	\end{pmatrix}
+	=
+	[U^{i'}_j\lambda^j]
+	= 
+	\frac{1}{r}
+	\begin{pmatrix}
+	r\sin\theta\cos\phi & r\sin\theta\sin\phi & r\cos\theta\\
+	\cos\theta\cos\phi & \cos\theta\sin\phi & -\sin\theta\\
+	\frac{-\sin\phi}{\sin\theta} & \frac{\cos\phi}{\sin\theta} & 0
+	\end{pmatrix}
+	\begin{pmatrix}
+	1 \\ 0 \\ 0
+	\end{pmatrix},
+	\end{align*}
+	which gives
+	\begin{align*}
+	\begin{pmatrix}
+	\lambda^{1'} \\ \lambda^{2'} \\ \lambda^{3'}
+	\end{pmatrix}
+	=
+	\frac{1}{r}
+	\begin{pmatrix}
+	r\sin\theta\cos\phi\\
+	\cos\theta\cos\phi\\
+	\frac{-\sin\phi}{\sin\theta}
+	\end{pmatrix}.
+	\end{align*}
+	In the natural basis of spherical coordinates, 
+	\begin{align*}
+	\vec{\lambda} = \sin\theta\cos\phi\,\vec{e}_r + \frac{1}{r}\cos\theta\cos\phi\,\vec{e}_\theta - \frac{\sin\phi}{r\sin\theta}\,\vec{e}_\phi.
+	\end{align*}
+	We have said before that the ``physical quantity'' $\vec{\lambda}$ does not change. We can test this by finding $\vert\vert \vec{\lambda} \vert\vert$ in Cartesian and spherical coordinates and compare the results. In Cartesian, the metric tensor is $g_{ij} = \delta^j_i$, so
+	\begin{align*}
+	\vert\vert \vec{\lambda} \vert\vert_{\text{Cartesian}} = \sqrt{g_{ij}\lambda^i\lambda^j} = \sqrt{1^2 + 0^2 + 0^2} = 1,
+	\end{align*}
+	as expected. The metric tensor $g_{i'j'}$ of spherical coordinate, in matrix form, is:
+	\begin{align*}
+	[g_{i'j'}] = \begin{pmatrix}
+	1 & 0 & 0\\
+	0 & r^2 & 0\\
+	0 & 0 & r^2\sin^2\theta
+	\end{pmatrix}.
+	\end{align*}
+	It follows that
+	\begin{align*}
+	\vert\vert \vec{\lambda} \vert\vert_{\text{Spherical}} &= \sqrt{g_{i'j'}\lambda^{i'}\lambda^{j'}} = g_{1'1'}\left( \lambda^{1'}\right) ^2 + g_{2'2'}\left( \lambda^{2'}\right) ^2 + g_{3'3'}\left( \lambda^{3'}\right) ^2\\
+	&= \sqrt{\left( \sin\theta\cos\phi\right)^2 + r^2\left(\frac{1}{r}\cos\theta\cos\phi \right)^2 + r^2\sin^2\theta\left(-\frac{\sin\phi}{r\sin\theta} \right)^2  }\\
+	&= \sqrt{\left( \sin\theta\cos\phi\right)^2 + \left(\cos\theta\cos\phi \right)^2 + \sin^2\phi}\\
+	&= \sqrt{\cos^2\phi + \sin^2\phi}\\
+	&= 1.
+	\end{align*}
+	Not surprisingly, $\vert\vert \vec{\lambda}_{\,\text{Cartesian}} \vert\vert = \vert\vert \vec{\lambda}_{\,\text{Spherical}} \vert\vert = 1$.
+\end{exmp}
+\begin{exmp}
+	Find $U^{j'}_i$ for a rotation by an angle $\phi$ around the $z$-axis in Cartesian coordinates. Suppose $\vec{a} = \{a^i \}= (1,1,0)$. What is $\vec{a} = \{ a^{i'}\}$ after a rotation by $\phi$.
+	\begin{align*}
+	\text{insert figure here!!!}
+	\end{align*}
+	From linear algebra... we know
+	\begin{align*}
+	1 + 1 = 2
+	\end{align*}
+	More completely,...\\
+	
+	But note that this is not true in general. As we have said before, coordinates don't generally form vectors, unless transformations are linear. 
 \end{exmp}
 
 \subsubsection{Tensors}
