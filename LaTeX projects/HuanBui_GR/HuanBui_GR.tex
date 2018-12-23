@@ -7,6 +7,8 @@
 \usepackage{mathtools}
 \usepackage{amsthm}
 \theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{rmk}{Remark}[section]
 \newtheorem{exmp}{Example}[section]
 \usepackage{empheq}
 \usepackage{hyperref}
@@ -1085,18 +1087,126 @@ So, the chain rule for $\vec{e}_j$ becomes the general coordinate transformation
 \begin{align*}
 \boxed{\vec{e}_j = U^{i'}_j\vec{e}_{i'}}
 \end{align*}
-Next, since $\vec{\lambda} = \lambda^{i'}\vec{e}_{i'} = \lambda^j\vec{e}_j = \lambda^jU^{i'}_j\vec{e}_{i'}$, we obtain the general coordinate transformation rule for contravariant vector components $\lambda_{i} \rightarrow \lambda^{i'}$ 
+Next, since $\vec{\lambda} = \lambda^{i'}\vec{e}_{i'} = \lambda^j\vec{e}_j = \lambda^jU^{i'}_j\vec{e}_{i'}$, we obtain the general coordinate transformation rule for contravariant vector components $\lambda^{i} \rightarrow \lambda^{i'}$: 
 \begin{align*}
 \boxed{\lambda^{i'} = U^{i'}_j\lambda^j}
 \end{align*}
-We can, of course, look at the Jacobian matrix representing the transformation $(S') \rightarrow (S)$:
+We can, of course, conjecture that the transformation rule for contravariant vector components $\lambda^{i'} \rightarrow \lambda^{i}$ is:
 \begin{align*}
-[U^{j}_{i'}] = \left[ \frac{\partial u^j}{\partial u^{i'}}\right], 
+\boxed{\lambda^{i'} = U^{j}_{i'}\lambda^{i'}}
 \end{align*}
-which is simply the inverse of $U^{i'}_j$. Therefore, it follows that:
+and we would be correct. The ``proof'' follows here. First, we look at the Jacobian matrix representing the transformation $(S') \rightarrow (S)$:
 \begin{align*}
-[U^{k}_{i'}]
+[ U^{j}_{i'}]  = \left[ \frac{\partial u^j}{\partial u^{i'}}\right], 
 \end{align*}
+which is simply the inverse of $\left[ U^{i'}_j\right] $. So, it follows that:
+\begin{align*}
+[ U^{j'}_k] [ U^{k}_{i'}]  &= \text{diag}(1,\dots,1) = [\delta^{j'}_{i'}] = [ \delta^{j}_{i}] = \tilde{I},
+\end{align*}
+and 
+\begin{align*}
+[U^k_{i'}][U^{i'}_j] &= \text{diag}(1,\dots,1) = [\delta^k_{j}] = \tilde{I},
+\end{align*}
+because matrices that are inverses of each other are commutative. Element-wise:
+\begin{align*}
+\boxed{U^k_{i'} U^{i'}_j = \delta^k_j = \delta^{k'}_{j'}= U^{k'}_i U^i_{j'}}
+\end{align*}
+So we can now verify our little ``conjecture:''
+\begin{align*}
+\lambda^{i'} &= U^{i'}_j\lambda^j\\
+U^k_{i'}\lambda^{i'} &= U^{i'}_jU^k_{i'}\lambda^j\\
+U^k_{i'}\lambda^{i'} &= \delta^k_j\lambda^j\\
+U^k_{i'}\lambda^{i'} &= \lambda^k.
+\end{align*}
+We notice that nothing makes $U^{i'}_j$ more special than $U^{i}_{j'}$. Also, while we use contravariant vectors more often than covariant vectors, nothing makes contravariant vectors more special than covariant vectors. So if transformation rules apply to contravariant vectors, we should also expect them to work for covariant vectors:
+\begin{empheq}[box=\fbox]{align}
+\lambda_{i'} &= U^{j}_{i'}\lambda_j \nonumber\\
+\lambda_{i} &= U^{j'}_i\lambda_{j'} \nonumber
+\end{empheq}
+At this point it looks like we are inventing new mathematics by playing a little game of swapping indices, and it is reasonable for us to grow a little bit suspicious of what we are doing here. But we can show that our ``index-swapping intuition'' is correct. Let us consider (again) a vector $\vec{\lambda} = \lambda_j\vec{e}^{\,j} = \{ \lambda_j\}$, where $\vec{e}^{\,j}$ is a vector in the dual basis:
+\begin{align*}
+\vec{e}^{\,j} = \vec{\nabla}u^j = \frac{\partial u^j}{\partial x}\hat{i} + \frac{\partial u^j}{\partial y}\hat{j} + \frac{\partial u^j}{\partial z}\hat{k}.
+\end{align*}
+Let us apply to chain rule:
+\begin{align*}
+\frac{\partial u^j}{\partial x} = \frac{\partial u^j}{\partial u^{i'}}\frac{\partial u^{i'}}{\partial x}.
+\end{align*}
+Therefore,
+\begin{align*}
+\vec{e}^{\,j} &= \vec{\nabla}u^j\\
+&= \frac{\partial u^j}{\partial x}\hat{i} + \frac{\partial u^j}{\partial y}\hat{j} + \frac{\partial u^j}{\partial z}\hat{k}\\
+&= \frac{\partial u^j}{\partial u^{i'}}\frac{\partial u^{i'}}{\partial x}\hat{i} + \frac{\partial u^j}{\partial u^{i'}}\frac{\partial u^{i'}}{\partial y}\hat{j} + \frac{\partial u^j}{\partial u^{i'}}\frac{\partial u^{i'}}{\partial z}\hat{k}\\
+&= \sum_{i=1}^{3}\frac{\partial u^j}{\partial u^{i'}}\frac{\partial u^{i'}}{\partial x}\hat{i} + \frac{\partial u^j}{\partial u^{i'}}\frac{\partial u^{i'}}{\partial y}\hat{j} + \frac{\partial u^j}{\partial u^{i'}}\frac{\partial u^{i'}}{\partial z}\hat{k}\\
+&= \sum_{i=1}^{3}\frac{\partial u^j}{\partial u^{i'}}\left( \frac{\partial u^{i'}}{\partial x}\hat{i} + \frac{\partial u^{i'}}{\partial y}\hat{j} + \frac{\partial u^{i'}}{\partial z}\hat{k}\right) \\
+&= \sum_{i=1}^{3}\frac{\partial u^j}{\partial u^{i'}}\vec{\nabla}u^{i'}\\
+&= \sum_{i=1}^{3}U^{j}_{i'}\vec{e}^{\,i'}.
+\end{align*}
+Or, in Einstein's summation notation, the transformation rule for the dual basis vectors is:
+\begin{align*}
+\boxed{\vec{e}^{\,j} = U^j_{i'}\vec{e}^{\,i'}}
+\end{align*}
+And the inverse transformation follows:
+\begin{align*}
+\boxed{\vec{e}^{\,j'} = U^{j}_{i'}\vec{e}^{\,i'}}
+\end{align*}
+Note that, the above relation is in fact true for any $n$-dimensional space. Our ``proof'' here is restricted to only 3-dimensional space. However, it is not so difficult to fix this slight issue. If we redefine the $\vec{\nabla}$ operator for $n$-dimensional space, then we can easily see that the new proof is identical to the proof above, except for the maximal value of $n$. \\
+
+We easily obtain the transformation rules for the covariant vector components using the results above:
+\begin{align*}
+\vec{\lambda} = \lambda_{i'}\vec{e}^{\,i'} = \lambda_j\vec{e}^{\,j} = \lambda_jU^j_{i'}\vec{e}^{\,i'} = \lambda_{i'}U^{i'}_j\vec{e}^{\,j}.
+\end{align*}
+Therefore,
+\begin{empheq}[box=\fbox]{align}
+\lambda_{i'} &= U^j_{i'}\lambda_j \nonumber\\
+\lambda_j &= U^{i'}_j\lambda_{i'}
+\end{empheq}
+Below is a summary of what we have learned so far about general coordinate transformations:
+\[
+\boxed{
+\begin{matrix}
+\text{\textbf{Natural basis:} }& \vec{e}_j = U^{i'}_j\vec{e}_{i'} & \vec{e}_{j'} = U^{i}_{j'}\vec{e}_{i} \\
+\text{\textbf{Dual basis:} }& \vec{e}^{\,j} = U^{j}_{i'}\vec{e}^{\,i'} & \vec{e}^{\,j'} = U^{j'}_i\vec{e}^{\,i}\\
+\text{\textbf{Contravariants:} } & \vec{\lambda}^{j'} = U^{j'}_i\vec{\lambda}^{i} & \vec{\lambda}^j = U^{j}_{i'}\vec{\lambda}^{i'}\\
+\text{\textbf{Covariants:} } & \vec{\lambda}_j = U^{i'}_j\vec{\lambda}_{i'} & \vec{\lambda}_{j'} = U^{i}_{j'}\vec{\lambda}^{j'}\\
+\end{matrix}
+}
+\]
+Since components of a vector must transform according to the rules above under general coordinate transformations, we can turn these rules into a more general definition of a vector.
+\begin{defn}
+	A vector is a quantity whose components transform contravariantly as $\lambda^{i'} = U^{i'}_j\lambda^j$ under a general coordinate transformation $u^{i'} = u^{i'}(u^j)$.
+\end{defn}
+\begin{rmk}
+	We are often interested in vector fields, a collection of vectors at different points in space whose components depend on the coordinates: $\lambda^i = \lambda^i(u^j)$. Since vectors have to transform correctly, we require that at any point $P$, we require that $\lambda^{i'} = U^{i'}_j\lambda^j$ be true for a vector field (defined on $\lambda^i$) to be defined. 
+\end{rmk}
+\begin{rmk}
+	Not all 3-tuple of functions are vectors. Consider a 3-tuple of coordinates. Let $\lambda^i = u^i$ and $\lambda^{j'} = u^{j'}$, where $u^{j'} = u^{j'}(u^i)$. For $\lambda^i$ to be make a vector field, it is required that $\lambda^{i'} = U^{i'}_j\lambda^j$. This implies that $u^{i'} = U^{i'}_ju^j$, with $U^{i'}_j = \partial u^{i'}/\partial u^j$. However, we immediately see that this is \textbf{not true in general}:
+	\begin{align*}
+	\boxed{u^{i'} \neq \frac{\partial u^{i'}}{\partial u^j}u^j}
+	\end{align*}
+	But rather, $u^{i'} = u^{i'}(u^j) = f(u^j)$. So, coordinates themselves do not make vectors in general, because they, as components, do not transform correctly under general coordinate transformations. This is why we never use $g_{ij}$ or $g^{ij}$ to lower or raise the index of $u^i$ or $u_i$, i.e., $u^i \neq g^{ij}u_j$, and $u_j \neq g_{ij}u^i$, in general. \\
+	
+	There are exemptions to the ``general rule,'' of course. For instance, consider \textbf{linear transformations}, where $u^{j'} = u^{j'}(u^i) = C^{j'}_iu^i$, where $C^{j'}_i$ are constants. What this means is that the new coordinates are simply linear combinations of the old coordinates. It follows that
+	\begin{align*}
+	\frac{\partial u^{j'}}{\partial u^k} = C^{j'}_i\frac{\partial u^i}{\partial u^k} = C^{j'}_i\delta^i_k=C^{j'}_k.
+	\end{align*}
+	If we let $k=i$ (we're just swapping dummy indices here), then $C^{j'}_i = \partial u^{j'}/\partial u^i = U^{j'}_i$, i.e., $u^{j'} = U^{j'}_iu^i$ under linear transformations. Therefore, $u^i$ transform correctly, and in this case the coordinates $u^i$ can form a vector, $\{u^i\}$.
+\end{rmk}
+\begin{rmk}
+	Properly speaking we can define vectors with respect to a particular class of transformations. It is possible for something to be a vector with respect to a class of transformation, but not a vector with respect to another. Such a class of transformation (default) is the general coordinate transformations. 
+\end{rmk}
+\begin{exmp}
+	
+\end{exmp}
+\begin{exmp}
+	
+\end{exmp}
+\begin{exmp}
+	
+\end{exmp}
+\begin{exmp}
+	
+\end{exmp}
+
 \subsubsection{Tensors}
 
 \newpage
