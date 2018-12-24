@@ -12,6 +12,7 @@
 \newtheorem{exmp}{Example}[section]
 \usepackage{empheq}
 \usepackage{hyperref}
+\usepackage{tensor}
 
 \begin{document}
 \begin{titlepage}\centering
@@ -1282,20 +1283,78 @@ Since components of a vector must transform according to the rules above under g
 	Not surprisingly, $\vert\vert \vec{\lambda}_{\,\text{Cartesian}} \vert\vert = \vert\vert \vec{\lambda}_{\,\text{Spherical}} \vert\vert = 1$.
 \end{exmp}
 \begin{exmp}
-	Find $U^{j'}_i$ for a rotation by an angle $\phi$ around the $z$-axis in Cartesian coordinates. Suppose $\vec{a} = \{a^i \}= (1,1,0)$. What is $\vec{a} = \{ a^{i'}\}$ after a rotation by $\phi$.
+	Find $U^{j'}_i$ for a rotation by an angle $\phi$ around the $z$-axis in Cartesian coordinates. Suppose $\vec{a} = \{a^i \}= (1,1,0)^\top$. What is $\vec{a} = \{ a^{i'}\}$ after a rotation by $\phi$.
 	\begin{align*}
 	\text{insert figure here!!!}
 	\end{align*}
-	From linear algebra... we know
+	From linear algebra, we know that a rotation by $\phi$ around the $z$-axis is given by:
 	\begin{align*}
-	1 + 1 = 2
+	\begin{pmatrix}
+	x'\\y'\\z'
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\cos\phi & -\sin\phi & 0\\
+	\sin\phi & \cos\phi & 0 \\
+	0 & 0 & 1
+	\end{pmatrix}
+	\begin{pmatrix}
+	x\\y\\z
+	\end{pmatrix}.
 	\end{align*}
-	More completely,...\\
+	So,
+	\begin{align*}
+	[U^{j'}_i] = 
+	\begin{pmatrix}
+	\cos\phi & -\sin\phi & 0\\
+	\sin\phi & \cos\phi & 0 \\
+	0 & 0 & 1
+	\end{pmatrix}
+	\end{align*}
+	Given that $\vec{a} = \{a^i \}= (1,1,0)^\top$, 
+	\begin{align*}
+	\begin{pmatrix}
+	\lambda^{1'}\\\lambda^{2'}\\\lambda^{3'}
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	\cos\phi & -\sin\phi & 0\\
+	\sin\phi & \cos\phi & 0 \\
+	0 & 0 & 1
+	\end{pmatrix}
+	\begin{pmatrix}
+	1\\1\\0
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		\cos\phi - \sin\phi\\
+		\sin\phi + \cos\phi\\
+		0
+	\end{pmatrix}
+	\end{align*}
+	Notice that because the coefficients of $[U^{j'}_i]$ are constants, the coordinates $\{ x,y,z\}$ can make a vector. But note (again) that this is not true in general.\\
 	
-	But note that this is not true in general. As we have said before, coordinates don't generally form vectors, unless transformations are linear. 
+	Next, we can find $\vert\vert \vec{\lambda} \vert\vert$ in both coordinate systems again and show that they are equal. In Cartesian coordinates, $\{\lambda^i\} = (1,1,0)^\top$. So, $\vert\vert \vec{\lambda} \vert\vert = \sqrt{2}$. In the rotated frame:
+	\begin{align*}
+	\vert\vert\vec{\lambda}\vert\vert = \sqrt{g_{i'j'}\lambda^{i'}\lambda^{j'}}.
+	\end{align*}
+	We seem to be stuck here, since we have yet found the form of the new metric $g_{i'j'}$. However, we observe that $g_{i'j'} = e^{i'}\cdot\vec{e}_{j'}$, which is just either 1 (if $i=j$) or 0 (if $j\neq j$), because the new coordinate system is just the ``tilted'' version of the old one. So we expect that new metric tensor is the same as the old metric tensor, which is nothing but $g_{i'j'}=\text{diag}(1,1,1)$. We can proceed to calculate the norm:
+	\begin{align*}
+	\vert\vert\vec{\lambda}\vert\vert &= \sqrt{\left( \cos\phi - \sin\phi \right)^2 + \left( \sin\phi + \cos\phi \right)^2 + 0^2}\\
+	&= \sqrt{2\left(\sin^2\phi + \cos^2\phi\right) }\\
+	&= \sqrt{2},
+	\end{align*}
+	which is of course what we found earlier. 
 \end{exmp}
-
+The above example motivates what we will discuss next. We have seen how vector components transform under general coordinate transformations, and how their norms (scalar) remain invariant. However, we start to question how the metric tensor transforms, in general. In the above example, the only reason we was able to calculate the norm of $\vec{\lambda}$ was that we could guess the form of the metric tensor, using some cleverness. In general, though, we will not be able to solve this problem without knowing exactly the form of the metric. Our next task, as apparent as it is now, is to find out how metric tensors in particular and tensors in general transform under general coordinate transformations. 
 \subsubsection{Tensors}
+We should first ask ourselves what tensors are. While a rigorous definition of a tensor will come shortly in this section (hint: it will resemble that of a vector, i.e., based on how their components transform under general coordinate transformations), we can first think of tensors as generalizations of vectors, i.e., with more than one index and hence multi-dimensional. Consider a physical object like a balloon which stretches and compresses multi-dimensionally when some force is applied to it. We call this ``response'' the stress tensor, which has 9 components in 3-dimensional space: $F_{xx}, F_{xy}, F_{xz}, F_{yx}, F_{yy}, F_{yz}, F_{zx}, F_{zy}, F_{zz}$.  
+\begin{defn}
+	A tensor is a multi-component quantity whose components transform as contravariant or covariant vector components.
+\end{defn}
+\begin{exmp}
+	Find the condition for $\tensor{M}{^a_b^c}$ to be a tensor.
+\end{exmp}
 
 \newpage
 
