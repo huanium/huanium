@@ -1353,7 +1353,118 @@ We should first ask ourselves what tensors are. While a rigorous definition of a
 	A tensor is a multi-component quantity whose components transform as contravariant or covariant vector components.
 \end{defn}
 \begin{exmp}
-	Find the condition for $\tensor{M}{^a_b^c}$ to be a tensor.
+	Find the condition for $\tensor{\tau}{^{ij}_k^l}$ to be a tensor.\\
+	
+	Well, a tensor has to transform correctly, so we can play a little game of index-replacing:
+	\begin{align*}
+	\boxed{\tensor{\tau}{^{i'j'}_{k'}^{l'}} = U^{i'}_mU^{j'}_nU^p_{k'}U^{l'}_p\tensor{\tau}{^{mn}_{p}^{q}}}
+	\end{align*}
+	under a general coordinate transformation $u^{i'} \rightarrow u^{i'}(u^j)$. 
+\end{exmp}
+\begin{exmp}
+	Show that $g_{ij}$ is a tensor.\\
+	
+	$g_{ij}$ is a tensor, in fact, by definition:
+	\begin{align*}
+	\boxed{g_{i'j'} = U^k_{i'}\vec{e}_k \cdot U^l_{j'}\vec{e}_l = U^k_{i'}U^l_{j'}\vec{e}_k \cdot\vec{e}_l = U^k_{i'}U^l_{j'}g_{kl}}
+	\end{align*} 
+	Similarly, the inverse $g^{ij}$ is also a tensor:
+	\begin{align*}
+	\boxed{g^{k'l'} = U^{k'}_{i}\vec{e}^{\,i} \cdot U^{l'}_{j}\vec{e}^{\,j} = U^{k'}_iU^{l'}_{j}\vec{e}^{\,i} \cdot\vec{e}^{\,j} = U^{k'}_{i}U^{l'}_{j}g^{ij}}
+	\end{align*}
+\end{exmp}
+\begin{defn}
+	A tensor $\tensor{\tau}{^{abc\dots}_{def\dots}}$ is of type $(r,s)$ when it has $r$ contravariant components and $s$ covariant components. 
+\end{defn}
+\begin{exmp}
+	$g_{ij}$ is a type $(0,2)$ tensor. $g^{ij}$ is a type $(2,0)$ tensor. 
+\end{exmp}
+Vectors are just a special type of tensors. Contravariant vectors $\lambda^i$ are type $(1,0)$ tensors, while covariant vectors $\lambda_i$ are type $(0,1)$ tensors. 
+\begin{rmk}
+	The transformation $U^{i'}_j$ is NOT a tensor. Indeed, it does not make sense to talk about how a transformation transforms. 
+\end{rmk}
+\begin{exmp}
+	Write $g_{i'j'} = U^k_{i'}U^l_{j'}g_{kl}$ as a matrix equation.\\
+	
+	We let $\tilde{G} = [g_{ij}]$, $\tilde{G}'= [g_{i'j'}]$, and $\hat{U} = \tilde{U}^{-1} = [\partial u^k/\partial u^{i'}]$. To create a matrix equation, we have to be aware of when an index indicate a row or column. The correct ``row-column-sensitive'' order expression is:
+	\begin{align*}
+	[g_{i'j'}] &= [U^{k}_{i'}][g_{kl}][U^l_{j'}],
+	\end{align*}
+	or equivalently,
+	\begin{align*}
+	\boxed{\tilde{G}' = \hat{U}^{\top}\tilde{G}\hat{U}}
+	\end{align*}
+\end{exmp}
+\begin{exmp}
+	Using the transformation rules for tensors, obtain $g_{i'j'}$ for a rotation by $\phi$ around the $z$-axis in 3-dimensional space. \\
+	
+	Recall that
+	\begin{align*}
+	[U^{j'}_i] = 
+	\begin{pmatrix}
+	\cos\phi & -\sin\phi & 0\\
+	\sin\phi & \cos\phi & 0 \\
+	0 & 0 & 1
+	\end{pmatrix},
+	\end{align*}
+	and that $g_{ij} = \text{diag}(1,1,1)$ in 3-dimensional Cartesian coordinate system. To find $\tilde{G}'$, we first have to find $U^k_{i'}$, the inverse transformation. We expect that $U^k_{i'}$ is simply a rotating by $-\phi$ (since this intuitively ``reverses'' what $U^{k'}_{i}$ does). But we, as always, find $U^k_{i'}$ mechanically:
+	\begin{align*}
+	\hat{U} = \left[\frac{\partial u^k}{\partial u^{i'}} \right]  =\tilde{U}^{-1} = 
+	\begin{pmatrix}
+	\cos\phi & -\sin\phi & 0\\
+	\sin\phi & \cos\phi & 0 \\
+	0 & 0 & 1
+	\end{pmatrix}^{-1}
+	=
+	\begin{pmatrix}
+	\cos\phi & \sin\phi & 0\\
+	-\sin\phi & \cos\phi & 0 \\
+	0 & 0 & 1
+	\end{pmatrix},
+	\end{align*} 
+	as anticipated. Using the result of the previous example,
+	\begin{align*}
+	\tilde{G}' &= \hat{U}^{\top}\tilde{G}\hat{U}\\
+	&= \begin{pmatrix}
+	\cos\phi & \sin\phi & 0\\
+	-\sin\phi & \cos\phi & 0 \\
+	0 & 0 & 1
+	\end{pmatrix}
+	\begin{pmatrix}
+	1 & 0 & 0\\
+	0 & 1 & 0\\
+	0 & 0 & 1
+	\end{pmatrix}
+	\begin{pmatrix}
+	\cos\phi & -\sin\phi & 0\\
+	\sin\phi & \cos\phi & 0 \\
+	0 & 0 & 1
+	\end{pmatrix}\\
+	&=
+	\begin{pmatrix}
+	1 & 0 & 0\\
+	0 & 1 & 0\\
+	0 & 0 & 1
+	\end{pmatrix}\\
+	&= \text{diag}(1,1,1),
+	\end{align*}
+	just as guessed. So our intuition was correct after all. But we realize an important fact: the metric tensor can remain the same after a non-trivial transformation (in this case the transformation is a rotating around the $z$-axis). We also notice that the metric tensors are the same under a transformation if the transformation matrix is \textbf{orthogonal}, i.e., its inverse the equal to its transpose:
+	\begin{align*}
+	\hat{U} = \tilde{U}^{-1} = \tilde{U}^\top.
+	\end{align*}
+\end{exmp}
+
+\begin{rmk}
+	Only tensors of type $(r,s)$ with $r+s \leq 2$ can be displayed as matrices and/or matrix multiplications. It is not possible to write $\tensor{\tau}{^{ij}_{kl}}$ as a matrix. 
+\end{rmk}
+
+\subsection{Scalars}
+As we have seen from time to time, scalars are invariant under general coordinate transformations. As tensors, scalars are of type $(0,0)$, i.e., they have to open indices.
+\begin{exmp}
+	Show that the magnitude of a vector is a scalar.
+\end{exmp}
+\begin{exmp}
+	Show that the line element $ds^2 = g_{ij}\,du^i\,du^j$ is a scalar. 
 \end{exmp}
 
 \newpage
