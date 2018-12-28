@@ -1189,7 +1189,7 @@ We easily obtain the transformation rules for the covariant vector components us
 Therefore,
 \begin{empheq}[box=\fbox]{align}
 \lambda_{i'} &= U^j_{i'}\lambda_j \nonumber\\
-\lambda_j &= U^{i'}_j\lambda_{i'}
+\lambda_j &= U^{i'}_j\lambda_{i'} \nonumber
 \end{empheq}
 Below is a summary of what we have learned so far about general coordinate transformations:
 \[
@@ -1849,21 +1849,178 @@ So the Lorentz boost $[\Lambda^{\mu'}_\nu]$ becomes:
 \end{align*}
 
 \subsubsection{The Poincar\'e transformations}
-
+The general form of Poincar\'e transformations are given by:
 \begin{align*}
 \boxed{a^{\mu'} = \Lambda^{\mu'}_\nu a^{\nu} + b^{\mu'}}
 \end{align*}
-\begin{exmp}
-	stuff
-\end{exmp}
-\begin{exmp}
-	stuff
-\end{exmp}
-\begin{exmp}
-	stuff
-\end{exmp}
-\subsubsection{Velocity, momentum, and force}
+where $b^{\mu}$ is a constant, i.e., $\frac{\partial b^{\mu'}}{\partial x^\nu} = 0$. We notice that, by the form of the equation, these are ``affine'' transformations, or equivalent a linear transformation (or linear map) plus a shift/translation. What we mean by ``affine'' is that, suppose we take $\frac{\partial a^{\mu'}}{\partial a^\nu}$:
+\begin{align*}
+\frac{\partial a^{\mu'}}{\partial a^\nu} = \Lambda^{\mu'}_\nu,
+\end{align*}
+which is constant, and ``looks like a Lorentz transformation.'' With the chain rule:
+\begin{align*}
+\Lambda^{\mu'}_\nu \Lambda^\nu_{\sigma'} = \frac{\partial a^{\mu'}}{\partial a^\nu}\frac{\partial a^{\nu}}{\partial a^{\sigma'}} = \delta^{\mu}_\sigma,
+\end{align*}
+which is what we have seen in Lorentz transformations.\\
 
+A key feature of the Lorentz transformation is that it is a \textbf{linear map}, and that
+\begin{align*}
+ds^2 = \eta_{\mu\nu}\,dx^\mu\,dx^\nu = \eta_{\mu'\nu'}\,dx^{\mu'}\,dx^{\nu'},
+\end{align*}
+where 
+\begin{align*}
+[\eta_{\mu\nu}] = [\eta_{\mu'\nu'}] = 
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & -1 & 0 & 0\\
+0 & 0 & -1 & 0\\
+0 & 0 & 0 & -1
+\end{pmatrix},
+\end{align*}
+i.e., the Lorentz transformations preserve the Minkowski metric in Cartesian coordinates. Now, if we take the differentials of the Poincar\'e transformation equation:
+\begin{align*}
+da^{\mu'} = \Lambda^{\mu'}_\sigma\,da^\sigma,
+\end{align*}
+and plug this into the $ds^2$ equation above, then
+\begin{align*}
+\eta_{\mu\nu}\,dx^\mu\,dx^\nu &= \eta_{\mu'\nu'}\,dx^{\mu'}\,dx^{\nu'}\\
+&= \eta_{\mu'\nu'}\left( \Lambda^{\mu'}_\sigma\,dx^\sigma\right) \left( \Lambda^{\nu'}_\rho\,dx^\rho\right) \\
+&= \Lambda^{\mu'}_\sigma\Lambda^{\nu'}_\rho\eta_{\mu'\nu'}\,dx^\sigma \,dx^\rho
+\end{align*}
+Let $\sigma \rightarrow \mu$, $\rho \rightarrow \nu$, $\mu' \rightarrow \alpha'$, and $\nu' \rightarrow \beta'$ (since these are just indices), we get:
+\begin{align*}
+\boxed{\eta_{\mu\nu} = \Lambda^{\alpha'}_\sigma\Lambda^{\beta'}_\rho\eta_{\alpha'\beta'}}
+\end{align*}
+So, we conclude that in Poincar\'e transformations, the metric tensor transforms according to the above rule. We make two observations, as a consequence of the above fact and from the subsection on Lorentz transformations:
+\begin{itemize}
+	\item $\eta_{\mu\nu}$ is a tensor, since it transforms correctly under general coordinate transformations (Poincar\'e).
+	\item $\eta_{\mu\nu}$ is unchanged (preserved) under Lorentz transformations.
+\end{itemize}
+As a summary, we have this little table:
+\begin{empheq}[box=\fbox]{align}
+\text{\textbf{Contravariant vectors:} } \lambda^{\mu'} &= \Lambda^{\mu'}_{\nu}\lambda^\nu \nonumber\\
+\text{\textbf{Covariant vectors: }} \lambda_{\mu'} &= \Lambda^{\nu}_{\mu'}\lambda_\nu \nonumber\\
+\text{\textbf{Tensors: }}\tensor{\tau}{^{\mu'\nu'}_{\sigma'}} &= \Lambda^{\mu'}_{\alpha}\Lambda^{\nu'}_{\beta}\Lambda^{\gamma}_{\sigma'}\tensor{\tau}{^{\alpha\beta}_{\gamma}} \nonumber\\
+\text{\textbf{Scalars: }Invariant} \nonumber
+\end{empheq}
+\begin{exmp}
+	Show that inner products of vectors are scalars.\\
+	
+	We actually have done an identical problem before. Consider two vectors $a^{\mu'}$ and $b^{\mu'}$. Their inner product is given by:
+	\begin{align*}
+	a^{\mu'}b_{\mu'} &= \Lambda^{\mu'}_{\nu}a^{\nu}\Lambda^{\sigma}_{\mu'}b_\sigma\\
+	&= \Lambda^{\mu'}_{\nu}\Lambda^{\sigma}_{\mu'}a^{\nu}b_\sigma\\
+	&= \delta^\sigma_\nu a^\nu b_\sigma\\
+	&= a^\nu b_\nu.
+	\end{align*}
+	This shows that the norm of every 4-vector is invariant:
+	\begin{align*}
+	\lambda\cdot\lambda = \lambda^\mu \lambda_\mu = \lambda^{\mu'}\lambda_{\mu'}.
+	\end{align*}
+\end{exmp}
+
+Notice that the \textbf{sign} of a vector norm squared is also invariant. Among other quantities, this fact has some profound physical consequences. Recall that, in Minkowski spacetime, the norm squared of a vector can be either negative, positive, or zero. We recall and rethink the following facts from introductory special relativity:
+\begin{itemize}
+	\item If $\lambda^2 > 0$, then $\lambda^\mu$ is \textbf{time-like}. This means there exists a reference frame where $\lambda^{\mu'} = (\lambda^0,0,0,0)$, i.e., there exists a reference frame where the ``event'' described is at the spatial origin. Recall that if $\lambda^\mu$ is a vector between two events on the Minkowski spacetime diagram, then \textbf{time-like-ness} implies the existence of a frame where the events occur \textbf{at the same location}.
+	\item If $\lambda^2 < 0$, then $\lambda^\mu$ is \textbf{space-like}. This means there exists a reference frame where $\lambda^{\mu'} = (0, \lambda^1,0,0)$, i.e., there exists a reference frame where the ``event'' described is at the time origin. Recall that if $\lambda^\mu$ is a vector between two events on the Minkowski spacetime diagram, then \textbf{space-like-ness} implies the existence of a frame where the events are \textbf{simultaneous}.
+	\item If $\lambda^2 = 0$, then $\lambda^\mu$ is \textbf{light-like}. We say that $\lambda^\mu$ is a \textbf{null vector}, i.e., we can always find a frame where $\lambda^\mu = (\lambda^0, \lambda^0,0,0)$, or $(\lambda^0, 0, \lambda^0, 0)$, etc. More generally, $\lambda^\mu = (\lambda^0, \vec{\lambda})$ with $\vert\vert\vec{\lambda}\vert\vert = \lambda^0$.\\
+\end{itemize}
+
+\begin{exmp}
+	Is $X^\mu = (ct,x,y,z)$ a contravariant vector under Poincar\'e transformations?\\
+	
+	In order for $X^\mu = (ct,x,y,z)$ to be a contravariant vector under Poincar\'e transformation, the following needs to hold:
+	\begin{align*}
+	X^{\mu'} = \Lambda^{\mu'}_\nu X^\nu.
+	\end{align*}
+	Now, the Poincar\'e transformation is given by:
+	\begin{align*}
+	X^{\mu'} = \Lambda^{\mu'}_\nu X^\nu + a^{\mu'}.
+	\end{align*}
+	for any $a^{\mu'}$. We immediately realize that $X^\mu$ is not a vector if $a^{\mu'} \neq 0$, because for both equalities to hold, it is required that $a^{\mu'} = 0$, in which case, the transformation is reduced to a very special case (Lorentz transformation), rather than any general Poincar\'e transformation where $a^{\mu'}$ can be non-zero.  	\\
+\end{exmp}
+
+\begin{exmp}
+	Is $dX^\mu = (c\,dt, \,dx, \,dy, \,dz)$ a contravariant vector under Poincar\'e transformations?\\
+	
+	Recall the form of Poincar\'e transformations:
+	\begin{align*}
+	X^{\mu'} = \Lambda^{\mu'}_\nu X^\nu + a^{\mu'}.
+	\end{align*}
+	Computing the differentials, we obtain:
+	\begin{align*}
+	dX^{\mu'} = \Lambda^{\mu'}_\nu\,dX^\nu + 0 = \Lambda^{\mu'}_\nu\,dX^\nu.
+	\end{align*}
+	Since $dX^{\mu}$ transform correctly, $dX^\mu$ is a vector under Poincar\'e transformations. \\
+\end{exmp}
+
+\begin{exmp}
+	Here is an interesting follow-up to the previous example. Suppose that we take ${\partial }/{\partial X^\mu}$ of a scalar field $\phi$. Will the end result be a vector? In other words, is ${\partial \phi}/{\partial X^\mu}$ a vector? If so, what type of vector is this?\\
+	
+	Without much thought, we apply the chain rule on $\phi = \phi\left(X^{\nu}\left(X^{\mu'} \right)  \right) $ to obtain the following:
+	\begin{align*}
+	\frac{\partial \phi}{\partial X^{\mu'}} = \frac{\partial \phi}{\partial X^{\nu}}\frac{\partial X^\nu}{\partial X^{\mu'}} = \Lambda^\nu_{\mu'}\frac{\partial \phi}{\partial X^{\nu}}.
+	\end{align*}
+	We observe that $\partial \phi / \partial X^{\mu}$ transforms correctly under Poincar\'e transformations. Therefore, $\partial \phi / \partial X^{\mu}$ is a vector. Specifically, $\partial \phi / \partial X^{\mu}$ is a \textbf{covariant vector}. We can tell from two ways: (i) because the upper indices cancel out, and (ii) by the $\Lambda$ term in the transformation rule. For covariant transformations from ``unprimed'' to ``primed,'' the $\Lambda$ term has an unprimed upper index and a primed lower index.\\
+\end{exmp}
+
+The previous example is interesting enough that we should make some definitions, for the sake of simplicity and bookkeeping. For the partial derivative operator with respect to a coordinate, we define
+\begin{align*}
+\boxed{\partial_\mu = \frac{\partial }{\partial X^\mu}}
+\end{align*}
+This simplifies our notation for a partial derivative of a scalar field:
+\begin{align*}
+\partial_\mu \phi= \frac{\partial \phi}{\partial X^\mu}.
+\end{align*}
+With this definition, we can construct a vector whose components are the partial derivatives of a scalar field: the \textbf{gradient}:
+\begin{align*}
+\boxed{\vec{\nabla} = \partial_i = (\partial_1, \partial_2, \partial_3)}
+\end{align*}
+Of course, we can define a ``generalized gradient'' operator as:
+\begin{align*}
+\boxed{\partial_\mu = \left( \partial_0, \partial_i\right)  = \left( \partial_0, \vec{\nabla}\right) }
+\end{align*}
+These definitions will come in handy when we revisit the Maxwell's equations.\\
+
+Now that we have a ``covariantly'' operator, in makes sense to define a ``contravariantly'' operator $\partial^i$. In Minkowski spacetime with Cartesian coordinates, we define a lower coordinate:
+\begin{align*}
+X_\mu = \eta_{\mu\nu}X^\nu.
+\end{align*}
+Let
+\begin{align*}
+\boxed{\partial^\mu = \frac{\partial }{\partial X_\mu}}
+\end{align*}
+From
+\begin{align*}
+X^\mu = \eta^{\mu\nu}X_\nu,
+\end{align*}
+we get
+\begin{align*}
+\frac{\partial X^\mu}{\partial X_\nu} = \eta^{\mu\nu},
+\end{align*}
+since $\eta^{\mu\nu}$ is constant. This implies
+\begin{align*}
+\partial^\mu = \frac{\partial}{\partial X_\mu} = \frac{\partial X^\nu}{\partial X_\mu}\frac{\partial }{\partial X^\nu} = \eta^{\mu\nu}\partial_\nu.
+\end{align*}
+We quickly realize that we can raise the index of $\partial_\mu$ to get $\partial^\mu$:
+\begin{align*}
+\boxed{\partial^\mu = \eta^{\mu\nu}\partial_\nu}
+\end{align*}
+So, for a scalar field $\phi$:
+\begin{align*}
+\partial^\mu \phi = \eta^{\mu\nu}\partial_\nu \phi.
+\end{align*}
+But note that $\partial^i \neq \vec{\nabla}$. Rather, due to the nature of $\eta_{\mu\nu}$ (or equivalently $\eta^{\mu\nu}$), we get
+\begin{align*}
+\partial^i = -\partial_i = -\vec{\nabla}.
+\end{align*}
+So, we can write
+\begin{align*}
+\boxed{\partial^\mu = \left(\partial^0, \partial^i\right) = \left(\partial^0, -\vec{\nabla}\right)}
+\end{align*}
+
+\subsubsection{Velocity, momentum, and force}
+In this section we want look at what velocity, momentum, and force look like as 4-vectors and how they transform. To be precise, we want to know in which form do these vectors transform correctly under general Poincar\'e transformations or specifically in Lorentz transformations. Consider a vector $X^\mu$ in Minkowski spacetime, with metric tensor $\eta_{\mu\nu}$. 
 \subsection{Relativistic Electrodynamics}
 \begin{align*}
 \text{Gauss' law:  } \Aboxed{&\oiint\vec{E}\cdot\,d\vec{a} = \frac{q}{\epsilon_0}}\\
