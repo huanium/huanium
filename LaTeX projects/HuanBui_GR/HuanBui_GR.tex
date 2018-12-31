@@ -2352,10 +2352,16 @@ So, to summarize, in special relativity, all physical properties are some sort o
 \newpage
 
 \section{Curved spaces}
+Recall that equivalence principle leads us towards the idea of curved spacetime. In general relativity, gravity is not a force. Instead, massive objects curve or wrap spacetime around them. Light travels as a free particle along a ``geodesic'' through curved spacetime. One of the questions we will eventually answer in this section is: ``How to find the equation for geodesics?'' To answer this question, we will have to learn how to describe curved spaces and spacetime directly. We will derive the \textbf{geodesic equation}:
+\begin{align*}
+\frac{d^2X^\mu}{d\tau^2} + \tensor{\Gamma}{^\mu_{\nu\sigma}}\frac{dX^\nu}{d\tau}\frac{dX^\sigma}{d\tau} = 0.
+\end{align*}
+We will also see how the metric tensor $g_{\mu\nu}$ and the \textbf{Christoffel symbol} $\tensor{\Gamma}{^\mu_{\nu\sigma}}$, and the \textbf{Riemann curvature tensor} $\tensor{R}{^\lambda_{\mu\nu\sigma}}$ are related. We, of course, will explore what these mathematical objects are. Then (finally), we will look at the Einstein equations that will let us solve the metric tensor $g_{\mu\nu}$ for a given distribution of matter (mass and energy). 
 \subsection{Geodesics}
 In 3-dimensional flat space, we can think of a \textbf{geodesic} as the shortest distance between two points, i.e., a straight line, or the path of a free particle. It is very important to remember that \textbf{free particles follow geodesics}, as this is true in all spaces, while geodesics can be curves.\\
 
-For general $n$-dimensional spaces, geodesics are no longer shortest distances, as we will see in this section. Rather, geodesics are paths of free particles. 
+For general $n$-dimensional spaces, geodesics are no longer shortest distances, as we will see in this section. Rather, geodesics are paths of free particles. \\
+
 \begin{exmp}
 	Show that a geodesic in Minkowski spacetime is not the shortest distance. \\
 	
@@ -2384,10 +2390,176 @@ For general $n$-dimensional spaces, geodesics are no longer shortest distances, 
 	\Delta \tau' < \Delta \tau,
 	\end{align*}
 	i.e., the geodesic maximizes the proper time $\tau$, or equivalently, the ``length'' of the geodesic in this case is the largest of all possible ``lengths.'' 
-	
 \end{exmp} 
 \subsection{2-dimensional curved spaces}
+According to general relativity, we live in a 4-dimensional spacetime. However, this is hard to visualize. To start off more simply, we can look at 2-dimensional spaces that we can embed in 3-dimensional spaces.\\
+
+First off, 2-dimensional spaces can be embedded in 3-dimensional spaces. For example, the $xy$-plane can be embedded into 3-space simply by letting $z=0$ in Cartesian coordinates. Just like how 1-dimensional curves in 3-dimensions can be described by a parameterization $\vec{r} = \vec{r}(t) = (x(t),y(t),z(t))$, 2-dimensional surfaces can be parameterized with 2 parameters, say $u$ and $v$. For example, a surface $\vec{S}$ in $\mathbb{R}^3$ can have the following form:
+\begin{align*}
+\vec{S} = \vec{S}(u,v) = (x(u,v), y(u,v), z(u,v)).
+\end{align*}
+
+\begin{exmp}
+	Parameterize the surface of a sphere of radius $R$.\\
+	
+	We know from spherical coordinates the conversion formulas:
+	\begin{align*}
+	x &= R\sin\theta\cos\phi\\
+	y &= R\sin\theta\sin\phi\\
+	z &= R\cos\theta.
+	\end{align*}
+	So the parameterization is simply:
+	\begin{align*}
+	\vec{S}(\theta, \phi) = (R\sin\theta\cos\phi, R\sin\theta\sin\phi, R\cos\theta),
+	\end{align*}
+	where $0 \leq \phi \leq 2\pi$ and $0\leq \theta \leq \pi$. We can give this parameterization to Mathematica, under ``ParametricPlot3D" to get a sphere. Let $R=2$.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.5]{gr-fig-15.png}
+		\caption{Surface of a sphere of radius $R=2$}
+	\end{figure}
+\end{exmp}
+But we in fact don't need an extra dimension to describe a curved space. An obvious example is that we don't need to leave the surface of Earth to know that it is curved. With just two coordinates $u$ and $v$ in a 2-dimensional space, we can mathematically show whether the space is curved or not. The first step is to generate tangent vectors:
+\begin{align*}
+\vec{e}_i = \frac{\partial \vec{r}}{\partial u^i}.
+\end{align*} 
+For the case of a 2-dimensional surface parameterized by $u$ and $v$, we obtain two tangent vectors:
+\begin{align*}
+\vec{e}_u = \frac{\partial \vec{S}}{\partial u}, \text{ and } \vec{e}_v = \frac{\partial \vec{S}}{\partial v}.
+\end{align*}
+Note that these tangent vectors are not in the surface (this is also true in general $n$-dimensional cases). Rather, they lie in a a tangent space $T_p$ at each point $P$ in the space. Tangent vectors are useful because they give directions along the curve or surface.\\
+
+Next, we want to look at an infinitesimal displacement $d\vec{S}$. Because $\vec{S} = \vec{S}(u,v)$, we get from the chain rule:
+\begin{align*}
+d\vec{S} = \frac{\partial \vec{S}}{\partial u}\,du + \frac{\partial\vec{S}}{\partial v}\,dv = \vec{e}_u\,du + \vec{e}_v\,dv.
+\end{align*}
+For the sake of convenience (and further generalizations in the future), we shall switch to index notation. Recall that capital Roman characters are reserved for 2-dimensional manifolds, let $u^A = (u^1,u^2) = (u,v)$, with $A=1,2$. This gives
+\begin{align*}
+d\vec{S} = \vec{e}_A\,du^A.
+\end{align*}
+It follows that the line element $ds^2$ is
+\begin{align*}
+ds^2 = d\vec{S}\cdot\,d\vec{S} = \left(\vec{e}_A\,du^A \right) \cdot \left( \vec{e}_B\,du^B\right) = \vec{e}_A \cdot \vec{e}_B\,du^A\, du^B.
+\end{align*}
+But this is nothing but the all-familiar:
+\begin{align*}
+\boxed{ds^2 = g_{AB}\,du^A\,du^B}
+\end{align*}
+Note that we have just shown the above equation holds not only for flat but also for general curved spaces. With this, we can go on to calculate lengths of curves in general curved 2-dimensional spaces. Let a curve in this 2-dimensional space be $\vec{l}(\sigma) = (u(\sigma),v(\sigma))$. The length $L$ is this curve for $a \leq \sigma \leq b$ is given by:
+\begin{align*}
+L &= \int_{a}^{b}\,ds \\
+&= \int_{a}^{b}\sqrt{g_{AB}\,du^A\,du^B}\\ 
+&= \int\sqrt{g_{AB}\frac{du^A}{d\sigma}\frac{du^B}{d\sigma}}\,d\sigma\\
+&= \int_{a}^{b}\sqrt{g_{AB}\dot{u}^{A}(\sigma)\dot{u}^{B}(\sigma)}\,d\sigma.
+\end{align*}
+We realize that this has the same form as the length-formula we have found earlier. The only difference is that we are in curved spaces. This suggests that we can generalize this formula for any $n$-dimensional space. \\
+
+We have defined the natural basis vectors as $\vec{e}_A = \partial \vec{S}/\partial u^A$. What about the dual basis vectors? If we try to define the dual basis vectors as $\vec{e}^A = \vec{\nabla}u^A$, we run into trouble. Recall that we had we previous had three coordinates, and that the gradient of $u$ is a normal vector to the surface of constant $u$. However, in 2-dimensional spaces constant $u$ are lines, which has infinitely many normal vectors. This simply means we cannot use the gradient operator to find $\vec{e}^A$. Rather, we will use a more powerful tool, the \textbf{inverse metric tensor}, $g^{AB}$ to raise the index of the natural basis vectors $\vec{e}_A$:
+\begin{align*}
+\boxed{\vec{e}^A = g^{AB}\vec{e}_B}
+\end{align*}
+So, the general procedure is: (i) find the tangent vectors, i.e., the natural basis vectors $\vec{e}_A$, (ii) generate the metric tensor $g_{AB}$, (iii) compute the inverse metric tensor $g^{AB}$, and (iv) find the dual basis vectors $\vec{e}^A$ from raising the index of $\vec{e}_A$.\\
+
+\begin{exmp}
+	Consider a saddle in 3-dimensional flat space. Using paraboloidal coordinates with constant $w$, find the metric tensor and inverse metric tensor of this saddle surface.\\
+	
+	Recall the conversion formulas for paraboloidal coordinates:
+	\begin{align*}
+	x &= u+v\\
+	y &= u-v\\
+	z &= 2uv
+	\end{align*}
+	Let be saddle be
+	\begin{align*}
+	\vec{r} = (u+v, u-v, 2uv).
+	\end{align*}
+	We first find the tangent vectors (or the natural basis vectors):
+	\begin{align*}
+	\vec{e}_1 &= \frac{\partial \vec{r}}{\partial u} = (1,1,2v)^\top\\
+	\vec{e}_2 &= \frac{\partial \vec{r}}{\partial v} = (1,1,2u)^\top.
+	\end{align*}
+	Finding the metric tensor is then purely mechanical:
+	\begin{align*}
+	[g_{AB}] = [\vec{e}_A\cdot\vec{e}_B] = 
+	\begin{pmatrix}
+	2 + 4v^2 & 4uv\\
+	4uv & 2+4u^2
+	\end{pmatrix},
+	\end{align*}
+	as for finding the inverse metric tensor:
+	\begin{align*}
+	[g^{AB}] = [g_{AB}]^{-1} = 
+	\frac{1}{2(1+2u^2+2v^2)}
+	\begin{pmatrix}
+	1 + 2u^2 & -2uv\\
+	-2uv & 1+2v^2
+	\end{pmatrix}
+	\end{align*}
+	With the natural basis vectors and the inverse metric tensor, we can easily find the dual basis vectors:
+	\begin{align*}
+	\vec{e}^1 = [g^{AB}]\vec{e}_1 &= 
+	\frac{1}{2(1+2u^2+2v^2)}
+	\begin{pmatrix}
+	1 + 2u^2 & -2uv\\
+	-2uv & 1+2v^2
+	\end{pmatrix}
+	\begin{pmatrix}
+	1 \\ 1 \\ 2v
+	\end{pmatrix}\\
+	\vec{e}^2 = [g^{AB}]\vec{e}_2 &= 
+	\frac{1}{2(1+2u^2+2v^2)}
+	\begin{pmatrix}
+	1 + 2u^2 & -2uv\\
+	-2uv & 1+2v^2
+	\end{pmatrix}
+	\begin{pmatrix}
+	1 \\ 1 \\ 2u
+	\end{pmatrix}
+	\end{align*}
+\end{exmp}
+
+Ultimately, though, we will find that basis vectors are not so useful once we already have the metric tensor. So we will not be worrying about them so much moving forward. In the next sections, we will explore the Einstein equations, whose purpose is to find the metric tensor describing a space of a given matter distribution. Once we obtain the metric tensor, we can just mechanically work out other characteristics of the space. 
+
 \subsection{Manifolds}
+An arbitrary, curved $n$-dimensional space is called a manifold. Assuming that we know the metric tensor, we can write the $n$ coordinates associated with the space as
+\begin{align*}
+x^a = (x^1, x^2, \dots, x^n),
+\end{align*}
+for any coordinate system. Next, assume that we have two coordinate systems whose conversion formulae are differential and invertible functions:
+\begin{align*}
+x^{a'} &= x^{a'}(x^b)\\
+x^b = x^b(x^{a'}).
+\end{align*}
+Next, just like before, we define the Jacobian matrix for the transformation:
+\begin{align*}
+\boxed{[X^{a'}_b] = \left[\frac{\partial X^{a'}}{\partial X^b}\right]}
+\end{align*}
+And of course the inverse transformation:
+\begin{align*}
+\boxed{[X^{a}_{b'}] = \left[\frac{\partial X^{a}}{\partial X^{b'}}\right]}
+\end{align*}
+These have the usual properties we have seen before:
+\begin{align*}
+\boxed{X^{a'}_bX^b_{c'} = \delta^a_c = X^{a}_{b'}X^{b'}_c}
+\end{align*}
+Again, just as before, we define vectors, tensors, and scalars by how the transform:
+\begin{empheq}[box=\fbox]{align}
+\text{Contravariant vectors: }&\lambda^{a'} = X^{a'}_b\lambda^b \nonumber\\
+\text{Covariant vectors: }&\mu_{a'} = X^{b}_{a'}\mu_b
+\nonumber\\
+\text{Tensors: }&\tensor{\tau}{^{a'b'}_{c'd'}} = X^{a'}_{e}X^{b'}_{f}X^{g}_{c'}X^{h}_{d'}\tensor{\tau}{^{ef}_{gh}}\nonumber\\
+\text{Raising/lowering index: } &\tensor{\tau}{^a_b} = g_{bd}\tensor{\tau}{^{ad}}\nonumber\\
+\text{Identity: }&g^{ab}g_{bc}=\delta^a_c \nonumber 
+\end{empheq}\\
+
+In general, the metric tensor need not be \textbf{positive definite}, which means that $ds^2$ can be positive, negative, or zero. However, the \textbf{signature} (the number of positives minus the number of negatives) of $g_{ab}$ is a scalar and is $-2$ for all metric in general relativity. For instance, $\eta_{\mu\nu}$ has signature $-2$.\\
+
+There are classes of manifolds: \textbf{Riemannian manifolds}, which have positive definite metric tensors, and \textbf{pseudo-Riemannian manifolds}, where metric tensors do not have to be positive definite. Note that spacetime is a pseudo-Riemannian manifold.\\
+
+Now, recall that there are four ways to compute inner products. 
+
+
+
 \subsection{Tensors on manifolds}
 
 \newpage
