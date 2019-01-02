@@ -10,6 +10,7 @@
 \usepackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
 \newtheorem{rmk}{Remark}[section]
 \newtheorem{exmp}{Example}[section]
 \usepackage{empheq}
@@ -2556,11 +2557,143 @@ In general, the metric tensor need not be \textbf{positive definite}, which mean
 
 There are classes of manifolds: \textbf{Riemannian manifolds}, which have positive definite metric tensors, and \textbf{pseudo-Riemannian manifolds}, where metric tensors do not have to be positive definite. Note that spacetime is a pseudo-Riemannian manifold.\\
 
-Now, recall that there are four ways to compute inner products. 
+To define lengths and distances as real numbers, we need to add the absolute values to our previous definitions:
+\begin{empheq}[box=\fbox]{align}
+\text{Infinitesimal distance: } &ds = \sqrt{\vert\vert g_{ab}\,dx^a\,dx^b \vert\vert} \nonumber \\
+\text{Length of a curve: } &L = \int_{a}^{b}\,ds = int^{b}_a\sqrt{\vert\vert g_{ab}\,dx^a\,dx^b \vert\vert} \nonumber \\
+\text{Vector norm: } &\vert\vert \vec{\lambda} \vert\vert = \sqrt{\vert\vert \lambda^a \lambda_a \vert\vert} \nonumber
+\end{empheq}
 
+Note that vectors can be null or non-null. For non-null vectors in general $n$-dimensional manifolds, we can also define an ``angle'' $\theta$ between two vectors:
+\begin{align*}
+\cos\theta = \frac{\vec{\lambda}\cdot\vec{\mu}}{\vert\vert \vec{\lambda}\vert\vert \vert\vert \vec{\mu} \vert\vert} = \frac{g_{ab}\lambda^a \lambda^b}{\vert\vert \vec{\lambda}\vert\vert \vert\vert \vec{\mu} \vert\vert}.
+\end{align*} 
+Beware that this definition works well (intuitively) with positive definite metric tensors. However, for spacetime (whose metric tensor is not positive definite), things can get a little weird. \\
+
+\begin{exmp}
+	Consider space-like vector $\lambda^\mu$ in flat 4-dimensional Minkowski spacetime. Find $\theta$ between it and itself.\\
+	
+	Without changing the inner product (due to invariance), consider a frame where $\lambda^\mu = (0,\vec{\lambda})$. According to our definition:
+	\begin{align*}
+	\cos\theta = \frac{\eta_{\mu\nu}\lambda^\mu \lambda^\nu}{\vert\vert \lambda^\mu \vert\vert^2} = \frac{-\vert\vert\vec{\lambda}\vert\vert^2}{\vert\vert \vec{\lambda}\vert\vert^2} = -1.
+	\end{align*}
+	This implies $\theta = \pi$, so the vector makes an angle of $\pi$ with itself. 
+\end{exmp}
+
+We call the vectors $\lambda^\mu$ and $\pi^\mu$ \textbf{orthogonal} if $\lambda^\mu\cdot\pi^\mu = 0$, i.e., there exists a frame where they are orthogonal.
 
 
 \subsection{Tensors on manifolds}
+\subsubsection{Combining tensors}
+In this section, we will learn the mathematical properties of tensors including special identities and tensor algebra. Familiarizing ourselves with tensor algebra will save us a lot of time and effort when we cover the later topics where we will encounter a few more mathematical objects that are defined on tensors. \\
+
+\begin{prop}
+	Adding tensors of the same type gives tensors.
+\end{prop}
+\begin{proof}
+	Let two general tensors $\tensor{\tau}{^{ab}_c}$ and $\tensor{\Theta}{^{ab}_c}$ be given. Let $\tensor{\zeta}{^{a'b'}_{c'}} = \tensor{\tau}{^{a'b'}_{c'}} + \tensor{\Theta}{^{a'b'}_{c'}}$. We will show that $\tensor{\zeta}{^{a'b'}_{c'}}$ is a tensor, i.e.:
+	\begin{align*}
+	\tensor{\zeta}{^{a'b'}_{c'}} = X^{a}_dX^{b}_eX^f_{c'}\tensor{\zeta}{^{de}_f}.
+	\end{align*}
+	The proof is a straightforward application of the transformation rules for tensors:
+	\begin{align*}
+	\tensor{\zeta}{^{a'b'}_{c'}} &= \tensor{\tau}{^{a'b'}_{c'}} + \tensor{\Theta}{^{a'b'}_{c'}} \\
+	&= X^{a}_dX^{b}_eX^f_{c'}\tensor{\tau}{^{de}_{f}} + X^{a}_dX^{b}_eX^f_{c'}\tensor{\Theta}{^{de}_{f}}\\
+	&= X^{a}_dX^{b}_eX^f_{c'}\left(\tensor{\tau}{^{de}_{f}} +  \tensor{\Theta}{^{de}_{f}}\right) \\
+	&= X^{a}_dX^{b}_eX^f_{c'}\tensor{\zeta}{^{de}_{f}}.
+	\end{align*}
+	Since $\tensor{\zeta}{^{de}_{f}}$ transforms correctly, it is a tensor.
+\end{proof}
+
+\begin{prop}
+	Multiplying a tensor by a scalar gives a tensor
+\end{prop}
+\begin{proof}
+	The proof to this proposition is trivial. Suppose $\sigma^a_b = \alpha \tau^a_b$, where $\tau^a_b$ is a tensor. We want to show that $\sigma^a_b$ is also a tensor, i.e.,
+	\begin{align*}
+	\sigma^{a'}_{b'} = X^{a'}_{c}X^d_{b'}\sigma^{c}_d.
+	\end{align*}
+	Once again, a straightforward application of the transformation rule applies:
+	\begin{align*}
+	\sigma^{a'}_{b'} &= \alpha\tau^{a'}_{b'}\\
+	&= \alpha X^{a'}_{c}X^d_{b'}\tau^{c}_{d}\\
+	&= X^{a'}_{c}X^d_{b'} \sigma^{c}_d.
+	\end{align*}
+\end{proof}
+
+So far, we have seen that properties of tensors are similar to those of vectors. Specifically, we see that tensor spaces, similar to vector spaces, are also closed under addition and scalar multiplication. But there are more properties that tensor spaces have but vector spaces do not.
+
+\begin{prop}
+	Products of tensors are tensors.
+\end{prop}
+\begin{proof}
+	Suppose that $\tensor{\sigma}{^{ab}_c} = \lambda^a \tensor{\tau}{^b_c}$. We want to show:
+	\begin{align*}
+	\tensor{\sigma}{^{a'b'}_{c'}} = X^{a'}_{d}X^{b'}_{e}X^{f}_{c'}\tensor{\sigma}{^{de}_f}
+	\end{align*}
+	Once again...
+	\begin{align*}
+	\tensor{\sigma}{^{a'b'}_{c'}} &= \lambda^{a'}\tensor{\tau}{^{b'}_{c'}}\\
+	&= \left(X^{a'}_d \lambda^d \right) \left( X^{b'}_eX^f_{c'}\tensor{\tau}{^e_f}\right) \\
+	&= X^{a'}_dX^{b'}_eX^f_{c'}\lambda^d\tensor{\tau}{^e_f}\\
+	&= X^{a'}_{d}X^{b'}_{e}X^{f}_{c'}\tensor{\sigma}{^{de}_f}
+	\end{align*}
+\end{proof}
+
+\begin{prop}
+	Contracting a tensor of type $(r,s)$ gives a tensor of type $(r-1,s-1)$.
+\end{prop}
+\begin{proof}
+	Suppose $\tensor{\tau}{^{ab}_{cd}}$ is a $(2,2)$ tensor. Let us call another tensor $\sigma^{a}_b = \tensor{\tau}{^{ab}_{cb}}$, which is a $(1,1)$ tensor. We want to show that the contraction $\sigma^{a}_{b}$ is also a tensor:
+	\begin{align*}
+	\sigma^{a'}_{b'} = X^{a'}_{d}X^{g}_{b}\sigma^{d}_g.
+	\end{align*}
+	Again, applying the transformation rules:
+	\begin{align*}
+	\sigma^{a'}_{b'} &= \tensor{\tau}{^{a'c'}_{c'b'}}\\
+	&= X^{a'}_{d}X^{c'}_{e'}X^{f}_{c'}X^{g}_{b'}\tensor{\tau}{^{dc}_{fg}}\\
+	&= X^{a'}_{d}X^{g}_{b'}\delta^{e}_f\tensor{\tau}{^{de}_{fg}}\\
+	&= X^{a'}_{d}X^{g}_{b'}\tensor{\tau}{^{de}_{eg}}\\
+	&= X^{a'}_{d}X^{g}_{b'}\sigma^{d}_g.
+	\end{align*}
+\end{proof}
+Note that we have already seen this property already in the index lowering/raising operations. For example:
+\begin{align*}
+\lambda_a = g_{ab}\lambda^b.
+\end{align*}
+As a consequence of the above proposition, we can let $\tensor{\sigma}{^{ab}_{c}}$ be
+\begin{align*}
+\tensor{\sigma}{^{ab}_{c}} = \tensor{\tau}{^{abe}}\mu_eg_{cf}\lambda^f,
+\end{align*}
+and know immediately that it is a tensor (since the indices ``add up to'' or ``contract to'' to upper $ab$ and lower $c$).
+
+\begin{prop}[Diving: Quotient Theorem]
+	Suppose $\tensor{\tau}{^{a}_{bc}}\lambda^c$ transforms as a tensor for all $\lambda^c$. The \textbf{quotient theorem} says $\tensor{\tau}{^{a}_{bc}}$ is a tensor.  
+\end{prop} 
+\begin{proof}
+	We want to show that.... But we also know. So,
+	\begin{align*}
+	1 + 1 = 2
+	\end{align*}
+\end{proof}
+
+\subsubsection{Special tensors}
+\textbf{Symmetric} tensors\\
+
+\textbf{Anti-symmetric tensors}\\
+
+\textbf{Kronecker delta}\\
+
+\textbf{Note:} For most tensors the ordering of indices matter, i.e., $\tensor{\tau}{^{abe}} \neq \tensor{\tau}{^{aeb}}$ in general.
+\begin{exmp}
+	Show that...
+\end{exmp}
+Therefore, if we are not sure whether the ordering of the indices matter, we should not write, for instance $\tau^{ac}_b$ because this could mean, say $\tensor{\tau}{^a_c^b}$ or $\tensor{\tau}{^{ac}_b}$. 
+	 
+
+
+
+
 
 \newpage
 
@@ -2587,7 +2720,7 @@ Now, recall that there are four ways to compute inner products.
 
 \newpage
 
-\section{Cosmoslogy}
+\section{Cosmology}
 \subsection{Large-scale geometry of the universe}
 \subsubsection{Cosmological principle}
 \subsubsection{Robertson-Walker (flat, open, closed) geometries}
