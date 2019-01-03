@@ -2671,35 +2671,238 @@ and know immediately that it is a tensor (since the indices ``add up to'' or ``c
 	Suppose $\tensor{\tau}{^{a}_{bc}}\lambda^c$ transforms as a tensor for all $\lambda^c$. The \textbf{quotient theorem} says $\tensor{\tau}{^{a}_{bc}}$ is a tensor.  
 \end{prop} 
 \begin{proof}
-	We want to show that.... But we also know. So,
+	We want to show that 
 	\begin{align*}
-	1 + 1 = 2
+	\tensor{\tau}{^{a'}_{b'g'}} = X^{a'}_dX^{e}_{b'}X^{f}_{g'} \tensor{\tau}{^d_{ef}}.
 	\end{align*}
+	We first know that the given quantity transforms correctly as a tensor. We also know that $\lambda^{c'} = X^{c'}_f\lambda^f$. It follows that
+	\begin{align*}
+	\tensor{\tau}{^{a'}_{b'c'}}\left( X^{c'}_f\lambda^f \right) - X^{a'}_dX^{e}_{b'}\tensor{\tau}{^d_{ef}}\lambda^f &= 0\\
+	\tensor{\tau}{^{a'}_{b'c'}}X^{c'}_f - X^{a'}_dX^{e}_{b'}\tensor{\tau}{^d_{ef}} &= 0\\
+	\tensor{\tau}{^{a'}_{b'c'}}X^{c'}_f &= X^{a'}_dX^{e}_{b'}\tensor{\tau}{^d_{ef}}\\
+	\tensor{\tau}{^{a'}_{b'c'}}\delta^{c'}_{g'} &= X^{a'}_dX^{e}_{b'}X^{f}_{g'}\tensor{\tau}{^d_{ef}}\\
+	\tensor{\tau}{^{a'}_{b'g'}}&=X^{a'}_dX^{e}_{b'}X^{f}_{g'}\tensor{\tau}{^d_{ef}}.
+	\end{align*}
+	Therefore, $\tensor{\tau}{^{a}_{bc}}$ is a tensor. 
 \end{proof}
 
 \subsubsection{Special tensors}
-\textbf{Symmetric} tensors\\
+\textbf{Symmetric tensors}. Let a two-indexed tensor $\tau_{ab}$ be given. It is symmetric if
+\begin{align*}
+\tau_{ab} = \tau_{ba}.
+\end{align*}
+Note that a straightforward application of the transformation rule can show that if a tensor is symmetric in one frame $(S)$, then it is also symmetric in a different frame $(S')$.\\
 
-\textbf{Anti-symmetric tensors}\\
+\noindent \textbf{Anti-symmetric tensors}. Let a 2-indexed tensor $\tau^{ab}$ be given. We say that $\tau_{ab}$ is anti-symmetric if
+\begin{align*}
+\tau_{ab} = -\tau^{ba}.
+\end{align*}
+Again, an application of the transformation rule can show that if a tensor is anti-symmetric in one frame, it is anti-symmetric in all frames. \\
 
-\textbf{Kronecker delta}\\
+\noindent \textbf{Kronecker delta}. Recall that the Kronecker delta (a type $(1,1)$ tensor) is defined as
+\begin{align*}
+\delta^a_b = \begin{cases*}
+1, a=b\\
+0, a\neq b.
+\end{cases*}
+\end{align*}
+As we might have seen before, the Kronecker delta is frame-independent:
+\begin{align*}
+\delta^{a}_b =X^{a'}_{e}X^{f}_{b'}\delta^{e}_f = X^{a'}_eX^e_{b'} =\delta^{a'}_{b'}.
+\end{align*}
 
-\textbf{Note:} For most tensors the ordering of indices matter, i.e., $\tensor{\tau}{^{abe}} \neq \tensor{\tau}{^{aeb}}$ in general.
-\begin{exmp}
-	Show that...
-\end{exmp}
-Therefore, if we are not sure whether the ordering of the indices matter, we should not write, for instance $\tau^{ac}_b$ because this could mean, say $\tensor{\tau}{^a_c^b}$ or $\tensor{\tau}{^{ac}_b}$. 
+\noindent \textbf{Note:} For most tensors (with any arbitrary number of indices), the ordering of indices matter, i.e., $\tensor{\tau}{^{abe}} \neq \tensor{\tau}{^{aeb}}$ in general. Therefore, if we are not sure whether the ordering of the indices matter, we should not write, for instance $\tau^{ac}_b$ because this could mean, say $\tensor{\tau}{^a_c^b}$ or $\tensor{\tau}{^{ac}_b}$. 
 	 
-
-
-
-
 
 \newpage
 
 \section{Gravitation and Curvature}
+As we have said many times before, in general relativity, gravity is not a force. Rather, matter (mass and energy) causes spacetime to curve. And because gravity is not a force, we define \textbf{free particles} - objects who are not acted upon by any force - as objects moving with no forces \textbf{other than gravity}. The trajectory of free particles are called \textbf{geodesics}. \\
+
+In this section, we will learn about:
+\begin{itemize}
+	\item Curvature: How can we tell if a space is curved?
+	\item Geodesics: What is an equation to solve for a geodesic, and how can we solve for a geodesic?
+	\item Motion in curved spaces: How do vectors behave as we move them along a geodesic? What if we move them not along a geodesic?
+	\item The laws of physics: How do we describe the laws of physics in tensor form? As space can be curved and vectors can change due to the curvature of space, how we define the ``derivative?''
+	\item Newtonian limit: Will we be able to get back Newtonian physics in the limit?
+\end{itemize}
+This section will provide us with some powerful mathematical machinery for working with and understanding the Einstein equations and cosmology in the future.
+\subsection{Curvature}
+As tiny humans living of the surface of a giant ball, how could we tell that the space we are living in, where it seems locally flat, is actually curved? And what we mean by ``going straight'' once we have found out the Earth is round?\\
+
+One way to test if a 2-dimensional space (the Earth for instance) is to just to walk, but with equal left and right step lengths. Have two people start walking parallel to each other. If one point their paths cross, then the space is curved.\\
+
+Another way to see if the Earth is curved or flat is doing the ``triangle test.'' Simply generated a ``spherical triangle'' on the surface of Earth by intersecting three \textbf{great circles} (so the equator and two perpendicular (at the pole) longitude lines would suffice). We would observe that the sum of the angles in this triangle is $270^\circ$, not $180^\circ$. This says that the surface of the Earth is curved.\\
+
+Now, before we go on and attempt to make a rigorous procedure to distinguish curved and flat spaces, we should make a few key observations this above example: 
+\begin{itemize}
+	\item If parallel lines cross in a space, then the space is non-Euclidean and is therefore curved. 
+	\item Lines formed when walking ``straight'' (walking with left step size equal right step size as in our first method) are geodesics. 
+	\item On a sphere, great circles are circles whose center is the origin, for example: the equator, longitude lines. Beware that latitude lines are not great circles. On a sphere, great circles are geodesics. 
+	\item 
+\end{itemize}
+
 \subsection{Geodesics and Affine connections $\Gamma^{\sigma}_{\mu\nu}$}
+In this section, we will learn a procedure to generate a geodesic, given that we are in a space or spacetime where we know the metric of the space. This procedure will follow something along the line of ``moving straight'' in the space, but much more mathematically rigorous.\\
+
+\subsubsection{Flat 3D space}
+Let us consider the simplest possible case with flat 3D case where geodesics are, as we guessed it, literally straight lines. In Cartesian coordinates, a straight line obeys the ``no-curvature'' equation:
+\begin{align*}
+\frac{\partial^2 \vec{r}}{\partial t^2} = \vec{0}.
+\end{align*}
+Now, suppose that we are in an arbitrary curvilinear coordinate system. What would be the equation of a straight line here? It makes sense to think about \textbf{distance} and \textbf{displacement}. If we are moving such that the distance covered the same as displacement, at every instance, then we are moving in a straight line. So, let our displacement be $\vec{r}$. With arc length parameterization: $\vec{r} = \vec{r}(s)$, where $s$ is essentially distance traveled. The condition of straightness gives:
+\begin{align*}
+\boxed{\left|\left| \dot{\vec{r}}(s) \right|\right| = \left|\left| \frac{d\vec{r}}{ds} \right\|\right| = 1 }
+\end{align*}
+We should recognize that $d\vec{r}/ds$ is nothing but the tangent vector to the path. Let's call this vector $\vec{\lambda}$. Using the chain rule, it follows that
+\begin{align*}
+\vec{\lambda} = \frac{d\vec{r}}{ds} = \frac{\partial \vec{r}}{\partial u^i}\frac{\partial u^i}{\partial s} = \frac{\partial u^i}{\partial s}\vec{e}_i = \lambda^i\vec{e}_i,
+\end{align*}
+where $u^i$ is simply a coordinate in the curvilinear coordinate system. The above equality gives:
+\begin{align*}
+\boxed{\lambda^i = \frac{\partial u^i}{\partial s} = \dot{u}^i(s)}
+\end{align*}
+Now, be $\vec{\lambda}$ is a tangent vector, its direction does not change along a straight line. Since we also know that $\vert\vert \vec{\dot{r}}(s) \vert\vert = 1$, $\vec{\lambda}$ has both fixed direction and magnitude along a straight line. Therefore, ``straightness,'' at least in this limited case, implies that the derivative of tangent vectors with respect to arc length is zero. We call this implication the \textbf{condition of straightness}:
+\begin{align*}
+\boxed{\frac{\partial \vec{\lambda}}{\partial s} = 0}
+\end{align*}
+Let's take a closer look at the boxed expression but in a different coordinate system. If we think about the above equality, it should also make sense for any general 3-dimensional coordinate system in flat space, in which case:
+\begin{align*}
+\frac{d}{ds}\left(\lambda^i \vec{e}_i \right) = \dot{\lambda^i}\vec{e}_i + \lambda^i\dot{\vec{e}}_i  =  \vec{0}. 
+\end{align*}
+In Cartesian coordinates, the basis vectors $\vec{e}_i$ happen to be constant, so $\dot{\vec{e}}_i = \vec{0}$. This gives $\dot{\lambda}^i = 0$. And since $\lambda^i = \dot{u}^i = \dot{x}^i$, which implies $\partial^2 x^i/\partial s^2 = \vec{0}$. Now imagine if we parameterize $\vec{r}$ with a different parameter, say $t$. If $t \propto s$, then
+\begin{align*}
+\frac{\partial^2 x^i}{\partial s^2} = \frac{\partial x^2 x^i}{\partial t} = \vec{0}
+\end{align*}
+holds. This is equivalent to the case we have an object moving with constant velocity (so that $s = vt$). If $s$ is not proportional to $t$ then the above equality does not hold.\\
+
+We have established the ``condition of straightness'' in Cartesian coordinates. However, the equation $\partial^2 x^i/\partial s^2 = 0$ does not hold for general coordinate systems. Rather, the more fundamental equation applies:
+\begin{align*}
+\boxed{\frac{\partial \lambda^i}{\partial s}\vec{e}_i + \lambda^i\frac{\partial \vec{e}_i}{\partial s} = 0}
+\end{align*}
+where 
+\begin{align*}
+\frac{\partial \vec{e}_i}{\partial s} = \frac{\partial \vec{e}_i}{\partial u^j}\frac{\partial u^j}{\partial s}  = \frac{\partial \vec{e}_i}{\partial u^j}\dot{u}^j \neq 0
+\end{align*}
+in general. Now, to simplify our notation, let us use (as we have introduced before) $\partial_j = \partial/\partial u^j$. This gives:
+\begin{align*}
+\frac{\partial \lambda^i}{\partial s}\vec{e}_i + \lambda^i\frac{\partial \vec{e}_i}{\partial s} 
+=  \dot{\lambda}^i\vec{e}_i + \lambda^i\left( \partial_j \vec{e}_i\right)\dot{u}^j 
+=0
+\end{align*} 
+Note that $\partial_j\vec{e}_i$ are vectors, which we can expand in terms of basis vectors, but we will not do that. Rather, let us define the \textbf{Christoffel symbol}, or the \textbf{affine connection}, $\Gamma^{k}_{ij}$ in terms of $\partial_j\vec{e}_i$ as:
+\begin{align*}
+\boxed{\partial_j\vec{e}_i = \Gamma^{k}_{ij}\vec{e}_k}
+\end{align*}
+We will interpret $\Gamma^{k}_{ij}$ as ``the $k^{\text{th}}$ component of the $u^{j\,\text{th}}$ derivative of $\vec{e}_i$.'' It is very important that we keep in mind $\Gamma^{k}_{ij}$ is \textbf{not} a tensor. Rather, the Christoffel symbols are \textbf{connections} - they are just vector components.\\
+
+With the definition of $\Gamma^{k}_{ij}$, we can express the derivative of $\vec{e}_i$ as:
+\begin{align*}
+\dot{\vec{e}}_i = \left(\partial_j\vec{e}_i \right)\dot{u}^j = \Gamma^{k}_{ij}\vec{e}_k\dot{u}^j. 
+\end{align*}
+It follows that the condition of straightness becomes:
+\begin{align*}
+\frac{d\vec{\lambda}}{ds} &= \dot{\lambda}^i\vec{e}_i + \lambda^i \Gamma^{k}_{ij}\vec{e}_k\dot{u}^j\\
+&= \dot{\lambda}^i\vec{e}_i + \lambda^j \Gamma^{i}_{jk}\vec{e}_i\dot{u}^k, \text{ letting $i\rightarrow j, j\rightarrow k, k \rightarrow i$}\\
+&= \left(\dot{\lambda}^i + \Gamma^{i}_{jk}\dot{u}^k \right)\vec{e}_i\\
+&= 0, 
+\end{align*}
+or
+\begin{align*}
+\dot{\lambda}^i + \Gamma^{i}_{jk}\dot{u}^k = 0.
+\end{align*}
+Let us write the above equality more completely with the arc length parameter $s$, and call it the equation of a straight line in flat 3-dimensional space. But notice how the number of dimensions do not really play a role anywhere in our derivation. This hints to us that the equation also holds for $n$-dimensional manifolds, but we will discuss this topic later on.
+\begin{align*}
+\boxed{\frac{d^2u^i}{ds^2} + \Gamma^{i}_{jk}\frac{du^j}{ds}\frac{du^k}{ds} = 0}
+\end{align*}
+For $i,j,k$, the above expressions encodes $3$ equations whose solution is geodesic in flat space.\\ 
+
+Now, let us ``worry'' a little bit about the Christoffel symbol $\Gamma^{i}_{jk}$. It seems like that because $\Gamma^{i}_{jk}$ has three indices $i,j,k$, there will be $27$ coefficients associated with different combinations of $i,j,k$. However, we can show that this is not the case. Recall that
+\begin{align*}
+\partial_j \vec{e}_i = \Gamma^{k}_{ij}\vec{e}_k.
+\end{align*}
+Dotting the entire equation with $\vec{e}^l$ gives
+\begin{align*}
+\partial_j \vec{e}_i\cdot\vec{e}^l = \Gamma^{k}_{ij}\vec{e}_k\cdot\vec{e}^l = \Gamma^{k}_{ij}\delta^l_k = \Gamma^{l}_{ij}.
+\end{align*}
+Also, observe that 
+\begin{align*}
+\partial_j\vec{e}_i = \frac{\partial }{\partial u^j}\frac{\partial \vec{r}}{\partial u^i} = \frac{\partial }{\partial u^i}\frac{\partial \vec{r}}{\partial u^j} = \partial_i\vec{e}_j.
+\end{align*}
+This simply implies a symmetric relation:
+\begin{align*}
+\boxed{\Gamma^{l}_{ij} = \Gamma^{l}_{ji}}
+\end{align*}
+So, it turns out that we only  have $18$ independent terms, instead of $27$.\\
+
+Next, we want to the relationship between the Christoffel symbols and the metric tensor. Specifically, we want to find out how to compute the Christoffel symbols, using the metric tensor. Consider:
+\begin{align*}
+\partial_k g_{ij} &= \partial_k\left(\vec{e}_i\cdot\vec{e}_j \right) \\
+&= \vec{e}_j\partial_k\vec{e}_i + \vec{e}_i\partial_k\vec{e}_j\\
+&= \vec{e}_j \Gamma^{m}_{ik}\vec{e}_m + \vec{e}_i\Gamma^{m}_{kj}\vec{e}_m.
+\end{align*}
+This gives
+\begin{align*}
+\boxed{\partial_k g_{ij} = \Gamma^{m}_{ik}g_{jm} + \Gamma^{m}_{jk}g_{im}}
+\end{align*}
+By symmetry, we also get
+\begin{align*}
+\boxed{\partial_i g_{jk} = \Gamma^{m}_{ji}g_{km} + \Gamma^{m}_{ki}g_{jm}}
+\end{align*}
+and
+\begin{align*}
+\boxed{\partial_j g_{ik} = \Gamma^{m}_{kj}g_{im} + \Gamma^{m}_{ij}g_{km}}
+\end{align*}
+Adding the first two equations and subtract the third, we get
+\begin{align*}
+\partial_k g_{ij} + \partial_i g_{jk} - \partial_j g_{ik} = 2\Gamma^{m}_{ik}g_{jm}.
+\end{align*}
+Next, multiplying this entire equation by $g_{jl}$, so that $g_{jm}g^{jl} = \delta^l_m$, we get
+\begin{align*}
+\Gamma^{l}_{ik} = \frac{1}{2}g^{jl}\left( \partial_k g_{ij} + \partial_i g_{jk} - \partial_j g_{ik}\right).
+\end{align*}
+Finally, letting $l\rightarrow k, k\rightarrow i, i\rightarrow j, j\rightarrow l $, we obtain the formula to compute the Christoffel symbol from the metric:
+\begin{align*}
+\boxed{\Gamma^{k}_{ij} = \frac{1}{2}g^{kl}\left( \partial_i g_{jl} + \partial_j g_{il} - \partial_l g_{ij}\right)}
+\end{align*}
+Now, in Cartesian coordinates, the metric is simply the identity matrix, which is constant. This simply means that all Christoffel symbols $\Gamma^{k}_{ij}$ in Cartesian coordinates are zero. However, this does not imply if the Christoffel symbols are non-zero then the space is curved. In fact, we get non-zero Christoffel symbols in curvilinear coordinates in flat space whenever the basis vectors $\vec{e}_i$ are not constant. An example would be spherical coordinates, which we will soon find out.\\
+
+We might ask whether there is a nice, short way to calculate the Christoffel symbols. Unfortunately, the answer is no - brute force is the only way to go. Luckily, though, Mathematica can handle Christoffel symbol computations, given a metric tensor. 
+\begin{exmp}
+	Find $\Gamma^{1}_{23} = \Gamma^1_{32}$.\\
+	
+	Again, brute force is the way to go:
+	\begin{align*}
+	\Gamma^{1}_{23} &= \Gamma^1{32}\\
+	&= \frac{1}{2}g^{11}\left( \partial_2 g_{31} + \partial_3 g_{21} - \partial_1 g_{23}\right)\\
+	&+ \frac{1}{2}g^{12}\left( \partial_2 g_{32} + \partial_3 g_{22} - \partial_2 g_{23}\right)\\
+	&+
+	\frac{1}{2}g^{13}\left( \partial_2 g_{33} + \partial_3 g_{23} - \partial_3 g_{23}\right)
+	\end{align*}
+	We can of course repeat this process to find the other 25 terms, but we will not do that!
+\end{exmp}
 \subsection{Parallel transport}
+We have used arc length as a parameter in finding the geodesic equation. 
+\begin{align*}
+\frac{d^2u^i}{ds^2} + \Gamma^{i}_{jk}\frac{du^j}{ds}\frac{du^k}{ds} = 0.
+\end{align*}
+Now, what if we use a different parameter $t = f(s)$? How will the form of the equation above change? We can show (but we won't) that with $t = f(s)$, the above equation has an extra term:
+\begin{align*}
+\boxed{\frac{d^2u^i}{ds^2} + \Gamma^{i}_{jk}\frac{du^j}{ds}\frac{du^k}{ds} = -\frac{d^2t}{ds^2}\left( \frac{dt}{ds}\right)^{-2}\frac{du^i}{dt}}
+\end{align*}
+But if we have a linear relationship between $t$ and $s$, i.e.,
+\begin{align*}
+t = As +B,
+\end{align*}
+where $A\neq 0$ and $B$ are constants, then we get
+\begin{align*}
+\boxed{\frac{d^2u^i}{dt^2} + \Gamma^{i}_{jk}\frac{du^j}{dt}\frac{du^k}{dt} = -\frac{d^2t}{ds^2}\left( \frac{dt}{ds}\right)^{-2}\frac{du^i}{dt} = 0}
+\end{align*}
+\subsection{Geodesics in curved space}
+\begin{exmp}
+	blah blah blah
+\end{exmp}
 \subsection{Covariant differentiation}
 \subsection{Newtonian limit}
 
