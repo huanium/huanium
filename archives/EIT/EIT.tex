@@ -46,7 +46,7 @@ In shortest possible terms, EIT is a technique which renders an otherwise opaque
 
 Notice how there is no absorption at resonance frequency with EIT. Typically, in the presence of a near-resonance field, a two-level atom with ground state $\ket{1}$ and excited state $\ket{2}$ will interact with the field, resulting in a non-zero probability amplitude of the excited state, $\vert P_2\vert^2 = \bra{2}\ket{2} > 0$. If $\vert P_2(\delta\omega) \vert^2$ is the population of the excited state as a function of the detuning, then it follows the blue, Lorentzian line in the above figure. In EIT where there are two radiation fields, though, the energy levels of a three-level atom are altered. This in turn creates a window of frequencies at which the medium is transparent. \\
 
-\section{Derivation Overview}
+\section{Derivation: Static Dark State}
 
 The following derivation is (heavily) inspired by Furman's derivation and the Heidelberg paper, but roughly condensed and sprinkled with a bit of my own narratives and insights here and there. \\
 
@@ -186,23 +186,75 @@ Note that we can add $\hbar(\omega_1+\omega_p)\hat{I}$ to $\tilde{H}$ without ch
 -\Omega_p & -\Omega_c & 2\delta_p
 \end{pmatrix}
 \end{align}
-The eigenvalues of $\tilde{H}'$ are:
+Assuming $\delta_p \approx \delta_c$, the eigenvalues of $\tilde{H}'$ are:
 \begin{align}
-&E^+ = \hbar\omega^+ = \frac{\hbar}{2}\left( \delta_p + \sqrt{\delta^2_p + \Omega^2_p + \Omega^2_c}\right) \nonumber\\
-&E^- = \hbar\omega^- = \frac{\hbar}{2}\left( \delta_p - \sqrt{\delta^2_p + \Omega^2_p + \Omega^2_c}\right) \nonumber\\
-&E^0 = \hbar\omega = 0.
+E^+ &= \hbar\omega^+ = \frac{\hbar}{2}\left( \delta_p + \sqrt{\delta^2_p + \Omega^2_p + \Omega^2_c}\right) \nonumber\\
+E^- &= \hbar\omega^- = \frac{\hbar}{2}\left( \delta_p - \sqrt{\delta^2_p + \Omega^2_p + \Omega^2_c}\right) \nonumber\\
+E^0 &= \hbar\omega = 0.
 \end{align}
 And the eigenstates are:
 \begin{align}
-
+\ket{a^0} &= \frac{\Omega_c\ket{1} - \Omega_c\ket{2}}{\sqrt{\Omega^2_p + \Omega^2_c}} = \cos\theta\ket{1} - \sin\theta\ket{2}\nonumber\\
+\ket{a^-} &= -\frac{\Omega_p\ket{1} + \Omega_c\ket{2}}{\delta_p - \sqrt{\delta^2_p + \Omega^2_p + \Omega^2_c}} +\ket{3} = \sin\theta\cos\phi\ket{1} + \cos\theta \cos \phi \ket{2} - \sin\phi\ket{3}\nonumber\\
+\ket{a^+} &= +\frac{\Omega_p\ket{1} + \Omega_c\ket{2}}{\delta_p + \sqrt{\delta^2_p + \Omega^2_p + \Omega^2_c}} -\ket{3} = \sin\theta\cos\phi\ket{1} + \cos\theta \cos \phi \ket{2} + \cos\phi\ket{3}
 \end{align}
+where 
+\begin{align}
+\tan\theta &= \frac{\Omega_p}{\Omega_c}\\
+\tan\phi &= \frac{\sqrt{\Omega^2_p+\Omega^2_c}}{\delta_p +  \sqrt{\delta^2_p + \Omega^2_p + \Omega^2_c}}.
+\end{align}
+Notice that the transition probability of $\ket{a^0} \rightarrow \ket{3}$ is 0, because:
+\begin{align}
+\bra{a^0}\hat{H}\ket{3} = 0.
+\end{align}
+We can also see this because $\ket{a^0}$ is not expressed in terms of $\ket{3}$, i.e., it does have $\ket{3}$ component. We call $\ket{a^0}$ the \textit{dark state} because the transition to $\ket{3}$ is not possible.\\
+
+Now, in the case where $\Omega_p \ll \Omega_c$, i.e., the probe beam is much weaker than the coupling beam, we get
+\begin{align}
+\sin\theta \rightarrow 0, \cos\theta \rightarrow 1, \ket{a^0} \rightarrow \ket{1},
+\end{align}
+which means that $\ket{1}$ becomes a dark state, hence this opens a window of frequency where $\ket{1}$ becomes transparent to previously resonance frequencies. This is exactly electromagnetically induced transparency.
 
 
-
-
-
-
-
+\section{Derivation: Dynamic EIT}
+We have derived and explained how $\ket{1}$ becomes a dark state when $\Omega_p \ll \Omega_c$. Now, in order to derive the absorption profile, we need a dynamic description of the three-level system where we also take into account spontaneous emission. We do this using the \textit{density matrix formalism}. Let $r$ be the density operator, defined as:
+\begin{align}
+r = \sum_{n}P_n\ket{n}\bra{n},
+\end{align}
+where $P_i$ is the probability of finding the atom in state $i$. Note that the definition is simply describing a statistical mixture of the $n$ states. If given an operator $\mathcal{O}$, the expectation value of the measurement of a statistical mixture of states is given by:
+\begin{align}
+\langle \mathcal{O}\rangle &=\sum_{n}P_n\bra{n}\mathcal{O}\ket{n}\nonumber\\
+&= \sum_{n}P_n\tr(\ket{n}\bra{n}\mathcal{O})\nonumber\\
+&= \sum_{n}\tr(P_n\ket{n}\bra{n}\mathcal{O})\nonumber\\
+&= \tr\left( \sum_{n}P_n\ket{n}\bra{n}\mathcal{O}\right) \nonumber\\
+&= \tr(r\mathcal{O}).
+\end{align}
+Another way to derive the above equality is given in Furman's thesis:
+\begin{align}
+\langle \mathcal{O}\rangle &=\sum_{n}P_n\bra{n}\mathcal{O}\ket{n}\nonumber\\
+&= \sum_{m,n}P_n\bra{n}\mathcal{O}\ket{m}\bra{m}\ket{n}\nonumber\\
+&= \sum_{m,n}\bra{m}P_n\ket{n}\bra{n}\mathcal{O}\ket{m}\nonumber\\
+&= \sum_{m}\bra{m}r\mathcal{O}\ket{m}\nonumber\\
+&= \tr(r\mathcal{O}).
+\end{align}
+Note that for pure states:
+\begin{align}
+\langle \mathcal{O} \rangle = \bra{n}\mathcal{O}\ket{n}.
+\end{align}
+To relate $r$ to the Hamiltonian $\hat{H}$, we invoke the von Neumann equation. The derivation of the von Neumann equation begins with the Schr\"{o}dinger equation and its adjoint:
+\begin{align}
+\frac{d}{dt}\ket{n} &= -\frac{i}{\hbar}\hat{H}\ket{n}\\
+\frac{d}{dt}\bra{n} &= \frac{i}{\hbar}\bra{n}\hat{H}.
+\end{align}
+To get the von Neumann equation, we take the time derivative of $r$.
+\begin{align}
+\dot{r} &= \frac{d}{dt}\sum_{n}P_n\ket{n}\bra{n}\nonumber\\
+&= \sum_{n}P_n\left(\ket{\dot{n}\bra{n} + \ket{n}\bra{\dot{n}}} \right) \nonumber\\
+&= -\frac{i}{\hbar}\sum_{n}P_n\left( \hat{H}\ket{n}\bra{n} - \ket{n}\bra{n}\hat{H}\right) \nonumber\\
+&= -\frac{i}{\hbar}(\hat{H}r - r\hat{H})\nonumber\\
+&= -\frac{i}{\hbar}[\hat{H},r].
+\end{align}
+Note that $r$ is an operator, so $\dot{r}$ is expressed in terms of a commutator. 
 
 
 
