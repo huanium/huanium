@@ -274,10 +274,105 @@ a_i(0) \\ a_f(0)
 \end{align}
 This gives the state amplitudes after time $\tau$:
 \begin{align}
-a_i(\tau) &= e^{-i\bar{\tau}\tau}\left\{ e^{-i\frac{\Delta_0}{2}\tau}\left(\cos\frac{\Omega'\tau}{2} + i\cos\theta\sin\frac{\Omega'\tau}{2} \right) \right\}\nonumber\\
+a_i(\tau) &= e^{-i\frac{\Delta_0}{2}\tau}\left\{ e^{-i\frac{\Delta_0}{2}\tau}\left(\cos\frac{\Omega'\tau}{2} + i\cos\theta\sin\frac{\Omega'\tau}{2} \right) \right\}\nonumber\\
 a_f(\tau) &= e^{-i\bar{\Delta}\tau}\left\{ie^{i\left(\frac{\Delta_0\tau}{2} + \phi_0 \right) }\sin\theta\sin\frac{\Omega'\tau}{2} \right\} 
 \end{align}
-The derivation of $\mathcal{N}$ should be quite similar to that of $\mathcal{M}$. However, we should also take into account the wait time $T$.
+The derivation of $\mathcal{N}$ should be quite similar to that of $\mathcal{M}$. However, we should also take into account the wait time $T$. It turns out that we only need to add the extra terms $e^{i\Delta_0t}$ and $e^{-i\Delta_0t}$ to the off-diagonals. These terms represent how the state vector evolves over the ``rest-time'' $T$. The matrix $\mathcal{N}(T)$ has the following form:
+\begin{align}
+\boxed{e^{-i\bar{\Delta}\tau}\begin{pmatrix}
+	e^{-i\frac{\Delta_0}{2}\tau}\left(\cos\frac{\Omega'\tau}{2} + i\cos\theta\sin\frac{\Omega'\tau}{2} \right) & ie^{-i\left( \frac{\Delta_0}{2}\tau + \phi_0\right) }\sin\theta\sin\frac{\Omega'\tau}{2}e^{-i\Delta_0T}\\
+	ie^{i\left( \frac{\Delta_0}{2}\tau + \phi_0\right) }\sin\theta\sin\frac{\Omega'\tau}{2}e^{i\Delta_0T} & e^{i\frac{\Delta_0}{2}\tau}\left(\cos\frac{\Omega'\tau}{2}-i\cos\theta\sin\frac{\Omega'\tau}{2} \right)
+	\end{pmatrix}}
+\end{align}
+So, the final state vector, as represented by the initial state vector and $\mathcal{M}(\tau)$ and $\mathcal{N}(\tau+T)$ is:
+\begin{align}
+\begin{pmatrix}
+a_i(2\tau+T)\\a_f(2\tau+T)
+\end{pmatrix}=
+\mathcal{N}(\tau + T)\mathcal{M}(\tau)
+\begin{pmatrix}
+a_i(0) \\a_f(0)
+\end{pmatrix} = 
+\mathcal{N}(\tau + T)\mathcal{M}(\tau)
+\begin{pmatrix}
+1 \\ 0
+\end{pmatrix}
+\end{align}
+Since we're only interested in the final state probability amplitude, we can ignore the initial state amplitude:
+\begin{align}
+a_f(2\tau + T) &= e^{-i\bar{\Delta}\tau}\left\{ie^{i\left( \frac{\Delta_0}{2}\tau + \phi_0\right) }\sin\theta\sin\frac{\Omega'\tau}{2}e^{i\Delta_0(\tau+T)}a_i(\tau)\right.\nonumber\\ 
+&{\,}\left. e^{i\frac{\Delta_0}{2}\tau}\left(\cos\frac{\Omega'\tau}{2}-i\cos\theta\sin\frac{\Omega'\tau}{2} \right)a_f(\tau)\right\}\nonumber\\
+&= e^{-i\bar{\Delta}\tau}\left\{ie^{i\left( \frac{\Delta_0}{2}\tau + \phi_0\right) }\sin\theta\sin\frac{\Omega'\tau}{2}e^{i\Delta_0(\tau+T)}\right.\nonumber\\&{\,}\left.\times e^{-i\frac{\Delta_0\tau}{2}}\left[ e^{-i\frac{\Delta_0}{2}\tau}\left(\cos\frac{\Omega'\tau}{2} + i\cos\theta\sin\frac{\Omega'\tau}{2} \right) \right]\right.\nonumber\\
+&{\,}\left. e^{i\frac{\Delta_0}{2}\tau}\left(\cos\frac{\Omega'\tau}{2}-i\cos\theta\sin\frac{\Omega'\tau}{2} \right) e^{-i\bar{\Delta}\tau}\left[ie^{i\left(\frac{\Delta_0\tau}{2} + \phi_0 \right) }\sin\theta\sin\frac{\Omega'\tau}{2} \right]
+\right\}.
+\end{align}
+Further simplification gives:
+\begin{align}
+a_f(2\tau+T) = &{\,}ie^{-2i\bar{\Delta}\tau}e^{i(\Delta_0\tau + \phi_0)}\sin\theta\sin\frac{\Omega'\tau}{2}\left\{e^{iT(\Delta_0-\Delta_i)}\times\right.\nonumber\\&\left.
+\left(\cos\frac{\Omega'\tau}{2}+i\cos\theta\sin\frac{\Omega'\tau}{2} \right) + e^{-i\Delta_f\tau}\left(\cos\frac{\Omega'\tau}{2}-i\cos\theta\sin\frac{\Omega'\tau}{2} \right) \right\}
+\end{align}
+In order to calculate the transition probability $P_2 = \vert a_f\vert^2 = a^*_fa_f$, we have to find the complex conjugate of $a_f$. Consider this term:
+\begin{align*}
+E = e^{iT(\Delta_0-\Delta_i)}
+\left(\cos\frac{\Omega'\tau}{2}+i\cos\theta\sin\frac{\Omega'\tau}{2} \right) + e^{-i\Delta_f\tau}\left(\cos\frac{\Omega'\tau}{2}-i\cos\theta\sin\frac{\Omega'\tau}{2} \right).
+\end{align*}
+Let
+\begin{align}
+a &= \cos\frac{\Omega'\tau}{2}\\
+b &= \cos\theta\sin\frac{\Omega'\tau}{2}
+\end{align}
+It follows that
+\begin{align}
+E &= e^{iT(\Delta_0-\Delta_i)}(a+ib) + e^{-i\Delta_f\tau}(a-ib)\nonumber\\
+&= \left[\cos\left( (\Delta_0-\Delta_i)\tau\right) + i\sin\left( (\Delta_0-\Delta_i)\tau\right) \right](a+ib)\nonumber\\
+& {\,} + \left[\cos\Delta_f\tau - i\sin\Delta_f\tau \right](a-ib)\nonumber\\
+&= R + iI.
+\end{align}
+The Real part $R$ is:
+\begin{align}
+R &= a\cos\left( (\Delta_0-\Delta_i)\tau\right) -b\sin\left( (\Delta_0-\Delta_i)\tau\right) + a\cos\Delta_f\tau - b\sin\Delta_f\tau\nonumber\\
+&= 2a\cos\left(\frac{\tau(\Delta_0-\Delta_i+\Delta_f)}{2} \right) \cos\left(\frac{\tau(\Delta_0-\Delta_i-\Delta_f)}{2} \right) \nonumber\\
+&{\,} -2b\sin\left(\frac{\tau(\Delta_0-\Delta_i+\Delta_f)}{2} \right) \sin\left(\frac{\tau(\Delta_0-\Delta_i-\Delta_f)}{2} \right)\nonumber\\
+&= 2\cos\left[T\left( \frac{\Delta_0}{2} - \bar{\Delta}\right)  \right]\left[\cos\frac{\Omega'\tau}{2}\cos\frac{T(\Delta_0+\Delta_d)}{2} - \cos\theta\sin\frac{\Omega'\tau}{2}\sin\frac{T(\Delta_0 + \Delta_d)}{2}\right].
+\end{align}
+And deriving in a similar fashion, the imaginary part $I$ is:
+\begin{align}
+I = 2\sin\left[T\left( \frac{\Delta_0}{2} - \bar{\Delta}\right)  \right]\left[\cos\frac{\Omega'\tau}{2}\cos\frac{T(\Delta_0+\Delta_d)}{2} - \cos\theta\sin\frac{\Omega'\tau}{2}\sin\frac{T(\Delta_0 + \Delta_d)}{2}\right].
+\end{align}
+Therefore, 
+\begin{align}
+P_2 &= a_f^*a_f\nonumber\\
+&= R^2 + I^2\nonumber\\
+&= 4\sin^2\theta\sin^2\frac{\Omega'\tau}{2}\left[\cos\frac{\Omega'\tau}{2}\cos\frac{T(\Delta_0+\Delta_d)}{2} - \cos\theta\sin\frac{\Omega'\tau}{2}\sin\frac{T(\Delta_0 + \Delta_d)}{2} \right] ^2
+\end{align}
+To complete our derivation and match our version with Ramsey's, we make one approximation:
+\begin{align}
+\Delta_d = \Delta_f - \Delta_i \ll \Delta_0,
+\end{align}
+this basically says that the difference in the ac Stark shift between the states is much smaller than the detuning. This leaves us with:
+\begin{align}
+\boxed{P_2 = 4\sin^2\theta\sin^2\frac{\Omega'\tau}{2}\left(\cos\frac{\Omega'\tau}{2}\cos\frac{T\Delta_0}{2} - \cos\theta\sin\frac{\Omega'\tau}{2}\sin\frac{T\Delta_0}{2} \right) ^2}
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
