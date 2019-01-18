@@ -3178,6 +3178,17 @@ What the principle of covariance is saying is that as long as the laws of specia
 	Given the metric tensor $g_{\mu\nu}$. Show that $\partial_\lambda g_{\mu\nu}$ is not a tensor.\\
 	
 	We simply apply the transformation rule
+	\begin{align*}
+	\partial_{\lambda'}g_{\mu'\nu'} = \partial_{\lambda'}X^{\alpha}_{\mu'}X^{\beta}_{\nu'}g_{\alpha\beta} \neq X^{\gamma}_{\lambda'}X^{\alpha}_{\mu'}X^{\beta}_{\nu'}\partial_{\gamma}g_{\alpha\beta}.
+	\end{align*}
+	So, $\partial_{\lambda}g_{\alpha\beta}$ is not a tensor. For this reason, 
+	\begin{align*}
+	\Gamma^{\mu}_{\lambda\nu} = \frac{1}{2}g^{\mu\rho}\left( \partial_{\nu}g_{\rho\lambda} + \partial_{\lambda}g_{\gamma\rho} - \partial_{\rho}g_{\nu\lambda}\right) 
+	\end{align*}
+	is also not a tensor, even though it is covariant, i.e. it retains the same form in a primed frame.
+	\begin{align*}
+	\Gamma^{\mu'}_{\lambda'\nu'} = \frac{1}{2}g^{\mu'\rho'}\left( \partial_{\nu'}g_{\rho'\lambda'} + \partial_{\lambda'}g_{\gamma'\rho'} - \partial_{\rho'}g_{\nu'\lambda'}\right)
+	\end{align*}
 \end{exmp}
 
 The above examples suggest to us that ``things go wrong'' because of the derivative $\partial_\tau$. In fact, we have just shown that the derivative of a tensor is not necessarily a tensor under general coordinate transformations. So, it is reasonable to suspect that in order to derive a procedure for finding the laws of physics in a different coordinate system, we would first need to generalize our current definition of the derivative so that derivatives of tensors are tensors.\\
@@ -3189,11 +3200,68 @@ Let us revisit the our current definition of the derivative and see where we wou
 \begin{align*}
 \frac{d\lambda^a}{dt} = \lim_{\Delta t \rightarrow 0}\frac{\lambda^a(t+\Delta t) - \lambda^a(t)}{\Delta t}.
 \end{align*}
-Applying the transformation rules $X^{b'}_a(t)$ on $\lambda^a$ at point $Q$ and $X^{b'}_a(t+\Delta t)$ on $\lambda^a$ at $P$, we realize that the Jacobian matrix element $X^{b'}_a$ can depend on $t$, i.e., the space is different at $P$ and $Q$, so it does make sense to compare $\lambda^a$ at $P$ to $\lambda^a$ at $Q$ if we cannot account for the change in the space. A better approach would be to compare $\lambda^a(t+\Delta t)$ and $\lambda^a$ at the same point. And to do this, we need to parallel transport $\lambda^a(t+\Delta t)$ from $Q$ to $P$. 
+Applying the transformation rules $X^{b'}_a(t)$ on $\lambda^a$ at point $Q$ and $X^{b'}_a(t+\Delta t)$ on $\lambda^a$ at $P$, we realize that the Jacobian matrix element $X^{b'}_a$ can depend on $t$, i.e., the space is different at $P$ and $Q$, so it does make sense to compare $\lambda^a$ at $P$ to $\lambda^a$ at $Q$ if we cannot account for the change in the space. A better approach would be to compare $\lambda^a(t+\Delta t)$ and $\lambda^a$ at the same point. And to do this, we need to parallel transport $\lambda^a(t+\Delta t)$ from $Q$ to $P$. We shall explore the `new' definition of the derivative in the next section.
 
 
 \subsection{Absolute and Covariant differentiation}
 \subsubsection{Absolute differentiation}
+Consider a manifold and a contravariant vector $\lambda^a$ parameterized by $t$. It follows from the definition of the derivative with respect to $t$ that:
+\begin{align*}
+\frac{d\lambda^a}{dt} = \lim\limits_{\Delta t \rightarrow 0} \frac{\lambda^a(\Delta t+t) - \lambda^a(t)}{\Delta t}.
+\end{align*}
+We have stated that we run into trouble with this definition because the space at $P$ and $Q$ are somehow ``different'' due to general curvature, i.e.
+\begin{align*}
+X^{a'}_{b'}(P) \neq X^{a}_{b}(Q).
+\end{align*}
+Specifically, as $\Delta t \rightarrow 0$, we will also get extra terms that are derivatives of $X^{a'}_{b'}$. To `fix' this issue, we introduce the \textbf{absolute derivative}:
+\begin{align*}
+\frac{D\lambda^a}{dt} = \lim\limits_{\Delta t \rightarrow 0}\frac{\lambda^a(\Delta t + t) - \bar{\lambda}^2}{\Delta t},
+\end{align*}
+where $\bar{\lambda}^a = \lambda^a$ at point $P$ but parallel transported to point $Q$. Now, we want an explicit expression for the absolute derivative. To do this, we Taylor expand the first term in the definition
+\begin{align*}
+\lambda^a(\Delta t + t) \approx \lambda^a(t) + \frac{d\lambda^a}{dt}\Delta t = \lambda^a(P) + \frac{d\lambda^a}{dt}\Delta t,
+\end{align*}
+and apply the parallel transport equation to the second term:
+\begin{align*}
+\dot{\lambda}^a + \Gamma^a_{bc}\lambda^b\dot{x}^c = 0.
+\end{align*}
+For small finite intervals, 
+\begin{align*}
+\dot{\lambda}^a &\approx \frac{\Delta \lambda^a}{\Delta t}\\
+\dot{x}^c &\approx \frac{\Delta x^c}{\Delta t}.
+\end{align*}
+So the parallel transport equation becomes:
+\begin{align*}
+\Delta \lambda^a + \Gamma^a_{bc}\lambda^b\Delta x^c = 0,
+\end{align*}
+where $\Delta \lambda^a = \bar{\lambda}^a(Q) - \lambda^a(P)$. This gives
+\begin{align*}
+\bar{\lambda}^a(Q) \approx \lambda^a(P) - \Gamma^a_{bc}\lambda^b\Delta x^c.
+\end{align*}
+Plugging this into the definition of the absolute derivative, we get
+\begin{align*}
+\frac{D\lambda^a}{dt} &= \lim\limits_{\Delta t \rightarrow 0}\frac{(d\lambda^a/dt)\Delta t + \Gamma^a_{bc}\lambda^b\Delta x^c}{\Delta t}\\
+&= \lim\limits_{\Delta t \rightarrow 0}\left( \frac{d\lambda^a}{dt} + \Gamma^a_{bc}\lambda^b\frac{\Delta x^c}{\Delta t} \right)\\
+&= \frac{d\lambda^a}{dt} + \Gamma^a_{bc}\lambda^b\dot{x}^c 
+\end{align*}
+So, let us define the absolute derivative of a contravariant vector as:
+\begin{align*}
+\boxed{\frac{D\lambda^a}{dt} = \frac{d\lambda^a}{dt} + \Gamma^a_{bc}\lambda^b\dot{x}^c}
+\end{align*}
+Note that this definition is covariant as expected:
+\begin{align*}
+\frac{D\lambda^a}{dt} = X^{a}_{b'}\frac{D\lambda^{b'}}{dt}.
+\end{align*}
+We also notice that the right hand side of the definition is quite similar to the parellel transport equation. In fact, 
+\begin{align*}
+\frac{d\lambda^a}{dt} + \Gamma^a_{bc}\lambda^b\dot{x}^c = 0
+\end{align*}
+if we parallel transport a contravariant vector $\lambda^a$. This says that $\lambda^a$ is constant under absolute differentiation. We get a nice property for a parallel transported $\lambda^a$:
+\begin{align*}
+\boxed{\frac{D\lambda^a}{dt} = 0}
+\end{align*}
+A reasonable question to ask now is what the absolute differentiation of scalars, covariant vectors, and general tensors look like. 
+
 \subsubsection{Covariant differentiation}
 \subsection{Newtonian limit}
 
