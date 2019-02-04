@@ -3398,6 +3398,7 @@ With the principle of covariance, we now have a prescription for finding physics
 	which is the geodesic equation, as expected. 
 \end{exmp}
 \subsection{Newtonian limit}
+\subsubsection{Overview}
 In Newtonian physics, gravity is a force:
 \begin{align*}
 \vec{F} = -\frac{GMm}{r^2}\hat{r},
@@ -3411,12 +3412,226 @@ In general relativity, however, the equation of motion is the geodesic equation:
 \frac{d^2X^\mu}{d\tau^2} + \Gamma^\mu_{\nu\lambda}\frac{dX^\nu}{d\tau}\frac{dX^\lambda}{d\tau} = 0.
 \end{align*}
 Now, in some limit, these equations have to match up. Indeed, there is a quantity in the metric tensor $g_{\mu\nu}$ that links up with a quantity in Newtonian physics. This quantity is called the gravitational potential $V$. We can think of $V$ by analogy to the electromagnetic potential:
+\begin{align*}
+V = \frac{U}{q} = -\frac{1}{q}\int\frac{1}{4\pi\epsilon_0}\frac{Qq}{r^2} = \frac{1}{4\pi\epsilon_0}\frac{q}{r}.
+\end{align*}
+We can define a similar quantity for gravity, called the gravitational potential:
+\begin{align*}
+V = \frac{U}{m} = -\frac{1}{m}\frac{GMm}{r}= -\frac{GM}{r}.
+\end{align*}
+We can find the relationship between gravitational potential and force:
+\begin{align*}
+\vec{F} = -m\vec{\nabla}V.
+\end{align*}
+So Newton's second law of motion becomes:
+\begin{align*}
+\vec{F} = m\vec{a} = m\frac{d^2X}{dt^2} = -m\vec{\nabla}V.
+\end{align*}
+Therefore,
+\begin{align*}
+\frac{d^2X}{dt^2} = \vec{\nabla}V.
+\end{align*}
+Let us write the above equation in terms of indices:
+\begin{align*}
+\frac{d^2X^i}{dt^2} = -\partial_iV.
+\end{align*}
+But in order for this equation work with relativistic theory (where we work with four instead of three indices), we ``fix'' with a Kronecker delta $\delta^{ij}$:
+\begin{align*}
+\boxed{\frac{d^2X^i}{dt^2} = -\delta^{ij}\partial_jV}
+\end{align*}
+We might wonder how this equation is compatible with the geodesic equation in the non-relativistic limit. We shall explore the answers in the following subsections:
+\subsubsection{Weak limit of General Relativity}
+The effects of gravity near Earth or the Sun are weak. Therefore only a slight curvature is expected, which means we can approximate the metric tensor as a Minkowski metric plus a small correction term:
+\begin{align*}
+g_{\mu\nu} \approx \eta_{\mu\nu} + h_{\mu\nu},
+\end{align*}
+where $\vert h_{\mu\nu} \vert \ll 1$. In the Newtonian limit, spacetime is almost Minkowski-like (flat). Keeping only the first terms in $h_{\mu\nu}$, we can show the following example that 
+\begin{align*}
+g^{\mu\nu} \approx eta^{\mu\nu} - h^{\mu\nu},
+\end{align*}
+where 
+\begin{align*}
+h^{\mu\nu} = \eta^{\mu\alpha}\eta^{\mu\beta}h_{\alpha\beta}.
+\end{align*}
 
+\begin{exmp}
+	Show that $g^{\mu\nu} \approx \eta^{\mu\nu} - h^{\mu\nu}$ where $h^{\mu\nu} = \eta^{\mu\alpha}\eta^{\nu\beta}h_{\alpha\beta}$. Hint: verify that $g^{\mu\nu}g_{\nu\sigma} \approx \delta^{\mu}_{\sigma} $ to first order, assuming that products of $h$ terms are small enough to be taken to 0.\\
+	
+	At this point this example is left to the reader.\\ 
+\end{exmp}
+
+Once we have these results, we can find the Christoffel symbols $\Gamma^{\mu}_{\nu\sigma}$ in terms of the correction metric $h$ to first order:
+\begin{align*}
+\boxed{\Gamma^{\mu}_{\nu\sigma} = \frac{1}{2}\eta^{\mu\rho}\left(\partial_\nu h_{\sigma\rho} + \partial_\sigma h_{\nu\rho} - \partial_\mu h_{\nu\sigma} \right) }
+\end{align*}
+Let us use this Christoffel symbol in the geodesic equation, but before we start, we should make a few approximations. First, we want a result in the non-relativistic (slow) limit, so
+\begin{align*}
+\frac{dX^0}{d\tau} \gg \frac{dX^i}{d\tau}.
+\end{align*}
+This follows since
+\begin{align*}
+\frac{dX^0}{d\tau} = \frac{d}{d\tau}(ct) = c\frac{dt}{d\tau},
+\end{align*}
+whereas
+\begin{align*}
+\frac{dX^i}{d\tau} = \frac{dX^i}{dt}\frac{dt}{d\tau} \ll c\frac{dt}{d\tau}.
+\end{align*}
+With this result, we can ignore the terms $dX^i/d\tau$ in summing compared to $dX^0/d\tau$. Now we can start:
+\begin{align*}
+\frac{d^2X^\mu}{d\tau^2} + \Gamma^{\mu}_{\nu\sigma}\frac{dX^\nu}{d\tau}\frac{dX^\sigma}{d\tau} \approx \frac{d^2X^\mu}{d\tau^2} + \Gamma^{\mu}_{00}\frac{dX^0}{d\tau}\frac{dX^0}{d\tau} \approx 0.
+\end{align*}
+Second, we assume static gravitational field (not changing in time - assuming stationary Earth/Sun), i.e. $\partial_0 h_{\sigma 0 } = 0$:
+\begin{align*}
+\Gamma^{\mu}_{00} &= \frac{1}{2}\eta^{\mu\sigma}\left( \partial_0h_{\sigma 0} + \partial_0 h_{\sigma 0} - \partial_\sigma h_{00}\right) \\
+&\approx -\frac{1}{2}\eta^{\mu\sigma}\partial_{\sigma}h_{00}.
+\end{align*} 
+So, the geodesic equation becomes:
+\begin{align*}
+\frac{d^2X^\mu}{d\tau} &\approx  \frac{1}{2}\eta^{\mu\sigma}\partial_{\sigma}h_{00}\left( \frac{dX^0}{d\tau} \right)^2\\
+&= \frac{1}{2}\eta^{\mu\sigma}\partial_{\sigma}h_{00}c^2\left( \frac{dt}{d\tau} \right)^2.
+\end{align*}
+Let $\mu = 0$. 
+\begin{align*}
+\frac{d^2X^0}{d\tau^2} = c^2\frac{d^2t}{d\tau^2} \approx \left(\frac{1}{2}\eta^{0\sigma}\partial_\sigma h_{00} \right)c^2\left(\frac{dt}{d\tau} \right) ^2 
+\end{align*}
+The only value for $\sigma$ so that $\eta^{\sigma 0}$ is nonzero is $\sigma = 0$. But because $\partial_0 h_{00} = 0$ in the static limit,
+\begin{align*}
+\frac{1}{c^2}\frac{d^2X^0}{d\tau^2} = \frac{d^2t}{d\tau^2} = 0.
+\end{align*}
+Therefore, $dt/d\tau$ has no $\tau$ dependence.\\
+
+Let $\mu = i$,
+\begin{align*}
+\frac{d^2X^i}{d\tau^2} \approx \frac{1}{2}\eta^{i\sigma}\left(\partial_\sigma h_{00}\right)c^2\left(\frac{dt}{d\tau} \right)^2. 
+\end{align*}
+Applying the chain rule:
+\begin{align*}
+\frac{d^2X^i}{d\tau^2} &= \frac{d}{d\tau}\left(\frac{dX^i}{d\tau} \right) \\
+&= \frac{d}{d\tau}\left(\frac{dX^i}{dt}\frac{dt}{d\tau} \right)  \\
+&= \frac{d^2X^i}{dtd\tau}\frac{dt}{d\tau} + \frac{dX^i}{dt}\frac{d^2t}{d\tau^2}\\
+&= \frac{dt}{d\tau}\frac{d}{d\tau}\frac{dX^i}{dt}\\
+&= \frac{dt}{d\tau}\frac{d}{dt}\frac{dX^i}{dt}\frac{dt}{d\tau}\\
+&= \left( \frac{dt}{d\tau}\right)^2\frac{d^2X^i}{dt^2}.
+\end{align*}
+So,
+\begin{align*}
+\frac{d^2X^i}{dt^2} &= \frac{c^2}{2}\eta^{i\sigma}\left(\partial_\sigma h_{00} \right). 
+\end{align*}
+Now note that this equation indicates a summing of indices. If $\sigma = 0$, then $\eta^{i\sigma} = 0$. While if $\sigma = j$, then $\eta^{ij} = -1 = -\delta^{ij}$ if $i=j$. So,
+\begin{align*}
+\frac{d^2X^i}{dt^2} \approx -\frac{c^2}{2}\delta^{ij}\left(\partial_j h_{00} \right).
+\end{align*}
+Now, we compare this with the Newtonian equation:
+\begin{align*}
+\frac{d^2X^i}{dt^2} = -\delta^{ij}\partial_jV.
+\end{align*}
+In order for general relativity to go back to Newtonian physics, there must be the following correspondence in the limit:
+\begin{align*}
+V \approx \frac{c^2}{2}h_{00} + \text{Constant}.
+\end{align*}
+Now if we ``turn off'' gravity, then $h_{\mu\nu} = 0$, since spacetime is completely Minkowski, which means $V = 0$. So, $\text{Constant} = 0$. We get:
+\begin{align*}
+\boxed{h_{00} = \frac{2V}{c^2}}
+\end{align*} 
+Now, since 
+\begin{align*}
+g_{00} \approx \eta_{00} + h_{00} = 1 + h_{00},
+\end{align*}
+we finally get the correspondence between general relativity and Newtonian physics. 
+\begin{align*}
+\boxed{g_{00} = 1 + \frac{2V}{c^2}}
+\end{align*}
+A more careful analysis shows 
+\begin{align*}
+\frac{d\tau}{dt} = \sqrt{1+ h_{00}},
+\end{align*}
+which follows from the fact that  
+\begin{align*}
+c\,d\tau^2 = g_{\mu\nu}\,dX^\mu\,dX^\nu
+\end{align*}
+is independent of $\tau$ in the static and weak limit. We notice that this results in a new type of time dilation which we will explore later when we are close to discussing cosmology. Basically, the exact solution for a spherical mass $M$ in general relativity is the Schwarzschild solution:
+\begin{align*}
+g_{\mu\nu} = \begin{pmatrix}
+1 - \frac{2GM}{c^2r} & 0 & 0 & 0 \\
+0 & -\left(1-\frac{2GM}{c^2r} \right)^{-1} & 0 & 0\\
+0 & 0 & -r^2 & 0\\
+0 & 0 & 0 & -r^2\sin^2\theta
+\end{pmatrix}.
+\end{align*}
+Note that
+\begin{align*}
+g_{00} = 1 + \frac{2V}{c^2},
+\end{align*}
+as predicted by our workings so far. 
 
 \newpage
 
 \section{Einstein's field equations}
+We have been assuming that we know the metric tensor and have looked at physics in curved spaces. But we have yet to develop a method to obtain the metric from a given distribution of mass and energy. In this section, we will look at the Einstein equations - our prescription to finding the metric tensor given a distribution of mass and energy. The Einstein equations took Einstein 8 years to develop. The Einstein equations are a set of coupled, non-linear partial differential equations that we can solve for the metric tensor $g_{\mu\nu}$.\\
+
+As a little teaser, let us look at the form of the Einstein equations:
+\begin{align*}
+\boxed{R^{\mu\nu} - \frac{1}{2}Rg^{\mu\nu} = -\frac{8\pi G}{c^4}T^{\mu\nu}}
+\end{align*}
+where \begin{itemize}
+	\item $T^{\mu\nu}$ is the energy-momentum stress tensor, which represents the density of energy, mass, and momentum, which together is the source of gravity or the curvature of spacetime. 
+	\item $R^{\mu\nu}$ is the Ricci tensor. This is actually a contraction of the Riemann curvature tensor $\tensor{R}{^\mu_{\nu\lambda\sigma}}$:
+	\begin{align*}
+	R_{\mu\nu} = \tensor{R}{^\sigma_{\mu\nu\sigma}}
+	\end{align*}
+	\item $R$ is the curvature scalar, which is the contraction of the Ricci tensor $R_{\mu\nu}$:
+	\begin{align*}
+	R = g^{\mu\nu}R_{\mu\nu} = \tensor{R}{^\mu_\mu}.
+	\end{align*}
+\end{itemize}
+We will eventually show that the Riemann curvature tensor $
+\tensor{R}{^{\mu}_{\nu\sigma\lambda}}$ is a function of the metric tensor $g_{\mu\nu}$ and its derivatives.\\
+
+As a little aside: When Einstein looked at the solutions for a gas of cosmic matter, he found an evolving solution which suggested an expanding/contracting universe. However, because Einstein thought the universe has to be static (as he was doing this before Hubble's discover in 1929 that the universe is expanding), Einstein added an extra term $\Lambda$ to his equations:
+\begin{align*}
+R^{\mu\nu} - \frac{1}{2}g^{\mu\nu} + \Lambda g^{\mu\nu} = \frac{8\pi G}{c^4}T^{\mu\nu}.
+\end{align*}
+$\Lambda$ is the \textbf{cosmological constant}. This extra term accounts for a cosmic source of energy density that is associated with the vacuum (which we today refer to as \textbf{dark energy}). After Hubble's discovery, though, Einstein set $\Lambda$ to 0, calling it the ``greatest blunder'' of his life, and for decades, all cosmology uses $\Lambda = 0$ until the 1990s when it was discovered that the universe is not only expanding but also the expansion is accelerating. This event brought back $\Lambda$. Today, almost all cosmological models include the cosmological constant or some form of ``dark energy.''\\
+
+In the later sections, we will study cosmology with and without the cosmological constant $\Lambda$. Our plan is to look at $T^{\mu\nu}$, $\tensor{R}{^{\mu_{\nu\lambda\sigma}}}$, $R_{\mu\nu}$, $R$, etc. and retrace some of Einstein's steps with which he came up with his solutions. \\
+
+We should also note that the Einstein equations are very difficult to solve partly because they are non-linear: Gravitational fields carry energy, which in turn affects themselves, unlike in electromagnetism where we get linear equations whose solutions obey the principle of superposition because electromagnetic waves don't carry charge and don't interact with each other. Now, we are not going to attempt to solve the Einstein equations (that would be way beyond the scope of this Quick Guide). Instead, we will study two well-known solutions to the Einstein equations:
+\begin{itemize}
+	\item The Schwarzschild solution, which gives the metric tensor outside a spherical static mass $M$ such as the Sun or the Earth or a black hole. 
+	\item The Friedmann-Robertson-Walker (FRW) solution, which gives the metric tensor for a homogeneous and spatially isotropic universe with $\Lambda = 0$ or $\Lambda \neq 0$. Note that the FRW solution with $\Lambda \neq 0$ is the current best cosmological model.  
+\end{itemize}
+
+Now, let us find out how Einstein was guided to find what we know call the Einstein equations. In Newtonian limit, for a point particle, we know that
+\begin{align*}
+\vec{F} = -m\vec{\nabla}V, 
+\end{align*}
+where 
+\begin{align*}
+V = -\frac{GM}{r}.
+\end{align*}
+What about for a mass density of $\rho$? Let us first define the mass density $\rho$ as:
+\begin{align*}
+\boxed{\vec{\nabla}^2V = 4\pi G \rho}
+\end{align*}
+This is called the \textbf{Poison equation}. How we show this is true? We can do this by analogy (again) to electromagnetism. In electromagnetism, the charge density is found through the first of four Maxwell's equations:
+\begin{align*}
+\rho = \epsilon_0\vec{\nabla}\cdot\vec{E},
+\end{align*}
+where $\vec{E}$ can be expressed in terms of the electric potential:
+\begin{align*}
+\vec{E} = -\vec{\nabla}V.
+\end{align*}
+This simply gives:
+\begin{align*}
+\vec{\nabla}^2V = -\frac{\rho}{\epsilon_0}.
+\end{align*}
+Einstein indeed used this analogy as a guide. 
 \subsection{The stress-energy tensor $T^{\mu\nu}$}
+As we have said before, $T^{\mu\nu}$ is the energy-momentum stress tensor. For a given distribution of matter,
+\begin{align*}
+\rho = \frac{dM}{dV}.
+\end{align*}
+
 \subsection{Riemann curvature tensor $R^{\lambda}_{\text{ }\mu\nu\sigma}$}
 \subsection{The Einstein equations}
 \subsection{Schwarzschild solution}
@@ -3442,13 +3657,13 @@ Now, in some limit, these equations have to match up. Indeed, there is a quantit
 \subsubsection{The cosmological constant $\Lambda$}
 \subsubsection{Equations of state}
 \subsubsection{A matter-dominated universe ($\Lambda = 0$) [Friedmann models]}
-\subsubsection{A flat, metter-dominated universe ($\Lambda = 0$) [old favorite model]}
+\subsubsection{A flat, matter-dominated universe ($\Lambda = 0$) [old favorite model]}
 \subsection{Observational cosmology}
 \subsubsection{Hubble law}
 \subsubsection{Acceleration of the universe}
 \subsubsection{Matter densities and dark matter}
 \subsubsection{The flatness and horizon problems}
-\subsubsection{Cosmic Microwave Backgrond (CMB) anisotropy}
+\subsubsection{Cosmic Microwave Background (CMB) anisotropy}
 \subsection{Modern cosmology}
 \subsubsection{Inflation}
 \subsubsection{Dark energy (The cosmological constant problem)}
