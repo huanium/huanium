@@ -40,6 +40,7 @@
 
 Greetings,\\
 
+\textit{Partial Differential Equations: A Quick Guide} is based on my lecture notes from MA411: Topics in Differential Equations - Partial Differential Equations with professor Evan Randles at Colby. The contents are somewhat based on Farlow's \textit{Partial Differential Equations for Scientists and Engineers}.\\	
 
 Enjoy!
 
@@ -47,5 +48,130 @@ Enjoy!
 \tableofcontents
 \newpage
 
+\section{Overview and Classification}
+
+%\date{Feb 6, 2019}
+
+
+\subsection{What in the world is a PDE?}
+We shall begin with what PDEs are. 
+\begin{defn}
+	A partial differential equation (PDE) is an equation relating a function of several variables $\psi(t,\vec{x})$ to its partial derivatives: $\partial_{x_1}\psi$, $\partial^2_{x_1x_2}\psi$, etc.\\
+	
+	A note on notation:
+	\begin{align*}
+	\frac{\partial^2 \psi}{\partial x_1\,\partial x_2} \equiv \partial^2_{x_1x_2}\psi \equiv \partial_{x_1}\partial_{x_2}\psi.
+	\end{align*}
+\end{defn}
+
+\subsection{Some notable examples}
+Let us look at a couple of famous PDEs:
+\begin{exmp}
+	\textbf{Laplace Equation:}
+	\begin{align*}
+	\Delta \psi = \nabla^2\psi = \frac{\partial^2 \psi}{\partial x^2} + \frac{\partial^2 \psi}{\partial y^2} + \frac{\partial^2 \psi}{\partial z^2} = 0.
+	\end{align*}
+\end{exmp}
+
+\begin{exmp}
+	\textbf{Poisson's Equation:}
+	\begin{align*}
+	\Delta \psi = \nabla^2 \psi = F(x,y,z)
+	\end{align*}
+\end{exmp}
+
+We take note of the \textbf{Laplacian} or the \textbf{Laplacian operator}:
+\begin{align*}
+\boxed{\Delta \psi \equiv \nabla^2 \psi = \frac{\partial^2 \psi}{\partial x^2} + \frac{\partial^2 \psi}{\partial y^2} + \frac{\partial^2 \psi}{\partial z^2}}
+\end{align*}
+The Laplacian operator takes a function $\psi$ linearly to another function $\nabla^2 \psi$. The Laplacian is one of the most important objects in mathematics, as it touches probability theory, potential theory, partial differential equations, mathematical physics, harmonic analysis, number theory, etc.\\
+
+Another note on notation: the symbols $\Delta$ and $\nabla^2$ will be used interchangeably in this text. The $\nabla^2$ represents the divergence of the gradient.\\
+
+Let us look at some more examples to see the ubiquity of the Laplacian in PDEs:
+\begin{exmp}
+	\textbf{The heat equation:}
+	\begin{align*}
+	\frac{\partial \psi}{\partial t} = \nabla^2 \psi.
+	\end{align*}
+	The heat equation describes heat transfer over time. But there is also a connection between the heat equation and probability theory. In particular, the Gaussian function:
+	\begin{align*}
+	\frac{1}{\sqrt{4\pi t}}e^{-\frac{x^2}{4t}}
+	\end{align*}
+	solves the heat equation.
+\end{exmp}
+
+\begin{exmp}
+	\textbf{The wave equation:}
+	\begin{align*}
+	\frac{\partial^2 \psi}{\partial t^2} = \nabla^2 \psi.
+	\end{align*}
+	The wave equation describes physical vibrations. The second $t$-derivative in the equation is strongly correlated to Newton's second law of motion.
+\end{exmp}
+
+\begin{exmp}
+	\textbf{The Schr\"{o}dinger equation:}
+	\begin{align*}
+	i\hbar \frac{\partial \psi}{\partial t} = -\frac{\hbar^2}{2m}\nabla^2\psi + V(t,\vec{x})\psi.
+	\end{align*}
+	One can hardly talk about PDEs without mentioning the Schr\"{o}dinger equation. There is a strong resemblance between the Schr\"{o}dinger equation and the wave equation. Of course, this is no coincidence, as the Schr\"{o}dinger equation is postulated based on a description of a harmonic oscillator.  
+\end{exmp}
+
+Our next example does not include the Laplacian operator. 
+
+\begin{exmp}
+	\textbf{The telegraphic equation:}
+	\begin{align*}
+	\frac{\partial^2 \psi}{\partial t^2} = \frac{\partial^2 \psi}{\partial x^2} + \alpha \frac{\partial \psi}{\partial t} + \beta \psi.
+	\end{align*}
+	The telegraphic equation describes the transfer of information. 
+\end{exmp}
+
+\subsection{Vocabulary}
+\begin{itemize}
+	\item The function $\psi$ appearing in a given PDE is called the ``dependent variable.''
+	\item The variables $t,x_1,x_2,\dots$ are called ``independent variables.''
+\end{itemize}
+
+\subsection{Our goals}
+Our goal is, given a PDE, to find a sufficiently differentiable function which satisfies it that is subject to \textbf{boundary} and \textbf{initial} conditions. 
+
+\subsection{Our plan}
+Here are the key concepts we will explore in this text:
+\begin{itemize}
+	\item Modeling: Formulate same physical problem in terms of PDEs.
+	\item Learn how to solve (some) PDEs, subjection to initial conditions and boundary conditions. This means we will be looking at ideas like:
+	\begin{itemize}
+		\item Separation of variables, in order to reduce a PDE into a system of ODEs.
+		\item Integral transforms, in order to reduce the number of independent variables.
+		\item Change of coordinates, in order to change a complicated PDE into another one which is easier to solve.
+		\item Eigenfunction expansion, which generally goes under the Stum-Louiville theory.
+		\item Numerical methods, as most PDEs cannot be solved analytically. 
+	\end{itemize}
+\end{itemize}
+
+\subsection{Classification}
+\begin{itemize}
+	\item The order of a PDE is the highest order of partial derivatives appearing (non-trivially) in the PDE.
+	\begin{exmp}
+		\begin{align*}
+		\frac{\partial \psi}{\partial t} = \nabla^2\psi
+		\end{align*}
+		is a second-order PDE.
+	\end{exmp}
+	\begin{exmp}
+		\begin{align*}
+		\frac{\partial \psi}{\partial t} = \partial^4_x\psi
+		\end{align*}
+		- the biharmonic heat equation, is a fourth-order PDE.
+	\end{exmp}
+	\item Linearity: A PDE is linear if the function $\psi$ and its derivatives appear in a linear way.
+	\begin{exmp}
+		All second-order linear PDEs in 2 variables are of the form:
+		\begin{align*}
+		\boxed{A\frac{\partial^2 \psi}{\partial x^2} + B\frac{\partial^2 \psi}{\partial x\,\partial y} + C\frac{\partial^2 \psi}{\partial y^2} + D\frac{\partial \psi}{\partial x} + E\frac{\partial \psi}{\partial y} + F\psi = G}
+		\end{align*}
+	\end{exmp}
+\end{itemize}
 
 \end{document}
