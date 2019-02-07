@@ -18,6 +18,23 @@
 \usepackage{clock}
 \usepackage[clock]{ifsym}
 \usetikzlibrary{shapes}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{exmp}{Example}[section]
+\usepackage{empheq}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
 %\usepgfplotslibrary{external}
 %\tikzexternalize
 
@@ -47,13 +64,132 @@ Enjoy!
 
 
 \newpage
+
 \tableofcontents
+
 \newpage
+
 \section{Introduction to Classical Field Theory}
 \subsection{Overview of Lagrangian Formulation of Classical Mechanics}
-\subsection{The Lagrangian in field theory}
+\subsection{Lagrangian Formulation in Field Theory}
+\begin{prop}
+	All fundamental physics obeys least action principles.
+\end{prop}
+The action $S$ is defined as
+\begin{align*}
+S = \int_{a}^{b}\mathcal{L}\,dt.
+\end{align*}
+where $\mathcal{L}$ is called the Lagrangian. 
 \subsection{Field Theory: A Mechanical Example}
-\subsection{Field Theory: An Electromagnetic Example}
+In this subsection we take a look at how the Lagrangian formulation of classical mechanics can give rise to Newton's second law of motion. In mechanics, the Lagrangian often takes the form:
+\begin{align}
+\mathcal{L} = K - V.
+\end{align}
+where $K$ is the kinetic energy, and $V$ is the potential energy. Let us consider a simple example where
+\begin{align*}
+K &= \frac{1}{2}m\dot{x}^2\\
+V &= V(x).
+\end{align*}
+Variations on the Lagrangian gives
+\begin{align*}
+\delta \mathcal{L} &= \delta\left( \frac{1}{2}m\dot{x}^2 - V(x) \right)\\
+&= m\dot{x}\delta \dot{x} - \frac{dV}{dx}\delta x\\
+&= m\dot{x}\dot{\delta x} - \frac{dV}{dx}\delta x\\
+&= m \left( -\ddot{x}\delta x + \frac{d}{dt}\dot{x}\delta x \right) - \frac{dV}{dx}\delta x\\
+&= -m\ddot{x}\delta x - m\frac{d}{dt}\dot{x}\delta x - \frac{dV}{dx}\delta x. 
+\end{align*}
+It follows that the variations on the action gives
+\begin{align*}
+\delta S = \int_{a}^{b}\delta L \,dt = -\int_a^b\left( m\ddot{x} + \frac{dV}{dx} \right)\delta x\,dt.
+\end{align*}
+The principle of least action requires $\delta S = 0$ for all $\delta x$. Therefore it follows that
+\begin{align*}
+m\ddot{x} + \frac{dV}{dx} = 0,
+\end{align*}
+which is simply Newton's second law of motion in disguise. \\
+
+Before we move on, we should note that in order for the Lagrangian formulation to work in electromagnetism or in general relativity, we need to promote the Lagrangian to its relativistic version where the Lagrangian is given by
+\begin{align*}
+L = \int_a^b\mathcal{L}\,d^3x.
+\end{align*}
+$\mathcal{L}$ is called the Lagrangian density, but we can colloquially refer to it as ``the Lagrangian.'' The relativistic action hence takes the form
+\begin{align*}
+S = \int \mathcal{L}\,d^4x,
+\end{align*}
+where $d^4x$ implies integrating over all spacetime.
+
+\subsection{Introduction to Fields}
+In field theory, most physical objects are described as ``fields.'' Let us dive into the first two fields that we are more or less familiar with: scalar fields and vector fields. 
+
+\subsubsection{Scalar Fields}
+A scalar field can be used to describe particles of spin 0. A scalar field has only one component, or one degree of freedom, making it the ``simplest case'' of the fields we will discuss. Let us now consider a moving field in one dimension, which has the form
+\begin{align*}
+\phi(s) \sim e^{-i\mathbf{k}\cdot\mathbf{x}},
+\end{align*}
+where
+\begin{align*}
+\mathbf{k} &= K^\mu = (K^0, \vec{K})\\
+\mathbf{x} &= X^\mu = (X^0, \vec{X}).
+\end{align*}
+Remember that $K^\mu$ is the wavenumber vector, and $X^\mu$ is the position vector. Also recall that the metric is Minkowskian at this point of consideration (we are still in flat spacetime. General curved spacetime will come later):
+\begin{align*}
+\eta_{\mu\nu} = \begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & -1 & 0 & 0\\
+0 & 0 & -1 & 0\\
+0 & 0 & 0 & -1
+\end{pmatrix}.
+\end{align*} 
+Doing the inner product of $X^\mu$ and $K^\mu$ gives
+\begin{align*}
+\phi(x) = e^{-iK^0t + i\vec{k}\cdot\vec{x}}.
+\end{align*}
+We shall choose ``natural units'' such that $\hbar = c = 1$. This gives
+\begin{align*}
+\phi(x) = e^{-i\omega t}e^{i\vec{k}\cdot\vec{x}}.
+\end{align*}
+Now, particles obey the following Einstein mass-energy equivalence:
+\begin{align*}
+E^2 = m^2 + \vec{p}^2.
+\end{align*}
+But because of our choice of units, $E = c\hbar K^0= K^0$, and $\vec{p} = \hbar \vec{k} = \vec{k}$. This gives
+\begin{align*}
+\left( K^0\right)^2 - \vec{k}^2 &= m^2\\
+K^\mu K_\mu &= m^2.
+\end{align*}
+So, massive particles obey $K^\mu K_\mu = m^2$, while massless particles obey $K^\mu K_\mu = 0$. \\
+
+Now, we might wonder how we know that the scalar field has the above form. The answer is derived from, you guessed it, the Lagrangian for a scalar field. Let us consider a single scalar field in classical mechanics where
+\begin{align*}
+\text{Kinetic energy: } K &= \frac{1}{2}\dot{\phi}^2\\
+\text{Gradient energy: } G &= \frac{1}{2}\left(\nabla \phi \right)^2\\
+\text{Potential energy: } P &= V(\phi).
+\end{align*}
+We currently have three terms, but we would like our Lagrangian density to have the form $\mathcal{L} = K-V$. So, let us combine the kinetic energy and gradient energy terms into one:
+\begin{align*}
+K' = \frac{1}{2}\dot{\phi}^2 - \frac{1}{2}\left(\nabla \phi \right)^2.
+\end{align*}
+We shall verify that 
+\begin{align*}
+K' = -\frac{1}{2}\left( \partial_\mu \phi\right)\left( \partial^\mu \phi\right).
+\end{align*}
+This turns out to be quite straightforward:
+\begin{align*}
+\left( \partial_\mu \phi\right)\left( \partial^\mu \phi\right) &= \eta^{\mu\nu}\left( \partial_\mu \phi\right)\left( \partial_\nu \phi\right)\\
+&= \left( \partial_0 \phi \right)^2 - \left(\partial_j\phi \right)^2\\
+&= \dot{\phi}^2 - \left( \nabla \phi \right)^2.
+\end{align*}
+So, a good choice of Lagrangian for our scalar field would be
+\begin{align*}
+\mathcal{L} \sim K'-V = -\frac{1}{2}\left( \partial_\mu \phi\right)\left( \partial^\mu \phi\right) - V(\phi)
+\end{align*}
+
+
+\subsubsection{Vector Fields: An Electromagnetic Example}
+
+
+
+
 \newpage
 
 \end{document}
