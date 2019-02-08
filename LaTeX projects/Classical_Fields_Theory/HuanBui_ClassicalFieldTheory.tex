@@ -79,11 +79,18 @@ The action $S$ is defined as
 \begin{align*}
 S = \int_{a}^{b}\mathcal{L}\,dt.
 \end{align*}
-where $\mathcal{L}$ is called the Lagrangian. 
+where $\mathcal{L}$ is called the Lagrangian.\\
+
+Refer for Farlow's \textit{Partial Differential Equation}, page 353, for detailed explanation of Lagrange's calculus of variations.\\
+
+I will derive the Euler-Lagrange equation(s) here, but we are not going to use it in the following subsection for the introduction to field theory for now. \\
+\begin{align*}
+\frac{\partial \mathcal{L}}{\partial \phi} - \partial_\mu\frac{\partial \mathcal{L}}{\partial(\partial_\mu \phi)} = 0.
+\end{align*}
 \subsection{Field Theory: A Mechanical Example}
 In this subsection we take a look at how the Lagrangian formulation of classical mechanics can give rise to Newton's second law of motion. In mechanics, the Lagrangian often takes the form:
 \begin{align}
-\mathcal{L} = K - V.
+\mathcal{L} = K - V,
 \end{align}
 where $K$ is the kinetic energy, and $V$ is the potential energy. Let us consider a simple example where
 \begin{align*}
@@ -165,13 +172,15 @@ Now, we might wonder how we know that the scalar field has the above form. The a
 \text{Gradient energy: } G &= \frac{1}{2}\left(\nabla \phi \right)^2\\
 \text{Potential energy: } P &= V(\phi).
 \end{align*}
+\textit{Note: I haven't found a satisfactory explanation to what a ``gradient energy'' is. I'll come back to this term later.} \\
+
 We currently have three terms, but we would like our Lagrangian density to have the form $\mathcal{L} = K-V$. So, let us combine the kinetic energy and gradient energy terms into one:
 \begin{align*}
 K' = \frac{1}{2}\dot{\phi}^2 - \frac{1}{2}\left(\nabla \phi \right)^2.
 \end{align*}
 We shall verify that 
 \begin{align*}
-K' = -\frac{1}{2}\left( \partial_\mu \phi\right)\left( \partial^\mu \phi\right).
+K' = -\frac{1}{2}\left( \partial_\mu \phi\right)\left( \partial^\mu \phi\right) = \frac{1}{2}\dot{\phi}^2 - \frac{1}{2}\left(\nabla \phi \right)^2.
 \end{align*}
 This turns out to be quite straightforward:
 \begin{align*}
@@ -181,14 +190,195 @@ This turns out to be quite straightforward:
 \end{align*}
 So, a good choice of Lagrangian for our scalar field would be
 \begin{align*}
-\mathcal{L} \sim K'-V = -\frac{1}{2}\left( \partial_\mu \phi\right)\left( \partial^\mu \phi\right) - V(\phi)
+\mathcal{L} \sim K'-V = -\frac{1}{2}\left( \partial_\mu \phi\right)\left( \partial^\mu \phi\right) - V(\phi).
 \end{align*}
+In order for the action to be extremized, i.e. $\delta S = 0$, we require that $\delta \mathcal{L} = 0$ for any $\delta \phi$. Varying $\mathcal{L}$ with respect to $\phi$ gives
+\begin{align*}
+\delta \mathcal{L} &= \delta\left( -\frac{1}{2}\left( \partial_\mu \phi\right)\left( \partial^\mu \phi\right) - V(\phi)  \right)\\
+&= -\frac{1}{2}\left( \partial_\mu \phi\, \partial^\mu\phi + \partial_\mu\phi\,\partial^\mu\delta \phi \right) - \frac{dV(\phi)}{d\phi}\delta \phi\\
+&= -\partial_\mu\delta \phi\, \partial^\mu\phi - \frac{dV(\phi)}{d\phi}\delta \phi.
+\end{align*}
+Now, integration by parts tells us that
+\begin{align*}
+\partial_\mu\left( \partial^\mu \phi\, \delta \phi \right) = \partial^\mu\partial_\mu\phi\, \delta \phi + \partial_\mu\delta\phi \,\partial^\mu\phi.
+\end{align*}
+So,
+\begin{align*}
+ \partial_\mu\delta \phi\, \partial^\mu\phi = \partial_\mu\left( \partial^\mu \phi\, \delta \phi \right) - \partial^\mu\partial_\mu\phi\, \delta \phi.
+\end{align*}
+Therefore, variations on $\mathcal{L}$ is:
+\begin{align*}
+\delta \mathcal{L} &= -\left[ \partial_\mu\left( \partial^\mu \phi\, \delta \phi \right) - \partial^\mu\partial_\mu\phi\, \delta \phi \right] - \frac{dV(\phi)}{d\phi}\delta \phi.
+\end{align*}
+It follows that the action is
+\begin{align*}
+S = \int_a^b \delta \mathcal{L}\,d^4x = \int^b_a \left\{ 
+-\left[ \partial_\mu\left( \partial^\mu \phi\, \delta \phi \right) - \partial^\mu\partial_\mu\phi\, \delta \phi \right] - \frac{dV(\phi)}{d\phi}\delta \phi \right\}\,d^4x.
+\end{align*}
+The total derivative term $\partial_\mu\left( \partial^\mu \phi\, \delta \phi \right)$ vanishes as we require the variations $\delta \phi = 0$ at $a$ and $b$. This leaves us with
+\begin{align*}
+S = \int_a^b \left\{ 
+ \partial^\mu\partial_\mu\phi - \frac{dV(\phi)}{d\phi} \right\}\,\delta \phi \,d^4x.
+\end{align*}
+We require that this equality hold for any variation $\delta \phi$. So it must be true that
+\begin{align*}
+\partial^\mu\partial_\mu\phi - \frac{dV(\phi)}{d\phi} = 0.
+\end{align*}
+We introduce a new operator, the \textbf{d'Alembertian}:
+\begin{align*}
+\square \equiv \partial^\mu\partial_\mu \equiv \partial_\nu\partial^\mu \equiv \frac{\partial^2}{\partial t^2} - \vec{\nabla}^2.
+\end{align*}
+The requirement we just derived now becomes the \textbf{Klein-Gordon equation}:
+\begin{align*}
+\square \phi - \frac{dV}{d\phi} = 0.
+\end{align*}
+Remember that we are working with Lagrangian for a scalar field. It can easily be shown the connection between the Klein-Gordon equations and Newton's second law of motion, by separating the temporal and spatial derivatives from the d'Alembertian and rewriting a few things:
+\begin{align*}
+\square \phi - \frac{dV}{d\phi} = \ddot{\phi} - \vec{\nabla}^2\phi - \frac{dV(\phi)}{d\phi} = 0.
+\end{align*}
+We can see the time second derivative on the field $\phi$ and the $\phi$-derivative on the potential field resemble ``acceleration'' and ``force'' in Newton's second law.\\
 
+Let us return to our original question of why a scalar field has the form $\phi  \sim e^{-i\mathbf{k}\cdot\mathbf{x}}$. From our derivation of the Klein-Gordon equation, we observe that a scalar field $\phi$ must be a solution to the Klein-Gordon equation. Now, we verify that
+\begin{align*}
+\phi = e^{-i\mathbf{k}\cdot\mathbf{x}}
+\end{align*}
+is a solution to the KG equation. We simply unpack the d'Alembertian and attack the derivatives step-by-step. The first derivative is
+\begin{align*}
+\partial_\mu \phi &= \partial_\mu \left(e^{-i\mathbf{k}\cdot\mathbf{x}} \right)\\
+&= -i\partial_\mu \left( \mathbf{k}\cdot\mathbf{x}\right)e^{-i\mathbf{k}\cdot\mathbf{x}}
+\\
+&= -i\partial_\mu \left(K_\nu X^\nu\right) e^{-iK_\alpha X^\alpha}\\
+&= -iK_\nu\, \partial_\mu X^\nu\,\phi\\
+&= -iK_\nu \delta^\nu_\mu \phi\\
+&= -iK_\mu \phi 
+\end{align*} 
+Next, we attack the second derivative:
+\begin{align*}
+\partial^\mu \partial_\mu \phi &= \eta^{\mu\nu}\partial_\nu\partial_\mu\phi\\
+&= \eta^{\mu\nu}\partial_\nu \left( -iK_\mu\phi \right)\\
+&= -iK_\mu\eta^{\mu\nu}\left( -iK_\nu\phi \right)\\
+&= (-i)^2 K^\mu K_\mu \phi.
+\end{align*}
+If $K^\mu K_\mu = m^2$ (as we have shown before), then 
+\begin{align*}
+\square \phi + m^2\phi = (-m^2 + m^2)\phi = 0, 
+\end{align*}
+which satisfies the Klein-Gordon equation. So, as long as $K^\mu K_\mu = m^2$ is satisfied, $\phi$ of the given form is a solution to the KG equation and is a legitimate scalar field. 
 
 \subsubsection{Vector Fields: An Electromagnetic Example}
 
+Vector fields describe particles of spin 1 such as photons. Unlike scalar fields $\phi$ where there is only one degree of freedom, a vector field is represented by $A_\mu$ with $\mu = 0,1,2,3$, hence having 4 degrees of freedom. Electromagnetism is a field theory where the relevant field is a vector field, $A_\mu$, called the vector potential.
+\begin{align*}
+A_\mu = (A_0, \vec{A}).
+\end{align*}
+The first component of the vector potential, $A_0$ is the electrostatic potential $V$ where $\vec{E} = -\vec{\nabla}V$. The other spatial components of $A_\mu$, forming $\vec{A}$, form the vector potential from which the magnetic field and full electric field is derived:
+\begin{align*}
+\vec{B} &= \vec{\nabla}\times \vec{A}\\
+\vec{E} &= -\vec{\nabla}V - \frac{\partial \vec{A}}{\partial t}
+\end{align*}
 
+Let us consider the (cleverly chosen) Lagrangian density for electromagnetism:
+\begin{align*}
+\mathcal{L} = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} - j^\mu A_\mu,
+\end{align*}
+where $j^\mu = (\rho, \vec{J})$ is a combination of the charge density and current density. The electromagnetic field strength tensor is given by:
+\begin{align*}
+F^{\mu\nu} &= \partial^\mu A^\nu - \partial^\nu A^\mu \\
+&= \begin{pmatrix}
+0 & -E^1 & -E^2 & -E^3\\
+E^1 & 0 & -B^3 & -B^2 \\
+E^2 & B^3 & 0 & -B^1\\
+E^3 & B^2 B^1 & 0
+\end{pmatrix}.
+\end{align*}
+With this definition, we can also have an equivalent definition:
+\begin{align*}
+F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu.
+\end{align*}
+Recall the cyclic identity (this can be readily verified - we in fact have covered this in the GR notes):
+\begin{align*}
+\partial_\lambda F_{\mu\nu} + \partial_{\mu}F_{\nu\lambda} + \partial_{\nu}F_{\lambda\mu} = 0.
+\end{align*}
+We can easily show that this identity yields two of four Maxwell's equations:
+\begin{align*}
+\vec{\nabla}\times\vec{E} &= -\frac{\partial \vec{B}}{\partial t}\\
+\vec{\nabla}\cdot\vec{B} &= 0.
+\end{align*}
+The remaining Maxwell equations come from varying the action and minimizing the action: $\delta S = 0$ with respect to the vector potential $A_\mu$. Similar to what we have done before, we want to vary the Lagrangian. Now, the E\&M Lagrangian has two terms. The term involving the vector potential is simple:
+\begin{align*}
+\delta \left( j^\mu A_\mu \right) = j^\mu\,\delta A_\mu 
+\end{align*}
+true for all $\delta A_\mu$, so if the field strength tensor is zero, then $j^\mu = 0$. The term involving the field strength tensor is a little more complicated, but certainly doable:
+\begin{align*}
+\delta\left( \frac{-1}{4}F^{\mu\nu}F_{\mu\nu} \right) 
+&= \frac{-1}{4}\,\delta\left[\left( \partial^\mu A^\nu - \partial^\nu A^\nu  \right)\left( \partial_\mu A_\nu - \partial_\nu A_\mu \right)\right]\\
+&= \frac{-1}{2}\,\delta\left( \partial^\mu A^\nu\,\partial_\mu A_\nu - \partial_\mu A_\nu\,\partial^\mu A^\nu\right)\\
+&= \frac{-1}{2}\left( \partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
+\partial^\mu A^\nu\,\partial_\mu\,\delta A_\nu - \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu - \partial_\mu A_\nu\,\partial^\mu \,\delta A^\nu \right).
+\end{align*}
+Raising and lowering indices gives
+\begin{align*}
+\delta\left( \frac{-1}{4}F^{\mu\nu}F_{\mu\nu} \right)  
+&= \frac{-1}{2}\left( 
+\partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
+\partial_\nu A_\mu\,\partial^\nu\,\delta A^\mu 
+- \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu 
+- \partial^\nu A^\mu\,\partial_\nu \,\delta A_\mu \right)\\
+&= \partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu
+- \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu.
+\end{align*}
+We can again integrate by parts on the two terms similar to the following steps
+\begin{align*}
+\partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu &=  \partial^\nu(\partial_\mu A_\nu\,\delta A^\mu) -(\partial^\nu\partial_\mu A_\nu)\delta A^\mu = \partial_\mu(\partial^\nu A^\mu\,\delta A_\nu) -(\partial^\nu\partial_\mu A_\nu)\delta A^\mu
+\\
+\partial_\mu\,\delta A_\nu\partial^\mu A^\nu &= 
+\partial_\mu (\partial^\mu A^\nu \,\delta A_\nu)
+ - \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu  =
+\partial_\mu (\partial^\mu A^\nu \,\delta A_\nu) 
+ - \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu.
+\end{align*} 
+and eliminate the total derivative from the action integral. Assuming that the term with the current density and vector potential is zero, we are eventually (after lowering/raising the indices correctly, of course) left with the requirement
+\begin{align*}
+\partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu - (\partial^\nu\partial_\mu A_\nu)\delta A^\mu
+&\equiv 
+\left(\square A^\mu - \partial^\mu\partial^\nu A_\nu \right)\,\delta A_\mu = 0
+\end{align*}
+for all $\delta A_\mu$, which forces the following identity:
+\begin{align*}
+\square A^\mu - \partial^\nu \partial^\mu A_\nu = \square A^\mu - \partial_\nu \partial^\mu A^\nu = \partial_\nu(\partial^\nu A^\mu - \partial^\mu A^\nu) = \partial_\nu F^{\mu\nu} = 0.
+\end{align*}
+Now, with the current density and vector potential terms, we get the requirement 
+\begin{align*}
+\partial_\nu F^{\mu\nu} = j^\mu. 
+\end{align*}
+This identity gives the remaining two Maxwell's equations.\\
 
+We can look at photons as an example. Photons do not carry a current/charge, so $j^\mu = 0$. Therefore the equation of motion can be derived from just $-(\partial^\nu\partial_\mu A_\nu)\delta A^\mu = 0$. Now, we have an interesting problem to think about: We know that photons can have 2 independent transverse polarizations, i.e. there are 2 massless modes for photons. However, $A^\mu$ has 4 degrees of freedom, not 2. So why does our theory require more than 2 degrees of freedom to describe a physical quantity that only has 2 degrees of freedom? The answer to this is that there are 2 degrees of freedom in $A_\mu$ that don't matter. The first is the $A_0$ factor - the electrostatic potential. Why $A_0$ does not matter in describing photons can be illustrated if we look at the case where $\mu = 0$:
+\begin{align*}
+\square A_0 - \partial_0\,\partial^\nu A_\nu 
+&= \partial^0\partial_0A_0 + \partial^j\partial_jA_0 - \partial_0\partial^0A_0-\partial_0\partial^jA_j\\ 
+&=  \partial^j\partial_jA_0 - \partial_0\partial^jA_j \\
+&=  0.
+\end{align*} 
+We see that $A_0$ is not a propagating mode, or the \textbf{ghost} mode, or the \textbf{auxiliary} mode. This is actually a good thing in our theory. In fact, the Lagrangian is actually chosen such that the time second derivative vanishes. \\
+
+Now that we have sort of explained why one degree of freedom of $A_\mu$ does not matter. What about the other one that shouldn't matter? The short answer to this is the keyword \textbf{gauge symmetry} in the theory. If we look back at how the field strength tensor is defined:
+\begin{align*}
+F_{\mu\nu} = \partial_\mu A_\nu - \partial_nu A_\mu,
+\end{align*}
+and attempt to transform (\textbf{gauge transform})
+\begin{align*}
+A_\mu \rightarrow A'_\mu = A_\mu + \partial_\mu\Lambda(x),
+\end{align*}
+then we observe that
+\begin{align*}
+F'_{\mu\nu} &= \partial_\mu(A_\nu + \partial_\nu\Lambda(x)) - \partial_\nu(A_\mu + \partial_\mu\Lambda(x))\\
+ &= \partial_\mu A_\nu - \partial_nu A_\mu \\
+ &= F^{\mu\nu},
+\end{align*}
+i.e. there is a way to choose $\Lambda(x)$ such that we eliminate one $A_\mu$ mode, leaving just 4-1-1=2 modes.\\
+
+Note: This is a very hand-wavy-type of explanation. For a better, more detailed, and more satisfactory explanation, please refer to Sean Carroll's book, p.~40. I will come back to this section later when my understanding of classical field theory develops, and hopefully provide a better explanation here. 
 
 \newpage
 
