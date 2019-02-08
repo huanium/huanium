@@ -174,4 +174,110 @@ Here are the key concepts we will explore in this text:
 	\end{exmp}
 \end{itemize}
 
+% Feb 08, 2019
+
+Note: define
+\begin{align*}
+L[\psi](x,y) = A\frac{\partial^2 \psi}{\partial x^2} + B\frac{\partial^2 \psi}{\partial x\,\partial y} + C\frac{\partial^2 \psi}{\partial y^2} + D\frac{\partial \psi}{\partial x} + E\frac{\partial \psi}{\partial y} + F\psi
+\end{align*}
+then we get
+\begin{align*}
+L[u] = G.
+\end{align*}
+We get a linear map $L:\psi\rightarrow L[\psi]$. So, for $\gamma, \sigma \in \mathbb{R}$
+\begin{align*}
+L[\gamma u+ \sigma v)] = \gamma L[u] + \sigma L[v].
+\end{align*}
+This observation justifies the moniker ``linear.'' Next, we say that $L[\psi] = G$ is \textbf{homogeneous} if $G = 0$. The equation is \textbf{inhomogenous} if $G(x,y)\neq 0$ for some $x,y$.\\
+
+If $A,B,C,D,E,F$ are constants, then $L[\psi] = G$ is said to be a \textbf{constant-coefficient} equation. Otherwise (at least one of $A,B,C,D,E,F$ is a function of $x,y$ in some non-trivial way), it is said to have \textbf{variable coefficients}. 
+
+\begin{exmp}
+	Classify: $u_t = \sin t u_{xx}$.\\
+	
+	It is a linear PDE, $A = \sin t$, $B=C=D=F=0$, $E=-1$, $G=0$, variable coefficient, and homogeneous. 
+\end{exmp}
+\begin{exmp}
+	Classify: $u_{xx} -\sin u = 0$.\\
+	
+	Not linear.
+\end{exmp}
+
+\begin{exmp}
+	Classify: $xu_x - yu_y = 0$.\\
+	
+	First-order homogeneous linear PDE with variable coefficients. 
+\end{exmp}
+
+Note: Linear PDEs are quite well understood. Notable mathematicians who established theories of linear PDEs: Ehenpres(?), Hille, Browder, Soboher, Nash, Nierenburd, Friedmann, Schwartz, Hormander (Fields, 1962), Gardiy.\\
+
+Note: Constant coefficient equations are \textbf{much easier} to solve than variable coefficient equations, because Fourier analysis makes a lot of the constant coefficient problems easy.\\
+
+Note: Non-linear equations are really hard, and there is no general theory. Each type of non-linear problem demands its own special techniques (well, if they exist at all). 
+
+\subsection{Types of second order linear PDE}
+\textbf{Parabolic:} $L[\psi] = G$ is said to be parabolic if $B^2 - 4AC = 0$ ($A,B,C$ don't have to be constant coefficients - so the PDE can be parabolic in some region and not elsewhere). 
+\begin{exmp}
+	The heat equation
+	\begin{align*}
+	u_t = u_{xx}
+	\end{align*}
+	is a parabolic equation, because $A=1, E=-1, B=C=0$. 
+\end{exmp}
+
+\textbf{Elliptic:} $L[\psi] = G$ is elliptic if $B^2 - 4AC < 0$.
+\begin{exmp}
+	Laplace's equation
+	\begin{align*}
+	\delta u = u_{xx} + u_{yy} = 0
+	\end{align*}
+	is elliptic, because $A=C=1, B=0$.
+\end{exmp}
+
+\textbf{Hyperbolic: } if $B^2 - 4AC > 0$.
+\begin{exmp}
+	The wave equation:\begin{align*}
+	u_{tt} = u_{xx}
+	\end{align*}
+	is hyperbolic, because $B=0, A=1, C=-1$.
+\end{exmp}
+
+\newpage
+
+
+\section{Diffusion-type problems: A study of the heat equation}
+\subsection{An experiment}
+We consider a copper rod of length $L$, which allows heat to transfer along the rod, but is insulated in such a way that heat does not transfer laterally across/out of the rod. 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{copper.png}
+\end{figure}
+
+At time $t=0$, the temperature in the rod is known.
+\begin{align*}
+u(0,x) = T_0
+\end{align*}
+The ends of the rod are placed in thermal baths which hold their temperatures fixed. So, at $x=0$, $u(t,0) = T_1$ and at $x=L$, $u(t,L) = T_2$ for all $t>0$. \\
+
+This behavior is modeled by the heat equation. 
+\begin{align*}
+u_t = \alpha^2 u_{xx},
+\end{align*}
+where $\alpha \in \mathbb{R}$, determined by the thermo-character of the rod. $u_t$ is the rate of change of temperature in time, and $u_{xx}$ is the concavity profile in space. \\
+
+Some justification for the heat equation: we look at the spatial difference quotient. For small change in $x$, $\Delta x$:
+\begin{align*}
+u_{xx} &\approx \frac{u_x(t,x+\Delta x) - u_x(t,x)}{\Delta x}\\
+&\approx \frac{(u(t,x+\Delta x) - u(t,x))/\Delta x - (u(t,x)-u(t,x-\Delta x))/\Delta x}{\Delta x}\\
+&\approx \frac{1}{\Delta x^2}(u(t,x+\Delta x) + u(t,x-\Delta x) - 2u(t,x))\\
+&\approx \frac{2}{\Delta x^2}\left(\frac{u(t,x+\Delta x) + u(t,x-\Delta x)}{2} - u(t,x) \right)
+\end{align*}
+So, $u_{xx} \propto$ the difference between the average temperatures among neighboring points and the temperature at $x$. 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{copper1.png}
+\end{figure}
+
+Assume that $u_t = \alpha^2 u_{xx}$, then if $u_{xx} < 0$, then $u_t < 0$, i.e. temperature decreases in time. If $u_{xx} > 0$, then $u_t > 0$, i.e. temperature increases in time. If $u_{xx} = 0$, the temperature stays fixed. 
+
 \end{document}
