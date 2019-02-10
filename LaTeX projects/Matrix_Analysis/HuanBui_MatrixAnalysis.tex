@@ -10,8 +10,11 @@
 \newtheorem{defn}{Definition}[section]
 \newtheorem{rmk}{Remark}[section]
 \newtheorem{exmp}{Example}[section]
+\newtheorem{prop}{Properties}[section]
 \usepackage{empheq}
 \usepackage{tensor}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
 
 
 \begin{document}
@@ -32,9 +35,13 @@
 
 Greetings,\\
 
-\textit{Matrix Analysis, A Quick Guide to} is compiled based on my MA353: Matrix Analysis notes with professor Leo Livshits. The sections are based on a number of resources: \textit{Linear Algebra Done Right} by Axler, \textit{A Second Course in Linear Algebra} by Horn and Garcia, \textit{Matrices and Linear Transformations} by Cullen, \textit{Matrices: Methods and Applications} by Barnett, \textit{Problems and Theorems in Linear Algebra} by Prasolov, \textit{Matrix Operations} by Richard Bronson, and professor Leo Livshits' own textbook (in the making).\\
+\textit{Matrix Analysis: A Quick Guide to} is compiled based on my MA353: Matrix Analysis notes with professor Leo Livshits. The sections are based on a number of resources: \textit{Linear Algebra Done Right} by Axler, \textit{A Second Course in Linear Algebra} by Horn and Garcia, \textit{Matrices and Linear Transformations} by Cullen, \textit{Matrices: Methods and Applications} by Barnett, \textit{Problems and Theorems in Linear Algebra} by Prasolov, \textit{Matrix Operations} by Richard Bronson, and professor Leo Livshits' own textbook (in the making).\\
 
 The development of this text will come in layers. The first layer, one that I am working on during the course of S'19 MA353, will be an overview of the key topics listed in the table of contents. As the semester progresses, I will be constantly updating the existing notes, as well as adding prof. Livshits' problems and my solutions to the problems. The second layer will come after the course is over, when concepts will have hopefully ``come together.''\\ 
+
+I will decide how much narrative I should put into the text as text is developed over the semester. I'm thinking that I will only add detailed explanations wherever I find fit or necessary for my own studies. I will most likely keep the text as condensed as I can.\\
+
+Technical note: for the conjugate transpose operation, I will use ``$^\dagger$'' and ``$^*$'' interchangeably. I'm more biased towards $^\dagger$ as a physics student, but to appeal to my mathematics professor, I should also learn the mathematicians' notations.
 
 Enjoy!
 
@@ -44,16 +51,328 @@ Enjoy!
 \newpage
 
 \section{List of Special Matrices \& Their Properties}
+\begin{enumerate}
+	\item \textbf{Hermitian/Self-adjoint}: $H = H^\dagger$. A Hermitian matrix is matrix that is equal to its own conjugate transpose:
+	\begin{align*}
+	H \text{ is Hermitian } \iff H_{ij} = \bar{H}_{ji}
+	\end{align*} 
+	\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item $H$ is Hermitian $ \iff \langle w, Hv\rangle = \langle Hw, v \rangle$, where $\langle, \rangle$ denotes the inner product.
+		\item $H$ is Hermitian $ \iff \langle v, Hv\rangle \in \R$.
+		\item $H$ is Hermitian $\iff$ it is \textit{unitarily diagonalizable} with \textit{real eigenvalues}.
+	\end{enumerate}
+	\item \textbf{Unitary}: $U^*U = UU^* = I = U^\dagger U = UU^\dagger$. The real analogue of a unitary matrix is an orthogonal matrix. The following list contain the properties of $U$:
+	\begin{enumerate}
+		\item $U$ preserves the inner product:
+		\begin{align*}
+		\langle Ux, Uy \rangle = \langle x,y\rangle.
+		\end{align*}
+		
+		\item $U$ is normal: it commutes with $U^* = U^\dagger$.
+		
+		\item $U$ is diagonalizable:
+		\begin{align*}
+		U = VDV^*,
+		\end{align*}
+		where $D$ is diagonal and unitary, and $V$ is unitary.
+		
+		\item $\vert \det(U) \vert = 1 $ (hence the real analogue to $U$ is an orthogonal matrix)
+		
+		\item Its eigenspaces are orthogonal.
+		
+		\item $U$ can be written as
+		\begin{align*}
+		U = e^{iH},
+		\end{align*}
+		where $H$ is a Hermitian matrix. 
+		
+		\item Any square matrix with unit Euclidean norm is the average of two unitary matrices.
+	\end{enumerate}
+	\end{prop}
+	\item \textbf{Cofactor}: ?
+\end{enumerate}
+
+\newpage
 \section{List of Operations}
+\begin{enumerate}
+	\item \textbf{Conjugate transpose} is what its name suggests.
+	\item \textbf{Classical adjoint/Adjugate/adjunct} of a square matrix is the transpose of its cofactor matrix. 
+\end{enumerate}
+\newpage
+
 \section{List of Algorithms}
+\newpage
 
 \section{Complex Numbers}
+\subsection{A different point of view}
+We often think of complex numbers as
+\begin{align*}
+a + ib
+\end{align*}
+where $a,b \in \R$ and $i = \sqrt{-1}$. While there is nothing ``bad'' about this way of thinking - in fact thinking of complex numbers as $a+ib$ allows us to very quickly and intuitively do arithmetics operations on them - a ``matrix representation'' of complex numbers can give us some insights on ``what we actually do'' when we perform complex arithmetics.\\
+
+Let us think of 
+\begin{align*}
+\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}
+\end{align*}
+as a different representation of the same object - the same complex number ``$a+ib$.'' Note that it does not make sense to say the matrix representation \textbf{equals} the complex number itself. But we shall see that a lot of the properties of complex numbers are carried into this matrix representation under interesting matricial properties.
+\begin{align*}
+\boxed{\begin{pmatrix}
+	a & -b\\
+	b & a
+	\end{pmatrix}
+\sim a + ib}
+\end{align*}
+
+First, let us break the the matrix down:
+\begin{align*}
+a+ib = a\times 1 + i \times b \sim \begin{pmatrix}
+a & -b \\
+b & a
+\end{pmatrix} 
+= 
+a\begin{pmatrix}
+1 & 0\\
+0 & 1
+\end{pmatrix}
++
+b\begin{pmatrix}
+0 & -1\\
+1 & 0
+\end{pmatrix}
+= aI + b\mathcal{I}.
+\end{align*}
+Right away, we can make some ``mental connections'' between the representations:
+\begin{align*}
+I &\sim 1\\
+\mathcal{I} \sim i.
+\end{align*}
+
+Now, we know that complex number multiplications commute:
+\begin{align*}
+(a+ib)(c+id) = (c+id)(a+ib).
+\end{align*}
+Matrix multiplications are not commutative. So, we might wonder whether commutativity holds under the this new representation of complex numbers. Well, the answer is yes. We can readily verify that
+\begin{align*}
+(aI+b\mathcal{I})(cI+b\mathcal{I}) = (cI+b\mathcal{I})(aI+b\mathcal{I}).
+\end{align*}
+How about additions? Let's check:
+\begin{align*}
+(a + ib) + (c+ id) = (a+c) + i(b+d) \sim \begin{pmatrix}
+a+c & -(b+d)\\
+(b+d) & a+c 
+\end{pmatrix}=
+\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}+
+\begin{pmatrix}
+c & -d\\
+d & c
+\end{pmatrix}.
+\end{align*}
+Ah! Additions work. So, the new representation of complex numbers seems to be working flawlessly. However, we have yet to gain any interesting insights into the connections between the representations. To do that, we have to look into changing the form of the matrix. First, let's see what conjugation does:
+\begin{align*}
+(a+ib)^* = a-ib \sim \begin{pmatrix}
+a & b \\
+-b & a
+\end{pmatrix}
+=
+\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}^{\top}
+\end{align*}
+Ah, so conjugation to a complex number in the traditional representation is the same as transposition in the matrix representations. What about the amplitude square? Let us call 
+\begin{align*}
+M = \begin{pmatrix}
+a & -b \\
+b & a
+\end{pmatrix}.
+\end{align*}
+We have
+\begin{align*}
+(a+ib)(a-ib) \sim \begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}
+\begin{pmatrix}
+a & b \\
+-b & a
+\end{pmatrix} =
+MM^\top= (a^2+b^2)I = \det(M)I
+\end{align*}
+Interesting. But observe that if $\det(M) \neq 0$
+\begin{align*}
+\frac{1}{\det(M)}MM^\top = I.
+\end{align*}
+This tells us that
+\begin{align*}
+M^\top = M^{-1},
+\end{align*}
+where $M^{-1}$ is the inverse of $M$, and, not surprisingly, it corresponds to the reciprocal to the complex number $a+ib$. We can readily show that
+\begin{align*}
+M^{-1} \sim (a+ib)^{-1} = \frac{1}{a^2+b^2}(a-ib).
+\end{align*} 
+Remember that we can also think of a complex number as a column vector:
+\begin{align*}
+c + id \sim \begin{pmatrix}
+c\\d
+\end{pmatrix}.
+\end{align*}
+Let us look back at complex number multiplication under matrix representation:
+\begin{align*}
+(a+ib)(c+id) = (ac-bd) + i(bc + ad) \sim \begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}
+\begin{pmatrix}
+c\\d
+\end{pmatrix}=
+\begin{pmatrix}
+ac-bd\\
+bc +ad
+\end{pmatrix}.
+\end{align*}
+Multiplication actually works in this ``mixed'' way of representing complex numbers as well. Now, observe that what we just did was performing a linear transformation on a vector in $\R^2$. It is always interesting to look at the geometrical interpretation of this transformation. To do this, let us call $N$ the ``normalized'' version of $M$:
+\begin{align*}
+N = \frac{1}{\sqrt{a^2 + b^2}}\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}.
+\end{align*}
+We immediately recognize that $N$ is an orthogonal matrix. This means $N$ is an orthogonal transformation (length preserving). Now, it is reasonable to define
+\begin{align*}
+\cos\theta &= \frac{a}{\sqrt{a^2 + b^2}}\\
+\sin\theta &= \frac{b}{\sqrt{a^2+b^2}}.
+\end{align*}
+We can write $N$ as
+\begin{align*}
+N = \begin{pmatrix}
+\cos\theta & -\sin\theta
+\sin\theta & \cos\theta
+\end{pmatrix},
+\end{align*}
+which is a physicists' favorite matrix: the rotation by $\theta$. So, let us write $M$ in terms of $N$:
+\begin{align*}
+M = \begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix} = \sqrt{a^2 + b^2}N = \sqrt{a^2 + b^2}\begin{pmatrix}
+\cos\theta & -\sin\theta\\
+\sin\theta & \cos\theta
+\end{pmatrix}.
+\end{align*}
+We can interpret $M$ as a rotation by $\theta$, followed by a scaling by $\sqrt(a^2 + b^2)$. But what $\sqrt{a^2 + b^2}$ exactly is just the ``length'' or the ``amplitude'' of the complex number $a+ib$, if we think of it as an arrow in a plane. 
+\subsection{Relevant properties and definitions}
+\begin{enumerate}
+	\item The \textit{modulus} of $z = a+ib$ is the ``amplitude'' of $z$, denoted by $\vert z \vert = \sqrt{a^2 + b^2} = z\bar{z}$. 
+	\item The modulus is \textit{multiplicative}, i.e. 
+	\begin{align*}
+	\vert wz \vert = \vert w \vert \vert z \vert.
+	\end{align*}
+	\item Triangle inequality:
+	\begin{align*}
+	\vert z + w \vert \leq \vert z \vert + \vert w \vert.
+	\end{align*}
+	We can readily show this geometrically, or algebraically. 
+	\item The \textit{argument} of $z = a+ib$ is $\theta$, where
+	\begin{align*}
+	\theta = 
+	\begin{cases}
+	\tan^{-1}\left( \frac{b}{a}\right), \text{ if } a > 0\\
+	\frac{\pi}{2} + k2\pi, k\in\R \text{ if } a = 0, b > 0\\
+	-\frac{\pi}{2} + k2\pi, k\in\R \text{ if } a = 0, b < 0\\
+	\text{Undefined if } a=b=0.
+	\end{cases}
+	\end{align*} 
+	\item The \textit{conjugate} of $a+ib$ is $a-ib$. Conjugation is \textit{additive} and \textit{multiplicative}, i.e.
+	\begin{align*}
+	\bar{z+w} &= \bar{z} + \bar{w}\\
+	\bar{wz} &= \bar{w}\bar{z}.
+	\end{align*}
+	Note that we can also show the multiplicative property with the matrix representation as well:
+	\begin{align*}
+	\bar{wz} \sim (WZ)^\top = Z^\top W^\top \sim \bar{z}\bar{w} = \bar{w}\bar{z}.
+	\end{align*}
+	\item Euler's identity, generalized to de Moivre's formula:
+	\begin{align*}
+	z^n = r^ne^{in\theta}.
+	\end{align*}
+\end{enumerate}
+
 \newpage
 \section{Vector Spaces \& Linear Functions}
+\subsection{Rank-Nullity Theorem}
 \subsection{Isomorphisms}
 \subsection{Coordinatization \& matricial representation of linear functions}
 \newpage
 \section{Products of vector spaces \& Sums of subspaces}
+\subsection{Direct Sums}
+\begin{defn}
+	Let $U_j$, $j=1,2,\dots m$ are subspaces of $V$. $\sum_1^m U_j$ is a \textit{direct sum} if each $u \in \sum U_j$ can be written in only one way as $u = \sum_1^m u_j$. The direct sum $\sum^m_i U_j$ is denoted as $U_1 \oplus\dots\oplus U_m$.
+\end{defn}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Condition for direct sum: If all $U_j$ are subspaces of $V$, then $\sum_1^m U_j$ is a direct sum $\iff$ the only way to write 0 as $\sum_1^m u_j$, where $u_j \in U_j$ is to take $u_j = 0$ for all $j$.  
+		\item If $U, W$ are subspaces of $V$ and $U \bigcap W = \{ 0\}$ then $U+W$ is a direct sum. 
+	\end{enumerate}
+\end{prop}
+\subsection{Products and Quotients of Vector Spaces}
+\subsection{Products of Vector Spaces}
+\begin{defn}
+	Product of vectors spaces
+	\begin{align*}
+	V_1 \times\dots\times V_m = \{ (v_1,\dots,v_m): v_j \in V_j, j=1,2,\dots,m\}.
+	\end{align*}
+\end{defn}
+\begin{defn}
+	Addition on $V_1 \times\dots\times V_m$:
+	\begin{align*}
+	(u_1,\dots,u_m) + (v_1,\dots,v_m) = (u_1+v_1,\dots,v_m+u_m).
+	\end{align*}
+\end{defn}
+\begin{defn}
+	Scalar multiplication on $V_1 \times\dots\times V_m$:
+	\begin{align*}
+	\lambda(v_1,\dots,v_m) = (\lambda v_1,\dots,\lambda v_m).
+	\end{align*}
+\end{defn}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Product of vectors spaces is a vector space.
+		\begin{align*}
+		V_j \text{ are vectors spaces over } \F \implies V_1\times\dots\times V_m \text{ is a vector space over } \F.
+		\end{align*}
+		\item Dimension of a product is the sum of dimensions: 
+		\begin{align*}
+		\dim(V_1\times\dots\times V_m) = \sum_1^m\dim(V_j)
+		\end{align*}
+	\end{enumerate}
+\end{prop}
+\subsection{Products \& Direct Sums}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+	\item Let $U_1,\dots,U_m$ be subspaces of $V$. Define a linear map $\Gamma : U_1\times\dots\times U_m \rightarrow U_1 + \dots + U_m$ by:
+	\begin{align*}
+	\Gamma(u_1,\dots,u_m) = \sum_1^m u_j.
+	\end{align*}
+	$U_1 + \dots + U_m$ is a direct sum $\iff \Gamma$ is injective. 
+	\item Let $U_j$ be finite-dimensional and are subspaces of $V$. 
+	\begin{align*}
+	U_1 \oplus \dots\oplus U_m \iff \dim(U_1+\dots+U_m) = \sum_1^m\dim(U_j)
+	\end{align*}
+	\end{enumerate}
+\end{prop}
+\subsection{Quotients of Vector Spaces}
 \subsection{Nullspaces}
 \subsection{Ranges of Operator Powers}
 \newpage
@@ -96,7 +415,43 @@ Enjoy!
 \subsection{Classical adjoints}
 \subsection{Cayley-Hamilton theorem}
 
+\newpage
+
+\section{Inner products and norms} 
+\newpage 
+\subsection{Riesz representation theorem}
+\subsection{Adjoints}
+\subsection{Grammians}
+\subsection{Orthogonal complements and orthogonal decompositions}
+\subsection{Ortho-projections}
+\subsection{Closest point solutions}
+\subsection{Gram-Schmidt and orthonormal bases}
 
 \newpage
+
+\section{Isometries and unitary operators}
+\newpage 
+
+\section{Ortho-triangularization}
+\newpage 
+
+\section{Spectral resolutions}
+\newpage 
+
+\section{Ortho-diagonalization; self-adjoint and normal operators; spectral theorems}
+\newpage 
+
+\section{Positive (semi-)definite operators}
+\subsection{Classification of inner products}
+\subsection{Positive square roots}
+\newpage 
+
+\section{Polar decomposition}
+\newpage 
+
+\section{Single value decomposition}
+\subsection{Spectral/operator norm}
+\subsection{Singular values and approximation}
+\subsection{Singular values and eigenvalues}
 
 \end{document}
