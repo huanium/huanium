@@ -309,7 +309,7 @@ Note: Non-linear equations are really hard, and there is no general theory. Each
 \newpage
 
 
-\section{Diffusion-type problems: A study of the heat equation}
+\section{Diffusion-type problems (parabolic equations): A study of the heat equation}
 \subsection{An experiment}
 We consider a copper rod of length $L$, which allows heat to transfer along the rod, but is insulated in such a way that heat does not transfer laterally across/out of the rod. 
 \begin{figure}[h!]
@@ -321,8 +321,8 @@ At time $t=0$, the temperature in the rod is known.
 \begin{align*}
 u(0,x) = T_0
 \end{align*}
-The ends of the rod are placed in thermal baths which hold their temperatures fixed. So, at $x=0$, $u(t,0) = T_1$ and at $x=L$, $u(t,L) = T_2$ for all $t>0$. \\
-
+The ends of the rod are placed in thermal baths which hold their temperatures fixed. So, at $x=0$, $u(t,0) = T_1$ and at $x=L$, $u(t,L) = T_2$ for all $t>0$.
+\subsection{The Mathematical Model}
 This behavior is modeled by the heat equation. 
 \begin{align*}
 u_t = \alpha^2 u_{xx},
@@ -343,5 +343,160 @@ So, $u_{xx} \propto$ the difference between the average temperatures among neigh
 \end{figure}
 
 Assume that $u_t = \alpha^2 u_{xx}$, then if $u_{xx} < 0$, then $u_t < 0$, i.e. temperature decreases in time. If $u_{xx} > 0$, then $u_t > 0$, i.e. temperature increases in time. If $u_{xx} = 0$, the temperature stays fixed. 
+
+% Feb 11, 2019
+\subsection{Boundary Conditions}
+In contrast to ODEs, PDE have different types of constraints which are combined with the PDE to form well-posed problems, where ``well-posed'' means that a unique solution exists. Our conditions are often (and will almost always) be physically motivated. \\
+
+Let us revisit the heat equation. 
+\begin{align*}
+u_t = \alpha^2 u_{xx}, t> 0, 0\leq x\leq L.
+\end{align*}
+The temperatures at the ends $x=0$ and $x=L$ are fixed $T_1$ and $T_2$ by the thermal baths, so the boundary conditions are
+\begin{align*}
+BCs = \begin{cases*}
+u(0,t) = T_1\\
+u(L,t) = T_2
+\end{cases*}
+\forall t > 0.
+\end{align*} 
+Here ``boundary'' refers to the boundary of $[0,L]$.
+\subsection{Initial Conditions}
+Our problem also involves evolution in time, we have an initial condition of the form
+\begin{align*}
+u(x,0) = T_0 \text{ or } u(x,0) = u_0(x) \forall x \in [0,L]
+\end{align*}
+where $T_0$ is the initial constant temperature of the rod and $u_0(x)$ is the initial temperature which is allowed to vary (some spatial distribution). All together, we form an initial boundary value problem, an IBVP of the form
+\begin{align*}
+\begin{cases*}
+u_t = \alpha^2 u_{xx}, t>0,x\in[0,L]\\
+u(0,t) = T_1, \forall t > 0\\
+u(L,t) = T_2,\forall t > 0\\
+u(x,0) = T_0, \forall x\in[0,L]
+\end{cases*} 
+\end{align*}
+\subsection{A Couple of Variants}
+\subsubsection{Lateral Heat Loss}
+This allows for heat to be transferred laterally into the rod according to Newton's law of cooling. So the new heat equation is
+\begin{align*}
+u_t = \alpha^2 u_{xx} -\beta(u - u_0), \beta > 0
+\end{align*}
+where $u_0$ is the outside temperature.
+\subsubsection{Internal Heat Source}
+If, by some non-diffusive heat source, heat is added into the rod at $(t,x)$, the equation is
+\begin{align*}
+u_t = \alpha^2 u_{xx} + f(x,t)
+\end{align*}
+where $f(x,t)$ is the heat added to the rod, internally. This PDE is \textit{inhomogeneous}.
+\subsubsection{Diffusion-convection Equation}
+\begin{align*}
+u_t = \alpha^2 u_{xx} - vu_x
+\end{align*}
+If $u$ describes the amount (not heat) pollutant, then the term $-vu_x$ describes the flow of additional pollutant introduced by the moving particles. 
+\subsubsection{Variable-coefficients case}
+When the thermal make up of the rod (its thermal character) is allowed to vary according to a variable diffusivity coefficient, i.e. $\alpha \rightarrow \alpha(x)$, then the relevant heat equation is
+\begin{align*}
+u_t = \alpha^2(x)u_{xx}.
+\end{align*}
+So, let's say
+\begin{align*}
+\alpha(x) = 
+\begin{cases*}
+\alpha_{Copper}, x\in[0,L/2]\\
+\alpha_{Bronze}, x\in[L/2,L]
+\end{cases*}
+\end{align*}
+\subsection{Other types of Boundary Conditions}
+\subsubsection{Type I}
+Let's revisit the original heat equation: $u_t = \alpha^2 u_{xx}$. If we force the rod ends to have time-dependent temperatures: $g_1(t)$ and $g_2(t)$ at $x=0$ and $x=L$ respectively, then our boundary conditions are
+\begin{align*}
+BCs = 
+\begin{cases*}
+u(0,t) = g_1(t)\\
+u(L,t) = g_2(t)
+\end{cases*}
+\forall t > 0.
+\end{align*} 
+If instead we're studying the heat flow on a circular plate, i.e., where $u = u(t,t,\theta)$, and the heat EQ is 
+\begin{align*}
+u_t = \alpha^2 \nabla^2 u = \alpha^2\left( u_{rr} + \frac{1}{r}u_r + \frac{1}{r^2}u_{\theta\theta} \right).
+\end{align*}
+Here, the boundary conditions look like $u(t,r_0,\theta) = g(t,\theta)$, i.e. we force the disk to have temperature $g(t,\theta)$ along the boundary.
+\subsubsection{Type 2 (more realistic)}
+We take into account heat transfer to rod ends via thermal bath. Suppose that our rod is placed in bath (liquid) at each end of temperature $g_1(t)$ and $g_2(t)$ respectively. 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.7]{type2.png}
+\end{figure}
+
+In view of Newton's law of cooling, the heat flux at a rod end is $h(u(t,0) - g_(1))$ at $x=0$ and $h(u(t,L)-g_2(t))$ at $x=L$, and $h$ is some constant. Next, we introduce Fourier's law of heat flux (empirical):
+\begin{align*}
+\frac{\p u}{\p n} = k \times\text{Heat flux}
+\end{align*}
+where $n$ is the \textit{inward normal} direction to the boundary, and $k\in\R$. At $x=0$:
+\begin{align*}
+\begin{cases*}
+\frac{\p u}{\p n} = u_x(t,0) = kh(u(t,0)-g_1(t)), x=0\\
+\frac{\p u}{\p n} = -u_x(t,L) = kh(u(t,L)-g_2(t)), x=L
+\end{cases*}.
+\end{align*}
+So, the BC for Type 2 is the following
+\begin{align*}
+\begin{cases*}
+u_x(t,0) = kh(u(t,0) - g_1(t))\\
+u_2(t,L) = -kh(u(t,L) - g_2(t))
+\end{cases*}
+\end{align*}
+The 2-D plate analogue is the following. We require (since $r$ is outward)
+\begin{align*}
+-\frac{\p u}{\p r} = -kh(u(t,r_0,\theta) - g(t,\theta))
+\end{align*}
+where $g(t,\theta)$ is the temperature of the bath surrounding the plate. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
