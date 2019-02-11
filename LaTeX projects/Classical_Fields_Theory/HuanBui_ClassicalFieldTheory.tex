@@ -36,6 +36,9 @@
 	citecolor={blue!50!black},
 	urlcolor={blue!80!black}
 }
+\newcommand{\p}{\partial}
+\newcommand{\lag}{\mathcal{L}}
+
 
 %\usepgfplotslibrary{external}
 %\tikzexternalize
@@ -58,7 +61,7 @@
 
 Greetings,\\
 
-\textit{Classical Field Theory, A Quick Guide to} is compiled based on my independent study PH492: Topics in Classical Field Theory notes with professor Robert Bluhm. Sean Carroll's \textit{Spacetime and Geometry: An Introduction to General Relativity}, along with other resources, serves as the main guiding text. \\
+\textit{Classical Field Theory, A Quick Guide to} is compiled based on my independent study PH492: Topics in Classical Field Theory notes with professor Robert Bluhm. Sean Carroll's \textit{Spacetime and Geometry: An Introduction to General Relativity}, along with other resources, serves as the main guiding text. Some parts of the text will be derived from \textit{Quantum Field Theory} by Ryder.  \\
 
 This text is a continuation of \textit{General Relativity and Cosmology, A Quick Guide to}. Familiarity with classical mechanics, linear algebra, vector calculus, and especially general relativity is expected. I will not be covering a review of general relativity, but instead will jump directly into an introduction to field theory and the Lagrangian formulation of general relativity and Einstein equations.\\ 
 
@@ -72,6 +75,7 @@ Enjoy!
 \newpage
 
 \section{Introduction to Classical Field Theory}
+\subsection{Group Theory: a quick study}
 \subsection{Overview of Lagrangian Formulation of Classical Mechanics}
 \subsection{Lagrangian Formulation in Field Theory}
 \begin{prop}
@@ -130,7 +134,7 @@ where $d^4x$ implies integrating over all spacetime.
 \subsection{Introduction to Fields}
 In field theory, most physical objects are described as ``fields.'' Let us dive into the first two fields that we are more or less familiar with: scalar fields and vector fields. 
 
-\subsubsection{Scalar Fields}
+\subsubsection{Real Scalar Fields}
 A scalar field can be used to describe particles of spin 0. A scalar field has only one component, or one degree of freedom, making it the ``simplest case'' of the fields we will discuss. Let us now consider a moving field in one dimension, which has the form
 \begin{align*}
 \phi(s) \sim e^{-i\mathbf{k}\cdot\mathbf{x}},
@@ -265,7 +269,216 @@ If $K^\mu K_\mu = m^2$ (as we have shown before), then
 \begin{align*}
 \square \phi + m^2\phi = (-m^2 + m^2)\phi = 0, 
 \end{align*}
-which satisfies the Klein-Gordon equation. So, as long as $K^\mu K_\mu = m^2$ is satisfied, $\phi$ of the given form is a solution to the KG equation and is a legitimate scalar field. 
+which satisfies the Klein-Gordon equation. So, as long as $K^\mu K_\mu = m^2$ is satisfied, $\phi$ of the given form is a solution to the KG equation and is a legitimate scalar field. \\
+
+Without knowing the solution to the Klein-Gordon equation, we can also verify that the Klein-Gordon equation is the equation of motion via the Euler-Lagrange equation, which says that
+\begin{align*}
+\frac{\p \lag}{\p \phi} - \p_\mu\left( \frac{\p \lag}{\p(\p_\mu \phi)} \right) = 0.
+\end{align*}
+Recall the Lagrangian:
+\begin{align*}
+\lag = \frac{1}{2}(\p_\mu\phi)(\p^\mu\phi) - V(\phi),
+\end{align*}
+we get
+\begin{align*}
+\frac{\p\lag}{\p\phi} &= -\frac{dV}{d\phi}\\
+\frac{\p\lag}{\p(\p_\mu\phi)} &= \p^\mu\phi.
+\end{align*}
+So the Euler-Lagrange equation gives:
+\begin{align*}
+-\frac{dV}{d\phi} - \p_\mu(\p^\mu\phi) = 0.
+\end{align*}
+If we reasonably take
+\begin{align*}
+V(\phi) = \frac{1}{2}m^2\phi^2,
+\end{align*}
+then we get $-m^2\phi - \square \phi = 0$, i.e.
+\begin{align*}
+(\square + m^2)\phi = 0.
+\end{align*}
+
+\subsubsection{Overview of Noether's Theorem: A Consequence of Variational Principle}
+So far, we have seen quite a lot of \textit{miraculous} coincidences, such as the fact that the Lagrangian somehow gives the Klein-Gordon equation and so on. We have also made a leap of faith from our traditional point-like description of particles $x^\mu$ to field-like descriptions $\phi$ and somehow the physics hasn't changed, i.e. we recognize that if the action is unchanged by a re-parameterization of $x^\mu$ and $\phi$, then there exist one or more conserved quantities. This is the idea of Noether's theorem. In this subsubsection we will get an overview of Noether's theorem and apply it to illustrate conservation rules.\\
+
+Let us go back and redefine the Lagrangian such that it also depends on $x^\mu$ - so that we take into account the interaction of $\phi$ with the space $x^\mu$:
+\begin{align*}
+\lag = \lag(\phi, \p_\mu\phi,x^\mu).
+\end{align*}
+Next, recall our earlier definition of the variation:
+\begin{align*}
+\phi'(x) = \phi(x) + \delta \phi(x).
+\end{align*}
+This definition merely compares $\phi'$ and $\phi$ at the same location in spacetime. To get the full, total variation, we define:
+\begin{align*}
+\Delta \phi &= \phi'(x') - \phi(x)\\
+&= [\phi'(x') - \phi(x')] + [\phi(x') - \phi(x)]\\
+&\approx \delta \phi + (\p_\mu \phi)\delta x^\mu.
+\end{align*}
+So, the variation is now
+\begin{align*}
+\delta S &= \int \lag(\phi',\p_\mu\phi',x'^\mu)\,d^4x' - \int \lag(\phi,\p_\mu\phi,x^\mu)\,d^4x\\
+&= \int \lag(\phi',\p_\mu\phi',x'^\mu)J\left(\frac{x'}{x} \right) \,d^4x - \int \lag(\phi,\p_\mu\phi,x^\mu)\,d^4x,
+\end{align*}
+where $J(x'/x)$ denotes the Jacobian - or the scaling factor:
+\begin{align*}
+J\left(\frac{x'}{x} \right) = \det \left(\frac{\p x'^\mu}{\p x^\lambda}\right) =   \det \left(\frac{\p (x^\mu + \delta x^\mu)}{\p x^\lambda}\right).
+\end{align*}
+So, the variation becomes
+\begin{align*}
+\delta S = \int \delta \lag + \lag \p_\mu(\delta x^\mu) \,d^4x
+\end{align*}
+where 
+\begin{align*}
+\delta \lag = \frac{\p\lag}{\p\phi}\delta \phi + \frac{\p\lag}{\p(\p_\mu\phi)}\delta(\p_\mu\phi) + \frac{\p\lag}{\p x^\mu}\delta x^\mu.
+\end{align*}
+Now, because $\delta(\p_\mu\phi) = \p_\mu(\delta \phi)$, the action variation becomes
+\begin{align*}
+\delta S &= \int \left[\frac{\p\lag}{\p\phi}\delta \phi + \frac{\p\lag}{\p(\p_\mu\phi)}\p_\mu(\delta\phi) + \frac{\p\lag}{\p x^\mu}\delta x^\mu + \lag \p_\mu (\delta x^\mu)\right]\,d^4x\\
+&= \int \left[\frac{\p\lag}{\p\phi}\delta \phi + \frac{\p\lag}{\p(\p_\mu\phi)}\p_\mu(\delta\phi) + \left(\frac{\p\lag}{\p x^\mu}\delta x^\mu + \lag \p_\mu (\delta x^\mu)\right)\right]\,d^4x\\
+&= \int \left[\frac{\p\lag}{\p\phi}\delta \phi + \frac{\p\lag}{\p(\p_\mu\phi)}\p_\mu(\delta\phi) + \p_\mu(\lag\delta x^\mu)\right]\,d^4x.
+\end{align*}
+Next, let us rewrite the second term in terms of the reverse-product rule:
+\begin{align*}
+\frac{\p\lag}{\p(\p_\mu\phi)}\p_\mu(\delta\phi) = 
+\p_\mu\left( \frac{\p\lag}{\p(\p_\mu\phi)}\delta \phi \right)
+- \p_\mu\left(\frac{\p\lag}{\p(\p_\mu\phi)} \right)\delta \phi.
+\end{align*}
+Assume that we are integrating over some region $R$ in spacetime, the action variation becomes
+\begin{align*}
+\delta S &= 
+\int_R \left[\frac{\p\lag}{\p\phi}\delta \phi + 
+\p_\mu\left( \frac{\p\lag}{\p(\p_\mu\phi)}\delta \phi \right)
+- \p_\mu\left(\frac{\p\lag}{\p(\p_\mu\phi)} \right)\delta \phi
+ + \p_\mu(\lag\delta x^\mu)\right]\,d^4x\\
+ &= \int_R \left\{\delta \phi \left[\frac{\p\lag}{\p\phi} -  \p_\mu\left(\frac{\p\lag}{\p(\p_\mu\phi)} \right)\right] + \p_\mu\left[\left( \frac{\p\lag}{\p(\p_\mu\phi)}\delta \phi \right) +  (\lag\delta x^\mu) \right]\right\}\,d^4x.
+\end{align*}
+Gauss' theorem says that integration over a divergence (recall that $\p_\mu$ denotes divergence) of a field over a region is equal to the integration of that field over the boundary of that region, so
+\begin{align*}
+\delta S &=
+\int_R \delta \phi \left[\frac{\p\lag}{\p\phi} -  \p_\mu\left(\frac{\p\lag}{\p(\p_\mu\phi)} \right)\right]\,d^4x + 
+\int_{\p R} \left[\frac{\p\lag}{\p(\p_\mu\phi)}\delta \phi +  \lag\delta x^\mu \right]\,d\sigma_\mu.
+\end{align*}  
+At this point, there are two routes to take. (1) If we restrict the variation to zero at the boundaries, we will end up with the Euler-Lagrange equations, which comes from setting the integrand of the first integral to zero:
+\begin{align*}
+\frac{\p\lag}{\p\phi} -  \p_\mu\left(\frac{\p\lag}{\p(\p_\mu\phi)} \right) = 0.
+\end{align*}
+(2) The other route we can take is not requiring the variation to be zero at the boundary. Doing a small ``add and subtract'' trick to the second integrand:
+\begin{align*}
+\frac{\p\lag}{\p(\p_\mu\phi)}\delta \phi +  \lag\delta x^\mu 
+&= \frac{\p\lag}{\p(\p_\mu\phi)}[\delta \phi +(\p_\nu\phi)\delta x^\nu ]+  \lag\delta x^\mu - \frac{\p\lag}{\p(\p_\mu\phi)}\p_\nu\phi\delta x^\nu\\
+&= \frac{\p\lag}{\p(\p_\mu\phi)}[\delta \phi +(\p_\nu\phi)\delta x^\nu ] - \left[ \frac{\p\lag}{\p(\p_\mu\phi)}\p_\nu\phi
+- \lag\delta^\mu_\nu\right]\delta x^\nu.
+\end{align*}
+Recall that the total variation is defined as
+\begin{align*}
+\Delta \phi \approx \delta \phi + (\p_\mu \phi)\delta x^\mu.
+\end{align*}
+We define the second bracketed term as the \textit{energy-momentum tensor} (we will justify this later):
+\begin{align*}
+\theta^\mu_\nu = \frac{\p\lag}{\p(\p_\mu\phi)}\p_\nu\phi
+- \lag\delta^\mu_\nu.
+\end{align*}
+So, once again, the action variation becomes:
+\begin{align*}
+\delta S = \int_R \delta \phi \left[\frac{\p\lag}{\p\phi} -  \p_\mu\left(\frac{\p\lag}{\p(\p_\mu\phi)} \right)\right]\,d^4x + 
+\int_{\p R} \left[\frac{\p\lag}{\p(\p_\mu\phi)}\Delta \phi - \theta^\mu_\nu\delta x^\nu \right]\,d\sigma_\mu.
+\end{align*}
+Let the infinitesimal transformations be 
+\begin{align*}
+\Delta \phi &= \Phi_\nu \delta \omega^\nu\\
+\Delta x^\mu &= X^\mu_\nu\delta \omega^\nu \approx \delta x^\mu,
+\end{align*}
+where $\Phi^\mu_\nu$ is a matrix and $\Phi_\nu$ is just a row vector. By requiring that $\delta S = 0$ and requiring that the Euler-Lagrange equation hold true, we get
+\begin{align*}
+\int_{\p R} \left[\frac{\p\lag}{\p(\p_\mu\phi)}\Delta \phi - \theta^\mu_\nu\delta x^\nu \right]\,d\sigma_\mu &= 0\\
+\int_{\p R} \left[\frac{\p\lag}{\p(\p_\mu\phi)}\Phi_\nu\delta \omega^\nu - \theta^\mu_\nu X^\nu_\mu \delta \omega^\nu \right]\,d\sigma_\mu &= 0\\
+\int_{\p R} \left[\frac{\p\lag}{\p(\p_\mu\phi)}\Phi_\nu - \theta^\mu_\nu X^\nu_\mu \right]\delta \omega^\nu\,d\sigma_\mu &= 0.
+\end{align*}
+Let us define 
+\begin{align*}
+J^\mu_\nu = \frac{\p\lag}{\p(\p_\mu\phi)}\Phi_\nu - \theta^\mu_\nu X^\nu_\mu.
+\end{align*}
+Now, because
+\begin{align*}
+\int_{\p R} J^\mu_\nu \delta \omega^\nu\,d\sigma_\mu = 0
+\end{align*}
+must hold for any arbitrary $\delta \omega^\nu$, we require
+\begin{align*}
+\int_{\p R}J^\mu_\nu\,d\sigma_\mu = 0.
+\end{align*}
+Now, recall Gauss' theorem one more time:
+\begin{align*}
+\int_{\p R}J^\mu_\nu\,d\sigma_\mu = \int_R \p_\mu J^\mu_\nu\,d^4x.
+\end{align*}
+This means $J^\mu_\nu$ is \textit{divergence-free}, i.e. $J^\mu_\nu$ is a \textit{conserved} quantity:
+\begin{align*}
+\p_\mu J^\mu_\nu = 0.
+\end{align*}
+We can think of $J^\mu_\nu$ as \textit{current}, whose existence is invariant under the given transformations. We can also calculate another conversed quantity called the ``charge''
+\begin{align*}
+Q_\nu = \int_\sigma J^\mu_\nu\,d\sigma_\mu.
+\end{align*}
+Let's look at $\mu=0$, i.e. assuming $t$ is constant:
+\begin{align*}
+Q_\nu = \int_VJ^0_\nu\,d^3x.
+\end{align*}
+Now, revisit Gauss' theorem:
+\begin{align*}
+\int_V \p_0 J^0_\nu\,d^3x + \int_V \p_iJ^i_\nu\,d^3x&=0\\
+\int_V \p_0 J^0_\nu\,d^3x + 0 &= 0\\
+\frac{d}{dt}\int_V J^0_\nu\,d^3x &= \frac{dQ_\nu}{dt} = 0.
+\end{align*}
+So \textit{charge} is conserved over time. This is the essence of \textit{Noether's theorem}.\\
+
+Finally, let us justify the definition of $\theta^\mu_\nu$ as the energy-momentum tensor. We require that the laws of physics remain the same translationally, and the same in all time. So, let see what we get if we make the transformations
+\begin{align*}
+X^\mu_\nu &= \delta^\mu_\nu\\
+\Phi_\mu &= 0.
+\end{align*}
+Now recall the definition of $J^\mu_\nu$, then apply the transformations to the definition:
+\begin{align*}
+J^\mu_\nu = \frac{\p\lag}{\p(\p_\mu\phi)}\Phi_\nu - \theta^\mu_\nu X^\nu_\mu = -\theta^\mu_\nu \delta ^\nu_\mu = -\theta^\mu_\nu.
+\end{align*}
+And so the conservation law, by taking $\mu=0$, is
+\begin{align*}
+\frac{d}{dt}\int \theta^0_\nu\,d^3x = \frac{d}{dt}P_\nu= 0.
+\end{align*}
+Let us calculate the first component $P_0$ from the definition of $\theta^\mu_\nu$, to show (partly) that $P_\nu$ is the 4-momentum:
+\begin{align*}
+P_0 = \int\theta^0_0\,d^3x = \int\left\{\frac{\p \lag}{\p(\p_0\phi)} - \lag \right\} \,d^3x = \int \left\{
+\frac{\p\lag}{\p\dot{\phi}}\dot{\phi} - \lag \right\}\,d^3x. 
+\end{align*}
+The right-hand side the energy of the field. Next, we can show
+\begin{align*}
+\int \theta^0_i\,d^3x
+\end{align*}
+is the momentum from the fact that $\p\phi/\phi x^\mu$ is a 4-vector under Lorentz transformations. \\
+
+Now, if we had assumed that the Lagrangian hadn't involved $x^\mu$, then we would have ended at the Euler-Lagrange equation, i.e. the system does not exchange energy and momentum with the outside. We condense that with the following proposition
+
+\begin{prop}
+	Conservation of energy and momentum holds for a system whose Lagrangian does not depend of $x^\mu$.
+\end{prop}
+
+Now, let us look at the relationship between the energy-momentum tensor $\theta^\mu_\nu$ and the $x^\mu$-independent Lagrangian, which can be given by
+\begin{align*}
+\lag = \frac{1}{2}g^{\mu\nu}(\p_\mu\phi)(\p_\nu\phi) - \frac{m^2}{2}\phi^2.
+\end{align*}
+So $\theta^{\mu\nu}$ can be written as (some of the derivations can be found in the previous subsubsection):
+\begin{align*}
+\theta^{\mu\nu} &= g^{\lambda\nu}\theta^\mu_\lambda \\
+&= g^{\lambda\nu}\left( \frac{\p\lag}{\p(\p_\mu\phi)}\p_\lambda\phi - \delta^\mu_\lambda\lag \right)\\
+&= g^{\lambda\nu}(g^{\mu\lambda}(\p_\lambda\phi) - \delta^\mu_\lambda\lag)\\
+&= g^{\lambda\nu}(\p^\mu\phi\,\p_\lambda\phi - \delta^\mu_\lambda\lag)\\
+&= (\p^\nu\phi)(\p^\mu\phi) - g^{\mu\nu}\lag.
+\end{align*}
+We observe that $\mu$ and $\nu$ are exchangeable, hence $\theta^{\mu\nu}$ is symmetric. So, for a scalar field $\phi$ whose Lagrangian does not exchange energy and momentum with the external, then the energy-momentum tensor $\theta^{\mu\nu}$ is \textbf{symmetric}. However, in general $\theta^{\mu\nu}$ is not symmetric, in general, by definition. But, we can define the \textit{canonical energy-momentum tensor} as
+\begin{align*}
+T^{\mu\nu} = \theta^{\mu\nu} + \p_\lambda f^{\lambda\mu\nu}
+\end{align*}
+such that $\p_\mu T^{\mu\nu} = 0$ and $T^{\mu\nu}$ is symmetric. We will not go into detail about this, but why do we want the energy-momentum tensor to be symmetric? One of the reasons for this is that in general relativity, Einstein's field equation requires that the energy-momentum stress tensor be symmetric, because the Ricci tensor $R_{\mu\nu}$ and the metric tensor $g_{\mu\nu}$ are both symmetric.
+
+\subsubsection{Complex Scalar Fields}  
 
 \subsubsection{Vector Fields: An Electromagnetic Example}
 
@@ -370,7 +583,7 @@ We see that $A_0$ is not a propagating mode, or the \textbf{ghost} mode, or the 
 
 Now that we have sort of explained why one degree of freedom of $A_\mu$ does not matter. What about the other one that shouldn't matter? The short answer to this is the keyword \textbf{gauge symmetry} in the theory. If we look back at how the field strength tensor is defined:
 \begin{align*}
-F_{\mu\nu} = \partial_\mu A_\nu - \partial_nu A_\mu,
+F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu,
 \end{align*}
 and attempt to transform (\textbf{gauge transform})
 \begin{align*}
