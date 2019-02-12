@@ -15,6 +15,7 @@
 \usepackage{tensor}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\F}{\mathbb{F}}
+\newcommand{\xpan}{\text{span}}
 
 
 \begin{document}
@@ -35,13 +36,11 @@
 
 Greetings,\\
 
-\textit{Matrix Analysis: A Quick Guide to} is compiled based on my MA353: Matrix Analysis notes with professor Leo Livshits. The sections are based on a number of resources: \textit{Linear Algebra Done Right} by Axler, \textit{A Second Course in Linear Algebra} by Horn and Garcia, \textit{Matrices and Linear Transformations} by Cullen, \textit{Matrices: Methods and Applications} by Barnett, \textit{Problems and Theorems in Linear Algebra} by Prasolov, \textit{Matrix Operations} by Richard Bronson, and professor Leo Livshits' own textbook (in the making).\\
+\textit{Matrix Analysis: A Quick Guide to} is compiled based on my MA353: Matrix Analysis notes with professor Leo Livshits. The sections are based on a number of resources: \textit{Linear Algebra Done Right} by Axler, \textit{A Second Course in Linear Algebra} by Horn and Garcia, \textit{Matrices and Linear Transformations} by Cullen, \textit{Matrices: Methods and Applications} by Barnett, \textit{Problems and Theorems in Linear Algebra} by Prasolov, \textit{Matrix Operations} by Richard Bronson, and professor Leo Livshits' own textbook (in the making). Prerequisites: some prior exposure to a first course in linear algebra.\\
 
 The development of this text will come in layers. The first layer, one that I am working on during the course of S'19 MA353, will be an overview of the key topics listed in the table of contents. As the semester progresses, I will be constantly updating the existing notes, as well as adding prof. Livshits' problems and my solutions to the problems. The second layer will come after the course is over, when concepts will have hopefully ``come together.''\\ 
 
 I will decide how much narrative I should put into the text as text is developed over the semester. I'm thinking that I will only add detailed explanations wherever I find fit or necessary for my own studies. I will most likely keep the text as condensed as I can.\\
-
-Technical note: for the conjugate transpose operation, I will use ``$^\dagger$'' and ``$^*$'' interchangeably. I'm more biased towards $^\dagger$ as a physics student, but to appeal to my mathematics professor, I should also learn the mathematicians' notations.
 
 Enjoy!
 
@@ -378,8 +377,151 @@ F[\alpha v + \beta w] = \alpha F[v] + \beta F[w].
 	\end{align*}
 \end{defn}
 \subsection{Atrices}
+\begin{defn}
+	\textbf{Atrix functions:} Let $V_1,\dots,V_m \in \mathbf{V}$ be given. Consider $f : \R^m \rightarrow \mathbf{V}$ be defined by
+	\begin{align*}
+	f\begin{pmatrix}
+	a_1\\
+	a_2\\
+	\vdots\\
+	a_m
+	\end{pmatrix}
+	=
+	\sum_{i=1}^m a_i V_i.
+	\end{align*} 
+	We denote $f$ by
+	\begin{align*}
+	\begin{pmatrix}
+	V_1 & V_2 &\dots& V_m
+	\end{pmatrix}.
+	\end{align*}
+	We refer to the $V_i$'s as the \textbf{columns} of $f$, even though there doesn't have to be any columns. Basically, $f$ is simply a function that takes in an ordered list of coefficients and returns a linear combination of $V_i$ with the respective coefficients. A matrix is a special atrix. Not every atrix is a matrix. 
+\end{defn}
+\begin{prop} of atrices
+	$\,$
+	\begin{enumerate}
+	\item The $V_i$'s - the columns of an atrix - are the images of the standard basis tuples. 
+	\item $\mathbf{e}_j \in \ker(V_1\dots V_m) \iff V_j = \mathbf{0}_V$, where $\mathbf{e}_j$ denotes a standard basis tuple with a 1 at the j$^\text{th}$ position. To put in words, a kernel of an atrix contains a standard basis if and only if one of its columns in a null element. 
+	\item $\Im(f) \equiv \Im(V_1\dots V_m) = \xpan(V_1\dots V_m)$
+	\item $B$ is a null atrix $\iff \ker(B) = \R^m \iff \Im(B) = \mathbf{0}_V \iff V_j = \mathbf{0}_V \forall j=1,2,\dots,m$.
+	\item  $f$ is a linear function $\R^m \rightarrow V \iff f$ is an atrix function $\R^m \rightarrow V$.
+	\item An atrix $A$ is bijective/invertible, then its inverse $A^{-1}$ is a linear function, but is an atrix only if $A$ is a matrix. 
+	\item Linear combinations of atrices are atrices:
+	\begin{align*}
+	\alpha \cdot\begin{pmatrix}
+	V_1 & \cdots & V_m
+	\end{pmatrix}
+	+ 
+	\beta \cdot \begin{pmatrix}
+	W_1 & \dots & W_m
+	\end{pmatrix}
+	\\= \begin{pmatrix}
+	\alpha V_1 + \beta W_1 &\dots& \alpha V_m + \beta W_m
+	\end{pmatrix}
+	\end{align*}  
+	\item Compositions of two atrices are NOT defined unless the atrix going first is a matrix. Consider $F : \R^m \rightarrow W$ and $G : \R^n \rightarrow T$. $F\circ G$ is only defined if $T = \R^m$. This make $G$ an $n\times m$ matrix. It follows that the atrix $F\circ G$ has the form
+	\begin{align*}
+	\begin{pmatrix}
+	f(g_1)&f(g_2)&\dots&f(g_m)
+	\end{pmatrix}.
+	\end{align*}
+	\item Consider $F : \R^m \rightarrow V$ and $G : \R^k \rightarrow V$. $\Im(F) \subseteq \Im(G) \iff F = G \circ C$, with $C \in \mathbb{M}_{k\times m}$, i.e. $C$ is an $k \times m$ matrix. 
+	\item Consider an atrix $A : \R^m \rightarrow V$. $A = (V_1\dots V_m)$. $A$ is NOT injective.\\
+	$\iff \exists$ a non-trivial linear combination of the columns of $A$ that gives $\mathbf{0}_V$\\
+	$\iff$ $A = [\mathbf{0}_v]$ or $\exists j \vert V_j$ is linear combination of other columns of $A$\\
+	$\iff$ The first column of $A$ is $\mathbf{0}_V$ or $\exists j \vert V_j$ is a linear combination some of $V_i, i < j$.
+	\item If atrix $A: \R \rightarrow V$ has a single column then it is injective if the column is not $\mathbf{0}_V$.
+	\end{enumerate}
+\end{prop}
+\begin{prop}
+	of elementary column operations for atrices. Elementary operations on the columns of $F$ can be expressed as a composition of $F$ and an appropriate elementary matrix $E$, $F\circ E$. 
+	\begin{enumerate}
+		\item Swapping $i^{th}$ and $j^{th}$ columns: $F\circ E^{[i]\leftrightarrow[j]}$.
+		\item Scaling the $j^{th}$ column by $\alpha$: $F\circ E^{\alpha\cdot[j]}$.
+		\item Adjust the $j^{th}$ column by adding to it $\alpha\times i^{th}$ column: $F\circ E^{[i]\stackrel{+}\leftarrow \alpha\cdot[j]}$.
+		\item Elementary column operations do not change the 'jectivity nor image of $F$.
+		\item If a column of $F$ is a linear combination of some of the other columns then elementary column operations can turn it into $\mathbf{0}_V$.
+		\item Removing/Inserting null columns or columns that are linear combinations of other columns does not change the image of $F$.
+		\item Given atrix $A$, it is possible to eliminate (or not) columns of $A$ to end up with an atrix $B$ with $\Im(B) = \Im(A)$.
+		\item If $B$ is obtained from insertion of columns into atrix $A$, then $\Im(B) = \Im(A) \iff$ the insert columns $\in \Im(A)$.
+		\item Inserting columns to a surjective $A$ does not destroy surjectivity of $A$. ($A$ is already having extra or just enough columns) 
+		\item $A$ surjective $\iff$ $A$ is obtained by inserting columns (or not) into an invertible atrix $\iff$ deleting some columns of $A$ (or not) gives an invertible matrix.
+		\item If $A$ is injective, then column deletion does not destroy injectivity. ($A$ is already ``lacking'' or having just enough columns)
+		\item The new atrix obtained from inserting columns from $\Im(A)$ into $A$ is injective $\iff$ $A$ is injective.
+	\end{enumerate}
+\end{prop}
+\subsection{Linear Independence, Span, and Bases}
+\subsubsection{Linear Independence}
+$\,\,\,\,\,\,\,\,\,\,\,\,\,\,X_1\dots X_m$ are linearly independent\\
+$\iff F = [X_1 \dots X_m]$ injective\\
+$\iff \sum a_iX_i = 0 \iff a_i = 0 \forall i$\\
+$\iff \mathbf{0}_V \notin \{X_i\}$ and none are linear combinations of some of the others.\\
+$\iff X_1 \neq \mathbf{0}_V$ and $X_j$ is not a linear combination of any of $X_i$'s for $i < j$. 
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item The singleton list is linearly independent if its entry is not the null element
+		\item Sublists of a linearly independent list are linearly independent
+		\item List operations cannot create/destroy linearly independence. 
+		\item If a linear map $L : X \rightarrow W$ injective, then $X_1\dots X_m$ linearly independent $\iff L(X_1)\dots L(X_m)$ linearly independent.  
+	\end{enumerate}
+\end{prop}
+\subsubsection{Span}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Spans are subspaces. $\xpan(X_1\dots X_m), X_j \in V$ is a subspace of $V$.
+		\item $\xpan(X_1\dots X_j) \subseteq \xpan(X_1\dots X_k)$ if $j\leq k$.
+		\item Adding elements to a list that spans $V$ produces a list that spans $V$.
+		\item The following list operations do not change the span of $V$: removing the null/linearly dependent element, inserting a linearly dependent element, scaling element(s), adding (multiples) of an element to another element.
+		\item It is possible to reduce a list that spans to a list that spans AND have linearly independent elements.
+		\item Consider $A : V \rightarrow W$. If $X_i$ span $W$ then $A(X_i)$ span $\Im(A)$. $i=1,2,\dots,m$.
+		\item If $A : V \rightarrow W$ invertible, then $X_i$ span $V \iff A(X_i)$ span $W$, $i=1,2,\dots,m$. 
+	\end{enumerate}
+\end{prop}
+\subsubsection{Bases}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item A list is a basis of $V$ if the elements are linearly independent and they span $V$.
+		\item A singleton linear space has no basis.
+		\item Re-ordering the elements of a basis gives another basis.
+		\item $\{X_1\dots X_m\}$ is a basis of $V$ if $(X_1\dots X_m)$ is injective AND $\Im(X_1\dots X_m) = V$, i.e. $(X_1\dots X_m)$ invertible.
+		\item If $\{X_i\}$ is a basis of $V$ and $\{Y_i \}$ is a list of elements in $W$, then there exists a unique linear function $L : V \rightarrow W$ satisfying 
+		\begin{align*}
+		L[X_i] = Y_i
+		\end{align*} 
+		\item If $A: V \rightarrow W$ bijective, then $\{ V_i \}$ forms a basis of $V$ and $\{A(X_i) \}$ forms a basis of $W$.
+		\item Elementary operations on bases give bases.  
+	\end{enumerate}
+\end{prop}
+\subsection{Linear Bijections and Isomorphisms}
+\begin{defn}
+	Let linear spaces $V, W$ be given. $V$ is \textbf{isomorphic} to $W$ if $\exists F : V \rightarrow W$ bijective. We say $V \sim W$. 
+\end{defn}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item A non-zero scalar multiple of an isomorphism is an isomorphism.
+		\item A composition of isomorphism is an isomorphism.
+		\item ``Isomorphism'' behaves like an equivalence relation:
+		\begin{enumerate}
+			\item Reflexivity: $V \sim V$.
+			\item Symmetry: if $V\sim W$ then $W\sim V$.
+			\item Transitivity: if $V\sim W$ and $W \sim Z$ then $V\sim Z$.
+		\end{enumerate}
+		\item Consider $F : V \rightarrow W$ an isomorphism.
+			\begin{enumerate}
+				\item Isomorphisms preserve linear independence. $V_i$'s are linearly independent in $V$ $\iff$ $F(V_i)$'s are linearly independent in $W$.
+				\item isomorphisms preserve spanning. $V_i$'s span $V$ $\iff$ $F(V_i)$'s span $W$.
+				\item Isomorphisms preserve bases. $\{V_i\}$ is a basis of $V$ $\iff$ $F\{(V_i)\}$ is a basis of $W$.
+			\end{enumerate}
+		\item If $V\sim W$ then $\dim(V) = \dim(W)$ (finite or infinite).
+		\item If a linear map $A : V \rightarrow W$ is given and $A(X_i)$'s are linearly independent, then $A_i$'s are linearly independent.  
+		\item If a linear map $A : V \rightarrow W$ is injective and $\{ X_i\}$ is a basis of $V$ then $\{ A(X_i)\}$ is a basis of $\Im(A)$
+	\end{enumerate}
+\end{prop}
 \subsection{Rank-Nullity Theorem}
-\subsection{Isomorphisms}
 \subsection{Coordinatization \& matricial representation of linear functions}
 \newpage
 \section{Products of vector spaces \& Sums of subspaces}
