@@ -407,7 +407,7 @@ So, let's say
 \end{cases*}
 \end{align*}
 \subsection{Other types of Boundary Conditions}
-\subsubsection{Type I}
+\subsubsection{Type 1}
 Let's revisit the original heat equation: $u_t = \alpha^2 u_{xx}$. If we force the rod ends to have time-dependent temperatures: $g_1(t)$ and $g_2(t)$ at $x=0$ and $x=L$ respectively, then our boundary conditions are
 \begin{align*}
 BCs = 
@@ -454,21 +454,120 @@ The 2-D plate analogue is the following. We require (since $r$ is outward)
 where $g(t,\theta)$ is the temperature of the bath surrounding the plate. 
 
 
+\subsubsection{Type 3: Flux specified - including isolated boundaries} 
+The rod ends are insulated, i.e., no heat flows in or out of the rod ends. So the boundary conditions are
+\begin{align*}
+u_x(0,t) = u_x(L,t) = 0 \forall 0 < t < \infty.
+\end{align*}
+In two variables (a disk), the analogous BC is
+\begin{align*}
+u_r(t,r_0,\theta) = 0 \forall 0 < t < \infty, 0\leq \theta \leq 2\pi.
+\end{align*}
+\subsubsection{Type 4: Mixed}
+We can mix BCs. Suppose that one end of the rod has zero flux condition (type 3) and the other end is submerged in a liquid (type 2).
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.7]{type4.png}
+\end{figure}
 
+So, the IBVP is
+\begin{align*}
+\begin{cases*}
+u_t = \alpha^2 u_xx\\
+u_x(t,L) = 0\\
+u_x(t,0) = -\lambda(u(t) - g_1(t)) \forall t > 0\\
+u(0,x) = u_0(x) \forall 0\leq x \leq L
+\end{cases*}
+\end{align*}
 
+\subsection{Derivation of the Heat Equation}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.3]{heat.png}
+\end{figure}
+Main idea: Conservation of (Heat) Energy. Assumptions:
+\begin{enumerate}
+	\item The rod is a thermally homogeneous material 
+	\item The temperature is constant across all cross-sections
+	\item The rod is laterally insulated (no heat loss laterally)
+\end{enumerate}
+Using conservation of energy, we have the following: the change in thermal energy in the cross section $x$ to $x+\Delta x$ should be equal to the flux of the heat through the ``ends'' at $x$ and $x+\Delta x$ plus any external heat produced by some source (e.g. heat element). Some physical constants:
+\begin{enumerate}
+	\item $C$: thermal capacity of the rod
+	\item $\rho$: density of the material of the rod
+	\item $A$: area of cross section
+	\item $k$: thermal conductivity
+\end{enumerate}
+Total heat inside is
+\begin{align*}
+\int_{x}^{\Delta x + x}c\rho A u(s,t)\,ds.
+\end{align*}
+The flux through the ends is
+\begin{align*}
+kA(u_x(x+\Delta x,t) - u_x(x, t)).
+\end{align*}
+The external energy is
+\begin{align*}
+A\int_x^{x+\Delta x}f(t,s)\,ds
+\end{align*}
+where $f(t,s)$ is the energy added at time $t$ and $x\leq s \leq x+\Delta x$. All together
+\begin{align*}
+\frac{d}{dt}\int_{x}^{\Delta x + x}c\rho A u(s,t)\,ds = kA(u_x(x+\Delta x,t) - u_x(x, t)) + A\int_x^{x+\Delta x}f(t,s)\,ds.
+\end{align*}
+Assuming that $u$ is nice enough, that
+\begin{align*}
+\frac{d}{dt}\int_{x}^{\Delta x + x}c\rho A u(s,t)\,ds = \int_{x}^{\Delta x + x}c\rho A u_t(s,t)\,ds.
+\end{align*}
+Also, the MVT for integrals says that if $G$ is continuous on the interval $[a,b]$ then $\exists c\in[a,b]$ such that
+\begin{align*}
+\int_a^b G(s)\,ds = G(c)(b-a).
+\end{align*}
+Therefore $\exists \chi \in [x,\Delta x]$ such that
+\begin{align*}
+\int_{x}^{\Delta x + x}c\rho A u_t(s,t)\,ds = c\rho A u_t(t,\chi)\Delta x
+\end{align*}
+and $\exists \eta \in [x,\Delta x]$ such that
+\begin{align*}
+A\int_x^{x+\Delta x}f(t,s)\,ds = Af(t,\eta)\Delta x.
+\end{align*}
+Combining all of these gives $\forall t > 0, \exists \chi,\eta \in [x,\Delta x]$ such that
+\begin{align*}
+c\rho Au_t(t,\chi)\Delta x &= kA(u_x(t,x+\Delta x) - u_x(t,x)) + Af(t,\eta)\Delta x\\
+u_t(t,\chi) &= \frac{k}{\rho c}\frac{u_x(t,x+\Delta x) - u_x(t,x)}{\Delta x} + \frac{1}{c\rho}f(t,\eta).
+\end{align*}
+As $\Delta x \rightarrow 0$, $\eta,\chi \rightarrow x$
+\begin{align*}
+u_t(t,x) &= \frac{k}{\rho c}u_{xx}(x,t) + \frac{1}{c\rho}f(t,x)\\
+u_t(t,x) &= \frac{k}{\rho c}u_{xx}(x,t) + F(t,x)\\
+u_t(t,x) &= \alpha^2 u_{xx}(x,t) + F(t,x),
+\end{align*}
+where
+\begin{align*}
+\alpha^2 &= \frac{k}{\rho c}\\
+F(t,x) &= \frac{1}{c\rho}f(t,x).
+\end{align*}
 
-
-
-
-
-
-
-
-
-
-
-
+\section{Separation of Variables - First method of solution}
+Main idea: If the IBVP is posed on a rectangle, e.g. $t>0,x\in[0,L]$, and the PDE is linear, it is often the case that this method reduces the PDE into ODEs.
+\subsection{Example: The heat equation}
+\begin{align*}
+u_t = \alpha^2 u_{xx}, t>0, x\in[0,1]
+\end{align*}
+We shall accompany this with so-called linear homogeneous BCs:
+\begin{align*}
+\alpha u(t,0) + \beta u_x(t,0) = 0\\
+\gamma u(t,1) + \delta u_x(t,1) = 0.
+\end{align*}
+In fact, we specify further to assume
+\begin{align*}
+u(t,0)=0=u(t,1)\forall t > 0.
+\end{align*}
+We make an ansatz that solutions are of the form
+\begin{align*}
+u(t,x) = T(t)X(x).
+\end{align*}
+(Maybe not solutions but builidng blocks of solutions). 
 
 
 
