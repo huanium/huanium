@@ -601,7 +601,124 @@ F'_{\mu\nu} &= \partial_\mu(A_\nu + \partial_\nu\Lambda(x)) - \partial_\nu(A_\mu
 \end{align*}
 i.e. there is a way to choose $\Lambda(x)$ such that we eliminate one $A_\mu$ mode, leaving just 4-1-1=2 modes.\\
 
-Note: This is a very hand-wavy-type of explanation. For a better, more detailed, and more satisfactory explanation, please refer to Sean Carroll's book, p.~40. I will come back to this section later when my understanding of classical field theory develops, and hopefully provide a better explanation here. 
+The goal of the above gauge transformation is to pick a $\Lambda(x)$ to remove an extra degree of freedom in the theory. Let us suppose that $\p^\mu A_\mu \neq 0$, i.e. $A_\mu$ is NOT divergence-free. We can pick $\Lambda(x)$ such that after the transformation, $\p^\mu A'_\mu = 0$. Let's start from the very beginning, repeat what we just done earlier:
+\begin{align*}
+A'_\nu = A_\nu + \p_\nu\Lambda.
+\end{align*}
+It follows that
+\begin{align*}
+\p^\nu A'_\nu &= \p^\nu(A_\nu + \p_\nu\Lambda)\\
+&= \p^\nu A_\nu + \p^\nu \p_\nu \Lambda\\
+&= \p^\nu A_\nu + \square\Lambda.
+\end{align*}
+This suggests that if we pick $\Lambda(x)$ such that $\square\Lambda(x) = -\p^\nu A_\nu$ then in this gauge $\p^nu A'_\nu = 0$. After that, we can just drop the prime and get $\p^\nu A_\nu = 0$. As a consequence, in this fixed gauge, the equations of motion can be deduced from 
+\begin{align*}
+\begin{cases*}
+\square A_\mu = 0\\
+\p^\nu A_\nu = 0
+\end{cases*}
+\end{align*}
+each of which adds one constraint, reducing the degree of freedom by 1. To solve for $A_\mu$, we can assume the form of $A_\mu$:
+\begin{align*}
+A+\mu = \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}},
+\end{align*}
+where $\epsilon_\mu$ is called the \textbf{polarization vector}. Now, let us work with the first constraint $\square A = 0$. We can verify (below) that this constraint requires $K^\mu K_\mu = 0$, i.e. $K^\mu$ is a null vector in flat Minkowskian spacetime, i.e. it is light-like. 
+\begin{align*}
+\square A_\mu &= \p_\mu \p^\mu A_\mu\\
+&= \p_\mu\left( 
+\eta^{\mu\nu}\p_\nu \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}}
+\right)\\
+&= \p_\mu\left[\epsilon_\mu\eta^{\mu\nu}\left(\p_\nu  e^{-i\mathbf{k}\cdot\mathbf{x}}
+\right)\right]\\
+&= \p_\mu\left[\epsilon_\mu\eta^{\mu\nu}(-iK_\mu)\left(
+e^{-i\mathbf{k}\cdot\mathbf{x}}\p_\nu X^\mu
+\right)\right]\\
+&= \p_\mu\left[\epsilon_\mu\eta^{\mu\nu}(-iK_\mu)\left(
+e^{-i\mathbf{k}\cdot\mathbf{x}}\delta^\mu_\nu
+\right)\right]\\
+&= (-iK^\nu)\p_\mu A_\mu\\
+&= 4(-iK^\nu)(-iK_\mu)A_\mu\\
+&= 4(-i)^2 K_\mu K^\mu A_\mu\\
+&= 0 \text{ if } K_\mu K^\mu = 0.
+\end{align*}
+This requirements implies that the vector field $A_\mu$ is massless ($K^\mu K_\mu = 0$ rather than $m^2$ like in the scalar field example), which is a good thing, since we are working with electromagnetism and these mathematical objects ultimately describe electromagnetic waves - photons. \\
+
+Next, the other constraint $\p^\nu A_\nu = 0$ motivates us to choose $\Lambda$ such that
+\begin{align*}
+\square \Lambda = -\p^\nu A_\nu
+\end{align*}
+so that $\p^\nu A'_\nu = 0$. However, this isn't enough information to choose $\Lambda$, because $\square \Lambda = -\p^\nu A_\nu$ alone cannot fix $\Lambda$. We also have to look at the gauge transformation of $A_\mu$ and make sure that the auxiliary part $A_0$ vanishes, then we have enough information to pick $\Lambda$. Let us start with the form of $A_\mu$:
+\begin{align*}
+A_\mu = \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}}.
+\end{align*}
+We know that $\square A_\mu = 0$, so if we pick
+\begin{align*}
+\Lambda = \lambda e^{-i\mathbf{k}\cdot\mathbf{x}}
+\end{align*}
+then we are guaranteed $\square \Lambda = 0 = \p^\nu A_\nu$. So that is quite nice. But what is $\lambda$? We can only set $\lambda$ if we fix the value of $A_0$. It makes sense to set $A_0 = 0$ so that it vanishes. With this, we can perform a gauge transformation on $A_0$, set it to zero, and find $\lambda$:
+\begin{align*}
+A_0 &\rightarrow A_0 + \p_0 \Lambda = 0\\
+&\rightarrow e^{-i\mathbf{k}\cdot\mathbf{x}}(\epsilon_0 - i\lambda K_0) = 0\\
+&\rightarrow \lambda = \frac{\epsilon_0}{i K_0}. 
+\end{align*}
+So, if we pick 
+\begin{align*}
+\Lambda = \frac{\epsilon}{i K_0}e^{-i\mathbf{k}\cdot\mathbf{x}}
+\end{align*}
+then $A_0 = 0$ implies
+\begin{align*}
+\p^\nu A_\nu = \p^0 A_0 + \vec{\nabla}\cdot\vec{A} = \vec{\nabla}\cdot\vec{A} = 0.
+\end{align*}
+So, it turns out that we can simply complete gauge fixing by setting two additional constraints on $A_\mu$:
+\begin{align*}
+\begin{cases*}
+A_0 = 0\\
+\vec{\nabla}\cdot\vec{A} = 0,
+\end{cases*}
+\end{align*}
+i.e., we require that the vector potential $A_\mu$ be divergence-free and to have a vanishing auxiliary mode. With this, we can the degree of freedom of $A_\mu$ from 4 from 2, making it a physical description. We shall show that can be done now. If we revisit the polarization vector
+\begin{align*}
+\epsilon_\mu = (\epsilon_0, \epsilon_1, \epsilon_2, \epsilon_3)
+\end{align*}
+and require that $A_0 = 0$, then obviously $\epsilon_0 = 0$. But since we also require $\vec{\nabla}\cdot\vec{A} = 0$, we have
+\begin{align*}
+\vec{\nabla}\cdot\vec{A} &= \p_j A^j\\
+&= \p_j \left( \epsilon^j e^{-i\mathbf{k}\cdot\mathbf{x}} \right)\\
+&\propto A^j (-iK_j)\\
+&= 0.
+\end{align*}
+So, $\vec{k}\cdot\vec{A} = 0$, i.e., they are orthogonal vectors. Now, consider a photon traveling in the $z$-direction. Because $K_\mu k^\mu = 0$, we have
+\begin{align*}
+K^\mu = (K,0,0,K).
+\end{align*}
+Because $\vec{k}\cdot\vec{A} \propto \vec{k}\cdot\vec{\epsilon}$, it follows that $K\epsilon^3 = 0$, i.e., there is no longitudinal component in the polarization vector. Therefore,
+\begin{align*}
+\epsilon_\mu = (0, \epsilon_1, \epsilon_2, 0).
+\end{align*}
+So, the vector potential $A_\mu$ has the form
+\begin{align*}
+A_\mu = \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}} = \begin{pmatrix}
+0\\\epsilon_1\\epsilon_2\\0
+\end{pmatrix}e^{-i\mathbf{k}\cdot\mathbf{x}}.
+\end{align*}
+We can construct the independent modes of propagation as
+\begin{align*}
+\begin{cases*}
+\epsilon^{(1)}_\mu = (0,1,0,0)^\top\\
+\epsilon^{(2)}_\mu = (0,0,1,0)^\top,
+\end{cases*}
+\end{align*}
+which give two physical transverse modes of the vector potential
+\begin{align*}
+\begin{cases*}
+A^{(1)}_\mu = (0,1,0,0)^\top e^{-i\mathbf{k}\cdot\mathbf{x}} = \epsilon^{(1)}_\mu e^{-i\mathbf{k}\cdot\mathbf{x}}\\
+A^{(2)}_\mu = (0,0,1,0)^\top e^{-i\mathbf{k}\cdot\mathbf{x}} = 
+\epsilon^{(2)}_\mu e^{-i\mathbf{k}\cdot\mathbf{x}},
+\end{cases*}
+\end{align*}
+
+All is good, but we might wonder why photons are massless. The answer depends on who we ask, but mathematically, it is the gauge symmetry requirement that ``makes'' photons massless. 
+
 
 \newpage
 
