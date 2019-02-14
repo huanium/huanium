@@ -1,0 +1,733 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{amsmath}
+\usepackage{authblk}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prop}{Properties}[section]
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\xpan}{\text{span}}
+
+
+\begin{document}
+	\begin{titlepage}\centering
+		\clearpage
+		\title{\textsc{\bf{MATRIX ANALYSIS}}\\\smallskip A Quick Guide\\}
+		\author{\bigskip Huan Bui}
+		\affil{Colby College\\Physics \& Statistics\\Class of 2021\\}
+		\date{\today}
+		\maketitle
+		\thispagestyle{empty}
+	\end{titlepage}
+
+\newpage
+
+\subsection*{Preface}
+\addcontentsline{toc}{subsection}{Preface}
+
+Greetings,\\
+
+\textit{Matrix Analysis: A Quick Guide to} is compiled based on my MA353: Matrix Analysis notes with professor Leo Livshits. The sections are based on a number of resources: \textit{Linear Algebra Done Right} by Axler, \textit{A Second Course in Linear Algebra} by Horn and Garcia, \textit{Matrices and Linear Transformations} by Cullen, \textit{Matrices: Methods and Applications} by Barnett, \textit{Problems and Theorems in Linear Algebra} by Prasolov, \textit{Matrix Operations} by Richard Bronson, and professor Leo Livshits' own textbook (in the making). Prerequisites: some prior exposure to a first course in linear algebra.\\
+
+The development of this text will come in layers. The first layer, one that I am working on during the course of S'19 MA353, will be an overview of the key topics listed in the table of contents. As the semester progresses, I will be constantly updating the existing notes, as well as adding prof. Livshits' problems and my solutions to the problems. The second layer will come after the course is over, when concepts will have hopefully ``come together.''\\ 
+
+I will decide how much narrative I should put into the text as text is developed over the semester. I'm thinking that I will only add detailed explanations wherever I find fit or necessary for my own studies. I will most likely keep the text as condensed as I can.\\
+
+Enjoy!
+
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{List of Special Matrices \& Their Properties}
+\begin{enumerate}
+	\item \textbf{Hermitian/Self-adjoint}: $H = H^\dagger$. A Hermitian matrix is matrix that is equal to its own conjugate transpose:
+	\begin{align*}
+	H \text{ is Hermitian } \iff H_{ij} = \bar{H}_{ji}
+	\end{align*} 
+	\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item $H$ is Hermitian $ \iff \langle w, Hv\rangle = \langle Hw, v \rangle$, where $\langle, \rangle$ denotes the inner product.
+		\item $H$ is Hermitian $ \iff \langle v, Hv\rangle \in \R$.
+		\item $H$ is Hermitian $\iff$ it is \textit{unitarily diagonalizable} with \textit{real eigenvalues}.
+	\end{enumerate}
+	\end{prop}
+	\item \textbf{Unitary}: $U^*U = UU^* = I = U^\dagger U = UU^\dagger$. The real analogue of a unitary matrix is an orthogonal matrix. The following list contain the properties of $U$:
+	\begin{enumerate}
+		\item $U$ preserves the inner product:
+		\begin{align*}
+		\langle Ux, Uy \rangle = \langle x,y\rangle.
+		\end{align*}
+		
+		\item $U$ is normal: it commutes with $U^* = U^\dagger$.
+		
+		\item $U$ is diagonalizable:
+		\begin{align*}
+		U = VDV^*,
+		\end{align*}
+		where $D$ is diagonal and unitary, and $V$ is unitary.
+		
+		\item $\vert \det(U) \vert = 1 $ (hence the real analogue to $U$ is an orthogonal matrix)
+		
+		\item Its eigenspaces are orthogonal.
+		
+		\item $U$ can be written as
+		\begin{align*}
+		U = e^{iH},
+		\end{align*}
+		where $H$ is a Hermitian matrix. 
+		
+		\item Any square matrix with unit Euclidean norm is the average of two unitary matrices.
+	\end{enumerate}
+	\item \textbf{Cofactor}: ?
+\end{enumerate}
+
+\newpage
+\section{List of Operations}
+\begin{enumerate}
+	\item \textbf{Conjugate transpose} is what its name suggests.
+	\item \textbf{Classical adjoint/Adjugate/adjunct} of a square matrix is the transpose of its cofactor matrix. 
+\end{enumerate}
+\newpage
+
+\section{List of Algorithms}
+\newpage
+
+\section{Complex Numbers}
+\subsection{A different point of view}
+We often think of complex numbers as
+\begin{align*}
+a + ib
+\end{align*}
+where $a,b \in \R$ and $i = \sqrt{-1}$. While there is nothing ``bad'' about this way of thinking - in fact thinking of complex numbers as $a+ib$ allows us to very quickly and intuitively do arithmetics operations on them - a ``matrix representation'' of complex numbers can give us some insights on ``what we actually do'' when we perform complex arithmetics.\\
+
+Let us think of 
+\begin{align*}
+\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}
+\end{align*}
+as a different representation of the same object - the same complex number ``$a+ib$.'' Note that it does not make sense to say the matrix representation \textbf{equals} the complex number itself. But we shall see that a lot of the properties of complex numbers are carried into this matrix representation under interesting matricial properties.
+\begin{align*}
+\boxed{\begin{pmatrix}
+	a & -b\\
+	b & a
+	\end{pmatrix}
+\sim a + ib}
+\end{align*}
+
+First, let us break the the matrix down:
+\begin{align*}
+a+ib = a\times 1 + i \times b \sim \begin{pmatrix}
+a & -b \\
+b & a
+\end{pmatrix} 
+= 
+a\begin{pmatrix}
+1 & 0\\
+0 & 1
+\end{pmatrix}
++
+b\begin{pmatrix}
+0 & -1\\
+1 & 0
+\end{pmatrix}
+= aI + b\mathcal{I}.
+\end{align*}
+Right away, we can make some ``mental connections'' between the representations:
+\begin{align*}
+I &\sim 1\\
+\mathcal{I} \sim i.
+\end{align*}
+
+Now, we know that complex number multiplications commute:
+\begin{align*}
+(a+ib)(c+id) = (c+id)(a+ib).
+\end{align*}
+Matrix multiplications are not commutative. So, we might wonder whether commutativity holds under the this new representation of complex numbers. Well, the answer is yes. We can readily verify that
+\begin{align*}
+(aI+b\mathcal{I})(cI+b\mathcal{I}) = (cI+b\mathcal{I})(aI+b\mathcal{I}).
+\end{align*}
+How about additions? Let's check:
+\begin{align*}
+(a + ib) + (c+ id) = (a+c) + i(b+d) \sim \begin{pmatrix}
+a+c & -(b+d)\\
+(b+d) & a+c 
+\end{pmatrix}=
+\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}+
+\begin{pmatrix}
+c & -d\\
+d & c
+\end{pmatrix}.
+\end{align*}
+Ah! Additions work. So, the new representation of complex numbers seems to be working flawlessly. However, we have yet to gain any interesting insights into the connections between the representations. To do that, we have to look into changing the form of the matrix. First, let's see what conjugation does:
+\begin{align*}
+(a+ib)^* = a-ib \sim \begin{pmatrix}
+a & b \\
+-b & a
+\end{pmatrix}
+=
+\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}^{\top}
+\end{align*}
+Ah, so conjugation to a complex number in the traditional representation is the same as transposition in the matrix representations. What about the amplitude square? Let us call 
+\begin{align*}
+M = \begin{pmatrix}
+a & -b \\
+b & a
+\end{pmatrix}.
+\end{align*}
+We have
+\begin{align*}
+(a+ib)(a-ib) \sim \begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}
+\begin{pmatrix}
+a & b \\
+-b & a
+\end{pmatrix} =
+MM^\top= (a^2+b^2)I = \det(M)I
+\end{align*}
+Interesting. But observe that if $\det(M) \neq 0$
+\begin{align*}
+\frac{1}{\det(M)}MM^\top = I.
+\end{align*}
+This tells us that
+\begin{align*}
+M^\top = M^{-1},
+\end{align*}
+where $M^{-1}$ is the inverse of $M$, and, not surprisingly, it corresponds to the reciprocal to the complex number $a+ib$. We can readily show that
+\begin{align*}
+M^{-1} \sim (a+ib)^{-1} = \frac{1}{a^2+b^2}(a-ib).
+\end{align*} 
+Remember that we can also think of a complex number as a column vector:
+\begin{align*}
+c + id \sim \begin{pmatrix}
+c\\d
+\end{pmatrix}.
+\end{align*}
+Let us look back at complex number multiplication under matrix representation:
+\begin{align*}
+(a+ib)(c+id) = (ac-bd) + i(bc + ad) \sim \begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}
+\begin{pmatrix}
+c\\d
+\end{pmatrix}=
+\begin{pmatrix}
+ac-bd\\
+bc +ad
+\end{pmatrix}.
+\end{align*}
+Multiplication actually works in this ``mixed'' way of representing complex numbers as well. Now, observe that what we just did was performing a linear transformation on a vector in $\R^2$. It is always interesting to look at the geometrical interpretation of this transformation. To do this, let us call $N$ the ``normalized'' version of $M$:
+\begin{align*}
+N = \frac{1}{\sqrt{a^2 + b^2}}\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}.
+\end{align*}
+We immediately recognize that $N$ is an orthogonal matrix. This means $N$ is an orthogonal transformation (length preserving). Now, it is reasonable to define
+\begin{align*}
+\cos\theta &= \frac{a}{\sqrt{a^2 + b^2}}\\
+\sin\theta &= \frac{b}{\sqrt{a^2+b^2}}.
+\end{align*}
+We can write $N$ as
+\begin{align*}
+N = \begin{pmatrix}
+\cos\theta & -\sin\theta
+\sin\theta & \cos\theta
+\end{pmatrix},
+\end{align*}
+which is a physicists' favorite matrix: the rotation by $\theta$. So, let us write $M$ in terms of $N$:
+\begin{align*}
+M = \begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix} = \sqrt{a^2 + b^2}N = \sqrt{a^2 + b^2}\begin{pmatrix}
+\cos\theta & -\sin\theta\\
+\sin\theta & \cos\theta
+\end{pmatrix}.
+\end{align*}
+We can interpret $M$ as a rotation by $\theta$, followed by a scaling by $\sqrt(a^2 + b^2)$. But what $\sqrt{a^2 + b^2}$ exactly is just the ``length'' or the ``amplitude'' of the complex number $a+ib$, if we think of it as an arrow in a plane. 
+\subsection{Relevant properties and definitions}
+\begin{enumerate}
+	\item The \textit{modulus} of $z = a+ib$ is the ``amplitude'' of $z$, denoted by $\vert z \vert = \sqrt{a^2 + b^2} = z\bar{z}$. 
+	\item The modulus is \textit{multiplicative}, i.e. 
+	\begin{align*}
+	\vert wz \vert = \vert w \vert \vert z \vert.
+	\end{align*}
+	\item Triangle inequality:
+	\begin{align*}
+	\vert z + w \vert \leq \vert z \vert + \vert w \vert.
+	\end{align*}
+	We can readily show this geometrically, or algebraically. 
+	\item The \textit{argument} of $z = a+ib$ is $\theta$, where
+	\begin{align*}
+	\theta = 
+	\begin{cases}
+	\tan^{-1}\left( \frac{b}{a}\right), \text{ if } a > 0\\
+	\frac{\pi}{2} + k2\pi, k\in\R \text{ if } a = 0, b > 0\\
+	-\frac{\pi}{2} + k2\pi, k\in\R \text{ if } a = 0, b < 0\\
+	\text{Undefined if } a=b=0.
+	\end{cases}
+	\end{align*} 
+	\item The \textit{conjugate} of $a+ib$ is $a-ib$. Conjugation is \textit{additive} and \textit{multiplicative}, i.e.
+	\begin{align*}
+	\bar{z+w} &= \bar{z} + \bar{w}\\
+	\bar{wz} &= \bar{w}\bar{z}.
+	\end{align*}
+	Note that we can also show the multiplicative property with the matrix representation as well:
+	\begin{align*}
+	\bar{wz} \sim (WZ)^\top = Z^\top W^\top \sim \bar{z}\bar{w} = \bar{w}\bar{z}.
+	\end{align*}
+	\item Euler's identity, generalized to de Moivre's formula:
+	\begin{align*}
+	z^n = r^ne^{in\theta}.
+	\end{align*}
+\end{enumerate}
+
+\newpage
+\section{Vector Spaces \& Linear Functions}
+\subsection{Review of Linear Spaces and Subspaces}
+\begin{prop} of linear spaces:
+\begin{enumerate}
+	\item Commutativity and associativity of addition
+	\item Existence of an additively neutral element (null element). Zero multiples of elements give the null element: $0\cdot V = \mathbf{0}$\\
+	\item Every element has an (unique) additively antipodal element
+	\item Scalar multiplication distributes over addition
+	\item Multiplicative identity: 
+	\item $ab\cdot V = a\cdot(bV)$
+	\item $(a+b)V = aV + bV$
+\end{enumerate}
+\end{prop}
+$W$ is a subspace of $V$ if
+\begin{enumerate}
+	\item $S \subseteq V$ 
+	\item $S$ is non-empty
+	\item $S$ is closed under addition and scalar multiplication
+\end{enumerate}
+\begin{prop} that are interesting/important/maybe-not-so-obvious:
+\begin{enumerate}
+	\item If $S$ is a subspace of $V$ and $S \neq V$ then $S$ is a proper subspace of $V$.
+	\item If $X$ in a subspace of $Y$ and $Y$ is a subspace of $Z$, then $X$ is a subspace of $W$.
+	\item Non-trivial linear (non-singleton) spaces are infinite. 
+\end{enumerate}
+\end{prop}
+\subsection{Review of Linear Maps}
+Consider linear spaces $V$ and $W$ and elements $v \in V$ and $w \in W$ and scalars $\alpha, \beta \in \R$, a function $F : V \rightarrow W$ is a linear map if
+\begin{align*}
+F[\alpha v + \beta w] = \alpha F[v] + \beta F[w].
+\end{align*}
+\begin{prop}
+	$\,$
+\begin{enumerate}
+	\item $F[\mathbf{0}_V] = \mathbf{0}_W$
+	\item $G[w] = (\alpha \cdot F)[w] = \alpha\cdot F[w]$
+	\item Given $F : V \rightarrow W$ and $G : V \rightarrow W$, $H[v] = F[v] + G[v] = (F+G)[v]$ is call the sum of the functions $F$ and $G$.
+	\item Linear combinations of linear maps are linear.
+	\item Compositions of linear maps are linear. 
+	\item Compositions distributes over linear combinations of linear maps.
+	\item Inverses of linear functions (if they exist) are linear.
+	\item Inverse of a bijective linear function is a bijective linear function
+\end{enumerate}
+\end{prop}
+\subsection{Review of Kernels and Images}
+\begin{defn}
+	Let $F : V \rightarrow W$ be given. The kernel of $F$ is defined as
+	\begin{align*}
+	\ker(F) = \{v\in V \vert F[v] = \mathbf{0}_W\}.
+	\end{align*}
+\end{defn}
+\begin{prop}
+	Let $F : V \rightarrow W$ a linear map be given. Also, consider a linear map $G$ such that $F\circ G$ is defined 
+	\begin{enumerate}
+		\item $F$ is null $\iff$ $\ker(F) = V \iff \Im(F) = \mathbf{0}_W $
+		\item $\ker(F)$ is a subspace of $V$
+		\item $\Im(F)$ is a subspace of $W$
+		\item $F$ is injective $\iff \ker(F) = \mathbf{0}_V$
+		\item $\ker(F) \subseteq \ker(F\circ G)$.
+		\item $F$ injective $\implies \ker(F) = \ker(F\circ G)$
+	\end{enumerate}
+\end{prop}
+
+
+\begin{defn}
+	Let $F : V \rightarrow W$ be given. The image of $F$ is defined as
+	\begin{align*}
+	\Im(F) = \{w\in W \vert \exists v\in V, F[v] = w \}. 
+	\end{align*}
+\end{defn}
+\subsection{Atrices}
+\begin{defn}
+	\textbf{Atrix functions:} Let $V_1,\dots,V_m \in \mathbf{V}$ be given. Consider $f : \R^m \rightarrow \mathbf{V}$ be defined by
+	\begin{align*}
+	f\begin{pmatrix}
+	a_1\\
+	a_2\\
+	\vdots\\
+	a_m
+	\end{pmatrix}
+	=
+	\sum_{i=1}^m a_i V_i.
+	\end{align*} 
+	We denote $f$ by
+	\begin{align*}
+	\begin{pmatrix}
+	V_1 & V_2 &\dots& V_m
+	\end{pmatrix}.
+	\end{align*}
+	We refer to the $V_i$'s as the \textbf{columns} of $f$, even though there doesn't have to be any columns. Basically, $f$ is simply a function that takes in an ordered list of coefficients and returns a linear combination of $V_i$ with the respective coefficients. A matrix is a special atrix. Not every atrix is a matrix. 
+\end{defn}
+\begin{prop} of atrices
+	$\,$
+	\begin{enumerate}
+	\item The $V_i$'s - the columns of an atrix - are the images of the standard basis tuples. 
+	\item $\mathbf{e}_j \in \ker(V_1\dots V_m) \iff V_j = \mathbf{0}_V$, where $\mathbf{e}_j$ denotes a standard basis tuple with a 1 at the j$^\text{th}$ position. To put in words, a kernel of an atrix contains a standard basis if and only if one of its columns in a null element. 
+	\item $\Im(f) \equiv \Im(V_1\dots V_m) = \xpan(V_1\dots V_m)$
+	\item $B$ is a null atrix $\iff \ker(B) = \R^m \iff \Im(B) = \mathbf{0}_V \iff V_j = \mathbf{0}_V \forall j=1,2,\dots,m$.
+	\item  $f$ is a linear function $\R^m \rightarrow V \iff f$ is an atrix function $\R^m \rightarrow V$.
+	\item An atrix $A$ is bijective/invertible, then its inverse $A^{-1}$ is a linear function, but is an atrix only if $A$ is a matrix. 
+	\item Linear combinations of atrices are atrices:
+	\begin{align*}
+	\alpha \cdot\begin{pmatrix}
+	V_1 & \cdots & V_m
+	\end{pmatrix}
+	+ 
+	\beta \cdot \begin{pmatrix}
+	W_1 & \dots & W_m
+	\end{pmatrix}
+	\\= \begin{pmatrix}
+	\alpha V_1 + \beta W_1 &\dots& \alpha V_m + \beta W_m
+	\end{pmatrix}
+	\end{align*}  
+	\item Compositions of two atrices are NOT defined unless the atrix going first is a matrix. Consider $F : \R^m \rightarrow W$ and $G : \R^n \rightarrow T$. $F\circ G$ is only defined if $T = \R^m$. This make $G$ an $n\times m$ matrix. It follows that the atrix $F\circ G$ has the form
+	\begin{align*}
+	\begin{pmatrix}
+	f(g_1)&f(g_2)&\dots&f(g_m)
+	\end{pmatrix}.
+	\end{align*}
+	\item Consider $F : \R^m \rightarrow V$ and $G : \R^k \rightarrow V$. $\Im(F) \subseteq \Im(G) \iff F = G \circ C$, with $C \in \mathbb{M}_{k\times m}$, i.e. $C$ is an $k \times m$ matrix. 
+	\item Consider an atrix $A : \R^m \rightarrow V$. $A = (V_1\dots V_m)$. $A$ is NOT injective.\\
+	$\iff \exists$ a non-trivial linear combination of the columns of $A$ that gives $\mathbf{0}_V$\\
+	$\iff$ $A = [\mathbf{0}_v]$ or $\exists j \vert V_j$ is linear combination of other columns of $A$\\
+	$\iff$ The first column of $A$ is $\mathbf{0}_V$ or $\exists j \vert V_j$ is a linear combination some of $V_i, i < j$.
+	\item If atrix $A: \R \rightarrow V$ has a single column then it is injective if the column is not $\mathbf{0}_V$.
+	\end{enumerate}
+\end{prop}
+\begin{prop}
+	of elementary column operations for atrices. Elementary operations on the columns of $F$ can be expressed as a composition of $F$ and an appropriate elementary matrix $E$, $F\circ E$. 
+	\begin{enumerate}
+		\item Swapping $i^{th}$ and $j^{th}$ columns: $F\circ E^{[i]\leftrightarrow[j]}$.
+		\item Scaling the $j^{th}$ column by $\alpha$: $F\circ E^{\alpha\cdot[j]}$.
+		\item Adjust the $j^{th}$ column by adding to it $\alpha\times i^{th}$ column: $F\circ E^{[i]\stackrel{+}\leftarrow \alpha\cdot[j]}$.
+		\item Elementary column operations do not change the 'jectivity nor image of $F$.
+		\item If a column of $F$ is a linear combination of some of the other columns then elementary column operations can turn it into $\mathbf{0}_V$.
+		\item Removing/Inserting null columns or columns that are linear combinations of other columns does not change the image of $F$.
+		\item Given atrix $A$, it is possible to eliminate (or not) columns of $A$ to end up with an atrix $B$ with $\Im(B) = \Im(A)$.
+		\item If $B$ is obtained from insertion of columns into atrix $A$, then $\Im(B) = \Im(A) \iff$ the insert columns $\in \Im(A)$.
+		\item Inserting columns to a surjective $A$ does not destroy surjectivity of $A$. ($A$ is already having extra or just enough columns) 
+		\item $A$ surjective $\iff$ $A$ is obtained by inserting columns (or not) into an invertible atrix $\iff$ deleting some columns of $A$ (or not) gives an invertible matrix.
+		\item If $A$ is injective, then column deletion does not destroy injectivity. ($A$ is already ``lacking'' or having just enough columns)
+		\item The new atrix obtained from inserting columns from $\Im(A)$ into $A$ is injective $\iff$ $A$ is injective.
+	\end{enumerate}
+\end{prop}
+\subsection{Linear Independence, Span, and Bases}
+\subsubsection{Linear Independence}
+$\,\,\,\,\,\,\,\,\,\,\,\,\,\,X_1\dots X_m$ are linearly independent\\
+$\iff F = [X_1 \dots X_m]$ injective\\
+$\iff \sum a_iX_i = 0 \iff a_i = 0 \forall i$\\
+$\iff \mathbf{0}_V \notin \{X_i\}$ and none are linear combinations of some of the others.\\
+$\iff X_1 \neq \mathbf{0}_V$ and $X_j$ is not a linear combination of any of $X_i$'s for $i < j$. 
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item The singleton list is linearly independent if its entry is not the null element
+		\item Sublists of a linearly independent list are linearly independent
+		\item List operations cannot create/destroy linearly independence. 
+		\item If a linear map $L : X \rightarrow W$ injective, then $X_1\dots X_m$ linearly independent $\iff L(X_1)\dots L(X_m)$ linearly independent.  
+	\end{enumerate}
+\end{prop}
+\subsubsection{Span}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Spans are subspaces. $\xpan(X_1\dots X_m), X_j \in V$ is a subspace of $V$.
+		\item $\xpan(X_1\dots X_j) \subseteq \xpan(X_1\dots X_k)$ if $j\leq k$.
+		\item Adding elements to a list that spans $V$ produces a list that spans $V$.
+		\item The following list operations do not change the span of $V$: removing the null/linearly dependent element, inserting a linearly dependent element, scaling element(s), adding (multiples) of an element to another element.
+		\item It is possible to reduce a list that spans to a list that spans AND have linearly independent elements.
+		\item Consider $A : V \rightarrow W$. If $X_i$ span $W$ then $A(X_i)$ span $\Im(A)$. $i=1,2,\dots,m$.
+		\item If $A : V \rightarrow W$ invertible, then $X_i$ span $V \iff A(X_i)$ span $W$, $i=1,2,\dots,m$. 
+	\end{enumerate}
+\end{prop}
+\subsubsection{Bases}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item A list is a basis of $V$ if the elements are linearly independent and they span $V$.
+		\item A singleton linear space has no basis.
+		\item Re-ordering the elements of a basis gives another basis.
+		\item $\{X_1\dots X_m\}$ is a basis of $V$ if $(X_1\dots X_m)$ is injective AND $\Im(X_1\dots X_m) = V$, i.e. $(X_1\dots X_m)$ invertible.
+		\item If $\{X_i\}$ is a basis of $V$ and $\{Y_i \}$ is a list of elements in $W$, then there exists a unique linear function $L : V \rightarrow W$ satisfying 
+		\begin{align*}
+		L[X_i] = Y_i
+		\end{align*} 
+		\item If $A: V \rightarrow W$ bijective, then $\{ V_i \}$ forms a basis of $V$ and $\{A(X_i) \}$ forms a basis of $W$.
+		\item Elementary operations on bases give bases.  
+	\end{enumerate}
+\end{prop}
+\subsection{Linear Bijections and Isomorphisms}
+\begin{defn}
+	Let linear spaces $V, W$ be given. $V$ is \textbf{isomorphic} to $W$ if $\exists F : V \rightarrow W$ bijective. We say $V \sim W$. 
+\end{defn}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item A non-zero scalar multiple of an isomorphism is an isomorphism.
+		\item A composition of isomorphism is an isomorphism.
+		\item ``Isomorphism'' behaves like an equivalence relation:
+		\begin{enumerate}
+			\item Reflexivity: $V \sim V$.
+			\item Symmetry: if $V\sim W$ then $W\sim V$.
+			\item Transitivity: if $V\sim W$ and $W \sim Z$ then $V\sim Z$.
+		\end{enumerate}
+		\item Consider $F : V \rightarrow W$ an isomorphism.
+			\begin{enumerate}
+				\item Isomorphisms preserve linear independence. $V_i$'s are linearly independent in $V$ $\iff$ $F(V_i)$'s are linearly independent in $W$.
+				\item isomorphisms preserve spanning. $V_i$'s span $V$ $\iff$ $F(V_i)$'s span $W$.
+				\item Isomorphisms preserve bases. $\{V_i\}$ is a basis of $V$ $\iff$ $F\{(V_i)\}$ is a basis of $W$.
+			\end{enumerate}
+		\item If $V\sim W$ then $\dim(V) = \dim(W)$ (finite or infinite).
+		\item If a linear map $A : V \rightarrow W$ is given and $A(X_i)$'s are linearly independent, then $A_i$'s are linearly independent.  
+		\item If a linear map $A : V \rightarrow W$ is injective and $\{ X_i\}$ is a basis of $V$ then $\{ A(X_i)\}$ is a basis of $\Im(A)$
+	\end{enumerate}
+\end{prop}
+\subsection{Finite-Dimensional Linear Spaces}
+\subsubsection{Dimension}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item $\R^m \sim R^n \iff m=n$.
+		\item Isomorphisms $F : \R^n \rightarrow V$ are bijective atrices.
+		\item Isomorphisms $G : W \rightarrow \R^m$ are inverses of bijective atrices.
+		\item Consider a non-singleton linear space $V$
+		\begin{enumerate}
+			\item $V$ has a basis with $n$ elements.
+			\item $V \sim \R^n$.
+			\item $V \sim W$, where $W$ is any linear space with a basis of $n$ elements.
+		\end{enumerate}
+		\item If $V$ is a linear space with a basis with $n$ elements, then any basis of $V$ has $n$ elements.
+		\item Linear space $V \sim W$ where $W$ is $n$-dimensional if $V$ is $n$-dimensional.
+		\item For a non-singleton linear space $V$, $V\sim \R^n \iff \dim(V) = n$.
+		\item $V \sim W \iff \dim(V) = \dim(W)$.
+		\item If $W$ is a subspace of $V$, then $\dim(W)\leq \dim(V)$. Equality holds when $W = V$.
+	\end{enumerate}
+\end{prop}
+\subsubsection{Rank-Nullity Theorem}
+Let finite-dimensional linear space $V$ and linear map $F : V \rightarrow W$ be given. Then $\Im(F)$ is finite-dimensional and 
+\begin{align*}
+\dim(\Im(F)) + \dim(\ker(F)) = \dim(V)
+\end{align*}
+
+A stronger statement: If a linear map $F : V\rightarrow W$ has finite rank and finite nullity $\iff$ $V$ is finite-dimensional, then
+\begin{align*}
+\Im(F) + \ker(F) = \dim(V).
+\end{align*}
+\subsubsection{Coordinatization \& matricial representation of linear functions}
+Consider a finite-dimensional linear space $V$ with basis $\{V_i \}$, $i=1,2,\dots,m$. An element $\tilde{V}$ in $V$ can be expressed in exactly one way:
+\begin{align*}
+\tilde{V} = \sum_{i=1}^m a_iV_i,
+\end{align*}
+where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{V}$ and $a_i$'s the coordinates. 
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Inverse of a bijective atrix outputs the coordinates. Suppose $A = [V_i]$. Then
+		\begin{align*}
+		\tilde{V} = \sum_{i=1}^ma_iV_i \iff A^{-1}(Z) = \begin{pmatrix}
+		a_1&\dots&a_m
+		\end{pmatrix}^\top
+		\end{align*}
+	\end{enumerate}
+\end{prop}
+\subsection{Infinite-Dimensional Spaces}
+Consider a non-singleton linear space $V$. The following statements are equivalent:
+\begin{enumerate}
+	\item $V$ is infinite-dimensional.
+	\item Every linearly independent list in $V$ can be enlarged to a strictly longer linearly independent set in $V$.
+	\item Every linearly independent list in $V$ can be enlarged to an arbitrarily long (finite) linearly independent set in $V$.
+	\item There are arbitrarily long (finite) linearly independent lists in $V$.
+	\item There are linearly independent lists in $V$ of any (finite) length.
+	\item No list of finitely many elements of $V$ spans $V$.
+\end{enumerate}
+\newpage
+\section{Sums of subspaces \& Products of vector spaces}
+\subsection{Direct Sums}
+\begin{defn}
+	Let $U_j$, $j=1,2,\dots m$ are subspaces of $V$. $\sum_1^m U_j$ is a \textit{direct sum} if each $u \in \sum U_j$ can be written in only one way as $u = \sum_1^m u_j$. The direct sum $\sum^m_i U_j$ is denoted as $U_1 \oplus\dots\oplus U_m$.
+\end{defn}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Condition for direct sum: If all $U_j$ are subspaces of $V$, then $\sum_1^m U_j$ is a direct sum $\iff$ the only way to write 0 as $\sum_1^m u_j$, where $u_j \in U_j$ is to take $u_j = 0$ for all $j$.  
+		\item If $U, W$ are subspaces of $V$ and $U \bigcap W = \{ 0\}$ then $U+W$ is a direct sum. 
+	\end{enumerate}
+\end{prop}
+\subsection{Products and Quotients of Vector Spaces}
+\subsection{Products of Vector Spaces}
+\begin{defn}
+	Product of vectors spaces
+	\begin{align*}
+	V_1 \times\dots\times V_m = \{ (v_1,\dots,v_m): v_j \in V_j, j=1,2,\dots,m\}.
+	\end{align*}
+\end{defn}
+\begin{defn}
+	Addition on $V_1 \times\dots\times V_m$:
+	\begin{align*}
+	(u_1,\dots,u_m) + (v_1,\dots,v_m) = (u_1+v_1,\dots,v_m+u_m).
+	\end{align*}
+\end{defn}
+\begin{defn}
+	Scalar multiplication on $V_1 \times\dots\times V_m$:
+	\begin{align*}
+	\lambda(v_1,\dots,v_m) = (\lambda v_1,\dots,\lambda v_m).
+	\end{align*}
+\end{defn}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Product of vectors spaces is a vector space.
+		\begin{align*}
+		V_j \text{ are vectors spaces over } \F \implies V_1\times\dots\times V_m \text{ is a vector space over } \F.
+		\end{align*}
+		\item Dimension of a product is the sum of dimensions: 
+		\begin{align*}
+		\dim(V_1\times\dots\times V_m) = \sum_1^m\dim(V_j)
+		\end{align*}
+	\end{enumerate}
+\end{prop}
+\subsection{Products \& Direct Sums}
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+	\item Let $U_1,\dots,U_m$ be subspaces of $V$. Define a linear map $\Gamma : U_1\times\dots\times U_m \rightarrow U_1 + \dots + U_m$ by:
+	\begin{align*}
+	\Gamma(u_1,\dots,u_m) = \sum_1^m u_j.
+	\end{align*}
+	$U_1 + \dots + U_m$ is a direct sum $\iff \Gamma$ is injective. 
+	\item Let $U_j$ be finite-dimensional and are subspaces of $V$. 
+	\begin{align*}
+	U_1 \oplus \dots\oplus U_m \iff \dim(U_1+\dots+U_m) = \sum_1^m\dim(U_j)
+	\end{align*}
+	\end{enumerate}
+\end{prop}
+\subsection{Quotients of Vector Spaces}
+\subsection{Nullspaces}
+\subsection{Ranges of Operator Powers}
+\newpage
+\section{Idempotents \& Resolutions of Identity}
+\newpage
+\section{Block-representations of operators}
+\subsection{Direct sums of operators}
+\newpage
+\section{Invariant subspaces}
+\subsection{Reducing subspaces}
+\newpage 
+\section{Polynomials applied to operators}
+\subsection{Minimal polynomials of block-$\Delta^r$ operators}
+\subsection{Minimal polynomials at a vector}
+\newpage 
+\section{Eigentheory}
+\subsection{Spectral Mapping Theorem}
+\newpage 
+\section{Triangularization}
+\subsection{Compression to invariant subspaces}
+\subsection{Simultaneously $\Delta$-ity of commuting families}
+\newpage 
+\section{Diagonalization}
+\subsection{Spectral resolutions}
+\subsection{Compressions to reducing subspaces}
+\subsection{Simultaneous diagonalizability for commuting families}
+\newpage
+\section{Primary decomposition over $\mathbb{C}$ and generalized eigenspaces}
+\newpage 
+\section{Cyclic decomposition and Jordan form}
+\subsection{Square roots of operators}
+\subsection{Similarity of a matrix and its transpose}
+\subsection{Similarity of a matrix and its conjugate}
+\subsection{Jordan forms of $\mathcal{AB}$ and $\mathcal{BA}$}
+\subsection{Power-convergent operators}
+\subsection{Power-bounded operators}
+\subsection{Row-stochastic matrices}
+\newpage 
+\section{Determinant \& Trace}
+\subsection{Classical adjoints}
+\subsection{Cayley-Hamilton theorem}
+
+\newpage
+
+\section{Inner products and norms} 
+\newpage 
+\subsection{Riesz representation theorem}
+\subsection{Adjoints}
+\subsection{Grammians}
+\subsection{Orthogonal complements and orthogonal decompositions}
+\subsection{Ortho-projections}
+\subsection{Closest point solutions}
+\subsection{Gram-Schmidt and orthonormal bases}
+
+\newpage
+
+\section{Isometries and unitary operators}
+\newpage 
+
+\section{Ortho-triangularization}
+\newpage 
+
+\section{Spectral resolutions}
+\newpage 
+
+\section{Ortho-diagonalization; self-adjoint and normal operators; spectral theorems}
+\newpage 
+
+\section{Positive (semi-)definite operators}
+\subsection{Classification of inner products}
+\subsection{Positive square roots}
+\newpage 
+
+\section{Polar decomposition}
+\newpage 
+
+\section{Single value decomposition}
+\subsection{Spectral/operator norm}
+\subsection{Singular values and approximation}
+\subsection{Singular values and eigenvalues}
+
+\end{document}
