@@ -226,7 +226,7 @@ So, a good choice of Lagrangian for our scalar field would be
 In order for the action to be extremized, i.e. $\delta S = 0$, we require that $\delta \mathcal{L} = 0$ for any $\delta \phi$. Varying $\mathcal{L}$ with respect to $\phi$ gives
 \begin{align*}
 \delta \mathcal{L} &= \delta\left( -\frac{1}{2}\left( \partial_\mu \phi\right)\left( \partial^\mu \phi\right) - V(\phi)  \right)\\
-&= -\frac{1}{2}\left( \partial_\mu \phi\, \partial^\mu\phi + \partial_\mu\phi\,\partial^\mu\delta \phi \right) - \frac{dV(\phi)}{d\phi}\delta \phi\\
+&= -\frac{1}{2}\left( \partial_\mu \delta\phi\, \partial^\mu\phi + \partial_\mu\phi\,\partial^\mu\delta \phi \right) - \frac{dV(\phi)}{d\phi}\delta \phi\\
 &= -\partial_\mu\delta \phi\, \partial^\mu\phi - \frac{dV(\phi)}{d\phi}\delta \phi.
 \end{align*}
 Now, integration by parts tells us that
@@ -826,30 +826,99 @@ So, the Lagrangian is no longer gauge-invariant. Therefore we claim that massive
 \end{align*}
 This also hints to us that mass comes from some mechanism that breaks gauge symmetry, which we will explore later on. 
 
-\subsubsection{Worked Problems}
+\subsection{Worked Problems}
 Consider the following Lagrangian
 \begin{align*}
 \lag = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu
 \end{align*}
-which describes a massive particle with a vector field.
+which describes a massive particle with a vector field.\\
 \begin{prob}
-	Verify that this Lagrangian does not have gauge symmetry under the gauge transformation $A_\mu \to A_\mu +\p_\mu \Lambda$, i.e. $\lag \not\to \lag$.
+	Verify that this Lagrangian does not have gauge symmetry under the gauge transformation $A_\mu \to A_\mu +\p_\mu \Lambda$, i.e. $\lag \not\to \lag$.\\
 	\begin{sln}
-		blah
+	We simply brute force through the problem and show that $\lag' \neq \lag$, where:
+	\begin{align*}
+	\lag' = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A'_\mu A'^\mu.
+	\end{align*}
+	Note that even though $F^{\mu\nu}$ is defined in terms of $A_\mu$, $F_{\mu\nu}$ is invariant under the gauge transformation because it is the 4-dimensional curl of $A_\mu$. We can verify this fact later. Focusing only on the massive term in the new Lagrangian:
+	\begin{align*}
+	\lag' &= -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A'_\mu A'^\mu\\
+	&= -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} +\frac{1}{2}m^2(A_\mu + \p_\mu \Lambda)(A^\mu + \p^\mu \Lambda)\\
+	&= \lag + \frac{1}{2}m^2(A_\mu \p^\mu\Lambda + A^\mu \p_\mu \Lambda + \p_\mu\Lambda \p^\mu \Lambda)
+	\end{align*}
+	It is clear that our choice of the scalar field $\Lambda$ affects the form of the new Lagrangian. So, $\lag \neq \lag'$ in general. Therefore, the massive vector Lagrangian does not have gauge symmetry under the given gauge transformation.\\
+	
+	As an aside, we can verify that $F_{\mu\nu}\to F_{\mu\nu}$. The $F^{\mu\nu} \to F^{\mu\nu}$ identity will follow accordingly. 
+	\begin{align*}
+	F'_{\mu\nu} &= \p_\mu A'_\nu - \p_\nu A'_\mu\\
+	&= \p_\mu(A_\nu + \p_\nu\Lambda) - \p_\nu(A_\mu + \p_\mu\Lambda)\\
+	&= F_{\mu\nu} + \p_\mu \p_\nu \Lambda - \p_\nu \p_\mu\Lambda\\
+	&= F_{\mu\nu},
+	\end{align*}
+	where $\p_\mu \p_\nu \Lambda - \p_\nu \p_\mu\Lambda=0$ because $\Lambda$ is a scalar (this is also true by index-swapping). So the electromagnetic field tensor has gauge symmetry under the given gauge transformation. \\
 	\end{sln}
 \end{prob}
 
 \begin{prob}
 	Vary the action
 	\begin{align*}
-	S = \int \lag,d^x
+	S = \int \lag\,d^4x
 	\end{align*}
 	with respect to $A_\mu$ and show that the equations of motion are 
 	\begin{align*}
 	\square A - \p_\mu \p^\nu A_\nu + m^2A_\mu = 0.
 	\end{align*}
 	\begin{sln}
-		blah
+		The Lagrangian is given by
+		\begin{align*}
+		\lag = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu.
+		\end{align*}
+		Varying the term with the electromagnetic field tensor gives
+		\begin{align*}
+		\delta\left(F^{\mu\nu}F_{\mu\nu} \right) 
+		&= 2\delta\left[\left( \partial^\mu A^\nu - \partial^\nu A^\nu  \right)\left( \partial_\mu A_\nu - \partial_\nu A_\mu \right)\right]\\
+		&= 2\delta\left( \partial^\mu A^\nu\,\partial_\mu A_\nu - \partial_\mu A_\nu\,\partial^\mu A^\nu\right)\\
+		&= 2\left( \partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
+		\partial^\mu A^\nu\,\partial_\mu\,\delta A_\nu - \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu - \partial_\mu  A_\nu\,\partial^\mu \,\delta A^\nu \right)\\
+		&= 2\left( 
+		\partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
+		\partial_\nu A_\mu\,\partial^\nu\,\delta A^\mu 
+		- \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu 
+		- \partial^\nu A^\mu\,\partial_\nu \,\delta A_\mu \right)\\
+		&= 4\left(\partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu
+		- \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu\right).
+		\end{align*}
+		Next, we integrate by parts to get the boundary terms (which will vanish when we vary the action):
+		\begin{align*}
+		\partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu &=  \partial^\nu(\partial_\mu A_\nu\,\delta A^\mu) -(\partial^\nu\partial_\mu A_\nu)\delta A^\mu = \partial_\mu(\partial^\nu A^\mu\,\delta A_\nu) -(\partial^\nu\partial_\mu A_\nu)\delta A^\mu
+		\\
+		\partial_\mu\,\delta A_\nu\partial^\mu A^\nu &= 
+		\partial_\mu (\partial^\mu A^\nu \,\delta A_\nu)
+		- \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu  =
+		\partial_\mu (\partial^\mu A^\nu \,\delta A_\nu) 
+		- \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu.
+		\end{align*}
+		This gives
+		\begin{align*}
+		\delta\left(-\frac{1}{4}F^{\mu\nu}F_{\mu\nu} \right) &= \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu - (\partial^\nu\partial_\mu A_\nu)\delta A^\mu\\ 
+		&= \left(\square A^\mu - \p^\mu\p^\nu A_\nu \right)\,\delta A_\mu\\
+		&= \left(\square A_\mu - \p_\mu \p^\nu A_\nu \right)\delta A^\mu
+		\end{align*}
+		Finally, we vary the term with the vector potential $A_\mu$ with respect to $A_\mu$:
+		\begin{align*}
+		\delta \left(\frac{1}{2}m^2 A_\mu A^\mu  \right) &= \frac{1}{2}m^2 \left( \delta A_\mu A^\mu + A_\mu \delta A^\mu \right)\\
+		&=  \frac{1}{2}m^2 \left( \delta A_\mu A^\mu + A^\mu \delta A_\mu \right)\\
+		&= \left(m^2 A^\mu\right)\delta A_\mu \\
+		&= \left(m^2 A_\mu\right)\delta A^\mu.
+		\end{align*}
+		Putting everything together, 
+		\begin{align*}
+		\delta \lag = \left(\square A_\mu - \p_\mu \p^\nu A_\nu m^2A_\mu \right)\delta A^\mu.
+		\end{align*}
+		Varying the action and requiring $\delta S = 0$ for all $\delta A^\mu$ forces $\delta \lag =0$. We arrive at the equations of motion
+		\begin{align*}
+		\square A_\mu - \p_\mu \p^\nu A_\nu +  m^2A_\mu = 0
+		\end{align*}
+		as desired.\\
 	\end{sln}
 \end{prob}
 
@@ -860,7 +929,21 @@ which describes a massive particle with a vector field.
 	\end{align*}
 	
 	\begin{sln}
-		blah
+	The given Lagrangian has no $x^\mu$ dependence, so we expect $\p^\mu \lag = 0$. We will show that this adds a constraint to $A^\mu$.
+		\begin{align*}
+		\p^\mu\lag &= \p^\mu\left( -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu \right)\\
+		&= -\frac{1}{4}\,\p^\mu\left( F_{\mu\nu}F^{\mu\nu}\right) + \frac{1}{2}m^2\left(\p^\mu A_\mu A^\mu + A_\mu \p^\mu A^\mu \right)\\
+		&= -\frac{1}{2}\,\p^\mu\left(\partial^\mu A^\nu\,\partial_\mu A_\nu - \partial_\mu A_\nu\,\partial^\mu A^\nu \right) + m^2A^\mu\p^\mu A_\mu\\
+		&= -\frac{1}{2}\left[(\p^\mu\p^\mu A^\nu)(\p_\mu A_\nu) - (\p^\mu\p^\mu A^\nu)(\p_\mu A_\nu)\right.\\
+		&\left.\,\,\,\,\,\,\,\,\,\, + (\square A_\nu)( \p^\mu A^\nu) - (\square A_\nu)( \p^\mu A^\nu)   \right] + 
+		m^2A^\mu\p^\mu A_\mu.\\
+		&= m^2A^\mu\p^\mu A_\mu.
+		\end{align*}
+		Since $\p^\mu\lag = 0$, a massive $m\neq 0$ field is assumed, and $A^\mu$ is arbitrary, $\p^\mu A_\mu = 0$ must hold as desired. With this, the equations of motion become:
+		\begin{align*}
+		\square A_\mu +  m^2A_\mu = 0.
+		\end{align*}
+		Notice that the form of the equations of motion is exactly the same as that of the Klein-Gordon equation. 
 	\end{sln}
 \end{prob}
 
@@ -873,14 +956,27 @@ which describes a massive particle with a vector field.
 	\begin{align*}
 	K^\mu K_\mu = m^2,
 	\end{align*}
-	i.e., the vector field is massive.
+	i.e., the vector field is massive.\\
+	
 	\begin{sln}
-		blah
+	We use the simplified equation of motion from the previous problem:
+	\begin{align*}
+	\square A_\mu + m^2 A_\mu &= \square\epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}} + m^2 \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}}\\
+	&= \epsilon_\mu\square e^{-iK_\alpha X^\alpha} + m^2 \epsilon_\mu e^{-iK_\alpha X^\alpha}\\
+	&= \epsilon_\mu\p^\beta (-iK_\alpha)e^{-iK_\alpha X^\alpha}\p_\beta X^\alpha + m^2 \epsilon_\mu e^{-iK_\alpha X^\alpha}\\
+	&= \epsilon_\mu(-iK_\beta)\eta^{\beta\gamma}\p_\gamma e^{-iK_\beta X^\beta} + m^2 \epsilon_\mu e^{-iK_\alpha X^\alpha}\\
+	&= A_\mu\left[  
+	(-iK_\beta)(-iK_\beta)\eta^{\beta\gamma}\delta^\beta_\gamma + m^2
+	\right]\\
+	&= A_\mu \left( - K_\beta K^\beta + m^2  \right)\\
+	&= 0.
+	\end{align*}
+	This means $A_\mu$ is a solution for any arbitrary $\epsilon_\mu$ if $K^\beta K_\beta = 0$, i.e., the vector field is massive. \\
 	\end{sln}
 \end{prob}
 
 \begin{prob}
-	Suppose that $k^\mu = (K^0,0,0,K^3)$ denotes movement in the $z$-direction. Show that $\p^\mu A_\mu = 0$ implies 
+	Suppose that $K^\mu = (K^0,0,0,K^3)$, which denotes moving in the $z$-direction. Show that $\p^\mu A_\mu = 0$ implies 
 	\begin{align*}
 	\epsilon_0 = \frac{-K^3}{K^0}\epsilon_3
 	\end{align*}
@@ -890,7 +986,27 @@ which describes a massive particle with a vector field.
 	\end{align*}
 	
 	\begin{sln}
-		blah
+	We simply the requirement $\p^\mu A_\mu = 0$:
+	\begin{align*}
+	\p^\mu A_\mu &= \eta^{\mu\nu}\p_\nu A_\mu\\
+	&= \eta^{\mu\nu}\epsilon_\mu (-iK_\alpha)e^{-iK_\alpha X^\alpha}\p_\nu X^\alpha\\
+	&= \eta^{\mu\nu}\epsilon_\mu (-iK_\alpha)e^{-iK_\alpha X^\alpha}\delta^{\nu}_\alpha\\
+	&= -i K_\alpha \epsilon^\alpha e^{-iK_\alpha X^\alpha }\\
+	&= 0.
+	\end{align*}
+	This means $K_\alpha \epsilon^\alpha  = 0$. But since $K^\alpha = (K^0,0,0,K^3)$, we require that
+	\begin{align*}
+	\epsilon_0 K^0 = \epsilon_3 K^3,
+	\end{align*}
+	i.e., 
+	\begin{align*}
+	\epsilon_0 = \frac{-K^3}{K^0}\epsilon_3.
+	\end{align*}
+	So, 
+	\begin{align*}
+	\epsilon_\mu = \left(\frac{K^3}{K^0}\epsilon_3,\epsilon_1,\epsilon_2,\epsilon_3 \right)^\top.
+	\end{align*}
+	$\,$
 	\end{sln}
 \end{prob}
 
@@ -905,10 +1021,21 @@ which describes a massive particle with a vector field.
 	\end{align*}
 	where the first two modes are transverse modes and the third is longitudinal.\\
 	
-	As expected for a massive vector, it has spin 1, $j=1$ with 3 polarizations $m_j = -1,0,1$. This is in contrast to a massless vector that only has 2 transverse polarizations. 
+	As expected for a massive vector, it has spin 1, $j=1$ with 3 polarizations $m_j = -1,0,1$. This is in contrast to a massless vector that only has 2 transverse polarizations. \\
 	
 	\begin{sln}
-		blah
+	Since the polarization vector $\epsilon_\mu$ has the form
+	\begin{align*}
+	\epsilon_\mu = \left(\frac{K^3}{K^0}\epsilon_3,\epsilon_1,\epsilon_2,\epsilon_3 \right)^\top,
+	\end{align*}
+	there are only 3 ``degrees of freedom.'' More precisely, if $\mathcal{E}$ is a vector space spanned by all $\epsilon_\nu$, then $\dim(\mathcal{E}) = 3$. To decompose $\mathcal{E}$, we simply choose a simple basis set of $\epsilon_\mu$ for $\mathcal{E}$ with three linearly independent $\epsilon_\mu$'s:
+	\begin{align*}
+	\begin{cases}
+	\epsilon^{(1)}_\mu = (0,1,0,0)^\top\\
+	\epsilon^{(2)}_\mu = (0,0,1,0)^\top\\
+	\epsilon^{(3)}_\mu = \left(\frac{K^3}{K^0},0,0,1\right)^\top
+	\end{cases}.
+	\end{align*}
 	\end{sln}
 \end{prob}
 
