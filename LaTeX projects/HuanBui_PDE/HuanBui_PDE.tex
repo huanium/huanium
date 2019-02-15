@@ -549,7 +549,7 @@ F(t,x) &= \frac{1}{c\rho}f(t,x).
 \end{align*}
 
 \section{Separation of Variables - First method of solution}
-Main idea: If the IBVP is posed on a rectangle, e.g. $t>0,x\in[0,L]$, and the PDE is linear, it is often the case that this method reduces the PDE into ODEs.
+Main idea: If the IBVP is posed on a rectangle, e.g. $t>0,x\in[0,L]$, and the PDE is linear, it is often the case that this method reduces the PDE into ODEs. 
 \subsection{Example: The heat equation}
 \begin{align*}
 u_t = \alpha^2 u_{xx}, t>0, x\in[0,1]
@@ -567,7 +567,73 @@ We make an ansatz that solutions are of the form
 \begin{align*}
 u(t,x) = T(t)X(x).
 \end{align*}
-(Maybe not solutions but builidng blocks of solutions). 
+(Maybe not solutions but builidng blocks of solutions). Plug into the PDE, we get
+\begin{align*}
+u_t(t,x) = T'(t)X(x) = \alpha^2\p_x^2(u(t,x)) = \alpha^2 T(t)X''(x). 
+\end{align*}
+Separating variables gives
+\begin{align*}
+\frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} \forall t>0, x\in[0,1].
+\end{align*} 
+For this equation to hold for all independent $t$ and $x$, we must have that 
+\begin{align*}
+\frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} = \text{Const} \forall t>0, x\in[0,1].
+\end{align*}
+This immediately gives two ODEs connected by a constant $k$:
+\begin{align*}
+\begin{cases}
+T(t) = \alpha^2 k T(t)\\
+X''(x) = kX(x)
+\end{cases}.
+\end{align*}
+By solving these equations, we hope to learn something aboaut $k$. The solution to the first solution is obvious:
+\begin{align*}
+K(t) = Ae^{\alpha^2 kt} \forall t > 0. 
+\end{align*}
+For physically reasonable solutions, we expect that the limit as $t\to \infty$ of $u(t,x) = 0$ and so, $T(t)\not\to\infty$ as $t\to\infty$, this forces $k<0$. Thus, we write $k=-\lambda^2$, $\lambda\in\R$, and denote
+\begin{align*}
+u_\lambda(t,x) = T(t)X(x) = X(x)Ae^{-\alpha^2\lambda^2t}.
+\end{align*}
+Next, the spatial ODE gives
+\begin{align*}
+X''(x) + \lambda^2 X(x) = 0.
+\end{align*}
+A general solution for this equation is
+\begin{align*}
+X(x) = A\sin(\lambda x) + B\cos(\lambda x).
+\end{align*}
+By absorbing multiplcative constants
+\begin{align*}
+u_\lambda(t,x) = e^{-\alpha^2\lambda^2 t}\left(A\sin(\lambda x) + B\cos(\lambda x) \right).
+\end{align*}
+Though we still don't know what $\lambda$ is, let us force this solution to satisfy the boundary conditions to learn more. Since the boundary conditions require that $u(t,0)=0=u(t,1)$, we require that
+\begin{align*}
+\begin{cases}
+B=0\\
+\lambda = \pm n\pi
+\end{cases}
+\end{align*}
+where $n\in \mathbb{N}$, for non-trivial solutions (where $A\neq 0$). Thus, with separation of variables, we find that
+\begin{align*}
+u_n(t,x) = A_ne^{-(n\alpha\pi)^2}\sin(n\pi x).
+\end{align*}
+This is a solution for any $n\in \mathbb{N}$ and $A_n\in\R$. Just to be sure that we haven't made an error, we can readily verify this solution. This is left as an exercise to the reader. \\
+
+Note that we still have some ``degrees of freedom'' - $A_n$ and $n$. So, we have established the existence of \textit{many} solutions, for each $n\in\mathbb{N}$ and $A_n\in\R$. Now, we make use of the principle of superposition to generate more solutions. The principle of superposition (works for linear DEs) says that all convergent sums of solutions are solutions. More generally, for any collection $\{A_n \} \subseteq\R$,
+\begin{align*}
+u(t,x) = \sum_{n=1}^\infty A_n e^{-(n\pi\alpha)^2}\sin(n\pi x)
+\end{align*}
+is also a solution. But divergence could be a problem here. It might be that $u(t,x)$ fails to exist, or differentiation might not work. But worry not, since the presence of the term $e^{-(n\pi\alpha)^2}$ makes this series always converge. And so, we have that for any sequence $\{ A_n\}$, $u(t,x)$ defined in this way solves the DE $u_t = \alpha^2 u_{xx}$ and satisfies the boundary conditions $u(t,0)=0=u(t,1)$. The problem of satisfying the initial condition $u(0,x) = u_0$ becomes one of finding the ``right'' constants $A_n$ so that 
+\begin{align*}
+u(0,x) = \sum_{n=1}^\infty A_n\sin(n\pi x) = u_0(x).
+\end{align*} 
+The term on the left hand side is called the trigonometric series. 
+
+
+
+
+
+
 
 
 
