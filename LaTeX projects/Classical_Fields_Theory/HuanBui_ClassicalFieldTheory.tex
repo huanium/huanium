@@ -26,7 +26,9 @@
 \newtheorem{rmk}{Remark}[section]
 \newtheorem{exmp}{Example}[section]
 \newtheorem*{prob*}{Problem}
+\newtheorem{prob}{Problem}[section]
 \newtheorem*{sln*}{Solution}
+\newtheorem{sln}{Solution}[section]
 \usepackage{empheq}
 \usepackage{hyperref}
 \usepackage{tensor}
@@ -77,7 +79,26 @@ Enjoy!
 
 \section{Introduction to Classical Field Theory}
 \newpage
-\section{Group Theory: a quick study}
+\section{Group Theory: a quick guide in a quick guide}
+\begin{enumerate}
+	\item Consider an N-dimensional vector with complex elements. A gauge transformation that takes $\vert z\vert^2 \to \vert z \vert^2$ (modulus preserving) is call a U(N) gauge transformation. The letter ``U'' denotes ``unitary.'' These kinds of transformations can be represented by a unitary matrix, which is defined as a matrix whose conjugate transpose is the same as its inverse. If $z\to Uz$, then 
+	\begin{align*}
+	\vert z\vert^2 \to (Uz)^\dagger(Uz) = z^\dagger U^\dagger U z =z^\dagger z =\vert z\vert^2,
+	\end{align*} 
+	hence modulus preserving.\\
+	
+	Note that the transformation $e^{i\alpha}$ is unitary. It is simply a 1$\times$1 unitary matrix. This immediately implies that complex scalars have a U(1) gauge invariance.\\
+	
+	The special group of U(N) transformations is denoted SU(N), which represents those with $\det U= 1$. 
+	\item Consider another N-dimensional real-valued-element vector. We denote the group of orthogonal transformations O(N). Orthogonal transformations are orthogonal, i.e., length-preserving. 
+	\begin{align*}
+	(Ox)^\top(Ox) = x^\top O^\top O x = x^\top x = \vec{x}^2
+	\end{align*} 
+	Once again, we denote the special group of the O(N) the SO(N) group. This group represents transformations with $\det O = 1$. The Lorentz group is a sub-group of SO(N), as the norm is defined differently, nevertheless it is still length-preserving. We call the Lorentz group SO(3,1), signifying that one sign is different from the other three. 
+\end{enumerate}
+
+\newpage
+\section{Gauge Invariance}
 \newpage
 \section{Overview of Lagrangian Formulation of Classical Mechanics}
 \newpage
@@ -97,7 +118,7 @@ I will derive the Euler-Lagrange equation(s) here, but we are not going to use i
 \begin{align*}
 \frac{\partial \mathcal{L}}{\partial \phi} - \partial_\mu\frac{\partial \mathcal{L}}{\partial(\partial_\mu \phi)} = 0.
 \end{align*}
-\subsection{Field Theory: A Mechanical Example}
+\subsection{A Classical-Mechanical Example}
 In this subsection we take a look at how the Lagrangian formulation of classical mechanics can give rise to Newton's second law of motion. In mechanics, the Lagrangian often takes the form:
 \begin{align}
 \mathcal{L} = K - V,
@@ -252,7 +273,7 @@ Let us return to our original question of why a scalar field has the form $\phi 
 \begin{align*}
 \phi = e^{-i\mathbf{k}\cdot\mathbf{x}}
 \end{align*}
-is a solution to the KG equation. We simply unpack the d'Alembertian and attack the derivatives step-by-step. The first derivative is
+is a solution to the KG equation. Note that even though we are concerned with real scalar field for the time being, it is reasonable to have $\phi$ of that particular complex form, simply because it makes taking derivatives easier. One can certainly work with only the real part of $\phi$ and get the same result. Now, to check when $\phi$ satisfies the Klein-Gordon equation, we simply unpack the d'Alembertian and attack the derivatives step-by-step. The first derivative is
 \begin{align*}
 \partial_\mu \phi &= \partial_\mu \left(e^{-i\mathbf{k}\cdot\mathbf{x}} \right)\\
 &= -i\partial_\mu \left( \mathbf{k}\cdot\mathbf{x}\right)e^{-i\mathbf{k}\cdot\mathbf{x}}
@@ -458,7 +479,7 @@ The right-hand side the energy of the field. Next, we can show
 \end{align*}
 is the momentum from the fact that $\p\phi/\phi x^\mu$ is a 4-vector under Lorentz transformations. \\
 
-Now, if we had assumed that the Lagrangian hadn't involved $x^\mu$, then we would have ended at the Euler-Lagrange equation, i.e. the system does not exchange energy and momentum with the outside. We condense that with the following proposition
+Now, if we had assumed that the Lagrangian hadn't involved $x^\mu$, then we would have ended at the Euler-Lagrange equation, i.e. the system does not exchange energy and momentum with the outside. We condense that with the following proposition:\\
 
 \begin{prop}
 	Conservation of energy and momentum holds for a system whose Lagrangian does not depend of $x^\mu$.
@@ -480,13 +501,80 @@ We observe that $\mu$ and $\nu$ are exchangeable, hence $\theta^{\mu\nu}$ is sym
 \begin{align*}
 T^{\mu\nu} = \theta^{\mu\nu} + \p_\lambda f^{\lambda\mu\nu}
 \end{align*}
-such that $\p_\mu T^{\mu\nu} = 0$ and $T^{\mu\nu}$ is symmetric. We will not go into detail about this, but why do we want the energy-momentum tensor to be symmetric? One of the reasons for this is that in general relativity, Einstein's field equation requires that the energy-momentum stress tensor be symmetric, because the Ricci tensor $R_{\mu\nu}$ and the metric tensor $g_{\mu\nu}$ are both symmetric.
+such that $\p_\mu T^{\mu\nu} = 0$ and $T^{\mu\nu}$ is symmetric. We will not go into detail about this, but the idea is similar to the three-dimensional case in vector calculus where the curl of a vector field is the same as the curl of that same vector field added to a gradient of some other scalar field. By adding the $f$ term, what we wish to accomplish is have $T$ be both divergence-free and symmetric. Now, why do we want the energy-momentum tensor to be symmetric? One of the reasons for this is that in general relativity, Einstein's field equation requires that the energy-momentum stress tensor be symmetric, because the Ricci tensor $R_{\mu\nu}$ and the metric tensor $g_{\mu\nu}$ are both symmetric.
 
-\subsection{Complex Scalar Fields}  
+\subsection{Complex Scalar Fields and Electromagnetism}
+\subsubsection{Gauge transformation of the first kind - Global Symmetry}
+In this section, we will see how things ``come together.'' As real scalar fields describe massive neutral particles and how vector fields describe massless photons, complex scalar fields somehow fills in and completes the picture by bringing in the charge and somehow joins the real scalar and vector field pictures. At the end of this section, we will see how the ``full theory'' where the electromagnetic field with charge is described by a single Lagrangian. \\
 
-\subsection{Vector Fields: An Electromagnetic Example}
+If our scalar field is complex, we can think of it and its complex conjugate as:
+\begin{align*}
+\phi &= \frac{\phi_r + i\phi_i}{\sqrt{2}}\\
+\phi^* &= \frac{\phi_r - i\phi_i}{\sqrt{2}}.
+\end{align*}
+Or, we can think of $\phi$ and $\phi^*$ as independent fields. Since the Lagrangian has to be real, plugging $\phi$ and $\phi^*$ into the Lagrangian introduced in the previous section gives:
+\begin{align*}
+\lag = (\p_\mu \phi)(\p^\mu \phi)^* - m^2\phi^*\phi.
+\end{align*}
+Without much inspection, we can see that the fields satisfy the Klein-Gordon equation:
+\begin{align*}
+\begin{cases}
+(\square + m^2)\phi &= 0\\
+(\square + m^2)\phi^* &= 0.
+\end{cases}
+\end{align*}
+Now, we can ask ourselves: ``Is this Lagrangian invariant under the transformation
+\begin{align*}
+\phi &\to e^{-i\Lambda}\phi\\
+\phi^* &\to e^{i\Lambda}\phi^*,
+\end{align*}
+where $\Lambda$ is a constant?'' Again, by inspection, the answer is yes, simply because the transformation is nothing but an orthogonal rotation (length preserving). And since because we changed the field the same way everywhere by a rotation induced by $e^{\pm i\Lambda}$ while the Lagrangian remains invariant, we say that the theory has a \textbf{global U(1) symmetry}. Global transformations like this one are called \textit{gauge transformation of the first kind}.
+\subsubsection{Gauge transformation of the second kind - Local Symmetry}
+Now, consider the case where the rotation operation $e^{\pm i \Lambda}$ has a spatio-dependence, i.e., $\Lambda \to \Lambda(x)$. We call this a \textit{gauge transformation of the second kind}. This leads to the fact that $\phi$ transform differently at different places. We want our theory to also be invariant under this ``local'' transformation. But first, we have to show that our previous Lagrangian no longer retains its gauge symmetry and try to come up with ways to ``fix'' the theory. Let us say that $\phi$ transforms as $\phi \to \phi e^{i\Lambda(x)}$, then
+\begin{align*}
+\p_\mu \phi \to \p_\mu (\phi e^{i\Lambda(x)}) = i(\p_\mu \Lambda(x))\phi + e^{i\alpha}\p_\mu \phi.
+\end{align*}
+It is already clear that 
+\begin{align*}
+(\p_\mu \phi)(\p_\mu \phi)^* \not\to (\p_\mu \phi)(\p_\mu \phi)^* e^{i\Lambda(x)}
+\end{align*}
+since there will always be some $\Lambda(x)$-dependent residual terms. We can stop here and surrender, but we can also ``fix'' our notion of the derivative (just like what we did in general relativity), introducing the \textbf{gauge-covariant derivative}:
+\begin{align*}
+D_\mu = \p_\mu + iqA_\mu,
+\end{align*}
+where $q$ is the charge, which acts as a \textit{coupling term} like the Christoffel symbols in general relativity, and $A_\mu$ is the vector potential, which is also the gauge field that has symmetry:
+\begin{align*}
+A_\mu \sim A_\mu + \p_\mu\Lambda.
+\end{align*}
+Once again, recall we have discussed in the gauge invariance section. By adding the 4-dimensional gradient of a scalar field $\Lambda$ (so adding the $\p_\mu \Lambda$ term), we are not changing the 4-dimensional curl of $A_\mu$, i.e. the electromagnetic field tensor $F^{\mu\nu}$ is divergence-free. We can refer to section on gauge invariance for more details about this is true. But focusing on the results here, if we cleverly (once again) pick $\Lambda$ such that
+\begin{align*}
+\Lambda(x) = -\frac{\alpha(x)}{q}
+\end{align*}
+then with the gauge transformations
+\begin{align*}
+\begin{cases}
+\phi \to \phi e^{i\Lambda(x)}\\
+A_\mu \to A_\mu - \frac{1}{q}\p_\mu\Lambda(x)
+\end{cases}
+\end{align*}
+the new derivative $D_\mu\phi = (\p_\mu + iqA_\mu)\phi$ is transformed into
+\begin{align*}
+&\to \left( \p_\mu  iq\left[ A_\mu -\frac{1}{q}\p_\mu\Lambda(x)  \right] \right)\phi e^{i\Lambda(x)}\\
+&= e^{i\Lambda(x)}\left( \p_\mu\phi + i(\p_\mu\Lambda(x)\phi) + iqA_\mu \phi - i(\p_\mu \Lambda(x))\phi \right)\\
+&= e^{i\Lambda(x)}(\p_\mu \phi + iqA_\mu\phi)\\
+&= e^{i\Lambda(x)}D_\mu\phi.
+\end{align*}
+So, $D_\mu\phi$ transforms correctly. Since we have added the electromagnetic vector potential to the theory, adding the electromagnetic field tensor term completes the classical field theory for the charged scalar field in electromagnetism. 
+\begin{align*}
+\boxed{\lag = \vert D_\mu \phi\vert^2 - m^2\vert \phi\vert^2 - \frac{1}{4}F_{\mu\nu}F^{\mu\nu} }
+\end{align*}
 
-Vector fields describe particles of spin 1 such as photons. Unlike scalar fields $\phi$ where there is only one degree of freedom, a vector field is represented by $A_\mu$ with $\mu = 0,1,2,3$, hence having 4 degrees of freedom. Electromagnetism is a field theory where the relevant field is a vector field, $A_\mu$, called the vector potential.
+
+\subsection{Vector Fields and Photons}
+
+In this section, we will see how electromagnetism naturally arises from the previous section where we demand invariance of the action under gauge transformation of the second kind (local rotations). In particular, we will work with a Lagrangian density that describes the massless and neutral photon, and see how variations on the action gives rise to the Maxwell's equations. We will also confirm that fact that photons must be massless in the theory, by enforcing conditions on the vector potential $A_\mu$. The section is more of synopsis of the methods we have learned so far about variations on the action, gauge transformations, symmetries, and invariances. The goal of this section is to show the theory actually works to describe a physical, real, particle. We will be working with vector field in the formulation the action, but the main principles regarding variations and gauge-stuff are the same.  \\
+
+Vector fields describe particles of spin 1 such as photons. Unlike real scalar fields $\phi$ where there is only one degree of freedom, a vector field is represented by $A_\mu$ with $\mu = 0,1,2,3$, hence having 4 degrees of freedom. Electromagnetism is a field theory where the relevant field is a vector field, $A_\mu$, called the vector potential.
 \begin{align*}
 A_\mu = (A_0, \vec{A}).
 \end{align*}
@@ -496,7 +584,7 @@ The first component of the vector potential, $A_0$ is the electrostatic potentia
 \vec{E} &= -\vec{\nabla}V - \frac{\partial \vec{A}}{\partial t}
 \end{align*}
 
-Let us consider the (cleverly chosen) Lagrangian density for electromagnetism:
+Let us consider the following Lagrangian density:
 \begin{align*}
 \mathcal{L} = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} - j^\mu A_\mu,
 \end{align*}
@@ -533,7 +621,7 @@ true for all $\delta A_\mu$, so if the field strength tensor is zero, then $j^\m
 &= \frac{-1}{4}\,\delta\left[\left( \partial^\mu A^\nu - \partial^\nu A^\nu  \right)\left( \partial_\mu A_\nu - \partial_\nu A_\mu \right)\right]\\
 &= \frac{-1}{2}\,\delta\left( \partial^\mu A^\nu\,\partial_\mu A_\nu - \partial_\mu A_\nu\,\partial^\mu A^\nu\right)\\
 &= \frac{-1}{2}\left( \partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
-\partial^\mu A^\nu\,\partial_\mu\,\delta A_\nu - \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu - \partial_\mu A_\nu\,\partial^\mu \,\delta A^\nu \right).
+\partial^\mu A^\nu\,\partial_\mu\,\delta A_\nu - \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu - \partial_\mu  A_\nu\,\partial^\mu \,\delta A^\nu \right).
 \end{align*}
 Raising and lowering indices gives
 \begin{align*}
@@ -585,18 +673,18 @@ Now, we have an interesting problem to think about: We know that photons can hav
 \end{align*} 
 We see that $A_0$ is not a propagating mode, or the \textbf{ghost} mode, or the \textbf{auxiliary} mode. This is actually a good thing in our theory. In fact, the Lagrangian is actually chosen such that the time second derivative vanishes. \\
 
-Now that we have sort of explained why one degree of freedom of $A_\mu$ does not matter. What about the other one that shouldn't matter? The short answer to this is the keyword \textbf{gauge symmetry} in the theory. If we look back at how the field strength tensor is defined:
+Now that we have sort of explained why one degree of freedom of $A_\mu$ does not matter. What about the other one that shouldn't matter? The short answer to this is the keyword \textbf{gauge symmetry} in the theory. If we look back at how the field strength tensor is defined as the 4-dimensional curl of the vector potential $A_\mu$:
 \begin{align*}
-F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu,
+F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu.
 \end{align*}
-and attempt to transform (\textbf{gauge transform})
+As an aside, it makes sense to define the 4-dimensional curl this way, because the curl of a 2-vector field in two dimensions gives a scalar (a zero-index object), the curl of a 3-vector field in three dimensions gives a 3-vector field (a one-index object). So it is reasonable to define the 4-dimensional curl of a 4-vector field as a tensor (a two-index object). Now, back to our problem. We should also attempt to gauge transform
 \begin{align*}
 A_\mu \rightarrow A'_\mu = A_\mu + \partial_\mu\Lambda(x),
 \end{align*}
 then we observe that
 \begin{align*}
 F'_{\mu\nu} &= \partial_\mu(A_\nu + \partial_\nu\Lambda(x)) - \partial_\nu(A_\mu + \partial_\mu\Lambda(x))\\
- &= \partial_\mu A_\nu - \partial_nu A_\mu \\
+ &= \partial_\mu A_\nu - \partial_\nu A_\mu \\
  &= F^{\mu\nu},
 \end{align*}
 i.e. there is a way to choose $\Lambda(x)$ such that we eliminate one $A_\mu$ mode, leaving just 4-1-1=2 modes.\\
@@ -613,14 +701,14 @@ It follows that
 \end{align*}
 This suggests that if we pick $\Lambda(x)$ such that $\square\Lambda(x) = -\p^\nu A_\nu$ then in this gauge $\p^nu A'_\nu = 0$. After that, we can just drop the prime and get $\p^\nu A_\nu = 0$. As a consequence, in this fixed gauge, the equations of motion can be deduced from 
 \begin{align*}
-\begin{cases*}
+\begin{cases}
 \square A_\mu = 0\\
 \p^\nu A_\nu = 0
-\end{cases*}
+\end{cases}
 \end{align*}
 each of which adds one constraint, reducing the degree of freedom by 1. To solve for $A_\mu$, we can assume the form of $A_\mu$:
 \begin{align*}
-A+\mu = \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}},
+A_\mu = \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}},
 \end{align*}
 where $\epsilon_\mu$ is called the \textbf{polarization vector}. Now, let us work with the first constraint $\square A = 0$. We can verify (below) that this constraint requires $K^\mu K_\mu = 0$, i.e. $K^\mu$ is a null vector in flat Minkowskian spacetime, i.e. it is light-like. 
 \begin{align*}
@@ -641,7 +729,7 @@ e^{-i\mathbf{k}\cdot\mathbf{x}}\delta^\mu_\nu
 &= 4(-i)^2 K_\mu K^\mu A_\mu\\
 &= 0 \text{ if } K_\mu K^\mu = 0.
 \end{align*}
-This requirements implies that the vector field $A_\mu$ is massless ($K^\mu K_\mu = 0$ rather than $m^2$ like in the scalar field example), which is a good thing, since we are working with electromagnetism and these mathematical objects ultimately describe electromagnetic waves - photons. \\
+This requirement implies that the vector field $A_\mu$ is massless ($K^\mu K_\mu = 0$ rather than $m^2$ like in the scalar field example), which is a good thing, since we are working with electromagnetism and these mathematical objects ultimately describe electromagnetic waves - photons. \\
 
 Next, the other constraint $\p^\nu A_\nu = 0$ motivates us to choose $\Lambda$ such that
 \begin{align*}
@@ -671,10 +759,10 @@ then $A_0 = 0$ implies
 \end{align*}
 So, it turns out that we can simply complete gauge fixing by setting two additional constraints on $A_\mu$:
 \begin{align*}
-\begin{cases*}
+\begin{cases}
 A_0 = 0\\
 \vec{\nabla}\cdot\vec{A} = 0,
-\end{cases*}
+\end{cases}
 \end{align*}
 i.e., we require that the vector potential $A_\mu$ be divergence-free and to have a vanishing auxiliary mode. With this, we can the degree of freedom of $A_\mu$ from 4 from 2, making it a physical description. We shall show that can be done now. If we revisit the polarization vector
 \begin{align*}
@@ -698,31 +786,139 @@ Because $\vec{k}\cdot\vec{A} \propto \vec{k}\cdot\vec{\epsilon}$, it follows tha
 So, the vector potential $A_\mu$ has the form
 \begin{align*}
 A_\mu = \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}} = \begin{pmatrix}
-0\\\epsilon_1\\epsilon_2\\0
+0\\\epsilon_1\\\epsilon_2\\0
 \end{pmatrix}e^{-i\mathbf{k}\cdot\mathbf{x}}.
 \end{align*}
 We can construct the independent modes of propagation as
 \begin{align*}
-\begin{cases*}
+\begin{cases}
 \epsilon^{(1)}_\mu = (0,1,0,0)^\top\\
 \epsilon^{(2)}_\mu = (0,0,1,0)^\top,
-\end{cases*}
+\end{cases}
 \end{align*}
 which give two physical transverse modes of the vector potential
 \begin{align*}
-\begin{cases*}
+\begin{cases}
 A^{(1)}_\mu = (0,1,0,0)^\top e^{-i\mathbf{k}\cdot\mathbf{x}} = \epsilon^{(1)}_\mu e^{-i\mathbf{k}\cdot\mathbf{x}}\\
 A^{(2)}_\mu = (0,0,1,0)^\top e^{-i\mathbf{k}\cdot\mathbf{x}} = 
 \epsilon^{(2)}_\mu e^{-i\mathbf{k}\cdot\mathbf{x}},
-\end{cases*}
+\end{cases}
 \end{align*}
 
-All is good, but we might wonder why photons are massless. The answer depends on who we ask, but mathematically, it is the gauge symmetry requirement that ``makes'' photons massless. 
+All is good, but we might wonder why photons are massless. The answer depends on who we ask, but mathematically, it is the gauge symmetry requirement that ``makes'' photons massless. Suppose that the Lagrangian is of the form
+\begin{align*}
+\lag = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu}+ \frac{1}{2}m^2A_\mu A^\mu,
+\end{align*}
+which suggests that the field is massive (hence the mass term $m$). Under gauge transformation,
+\begin{align*}
+A_\mu \rightarrow A_\mu + \p_\mu \Lambda,
+\end{align*}
+we have 
+\begin{align*}
+\begin{cases}
+F_{\mu\nu} \rightarrow F_{\mu\nu}\\
+A_\mu A^\mu = (A_\mu + \p_\mu\Lambda)(A^\mu + \p^\mu\Lambda) \not\to A_\mu A^\mu
+\end{cases}
+\end{align*}
+So, the Lagrangian is no longer gauge-invariant. Therefore we claim that massive fields do not have gauge symmetry, i.e., we cannot have the mass term if we require mass invariance:
+\begin{align*}
+\text{Massless field }\iff \text{ Gauge invariance}.
+\end{align*}
+This also hints to us that mass comes from some mechanism that breaks gauge symmetry, which we will explore later on. 
+
+\subsubsection{Worked Problems}
+Consider the following Lagrangian
+\begin{align*}
+\lag = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu
+\end{align*}
+which describes a massive particle with a vector field.
+\begin{prob}
+	Verify that this Lagrangian does not have gauge symmetry under the gauge transformation $A_\mu \to A_\mu +\p_\mu \Lambda$, i.e. $\lag \not\to \lag$.
+	\begin{sln}
+		blah
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Vary the action
+	\begin{align*}
+	S = \int \lag,d^x
+	\end{align*}
+	with respect to $A_\mu$ and show that the equations of motion are 
+	\begin{align*}
+	\square A - \p_\mu \p^\nu A_\nu + m^2A_\mu = 0.
+	\end{align*}
+	\begin{sln}
+		blah
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Take $\p^\mu$ of the Lagrangian and show that it gives a constraint: $\p^\mu A_\mu = 0$. Use this to simplify the equations of motion to
+	\begin{align*}
+	\square A_\mu - m^2 A_\mu = 0.
+	\end{align*}
+	
+	\begin{sln}
+		blah
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Look for a solution of the form
+	\begin{align*}
+	A_\mu = \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}},
+	\end{align*}
+	where $\epsilon_\mu$ is the polarization vector, and show that it's a solution provided that
+	\begin{align*}
+	K^\mu K_\mu = m^2,
+	\end{align*}
+	i.e., the vector field is massive.
+	\begin{sln}
+		blah
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Suppose that $k^\mu = (K^0,0,0,K^3)$ denotes movement in the $z$-direction. Show that $\p^\mu A_\mu = 0$ implies 
+	\begin{align*}
+	\epsilon_0 = \frac{-K^3}{K^0}\epsilon_3
+	\end{align*}
+	or
+	\begin{align*}
+	\epsilon_\mu = \left(\frac{K^3}{K^0}\epsilon_3,\epsilon_1,\epsilon_2,\epsilon_3 \right)^\top.
+	\end{align*}
+	
+	\begin{sln}
+		blah
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Show that this gives 3 independent modes of motion
+	\begin{align*}
+	\begin{cases}
+	\epsilon^{(1)}_\mu = (0,1,0,0)^\top\\
+	\epsilon^{(2)}_\mu = (0,0,1,0)^\top\\
+	\epsilon^{(3)}_\mu = \left(\frac{K^3}{K^0},0,0,1\right)^\top
+	\end{cases}
+	\end{align*}
+	where the first two modes are transverse modes and the third is longitudinal.\\
+	
+	As expected for a massive vector, it has spin 1, $j=1$ with 3 polarizations $m_j = -1,0,1$. This is in contrast to a massless vector that only has 2 transverse polarizations. 
+	
+	\begin{sln}
+		blah
+	\end{sln}
+\end{prob}
 
 
 \newpage
 
 \section{Gravitation and Lagrangian Formulation of General Relativity}
+
+
+
 
 \subsection{Review of General Relativity \& Curved Spacetime}
 
@@ -794,6 +990,12 @@ Recall Stokes' theorem:
 \begin{align*}
 \int_\Sigma \nabla_\mu V^\mu \sqrt{\vert g\vert}\,d^nx = \int_{\p\Sigma} n_\mu V^\mu \sqrt{\vert \gamma \vert},d^{n-1}x
 \end{align*}
+
+\newpage
+
+\section{Quantization}
+
+
 \end{document}
 
 
