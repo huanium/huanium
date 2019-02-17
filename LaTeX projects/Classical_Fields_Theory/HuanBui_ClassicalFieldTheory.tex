@@ -64,7 +64,7 @@
 
 Greetings,\\
 
-\textit{Classical Field Theory, A Quick Guide to} is compiled based on my independent study PH492: Topics in Classical Field Theory notes with professor Robert Bluhm. Sean Carroll's \textit{Spacetime and Geometry: An Introduction to General Relativity}, along with other resources, serves as the main guiding text. Some parts of the text will be derived from \textit{Quantum Field Theory} by Ryder.  \\
+\textit{Classical Field Theory, A Quick Guide to} is compiled based on my independent study PH492: Topics in Classical Field Theory notes with professor Robert Bluhm. Sean Carroll's \textit{Spacetime and Geometry: An Introduction to General Relativity}, along with other resources, serves as the main guiding text. This text also references a number of other texts such as \textit{Quantum Field Theory} by Ryder, \textit{Quantum Field Theory} by Mandl and Shaw, \textit{Gauge Theories Of The Strong, Weak, And Electromagnetic Interactions} by Quigg.   \\
 
 This text is a continuation of \textit{General Relativity and Cosmology, A Quick Guide to}. Familiarity with classical mechanics, linear algebra, vector calculus, and especially general relativity is expected. There will be a quick review of general relativity where important concepts are revisited and important derivations highlighted, but familiarity with basic notions such as geodesics, Christoffel symbols, the Riemann curvature tensors, etc. is assumed. \\ 
 
@@ -99,6 +99,149 @@ Enjoy!
 
 \newpage
 \section{Gauge Invariance}
+\subsection{Introduction}
+From studying Maxwell's equations, we know that there is more than one way to choose a vector potential $A_\mu$ that describes the same electromagnetic field. This freedom is called \textit{gauge invariance}. We will explore the idea of gauge invariance  in the context of a continuous symmetry of the Lagrangian, which leads to the conservation of electric charge and other important consequences under Noether's theorem.\\
+
+In the subsequent subsections, we will explore and try to understand the idea of gauge invariance. We will start out with gauge invariance in classical electrodynamics. Then, we will look briefly at phase invariance in quantum mechanics and ultimately field theory.  
+\subsection{Gauge Invariance in Classical Electrodynamics}
+Recall the second of Maxwell's equations, written in differential form:
+\begin{align*}
+\div{\mathbf{B}} = 0.
+\end{align*}
+Following from a vector calculus identity, this means the magnetic field can be expressed as a curl of some vector potential, called $\mathbf{A}$:
+\begin{align*}
+\div{\mathbf{B}} = \div{\curl\mathbf{A}} = 0.
+\end{align*}
+Now, we also know that the curl of a conservative vector field is zero, it is also true that
+\begin{align*}
+\curl{(\mathbf{A} + \grad{\Lambda})}= \curl{\mathbf{A}} + \curl{\grad{\Lambda}} = \curl{\mathbf{A}}.
+\end{align*}
+It follows that this new vector potential $\mathbf{A} + \grad{\Lambda}$ also describes the same magnetic field $\mathbf{B}$:
+\begin{align*}
+\mathbf{B} = \curl{(\mathbf{A} + \grad{\Lambda})} = \curl{\mathbf{A}}.
+\end{align*}
+
+Next, consider Faraday-Lenz law:
+\begin{align*}
+\curl{\mathbf{E}} = -\frac{\p \mathbf{B}}{\p t}.
+\end{align*}
+Since $\mathbf{B} = \curl{\mathbf{A}}$, this can be re-written as:
+\begin{align*}
+\curl{\left(\mathbf{E} + \frac{\p \mathbf{A}}{\p t}\right)} = 0.
+\end{align*}
+This suggests that 
+\begin{align*}
+\mathbf{E} + \frac{\p \mathbf{A}}{\p t} 
+\end{align*}
+is some conservative vector field, which we shall identity as $-\grad{V}$, where $V$ is the scalar potential:
+\begin{align*}
+\mathbf{E} + \frac{\p \mathbf{A}}{\p t}  = -\grad{V}.
+\end{align*}
+Now, in order for the electric field $\mathbf{E}$ to remain invariant under the transformation
+\begin{align*}
+\mathbf{A} \to \mathbf{A} + \grad{\Lambda},
+\end{align*}
+we must require that
+\begin{align*}
+\mathbf{E'} &= \mathbf{E}\\
+-\grad{V'} - \frac{\p \mathbf{A'}}{\p t} &= -\grad{V} - \frac{\p \mathbf{A}}{\p t}\\
+-\grad{V'} - \frac{\p }{\p t}\left( \mathbf{A} + \grad{\Lambda} \right) &= -\grad{V} - \frac{\p \mathbf{A}}{\p t}\\
+\grad{V'} &= \grad{V} + \frac{\p }{\p t}\grad{\Lambda}\\
+\grad{V'} &= \grad{V} + \grad{\left( \frac{\p \Lambda}{\p t}\right)},
+\end{align*}
+i.e,
+\begin{align*}
+V' = V + \frac{\p \Lambda}{\p t}.
+\end{align*}
+So, the scalar potential has to undergo the transformation
+\begin{align*}
+V \to V + \frac{\p \Lambda}{\p t}.
+\end{align*}
+
+Now, if we define the 4-vector potential as
+\begin{align*}
+A^\mu = (V,\mathbf{A}),
+\end{align*}
+then everything we have done so far can be encoded in the 4-curl of $A^\mu$, which we define as the anti-symmetric electromagnetic field strength tensor
+\begin{align*}
+F^{\mu\nu} = -F^{\nu\mu} = \p^\mu A^\nu - \p^\nu A^\mu = \begin{pmatrix}
+0 & -E_1 & -E_2 & -E_3\\
+E_1 & 0 & -B_3 & B_2\\
+E_2 & B_3 & 0 & -B_1\\
+E_3 & -B_2 & B_1 & 0
+\end{pmatrix}.
+\end{align*}
+We can verify that $F^{\mu\nu}$ is invariant under the transformation
+\begin{align*}
+A^\mu \to A^\mu - \p^\mu\Lambda
+\end{align*}
+or
+\begin{align*}
+A_\mu \to A_\mu + \p_\mu \Lambda,
+\end{align*}
+where $\Lambda(x)$ is an arbitrary scalar field of the coordinate. The fact that many different four-vector potentials yield the same electromagnetic fields, and thus describe the same physics, is a manifestation of the gauge invariance of classical electrodynamics.\\
+
+From \textit{General Relativity \& Cosmology, A Quick Guide to...}, we have verified how the Maxwell's equations in covariant notation:
+\begin{align*}
+\p_\mu F^{\mu\nu} &= -J^\nu\\
+\p_\sigma F_{\mu\nu} + \p_\mu F_{\nu\sigma} + \p_\nu F_{\sigma\mu} &= 0
+\end{align*} 
+where the \textit{4-current} $J^\nu$ is defined as
+\begin{align*}
+J^\nu = (\p,\mathbf{J})
+\end{align*}
+give rise to the same Maxwell's equations in differential form. Now, we look at two important consequences of these two covariant equations.\\
+
+First, consider the 4-divergence of the 4-current. We can readily from the definition of $F^{\mu\nu}$ that 
+\begin{align*}
+\p_\nu J^\nu &= -\p_\nu\p_\mu F^{\mu\nu}\\
+ &= -\p_\nu\p_\mu(\p^\mu A^\nu - \p^\nu A^\mu)\\
+ &= -\p_\nu\p_\mu\p^\mu A^\nu + \p_\nu\p_\mu\p^\nu A^\mu)\\
+ &= [-\p_\nu\p_\mu + \p_\mu\p_\nu]\p^\mu A^\nu\\
+ &= 0.
+\end{align*}
+Note that operators $\p_\nu\p_\mu$ and $\p_\mu\p_\nu$ commute because they are just partial derivatives. This tells us that \textbf{the electromagnetic current is conserved}.\\
+
+Second, 
+\begin{align*}
+\p_\mu F^{\mu\nu} &= -J^\nu
+\end{align*}
+can be expanded as
+\begin{align*}
+\p_\mu \p^\mu A^\nu - \p_\mu \p^\nu A^\mu = J^\nu
+\end{align*}
+and re-written as
+\begin{align*}
+\square A^\nu - \p^\nu(\p_\mu A^\mu) = J^\nu.
+\end{align*}
+In the absence of any sources, and in the Lorentz gauge where $\p_\mu A^\mu = 0$, this reduces to
+\begin{align*}
+\square A^\nu = 0.
+\end{align*}
+So $A^\nu$ satisfies the Klein-Gordon equation for a massless particle (photon). 
+
+
+\subsection{Phase Invariance in Quantum Mechanics}
+It is in fact possible for us to guess Maxwell's equations from a gauge principle based on the Schr\"odinger equation, even in the absence of electrodynamics knowledge. Let a wavefunction $\psi$ be given, recall that a quantum mechanical observable is of the form
+\begin{align*}
+\langle \mathcal{O} \rangle = \int\psi^* \mathcal{O} \psi\, d^nx,
+\end{align*}
+which can be readily verified to be invariant under the global phase rotation:
+\begin{align*}
+\psi(x) \to e^{i\theta}\psi(x)
+\end{align*}
+
+\subsection{Significance of Potentials in Quantum Theory}
+Recall the Schr\"ondinger equation:
+\begin{align*}
+-\frac{\hbar^2}{2m}\nabla^2 \psi^0 = i\hbar \frac{\p \psi^0}{\p t}.
+\end{align*}
+\subsection{Phase Invariance in Field Theory}
+\subsection{Feynman Rules for Electromagnetism}
+
+
+
+
 \newpage
 \section{Overview of Lagrangian Formulation of Classical Mechanics}
 \newpage
@@ -593,9 +736,9 @@ where $j^\mu = (\rho, \vec{J})$ is a combination of the charge density and curre
 F^{\mu\nu} &= \partial^\mu A^\nu - \partial^\nu A^\mu \\
 &= \begin{pmatrix}
 0 & -E^1 & -E^2 & -E^3\\
-E^1 & 0 & -B^3 & -B^2 \\
+E^1 & 0 & -B^3 & B^2 \\
 E^2 & B^3 & 0 & -B^1\\
-E^3 & B^2 & B^1 & 0
+E^3 & -B^2 & B^1 & 0
 \end{pmatrix}.
 \end{align*}
 With this definition, we can also have an equivalent definition:
@@ -631,8 +774,7 @@ Raising and lowering indices gives
 \partial_\nu A_\mu\,\partial^\nu\,\delta A^\mu 
 - \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu 
 - \partial^\nu A^\mu\,\partial_\nu \,\delta A_\mu \right)\\
-&= \partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu
-- \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu.
+&= \partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu - \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu.
 \end{align*}
 We can again integrate by parts on the two terms similar to the following steps
 \begin{align*}
@@ -875,7 +1017,7 @@ which describes a massive particle with a vector field.\\
 		Varying the term with the electromagnetic field tensor gives
 		\begin{align*}
 		\delta\left(F^{\mu\nu}F_{\mu\nu} \right) 
-		&= 2\delta\left[\left( \partial^\mu A^\nu - \partial^\nu A^\nu  \right)\left( \partial_\mu A_\nu - \partial_\nu A_\mu \right)\right]\\
+		&= 2\delta\left[\left( \partial^\mu A^\nu - \partial^\nu A^\mu  \right)\left( \partial_\mu A_\nu - \partial_\nu A_\mu \right)\right]\\
 		&= 2\delta\left( \partial^\mu A^\nu\,\partial_\mu A_\nu - \partial_\mu A_\nu\,\partial^\mu A^\nu\right)\\
 		&= 2\left( \partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
 		\partial^\mu A^\nu\,\partial_\mu\,\delta A_\nu - \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu - \partial_\mu  A_\nu\,\partial^\mu \,\delta A^\nu \right)\\
