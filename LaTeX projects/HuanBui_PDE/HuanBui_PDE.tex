@@ -16,6 +16,7 @@
 \newtheorem{prob}{Problem}[section]
 \newtheorem{sln}{Solution}[section]
 \newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
 \newtheorem*{sln*}{Solution}
 \usepackage{empheq}
 \usepackage{hyperref}
@@ -635,6 +636,269 @@ The term on the left hand side is called the trigonometric series.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\section{Problems and Solutions}
+\subsection{Problem set 1}
+\begin{exer}
+	\begin{prob*}2, Lesson 2.
+		The heat equation is
+		\begin{align*}
+		u_t = \alpha^2 u_{xx} + 1, \text{ with }0 < x < 1.
+		\end{align*}
+		Suppose $u(0,t) = 0$ and $u(1,t) = 1$. What is the steady-state temperature of the rod?\\
+		\begin{sln*}
+			Stead-state temperature can be found by setting $u_t(x,t) = 0$ for $0 < x < 1$. It follows that $\alpha^2 u_{xx}(x,t) + 1 = 0$. In addition, the temperature profile is no longer time-dependent, so $u(x,t)\to u(x)$. These conditions give
+			\begin{align*}
+			u_{xx}(x) &= -\frac{1}{\alpha^2}\\
+			u(x) &= -\frac{1}{2\alpha^2}x^2 + Cx + D.
+			\end{align*} 
+			Applying the boundary conditions $u(0,t)=0$ and $u(1,t)=1$, we can find $C$ and $D$:
+			\begin{align*}
+			\begin{cases}
+			u(0) = 0 = D\\
+			u(1) = -\frac{1}{2\alpha^2} + C = 1
+			\end{cases}.
+			\end{align*}
+			So, $C = 1 + 1/s\alpha^2$. The temperature profile of the rod is then
+			\begin{align*}
+			u_{\text{steady-state}}(x) = -\frac{1}{2\alpha^2}x^2 + \left(1 + \frac{1}{2\alpha^2} \right)x .
+			\end{align*}
+		\end{sln*}
+	\end{prob*}
+	
+	\newpage
+	
+	\begin{prob*}3, Lesson 2. The heat equation is
+		\begin{align*}
+		u_t = \alpha^2 u_{xx} - \beta u, \text{ with } 0<x<1.
+		\end{align*}
+		Suppose the BC is $u(0,t)=1$ and $u(1,t)=1$. What is the steady-state temperature of the rod?\\
+		\begin{sln*}
+			Again, we set $u_t = 0$ to find the steady-state temperature profile. This forces $\alpha^2 u_{xx} - \beta u = 0$, i.e., $\alpha^2 u_{xx} = \beta u$. Next, since the temperature is no longer time-dependent, we can let $u(x,t)\to u(x)$. Now, because $\beta$ and $\alpha^2$ are both positive numbers, the solution to this ODE has the form
+			\begin{align*}
+			u_{\text{steady-state}} = u(x) = Ce^{-\sqrt{\frac{\beta}{\alpha^2}}x} + De^{\sqrt{\frac{\beta}{\alpha^2}}x}.
+			\end{align*}
+			Let us denote $\sqrt{\beta/\alpha^2}$ as $\phi$. To find the coefficients $C$ and $D$, we apply the boundary condition:
+			\begin{align*}
+			\begin{cases}
+			u(0) = C + D = 1\\
+			u(1) = Ce^{-\phi} + De^{\phi} = 1.
+			\end{cases}
+			\end{align*}
+			Solving this linear system of equation in Mathematica we find 
+			\begin{align*}
+			C &= \frac{e^\phi}{1 + e^\phi}\\
+			D &= \frac{1}{1+e^\phi}.
+			\end{align*}
+			So, the steady-state temperature profile is
+			\begin{align*}
+			u_s(x) =  \frac{e^\phi}{1 + e^\phi}e^{-\phi x} + \frac{1}{1+e^\phi}e^{\phi x} = \frac{1}{1+e^\phi}\left( e^{\phi(1-x)} + e^{\phi x} \right),
+			\end{align*}
+			where
+			\begin{align*}
+			\phi = \sqrt{\frac{\beta}{\alpha^2}}.
+			\end{align*}
+			Mathematica code and graph of steady-state temperature distribution:
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[scale=0.5]{1.png}
+			\end{figure}
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[scale=0.5]{2.png}
+			\end{figure}
+		\end{sln*}
+	\end{prob*}
+\end{exer}
+
+\newpage
+
+
+\begin{exer}
+	\begin{prob*}1, Lesson 3. Sketch the solution to the IBVP (Farlow, 3.6) for different values of time. Check if they agree with the boundary conditions. What is the steady-state temperature of the rod? Is this obvious?\\
+		
+		The IBVP:
+		\begin{align*}
+		\begin{cases}
+		PDE: u_t = \alpha^2 u_{xx}, x\in(0,200), t\in(0,\infty)\\
+		BC_1: u_x(0,t) = 0, t\in(0,\infty)\\
+		BC_2: u_x(200,t) = -\frac{h}{k}[u(200,t) - 20], t\in(0,\infty)\\
+		IC: u(x,0) = 0, x\in[0,200]
+		\end{cases}
+		\end{align*}
+		\begin{sln}
+			Sketches:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+			
+			Intuitively, the steady-state temperature of the rod is just 20$^\circ$C, since the rod in the problem, which is initially at 0$^\circ$C, is simply being warmed up by the 20$^\circ$C water. We can of course show this mathematically. By the steady-state condition, $u_t = 0 = u_{xx}$. This forces $u_{xx} = Cx + D$. But by the first boundary condition $u_x(0,t)=0$, require that $C = 0$. The second boundary condition requires that $u_{s,x} = C = 0 = (-h/k)[u(200,t) -20] = (-h/k)[200C + D - 20]$, which means $D=20$. So, the steady-state temperature profile, not surprisingly, is 20$^\circ$C uniform along the length of the rod. 
+		\end{sln}
+	\end{prob*}
+	\newpage
+	\begin{prob*}2, Lesson 3. Interpret the IBVP:
+		\begin{align*}
+		\begin{cases}
+		PDE: u_t = \alpha^2 u_{xx}, x\in(0,1), t\in(0,\infty)\\
+		BC_1: u(0,t) = 0, t\in(0,\infty)\\
+		BC_2: u_x(1,t) = 1, t\in(0,\infty)\\
+		IC: u(x,0) = \sin(\pi x), x\in[0,1]
+		\end{cases}
+		\end{align*}
+		\begin{sln}
+			$\,$\\
+			
+			\textit{Interpretation:} The PDE suggests that we are dealing with heat flow in one dimension, so we can imagine a rod of length 1 with no laterally heat transfer. The first boundary condition suggests that the temperature is held fixed at 0 at $x=0$ for all $t$. The second boundary condition suggests that temperature is increasing (at a constant rate) at $x=1$ end. The initial condition tells us that initially, the temperature profile of the rod has a sinusoidal distribution across the rod's length, with the ends having temperature of 0 ($\sin(0)=\sin(\pi) = 0$) and the middle $x=1/2$ having the highest temperature of 1. \\
+			
+			\textit{Steady-state?} The steady-state condition requires that $u_{xx} = 0$, so again, we have $u_s(x) = Cx +D$, where $C,D$ are real constants. The first boundary condition requires $D=0$. The second boundary condition requires that $u_x(1) = C\times 1 = C = 1$. Therefore, in the long run, $u_s(x) = x$. So, the stead-state temperature at each point of the rod has the same value as the position (from the 0 degree end) of that point on the rod. \\
+			
+			\textit{Sketches:}
+		\end{sln}
+	\end{prob*}
+	\newpage
+	\begin{prob*}3, Lesson 3. Interpret the following IBVP:
+		\begin{align*}
+		\begin{cases}
+		PDE: u_t = \alpha^2 u_{xx}, x\in(0,1), t\in(0,\infty)\\
+		BC_1: u_x(0,t) = 0, t\in(0,\infty)\\
+		BC_2: u_x(1,t) = 0, t\in(0,\infty)\\
+		IC: u(x,0) = \sin(\pi x), x\in[0,1]
+		\end{cases}
+		\end{align*}
+		\begin{sln}
+			$\,$\\
+			
+			\textit{Interpretation:} The PDE suggests that we are dealing with heat flow in one dimension, so we can imagine a rod of length 1 with no laterally heat transfer. The boundary conditions suggest that there are no temperature gradients at the ends of the rod. So we imagine the rod being insulated at the ends. The initial condition is like that in the previous problem where the temperature profile of the rod has a sinusoidal distribution across the rod's length, with the ends being at zero degrees ($\sin(0)=\sin(\pi) = 0$) and the middle $x=1/2$ having the highest temperature of 1. \\
+			
+			\textit{Steady-state:} The steady-state condition requires that $u_{xx} = 0$, i.e., $u_s(x) = Cx + D$, where $C,D$ are real constants. Since the temperatures are fixed at the end points, $u_{s,x} = C = 0$. So the steady state temperature is $D$, which takes some value between 0 and 1 as $t\to \infty$. The steady-state temperature profile is the same along the length of the rod. \\
+			
+			\textit{Sketches:}
+		\end{sln}
+	\end{prob*}
+\end{exer}
+
+\newpage
+
+
+\begin{exer}
+	\begin{prob*}3, Lesson 4. Derive the heat equation
+		\begin{align*}
+		u_t = \frac{1}{c\rho}\p_x[k(x)u_x] + f(x,t)
+		\end{align*}
+		for the situation where the thermal conductivity $k(x)$ depends on $x$.\\
+		\begin{sln*}
+			We can start the derivation from step (4.2) in Farlow's, modify $k \to k(x)$. The conservation of energy gives:
+			\begin{align*}
+			c\rho A\int_{x}^{x+\Delta x}u_t(s,t)\,ds = A\left(k(x+\Delta x)u_x(x+\Delta x,t) - k(x)u_x(x,t)  + \int_x^{x+\Delta x}f(s,t)\,ds \right).
+			\end{align*}
+			By the MVT, there exists $\zeta \in (x,x+\Delta x)$ such that
+			\begin{align*}
+			c\rho u_t(\zeta, t)\Delta x = k(x+\Delta x)u_x(x+\Delta x,t) - k(x)u_x(x,t) + f(\zeta,t)\Delta x,
+			\end{align*} 
+			i.e.,
+			\begin{align*}
+			u_t(\zeta,t) &= \frac{1}{c\rho}\left\{ \frac{k(x+\Delta x)u_x(x+\Delta x,t) - k(x)u_x(x,t)}{\Delta x} \right\} + \frac{1}{c\rho}f(\zeta,t)
+			\end{align*}
+			Letting $\Delta x \to 0$, we turn the term with $\Delta x$ into a derivative of a composition defined as $UK(x,t) = k(x)u_x(x,t)$. The result is
+			\begin{align*}
+			u_t(x,t) = \frac{1}{c\rho}\p_x(k(x)u_x(x,t)) + f(x,t),
+			\end{align*}
+			where we simply let $f(x,t)$ absorb the constant $(c\rho)^{-1}$. We have obtained the heat equation with $x$-dependent thermal conductivity. 
+		\end{sln*}
+	\end{prob*}
+\end{exer}
+
+\newpage
+
+\begin{exer}
+	\begin{prob*}1, Lesson 5. Show that
+		\begin{align*}
+		u(x,t) = e^{-\lambda^2\alpha^2 t}(A\sin\lambda x + B\cos \lambda x)
+		\end{align*}
+		satisfies the PDE $u_t = \alpha^2 u_{xx}$ for $A,B,\lambda \in \R$.
+		\begin{sln*}
+			We can compute the partial derivatives and verify that $u(x,t)$ solves the PDE ``by inspection.'' The $t$-derivative gives the same $u(x,t)$, multiplied by a factor of $-\lambda^2\alpha^2$, while the $x$-second derivative also gives $u(x,t)$, but multiplied by factor of $\lambda^2$. So, these expressions differ by a factor of $\alpha^2$.  Mathematically:
+			\begin{align*}
+			u_t = -\lambda^2 \alpha^2 u(x,t) = \alpha^2 u_{xx}.
+			\end{align*}
+			Hence, $u(x,t)$ solves the given PDE. 
+		\end{sln*}
+	\end{prob*}
+	\newpage
+	\begin{prob*}2, Lesson 5. Let $\delta^m_n$ denotes the Kronecker delta, where $m,n$ are non-negative whole numbers. Show
+		\begin{align*}
+		\int_{0}^{1}\sin(\pi mx)\sin(\pi nx)\,dx = \frac{1}{2}\delta^m_n
+		\end{align*}
+		\begin{sln*}
+			Applying the hinted trigonometric identity, we have
+			\begin{align*}
+			\int_{0}^{1}\sin(\pi mx)\sin(\pi nx)\,dx &= \frac{1}{2}\int_0^1\cos[(m-n)\pi x] - \cos[(m+n)\pi x]\,dx\\
+			&= \frac{1}{2}\int_0^1\cos[(m-n)\pi x]\,dx - \frac{1}{2}\int_0^1\cos[(m+n)\pi x]\,dx
+			\end{align*}
+			At this point, we can argue why the equality given by the problem is true without much computation. The argument goes as follows. If $m = n$, then the second integral vanishes because $\cos(xk\pi)$, where $k$ is an even number and $x\in [0,1]$, is symmetric about $x=1/2$ and $y=0$. If $m\neq n$, then $m-n$ and $m+n$ are either odd or even. If they are even (and positive), then both integrals on the right hand side vanish. If they are odd, then we can assume (without loss of generality) that $m$ is odd and $n$ is even. This makes $\sin(\pi m x)\sin(\pi n x)$ symmetric about $x=1/2$ and $y=0$, so the integral also vanishes over $x\in[0,1]$.
+		\end{sln*}
+	\end{prob*}
+	\newpage
+	\begin{prob*}5, Lesson 5. What is the solution to problem 4 in Farlow, Lesson 5 (which also requires doing 3) if the initial condition is changed to 
+		\begin{align*}
+		u(x,0) = \sin(2\pi x) + \frac{1}{3}\sin(4\pi x) + \frac{1}{5}\sin(6\pi x)
+		\end{align*}
+		\begin{sln*}
+			We should quickly do problem 3 first. If $\Phi(x) = 1$, $x\in[0,1]$. Applying the formula for the coefficients $A_n$:
+			\begin{align*}
+			A_n = 2\int_0^1\Phi(x)\sin(n\pi x)\,dx = 2\int_0^1\sin(n\pi x)\,dx = \frac{2}{n\pi}(1-\cos(n\pi x)) = \begin{cases}
+			\frac{4}{n\pi}, n \text{ odd}\\
+			0, n\text{ even}
+			\end{cases}.
+			\end{align*}
+			So, the Fourier expansion for $\Phi(x) = 1$ is
+			\begin{align*}
+			\Phi(x) =1 = \frac{4}{\pi}\left[\sin(\pi x) + \frac{1}{3}\sin(3\pi x) + \frac{1}{5}\sin(5\pi x)+\dots \right].
+			\end{align*}
+			In problem 4, the boundary and initial conditions suggests using $\Phi(x)$ from problem 3. So, given the formula for $u(x,t)$, we simply substitute in the coefficients to generate a Fourier expansion for $u(x,t)$:
+			\begin{align*}
+			u(x,t) &= \sum_{n=1}^{\infty}A_n e^{-(n\pi)^2t}\sin(n\pi x)\\
+			&= \frac{4}{\pi}\left[ e^{-(\pi)^2t}\sin(\pi x) + \frac{1}{3}e^{-(3\pi)^2t}\sin(3\pi x)
+			+ \frac{1}{5}e^{-(5\pi)^2t}\sin(5\pi x)+\dots\right].
+			\end{align*}
+			Back to problem 5, if the initial condition is given as $u(x,0)$ above, then we might think we have to re-do and find a new Fourier expansion. But by inspecting the form of $u(x,0)$, we can see that it is just a truncated Fourier expansion. So there is no need to find the coefficients $A_n$ since they are already given to us. So, carefully picking out the coefficients, we get the new solution
+			\begin{align*}
+			u(x,t) = e^{-(2\pi)^2t}\sin(2\pi x) + \frac{1}{3}e^{-(4\pi)^2t}\sin(4\pi x) + \frac{1}{5}e^{-(6\pi)^2t}\sin(6\pi x).
+			\end{align*}
+		\end{sln*}
+	\end{prob*}
+\end{exer}
+
+\newpage
+\subsection{Problem set 2}
+
+\newpage
+\subsection{Problem set 3}
+
+\newpage
+\subsection{Problem set 4}
 
 
 

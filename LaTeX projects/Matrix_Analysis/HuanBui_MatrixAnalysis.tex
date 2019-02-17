@@ -8,9 +8,13 @@
 \usepackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
 \newtheorem{rmk}{Remark}[section]
 \newtheorem{exmp}{Example}[section]
-\newtheorem{prop}{Properties}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem*{sln*}{Solution}
 \usepackage{empheq}
 \usepackage{tensor}
 \usepackage{hyperref}
@@ -23,6 +27,15 @@
 }
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\F}{\mathbb{F}}
+\newcommand{\p}{\partial}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\U}{\mathbf{U}}
+\newcommand{\X}{\mathbf{X}}
+
 \newcommand{\xpan}{\text{span}}
 
 
@@ -729,5 +742,347 @@ Consider a non-singleton linear space $V$. The following statements are equivale
 \subsection{Spectral/operator norm}
 \subsection{Singular values and approximation}
 \subsection{Singular values and eigenvalues}
+
+\newpage
+\section{Problems and Solutions}
+\subsection{Problem set 1}
+\begin{prob*} Prelim. 1.1.
+	Suppose that $\V$ is a finite-dimensional vector space. Consider the following subspace $\W$ of the vector space $\V\times \V$:
+	\begin{align*}
+	\W = \left\{ \begin{pmatrix}
+	v\\-v
+	\end{pmatrix}\bigg\vert\, v \in \V \right\}.
+	\end{align*}
+	Argue that
+	\begin{align*}
+	\dim(\V) = \dim(\W).
+	\end{align*}
+	\begin{sln*}
+		$\,$\\\\
+		We can equivalently show that $\dim(V) = \dim(W)$ by showing that $\V$ is isomorphic to $\W$ ($\V \sim \W$), i.e., there exists a bijective linear function $\lag : \V \rightarrow \W \prec \V\times\V $.\\
+		
+		\noindent We can define $\lag : \V \rightarrow \W$ as 
+		\begin{align*}
+		\lag[v] = \begin{pmatrix}
+		v\\-v
+		\end{pmatrix},
+		\end{align*} 
+		where $v\in \V$. Let $v_1,v_2\in\V$ and $a,b \in \mathbb{C}$ be given, $\lag$ satisfies the linearity condition because
+		\begin{align*}
+		\lag[av_1 + bv_2] = \begin{pmatrix}
+		av_1 + bv_2\\
+		-(av_1 + bv_2)
+		\end{pmatrix}
+		= 
+		a\begin{pmatrix}
+		v_1\\-v_1
+		\end{pmatrix}+
+		b\begin{pmatrix}
+		v_2\\-v_2
+		\end{pmatrix}
+		=
+		a\lag[v_1] + b\lag[v_2],
+		\end{align*}
+		where the second equality follows from the fact that $\W$ is a subspace. Therefore, $\lag$ is a linear function.\\
+		
+		\noindent Now, $\lag$ is surjective, by definition:
+		\begin{align*}
+		\Im(\lag) = \left\{ \begin{pmatrix}
+		v\\-v
+		\end{pmatrix}\bigg\vert\, v \in \V \right\} = \W.
+		\end{align*}
+		$\lag$ is also injective, since $\ker(\lag) = \mathbf{0}_V$:
+		\begin{align*}
+		\lag[v] = \mathbf{0}_\W \iff 
+		\begin{pmatrix}
+		v\\-v
+		\end{pmatrix}
+		= \mathbf{0}_\W
+		=
+		\begin{pmatrix}
+		\mathbf{0}_\V\\
+		\mathbf{0}_\V
+		\end{pmatrix}
+		\iff v = \mathbf{0}_\V.
+		\end{align*}
+		Therefore, $\lag$ is an isomorphism. It follows that $\V \sim \W \iff \dim(V) = \dim(W)$.
+	\end{sln*}
+\end{prob*} 
+
+\newpage
+
+
+
+
+
+\begin{prob*} Prelim. 1.2.
+	Argue that $\V + \{ \mathbf{0}_\W \} = \V$, for any subspace $\V$ of a vector space $\W$. 
+	\begin{sln*}
+		$\,$\\\\
+		We shall first argue that $\mathbf{0}_\W = \mathbf{0}_\V$. Let $v_+ \in \V$ be given, and let the unique additive antipodal element of $v_+$ be $v_- \in \V$. Because $\V$ is a subspace of $\W$, $v_+\in \W$ and $v_- \in \W$,
+		\begin{align*}
+		\mathbf{0}_\V = v_+ \stackrel{\tiny\V}{+} v_- = v_+ \stackrel{\tiny\W}{+} v_- = \mathbf{0}_\W.
+		\end{align*}
+		Therefore, $\{\mathbf{0}_\W \} = \{ \mathbf{0}_\V\}$. It then follows that 
+		\begin{align}
+		\V + \{ \mathbf{0}_\W\} = \V + \{\mathbf{0}_\V \}. 
+		\end{align}
+		Now, it suffices to show that (i) $\V$ is a subspace of $\V + \{ \mathbf{0}_\V\}$ and (ii) $\V + \{\mathbf{0}_\V\}$ is a subspace of $\V$.\\
+		
+		\noindent Consider $v \in \V$. It follows trivially that $v \in \V + \{\mathbf{0}_\V \}$, so $\V \subseteq \V + \{\mathbf{0}_\V \}$. But because both $\V$ and $\V + \{\mathbf{0}_\V \}$, $\V$ is a subspace of $\V + \{\mathbf{0}_\V \}$. Hence (i) is true.\\
+		
+		\noindent Consider $v_0 \in \V + \{\mathbf{0}_\V \}$, then for some $a_v, a_0 \in \mathbb{C} $, $v_\V \in \V$, and $v_\mathbf{0} \in \{\mathbf{0}_\V\}$,
+		\begin{align*}
+		v_0 = a_v v_\V + a_0v_\mathbf{0}. 
+		\end{align*} 
+		But $v_\mathbf{0}$ is identically $\mathbf{0}_\V$, so
+		\begin{align*}
+		v_0 = a_v v_\V + a_0\mathbf{0}_\V = a_v v_\V \in \V, 
+		\end{align*}
+		which implies $\V+\{ \mathbf{0}_\V\} \subseteq \V$. Therefore $\V+\{ \mathbf{0}_\V\}$ is a subspace of $\V$, i.e., (ii) is true. \\
+		
+		\noindent Hence, by Eq. (1), facts (i), and (ii), 
+		\begin{align*}
+		\V + \{\mathbf{0}_\V\} = \V.
+		\end{align*}
+	\end{sln*}
+\end{prob*}
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{prob*} 1. Suppose that $\V_1, \V_2\,\dots,\V_{315}$ are subspaces of a vector space $\W$. Argue that the following claims are equivalent. 
+	\begin{enumerate}
+		\item The subspace sum $\V_1 + \V_2 + \dots + \V_{315}$ is direct. 
+		\item If $x_i \in \V_i$ and 
+		\begin{align*}
+		x_1 + x_2 + \dots + x_{315} = \mathbf{0}_\W,
+		\end{align*}
+		then $x_i = \mathbf{0}_\W$ for every $i$.
+		\item For any $i$, no non-null element of $\V_i$ can be express as a sum of the elements of the other $V_j$'s.
+		\item For any $i$, no non-null element of $\V_i$ can be expressed as a sum of the elements of the preceding $V_j$'s. 
+	\end{enumerate}
+	\begin{sln*}
+		It suffices to show $1\iff 2 \iff 3\iff 4$.
+		\begin{itemize}
+			\item ($1\implies 2$) If $\V_1 + \V_2 + \dots + \V_{315}$ is a direct sum, then by definition the only way to write
+			\begin{align}
+			\mathbf{0}_\W = x_1 + x_2 + \dots + x_{315},
+			\end{align}
+			where $x_i \in \V_i$, is by requiring $x_i = \mathbf{0}_\W$ for all $i$. In other words, taking all $x_i = \mathbf{0}_\W$ for all $i$ is the \textit{one and only way} to satisfy Eq. (2) because $\V_1 + \V_2 + \dots + \V_{315}$ is a direct sum.
+			
+			\item ($2\implies 1$) Let $a,b \in \V_1 + \V_2 + \dots + \V_{315}$ be given such that
+			\begin{align}
+			\hat{h} = x_1 + x_2 + \dots + x_{315} = y_1 + y_2 + \dots + y_{315} ,
+			\end{align}
+			where $x_i, y_i \in \V_i$. It suffices to show $x_i = y_i$, i.e, any representation of $\hat{h}$ as Eq. (3) is unique. Consider 
+			\begin{align*}
+			\mathbf{0}_\W = \hat{h} - \hat{h} = (x_1 - y_1) + (x_2 - y_2) + \dots + (x_{315} - y_{315})
+			\end{align*}
+			By assuming the second statement and the fact that $x_i, y_i \in \V_i$, $x_i = y_i$ for all $i$. Therefore, any representation of $\hat{h}$ is unique, as desired by the first statement. 
+			\item ($3\implies 2$) Suppose that the second statement is incorrect. Without loss of generality, suppose that for $i=1$, $\mathbf{0}_\W \neq x_1 \in \V_1$
+			\begin{align*}
+			x_1 + x_2 + \dots + x_{315} = \mathbf{0}_\W.
+			\end{align*}
+			It immediately follows that
+			\begin{align*}
+			x_1 = -(x_2 + x_3+\dots + x_{315})\neq \mathbf{0}_\W,
+			\end{align*}
+			which implies the third statement is also incorrect. By contraposition, $3\implies 2$.
+			\item ($2\implies 3$) Suppose that $x_1 = -x_2 \neq \mathbf{0}_\W$, $x_1 \in \V_1$, $x_2\in \V_2$. Then with $x_j = \mathbf{0}_\W$ for all $j=3,4,\dots,315$,
+			\begin{align*}
+			x_1 + x_2 + x_3 + \dots + x_{315} &= x_1 -x_1 + x_3 + \dots + x_{315}\\
+			&= x_3 + \dots + x_{315}\\
+			&=\mathbf{0}_\W.
+			\end{align*}
+			But $x_1 = -x_2 \neq \mathbf{0}_\W$. Therefore the second statement no longer holds. By contraposition, it implies the third statement. 
+			\item ($3\iff 4$) This is evidently true since ``sum of the elements of the preceding $\V_j$'' is a subset of ``sums of the elements of the other $\V_j$'s.'' Conversely, if no non-null element of $\V_i$ can be expressed as a sum of the elements of the preceding $\V_j$'s, then the third statement is also true. (Imagine going through an ordered list, checking for a counter example, and not succeeding). 
+		\end{itemize}
+	\end{sln*}
+\end{prob*}
+
+\newpage
+
+\begin{prob*} 2. \textbf{Sub-sums of direct sums are direct: }\\
+	
+	\noindent Suppose that $\V_1, \V_2,\dots, \V_{315}$ are subspaces of a vector space $\W$, and the subspace sum $\V_1+\V_2+\dots+\V_{315}$ is direct.
+	\begin{enumerate}
+		\item Suppose that for each $i$, $\Z_i$ is a subspace of $V_i$. Argue that the subspace sum $\Z_1 + \Z_2 + \dots \Z_{315}$ is direct. 
+		\item Argue that the sum $\V_2 + \V_5 + \V_7 + \V_{12}$ is also direct. 
+	\end{enumerate}
+	\begin{sln*}
+		$\,$
+		\begin{enumerate}
+			\item By the previous problem, because $\V_1+\V_2+\dots+\V_{315}$ is direct, for any $i$, no non-null element of $\V_i$ can be expressed as a sum of the elements of the other $\V_j$'s. Since $\Z_i$ is a subspace of $\V_i$, no $\mathbf{0}_\W \neq z_i\in \Z_i \prec \V_i$ can be expressed as a sum of the elements of the other $\Z_j$'s $\prec \V_j$'s. Hence, the subspace sum $\Z_1 + \Z_2 + \dots \Z_{315}$ is also direct.
+			\item This is true by (1). Since each $\V_j$ is a subspace of itself, the subspace sum of distinct $\V_j$'s is direct. Therefore, the sum $\V_2 + \V_5 + \V_7 + \V_{12}$ is direct.
+		\end{enumerate}
+	\end{sln*}
+\end{prob*}
+
+\newpage
+
+\begin{prob*} 3. \textbf{Associativity of directness of subspace sums:} Suppose that 
+	\begin{align*}
+	\Y, \V_1, \V_2, \dots, \V_5, \U_1, \U_2, \dots, \U_{12},\Z_1,\Z_2,\dots,\Z_4, \X_1, \X_2, \dots,\X_{53}
+	\end{align*}
+	are subspaces of a vector space $\W$. Argue that the following claims are equivalent. 
+	\begin{enumerate}
+		\item The subspace sum 
+		\begin{align*}
+		\Y+ \V_1+ \V_2+\dots+ \V_5+ \U_1+ \U_2+ \dots\\+ \U_{12}+\Z_1+\Z_2+\dots+\Z_4+ \X_1+ \X_2+ \dots+\X_{53}
+		\end{align*}
+		is direct. 
+		\item The subspace sums
+		\begin{align*}
+		&\left[\V :=  \right] \V_1 +\V_2 + \dots + \V_5\\
+		&\left[\U :=  \right] \U_1 +\U_2 + \dots + \U_{12}\\
+		&\left[\Z :=  \right] \Z_1 +\Z_2 + \dots + \Z_4\\
+		&\left[\X :=  \right] \X_1 +\X_2 + \dots + \X_{53}\\
+		&\Y + \V + \U + \X + \Z
+		\end{align*}
+		are all direct. 
+	\end{enumerate}
+	\begin{sln*}
+		$\,$
+		\begin{enumerate}
+			\item ($1\implies 2$) If the subspace sum 
+			\begin{align*}
+			\Y+ \V_1+ \V_2+\dots+ \V_5+ \U_1+ \U_2+ \dots\\+ \U_{12}+\Z_1+\Z_2+\dots+\Z_4+ \X_1+ \X_2+ \dots+\X_{53}
+			\end{align*}
+			is direct, then by part 2 the previous problem, the subspace sums
+			\begin{align*}
+			&\left[\V :=  \right] \V_1 +\V_2 + \dots + \V_5\\
+			&\left[\U :=  \right] \U_1 +\U_2 + \dots + \U_{12}\\
+			&\left[\Z :=  \right] \Z_1 +\Z_2 + \dots + \Z_4\\
+			&\left[\X :=  \right] \X_1 +\X_2 + \dots + \X_{53}\\
+			&\Y + \V + \U + \X + \Z
+			\end{align*}
+			are all direct.
+			
+			\item ($2\implies 1$) This follows trivially because the subspace sum
+			\begin{align*}
+			\Y \oplus \V \oplus \U \oplus \X \oplus \Z
+			\end{align*}
+			can be written as 
+			\begin{align}
+			\Y\oplus \left(\V_1\oplus \V_2\oplus\dots\oplus \V_5\right)\oplus \left(\U_1\oplus \U_2\oplus \dots\oplus \U_{12}\right)\nonumber\\\oplus\left(\Z_1\oplus\Z_2\oplus\dots\oplus\Z_4\right)\oplus \left(\X_1\oplus \X_2\oplus \dots\oplus\X_{53}\right).
+			\end{align}
+			Because vector space addition is associative, (4) is equivalent to saying the subspace sum in the first statement is direct. 
+		\end{enumerate}
+	\end{sln*}
+\end{prob*}
+
+\newpage
+
+\begin{prob*} 4. \textbf{Direct sums preserve linear independence:} Suppose that $\U,\V,\W$ are subspaces of a vector space $\Z$, and the sum $\U,\V,\W$ is direct. 
+	\begin{enumerate}
+		\item Suppose that $U_1,U_2,\dots,U_{13}$ is a linearly independent list in $\U$, $V_1,V_2,\dots,V_{6}$ is a linearly independent list in $\V$, and $W_1,W_2,\dots,W_{134}$ is a linearly independent list in $\W$. Argue that the concatenated list 
+		\begin{align*}
+		U_1,U_2,\dots,U_{13},V_1,V_2,\dots,V_{6},W_1,W_2,\dots,W_{134}
+		\end{align*}
+		is linearly independent. 
+		\item Suppose that $U_1,U_2,\dots,U_{13}$ is a basis of $\U$, $V_1,V_2,\dots,V_{6}$ is a basis of $\V$, and $W_1,W_2,\dots,W_{134}$ is a basis of $\W$. Argue that the concatenated list
+		\begin{align*}
+		U_1,U_2,\dots,U_{13},V_1,V_2,\dots,V_{6},W_1,W_2,\dots,W_{134}
+		\end{align*}
+		is a basis of $\U \oplus \V \oplus \W$.
+	\end{enumerate}
+	\begin{sln*}
+		$\,$
+		\begin{enumerate}
+			\item It suffices to consider a linearly independent $U_1\in \U$ and $\V$. Since $\U +\V +\W$ is a direct sum, by the previous problem, $\U + \V$ is a direct sum. Therefore, $U_1\neq \mathbf{0}_\Z$ cannot be expressed as a sum of the elements of $\V$. Therefore, $U_1$ is linearly independent of all $V_i$'s $\in \V$. The same is true with regards to $U_1$ and all $W_i$'s $\in \W$.\\
+			
+			\noindent It follows, without loss of generality, that if $U_1,U_2,\dots,U_{13}$ is a linearly independent list in $\U$, $V_1,V_2,\dots,V_{6}$ is a linearly independent list in $\V$, and $W_1,W_2,\dots,W_{134}$ is a linearly independent list in $\W$, then the list
+			\begin{align*}
+			U_1,U_2,\dots,U_{13},V_1,V_2,\dots,V_{6},W_1,W_2,\dots,W_{134}
+			\end{align*}
+			is linearly independent.
+			\item Since $U_1,U_2,\dots,U_{13}$ is a basis of $\U$, $V_1,V_2,\dots,V_{6}$ is a basis of $\V$, and $W_1,W_2,\dots,W_{134}$ is a basis of $\W$, the concatenated list
+			\begin{align*}
+			U_1,U_2,\dots,U_{13},V_1,V_2,\dots,V_{6},W_1,W_2,\dots,W_{134}
+			\end{align*}
+			is linearly independent. It, then, suffices to show that the concatenated list spans $\U \oplus \V \oplus \W$. \\
+			
+			Consider $H \in \U \oplus \V \oplus \W$, $H$ can be written as
+			\begin{align*}
+			H = u_h U_h + v_h V_h + w_h W_h,
+			\end{align*}
+			where $u_h,v_h,w_h \in \mathbb{C}, U_h \in \U, V_h\in\V, W_h\in\W$. Now, $U_h$ can be written as a linear combination of $U_1,U_2,\dots,U_{13}$ because $U_1,U_2,\dots,U_{13}$ form a basis of $\U$. Similarly, $V_h, W_h$ can also be written as linear combination of basis elements of their respective subspaces. It follows that $H$ can be expressed as a linear combination of the given concatenated list, i.e, the concatenated list spans $\U \oplus \V \oplus \W$.\\
+			
+			Therefore, the concatenated list
+			\begin{align*}
+			U_1,U_2,\dots,U_{13},V_1,V_2,\dots,V_{6},W_1,W_2,\dots,W_{134}
+			\end{align*}
+			is a basis of $\U \oplus \V \oplus \W$.
+		\end{enumerate}
+	\end{sln*}
+\end{prob*}
+
+\newpage
+
+\begin{prob*} 5. Suppose that $x_1, x_2,\dots,x_{14}$ are non-null elements of a linear space $\W$. 
+	\begin{enumerate}
+		\item Argue that the following claims are equivalent. 
+		\begin{enumerate}
+			\item $x_1, x_2,\dots,x_{14}$ are linearly independent. 
+			\item The subspace sum 
+			\begin{align*}
+			\xpan(x_1) + \xpan(x_2) + \dots + \xpan(x_{14})
+			\end{align*}
+			is direct. 
+		\end{enumerate}
+		\item Argue that the following claims are equivalent.
+		\begin{enumerate}
+			\item $x_1, x_2,\dots,x_{14}$  is a basis of $\W$.
+			\item $\W = \xpan(x_1) \oplus \xpan(x_2) \oplus \dots \oplus \xpan(x_{14})$
+		\end{enumerate}
+	\end{enumerate}
+	\begin{sln*}
+		$\,$
+		\begin{enumerate}
+			\item 
+			\begin{enumerate}
+				\item ($a\implies b$) If $x_1, x_2,\dots,x_{14}$ are linearly independent, then any $x_i$ is neither null nor can be expressed as a linear combination of the other $x_j$'s. Therefore, no non-null $x_i \in \xpan(x_i)$ can be written as a sum of other $x_j$'s $\in \xpan(x_j)$. This is equivalent to 
+				\begin{align*}
+				\xpan(x_1) + \xpan(x_1) + \dots + \xpan(x_{14})
+				\end{align*}
+				being direct. 
+				\item ($b\implies a$) The subspace sum 
+				\begin{align*}
+				\xpan(x_1) + \xpan(x_2) + \dots + \xpan(x_{14})
+				\end{align*}
+				being direct implies that no non-null $x_i \in \xpan(x_i)$ can be written as a sum of other $x_j$'s $\in \xpan(x_j)$. Therefore, the list $x_1, x_2, \dots, x_{14}$ is linearly independent.  
+			\end{enumerate}
+			\item Because $x_i$ is a basis of $\xpan(x_i)$, by the previous problem, the concatenated list $x_1,x_2,\dots,x_{14}$ is a basis of $\xpan(x_1)\oplus\xpan(x_2)\oplus\dots\oplus\xpan(x_{14})$. (${\dagger}$)
+			\begin{enumerate}
+				\item ($a\implies b$) Let $w\in\xpan(x_1)\oplus\xpan(x_2)\oplus\dots\oplus\xpan(x_{14})$ be given, then by ($\dagger$), $w$ can be expressed as a combination of the $x_i$'s, where $x_i\in\xpan(x_i)$. But this is equivalent to $w\in\W$ because $x_1,x_2,\dots,x_{14}$ is a basis of $\W$. Therefore, $\W = \xpan(x_1)\oplus\xpan(x_2)\oplus\dots\oplus\xpan(x_{14})$.
+				\item ($b\implies a$) It follows from fact ($\dagger$) that if $\W = \xpan(x_1) \oplus \xpan(x_2) \oplus \dots \oplus \xpan(x_{14})$, then $x_1, x_2,\dots,x_{14}$  is a basis of $\W$.
+			\end{enumerate}
+		\end{enumerate}
+	\end{sln*}
+\end{prob*}
+
+\newpage
+
+\subsection{Problem set 2}
+\newpage
+\subsection{Problem set 3}
+\newpage
+
 
 \end{document}
