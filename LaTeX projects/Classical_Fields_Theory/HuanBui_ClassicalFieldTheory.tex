@@ -98,6 +98,64 @@ Enjoy!
 \end{enumerate}
 
 \newpage
+\section{Introduction to the Lagrangian and the Principle of Least Action}
+\begin{prop}
+	All fundamental physics obeys least action principles.
+\end{prop}
+The action $S$ is defined as
+\begin{align*}
+S = \int_{a}^{b}\mathcal{L}\,dt.
+\end{align*}
+where $\mathcal{L}$ is called the Lagrangian.\\
+
+Refer for Farlow's \textit{Partial Differential Equation}, page 353, for detailed explanation of Lagrange's calculus of variations.\\
+
+I will derive the Euler-Lagrange equation(s) here, but we are not going to use it in the following subsection for the introduction to field theory for now. \\
+\begin{align*}
+\frac{\partial \mathcal{L}}{\partial \phi} - \partial_\mu\frac{\partial \mathcal{L}}{\partial(\partial_\mu \phi)} = 0.
+\end{align*}
+\subsection{A Classical-Mechanical Example}
+In this subsection we take a look at how the Lagrangian formulation of classical mechanics can give rise to Newton's second law of motion. In mechanics, the Lagrangian often takes the form:
+\begin{align}
+\mathcal{L} = K - V,
+\end{align}
+where $K$ is the kinetic energy, and $V$ is the potential energy. Let us consider a simple example where
+\begin{align*}
+K &= \frac{1}{2}m\dot{x}^2\\
+V &= V(x).
+\end{align*}
+Variations on the Lagrangian gives
+\begin{align*}
+\delta \mathcal{L} &= \delta\left( \frac{1}{2}m\dot{x}^2 - V(x) \right)\\
+&= m\dot{x}\delta \dot{x} - \frac{dV}{dx}\delta x\\
+&= m\dot{x}\dot{\delta x} - \frac{dV}{dx}\delta x\\
+&= m \left( -\ddot{x}\delta x + \frac{d}{dt}\dot{x}\delta x \right) - \frac{dV}{dx}\delta x\\
+&= -m\ddot{x}\delta x - m\frac{d}{dt}\dot{x}\delta x - \frac{dV}{dx}\delta x. 
+\end{align*}
+It follows that the variations on the action gives
+\begin{align*}
+\delta S = \int_{a}^{b}\delta L \,dt = -\int_a^b\left( m\ddot{x} + \frac{dV}{dx} \right)\delta x\,dt.
+\end{align*}
+The principle of least action requires $\delta S = 0$ for all $\delta x$. Therefore it follows that
+\begin{align*}
+m\ddot{x} + \frac{dV}{dx} = 0,
+\end{align*}
+which is simply Newton's second law of motion in disguise. \\
+
+Before we move on, we should note that in order for the Lagrangian formulation to work in electromagnetism or in general relativity, we need to promote the Lagrangian to its relativistic version where the Lagrangian is given by
+\begin{align*}
+L = \int_a^b\mathcal{L}\,d^3x.
+\end{align*}
+$\mathcal{L}$ is called the Lagrangian density, but we can colloquially refer to it as ``the Lagrangian.'' The relativistic action hence takes the form
+\begin{align*}
+S = \int \mathcal{L}\,d^4x,
+\end{align*}
+where $d^4x$ implies integrating over all spacetime.
+
+\subsection{Introduction to Fields}
+In field theory, most physical objects are described as ``fields.'' Let us dive into the first two fields that we are more or less familiar with: scalar fields and vector fields. 
+
+\newpage
 \section{Gauge Invariance}
 \subsection{Introduction}
 From studying Maxwell's equations, we know that there is more than one way to choose a vector potential $A_\mu$ that describes the same electromagnetic field. This freedom is called \textit{gauge invariance}. We will explore the idea of gauge invariance  in the context of a continuous symmetry of the Lagrangian, which leads to the conservation of electric charge and other important consequences under Noether's theorem.\\
@@ -228,80 +286,137 @@ It is in fact possible for us to guess Maxwell's equations from a gauge principl
 \end{align*}
 which can be readily verified to be invariant under the global phase rotation:
 \begin{align*}
-\psi(x) \to e^{i\theta}\psi(x)
+\psi(x) \to e^{i\theta}\psi(x).
 \end{align*}
+This result implies that there is no such thing as ``the absolute phase.'' Rather, the only thing we can measure is the \textit{relative phase} between wavefunctions, which is unaffected by global rotation.\\
+
+Now, what about local rotation $e^{i\alpha(x)}$? Are we free to choose different phase conventions at different locations? Can quantum mechanics be formulated such that it is invariant under \textit{local}, i.e., spatio-dependent phase rotations
+\begin{align*}
+\psi \to e^{i\alpha(x)}\psi?
+\end{align*}
+The answer turns out to be yes, and we shall explore how this is done. Consider the same local transformation. Since the Schr\"odinger equation involves the derivatives of $\psi$, we should consider how it transforms:
+\begin{align*}
+\p_\mu \psi(x) \to \p_\mu \psi' &= \p_\mu\left(e^{i\alpha(x)}\psi(x)\right)\\
+&= i\left(\p_\mu\alpha(x)\right)\left(e^{i\alpha(x)}\psi(x)\right) + 
+e^{i\alpha(x)}\p_\mu\psi(x)\\
+&= e^{i\alpha(x)}\left[\p_\mu \psi(x) + i(\p_\mu \alpha(x))\psi(x) \right].
+\end{align*}
+So there is an additional gradient term apart from just the phase change as we have seen before. The problem here is that our current notion of the derivation is not \textit{gauge-covariant}, just like how the ``normal'' derivative does not work in curved spacetime and has to be replaced by covariant derivative in general relativity. The same thing is happening here, and the ``fix'' is also the same. We shall change our notion of the derivative and define a new, \textit{gauge covariant} one as
+\begin{align*}
+D_\mu \equiv \p_\mu + ieA_\mu
+\end{align*}
+such that
+\begin{align*}
+D_\mu\psi(x) \to D_\mu \psi'(x) = e^{i\alpha(x)}D_\mu \psi(x).
+\end{align*}
+To find how $A_\mu$ transforms (it should because it acts like the Christoffel symbol in general relativity, connecting the coordinate systems), we let $D_\mu$ act on $\psi(x)$ in their respective frames, and require that
+\begin{align*}
+D'_\mu\psi'(x') = e^{i\alpha(x)}D_\mu\psi(x).
+\end{align*} 
+First, we look at the rotated frame:
+\begin{align*}
+D'_\mu\psi'(x') &= \left( \p_\mu + ieA'_\mu \right)\psi(x) e^{i\alpha(x)}\\
+&= \p_\mu \left(\psi(x) e^{i\alpha(x)} \right) + ieA'_\mu\psi(x) e^{i\alpha(x)}\\
+&= e^{i\alpha(x)}\p_\mu\psi(x) + \psi(x) \left(\p_\mu e^{i\alpha(x)} \right) + ieA'_\mu \psi(x) e^{i\alpha(x)}\\
+&= e^{i\alpha(x)}\left( \p_\mu \psi(x) + i\psi(x)\p_\mu \alpha(x) + ie A'_\mu \psi(x) \right).
+\end{align*}
+Next, we look at the original frame:
+\begin{align*}
+D_\mu \psi(x) &= \left(\p_\mu + ieA_\mu \right)\psi(x)\\
+&= \p_\mu\psi(x) + ieA_\mu \psi(x).
+\end{align*}
+Since $D'\psi'(x') = e^{i\alpha(x)}D_\mu\psi(x)$,
+\begin{align*}
+\p_\mu\psi(x) + ieA_\mu \psi(x) &= \p_\mu \psi(x) + i\psi(x)\p_\mu \alpha(x) + ie A'_\mu \psi(x)\\
+ieA_\mu &= i\p_\mu \alpha(x) + e A'_\mu.
+\end{align*}
+Therefore, the transformation rule for $A_\mu$ must be
+\begin{align*}
+A'_\mu = A_\mu - \frac{1}{e}\p_\mu\alpha(x).
+\end{align*}
+This transformation rule has exactly the same form of a gauge transformation in electrodynamics, which we have discussed in the previous subsection
+\begin{align*}
+A_\mu \to A_\mu + \p_\mu \Lambda.
+\end{align*} 
+In fact, $A_\mu$ is the electromagnetic field 4-vector. Now, while the form is the same, there is an additional coupling constant $e$, which is the charge in natural units of the particle described by $\psi(x)$. Therefore, the form of the coupling $D_\mu\psi(x)$ between the electromagnetic field and matter is suggested, if not uniquely dictated, by local phase invariance. 
+
+
 
 \subsection{Significance of Potentials in Quantum Theory}
-Recall the Schr\"ondinger equation:
+In this subsection, we will look at the role of the vector potential $A_\mu$ in quantum mechanics, specifically quantum-mechanical interference phenomena. First, we will briefly discuss the Aharonov-Bohm effect. Second, we will show that the vector potential, though regarded as a purely mathematical devide which lacks physical significance, does play a role in quantum mechanics. Third, we will learn a little bit about path-dependent phase factors in quantum mechanics. 
+\subsubsection{The Aharonov-Bohm Effect \& The Physical Vector Potential}
+The Ahanorov-Bohm effect shows that the vector potential is not just a mathematical construct to simplify calculations and that it does not have any physical significance. In 1959, Aharonov and Bohm proposed an experiment to resolve the question of the physical significance of the vector potential. The gist of the effect is that fact that wavefunctions of quantum mechanical objects acquire additional phase when traveling through space with no electromagnetic fields, only potentials. To show this, we first recall the Schr\"ondinger equation for a free particle:
 \begin{align*}
 -\frac{\hbar^2}{2m}\nabla^2 \psi^0 = i\hbar \frac{\p \psi^0}{\p t}.
 \end{align*}
+In the presence of a vector potential, the Schr\"odinger equation becomes
+\begin{align*}
+\frac{(-i\hbar\nabla - e\mathbf{A})^2}{2m} \psi(x) = i\hbar \frac{\p \psi(x)}{\p t}.
+\end{align*}
+The solution to this new Schr\"odinger is
+\begin{align*}
+\psi(\mathbf{x},t) = \psi^0(\mathbf{x},t)e^{\frac{iS}{\hbar}}
+\end{align*}
+where
+\begin{align*}
+S = e\int \mathbf{A}\,d\mathbf{x}
+\end{align*}
+is a line integral of $\mathbf{A}$ along the trajectory of the particle. Now, recall that
+\begin{align*}
+\curl{\mathbf{A}} = \mathbf{B},
+\end{align*}
+which means it is possible to have $\mathbf{A} \neq 0$ but $\mathbf{B} = 0$. So, if we allow particles to move in a potential, say around a vertical rod with a solenoidal $\mathbf{A}$, even without the magnetic field, there will be a phase difference between particles that go \textit{along} $\mathbf{A}$ and those that go \textit{against} $\mathbf{A}$. This creates a phase shift between the wavefunctions, giving rise to interference that can be shifted by turning on and off the magnetic field. We can argue this rigorously as follows. Let
+\begin{align*}
+\psi^0(\mathbf{x},t) = \psi_1^0(\mathbf{x},t) + \psi_2^0(\mathbf{x},t)
+\end{align*}
+represent the wavefucntion in the absence of a vector potential, where $\psi^0_1$ and $\psi^0_2$ denote the components of the beam that pass on the right or left of the solenoid:
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.75]{bohm.png}
+\end{figure}
+When we turn the current on, there is a magnetic field $\mathbf{B}$ confined within the solenoid, i.e., there is no lateral magnetic field $\mathbf{B}$ on the side of the solenoid. So, according to the figure, electrons pass through a magnetic-field-free region before landing on the detector sheet. However, there exists a vector potential $\mathbf{A}$ outside of the solenoid, as the curl of $\mathbf{A}$ has to be such that the produced magnetic field $\mathbf{B}$ is contained within the coil. This can be illustrated mathematically by Stokes' theorem:
+\begin{align*}
+\int_D \mathbf{B}\cdots \,d\mathbf{\sigma} = \int_{\sigma D}\mathbf{A}\cdot\,d\mathbf{x}.
+\end{align*}
+The perturbed wavefunction as a result of passing through this region is
+\begin{align*}
+\psi = \psi^0_1 e^{iS_1\hbar} + \psi^0_2 e^{iS_2/\hbar}
+\end{align*}
+where 
+\begin{align*}
+S_i = e\int_{\text{path } i}\mathbf{A}\cdot\,d\mathbf{x}.
+\end{align*}
+It is clear now that the two components of the perturbed wavefunction has a phase difference of
+\begin{align*}
+\phi = \frac{S_1-S_2}{\hbar} = \frac{e}{\hbar}\oint \mathbf{A}(\mathbf{x})\cdot\, d\mathbf{x} = \frac{e}{\hbar}\oint A^\mu\,dx_\mu,
+\end{align*}
+which is dependent on the vector potential $\mathbf{A}$. Therefore, there is a physical effect from $\mathbf{A}$ even though the electrons do not experience any electromagnetic force. 
+
+\subsubsection{Path-dependent Phase Factors}
+Results from the Aharonov-Bohm experiment showed that knowing the electromagnetic field strength tensor $F^{\mu\nu}$ is not enough to determine all electrodynamic phenomena in quantum mechanics. In fact, a phase factor of the form
+\begin{align*}
+e^{\frac{-ie}{\hbar}\oint A^\mu\,dx_\mu}
+\end{align*}
+must be known in order to give correct predictions. Notice that the given integral is path-dependent line integral. 
+
 \subsection{Phase Invariance in Field Theory}
+Consider the Lagrangian for the free complex scalar field: 
+\begin{align*}
+\lag = \vert \p^\mu \phi \vert^2 = m^2\vert \psi \vert^2 
+\end{align*}
+
+\begin{align*}
+(\square + m^2)\phi(x) &= 0\\
+(\square + m^2)\phi^*(x) &= 0
+\end{align*}
+
 \subsection{Feynman Rules for Electromagnetism}
 
 
 
 
 \newpage
-\section{Overview of Lagrangian Formulation of Classical Mechanics}
-\newpage
-\section{Lagrangian Formulation in Field Theory}
-\begin{prop}
-	All fundamental physics obeys least action principles.
-\end{prop}
-The action $S$ is defined as
-\begin{align*}
-S = \int_{a}^{b}\mathcal{L}\,dt.
-\end{align*}
-where $\mathcal{L}$ is called the Lagrangian.\\
-
-Refer for Farlow's \textit{Partial Differential Equation}, page 353, for detailed explanation of Lagrange's calculus of variations.\\
-
-I will derive the Euler-Lagrange equation(s) here, but we are not going to use it in the following subsection for the introduction to field theory for now. \\
-\begin{align*}
-\frac{\partial \mathcal{L}}{\partial \phi} - \partial_\mu\frac{\partial \mathcal{L}}{\partial(\partial_\mu \phi)} = 0.
-\end{align*}
-\subsection{A Classical-Mechanical Example}
-In this subsection we take a look at how the Lagrangian formulation of classical mechanics can give rise to Newton's second law of motion. In mechanics, the Lagrangian often takes the form:
-\begin{align}
-\mathcal{L} = K - V,
-\end{align}
-where $K$ is the kinetic energy, and $V$ is the potential energy. Let us consider a simple example where
-\begin{align*}
-K &= \frac{1}{2}m\dot{x}^2\\
-V &= V(x).
-\end{align*}
-Variations on the Lagrangian gives
-\begin{align*}
-\delta \mathcal{L} &= \delta\left( \frac{1}{2}m\dot{x}^2 - V(x) \right)\\
-&= m\dot{x}\delta \dot{x} - \frac{dV}{dx}\delta x\\
-&= m\dot{x}\dot{\delta x} - \frac{dV}{dx}\delta x\\
-&= m \left( -\ddot{x}\delta x + \frac{d}{dt}\dot{x}\delta x \right) - \frac{dV}{dx}\delta x\\
-&= -m\ddot{x}\delta x - m\frac{d}{dt}\dot{x}\delta x - \frac{dV}{dx}\delta x. 
-\end{align*}
-It follows that the variations on the action gives
-\begin{align*}
-\delta S = \int_{a}^{b}\delta L \,dt = -\int_a^b\left( m\ddot{x} + \frac{dV}{dx} \right)\delta x\,dt.
-\end{align*}
-The principle of least action requires $\delta S = 0$ for all $\delta x$. Therefore it follows that
-\begin{align*}
-m\ddot{x} + \frac{dV}{dx} = 0,
-\end{align*}
-which is simply Newton's second law of motion in disguise. \\
-
-Before we move on, we should note that in order for the Lagrangian formulation to work in electromagnetism or in general relativity, we need to promote the Lagrangian to its relativistic version where the Lagrangian is given by
-\begin{align*}
-L = \int_a^b\mathcal{L}\,d^3x.
-\end{align*}
-$\mathcal{L}$ is called the Lagrangian density, but we can colloquially refer to it as ``the Lagrangian.'' The relativistic action hence takes the form
-\begin{align*}
-S = \int \mathcal{L}\,d^4x,
-\end{align*}
-where $d^4x$ implies integrating over all spacetime.
-
-\subsection{Introduction to Fields}
-In field theory, most physical objects are described as ``fields.'' Let us dive into the first two fields that we are more or less familiar with: scalar fields and vector fields. 
-
+\section{Lagrangian Field Theory in Flat Spacetime}
 \subsection{Real Scalar Fields}
 A scalar field can be used to describe particles of spin 0. A scalar field has only one component, or one degree of freedom, making it the ``simplest case'' of the fields we will discuss. Let us now consider a moving field in one dimension, which has the form
 \begin{align*}
@@ -968,226 +1083,13 @@ So, the Lagrangian is no longer gauge-invariant. Therefore we claim that massive
 \end{align*}
 This also hints to us that mass comes from some mechanism that breaks gauge symmetry, which we will explore later on. 
 
-\subsection{Worked Problems}
-Consider the following Lagrangian
-\begin{align*}
-\lag = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu
-\end{align*}
-which describes a massive particle with a vector field.\\
-\begin{prob}
-	Verify that this Lagrangian does not have gauge symmetry under the gauge transformation $A_\mu \to A_\mu +\p_\mu \Lambda$, i.e. $\lag \not\to \lag$.\\
-	\begin{sln}
-	We simply brute force through the problem and show that $\lag' \neq \lag$, where:
-	\begin{align*}
-	\lag' = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A'_\mu A'^\mu.
-	\end{align*}
-	Note that even though $F^{\mu\nu}$ is defined in terms of $A_\mu$, $F_{\mu\nu}$ is invariant under the gauge transformation because it is the 4-dimensional curl of $A_\mu$. We can verify this fact later. Focusing only on the massive term in the new Lagrangian:
-	\begin{align*}
-	\lag' &= -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A'_\mu A'^\mu\\
-	&= -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} +\frac{1}{2}m^2(A_\mu + \p_\mu \Lambda)(A^\mu + \p^\mu \Lambda)\\
-	&= \lag + \frac{1}{2}m^2(A_\mu \p^\mu\Lambda + A^\mu \p_\mu \Lambda + \p_\mu\Lambda \p^\mu \Lambda)
-	\end{align*}
-	It is clear that our choice of the scalar field $\Lambda$ affects the form of the new Lagrangian. So, $\lag \neq \lag'$ in general. Therefore, the massive vector Lagrangian does not have gauge symmetry under the given gauge transformation.\\
-	
-	As an aside, we can verify that $F_{\mu\nu}\to F_{\mu\nu}$. The $F^{\mu\nu} \to F^{\mu\nu}$ identity will follow accordingly. 
-	\begin{align*}
-	F'_{\mu\nu} &= \p_\mu A'_\nu - \p_\nu A'_\mu\\
-	&= \p_\mu(A_\nu + \p_\nu\Lambda) - \p_\nu(A_\mu + \p_\mu\Lambda)\\
-	&= F_{\mu\nu} + \p_\mu \p_\nu \Lambda - \p_\nu \p_\mu\Lambda\\
-	&= F_{\mu\nu},
-	\end{align*}
-	where $\p_\mu \p_\nu \Lambda - \p_\nu \p_\mu\Lambda=0$ because $\Lambda$ is a scalar (this is also true by index-swapping). So the electromagnetic field tensor has gauge symmetry under the given gauge transformation. \\
-	\end{sln}
-\end{prob}
+\newpage
 
-\begin{prob}
-	Vary the action
-	\begin{align*}
-	S = \int \lag\,d^4x
-	\end{align*}
-	with respect to $A_\mu$ and show that the equations of motion are 
-	\begin{align*}
-	\square A - \p_\mu \p^\nu A_\nu + m^2A_\mu = 0.
-	\end{align*}
-	\begin{sln}
-		The Lagrangian is given by
-		\begin{align*}
-		\lag = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu.
-		\end{align*}
-		Varying the term with the electromagnetic field tensor gives
-		\begin{align*}
-		\delta\left(F^{\mu\nu}F_{\mu\nu} \right) 
-		&= 2\delta\left[\left( \partial^\mu A^\nu - \partial^\nu A^\mu  \right)\left( \partial_\mu A_\nu - \partial_\nu A_\mu \right)\right]\\
-		&= 2\delta\left( \partial^\mu A^\nu\,\partial_\mu A_\nu - \partial_\mu A_\nu\,\partial^\mu A^\nu\right)\\
-		&= 2\left( \partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
-		\partial^\mu A^\nu\,\partial_\mu\,\delta A_\nu - \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu - \partial_\mu  A_\nu\,\partial^\mu \,\delta A^\nu \right)\\
-		&= 2\left( 
-		\partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
-		\partial_\nu A_\mu\,\partial^\nu\,\delta A^\mu 
-		- \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu 
-		- \partial^\nu A^\mu\,\partial_\nu \,\delta A_\mu \right)\\
-		&= 4\left(\partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu
-		- \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu\right).
-		\end{align*}
-		Next, we integrate by parts to get the boundary terms (which will vanish when we vary the action):
-		\begin{align*}
-		\partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu &=  \partial^\nu(\partial_\mu A_\nu\,\delta A^\mu) -(\partial^\nu\partial_\mu A_\nu)\delta A^\mu = \partial_\mu(\partial^\nu A^\mu\,\delta A_\nu) -(\partial^\nu\partial_\mu A_\nu)\delta A^\mu
-		\\
-		\partial_\mu\,\delta A_\nu\partial^\mu A^\nu &= 
-		\partial_\mu (\partial^\mu A^\nu \,\delta A_\nu)
-		- \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu  =
-		\partial_\mu (\partial^\mu A^\nu \,\delta A_\nu) 
-		- \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu.
-		\end{align*}
-		This gives
-		\begin{align*}
-		\delta\left(-\frac{1}{4}F^{\mu\nu}F_{\mu\nu} \right) &= \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu - (\partial^\nu\partial_\mu A_\nu)\delta A^\mu\\ 
-		&= \left(\square A^\mu - \p^\mu\p^\nu A_\nu \right)\,\delta A_\mu\\
-		&= \left(\square A_\mu - \p_\mu \p^\nu A_\nu \right)\delta A^\mu
-		\end{align*}
-		Finally, we vary the term with the vector potential $A_\mu$ with respect to $A_\mu$:
-		\begin{align*}
-		\delta \left(\frac{1}{2}m^2 A_\mu A^\mu  \right) &= \frac{1}{2}m^2 \left( \delta A_\mu A^\mu + A_\mu \delta A^\mu \right)\\
-		&=  \frac{1}{2}m^2 \left( \delta A_\mu A^\mu + A^\mu \delta A_\mu \right)\\
-		&= \left(m^2 A^\mu\right)\delta A_\mu \\
-		&= \left(m^2 A_\mu\right)\delta A^\mu.
-		\end{align*}
-		Putting everything together, 
-		\begin{align*}
-		\delta \lag = \left(\square A_\mu - \p_\mu \p^\nu A_\nu m^2A_\mu \right)\delta A^\mu.
-		\end{align*}
-		Varying the action and requiring $\delta S = 0$ for all $\delta A^\mu$ forces $\delta \lag =0$. We arrive at the equations of motion
-		\begin{align*}
-		\square A_\mu - \p_\mu \p^\nu A_\nu +  m^2A_\mu = 0
-		\end{align*}
-		as desired.\\
-	\end{sln}
-\end{prob}
-
-\begin{prob}
-	Take $\p^\mu$ of the Lagrangian and show that it gives a constraint: $\p^\mu A_\mu = 0$. Use this to simplify the equations of motion to
-	\begin{align*}
-	\square A_\mu - m^2 A_\mu = 0.
-	\end{align*}
-	
-	\begin{sln}
-	The given Lagrangian has no $x^\mu$ dependence, so we expect $\p^\mu \lag = 0$. We will show that this adds a constraint to $A^\mu$.
-		\begin{align*}
-		\p^\mu\lag &= \p^\mu\left( -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu \right)\\
-		&= -\frac{1}{4}\,\p^\mu\left( F_{\mu\nu}F^{\mu\nu}\right) + \frac{1}{2}m^2\left(\p^\mu A_\mu A^\mu + A_\mu \p^\mu A^\mu \right)\\
-		&= -\frac{1}{2}\,\p^\mu\left(\partial^\mu A^\nu\,\partial_\mu A_\nu - \partial_\mu A_\nu\,\partial^\mu A^\nu \right) + m^2A^\mu\p^\mu A_\mu\\
-		&= -\frac{1}{2}\left[(\p^\mu\p^\mu A^\nu)(\p_\mu A_\nu) - (\p^\mu\p^\mu A^\nu)(\p_\mu A_\nu)\right.\\
-		&\left.\,\,\,\,\,\,\,\,\,\, + (\square A_\nu)( \p^\mu A^\nu) - (\square A_\nu)( \p^\mu A^\nu)   \right] + 
-		m^2A^\mu\p^\mu A_\mu.\\
-		&= m^2A^\mu\p^\mu A_\mu.
-		\end{align*}
-		Since $\p^\mu\lag = 0$, a massive $m\neq 0$ field is assumed, and $A^\mu$ is arbitrary, $\p^\mu A_\mu = 0$ must hold as desired. With this, the equations of motion become:
-		\begin{align*}
-		\square A_\mu +  m^2A_\mu = 0.
-		\end{align*}
-		Notice that the form of the equations of motion is exactly the same as that of the Klein-Gordon equation. 
-	\end{sln}
-\end{prob}
-
-\begin{prob}
-	Look for a solution of the form
-	\begin{align*}
-	A_\mu = \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}},
-	\end{align*}
-	where $\epsilon_\mu$ is the polarization vector, and show that it's a solution provided that
-	\begin{align*}
-	K^\mu K_\mu = m^2,
-	\end{align*}
-	i.e., the vector field is massive.\\
-	
-	\begin{sln}
-	We use the simplified equation of motion from the previous problem:
-	\begin{align*}
-	\square A_\mu + m^2 A_\mu &= \square\epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}} + m^2 \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}}\\
-	&= \epsilon_\mu\square e^{-iK_\alpha X^\alpha} + m^2 \epsilon_\mu e^{-iK_\alpha X^\alpha}\\
-	&= \epsilon_\mu\p^\beta (-iK_\alpha)e^{-iK_\alpha X^\alpha}\p_\beta X^\alpha + m^2 \epsilon_\mu e^{-iK_\alpha X^\alpha}\\
-	&= \epsilon_\mu(-iK_\beta)\eta^{\beta\gamma}\p_\gamma e^{-iK_\beta X^\beta} + m^2 \epsilon_\mu e^{-iK_\alpha X^\alpha}\\
-	&= A_\mu\left[  
-	(-iK_\beta)(-iK_\beta)\eta^{\beta\gamma}\delta^\beta_\gamma + m^2
-	\right]\\
-	&= A_\mu \left( - K_\beta K^\beta + m^2  \right)\\
-	&= 0.
-	\end{align*}
-	This means $A_\mu$ is a solution for any arbitrary $\epsilon_\mu$ if $K^\beta K_\beta = 0$, i.e., the vector field is massive. \\
-	\end{sln}
-\end{prob}
-
-\begin{prob}
-	Suppose that $K^\mu = (K^0,0,0,K^3)$, which denotes moving in the $z$-direction. Show that $\p^\mu A_\mu = 0$ implies 
-	\begin{align*}
-	\epsilon_0 = \frac{-K^3}{K^0}\epsilon_3
-	\end{align*}
-	or
-	\begin{align*}
-	\epsilon_\mu = \left(\frac{K^3}{K^0}\epsilon_3,\epsilon_1,\epsilon_2,\epsilon_3 \right)^\top.
-	\end{align*}
-	
-	\begin{sln}
-	We simply the requirement $\p^\mu A_\mu = 0$:
-	\begin{align*}
-	\p^\mu A_\mu &= \eta^{\mu\nu}\p_\nu A_\mu\\
-	&= \eta^{\mu\nu}\epsilon_\mu (-iK_\alpha)e^{-iK_\alpha X^\alpha}\p_\nu X^\alpha\\
-	&= \eta^{\mu\nu}\epsilon_\mu (-iK_\alpha)e^{-iK_\alpha X^\alpha}\delta^{\nu}_\alpha\\
-	&= -i K_\alpha \epsilon^\alpha e^{-iK_\alpha X^\alpha }\\
-	&= 0.
-	\end{align*}
-	This means $K_\alpha \epsilon^\alpha  = 0$. But since $K^\alpha = (K^0,0,0,K^3)$, we require that
-	\begin{align*}
-	\epsilon_0 K^0 = \epsilon_3 K^3,
-	\end{align*}
-	i.e., 
-	\begin{align*}
-	\epsilon_0 = \frac{-K^3}{K^0}\epsilon_3.
-	\end{align*}
-	So, 
-	\begin{align*}
-	\epsilon_\mu = \left(\frac{K^3}{K^0}\epsilon_3,\epsilon_1,\epsilon_2,\epsilon_3 \right)^\top.
-	\end{align*}
-	$\,$
-	\end{sln}
-\end{prob}
-
-\begin{prob}
-	Show that this gives 3 independent modes of motion
-	\begin{align*}
-	\begin{cases}
-	\epsilon^{(1)}_\mu = (0,1,0,0)^\top\\
-	\epsilon^{(2)}_\mu = (0,0,1,0)^\top\\
-	\epsilon^{(3)}_\mu = \left(\frac{K^3}{K^0},0,0,1\right)^\top
-	\end{cases}
-	\end{align*}
-	where the first two modes are transverse modes and the third is longitudinal.\\
-	
-	As expected for a massive vector, it has spin 1, $j=1$ with 3 polarizations $m_j = -1,0,1$. This is in contrast to a massless vector that only has 2 transverse polarizations. \\
-	
-	\begin{sln}
-	Since the polarization vector $\epsilon_\mu$ has the form
-	\begin{align*}
-	\epsilon_\mu = \left(\frac{K^3}{K^0}\epsilon_3,\epsilon_1,\epsilon_2,\epsilon_3 \right)^\top,
-	\end{align*}
-	there are only 3 ``degrees of freedom.'' More precisely, if $\mathcal{E}$ is a vector space spanned by all $\epsilon_\nu$, then $\dim(\mathcal{E}) = 3$. To decompose $\mathcal{E}$, we simply choose a simple basis set of $\epsilon_\mu$ for $\mathcal{E}$ with three linearly independent $\epsilon_\mu$'s:
-	\begin{align*}
-	\begin{cases}
-	\epsilon^{(1)}_\mu = (0,1,0,0)^\top\\
-	\epsilon^{(2)}_\mu = (0,0,1,0)^\top\\
-	\epsilon^{(3)}_\mu = \left(\frac{K^3}{K^0},0,0,1\right)^\top
-	\end{cases}.
-	\end{align*}
-	\end{sln}
-\end{prob}
-
+\section{Symmetries and Conservation Laws}
 
 \newpage
 
 \section{Gravitation and Lagrangian Formulation of General Relativity}
-
-
-
 
 \subsection{Review of General Relativity \& Curved Spacetime}
 
@@ -1264,6 +1166,220 @@ Recall Stokes' theorem:
 
 \section{Quantization}
 
+\newpage
+
+\section{Worked Problems}
+Consider the following Lagrangian
+\begin{align*}
+\lag = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu
+\end{align*}
+which describes a massive particle with a vector field.\\
+\begin{prob}
+	Verify that this Lagrangian does not have gauge symmetry under the gauge transformation $A_\mu \to A_\mu +\p_\mu \Lambda$, i.e. $\lag \not\to \lag$.\\
+	\begin{sln}
+		We simply brute force through the problem and show that $\lag' \neq \lag$, where:
+		\begin{align*}
+		\lag' = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A'_\mu A'^\mu.
+		\end{align*}
+		Note that even though $F^{\mu\nu}$ is defined in terms of $A_\mu$, $F_{\mu\nu}$ is invariant under the gauge transformation because it is the 4-dimensional curl of $A_\mu$. We can verify this fact later. Focusing only on the massive term in the new Lagrangian:
+		\begin{align*}
+		\lag' &= -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A'_\mu A'^\mu\\
+		&= -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} +\frac{1}{2}m^2(A_\mu + \p_\mu \Lambda)(A^\mu + \p^\mu \Lambda)\\
+		&= \lag + \frac{1}{2}m^2(A_\mu \p^\mu\Lambda + A^\mu \p_\mu \Lambda + \p_\mu\Lambda \p^\mu \Lambda)
+		\end{align*}
+		It is clear that our choice of the scalar field $\Lambda$ affects the form of the new Lagrangian. So, $\lag \neq \lag'$ in general. Therefore, the massive vector Lagrangian does not have gauge symmetry under the given gauge transformation.\\
+		
+		As an aside, we can verify that $F_{\mu\nu}\to F_{\mu\nu}$. The $F^{\mu\nu} \to F^{\mu\nu}$ identity will follow accordingly. 
+		\begin{align*}
+		F'_{\mu\nu} &= \p_\mu A'_\nu - \p_\nu A'_\mu\\
+		&= \p_\mu(A_\nu + \p_\nu\Lambda) - \p_\nu(A_\mu + \p_\mu\Lambda)\\
+		&= F_{\mu\nu} + \p_\mu \p_\nu \Lambda - \p_\nu \p_\mu\Lambda\\
+		&= F_{\mu\nu},
+		\end{align*}
+		where $\p_\mu \p_\nu \Lambda - \p_\nu \p_\mu\Lambda=0$ because $\Lambda$ is a scalar (this is also true by index-swapping). So the electromagnetic field tensor has gauge symmetry under the given gauge transformation. \\
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Vary the action
+	\begin{align*}
+	S = \int \lag\,d^4x
+	\end{align*}
+	with respect to $A_\mu$ and show that the equations of motion are 
+	\begin{align*}
+	\square A - \p_\mu \p^\nu A_\nu + m^2A_\mu = 0.
+	\end{align*}
+	\begin{sln}
+		The Lagrangian is given by
+		\begin{align*}
+		\lag = -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu.
+		\end{align*}
+		Varying the term with the electromagnetic field tensor gives
+		\begin{align*}
+		\delta\left(F^{\mu\nu}F_{\mu\nu} \right) 
+		&= 2\delta\left[\left( \partial^\mu A^\nu - \partial^\nu A^\mu  \right)\left( \partial_\mu A_\nu - \partial_\nu A_\mu \right)\right]\\
+		&= 2\delta\left( \partial^\mu A^\nu\,\partial_\mu A_\nu - \partial_\mu A_\nu\,\partial^\mu A^\nu\right)\\
+		&= 2\left( \partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
+		\partial^\mu A^\nu\,\partial_\mu\,\delta A_\nu - \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu - \partial_\mu  A_\nu\,\partial^\mu \,\delta A^\nu \right)\\
+		&= 2\left( 
+		\partial^\mu\,\delta A^\nu\,\partial_\mu A_\nu  + 
+		\partial_\nu A_\mu\,\partial^\nu\,\delta A^\mu 
+		- \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu 
+		- \partial^\nu A^\mu\,\partial_\nu \,\delta A_\mu \right)\\
+		&= 4\left(\partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu
+		- \partial_\mu \,\delta A_\nu\,\partial^\mu A^\nu\right).
+		\end{align*}
+		Next, we integrate by parts to get the boundary terms (which will vanish when we vary the action):
+		\begin{align*}
+		\partial^\nu\,\delta A^\mu\,\partial_\nu A_\mu &=  \partial^\nu(\partial_\mu A_\nu\,\delta A^\mu) -(\partial^\nu\partial_\mu A_\nu)\delta A^\mu = \partial_\mu(\partial^\nu A^\mu\,\delta A_\nu) -(\partial^\nu\partial_\mu A_\nu)\delta A^\mu
+		\\
+		\partial_\mu\,\delta A_\nu\partial^\mu A^\nu &= 
+		\partial_\mu (\partial^\mu A^\nu \,\delta A_\nu)
+		- \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu  =
+		\partial_\mu (\partial^\mu A^\nu \,\delta A_\nu) 
+		- \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu.
+		\end{align*}
+		This gives
+		\begin{align*}
+		\delta\left(-\frac{1}{4}F^{\mu\nu}F_{\mu\nu} \right) &= \partial_\mu(\partial^\mu A^\nu)\,\delta A_\nu - (\partial^\nu\partial_\mu A_\nu)\delta A^\mu\\ 
+		&= \left(\square A^\mu - \p^\mu\p^\nu A_\nu \right)\,\delta A_\mu\\
+		&= \left(\square A_\mu - \p_\mu \p^\nu A_\nu \right)\delta A^\mu
+		\end{align*}
+		Finally, we vary the term with the vector potential $A_\mu$ with respect to $A_\mu$:
+		\begin{align*}
+		\delta \left(\frac{1}{2}m^2 A_\mu A^\mu  \right) &= \frac{1}{2}m^2 \left( \delta A_\mu A^\mu + A_\mu \delta A^\mu \right)\\
+		&=  \frac{1}{2}m^2 \left( \delta A_\mu A^\mu + A^\mu \delta A_\mu \right)\\
+		&= \left(m^2 A^\mu\right)\delta A_\mu \\
+		&= \left(m^2 A_\mu\right)\delta A^\mu.
+		\end{align*}
+		Putting everything together, 
+		\begin{align*}
+		\delta \lag = \left(\square A_\mu - \p_\mu \p^\nu A_\nu m^2A_\mu \right)\delta A^\mu.
+		\end{align*}
+		Varying the action and requiring $\delta S = 0$ for all $\delta A^\mu$ forces $\delta \lag =0$. We arrive at the equations of motion
+		\begin{align*}
+		\square A_\mu - \p_\mu \p^\nu A_\nu +  m^2A_\mu = 0
+		\end{align*}
+		as desired.\\
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Take $\p^\mu$ of the Lagrangian and show that it gives a constraint: $\p^\mu A_\mu = 0$. Use this to simplify the equations of motion to
+	\begin{align*}
+	\square A_\mu - m^2 A_\mu = 0.
+	\end{align*}
+	
+	\begin{sln}
+		The given Lagrangian has no $x^\mu$ dependence, so we expect $\p^\mu \lag = 0$. We will show that this adds a constraint to $A^\mu$.
+		\begin{align*}
+		\p^\mu\lag &= \p^\mu\left( -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \frac{1}{2}m^2 A_\mu A^\mu \right)\\
+		&= -\frac{1}{4}\,\p^\mu\left( F_{\mu\nu}F^{\mu\nu}\right) + \frac{1}{2}m^2\left(\p^\mu A_\mu A^\mu + A_\mu \p^\mu A^\mu \right)\\
+		&= -\frac{1}{2}\,\p^\mu\left(\partial^\mu A^\nu\,\partial_\mu A_\nu - \partial_\mu A_\nu\,\partial^\mu A^\nu \right) + m^2A^\mu\p^\mu A_\mu\\
+		&= -\frac{1}{2}\left[(\p^\mu\p^\mu A^\nu)(\p_\mu A_\nu) - (\p^\mu\p^\mu A^\nu)(\p_\mu A_\nu)\right.\\
+		&\left.\,\,\,\,\,\,\,\,\,\, + (\square A_\nu)( \p^\mu A^\nu) - (\square A_\nu)( \p^\mu A^\nu)   \right] + 
+		m^2A^\mu\p^\mu A_\mu.\\
+		&= m^2A^\mu\p^\mu A_\mu.
+		\end{align*}
+		Since $\p^\mu\lag = 0$, a massive $m\neq 0$ field is assumed, and $A^\mu$ is arbitrary, $\p^\mu A_\mu = 0$ must hold as desired. With this, the equations of motion become:
+		\begin{align*}
+		\square A_\mu +  m^2A_\mu = 0.
+		\end{align*}
+		Notice that the form of the equations of motion is exactly the same as that of the Klein-Gordon equation. 
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Look for a solution of the form
+	\begin{align*}
+	A_\mu = \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}},
+	\end{align*}
+	where $\epsilon_\mu$ is the polarization vector, and show that it's a solution provided that
+	\begin{align*}
+	K^\mu K_\mu = m^2,
+	\end{align*}
+	i.e., the vector field is massive.\\
+	
+	\begin{sln}
+		We use the simplified equation of motion from the previous problem:
+		\begin{align*}
+		\square A_\mu + m^2 A_\mu &= \square\epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}} + m^2 \epsilon_\mu e^{-i\mathbf{k}\cdot\mathbf{x}}\\
+		&= \epsilon_\mu\square e^{-iK_\alpha X^\alpha} + m^2 \epsilon_\mu e^{-iK_\alpha X^\alpha}\\
+		&= \epsilon_\mu\p^\beta (-iK_\alpha)e^{-iK_\alpha X^\alpha}\p_\beta X^\alpha + m^2 \epsilon_\mu e^{-iK_\alpha X^\alpha}\\
+		&= \epsilon_\mu(-iK_\beta)\eta^{\beta\gamma}\p_\gamma e^{-iK_\beta X^\beta} + m^2 \epsilon_\mu e^{-iK_\alpha X^\alpha}\\
+		&= A_\mu\left[  
+		(-iK_\beta)(-iK_\beta)\eta^{\beta\gamma}\delta^\beta_\gamma + m^2
+		\right]\\
+		&= A_\mu \left( - K_\beta K^\beta + m^2  \right)\\
+		&= 0.
+		\end{align*}
+		This means $A_\mu$ is a solution for any arbitrary $\epsilon_\mu$ if $K^\beta K_\beta = 0$, i.e., the vector field is massive. \\
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Suppose that $K^\mu = (K^0,0,0,K^3)$, which denotes moving in the $z$-direction. Show that $\p^\mu A_\mu = 0$ implies 
+	\begin{align*}
+	\epsilon_0 = \frac{-K^3}{K^0}\epsilon_3
+	\end{align*}
+	or
+	\begin{align*}
+	\epsilon_\mu = \left(\frac{K^3}{K^0}\epsilon_3,\epsilon_1,\epsilon_2,\epsilon_3 \right)^\top.
+	\end{align*}
+	
+	\begin{sln}
+		We simply the requirement $\p^\mu A_\mu = 0$:
+		\begin{align*}
+		\p^\mu A_\mu &= \eta^{\mu\nu}\p_\nu A_\mu\\
+		&= \eta^{\mu\nu}\epsilon_\mu (-iK_\alpha)e^{-iK_\alpha X^\alpha}\p_\nu X^\alpha\\
+		&= \eta^{\mu\nu}\epsilon_\mu (-iK_\alpha)e^{-iK_\alpha X^\alpha}\delta^{\nu}_\alpha\\
+		&= -i K_\alpha \epsilon^\alpha e^{-iK_\alpha X^\alpha }\\
+		&= 0.
+		\end{align*}
+		This means $K_\alpha \epsilon^\alpha  = 0$. But since $K^\alpha = (K^0,0,0,K^3)$, we require that
+		\begin{align*}
+		\epsilon_0 K^0 = \epsilon_3 K^3,
+		\end{align*}
+		i.e., 
+		\begin{align*}
+		\epsilon_0 = \frac{-K^3}{K^0}\epsilon_3.
+		\end{align*}
+		So, 
+		\begin{align*}
+		\epsilon_\mu = \left(\frac{K^3}{K^0}\epsilon_3,\epsilon_1,\epsilon_2,\epsilon_3 \right)^\top.
+		\end{align*}
+		$\,$
+	\end{sln}
+\end{prob}
+
+\begin{prob}
+	Show that this gives 3 independent modes of motion
+	\begin{align*}
+	\begin{cases}
+	\epsilon^{(1)}_\mu = (0,1,0,0)^\top\\
+	\epsilon^{(2)}_\mu = (0,0,1,0)^\top\\
+	\epsilon^{(3)}_\mu = \left(\frac{K^3}{K^0},0,0,1\right)^\top
+	\end{cases}
+	\end{align*}
+	where the first two modes are transverse modes and the third is longitudinal.\\
+	
+	As expected for a massive vector, it has spin 1, $j=1$ with 3 polarizations $m_j = -1,0,1$. This is in contrast to a massless vector that only has 2 transverse polarizations. \\
+	
+	\begin{sln}
+		Since the polarization vector $\epsilon_\mu$ has the form
+		\begin{align*}
+		\epsilon_\mu = \left(\frac{K^3}{K^0}\epsilon_3,\epsilon_1,\epsilon_2,\epsilon_3 \right)^\top,
+		\end{align*}
+		there are only 3 ``degrees of freedom.'' More precisely, if $\mathcal{E}$ is a vector space spanned by all $\epsilon_\nu$, then $\dim(\mathcal{E}) = 3$. To decompose $\mathcal{E}$, we simply choose a simple basis set of $\epsilon_\mu$ for $\mathcal{E}$ with three linearly independent $\epsilon_\mu$'s:
+		\begin{align*}
+		\begin{cases}
+		\epsilon^{(1)}_\mu = (0,1,0,0)^\top\\
+		\epsilon^{(2)}_\mu = (0,0,1,0)^\top\\
+		\epsilon^{(3)}_\mu = \left(\frac{K^3}{K^0},0,0,1\right)^\top
+		\end{cases}.
+		\end{align*}
+	\end{sln}
+\end{prob}
 
 \end{document}
 
