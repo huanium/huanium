@@ -628,7 +628,130 @@ is also a solution. But divergence could be a problem here. It might be that $u(
 \begin{align*}
 u(0,x) = \sum_{n=1}^\infty A_n\sin(n\pi x) = u_0(x).
 \end{align*} 
-The term on the left hand side is called the trigonometric series. 
+
+% feb 18, 2019} 
+The term on the left hand side is called the trigonometric series. The question now becomes whether it is possible to find the sequence $\{ A_n\} \subseteq \R$ so that
+\begin{align*}
+u(0,x) = \sum_{n=1}^\infty A_n \sin (n \pi x) = u_0(x).
+\end{align*}
+Another question would be which function $u_0(x)$ can be expanded as a trigonometric series as above.
+
+\begin{exmp}
+	Consider
+	\begin{align*}
+	u_0(x) = \frac{1}{2}\sin(2\pi x) + \frac{1}{50}\sin(201\pi x).
+	\end{align*}
+	We see that
+	\begin{align*}
+	A_n = 0, A_2 = \frac{1}{2}, A_{201} = \frac{1}{50} \forall n\neq 2,201.
+	\end{align*}
+\end{exmp}
+
+\begin{exmp}
+	What about
+	\begin{align*}
+	u_0(x) = \begin{cases}
+	x, 0\leq x < \frac{1}{2}\\
+	1-x, \frac{1}{2} < x \leq 1
+	\end{cases}
+	\end{align*}
+	or
+	\begin{align*}
+	u_0(x) = 1?
+	\end{align*}
+\end{exmp}
+
+
+It's clear that we must have that $u_0(0) = u_1(1) = 0$, otherwise this cannot be done. To treat otherwise, one needs a cosine term. But what if $u_0(0) = u_0(1) = 0$, but $u_0(x)$ is very bad? Suppose that this can be done. Using the property that 
+\begin{align*}
+\int_{0}^1 \sin(n\pi x)\sin(m\pi x) = \frac{1}{2}\delta^m_n,
+\end{align*}
+we use \textbf{Fourier's trick}: multiply both sides of the $u_0(x)$ expansion by $\sin(m \pi x)$ and integrate:
+\begin{align*}
+\int^1_0 u_0(x)\sin(m \pi x) &= \sum_{n=1}^\infty\int_{0}^1A_n\sin(n\pi x)\sin(m \pi x)\,dx\\
+&= \sum_{n=1}^\infty A_m\frac{1}{2}\delta^m_n.
+\end{align*}
+So this gives
+\begin{align*}
+A_m = 2\int^1_0 u_0(x)\sin(m\pi x)\,dx \forall m\in \mathbb{N}.
+\end{align*}
+This gives a prescription for finding the sequence $\{A_m \}$ so that the expansion works. So, we might ask, given a function $u_0(x)$ with value 0 at $x=0,1$ and define
+\begin{align*}
+A_m = 2\int^1_0 u_0(x)\sin(m\pi x)\,dx\,\,\, \forall m\in \mathbb{N},
+\end{align*}
+when does 
+\begin{align*}
+u_0(x) = \sum^\infty_{n=1}A_n \sin(n\pi x)?
+\end{align*}
+Usually, this works perfectly, but around 1802, the mathematician DuBois Reymond found an example for which the \textbf{Fourier series} does not hold. The exact class of such functions was determined explicitly in 1962 by UCLA professor L. Carelson. The answer is $L^2[0,1]$ - square integrable functions. \\
+
+\begin{exmp}
+	Now, let's find $A_n$ so that 
+	\begin{align*}
+	u_0(x) = \begin{cases}
+	x, 0\leq x < \frac{1}{2}\\
+	1-x, \frac{1}{2} < x \leq 1
+	\end{cases}.
+	\end{align*}
+	Well,
+	\begin{align*}
+	A_n &= 2\int_{0}^1 u_0(x)\sin(n\pi x)\,dx = 2\int_{0}^\frac{1}{2} x\sin(n\pi x)\,dx + 2\int_{\frac{1}{2}}^1 (1-x)\sin(n\pi x)\,dx\\
+	&= 2\int_{0}^\frac{1}{2} x\sin(n\pi x)\,dx - 2\int_\frac{1}{2}^1 +  x\sin(n\pi x)\,dx + 2\int_{\frac{1}{2}}^1 \sin(n\pi x)\,dx
+	\end{align*}
+	Integration by parts...
+	\begin{align*}
+	\int x\sin(kx)\,dx = \frac{-1}{k}x\cos(kx) - \int \frac{-\cos(kx)}{k}\,dx = \frac{1}{k^2}\sin(kx) - \frac{x\cos(kx)}{k}.
+	\end{align*}
+	So
+	\begin{align*}
+	2\left( \frac{1}{(n\pi)^2}\sin(n\pi x) - \frac{x}{\pi n}\cos(n\pi x)
+	 \right)\bigg\vert^{1/2}_0
+	 = \frac{2}{(n\pi)^2}\sin\left( \frac{n\pi}{2}\right)  - \frac{1}{n\pi}\cos\left( \frac{n\pi}{2}\right).
+	\end{align*}
+	\begin{align*}
+	2\int_{\frac{1}{2}}^1 (1-x)\sin(n\pi x)\,dx = 
+	\frac{2}{n\pi}\left( \cos\left(\frac{n\pi}{2} \right)  - \cos(n\pi)\right).
+	\end{align*}
+	\begin{align*}
+	2\int_\frac{1}{2}^1 x\sin(n\pi x)\,dx = \frac{2}{n\pi}\cos(n\pi) - \frac{2}{(n\pi)^2}\sin\left( \frac{n\pi}{2} \right) + \frac{1}{n\pi}\cos\left(\frac{n\pi}{2} \right).
+	\end{align*}
+	So, all together,
+	\begin{align*}
+	A_n = \frac{4}{(n\pi)^2}\sin\left( \frac{n\pi}{2}\right).
+	\end{align*}
+	So our series is
+	\begin{align*}
+	u_0(x) = \sum_{n=1}^\infty \frac{4}{(n\pi)^2}\sin\left( \frac{n\pi}{2}\right) \sin(n\pi x)
+	\end{align*}
+	This converges nicely. 
+\end{exmp}
+
+Recap: to solve our IVBP, we defines 
+\begin{align*}
+A_n = 2\int_{0}^1 u_0(x)\sin(n\pi x)\,dx, \,\,\, n\in \mathbb{N}
+\end{align*}
+and then (provided that things converge nicely)
+\begin{align*}
+u(t,x) = \sum_{n=1}^\infty A_n e^{-(\alpha \pi n)^2 t}\sin(n\pi x)
+\end{align*}
+is \textbf{the} solution. More generally, on the interval $[0,L]$ for the same IVBP with $u(t,0) = u(t,L) = 0$ and $u(0,x) = u_0(x), x\in[0,L]$, then the solution is given by
+\begin{align*}
+u(t,x) = \sum_{n=1}^\infty A_n e^{-(\alpha \pi n/L)^2 t}\sin\left(\frac{n\pi x}{L}\right)
+\end{align*}
+where 
+\begin{align*}
+A_n = \frac{2}{L}\int_{0}^1 u_0(x)\sin\left(\frac{n\pi x}{L}\right)\,dx, \,\,\, n\in \mathbb{N}.
+\end{align*}
+One more note: as $t\to \infty$, the solution is dominated lower order terms
+\begin{align*}
+u(t,x)\approx A_1 e^{-(\alpha \pi/L)^2 t}\sin\left(\frac{\pi x}{L}\right).
+\end{align*}
+
+
+
+
+
+
 
 
 
