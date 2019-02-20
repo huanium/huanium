@@ -111,7 +111,45 @@ Enjoy!
 		\item Any square matrix with unit Euclidean norm is the average of two unitary matrices.
 	\end{enumerate}
 	\end{prop}
-	\item \textbf{Cofactor}: ?
+	\item \textbf{Idempotent:} $M$ idempotent $\iff M^2 = M$.
+	\begin{enumerate}
+		\item Singularity: its number of independent rows (and columns) is less than its number of rows (and columns). 
+		\item When an idempotent matrix is subtracted from the identity matrix, the result is also idempotent. 
+		\begin{proof}[``Proof'']
+			\begin{align*}
+			[I-M][I-M] = I - M - M + M^2 = I-M - M + M = I - M.
+			\end{align*}
+		\end{proof}
+		\item $M$ is idempotent $\iff \forall n \in \mathbb{N}$, $A^n = A$. 
+		\item Eigenvalues: an idempotent matrix is always diagonalizable and its eigenvalues are either 0 or 1. (think ``projection")
+		\item Trace: the trace of an idempotent matrix equals the rank of the matrix and thus is always an integer. So
+		\begin{align*}
+		\tr(A) = \dim(\Im A).
+		\end{align*}
+	\end{enumerate}
+	\item \textbf{Nilpotent:} a nilpotent matrix is a square matrix $N$ such that
+	\begin{align*}
+	N^k = 0
+	\end{align*}
+	for some positive integer $k$. The smallest such $k$ is sometimes called the \textbf{index} of $N$.\\
+	
+	The following statements are equivalent:
+	\begin{enumerate} 
+		\item $N$ is nilpotent.
+		\item The minimal polynomial for $N$ is $x^k$ for some positive integer $k\leq n$.
+		\item The characteristic polynomial for $N$ is $x^n$.
+		\item The only complex eigenvalue for $N$ is 0.
+		\item $\tr N^k = 0$ for all $k > 0$.
+	\end{enumerate}
+	\begin{prop}
+		$\,$
+		\begin{enumerate}
+			\item The degree of an $n\times n$ nilpotent matrix is always less than or equal to $n$. 
+			\item $\det N = \tr(N) = 0$.
+			\item Nilpotent matrices are not invertible.
+			\item The only nilpotent diagonalizable matrix is the zero matrix. 
+		\end{enumerate}
+	\end{prop}
 \end{enumerate}
 
 \newpage
@@ -573,23 +611,7 @@ A stronger statement: If a linear map $F : V\rightarrow W$ has finite rank and f
 \begin{align*}
 \Im(F) + \ker(F) = \dim(V).
 \end{align*}
-\subsubsection{Coordinatization \& matricial representation of linear functions}
-Consider a finite-dimensional linear space $V$ with basis $\{V_i \}$, $i=1,2,\dots,m$. An element $\tilde{V}$ in $V$ can be expressed in exactly one way:
-\begin{align*}
-\tilde{V} = \sum_{i=1}^m a_iV_i,
-\end{align*}
-where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{V}$ and $a_i$'s the coordinates. 
-\begin{prop}
-	$\,$
-	\begin{enumerate}
-		\item Inverse of a bijective atrix outputs the coordinates. Suppose $A = [V_i]$. Then
-		\begin{align*}
-		\tilde{V} = \sum_{i=1}^ma_iV_i \iff A^{-1}(Z) = \begin{pmatrix}
-		a_1&\dots&a_m
-		\end{pmatrix}^\top
-		\end{align*}
-	\end{enumerate}
-\end{prop}
+
 \subsection{Infinite-Dimensional Spaces}
 Consider a non-singleton linear space $V$. The following statements are equivalent:
 \begin{enumerate}
@@ -601,7 +623,7 @@ Consider a non-singleton linear space $V$. The following statements are equivale
 	\item No list of finitely many elements of $V$ spans $V$.
 \end{enumerate}
 \newpage
-\section{Sums of subspaces \& Products of vector spaces}
+\section{Sums of Subspaces \& Products of vector spaces}
 \subsection{Direct Sums}
 \begin{defn}
 	Let $U_j$, $j=1,2,\dots m$ are subspaces of $V$. $\sum_1^m U_j$ is a \textit{direct sum} if each $u \in \sum U_j$ can be written in only one way as $u = \sum_1^m u_j$. The direct sum $\sum^m_i U_j$ is denoted as $U_1 \oplus\dots\oplus U_m$.
@@ -613,7 +635,8 @@ Consider a non-singleton linear space $V$. The following statements are equivale
 		\item If $U, W$ are subspaces of $V$ and $U \bigcap W = \{ 0\}$ then $U+W$ is a direct sum. 
 	\end{enumerate}
 \end{prop}
-\subsection{Products and Quotients of Vector Spaces}
+
+
 \subsection{Products of Vector Spaces}
 \begin{defn}
 	Product of vectors spaces
@@ -673,9 +696,7 @@ Consider a non-singleton linear space $V$. The following statements are equivale
 	\end{align*}
 	\end{enumerate}
 \end{prop}
-\subsection{Quotients of Vector Spaces}
-\subsection{Nullspaces}
-\subsection{Ranges of Operator Powers}
+
 \subsection{Rank-Nullity Theorem}
 Suppose $Z_1$ and $Z_2$ are subspaces of a finite-dimensional vector space $W$. Consider $z_1\in Z_1$, $z_2\in Z_2$, and a function $\phi : Z_1 \times Z_2 \to Z_1 + Z_2 \prec W$ defined by
 \begin{align*}
@@ -718,20 +739,21 @@ The kernel of $\phi$ is:
 v\\-v
 \end{pmatrix}
 \bigg\vert v\in z\in Z_1, z\in Z_2
- \right\}
- =
- \left\{
- \begin{pmatrix}
- v\\-v
- \end{pmatrix}
- \bigg\vert v\in z\in Z_1 \cap Z_2
- \right\}
+\right\}
+=
+\left\{
+\begin{pmatrix}
+v\\-v
+\end{pmatrix}
+\bigg\vert v\in z\in Z_1 \cap Z_2
+\right\}
 \end{align*}
 We can readily verify that $Z_1 \cap Z_2$ is a subspace of $W$. With this, $\dim(\ker(\phi)) = \dim(Z_1\cap Z_2)$. So we end up with
 \begin{align*}
 \dim(Z_1 + Z_2) = \dim(Z_1) + \dim(Z_2) - \dim(Z_1\cap Z_2).
 \end{align*}
-\begin{prob}
+\begin{prop}
+	$\,$
 	\begin{enumerate}
 		\item When $Z_1\cap Z_2$ is trivial, then $Z_1 + Z_2$ is direct. 
 		\item When $\dim(\ker(\phi)) = 0$, $\phi$ is injective. But $\phi$ is also surjective by definition, this implies $\phi$ is a bijection, in which case
@@ -739,13 +761,163 @@ We can readily verify that $Z_1 \cap Z_2$ is a subspace of $W$. With this, $\dim
 		Z_1 \oplus Z_2 \sim Z_1 + Z_2.
 		\end{align*} 
 	\end{enumerate}
-\end{prob}
+\end{prop}
+
+
+\subsection{Nullspaces \& Ranges of Operator Powers}
+
+\begin{enumerate}
+	\item Sequence of increasing null spaces: Suppose $T \in \lag(V)$, i.e., $T$ is some linear function mapping $V\to V$, then
+	\begin{align*}
+	\{ 0 \} = \ker(T^0) \subset \ker(T^1) \subset \ker(T^2) \subset \dots \subset \ker(T^k) \subset \ker(T^{k+1}) \subset\dots.
+	\end{align*} 
+	
+	\begin{proof}[Proof Outline]
+		Let $k$ be a nonnegative integer and $v\in \ker(T^k)$. Then $T^kv = 0$, so $T^{k+1}v = T(T^kv) = T(0) = 0$, so $v\in \ker T^{k+1}$. So $\ker(T^k) \subset \ker(T^{k+1})$. 
+	\end{proof}
+	\item Equality in the sequence of null spaces: Suppose $m$ is a nonnegative integer such that $\ker(T^m) = \ker(T^{m+1})$, then
+	\begin{align*}
+	\ker(T^m) = \ker(T^{m+1}) = \ker(T^{m+2}) = \dots.
+	\end{align*}
+	
+	\begin{proof}[Proof Outline]
+		We want to show
+		\begin{align*}
+		\ker(T^{m+k}) = \null(T^{m+k+1}).
+		\end{align*}
+		We know that $\ker T^{m+k} \subset \ker T^{m+k+1}$. Suppose $v\in \ker T^{m+k+1}$, then
+		\begin{align*}
+		T^{m+1}(T^kv) = T^{m+k+1}v = 0.
+		\end{align*}
+		So
+		\begin{align*}
+		T^kv \in \ker T^{m+1} = \ker T^m.
+		\end{align*}
+		So
+		\begin{align*}
+		0 = T^m(T^kv) = T^{m+k}v,
+		\end{align*}
+		i.e., $v\in \ker T^{m+k}$. So $\ker T^{m+k+1} \subset \ker T^{m+k}$. This completes the proof. 
+	\end{proof}
+	\item Null spaces stop growing: If $n = \dim(V)$, then
+	\begin{align*}
+	\ker(T^n) = \ker(T^{n+1}) = \ker(T^{n+2}) = \dots.
+	\end{align*}
+	
+	\begin{proof}[Proof Outline]
+		To show:
+		\begin{align*}
+		\ker T^n = \ker T^{n+1}.
+		\end{align*}
+		Suppose this is not true. Then the dimension of the kernel has to increase by at least 1 every step until $n+1$. Thus $\dim \ker T^{n+1} \geq n+1 > n = \dim(V)$. This is a contradiction. 
+	\end{proof}
+	\item $V$ is the direct sum of $\ker(T^{\dim(V)})$ and $\Im(T^{\dim(V)})$: If $n = \dim(V)$, then
+	\begin{align*}
+	V = \ker(T^n) \oplus \Im(T^n).
+	\end{align*}
+	\begin{proof}[Proof Outline]
+		To show:
+		\begin{align*}
+		\ker T^n \cap \Im T^n = \{0 \}. 
+		\end{align*}
+		Suppose $v\in \ker T^n \cap \Im T^n$. Then $T^n v = 0$ and $\exists u\in V$ such that $v = T^n u$. So
+		\begin{align*}
+		T^n v = T^{2n}u = 0.
+		\end{align*}
+		So
+		\begin{align*}
+		T^n u = 0.
+		\end{align*}
+		But this means $v = 0$. 
+	\end{proof}
+	\item IT IS NOT TRUE THAT $V = \ker(T) \oplus \Im(T)$ in general. 
+\end{enumerate}
+
+\subsection{Generalized Eigenvectors and Eigenspaces}
+\begin{defn}
+	Suppose $T\in \lag(V)$ and $\Lambda$ is an eigenvalue of $T$. A vector $v\in V$ is called a \textbf{generalized eigenvector} of $T$ corresponding to $\lambda$ if $v\neq 0$ and
+	\begin{align*}
+	(T-\lambda I)^j v = 0
+	\end{align*}
+	for some positive integer $j$. 
+\end{defn}
+
+\begin{defn}
+	\textbf{Generalized Eigenspace}: Suppose $T \in \lag(V)$ and $\lambda \in \mathbf{F}$. The \textbf{generalized eigenspace} of $T$ corresponding to $\lambda$, denoted $G(\lambda,T)$, is defined to be the set of all generalized eigenvectors of $T$ corresponding to $\lambda$, along with the 0 vector.
+\end{defn}
+
+\begin{prop}
+	\begin{enumerate}
+		\item Suppose $T\in\lag(V)$ and $\lambda \in \mathbf{F}$. Then 
+		\begin{align*}
+		G(\lambda,T) = \ker(T-\lambda I)^{\dim(V)}.
+		\end{align*}
+		\begin{proof}[Proof Outline]
+			Suppose $v\in \ker (T_\lambda I)^{\dim(V)}$. Then $v\in G(\lambda,T)$. So, $\ker(T-\lambda I)^{\dim V} \subset G(\lambda,T)$. Next, suppose $v\in G(\lambda,T)$. Then these is a positive integer $j$ such that
+			\begin{align*}
+			v\ in \ker (T-\lambda I)^j.
+			\end{align*}
+			But if this is true, then 
+			\begin{align*}
+			v\ in \ker (T-\lambda I)^{\dim V},
+			\end{align*}
+			since $\ker(T-\lambda I)^{\dim V}$ is the largest possible kernel, in a sense. 
+		\end{proof}
+		\item Linearly independent generalized eigenvectors: Let $T\in\lag(V)$. Suppose $\lambda_1,\dots,\lambda_m$ are distinct eigenvalues of $T$ and $v_1,\dots,v_m$ are corresponding generalized eigenvectors. Then $v_1,\dots,v_m$ is linearly independent.
+	\end{enumerate}
+\end{prop}
+
+\subsection{Nilpotent Operators}
+\begin{defn}
+	An operator is called \textbf{nilpotent} if some power of it equals 0.
+\end{defn}
+\begin{prop}
+	\item Nilpotent operator raised to dimension of domain is 0: Suppose $N\in \lag(V)$ is nilpotent. Then \begin{align*}
+	N^{\dim(V)} = 0.
+	\end{align*}
+	\item Matrix of a nilpotent operator: Suppose $N$ is a nilpotent operator on $V$. Then there is a basis of $V$ with espect to which the matrix of $N$ has the form
+	\begin{align*}
+	\begin{pmatrix}
+	0 & & *\\
+	&\ddots&\\
+	0&&0
+	\end{pmatrix};
+	\end{align*}
+	here all entries on and below the diagonal are 0's. 
+\end{prop}
+
+\subsection{Weyr Characteristic}
 
 \newpage
 \section{Idempotents \& Resolutions of Identity}
+
+
+
+
 \newpage
 \section{Block-representations of operators}
 \subsection{Direct sums of operators}
+\subsection{Coordinatization \& matricial representation of linear functions}
+Consider a finite-dimensional linear space $V$ with basis $\{V_i \}$, $i=1,2,\dots,m$. An element $\tilde{V}$ in $V$ can be expressed in exactly one way:
+\begin{align*}
+\tilde{V} = \sum_{i=1}^m a_iV_i,
+\end{align*}
+where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{V}$ and $a_i$'s the coordinates. 
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Inverse of a bijective atrix outputs the coordinates. Suppose $A = [V_i]$. Then
+		\begin{align*}
+		\tilde{V} = \sum_{i=1}^ma_iV_i \iff A^{-1}(Z) = \begin{pmatrix}
+		a_1&\dots&a_m
+		\end{pmatrix}^\top
+		\end{align*}
+	\end{enumerate}
+\end{prop}
+\subsection{Equality of rank and trace for idempotents; Resolution of Identity Revisited}
+
+
+
 \newpage
 \section{Invariant subspaces}
 \subsection{Reducing subspaces}
