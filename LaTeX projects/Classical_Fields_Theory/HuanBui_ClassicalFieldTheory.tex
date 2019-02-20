@@ -132,9 +132,6 @@ S = \int \mathcal{L}\,d^4x,
 \end{align*}
 where $d^4x$ implies integrating over all spacetime.
 
-\subsection{Introduction to Fields}
-In field theory, most physical objects are described as ``fields.'' Let us dive into the first two fields that we are more or less familiar with: scalar fields and vector fields. 
-
 \newpage
 \section{Group Theory: a quick guide in a quick guide}
 \begin{enumerate}
@@ -190,9 +187,228 @@ Lastly, we define the \textbf{d'Alembertian} as:
 These will come in handy when we ``vary'' the action and the Lagrangian - but more on this later. 
 
 \subsection{Classical Lagrangian Field Theory}
-\subsection{Quantized Lagrangian Field Theory (primer)}
-\subsection{Symmetries and Conservation Laws}
+In classical field theory, we are interested in fields, or systems of fields. We can consider a system which requires several fields, $\phi_r(x)$, where $r=1,\dots,N$. We are also interested in the Lagrangian density, which has a more general form than we have seen in the first section when we are still in the realm of Newtonian physics:
+\begin{align*}
+\lag = \lag(\phi_r, \phi_{r,a}),
+\end{align*}
+where we have used the covariant notation to denote derivatives of $\phi$ with respect to the coordinates. The action, as integrated over some region $\Omega$ of four-spacetime, is then given by
+\begin{align*}
+S(\Omega) = \int_\Omega \lag(\phi, \phi_{r,a})\,d^4x.
+\end{align*}
+Now, consider a variation in the field
+\begin{align*}
+\phi_r(x) \to \phi_r(x) + \delta \phi_r(x)
+\end{align*}
+with the requirement that
+\begin{align*}
+\delta \phi_r(x) 0
+\end{align*}
+ on the boundary of $\Omega$. As we will explore later on, the field $\phi$ can be real or complex. In the case of the complex field, we can simply treat $\phi$ and its complex conjugate $\phi^*$ as two independent fields. However, whether $\phi$ is complex or not should not matter in what we are doing now, which is requiring that the variation in the action to take a stationary value, i.e.,
+ \begin{align*}
+ \delta S = 0.
+ \end{align*}
+So,
+\begin{align*}
+0 = \delta S &= \int_\Omega  d^4x\,\left\{ \frac{\p\lag}{\p\phi_r}\delta \phi_r + \frac{\p\lag}{\p\phi_{r,a}}\delta \phi_{r,a}    \right\}\\
+&= \int_\Omega d^4x\, \left\{ \frac{\p\lag}{\p\phi_r} - \frac{\p}{\p x^a}\left( \frac{\p\lag}{\p\phi_{r,a}} \right) \right\}\delta \phi_r +  \int_\Omega d^4x\,\frac{\p}{\p x^a}\left(\frac{\p\lag}{\p\phi_{r,a}}\p \phi_r \right)
+\end{align*}
+where the second line simply comes from doing integration by parts and the covariant notation:
+\begin{align*}
+\delta \phi_{r,a} = \frac{\p}{\p x^a}\delta \phi_r.
+\end{align*}
+Now, the second term on the second line can be re-written under Gauss-Ostrogradsky's theorem as
+\begin{align*}
+\int_\Omega d^4x\,\frac{\p}{\p x^a}\left(\frac{\p\lag}{\p\phi_{r,a}}\p \phi_r \right) = 
+\int_{\delta \Omega}d^3x\,  \frac{\p\lag}{\p\phi_{r,a}}\p \phi_r
+\end{align*}
+where the $\p_a$ denotes a divergence and $\delta \Omega$ denotes the boundary of the region in spacetime. But notice that since we require the variation to vanish at the boundary of $\Omega$, this integral simply vanishes, so the variation in the action becomes
+\begin{align*}
+0 = \delta S = \int_\Omega d^4x\, \left\{ \frac{\p\lag}{\p\phi_r} - \frac{\p}{\p x^a}\left( \frac{\p\lag}{\p\phi_{r,a}} \right) \right\}\delta \phi_r.
+\end{align*}
+Now, because this equality has to hold for any variation $\delta \phi_r$, it must be true that the integrand has to be zero. We arrive at the Euler-Lagrange equation:
+\begin{align*}
+\frac{\p\lag}{\p\phi_r} - \frac{\p}{\p x^a}\left( \frac{\p\lag}{\p\phi_{r,a}} \right) = 0.
+\end{align*}
 
+\subsection{Quantized Lagrangian Field Theory (primer)}
+While the focus of this text is classical field theory, it can be worthwhile to have a little primer on what quantized Lagrangian field theory looks like. The main difference between classical and quantized Lagrangian field theory is the ``degree of freedom'' in the field. In classical field theory, we deal with systems with a continuously infinite number of degrees of freedom, i.e. at any point in spacetime, the field $\phi$ is assigned some value. In quantized field theory, we consider an ``approximation'' of this by imagining a system with a countable number of degrees of freedom, and then go to the continuum limit.\\
+
+Consider flat spacetime, at an instance $t = Constant$. Let us now make space discrete by thinking of space as ``cells'' of equal volume called $\delta x_i$ where $i$ is just another index. Let the value of the field within each cell by the value of the field at the center of the cell. So now the system is discrete and can be described by a discrete set of generalized coordinates:
+\begin{align*}
+q_{ri}(t) \equiv \phi_r(\mathbf{x}_i, t)
+\end{align*} 
+where $q_{ri}(t)$ simply represents the value of the field $\phi_r$ at cell $\mathbf{x}_i$ at time $t$. Now, since the idea of the derivative no longer holds in the discrete world, the new Lagrangian density takes into account the difference in the field values between neighboring cells. This gives the \textit{Lagrangian}, $L$, NOT the \textit{Lagrangian density} (the Lagrangian density is denoted $\lag$):
+\begin{align*}
+L(t) = \sum_{i} \delta \mathbf{x}_i \lag_i (\phi_r(i,t), \dot{\phi}_r(i,t), \phi_r(i',t))
+\end{align*} 
+Now, recall from classical mechanics that the second term in the Euler-Lagrange equation represents the momentum, so we define the \textbf{momentum conjugate} to $q_{ri}$ as
+\begin{align*}
+p_{ri} &= \frac{\p L}{\p \dot{q}_{ri}}\\
+&= \frac{\p L}{\p \dot{\phi}_r(i,t)}\\
+&= \frac{\p}{\p \dot{\phi}_r(i,t)}\sum_{i} \delta \mathbf{x}_i \lag_i \\
+&= \pi_r(i,t)\delta \mathbf{x}_i
+\end{align*}
+where 
+\begin{align*}
+\pi_r(i,t) = \frac{\p\lag_i}{\p \dot{q}_r(i,t)} =\frac{\p\lag_i}{\p \dot{\phi}_r(i,t)}
+\end{align*}
+is called the \textbf{canonical momenta}. This definition makes sense by analogy to classical mechanics, as $q_{ri}$ is just the coordinates. So, the Hamiltonian of the discrete system is given by
+\begin{align*}
+H &= \sum_{i}p_{i}\dot{q}_{ri} - L\\
+&= \sum_{i}\delta\mathbf{x}_i \left\{\pi_r(i,t)\dot{\phi}_r(i,t) - \lag_i \right\}.
+\end{align*}
+Now, letting the difference go to zero, i.e, $\delta \mathbf{x}_i \to 0$, which makes
+\begin{align*}
+\pi_r(x) = \frac{\p\lag_i}{\p \dot{\phi}_r(i,t)} \to \frac{\p\lag_i}{\p \dot{\phi}_r},
+\end{align*}
+i.e., 
+\begin{align*}
+\pi_r(i,t) \to \pi_r(\mathbf{x}_i,t),
+\end{align*}
+in which case the Lagrangian turns from a sum into an integral
+\begin{align*}
+L(t) = \int d^3x\, \lag(\phi_r, \phi_{r,a})
+\end{align*}
+and so does the Hamiltonian
+\begin{align*}
+H = \int d^3x\, \mathcal{H}(x),
+\end{align*}
+where the Hamiltonian density is given by (again, turned from a sum into an integral)
+\begin{align*}
+\mathcal{H}(x) = \pi_r(x)\dot{\phi_r}(x) - \lag(\phi_r, \phi_{r,a}).
+\end{align*}
+\subsection{Symmetries and Conservation Laws}
+Recall the Heisenberg's equation of motion of an operator $O(t)$:
+\begin{align*}
+i\hbar \frac{dO(t)}{dt} = [O(t), H],
+\end{align*}
+where $[.,.]$ denotes the commutator. Note that
+\begin{align*}
+[O, H] = 0
+\end{align*}
+if $O$ is a constant of motion, which often stem from invariance properties of systems under groups of transformation such as translation or rotations. These invariances relate to conservation laws, which we will explore in much more detail in the next sections. Consider an example with a wavefunction $\Psi$ and an operator $O$ undergoing a Lorentz transformation:
+\begin{align*}
+\ket{\Psi} &\to \ket{\Psi'} = U\ket{\Psi}\\
+O &\to O' = UOU^\dagger.
+\end{align*}
+$U$ is a unitary transformation, which ensure that (i) the operator equations are covariant, and (ii) probability amplitudes and eigenvalues of operators (observables) are invariant (unitary matrices are length-preserving).\\
+
+We can consider another example of a rotation in the complex plane:
+\begin{align*}
+U = e^{i\alpha T}
+\end{align*}
+where $U$ can be thought of as a unitary, continuous, 1$\times$1 transformation, and $T = T^\dagger$. For an infinitesimal transformation
+\begin{align*}
+U \approx 1 + i\delta \alpha T
+\end{align*}
+and hence
+\begin{align*}
+O' = O \delta O = UOU^\dagger = (1+i\delta \alpha T)O(1-i\delta \alpha T),
+\end{align*}
+which we can show to be equivalent to
+\begin{align*}
+\delta O = i\delta \alpha[T,O].
+\end{align*}
+So, if the operator $O$ is the Hamiltonian $H$, and by requiring the theory to be invariant under variations, i.e., $\delta H = 0$, which means
+\begin{align*}
+[T,H] = 0,
+\end{align*}
+which implies that $T$ is a constant of motion. \\
+
+For a field theory derived from a Lagrangian density, we can construct conserved quantities from the invariance of $\lag$ under symmetry transformations. We have a prescription to do this where very first step is to show that we can construct a function $f^a$ of the field operators and derivatives such that
+\begin{align*}
+\frac{\p f^a}{\p x^a} = 0.
+\end{align*}
+where $a$ are just indices, and $x^0 \equiv t$. We will show how this is possible by first assuming that, well, it is possible - in which case if we define 
+\begin{align*}
+F^a(t) = \int d^3x\, f^a(\mathbf{x},t) = Constant.
+\end{align*}
+(this equation really hints to us that something is conserved over time... hence a requirement to construct conserved quantities) then by $\p f^a/\p x^a = 0$ we have
+\begin{align*}
+\frac{dF^0}{dt} &= \frac{d}{dt} \int d^3x\, f^0(\mathbf{x},t)\\
+&= \frac{d}{dt}Constant - \frac{d}{dt} \p_j f^j(\mathbf{x},t),\,\,\,\,\,\, j = 1,2,3\\
+&= -\int d^3x\, \p_j f^j(\mathbf{x},t)\\
+&= 0.
+\end{align*}
+This means
+\begin{align*}
+F^0 = \int d^3x\, f^0(\mathbf{x},t) = Constant,
+\end{align*}
+i.e, $F^0$ is a conserved quantity we are talking about. But what exactly are the quantities $f$ and $F$ and how can we interpret them? As we go along, it will make more sense to call $f^a$ the \textit{conserved current}. We will also explore Noether's theorem that relates transformation symmetries and conservations later in the following sections.\\
+
+Let us apply this result to the transformation (or rather, the variation):
+\begin{align*}
+\phi_r(x) \to \phi'_r(x) = \phi_r(x) + \delta \phi_r(x).
+\end{align*}
+This leads the variation of the Lagrangian to take the form
+\begin{align*}
+\delta \lag &= \frac{\p \lag}{\p \phi_r}\delta \phi_r + \frac{\p\lag}{\p\phi_{r,a}}\delta \phi_{r,a}\\
+&= \frac{\p \lag}{\p \phi_r}\delta \phi_r + \frac{\p\lag}{\p_a(\p\phi_r)}\delta \p_a(\phi_r)\\
+&= \left(0 + \frac{\p\lag}{\p(\p_a\phi_r)}  \right)\delta \phi_r + \frac{\p\lag}{\p_a(\p\phi_r)}\delta \p_a(\phi_r)\\
+&= \delta \phi_r\p_a \frac{\p\lag}{\p(\p_a\phi_r)} +  \frac{\p\lag}{\p(\p_a\phi_r)}\p_a\delta \phi_r\\
+&= \delta \phi_r\p_a \frac{\p\lag}{\p_a(\p\phi_r)} +  \frac{\p\lag}{\p_a(\p\phi_r)}\p_a\delta \phi_r \\
+&= \frac{\p}{\p x^a}\left( \frac{\p\lag}{\p_a(\p\phi_r)}\delta \phi_r \right)\\
+&= \frac{\p}{\p x^a}\left( \frac{\p\lag}{\p\phi_{r,a}}\delta \phi_r \right)
+\end{align*}
+where the third line comes from the Euler-Lagrange equation. Now, since we require $\delta \lag =0$, in hopes of deriving a conserved quantity, we can match $f$ to the last term in the equality:
+\begin{align*}
+f^a = \frac{\p\lag}{\p\phi_{r,a}}\delta \phi_r = \frac{\p\lag}{\p_a(\p\phi_r)}\delta \phi_r,
+\end{align*}
+in which case
+\begin{align*}
+F^a = \int d^3x\, f^a(x,t) = \int d^3x\, \frac{\p\lag}{\p_a(\p\phi_r)}\delta \phi_r,
+\end{align*}
+so
+\begin{align*}
+F^0 = \int d^3x\, \frac{\p\lag}{\p_0(\p\phi_r)}\delta \phi_r = \int d^3x\, \frac{\p\lag}{\p\dot{\phi}_r}\delta \phi_r = \int d^3x\, \pi_r(x)\delta \phi_r(x)
+\end{align*}
+where $\pi_r$ is the momentum as defined earlier.\\
+
+Now, some interesting things can happen is our field is complex. Recall that we can treat a complex fields as two independent fields. Consider the following transformations:
+\begin{align*}
+\phi_r\ to \phi'_r = e^{i\epsilon}\phi_r \approx (1 + i\epsilon)\phi_r\\
+\phi^\dagger_r \to \phi\dagger'_r e^{0ie\epsilon}\phi^\dagger_r \approx (1-i\epsilon)\phi^\dagger_r
+\end{align*}
+where $\epsilon$ is real, and suppose that $\lag$ is invariant under this transformation. The transformations, assuming that $\epsilon$ is very small, give
+\begin{align*}
+\delta \phi_r &= i\epsilon\phi_r\\
+\delta \phi^\dagger_r &= -i\epsilon\phi^\dagger_r.
+\end{align*}
+If this is the case, then $F^0$ can be written as
+\begin{align*}
+F^0 = \int d^3x\, \pi_r(x)\delta \phi_r(x) = i\epsilon\int d^3x\, [\pi_r(x)\phi_r(x) - \pi_r^\dagger(x) \phi^\dagger_r(x)].
+\end{align*}
+Now, recall that $F^0$ is simply some constant. So if we define $Q$ as an ``educated'' scalar multiplication of $F^0$, then $Q$ should also be a conserved quantity just like $F^0$, which we have shown. So, let 
+\begin{align*}
+Q = -\frac{iq}{\hbar}\int d^3x\, [\pi_r(x)\phi_r(x) - \pi_r^\dagger(x) \phi^\dagger_r(x)],
+\end{align*}
+where $q$ is just another constant. There are two reasons why we might want to do this. First, we would like to introduce $q$ because we will ultimately show that it is the electric charge. And second, we want to introduce the term $i/\hbar$ because we can observe that the integrand looks suspiciously like it has something to do with a commutator. In fact, we will now evaluate the commutator $[Q,\phi_r(x)]$. However, there are important steps and concepts we need to understand before doing this.\\
+
+First, recall the Heisenberg uncertainty principle can be written in commutator form
+\begin{align*}
+[\hat{x},\hat{p}] = i\hbar
+\end{align*}
+where $\hat{x}$ is just the position operator, and $\hat{p}$ is the momentum operator. Now, while we are not actually dealing with position and momentum operators, we are dealing the \textbf{canonical coordinate} $\phi_r$ and \textbf{canonical momenta} $\pi_r$, to which the canonical commutation relations still apply:
+\begin{align*}
+[\hat{x}_i,\hat{\pi}_j] &= i\hbar \delta^i_j\\
+[\hat{\pi}_i,\hat{\pi}_j] &= [\hat{x}_i,\hat{x}_j] = 0
+\end{align*}
+Specifically in our discrete case, 
+\begin{align*}
+[\phi_r(i,t), \pi_s(j',t)] &= i\hbar\frac{\delta^r_s \delta ^{j'}_j}{\delta \mathbf{x}_j}\\
+[\phi_r(j,t),\phi_s(j',t)] &= [\pi_r(j,t), \pi_s(j',t)] = 0.
+\end{align*}
+In the continuous case:
+\begin{align*}
+[\phi_r(\mathbf{x},t), \pi_s(\mathbf{x}',t)] &= i\hbar\delta^r_s \delta(\mathbf{x} - \mathbf{x}')\\
+[\phi_r(\mathbf{x},t),\phi_s(\mathbf{x'},t)] &= [\pi_r(\mathbf{x},t),\pi_s(\mathbf{x'},t)] = 0.
+\end{align*}
+Now, back to our case. We want to find 
+\begin{align*}
+[Q,\phi_r(x)].
+\end{align*}
+
+(more to come... this section in Mandl and Shaw is actually pretty long and I don't know what the ``narrative'' is. I'll come back to this later.)
 
 \newpage
 \section{Gauge Invariance}
@@ -481,7 +697,7 @@ which satisfies
 \begin{align*}
 \p_\mu J^\mu = 0.
 \end{align*}
-So, we have show the connection between global phase invariance and current conservation. But what if the transformation is local? Consider the following local phase rotation:
+So, we have shown the connection between global phase invariance and current conservation. But what if the transformation is local? Consider the following local phase rotation:
 \begin{align*}
 \phi(x) \to e^{iq\alpha(x)}\phi(x).
 \end{align*}
