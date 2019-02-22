@@ -818,13 +818,13 @@ U(0,x) = u_0(x) - S(0,x)\,\,\,\,\, x\in[0,L]
 \end{align*}
 which we know how to solve using separation of variables and Fourier series. 
 
-subsection{Time Varying BCs into Zero BCs}
+\subsection{Time Varying BCs into Zero BCs}
 \begin{align*}
 \begin{cases}
-U_t = \alpha^2U_{xx}\,\,\,\,, t>0,0<x<L\\
+u_t = \alpha^2u_{xx}\,\,\,\,, t>0,0<x<L\\
 \alpha_1 u(t,0) + \beta_1 u_x(t,0) = g_1(t)\\
 \alpha_2 u(t,L) + \beta_2 u_x(t,L) = g_2(t)\\
-U(0,x) = u_0(x)\,\,\,\,\,, x\in[0,L]
+u(0,x) = u_0(x)\,\,\,\,\,, x\in[0,L]
 \end{cases},
 \end{align*}
 where $\alpha_1,\alpha_2,\beta_1,\beta_2,g_1(t),g_2(t),u_0(x)$ are all known. To solve this, we push forwardour idea of steady-state-ish and transient solutions. We assume that 
@@ -918,15 +918,135 @@ u(t,x) = U(t,x) + S(t,x)
 satisfies a IBVP where the heat equation is homogeneous, but the BCs are very complicated compared to the new inhomogeneous heat IBVP. 
 \begin{align*}
 \begin{cases}
-fill in the gap
-\end{cases}
+U_t = \alpha^2 U_{xx} - S_t\\
+U_x(L,t) = 0\\
+U(t,L) = 0\\
+U(0,x) = u_0(x) - S(0,x)
+\end{cases}.
+\end{align*}
+Moral: problems with complicated BCs can often be transformed into equivalent problems with simple BCs at the cost of making the PDE more complicated. \\
+
+Question: Under what conditions on the first IBVP is our new IBVP homogeneous? The answer is that a sufficient condition is for $g_1$, $g_2$ to be constant. In this realm, $S(t,x) = S(x)$ nad is thus a ``real'' steady-state solution.
+
+\newpage
+
+\section{Solving more complicated problems directly: An invitation to Strum-Liouville theory}
+
+Consider the following IBVP:
+\begin{align*}
+\begin{cases}
+u_t = \alpha^2 u_{xx}\\
+u(t,0) = 0\\
+u_x(t,1) + hu(t,1) = 0\\
+u(0,x) = u_0(x) 
+\end{cases}.
+\end{align*}
+We can solve this using separation of variables. First, we seek product solutions of the form:
+\begin{align*}
+u(t,x) = T(t)X(x).
+\end{align*}
+By asking that $u_t = \alpha^2 u_{xx}$, we obtained 
+\begin{align*}
+\frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} = \mu
+\end{align*}
+where $\mu$ is a constant. What are the possibilities for $\mu$?\\
+
+\subsection{$\mu > 0$}
+If $\mu>0$, we obtain
+\begin{align*}
+u(t,x) = Ae^{\alpha^2 \mu t}X(x).
+\end{align*}
+But as $e^{\alpha^2 \mu t} \to \infty$ as $t\to\infty$, we reject this solution on physical grounds. \\
+\subsection{$\mu=0$}
+If $\mu = 0$, then $T'(t) = X''(x) = 0$, so
+\begin{align*}
+u(t,x) = Ax+b.
 \end{align*}
 
+To satisfy the BCs in this case:
+\begin{align*}
+u(t,0) = 0 = A\times 0 + b.
+\end{align*}
+So, $b=0$. Next,
+\begin{align*}
+u_x(t,1) + hu(t,1) = 0.
+\end{align*}
+So, $A+hA = 0$, so $A=0$. This is just the trivial solution.
 
+\subsection{$\mu <0$}
+Let $\mu=\lambda^2$, then we have
+\begin{align*}
+T(t) = Ae^{-(\alpha \lambda)^2t}
+\end{align*}
+and
+\begin{align*}
+X(x) = A\sin(\lambda x) + B\cos(\lambda x).
+\end{align*}
+So,
+\begin{align*}
+u(t,x) = e^{-(\lambda\alpha)^2t}\left( A\sin(\lambda x) + B\cos(\lambda x) \right).
+\end{align*}
+We let this subject to BCs:
+\begin{align*}
+u(t,0) = e^{-(\lambda\alpha)^2t}\left( A\sin(\lambda\times 0) + B\cos(\lambda \times 0) \right) = 0.
+\end{align*}
+So, $B=0$. Thus our product solution looks like
+\begin{align*}
+u(t,x) = Ae^{-(\lambda\alpha)^2t}\sin(\lambda x).
+\end{align*}
+The other BC gives
+\begin{align*}
+0=u(t,1)+hu_x(t,1)=Ae^{-(\lambda\alpha)^2t}\left( \lambda\cos(\lambda) + h\sin(\lambda) \right).
+\end{align*}
+So,
+\begin{align*}
+\tan\lambda - \frac{-\lambda}{h}.
+\end{align*}
 
+So, admissible $\lambda$'s here are solution to this equation, which is not as simple as $\pi n$, like we have found before. Now, note that $\lambda$ is this equation cannot be found explicitly. Solutions are just intersections on the following plot:
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.6]{tan.png}
+\end{figure}
 
-
-
+We see that
+\begin{align*}
+\frac{\pi}{2} < \lambda_1 < \pi < \lambda_2 < 2pi < \lambda_3 < 3\pi.
+\end{align*}
+We call these $\lambda_n$'s eigenvalues associated with the boundary value problem
+\begin{align}
+\begin{cases}
+X'' + \lambda^2 X = 0\\
+X(0) = 0\\
+X'(1) + hX(1) = 0
+\end{cases}.
+\end{align}
+The solutions, $\sin(\lambda_n x)$ are associated eigenfunction. So, with separation of variables, we obtain
+\begin{align*}
+u_n(x,t) = A_n e^{-(\lambda_n\alpha)^2t}\sin(\lambda_n x)
+\end{align*}
+which solve the IBVP. Once again, we have that
+\begin{align*}
+u(t,x) = \sum_{n=1}^{\infty} A_n e^{-(\lambda_n\alpha)^2t}\sin(\lambda_n x)
+\end{align*}
+which we want to also satisfy the IC, which is 
+\begin{align*}
+u(0,x) = u_0(x).
+\end{align*}
+We invoke Fourier's trick to find $A_n's$:
+\begin{align*}
+\int_{0}^1 u_0(x)\sin(\lambda_m x)\,dx &= \int_{0}^1 \sin(\lambda_m x)\sum_{n=1}^{\infty} A_n e^{-(\lambda_n\alpha)^2t}\sin(\lambda_n x)\,dx\\
+&= \sum_{n=1}^\infty A_n\int_{0}^1 \sim(\lambda_m x)\sin(\lambda_n x)\,dx\\
+&= A_m \left( \frac{1}{2} - \frac{\sin(2\lambda_m x)}{4\lambda_m} \right).
+\end{align*}
+So
+\begin{align*}
+\int_{0}^1 u_0(x)\sin(\lambda_m x) \,dx &= A_m \frac{1}{2\lambda_m}\left( \lambda_m - \sin(\lambda_m x)\cos(\lambda_m x) \right)
+\end{align*}
+and so
+\begin{align*}
+A_m = \frac{2\lambda_m}{\lambda_m - \sin(\lambda_m x)\cos(\lambda_m x)}\int_{0}^1 u_0(x)\sin(\lambda_m x) \,dx.
+\end{align*}
 
 
 \newpage
