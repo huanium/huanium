@@ -1,0 +1,542 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage{physics}
+\usepackage{amsmath}
+\numberwithin{equation}{section}
+\usepackage{siunitx}
+\usepackage{braket}
+\usepackage{authblk}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{parskip}
+\setlength{\parindent}{15pt}
+\usepackage{tikz}
+\usetikzlibrary{arrows, calc, patterns, angles, quotes}
+\usetikzlibrary{decorations.pathmorphing}
+\usepackage{amssymb}
+
+\begin{document}
+\begin{titlepage}\centering
+ \clearpage
+ \title{\textsc{\bf{A QUICK GUIDE TO\\SPECIAL RELATIVITY}}\\\smallskip An Inquiry into Space and Time\\}
+ \author{\bigskip Huan Bui}
+ \affil{Colby College\\Department of Physics and Astronomy\\Class of 2021\\}
+ \date{\today}
+ \maketitle
+ \thispagestyle{empty}
+\end{titlepage}
+ \noindent \textbf{\huge {Preface}}
+ 
+ \noindent \indent \textit{A Quick Guide to Special Relativity: An Inquiry into Space and Time} is, as its title hints, not a textbook, but rather a quick theoretical guide to Eintein's theory of special relativity. This book may suit best for miserable undergraduates whose first Modern Physics examination is quickly approaching (unideally the next day). However, readers who have established some intuition or mathematical background on special relativity may also find this text helpful for brushing up their technical understanding of this theory or for first diving into the more ``mathy'' and meaty bits of relativity. This book consists mostly of mathematical descriptions, derivations, and consequences of important concepts in special relativity, and it puts less emphasis on the historical background or intuitive explanations to these ideas. Hence, for readers who are eager to enhance their mathematical mastery of special relativity or looking for an ``equation handbook'', this book should be the way to go. Again, keep in mind that this text is not a textbook. There will be a few sample problems (with solution following immediately). However, readers should not expect to find exercises from this book. Therefore, to truly master special relativity (or anything else really), readers are encouraged to seek out challenging problem sets and more advanced-level theoretical readings on this subject. David J. Morin's \textit{Special Relativity: For the Enthusiastic Beginner} offers a great start.\\
+ 
+ \noindent \textbf{\huge {A word from the author}}
+ 
+ \noindent \indent I am currently an undergraduate pursuing a Bachelor of Arts (2021) in Physics and Mathematical Sciences with a Concentration in Statistics at Colby College, Waterville, Maine, U.S.A. This book is written based on my lecture notes from PH241: Modern Physics I, which I took in my first semester of college. As I am compiling this book, I am transcribing my hand-written notes into a digital form that includes mathematical notations and rigorous formatting in LaTeX. I want this book to be my first-ever LaTex project. I chose to write this book specifically because I want to learn LateX - an exciting and beautiful language - while being able to produce something of good use out of the process. I hope to benefit undergrads who are in need of a quick glance-over of special relativity to revise for a coming exam or to begin their venture into this exciting and logic-defying, yet very real, world of physics. 
+ 
+ Spacetime!
+ \newpage
+ 
+ \tableofcontents
+ \newpage
+ 
+ \section{Galilean and Newtonian Relativity}
+ \subsection{Two central problems of relativity}
+ Two observers in different inertial reference frames $S$ and $S'$ make detailed observations as physical phenomena occur. Each observer records the Time and Location of a set of events. How do their records compare?
+ \subsection{Terms defined}
+ \subsubsection{Events}
+ Something that occurs independent of our description of it (time and location).
+ \subsubsection{Observers}
+ Someone who compiles measurements of where and when Events occur. Note that measurements of when and where events occur are NOT when and where the observer ``sees'' the events.
+ \subsubsection{Inertial reference frame}
+ Coordinate systems in which the law of inertia is true.
+  \begin{figure}[h!] %place figure here
+  \centering
+    \begin{tikzpicture}[->, thick]
+            \draw (0,0,0) -- (0,3,0) node[above] {$+y$}; %+Y
+            \draw (5,0,0) -- (5,3,0) node[above] {$+y'$}; %+y'
+            \draw (0,0,0) -- (8,0,0) node[right] {$+x$}; %+x
+            \draw (0,0,0) -- (0,0,3.5) node[left] {$+z$}; %z
+            \draw (5,0,0) -- (5,0,3.5) node[left] {$+z'$}; %z'
+            \draw [->, ultra thick] (6,1.5,0) -- (7,1.5,0) node[right] {\textbf{$\vec{v}$}};
+            \node[label={left: \large ${(S)}$}] at (0,1.80,0){};
+            \node[label={left: \large ${(S')}$}] at (5,1.80,0){};
+    \end{tikzpicture}
+    \caption{Frame $(S')$ moves with speed $\vec{v}$ relative to frame $(S)$}
+    \label{fig: s to s'}
+  \end{figure}
+  
+ \subsection{Principle of Relativity}
+ The laws of physics are the same in \underline{all} intertial reference frames.
+ \subsection{Coordinate Transformations}
+ If an ``event'' is observed in space-time ordinates $(t,x,y,z)$ in $S$, how do we determin ethe space-time coordinate $(t', x', y', z')$ in $S'$?
+ \subsubsection{Spatial Rotation}
+  \begin{figure}[h!]
+  \centering
+   \begin{tikzpicture}[->]
+	\draw [->] (0,0,0) -- (0,7,0) node[above] {$y$};
+	\draw [->] (0,0,0) -- (7,0,0) node[right] {$x$};
+	\draw [dashed] (0,0,0) -- (6.75,1.5,0) node[above] {$x'$};
+	\draw [dashed] (0,0,0) -- (-1.5,6.75,0) node[above] {$y'$};
+	\draw [->, ultra thick] (0,0,0) -- (6,6,0) node[above] {\large $\vec{r_{p}}$};
+	
+   \end{tikzpicture}
+   \caption{Spatial rotation: $(S)$ being transformed into $(S')$}
+   \label{fig: rotate}
+  \end{figure}
+  
+  \begin{equation} \label{eq:1}
+  \begin{cases} 
+    (S): \vec{r_{p}} = \braket{x_{p}, y_{p}} = x_{p}\hat{i} + y_{p}\hat{j} \\
+    (S'): \vec{r_{p}} = \braket{x'_{p}, y'_{p}} = x'_{p}\hat{i'} + y'_{p}\hat{j'}
+  \end{cases}
+  \end{equation}
+  
+  For vector $\vec{r_{p}}$ in our case:
+  \begin{equation} \label{eq:2}
+   \vec{r_{p}} = x_{p}\hat{i} + y_{p}\hat{j} = x'_{p}\hat{i'} + y'_{p}\hat{j'}
+  \end{equation}
+  
+  So, for any vector $\vec{a}$:
+  \begin{equation} \label{eq:3}
+   \vec{r_{a}} = x_{a}\hat{i} + y_{a}\hat{j} = x'_{a}\hat{i'} + y'_{a}\hat{j'}
+  \end{equation}
+  
+  Unit vectors:
+  \begin{equation} \label{eq:4}
+  \begin{cases} 
+    \hat{i'} = \hat{i} \cos\theta + \hat{j} \sin\theta \\
+    \hat{j'} = -\hat{i} \sin\theta + \hat{j} \cos\theta
+  \end{cases}
+  \end{equation}
+  
+  Reversing the transformation:
+  \begin{equation} \label{eq:5}
+  \begin{cases} 
+    \hat{i} = \hat{i'} \cos(-\theta) + \hat{j'} \sin(-\theta) \\
+    \hat{j} = -\hat{i'} \sin(-\theta) + \hat{j'} \cos(-\theta)
+  \end{cases}
+  \end{equation}
+
+  We can thus find the coefficients $x_{a}$ and $y_{a}$ by combining \eqref{eq:3}, \eqref{eq:4}, and \eqref{eq:5}:\
+  \begin{equation} \label{eq:6}
+    \begin{split}
+      \vec{r_{a}} &= x_{a}\hat{i} + y_{a}\hat{j} \\
+      &= x_{a}(\hat{i'} \cos(-\theta) + \hat{j'} \sin(-\theta)) + y_{a}(-\hat{i'} \sin(-\theta) + \hat{j'} \cos(-\theta)) \\
+      &= x_{a}(\hat{i'} \cos\theta - \hat{j'} \sin\theta) + y_{a}(\hat{i'} \sin\theta + \hat{j'} \cos\theta) \\
+      &= (x_{a}\cos\theta + y_{a}\sin\theta)\hat{i'} + (-x_{a}\sin\theta + y_{a}\cos\theta)\hat{j'} \\
+      &= x'_{a}\hat{i'} + y'_{a}\hat{j'}
+    \end{split}
+  \end{equation}
+ 
+  Hence, we get: 
+  \begin{equation} \label{eq:7}
+  \begin{cases} 
+    x'_{a} = x_{a}\cos\theta + y_{a}\sin\theta \\ 
+    y'_{a} = -x_{a}\sin\theta + y_{a}\cos\theta
+  \end{cases}
+  \end{equation}
+  
+  We can now calculate the magnitude of vector $\vec{a}$ in both frames $(S')$ and $(S')$:
+  \begin{equation} \label{eq:8}
+    \begin{split}
+      (S): ||\vec{a}|| &= {x_{a}}^2 + {y_{a}}^2 \\ 
+      (S'): ||\vec{a}|| &= {x^{\prime}_{a}}^2 + {y^{\prime}_{a}}^2 \\
+      &= {(x_{a}\cos\theta + y_{a}\sin\theta)}^{2} + {(-x_{a}\sin\theta + y_{a}\cos\theta)}^{2} \\ 
+      &= ... \\
+      &= ((\cos\theta)^2 + (\sin\theta)^2)({x_{a}}^2 + {y_{a}}^2)\\
+      &= {x_{a}}^2 + {y_{a}}^2
+    \end{split}
+  \end{equation}
+  
+  \noindent So, different observers would agree on the magnitude of vector $\vec{a}$. We say the magnitude of vector $\vec{a}$ is \textit{invariant} under orthogonal transformations. 
+ 
+ \subsubsection{Galilean Transformation}
+ Say, we have two frames $(S)$ and $(S')$. Frame $(S')$ is moving with velocity $\vec{v}$ relative to frame $(S)$. At time $t=t'=0$, $x=x'=0$, $y=y'=0$, and $z=z'=0$. 
+ \begin{figure}[!hbt] %place figure here
+  \centering
+    \begin{tikzpicture}[->, thick]
+            \draw (0,0,0) -- (0,2,0) node[above] {$+y$}; %+Y
+            \draw (5,0,0) -- (5,2,0) node[above] {$+y'$}; %+y'
+            \draw (0,0,0) -- (8,0,0) node[right] {$+x$}; %+x
+            \draw (0,0,0) -- (0,0,3.5) node[left] {$+z$}; %z
+            \draw (5,0,0) -- (5,0,3.5) node[left] {$+z'$}; %z'
+            \draw [->, ultra thick] (6,1.5,0) -- (7,1.5,0) node[right] {\textbf{$\vec{v}$}};
+            \node[label={left: \large ${(S)}$}] at (0,1.80,0){};
+            \node[label={left: \large ${(S')}$}] at (5,1.80,0){};
+    \end{tikzpicture}
+    \caption{Frame $(S')$ moves with speed $\vec{v}$ relative to frame $(S)$}
+    \label{fig: galilean}
+  \end{figure}
+ 
+ \paragraph{\indent i) Galilean Transformation Equations}
+  \begin{equation} \label{eq:9}
+  \begin{cases} 
+    x'=x-vt \\ 
+    y'=y\\
+    z'=z\\
+    t'=t
+  \end{cases}
+  \end{equation}
+ Again, we should also see what it looks like if we reversed the transformation:
+  \begin{equation} \label{eq:10}
+  \begin{cases} 
+    x=x+vt \\ 
+    y=y'\\
+    z=z'\\
+    t=t'
+  \end{cases}
+  \end{equation}
+  
+  \noindent Another way to look at this system of transformation equations is to visualize the transformation in a space-time coordinate system. This will turn out to be a very useful strategy when we deal with more complex transformations in relativity.
+  \begin{figure}[!hbt] %place figure here
+  \centering
+    \begin{tikzpicture}[->, thick]
+            \draw (0,0,0) -- (0,3,0) node[above] {$+y$}; %+Y
+            \draw (0,0,0) -- (8,0,0) node[right] {$+x$}; %+x
+            \node[label={left: \large ${(S)}$}] at (0,1.80,0){};
+    \end{tikzpicture}
+    \caption{Our first space-time diagram!}
+    \label{fig: galilean}
+  \end{figure}
+  
+  In $(S)$: Events $A$, $B$, and $C$.
+  \begin{equation} \label{eq:11}
+  \begin{cases} 
+  (t_{A}, x_{A}) = (2s, 3m) \\
+  (t_{B}, x_{B}) = (6s, 3m) \\
+  (t_{C}, x_{C}) = (2s, 1m)
+  \end{cases}
+  \end{equation}
+  
+  What about movement in $(S')$? Recall the transformation equations:
+  \begin{equation} \label{eq:12}
+  \begin{cases} 
+  t'=t \\
+  x'=x-vt
+  \end{cases}
+  \end{equation}
+  
+  \noindent At $x'=0$, $x=vt$. In other words, the line $x=vt$ is the path which the origin of $(S')$ would draw in $(S)$ if it were to be stationary in $(S')$.
+ 
+ \paragraph{\indent ii) Galilean Velocity Transformation}
+ \subparagraph 
+  \noindent We can use the ``differential approach'' to derive the Galilean velocity transformation. First, we write the velocities $\vec{u}$ and $\vec{u'}$ in $(t,x,y,z)$ and $(t',x',y',z')$:
+  \begin{equation} \label{eq:13}
+  \vec{u}=\langle{\dv{x}{t},\dv{y}{t},\dv{z}{t}}\rangle
+  \end{equation}
+  \begin{equation} \label{eq:14}
+  \vec{u'}=\langle{\dv{x'}{t'}, \dv{y'}{t'}, \dv{z'}{t'}}\rangle
+  \end{equation}
+  Then, we examine the relationship between $(t,x,y,z)$ and $(t',x',y',z')$:
+  \begin{equation}
+   u'_{x}=\dv{x'}{t'}=\dv{x'}{t}\dv{t}{t'}=\dv{}{t}{(x-vt)}.1=\dv{x}{t}-\dv{t}{t}.v=u_{x}-v
+  \end{equation}
+  Using a similar approach, we can also evaluate $u'_{y}$ and $u'_{z}$. We can also evaluate $u'_{y}$ and $u'_{z}$:
+  \begin{equation} \label{eq:15}
+  \begin{cases}
+   u'_{y}=\dv{y'}{t'}=\dv{y'}{t}\dv{t}{t'}=\dv{y}{t}.1=\dv{y}{t}=u_{y} \\
+   u'_{z}=\dv{z'}{t'}=\dv{z'}{t}\dv{t}{t'}=\dv{z}{t}.1=\dv{z}{t}=u_{z}
+  \end{cases}
+  \end{equation}
+  
+  \noindent Combining \eqref{eq:15} and \eqref{eq:16}, we obtain the Galilean velocity transformation:
+  \begin{equation} \label{eq:16}
+  \begin{cases} 
+  u'_{x}=u_{x}-v \\
+  %u_{x}=u'_{x}+v
+  u'_{y}=u_{y} \\
+  u'_{z}=u_{z} \\
+  t' = t
+  \end{cases}
+  \end{equation}
+  
+  \noindent Again, we should also look at the inverse transformation from $(S')$ to $(S)$:
+  \begin{equation} \label{eq:18}
+  \begin{cases} 
+  u_{x}=u'_{x}+v \\
+  %u_{x}=u'_{x}+v
+  u_{y}=u'_{y} \\
+  u_{z}=u'_{z} \\ 
+  t = t'
+  \end{cases}
+  \end{equation}
+ 
+ \paragraph{\indent iii) Direction}
+ \subparagraph{} Imagine an object moving in the $xy$ coordinates in frame $(S)$, at an angle $\theta$ to the $x$-axis. How does the object move in frame $(S')$? Specifically, what angle does the object make with the $x'$-axis in $(S')$?
+  \begin{figure}[!h] %place figure here
+  \centering
+    \begin{tikzpicture}[->, thick]
+            \draw (0,0,0) -- (0,3,0) node[above] {$+y$}; %+Y
+            \draw (0,0,0) -- (5,0,0) node[right] {$+x$}; %+x
+            \draw [ultra thick](1,1,0) -- (2.5,2.5,0) node[above] {\textbf{$\vec{u}$}}; %+u
+            %\node[label={left: \large ${(S)}$}] at (0,1.80,0){};
+    \end{tikzpicture}
+    \caption{Velocity vector $\vec{u}$ in Cartesian coordinates}
+    \label{fig: Velocity vector}
+  \end{figure}
+  
+  First, we can easily work out the relationship between the angle $\theta$ and the vector components of $\vec{u}$.
+  \begin{equation} \label{eq:19}
+  \begin{cases} 
+  u_{x}=||\vec{u}||\cos\theta=u\cos\theta\\
+  u_{y}=||\vec{u}||\sin\theta=u\sin\theta 
+  \end{cases}
+  \end{equation}
+  
+  \begin{equation} \label{eq:20}
+  \tan\theta=\frac{\sin\theta}{\cos\theta}=\frac{u_{y}}{u_{x}}
+  \end{equation}
+  
+  Similarly, we can write an expression for $\tan\theta'$ in $(S')$. Combining this newly derived expression with the velocity transoformation equations, we obtain the relationship between $\theta'$ and $\theta$:
+  
+  \begin{equation} \label{eq:21}
+  \tan\theta'=\frac{\sin\theta'}{\cos\theta'}=\frac{u'_{y}}{u'_{x}} = \frac{u_{y}}{u_{x}-v}=\frac{u\sin\theta}{u\cos\theta - v}
+  \end{equation}
+  
+  This is the relationship between $\theta'$ and $\theta$. If you might wonder what you can do with \eqref{eq:21}, think about the problem of calculating the angle a raindrop makes on your car window as you move with some speed $v$, assuming that raindrops fall vertically relative to ground. 
+ 
+ \paragraph{\indent iv) Acceleration Transformation}
+ \subparagraph{}
+ Surprise surprise! We use the good 'ol ``differential approach'' to derive the Galilean acceleration transformation.
+ 
+  \begin{equation} \label{eq:22}
+  \begin{cases} 
+  a'_{x}=\dv{u'_{x}}{t'}=\dv{u'_{x}}{t}\dv{t}{t'}=\dv{}{t}{(u_{x}-v)}.1=a_{x} \\
+  a'_{y}=\dv{u'_{y}}{t'}=\dv{u'_{y}}{t}\dv{t}{t'}=\dv{u'_{y}}{t}=a_{y} \\ 
+  a'_{z}=\dv{u'_{z}}{t'}=\dv{u'_{z}}{t}\dv{t}{t'}=\dv{u'_{z}}{t}=a_{z}
+  \end{cases}
+  \end{equation}
+  Note that these transformation equations are only true is $v$ is constant. Otherwise, we would be dealing with noninertial reference frames, which is beyond our consideration of special relativity. 
+ 
+ \subsubsection{Newton's Laws and Galilean Relativity}
+ 
+ \begin{equation} \label{eq:23}
+ \vec{F} = m\vec{a}
+ \end{equation}
+ 
+ We have found that:
+  \begin{equation} \label{eq:24}
+  \begin{cases} 
+  a'_{x}=a_{x} \\
+  a'_{y}=a_{y} \\ 
+  a'_{z}=a_{z}
+  \end{cases}
+  \end{equation}
+  
+ Hence, Newton's laws are \textit{invariant} under a Galilean transformation.
+ 
+ \section{Electromagnetism and Galilean Relativity}
+ 
+ \subsection{Maxwell's equations and light}
+ Maxwell's equations summarizes the rules for $\vec{E}$ and $\vec{B}$. They predict that electromagnetic waves travel at speed:
+ \begin{equation}\label{eq:25}
+ c = \frac{1}{\sqrt{\mu_{0}\varepsilon_{0}}} = 3\times10^{8} m/s
+ \end{equation}
+ where $\mu_{0}$ is the permeability constant or the magnetic constant, and $\varepsilon_{0}$ is the permittivity of free space. 
+ 
+ \subsection{The ``luminiferous ether''}
+ Proposes that there is a medium in which $c = 3\times10^{8} \si{m/s}$
+ Are Maxwell's equations wrong? Or are Galilean's transformation wrong?
+ 
+ \subsection{The Michelson-Morley experiment}
+ A test of the ``luminiferous ether'' hypothesis. Experiment for measuring $c$.
+ 
+ \subsubsection{The ``horizontal''}
+  \begin{figure}[!h] %place figure here
+  \centering
+    \begin{tikzpicture}[thick]
+	    %speed vector + length
+	    \draw [->, ultra thick] (3,0.5,0) -- (4,0.5,0) node[right] {\textbf{$\vec{v}$}};
+	    %horizontal arrow
+            \draw (5,0,0) -- (0,0,0) node[left] {$t=t_{0}$} node[right, xshift=150] {mirror} node[above, yshift=-15, xshift=70]{$l_{1}$};
+            %vertical arrow
+            \draw [->](0,0,0) -- (0,0.5,0);
+            %mirror
+            \draw (5,-0.25) rectangle (5.25,0.25);
+            %squiggly arrow
+            \draw [->, line join=round, decorate, decoration={zigzag, segment length=4, amplitude=1,post=lineto, post length=2pt}]  (0.05,-0.25,0) -- (0.75,-0.25,0);
+            
+            \draw (6,-1,0) -- (1,-1,0) node[left, xshift=-28] {$t=t_{1}$} node[right, xshift=150] {mirror} node[above, yshift=-15, xshift=70]{$l_{1}$};
+            \draw [->](1,-1.0,0) -- (1,-0.5,0);
+            \draw (6,-1.25) rectangle (6.25,-0.75);
+            \draw [->, line join=round, decorate, decoration={zigzag, segment length=4, amplitude=1,post=lineto, post length=2pt}]  (5.20,-1.25,0) -- (5.95,-1.25,0);
+            
+            \draw (7,-2,0) -- (2,-2,0) node[left, xshift=-56] {$t=t_{2}$} node[right, xshift=150] {mirror} node[above, yshift=-15, xshift=70]{$l_{1}$};
+            \draw [->](2,-2,0) -- (2,-1.5,0);
+            \draw (7,-2.25) rectangle (7.25,-1.75);
+            \draw [->, line join=round, decorate, decoration={zigzag, segment length=4, amplitude=1,post=lineto, post length=2pt}]  (2.75,-2.25,0) -- (2.05,-2.25,0);
+            
+            %x-axis
+            \draw [->, dashed, ultra thin] (0,-3,0) -- (9,-3,0) node[right] {$+x$};
+            %y-axes
+            \draw[dashed, ultra thin] (0,-3,0) -- (0,0.0,.0) node[below, yshift = -90] {$x_{0}$};
+            %\draw[dashed, ultra thin] (1,-3,0) -- (1,-1,0) node[below, yshift = -61.5, xshift = 29] {$x_{1}$};
+            \draw[dashed, ultra thin] (2,-3,0) -- (2,-2,0) node[below, yshift = -33.5, xshift = 0] {$x_{1}$};
+            \draw[dashed, ultra thin] (6,-3,0) -- (6,-1,0) node[below, yshift = -61.5, xshift = 0] {$x_{2}$};
+    \end{tikzpicture}
+    \caption{Horizontal arm, length $l_{1}$, moving with speed $v$ relative to the ``ether''}
+    \label{fig: the horizontal}
+  \end{figure}
+  
+  Our goal is to work out $\Delta t$, the time it takes for light to travel from $x_{0}$ to $x_{2}$, and reflects from $x_{2}$ and to arrive back at $x_{1}$. Now, let the speed of light be $c$. We should also let $t_{a}=t_{1}-t_{0}$ and $t_{b}=t_{2}-t_{1}$. 
+  
+ 
+ \subsubsection{The ``vertical''}
+ 
+ \subsubsection{Michelson's first brilliant observation}
+ Interferometry
+ 
+ \subsubsection{Michelson's second brilliant observation}
+ 
+ \subsection{A different experiment}
+ 
+ \section{Einstein's Postulates of Relativity}
+ Can we reconcile the Michelson-Morley experiment and Stellar Aberration? Are the laws of Electricity and Magnetism independent of the inertial frame?
+ \subsection{Einstein's realization about electricity and magnetism}
+ \subsection{Postulates of Special Relativity}
+ 
+ \subsubsection{Einsteins postulates}
+ \indent a) All laws of physics are the same (identical mathematical forms) in all inertial reference frames. \\ 
+ b) Principles of constancy of the speed of light: The speed of light is the same in all inertial reference frames.
+ 
+ \section{The fundamental consequences of the postulates} 
+ Prelude to the ``Lorentz-Einstein Transformation''.
+ \subsection{Relativity of Simultaneity}
+ Alice in a train moving at speed $v$ relative to the ground. Bob stands on the ground.
+ \subsubsection{Simultaneity and clock readings}
+ \subsubsection{Simultaneity and Magnetism: A practical example}
+ \subsubsection{Simultaneity and relativity: A cautionary tale}
+ \subsection{Relativity and how to understand space and time}
+ Rules:\\
+ - All observers agree on events\\
+ - The principle of relativity and constancy of the speed of light\\
+ - All situations need to be measured with real tools - Sticks and Clocks
+ \subsubsection{Simultaneity}
+ \paragraph{\indent a)Determining distances and time intervals}
+ \paragraph{\indent b) Transverse length measurements}
+ \subsubsection{Time dilation}
+ \subsubsection{Length contraction}
+ \subsubsection{Reflection on fundamental effects}
+ What causes:\\
+ - Clocks to be unsynchronized?\\
+ \noindent - Moving clocks to run slow?\\
+ \noindent - Moving objects to get short?
+ 
+ \noindent The answer is PERSPECTIVE.
+ \subsubsection{Time dilation with regular clocks}
+ \subsubsection{Velocity ``addition''}
+ 
+ \section{Lorentz-Einstein Transformation Equations}
+ \underline{Goal}:
+ Find $(t,x,y,z)_{S} \longrightarrow (t',x',y',z')_{S'}$
+ \subsection{Linear transformation of the coordinates}
+ 
+ \subsection{Derivations}
+ \subsubsection{Transverse dimension}
+ \subsubsection{$x-t$ transformation}
+ \subsubsection{Dependence of $x',t'$ on $x,t$}
+ \paragraph{Consider the motion of the origins of $S$ and $S'$}
+ \paragraph{Apply the principle of relativity}
+ 
+ \subsection{The Lorentz-Einstein Equations}
+ 
+ \subsection{Some properties of the Lorentz-Einstein Transformations}
+ \subsubsection{Spatial seperation and time interval between events}
+ \subsubsection{Non-relativistic limit}
+ \subsubsection{The limiting speed}
+ \subsubsection{The limiting speed - REALLY!}
+ 
+ \subsection{The fundamental effects and consequence of the Lorentz-Einstein transformation}
+ \subsubsection{Time dilation}
+ \subsubsection{Length contraction}
+ \subsubsection{Relativity of simultaneity}
+ 
+ \section{Relativistic Kinematics: Description of the Motion of Particles}
+ \subsection{Longitudinal velocity transformation}
+ \subsection{Transverse velocity transformation}
+ \subsection{Relativistic speed transformation}
+ \subsection{Relativistic acceleration transformation}
+ \subsection{The Relativistic Doppler effect}
+ \subsubsection{The Doppler effect for sound}
+ \subsubsection{Light propagation}
+ \paragraph{i) 1-D}
+ \paragraph{ii) 2-D}
+ \subsubsection{Doppler effect for light}
+ 
+ \section{Spacetime}
+ \subsection{Minkowski spacetime diagrams and the Lorentz-Einstein transformations}
+ Graphical representation of the relationship between measurements in different frames.
+ \subsubsection{Spacetime axes, events, and worldlines}
+ \subsubsection{Light-cones}
+ \subsubsection{The $S'$ axes}
+ \subsubsection{Causality and Minkowski diagrams}
+ 
+ \subsection{How does Relativity explain Stellar Aberration?}
+ 
+ \subsection{The Space-Time interval: An \textit{Invariant}}
+ Is there a number that uniquely and in a frame independent way indentifies the ``kind'' of seperation between events?
+ 
+ \subsection{The Twin Paradox}
+ \subsubsection{Einstein's clock paradox}
+ \subsubsection{Elapsed proper time}
+ 
+ \section{Four-vectors}
+ \subsection{Three-vectors}
+ \subsubsection{The power of vector notations}
+ \subsubsection{The prototype vector}
+ \subsubsection{What is a 3-vector?}
+ \subsubsection{What is a scalar?}
+ \subsubsection{Combination of vectors and scalar?}
+ 
+ \subsection{Four-vectors}
+ \subsubsection{The power of 4-vector notation}
+ \subsubsection{The prototype 4-vector}
+ \subsubsection{What is a 4-vector?}
+ \subsubsection{Combination of 4-vectors and 4-scalars}
+ 
+ \subsection{Four-velocity}
+ \subsubsection{Four-velocity transformation}
+ \subsubsection{The meaning of \underline{u}}
+ 
+ \subsection{Four-acceleration}
+ 
+ \section{Relativistic Dynamics}
+ \subsection{Classical mechanics}
+ \subsection{Four-momentum}
+ \subsection{Interpretation of four-momentum}
+ \subsubsection{Non-relativistic reduction}
+ \subsubsection{Interpretation of $P_{0}$ and $\vec{P}$}
+ \subsubsection{The equivalence of mass and energy}
+ \subsubsection{Relativistic kinetic energy}
+ \subsubsection{The energy-momentum invariant}
+ \subsubsection{The energy-momentum transformation}
+ 
+ \subsection{Testing four-momentum conservation}
+ \subsubsection{Relativistic billiard problem}
+ \paragraph{i) Newtonian mechanics results}
+ \paragraph{ii) Relativistic results}
+ \subsubsection{Collisions and Particle Creation}
+ 
+ \subsection{Forces and relativistic dynamics}
+ \subsubsection{Acceleration, velocity, mass}
+ \subsubsection{The four-force}
+ 
+ \section{The General Theory of Relativity - A brief introduction}
+ - Special Relativity considers observers in inertial frames.\\
+ - General Relativity observations in relativity accelerating frames. This is the theory of gravity!
+ 
+ \subsection{Why Einstein included gravity in theory of General Relativity}
+ \subsubsection{Newton's gravitation}
+ \subsubsection{Problems with Newton's gravitation}
+ 
+ \subsection{The Equivalence Principle}
+ - In a truly falling frame, you \underline{do} eliminate gravity. Hence, the rules of special relativity hold.\\ 
+ - There is NO observable difference between a real acceleration and gravity.\\ 
+ - The ``strong'' equivalence principle:
+ In a freely falling frame, all of the law  of physics obey the rules of special relativity. 
+ \subsubsection{Freely falling light}
+ Light's path in a gravitational field is curved.
+ \subsubsection{Gravitational time dilation: Gravitational Redshift}
+ 
+ 
+\end{document}
+  
+  \grid
