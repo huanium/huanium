@@ -34,6 +34,39 @@
 \newcommand{\lag}{\mathcal{L}}
 
 
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
 \begin{document}
 \begin{titlepage}\centering
  \clearpage
@@ -1283,9 +1316,11 @@ A_m = \frac{2\lambda_m}{\lambda_m - \sin(\lambda_m x)\cos(\lambda_m x)}\int_{0}^
 
 \newpage
 \subsection{Problem set 2}
+
+
 \begin{exer*}\textbf{Problem 2, Lesson 6}
 	
-	Transform
+	\noindent Transform
 	\begin{align*}
 	&PDE: u_t = u_{xx},\,\,\,\,\,\,\,\,\,\,\, 0<x<1\\
 	&BCs:  
@@ -1297,7 +1332,82 @@ A_m = \frac{2\lambda_m}{\lambda_m - \sin(\lambda_m x)\cos(\lambda_m x)}\int_{0}^
 	\end{align*}
 	to zero BCs and solve the new problem. What will the solution to this problem look like for different values of time? Does the solution agree with your intuition? What is the steady-state solution? What does the transient solution look like?
 	\begin{sln*}
-		$\,$
+		$\,$\\
+		Let $u(x,t) = U(x,t) + S(x,t)$ where $U(x,t)$ is the transient solution while $S(x,t)$ is the steady-state solution to the IBVP. To find the steady-state solution $S(x,t)$, we set $u_t = 0$ and $U(x,t) = 0$. Applying the boundary conditions, we find 
+		\begin{align*}
+		S(x,t) = S(x) = Cx+D = x.
+		\end{align*}
+		So,
+		\begin{align*}
+		u(x,t) = x + U(x,t).
+		\end{align*}
+		Since $u_t = U_t$ and $u_{xx} = U_{xx}$, we can re-write the origin IBVP as
+		\begin{align*}
+		&PDE: U_t = U_{xx},\,\,\,\,\,\,\,\,\,\,\, 0<x<1\\
+		&BCs:  
+		\begin{cases}
+		U(0,t) = 0\\
+		U(1,t) = 0
+		\end{cases} 0 < t < \infty\\
+		&IC: U(x,0) = x^2 - x,\,\,\,\,\,\,\,\,\,\,\, 0 \leq x\leq 1
+		\end{align*}
+		The solution $U(x,t)$ to this IBVP is given by
+		\begin{align*}
+		U(x,t) = \sum^\infty_{n=1}A_n e^{-(n\pi)^2t} \sin(n\pi x),
+		\end{align*}
+		where
+		\begin{align*}
+		A_n = 2\int_{0}^{1}(x^2 - x)\sin(n\pi x)\,dx &= \frac{-2+2\cos(n\pi) + n\pi\sin(n\pi)}{n^3\pi^3}\\
+		&= \begin{cases}
+		\frac{4}{n^3\pi^3},\,\,\,\,\, n \text{ odd}\\
+		0,\,\,\,\,\,\,\,\,\, n \text{ even}.
+		\end{cases}.
+		\end{align*}
+		The second equality comes from integrating in Mathematica, which can also be done with integration by parts. The transient solution is then
+		\begin{align*}
+		U(x,t) = -\frac{4}{\pi ^3}e^{-(\pi)^2t} \sin(\pi x)   -\frac{4}{27 \pi ^3}e^{-(3\pi)^2t} \sin(3\pi x)    -\frac{4}{125 \pi ^3}e^{-(5\pi)^2t} \sin(5\pi x)  + \dots
+		\end{align*}
+		The full solution to the IBVP is
+		\begin{align*}
+		u(x,t) &= x- \frac{4}{\pi^3}\sum_{n=1}^\infty\frac{1}{n^3}e^{-(n\pi)^2t}\sin(n\pi x) \\ 
+		&= x -\frac{4}{\pi ^3}e^{-(\pi)^2t} \sin(\pi x)   -\frac{4}{27 \pi ^3}e^{-(3\pi)^2t} \sin(3\pi x)    -\frac{4}{125 \pi ^3}e^{-(5\pi)^2t} \sin(5\pi x)  + \dots
+		\end{align*}
+		
+		
+		\noindent Mathematica code:
+		\begin{lstlisting}
+		In[6]:= Simplify[Integrate[(x^2 - x) Sin[n*Pi*x], {x, 0, 1}]]
+		
+		Out[6]= (-2 + 2 Cos[n \[Pi]] + n \[Pi] Sin[n \[Pi]])/(n^3 \[Pi]^3)
+		
+		In[4]:= F[n_] := Simplify[Integrate[(x^2 - x) Sin[n*Pi*x], {x, 0, 1}]]
+		
+		In[7]:= Table[F[n], {n, 1, 10}]
+		
+		Out[7]= {-(4/\[Pi]^3), 0, -(4/(27 \[Pi]^3)), 0, -(4/(
+		125 \[Pi]^3)), 0, -(4/(343 \[Pi]^3)), 0, -(4/(729 \[Pi]^3)), 0}
+		\end{lstlisting}
+		$\,$\\
+		\noindent Solutions for different values of time:\\
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.7]{1.png}
+		\end{figure}
+		
+		\noindent Mathematica code:
+		\begin{lstlisting}
+		U[x_, t_] := 
+		x - (4 E^(-\[Pi]^2 t) Sin[\[Pi] x])/\[Pi]^3 - (
+		4 E^(-9 \[Pi]^2 t) Sin[3 \[Pi] x])/(27 \[Pi]^3) - (
+		4 E^(-25 \[Pi]^2 t) Sin[5 \[Pi] x])/(125 \[Pi]^3)
+		
+		Show[Plot[U[x, 0], {x, 0, 1}], Plot[U[x, 0.1], {x, 0, 1}], 
+		Plot[U[x, 1], {x, 0, 1}]]
+		\end{lstlisting}
+		
+		The solution matches my intuition. The IBVP simply states that the temperature at the ends are fixed, and that the temperature is initially distributed across the rod as $x^2$. Since the temperatures at the ends are fixed it is expected that in the long run the temperature increases uniformly across the rod, in agreement with the steady-state solution. 
+		
 	\end{sln*}
 \end{exer*}
 \newpage
@@ -1321,7 +1431,58 @@ A_m = \frac{2\lambda_m}{\lambda_m - \sin(\lambda_m x)\cos(\lambda_m x)}\int_{0}^
 	into a new problem with zero BCs. Is the new PDE homogeneous?
 	
 	\begin{sln*}
-		$\,$
+		$\,$\\
+		Once again, we let $u(x,t) = U(x,t) + S(x,t)$ where $S(x,t)$ is the steady-state solution. $S(x,t)$ has the form:
+		\begin{align*}
+		S(x,t) = A(t)\left( 1 - \frac{x}{L} \right) + B(t)\left( \frac{x}{L} \right) = A(t)\left( 1 - x \right) + B(t)\left( x \right),
+		\end{align*} 
+		where
+		\begin{align*}
+		S(0,t) &= A(t)\\
+		S(1,t) &= B(t)\\
+		S_x(0,t) &= B(t) - A(t) = S_x(1,t).
+		\end{align*}
+		Applying the boundary conditions,
+		\begin{align*}
+		\begin{pmatrix}
+		-1 & 1\\
+		-1 & h + 1
+		\end{pmatrix}
+		\begin{pmatrix}
+		A(t) \\ B(t)
+		\end{pmatrix}
+		=
+		\begin{pmatrix}
+		0\\1
+		\end{pmatrix}
+		\end{align*} 
+		Solving the system for $A(t)$ and $B(t)$ gives
+		\begin{align*}
+		A(t) = B(t) = \frac{1}{h}
+		\end{align*}
+		So, the steady-state solution is
+		\begin{align*}
+		S(x,t) = \frac{1}{h}(1-x+x) = \frac{1}{h},
+		\end{align*}
+		which is independent of $t$ and $x$. Therefore, $u_t = U_t = u_{xx} = U_{xx}$. Applying the initial condition, we find 
+		\begin{align*}
+		u(x,0) = S(x,0) + U(x,0) = \frac{1}{h} + U(x,0) = \sin(\pi x)
+		\end{align*}
+		and
+		\begin{align*}
+		u_x(1,t) + hu(1,t) = U(1,t) + hU(1,t) + \frac{h}{h} = 1.
+		\end{align*}
+		So, the new IBVP is:
+		\begin{align*}
+		&PDE: U_t = U_{xx},\,\,\,\,\,\,\,\,\,\,\, 0<x<1\\
+		&BCs:  
+		\begin{cases}
+		U_x(0,t) = 0\\
+		U_x(1,t) + hU(1,t)= 0
+		\end{cases} 0 < t < \infty\\
+		&IC: u(x,0) = \sin(\pi x)-\frac{1}{h}   ,\,\,\,\,\,\,\,\,\,\,\, 0 \leq x\leq 1
+		\end{align*}
+		We notice that the new PDE is still homogeneous. 
 	\end{sln*}
 \end{exer*}
 \newpage
@@ -1347,8 +1508,101 @@ A_m = \frac{2\lambda_m}{\lambda_m - \sin(\lambda_m x)\cos(\lambda_m x)}\int_{0}^
 	\end{align*}
 	by separation of variables. Does your solution agree with the your intuition? What is the steady-state solution? 
 	\begin{sln*}
-		$\,$
+		$\,$\\
+		
+		\noindent By separation of variables, we assume $u(x,t) = T(t)X(x)$. By the PDE, 
+		\begin{align*}
+		\frac{T'(t)}{T(t)} = \frac{X''(x)}{X(x)} = \mu,
+		\end{align*}
+		where $\mu$ is some constant. We reject solutions with $\mu > 0$ on physical grounds. If $\mu = 0$, then $T'(t) = X''(x) = 0$, so
+		\begin{align*}
+		u(x,t) = Ax + B.
+		\end{align*}
+		To satisfy the boundary conditions:
+		\begin{align*}
+		u(0,t) &= B = 0\\
+		u_x(1,t) &= A = 0.
+		\end{align*}
+		This $u(x,t) = 0$, a trivial solution. If $\mu < 0$, then we let $\mu = -\lambda^2$. We immediately have
+		\begin{align*}
+		T(t) &= Ae^{-\lambda^2 t}\\
+		X(x) &= C\sin(\lambda x) + B\cos(\lambda x).
+		\end{align*}
+		So, the general solution is
+		\begin{align*}
+		u(x,t) = e^{-\lambda^2 t}(A\sin(\lambda x) + B\cos(\lambda x)).
+		\end{align*}
+		Subjecting $u(x,t)$ to the first boundary condition, we find $B = 0$, which reduces the solution to
+		\begin{align*}
+		u(x,t) = Ae^{-\lambda^2 t}\sin(\lambda x).
+		\end{align*}
+		The second boundary condition gives
+		\begin{align*}
+		A\cos(\lambda)= 0.
+		\end{align*}
+		Assuming $A\neq 0$, so that our solution is not trivial, 
+		\begin{align*}
+		\lambda = k\pi,\,\,\,\,\,\,\,\, k\in \mathbb{Z}.
+		\end{align*}
+		The solution is then
+		\begin{align*}
+		u(x,t) = \sum_{k=1}^{\infty}A_ke^{-(k\pi)^2t}\sin(k\pi x).
+		\end{align*}
+		To find the coefficients $A_k$, we invoke Fourier's trick:
+		\begin{align*}
+		\int_{0}^1 u_0(x)\sin(n\pi x)\,dx &= \int_0^1 \sin(n\pi x)\sum_{k=1}^\infty A_k\sin(k\pi x)\,dx\\
+		&= \sum_{k=1}^\infty A_k \int_{0}^1 \sin(n\pi x)\sin(k\pi x)\,dx\\
+		&= \sum_{k=1}^\infty \frac{1}{2}A_k\delta^k_n\\
+		&= \frac{1}{2}A_n.
+		\end{align*}
+		Integration by parts gives
+		\begin{align*}
+		A_k = 2\int_{0}^1x\sin(k\pi x)\,dx = \frac{2\sin (\pi  k)-2\pi  k \cos (\pi  k)}{\pi ^2 k^2} = \frac{2(-1)^{k+1}}{k\pi}.
+		\end{align*}
+		So, the transient solution has the form:
+		\begin{align*}
+		U(x,t) &= \sum_{k=1}^\infty A_k e^{-(k\pi)^2t} \sin(k\pi x)\\
+		&= \frac{2}{\pi }e^{-(\pi)^2t}\sin(\pi x) -\frac{1}{\pi }e^{-(2\pi)^2t} \sin(2\pi x) + \frac{2}{3 \pi }e^{-(3\pi)^2t} \sin(3\pi x)-\frac{1}{2 \pi }e^{-(4\pi)^2t} \sin(4\pi x) + \dots
+		\end{align*}
+		The full solution is then
+		\begin{align*}
+		u(x,t) &= \frac{1}{h} + \frac{2}{\pi}\sum_{n=1}^\infty \frac{(-1)^{k+1}}{k}e^{-(k\pi)^2t} \sin(k\pi x)\\
+		&= \frac{1}{h} + \frac{2}{\pi }e^{-(\pi)^2t}\sin(\pi x) -\frac{1}{\pi }e^{-(2\pi)^2t} \sin(2\pi x) + \frac{2}{3 \pi }e^{-(3\pi)^2t} \sin(3\pi x)-\frac{1}{2 \pi }e^{-(4\pi)^2t} \sin(4\pi x) + \dots
+		\end{align*}
+		
+		\noindent Mathematica code:\\
+		\begin{lstlisting}
+		Integrate[Sin[k*Pi*x], {x, 0, 1}]
+		(1 - Cos[k \[Pi]])/(k \[Pi])
+		
+		Simplify[2*Integrate[x*Sin[k*Pi*x], {x, 0, 1}]]
+		(2 (-k \[Pi] Cos[k \[Pi]] + Sin[k \[Pi]]))/(k^2 \[Pi]^2)
+		
+		F[k_] := (2 (-k \[Pi] Cos[k \[Pi]] + Sin[k \[Pi]]))/(k^2 \[Pi]^2)
+		Table[F[k], {k, 1, 4}]
+		{2/\[Pi], -(1/\[Pi]), 2/(3 \[Pi]), -(1/(2 \[Pi]))}
+		
+		u[x_, t_, h_] := 
+		1/h + (2 E^(-\[Pi]^2 t) Sin[\[Pi] x])/\[Pi] - (
+		E^(-4 \[Pi]^2 t) Sin[2 \[Pi] x])/\[Pi] + (
+		2 E^(-9 \[Pi]^2 t) Sin[3 \[Pi] x])/(3 \[Pi]) - (
+		E^(-16 \[Pi]^2 t) Sin[4 \[Pi] x])/(2 \[Pi])
+		
+		Show[Plot[u[x, 0.002, 2], {x, 0, 1}], Plot[u[x, 0.05, 2], {x, 0, 1}], 
+		Plot[u[x, 0.1, 2], {x, 0, 1}], Plot[u[x, 0.2, 2], {x, 0, 1}], 
+		AxesLabel -> {x, u}]
+		\end{lstlisting}
+		
+		\noindent The figure below shows solutions for different values of time. Here, I'm setting $h=2$, so the steady-state temperature is $u = 0.5$. Notice that $u_0(x)$ is not quite $x$ because I don't have enough terms in the solution.\\
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.7]{pset2_2.png}
+		\end{figure}
+		
+		\noindent The solution has good sense, first because the steady-state solution is a constant that is equal to $1/h$, as expected. The boundary condition requires the temperature at $x=0$ stay fixed and the temperature gradient at $x=1$ to be zero, which the plot also illustrates. 
 	\end{sln*}
+	
 \end{exer*}
 \newpage
 
@@ -1374,6 +1628,28 @@ A_m = \frac{2\lambda_m}{\lambda_m - \sin(\lambda_m x)\cos(\lambda_m x)}\int_{0}^
 	
 	\begin{sln*} 
 		$\,$
+		\begin{enumerate}
+			\item $p(x) = 1$.
+			\item $q(x) = 0$.
+			\item $r(x) = 1$.
+		\end{enumerate}
+		To find the eigenvalues and the eigenfunctions, we have to solve the IVP. By the ODE, we know that 
+		\begin{align*}
+		X(t) = A\sin(\sqrt{\lambda}x) + B\cos(\sqrt{\lambda} x).
+		\end{align*}
+		Applying the initial conditions, we find 
+		\begin{align*}
+		B = 0\\
+		-A\sqrt{\lambda}\cos(\sqrt{\lambda}) = 0.
+		\end{align*}
+		i.e., for $n$ odd, we find the eigenvalues:
+		\begin{align*}
+		\lambda_n = \left( \frac{n\pi}{2} \right)^2.
+		\end{align*}
+		And so the eigenfunctions are
+		\begin{align*}
+		X_n(t) = A_n\sin\left( \frac{n\pi}{2} \right).
+		\end{align*}
 	\end{sln*}
 \end{exer*}
 \newpage
@@ -1399,9 +1675,85 @@ A_m = \frac{2\lambda_m}{\lambda_m - \sin(\lambda_m x)\cos(\lambda_m x)}\int_{0}^
 	\end{align*}
 	Does your solution agree with your interpretation of the problem? What is the steady-state solution? Does this make sense? 
 	\begin{sln*}
-		$\,$
+		$\,$\\
+		\noindent Let $u(x,t) = U(x,t) + S(x,t)$ where $S(x,t)$ is the steady-state and $U(x,t)$ is the transient solution. We can construct the steady-state solution as
+		\begin{align*}
+		S(x,t) = A(t)\left(1 -x \right) + B(t)x.
+		\end{align*}
+		As before, by applying the boundary conditions, we require that $A(t)$ and $B(t)$ solve the following linear system
+		\begin{align*}
+		\begin{pmatrix}
+		-1 & 1\\
+		-1 & 1
+		\end{pmatrix}
+		\begin{pmatrix}
+		A(t) \\ B(t)
+		\end{pmatrix}
+		=
+		\begin{pmatrix}
+		0\\0
+		\end{pmatrix}.
+		\end{align*}
+		The system has infinitely many solutions, but we get $A(t) = B(t)$. Assuming that at steady-state, $u_t = u_{xx} = 0 = S_t$, we get
+		\begin{align*}
+		S(x,t) = A(t)(1-x) + A(t)x = A(t) = \Lambda
+		\end{align*}
+		where $\Lambda$ is constant. Applying separation of variables to this PDE, we know that 
+		\begin{align*}
+		T(t) = e^{-\lambda^2 t}\\
+		X_n(x) = A\cos(\lambda x)  + B\sin(\lambda x).
+		\end{align*}
+		Applying the boundary conditions, 
+		\begin{align*}
+		B&= 0\\
+		\lambda_n &= n\pi.
+		\end{align*}
+		So, the general solution is
+		\begin{align*}
+		u(x,t) = \Lambda + \sum_{n=1}^\infty A_n e^{-(n\pi)^2 t}\cos(n\pi x).
+		\end{align*}
+		Next, we want to find the coefficients $A_n$. Since there is a $\cos$ involved, we will use Fourier's trick with a cosine and the identity
+		\begin{align*}
+		\int_{0}^1\cos(m\pi x)\cos(n\pi x) = \frac{1}{2}\delta^m_n.
+		\end{align*}
+		This gives
+		\begin{align*}
+		\int_{0}^1 u_0(x)\cos(m\pi x)\,dx &= \int_{0}^1 \cos(m\pi x)\sum_{n=1}^\infty A_n \cos(n\pi x)\,dx\\
+		&= \sum_{n=1}^\infty A_n \frac{1}{2}\delta^n_m\\
+		&= \frac{A_m}{2}.
+		\end{align*}
+		So, we can compute $A_m$ in Mathematica (or by integration by parts):
+		\begin{align*}
+		A_m = 2\int_{0}^1 x\cos(m\pi x)\,dx &= \frac{2 (\pi  m \sin (\pi  m)+\cos (\pi  m)-1)}{\pi ^2 m^2}\\
+		&= \frac{2(\cos(\pi m - 1))}{m^2\pi^2}\\
+		&= \begin{cases}
+		\frac{4}{m^2\pi^2},\,\,\,\,\,\, m \text{ odd}\\
+		0,\,\,\,\,\,\,\,\, m \text{ even}.
+		\end{cases}
+		\end{align*}
+		The general solution is then
+		\begin{align*}
+		u(x,t) &= \Lambda + \frac{4}{\pi^2}\sum_{n=1}^\infty \frac{1}{n^2}\cos(n\pi x)\\
+		&= \Lambda -\frac{4}{\pi ^2}e^{-(\pi)^2 t}\cos(\pi x)    -\frac{4}{9 \pi ^2}e^{-(3\pi)^2 t}\cos(3\pi x)        -\frac{4}{25 \pi ^2}e^{-(5\pi)^2 t}\cos(5\pi x) + \dots
+		\end{align*}
+		
+		\noindent Mathematica code:
+		\begin{lstlisting}
+		Simplify[Integrate[Cos[m*Pi*x]*Cos[n*Pi*x], {x, 0, 1}]]
+		(m Cos[n \[Pi]] Sin[m \[Pi]] - n Cos[m \[Pi]] Sin[n \[Pi]])/(
+		m^2 \[Pi] - n^2 \[Pi])
+		
+		2*Integrate[x*Cos[m*Pi*x], {x, 0, 1}]
+		(2 (-1 + Cos[m \[Pi]] + m \[Pi] Sin[m \[Pi]]))/(m^2 \[Pi]^2)
+		
+		A[m_] := (2 (-1 + Cos[m \[Pi]] + m \[Pi] Sin[m \[Pi]]))/(m^2 \[Pi]^2)
+		Table[A[m], {m, 1, 7}]
+		{-(4/\[Pi]^2), 0, -(4/(9 \[Pi]^2)), 0, -(4/(25 \[Pi]^2)), 0, -(4/(
+		49 \[Pi]^2))}
+		\end{lstlisting}
 	\end{sln*}
 \end{exer*}
+
 
 \newpage
 \subsection{Problem set 3}
