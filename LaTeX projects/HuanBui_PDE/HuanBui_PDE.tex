@@ -1070,7 +1070,7 @@ u(0,x) = u_0(x).
 We invoke Fourier's trick to find $A_n's$:
 \begin{align*}
 \int_{0}^1 u_0(x)\sin(\lambda_m x)\,dx &= \int_{0}^1 \sin(\lambda_m x)\sum_{n=1}^{\infty} A_n e^{-(\lambda_n\alpha)^2t}\sin(\lambda_n x)\,dx\\
-&= \sum_{n=1}^\infty A_n\int_{0}^1 \sim(\lambda_m x)\sin(\lambda_n x)\,dx\\
+&= \sum_{n=1}^\infty A_n\int_{0}^1 \sin(\lambda_m x)\sin(\lambda_n x)\,dx\\
 &= A_m \left( \frac{1}{2} - \frac{\sin(2\lambda_m x)}{4\lambda_m} \right).
 \end{align*}
 So
@@ -1081,6 +1081,157 @@ and so
 \begin{align*}
 A_m = \frac{2\lambda_m}{\lambda_m - \sin(\lambda_m x)\cos(\lambda_m x)}\int_{0}^1 u_0(x)\sin(\lambda_m x) \,dx.
 \end{align*}
+
+\noindent Summary: Recall the IBVP:
+\begin{align*}
+\begin{cases}
+u_t = \alpha^2 u_{xx}\\
+u(t,0) = 0\\
+u_x(t,1) + hu(t,1) = 0\\
+u(0,x) = u_0(x) 
+\end{cases}.
+\end{align*}
+In trying to solve it, we have found
+\begin{align*}
+u(t,x) \sum_{n=1}^{\infty}A_n e^{-(\alpha \lambda)^2t}\sin(\lambda_n x)
+\end{align*}
+to be a solution with
+\begin{align*}
+A_m = \frac{2\lambda_m}{\lambda_m - \sin(\lambda_m x)\cos(\lambda_m x)}\int_{0}^1 u_0(x)\sin(\lambda_m x) \,dx.
+\end{align*}
+where $\lambda_n$ is the n$^{th}$ positive solution to 
+\begin{align*}
+\frac{-\lambda}{n}= \tan(\lambda)
+\end{align*}
+Question: In our finding of $A_n$, we swept a detail under the rug. It was \textbf{orthogonality}. We assumed the fact that for all $n,m$
+\begin{align*}
+\int^1_0 \sin(\lambda_m x)\sin(\lambda_n x)\,dx = 0,\,\,\,\,\,\,\text{ if } m\neq n.
+\end{align*}
+This would be obvious if $\lambda_n = n\pi$. But it is not the case here. We will look at this in the next section.
+\newpage
+\section{ODE Boundary Value Problems - a look at the Sturm-Liouville theory}
+(reference: Boyce-DiPrima, Chapter 11).\\
+
+
+Motivating example:
+\begin{align*}
+\begin{cases}
+ODE: y'' + \lambda y = 0\\
+BC: y(0) = y(1) = 0, 0\leq x\leq 1.
+\end{cases}.
+\end{align*}
+We ask: does solving this BVP require anything about $\lambda$? Is it possible to find non-zero solutions to this problem for arbitrary $\lambda$? We can try...\\
+
+If $\lambda = 0$, then $y(x) = Ax+B$. By subjecting to the BCs, we get $A=B=0$. So, not every $\lambda$ gives a non-trivial solution. This $\lambda$ does not admit non-zero solutions. This is in stark contrast to IVP which can be solved for any non-zero $\lambda$.\\
+
+If $\lambda < 0$, we get the same issue (can check that there are no non-zero solutions for $\lambda< 0$. \\
+
+If $\lambda > 0$, then $y(x) = C_1 \sin(\sqrt{\lambda} x ) + C_2 \cos(\sqrt{\lambda} x)$. Subject to boundary conditions, we have $C_2 = 0$ and
+\begin{align*}
+C_1 = \sin(\sqrt{\lambda} x).
+\end{align*}
+For non-trivial solutions,
+\begin{align*}
+\sqrt{\lambda}=n\pi.
+\end{align*}
+Or for $n=1,2,3,\dots$
+\begin{align*}
+\lambda_n = n^2 \pi^2.
+\end{align*}
+
+The moral: Not every $\lambda$ works. So we ask: Given a linear ODE and linear homogeneous BCs, which $\lambda$ (if any) will work?\\
+
+\begin{defn}
+	\textbf{General theory:} Consider the ODE
+	\begin{align*}
+	(p(x)y')' - q(x)y + \lambda r(x)y = 0,
+	\end{align*}
+	where we will let $p,q,r \in C^0([0,1])$. Moreover, $p(x) \in C^1([0,1])$. Finally, $p(x),r(x) > 0$ for all $x\in[0,1]$. Also, consider the linear homogeneous BCs:
+	\begin{align*}
+	a_1y(0) + b_1y'(0) &= 0\\
+	a_2y(1) + b_2y'(1) &= 0.
+	\end{align*}
+	
+	If, for some fixed $\lambda$, the ODE and the BCs have a non-zero solution $\phi(x)$, we say that $\lambda$ is an \textbf{eigenvalue} for the BVP, and $\phi(x)$ is an \textbf{eigenfunction} corresponding to $\lambda$. \\
+	
+	An eigenvalue $\lambda$ corresponding to the BVP is said to be simple if it does not have two linearly independent eigenfunctions $\phi_1, \phi_2$. 
+	\qed
+\end{defn}
+
+\begin{rmk}
+	$\,$\\
+	\begin{enumerate}
+		\item We will write 
+		\begin{align*}
+		L[y] = -(p(x)y')' + q(x)y,
+		\end{align*}
+		which is a second-order linear operator. Then the ODE becomes:
+		\begin{align*}
+		L[y] = \lambda r(x)y.
+		\end{align*}
+		For this reason, we see the ``eigen'' terminology arises. 
+	\end{enumerate}
+\end{rmk}
+
+Given our ODE, the theory of ODE gives, for fixed $\lambda$, two linearly independent solutions of the form $y_1 = y_1(x,\lambda), y_2 = y_2(x,\lambda)$, and so all solutions to the ODE is of the form
+\begin{align*}
+y(x) = C_1 y_1(x,\lambda) + C_2y_2(x,\lambda).
+\end{align*}
+Question: can we find a condition on $\lambda$ so that $y$ above is a non-zero solution satisfying the BCs? Sure we can. Let us subject $y$ to the BCs. We have
+\begin{align*}
+0 = a_1y(0) + b_1 y'(0) =& a_1(C_1y_1(0,\lambda) + C_2y_2(0,\lambda)) + b_1(C_1y'_1(0,\lambda) + C_2y'_2(0,\lambda))\\
+&= C_1(a_1y_1(0,\lambda) + b_1y'_1(0,\lambda)) + C_2(a_1y_2(0,\lambda) + b_1y'_2(0,\lambda)).
+\end{align*}
+Similarly, 
+\begin{align*}
+0 = C_1(a_2y_1(1,\lambda) + b_2y'_1(1,\lambda)) + C_2(a_2y_2(1,\lambda) + b_2y'_2(1,\lambda)).
+\end{align*}
+As a matrix equation,
+\begin{align*}
+A\begin{pmatrix}
+C_1\\C_2
+\end{pmatrix}=
+\begin{pmatrix}
+0\\0
+\end{pmatrix}=
+\begin{pmatrix}
+a_1y_1(0,\lambda) + b_1y'_1(0,\lambda) & a_1y_2(0,\lambda) + b_1 y'_2(0,\lambda)\\
+a_2y_1(1,\lambda) + b_2y'_1(1,\lambda) & a_2y_2(1,\lambda) + b_2y'_2(1,\lambda)
+\end{pmatrix}
+\begin{pmatrix}
+C_1\\C_2
+\end{pmatrix}.
+\end{align*}
+To get non-trivial solution, we require that $\ker(A)\neq \{ 0\}$, i.e., $\det(A) = 0$. This gives a necessary and sufficient condition on $\lambda$, since $a_i,b_i$ and the solutions are known, that is
+\begin{align*}
+\boxed{\det(A)=0}
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage
