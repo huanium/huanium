@@ -1207,6 +1207,122 @@ To get non-trivial solution, we require that $\ker(A)\neq \{ 0\}$, i.e., $\det(A
 \boxed{\det(A)=0}
 \end{align*}
 
+% Feb 27, 2019 % 
+
+Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x) y.$$ 
+
+\begin{prop}
+	\textbf{Lagrange's Identity:} For any $u,v \in \mathbb{C}^2([0,1])$, the following identity holds:
+	\begin{align*}
+	\int^1_0 (uL[v] - vL[u])\,dx = p(x)\left( u'(x)v(x) - u(x)v'(x) \right)\bigg\vert^1_0.
+	\end{align*}
+	Intuitively, this is essentially an integration by parts formula for the operator $L$.
+	
+	
+	\begin{proof}
+		We have
+		\begin{align*}
+		u(x)L[v](x) - v(x)L[u](x) &= u(x)(-(p(x)v')' + q(x)v) - v(x)(-(p(x)u')' + q(x)u)\\
+		&= -u(x)(p(x)v'(x))' + u(x)q(x)v(x) + v(x)(p(x)u(x))' - q(x)v(x)u(x)\\
+		&= -u(x)(p(x)v'(x))' + v(x)(p(x)u(x))'.
+		\end{align*}
+		So the integral becomes
+		\begin{align*}
+		\int^1_0 (uL[v] - vL[u])\,dx &= \int^1_0 -u(x)(p(x)v'(x))' + v(x)(p(x)u(x))'\,dx\\
+		&= \int^1_0 -u(x)(p(x)v'(x))' \,dx    + \int^1_0 v(x)(p(x)u(x))' \,dx\\
+		&= -u(x)(p(x)v'(x))\bigg\vert^1_0 - int^1_0 -u'(x)p(x)v'(x)\,dx +\\ v(x)(p(x)u'(x))\bigg\vert^1_0 - int^1_0 v'(x)(p(x)u'(x))\,dx\\
+		&= p(x)\left(v(x)u'(x) - u(x)v'(x)\right)\bigg\vert^1_0.
+		\end{align*}
+	\end{proof}
+\end{prop}
+
+\textbf{Corollary:} If $u,v$ are eigenfunctions for the BVP then
+\begin{align*}
+\int_0^1 (uL[v] - vL[u])\,dx = 0.
+\end{align*}
+\begin{proof}
+	Recall the boundary conditions: 
+	\begin{align*}
+	a_1u(0) + b_1u'(0) &= 0\\
+	a_1v(0) + b_1v'(0) &= 0\\
+	a_2u(1) + b_2u'(1) &= 0\\
+	a_2v(1) + b_2v'(1) &= 0
+	\end{align*}
+	Assume that $b_1,b_2\neq 0$. For $\phi = v$ or $u$,
+	\begin{align*}
+	\phi'(0) &= \frac{-a_1}{b_1}\phi(0)\\
+	\phi'(0) &= \frac{-a_2}{b_2}\phi(1).
+	\end{align*}
+	So
+	\begin{align*}
+	\int_0^1 (uL[v] - vL[u])\,dx &= p(x)\left(v(x)u'(x) - u(x)v'(x)\right)\bigg\vert^1_0\\
+	&= p(1)\left(v(1)u'(1) - u(1)v'(1)\right) - p(0)\left(v(0)u'(0) - u(0)v'(0)\right)\\
+	&=\dots\\
+	&= 0.
+	\end{align*}
+\end{proof}
+
+
+	\textbf{Theorem: All eigenvalues associated with the Sturm-Liouville problem are real.} 
+\begin{proof}
+	Let $\lambda = u + iv$ and $\phi =U + iV$ are an eigenvalue-eigenfunction pair associated with the BVP. Then
+	\begin{align*}
+	L[\phi] = \lambda r(x)\phi.
+	\end{align*}
+	Conjugating and noting that $p,q,r$ are real give	
+	\begin{align*}
+	L[\phi]^* &= (\lambda r(x)\phi)^*\\
+	&= ((-p(x)\phi'(x))' + q(x)\phi(x))^*\\
+	&= (-p(x)\phi^{*'})' + q(x)\phi^*
+	&= L[\phi^*].
+	\end{align*}
+	This gives
+	\begin{align*}
+	L[\phi^*] = \lambda^* r(x)\phi^*.
+	\end{align*}
+	This says that $\lambda^*$ is an eigenvalue too, which takes $\phi^*$ as an eigenfunction. So, $(\lambda^*,\phi^*)$ and $(\lambda,\phi)$ are two eigenvalue-eigenfunction pairs. By the corollary:
+	\begin{align*}
+	0 &= \int_{0}^1 (\phi L[\phi^*] - \phi^* L[\phi])\,dx\\
+	&= \int^1_0 (\lambda^* -\lambda)r(x)\vert \phi(x)\vert^2\,dx
+	\end{align*}
+	Since $r(x) > 0$ for all $x$, and $\phi$ is non-zero, 
+	\begin{align*}
+	\vert \phi(x)\vert^2 > 0
+	\end{align*}
+	for some non-trivial interval in $[0,1]$. So
+	\begin{align*}
+	(\lambda^* -\lambda)\int^1_0 r(x)\vert \phi(x)\vert^2\,dx > 0.
+	\end{align*}
+	And so 
+	\begin{align*}
+	\lambda^* = \lambda,
+	\end{align*}
+	i.e., $\lambda \in \mathbb{R}$.
+\end{proof}
+
+
+
+	\textbf{Theorem: ORTHOGONALITY - Sweeping under the carpet:} Let $\lambda_1$ and $\lambda_2$ be distinct eigenvalues with eigenfunctions $\phi_1$ and $\phi_2$. Then 
+	\begin{align*}
+	\int^1_0 r(x)\phi_1(x)\phi_2(x)\,dx = 0.
+	\end{align*} 
+	\begin{proof}
+		We have, by the corollary, that
+		\begin{align*}
+		0 &= \int^1_0 (\phi_1L[\phi_2] - \phi_2L[\phi_1])\,dx
+		&= \int_{0}^1 r(x)\phi_1\lambda_2\phi_2 - \phi_2\lambda_1r(x)\phi_1\,dx\\
+		&= (\lambda_2 - \lambda_1)\int^1_0 r(x)\phi_1\phi_2\,dx.
+		\end{align*}
+		Since the eigenvalues are distinct, the integral must be zero.
+	\end{proof}
+
+
+
+
+
+
+
+
 
 
 
