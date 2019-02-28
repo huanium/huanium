@@ -1624,22 +1624,23 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 		\end{align*}
 		where
 		\begin{align*}
-		A_n = 2\int_{0}^{1}(x^2 - x)\sin(n\pi x)\,dx &= \frac{-2+2\cos(n\pi) + n\pi\sin(n\pi)}{n^3\pi^3}\\
+		A_n = 2\int_{0}^{1}(x^2 - x)\sin(n\pi x)\,dx &= 2\frac{-2+2\cos(n\pi) + n\pi\sin(n\pi)}{n^3\pi^3}\\
 		&= \begin{cases}
-		\frac{4}{n^3\pi^3},\,\,\,\,\, n \text{ odd}\\
+		\frac{-8}{n^3\pi^3},\,\,\,\,\, n \text{ odd}\\
 		0,\,\,\,\,\,\,\,\,\, n \text{ even}.
 		\end{cases}.
 		\end{align*}
 		The second equality comes from integrating in Mathematica, which can also be done with integration by parts. The transient solution is then
 		\begin{align*}
-		U(x,t) = -\frac{4}{\pi ^3}e^{-(\pi)^2t} \sin(\pi x)   -\frac{4}{27 \pi ^3}e^{-(3\pi)^2t} \sin(3\pi x)    -\frac{4}{125 \pi ^3}e^{-(5\pi)^2t} \sin(5\pi x)  + \dots
+		U(x,t) = -\frac{8}{\pi ^3}e^{-(\pi)^2t} \sin(\pi x)   -\frac{8}{27 \pi ^3}e^{-(3\pi)^2t} \sin(3\pi x)    -\frac{8}{125 \pi ^3}e^{-(5\pi)^2t} \sin(5\pi x)  + \dots
 		\end{align*}
 		The full solution to the IBVP is
 		\begin{align*}
-		u(x,t) &= x- \frac{4}{\pi^3}\sum_{n=1}^\infty\frac{1}{n^3}e^{-(n\pi)^2t}\sin(n\pi x) \\ 
-		&= x -\frac{4}{\pi ^3}e^{-(\pi)^2t} \sin(\pi x)   -\frac{4}{27 \pi ^3}e^{-(3\pi)^2t} \sin(3\pi x)    -\frac{4}{125 \pi ^3}e^{-(5\pi)^2t} \sin(5\pi x)  + \dots
+		u(x,t) &= x- \frac{8}{\pi^3}\sum_{n=1}^\infty\frac{1}{n^3}e^{-(n\pi)^2t}\sin(n\pi x),\,\,\, n \text{ odd} \\ 
+		&= x -\frac{8}{\pi ^3}e^{-(\pi)^2t} \sin(\pi x)   -\frac{8}{27 \pi ^3}e^{-(3\pi)^2t} \sin(3\pi x)    -\frac{8}{125 \pi ^3}e^{-(5\pi)^2t} \sin(5\pi x)  + \dots
 		\end{align*}
 		
+		\newpage
 		
 		\noindent Mathematica code:
 		\begin{lstlisting}
@@ -1665,9 +1666,9 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 		\noindent Mathematica code:
 		\begin{lstlisting}
 		U[x_, t_] := 
-		x - (4 E^(-\[Pi]^2 t) Sin[\[Pi] x])/\[Pi]^3 - (
-		4 E^(-9 \[Pi]^2 t) Sin[3 \[Pi] x])/(27 \[Pi]^3) - (
-		4 E^(-25 \[Pi]^2 t) Sin[5 \[Pi] x])/(125 \[Pi]^3)
+		x - (8 E^(-\[Pi]^2 t) Sin[\[Pi] x])/\[Pi]^3 - (
+		8 E^(-9 \[Pi]^2 t) Sin[3 \[Pi] x])/(27 \[Pi]^3) - (
+		8 E^(-25 \[Pi]^2 t) Sin[5 \[Pi] x])/(125 \[Pi]^3)
 		
 		Show[Plot[U[x, 0], {x, 0, 1}], Plot[U[x, 0.1], {x, 0, 1}], 
 		Plot[U[x, 1], {x, 0, 1}]]
@@ -1699,6 +1700,7 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 	
 	\begin{sln*}
 		$\,$\\
+		
 		Once again, we let $u(x,t) = U(x,t) + S(x,t)$ where $S(x,t)$ is the steady-state solution. $S(x,t)$ has the form:
 		\begin{align*}
 		S(x,t) = A(t)\left( 1 - \frac{x}{L} \right) + B(t)\left( \frac{x}{L} \right) = A(t)\left( 1 - x \right) + B(t)\left( x \right),
@@ -1809,65 +1811,60 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 		\end{align*}
 		Assuming $A\neq 0$, so that our solution is not trivial, 
 		\begin{align*}
-		\lambda = k\pi,\,\,\,\,\,\,\,\, k\in \mathbb{Z}.
+		\lambda = \frac{k\pi}{2},\,\,\,\,\,\,\,\, k \text{ odd}.
 		\end{align*}
 		The solution is then
 		\begin{align*}
-		u(x,t) = \sum_{k=1}^{\infty}A_ke^{-(k\pi)^2t}\sin(k\pi x).
+		u(x,t) = \sum_{k=1}^{\infty}A_ke^{-(k\pi/2)^2t}\sin\left(\frac{k\pi}{2} x\right), \,\,\, k \text{ odd}.
 		\end{align*}
-		To find the coefficients $A_k$, we invoke Fourier's trick:
+		To find the coefficients $A_k$, we invoke Fourier's trick, for odd $n$'s:
 		\begin{align*}
-		\int_{0}^1 u_0(x)\sin(n\pi x)\,dx &= \int_0^1 \sin(n\pi x)\sum_{k=1}^\infty A_k\sin(k\pi x)\,dx\\
-		&= \sum_{k=1}^\infty A_k \int_{0}^1 \sin(n\pi x)\sin(k\pi x)\,dx\\
+		\int_{0}^1 u_0(x)\sin\left(\frac{n\pi}{2} x\right)\,dx &= \int_0^1 \sin\left(\frac{n\pi}{2} x\right)\sum_{k=1}^\infty A_k\sin\left(\frac{k\pi}{2} x\right)\,dx\\
+		&= \sum_{k=1}^\infty A_k \int_{0}^1 \sin\left(\frac{n\pi}{2} x\right)\sin\left(\frac{k\pi}{2} x\right)\,dx\\
 		&= \sum_{k=1}^\infty \frac{1}{2}A_k\delta^k_n\\
 		&= \frac{1}{2}A_n.
 		\end{align*}
-		Integration by parts gives
+		So,
 		\begin{align*}
-		A_k = 2\int_{0}^1x\sin(k\pi x)\,dx = \frac{2\sin (\pi  k)-2\pi  k \cos (\pi  k)}{\pi ^2 k^2} = \frac{2(-1)^{k+1}}{k\pi}.
+		A_k = 2\int_{0}^1x\sin\left(\frac{k\pi}{2} x\right)\,dx,\,\,\,\, k \text{ odd}.
 		\end{align*}
 		So, the transient solution has the form:
 		\begin{align*}
-		U(x,t) &= \sum_{k=1}^\infty A_k e^{-(k\pi)^2t} \sin(k\pi x)\\
-		&= \frac{2}{\pi }e^{-(\pi)^2t}\sin(\pi x) -\frac{1}{\pi }e^{-(2\pi)^2t} \sin(2\pi x) + \frac{2}{3 \pi }e^{-(3\pi)^2t} \sin(3\pi x)-\frac{1}{2 \pi }e^{-(4\pi)^2t} \sin(4\pi x) + \dots
+		U(x,t) &= \sum_{k=1}^\infty A_k e^{-(k\pi/2)^2t} \sin\left(\frac{k\pi}{2} x\right),\,\,\, k \text{ odd},
 		\end{align*}
-		The full solution is then
+		and $A_k$ is given above. The steady-state solution is 0. So, the full solution is then
 		\begin{align*}
-		u(x,t) &= \frac{1}{h} + \frac{2}{\pi}\sum_{n=1}^\infty \frac{(-1)^{k+1}}{k}e^{-(k\pi)^2t} \sin(k\pi x)\\
-		&= \frac{1}{h} + \frac{2}{\pi }e^{-(\pi)^2t}\sin(\pi x) -\frac{1}{\pi }e^{-(2\pi)^2t} \sin(2\pi x) + \frac{2}{3 \pi }e^{-(3\pi)^2t} \sin(3\pi x)-\frac{1}{2 \pi }e^{-(4\pi)^2t} \sin(4\pi x) + \dots
+		u(x,t) &= U(x,t).
 		\end{align*}
 		
-		\noindent Mathematica code:\\
+		\noindent Mathematica code:
 		\begin{lstlisting}
-		Integrate[Sin[k*Pi*x], {x, 0, 1}]
-		(1 - Cos[k \[Pi]])/(k \[Pi])
+		A[k_] := 2*Integrate[x*Sin[k*Pi*x/2], {x, 0.0001, 1}]
 		
-		Simplify[2*Integrate[x*Sin[k*Pi*x], {x, 0, 1}]]
-		(2 (-k \[Pi] Cos[k \[Pi]] + Sin[k \[Pi]]))/(k^2 \[Pi]^2)
+		(2 (-2 k \[Pi] Cos[(k \[Pi])/2] + 4 Sin[(k \[Pi])/2]))/(k^2 \[Pi]^2)
 		
-		F[k_] := (2 (-k \[Pi] Cos[k \[Pi]] + Sin[k \[Pi]]))/(k^2 \[Pi]^2)
-		Table[F[k], {k, 1, 4}]
-		{2/\[Pi], -(1/\[Pi]), 2/(3 \[Pi]), -(1/(2 \[Pi]))}
 		
-		u[x_, t_, h_] := 
-		1/h + (2 E^(-\[Pi]^2 t) Sin[\[Pi] x])/\[Pi] - (
-		E^(-4 \[Pi]^2 t) Sin[2 \[Pi] x])/\[Pi] + (
-		2 E^(-9 \[Pi]^2 t) Sin[3 \[Pi] x])/(3 \[Pi]) - (
-		E^(-16 \[Pi]^2 t) Sin[4 \[Pi] x])/(2 \[Pi])
+		U[x_, t_] := 
+		Sum[(2 (-2 (2 k - 1) \[Pi] Cos[((2*k - 1) \[Pi])/2] + 
+		4 Sin[((2*k - 1) \[Pi])/2]))/((2 k - 1)^2 \[Pi]^2)*
+		E^(-t*((2 k - 1)*Pi)^2)*Sin[(2 k - 1)*Pi*x/2], {k, 1, 100}]
 		
-		Show[Plot[u[x, 0.002, 2], {x, 0, 1}], Plot[u[x, 0.05, 2], {x, 0, 1}], 
-		Plot[u[x, 0.1, 2], {x, 0, 1}], Plot[u[x, 0.2, 2], {x, 0, 1}], 
-		AxesLabel -> {x, u}]
+		
+		Show[Plot[U[x, 0], {x, 0, 1}], Plot[U[x, 0.05], {x, 0, 1}], 
+		Plot[U[x, 0.01], {x, 0, 1}], Plot[U[x, 0.1], {x, 0, 1}], 
+		Plot[U[x, 0.02], {x, 0, 1}], Plot[U[x, 0.2], {x, 0, 1}], 
+		Plot[U[x, 1], {x, 0, 1}], AxesLabel -> {x, u}]
 		\end{lstlisting}
 		
-		\noindent The figure below shows solutions for different values of time. Here, I'm setting $h=2$, so the steady-state temperature is $u = 0.5$. Notice that $u_0(x)$ is not quite $x$ because I don't have enough terms in the solution.\\
+		\newpage
+		\noindent The figure below shows solutions for different values of time.\\
 		
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[scale=0.7]{pset2_2.png}
+			\includegraphics[scale=0.7]{2.png}
 		\end{figure}
 		
-		\noindent The solution has good sense, first because the steady-state solution is a constant that is equal to $1/h$, as expected. The boundary condition requires the temperature at $x=0$ stay fixed and the temperature gradient at $x=1$ to be zero, which the plot also illustrates. 
+		\noindent The solution has good sense, first because the steady-state solution is zero - as suggested by the BCs and IC. Second, at $t=0$, $u(x,0) = x$. Third, the boundary condition requires the temperature at $x=0$ stay fixed and the temperature gradient at $x=1$ to be zero, which the plots also illustrate nicely. 
 	\end{sln*}
 	
 \end{exer*}
@@ -1902,7 +1899,7 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 		\end{enumerate}
 		To find the eigenvalues and the eigenfunctions, we have to solve the IVP. By the ODE, we know that 
 		\begin{align*}
-		X(t) = A\sin(\sqrt{\lambda}x) + B\cos(\sqrt{\lambda} x).
+		X(x) = A\sin(\sqrt{\lambda}x) + B\cos(\sqrt{\lambda} x).
 		\end{align*}
 		Applying the initial conditions, we find 
 		\begin{align*}
@@ -1915,7 +1912,7 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 		\end{align*}
 		And so the eigenfunctions are
 		\begin{align*}
-		X_n(t) = A_n\sin\left( \frac{n\pi}{2} \right).
+		X_n(x) = A_n\sin\left( \frac{n\pi x}{2} \right).
 		\end{align*}
 	\end{sln*}
 \end{exer*}
@@ -1943,7 +1940,8 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 	Does your solution agree with your interpretation of the problem? What is the steady-state solution? Does this make sense? 
 	\begin{sln*}
 		$\,$\\
-		\noindent Let $u(x,t) = U(x,t) + S(x,t)$ where $S(x,t)$ is the steady-state and $U(x,t)$ is the transient solution. We can construct the steady-state solution as
+		
+		Let $u(x,t) = U(x,t) + S(x,t)$ where $S(x,t)$ is the steady-state and $U(x,t)$ is the transient solution. We can construct the steady-state solution as
 		\begin{align*}
 		S(x,t) = A(t)\left(1 -x \right) + B(t)x.
 		\end{align*}
@@ -1965,7 +1963,9 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 		\begin{align*}
 		S(x,t) = A(t)(1-x) + A(t)x = A(t) = \Lambda
 		\end{align*}
-		where $\Lambda$ is constant. Applying separation of variables to this PDE, we know that 
+		where $\Lambda$ is constant.\\
+		
+		\noindent Applying separation of variables to this PDE, we know that 
 		\begin{align*}
 		T(t) = e^{-\lambda^2 t}\\
 		X_n(x) = A\cos(\lambda x)  + B\sin(\lambda x).
@@ -1994,14 +1994,25 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 		A_m = 2\int_{0}^1 x\cos(m\pi x)\,dx &= \frac{2 (\pi  m \sin (\pi  m)+\cos (\pi  m)-1)}{\pi ^2 m^2}\\
 		&= \frac{2(\cos(\pi m - 1))}{m^2\pi^2}\\
 		&= \begin{cases}
-		\frac{4}{m^2\pi^2},\,\,\,\,\,\, m \text{ odd}\\
+		\frac{-4}{m^2\pi^2},\,\,\,\,\,\, m \text{ odd}\\
 		0,\,\,\,\,\,\,\,\, m \text{ even}.
 		\end{cases}
 		\end{align*}
 		The general solution is then
 		\begin{align*}
-		u(x,t) &= \Lambda + \frac{4}{\pi^2}\sum_{n=1}^\infty \frac{1}{n^2}\cos(n\pi x)\\
-		&= \Lambda -\frac{4}{\pi ^2}e^{-(\pi)^2 t}\cos(\pi x)    -\frac{4}{9 \pi ^2}e^{-(3\pi)^2 t}\cos(3\pi x)        -\frac{4}{25 \pi ^2}e^{-(5\pi)^2 t}\cos(5\pi x) + \dots
+		u(x,t) &= \Lambda-\frac{4}{\pi^2}\sum_{n=1}^\infty \frac{1}{n^2}e^{-(n\pi)^2 t}\cos(n\pi x),\,\,\, n \text{ odd}\\
+		&= \Lambda-\frac{4}{\pi ^2}e^{-(\pi)^2 t}\cos(\pi x)    -\frac{4}{9 \pi ^2}e^{-(3\pi)^2 t}\cos(3\pi x)        -\frac{4}{25 \pi ^2}e^{-(5\pi)^2 t}\cos(5\pi x) + \dots
+		\end{align*}
+		To find the steady-state solution, we only need to look for $\Lambda$ such that $u(0,0) = 0$ (to satisfy the initial condition), i.e.,
+		\begin{align*}
+		\Lambda &= \frac{4}{\pi^2}\sum^\infty_{n=1}\frac{1}{n^2},\,\,\, n \text{ odd}\\
+		&= \frac{1}{2}.
+		\end{align*}
+		
+		So steady-state solution is $S(x,t) = 1/2$, and the full solution is
+		\begin{align*}
+		u(x,t) &= \frac{1}{2}-\frac{4}{\pi^2}\sum_{n=1}^\infty \frac{1}{n^2}e^{-(n\pi)^2 t}\cos(n\pi x),\,\,\, n \text{ odd}\\
+		&= \frac{1}{2}-\frac{4}{\pi ^2}e^{-(\pi)^2 t}\cos(\pi x)    -\frac{4}{9 \pi ^2}e^{-(3\pi)^2 t}\cos(3\pi x)        -\frac{4}{25 \pi ^2}e^{-(5\pi)^2 t}\cos(5\pi x) + \dots
 		\end{align*}
 		
 		\noindent Mathematica code:
@@ -2017,6 +2028,9 @@ Recall that $$ L[y] = -(p(x)y')' + q(x)y.$$ So the ODE is $$ L[y] = \lambda r(x)
 		Table[A[m], {m, 1, 7}]
 		{-(4/\[Pi]^2), 0, -(4/(9 \[Pi]^2)), 0, -(4/(25 \[Pi]^2)), 0, -(4/(
 		49 \[Pi]^2))}
+		
+		N[Sum[(4/Pi^2)*(1/(2 n - 1)^2)*1, {n, 1, 10000}]]
+		0.49999
 		\end{lstlisting}
 	\end{sln*}
 \end{exer*}
