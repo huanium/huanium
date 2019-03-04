@@ -1414,7 +1414,85 @@ Such an operator $L$ is said to be (formally) self-adjoint.
 
 
 
+%Mar 4 2019%
+\newpage
+\section{Transforming Hard Equations into Easier Ones}
+In this section we will learn how to solve the IBVP of a laterally-heat-losing rod.
+\begin{align*}
+&u_t = \alpha^2 u_{xx} - \beta u\\
+&\begin{cases}
+u(t,0) = 0 = u(t,1)\\u(0,x) = u_0(x)
+\end{cases}
+\end{align*}
+Ansatz: we will assume (so that the $\beta$ term goes away)
+\begin{align*}
+u(t,x) = e^{-\beta t}w(t,x).
+\end{align*}
+Can we convert an equation for $u$ into an easier equation for $w$. Plug in, we get:
+\begin{align*}
+- \beta e^{\beta t}w(t,x) + e^{-\beta t}w_t(t,x) = \alpha^2 e^{-\beta t}w''(t,x) - \beta e^{-\beta t}w(t,x).
+\end{align*}
+This gives a nice equation for $w$:
+\begin{align*}
+w_t = \alpha^2 w_{xx}.
+\end{align*}
+A moment's thougt shows that all of these steps are reversible. This means that $w$ solves $w_t = \alpha^2 w_{xx} \iff$ $u$ solves $u_t = \alpha^2 u - \beta u$.\\
 
+The boundary and initial conditions are exactly the same. In fact, $u$ satisfies the BCs and ICs $\iff$ $w$ satisfies the same ones:
+\begin{align*}
+\begin{cases}
+w(t,0) = 0 = w(t,1)\\
+w(0,x) = u(0,x) = u_0(x).
+\end{cases}
+\end{align*}
+So, we wish to solve the following problem:
+\begin{align*}
+&w_t = \alpha^2 w_{xx}\\
+&\begin{cases}
+w(t,0) = 0 = w(t,1)\\w(0,x) = u_0(x)
+\end{cases}.
+\end{align*}
+The solution is of course
+\begin{align*}
+w(t,x) = \sum^\infty_{i=1}a_n e^{-(n\pi \alpha)^2t}\sin(n\pi x)
+\end{align*}
+where 
+\begin{align*}
+a_n = 2\int^1_0 u_0(x)\sin(n\pi x)\,dx.
+\end{align*}
+So
+\begin{align*}
+u(t,x) &= e^{-\beta x}w(t,x)\\ &= e^{-\beta t}\sum^\infty_{i=1}a_n e^{-(n\pi \alpha)^2t}\sin(n\pi x)\\
+&= \sum^\infty_{i=1}a_n e^{-[(n\pi \alpha)^2 + \beta] t}\sin(n\pi x).
+\end{align*}
+Since $\beta>0$, $u(t,x)\to 0$ faster than if $\beta = 0$. 
+
+\newpage
+
+\section{Solving Nonhomogeneous PDEs (Eigenfunction Expansion)}
+In all we've done, we haven't yet attack an inhomogeneous heat equation. Let's set out to solve the problem 
+\begin{align*}
+&u_t = \alpha^2 u_{xx} + f(t,x)\\
+&\begin{cases}
+u(t,0) = 0\\
+u(t,1) = 0
+\end{cases}
+u(0,x) = u_0(x).
+\end{align*}
+The method we shall follow will also solve the more general problem 
+\begin{align*}
+&u_t = \alpha^2 u_{xx} + f(t,x)\\
+&\begin{cases}
+a_1u(t,0) + b_1u_x(t,0) = 0\\
+a_2u(t,1) + b_2u_x(t,1) = 0
+\end{cases}
+u(0,x) = u_0(x).
+\end{align*}
+The question is: Can we write the solution as a series of products:
+\begin{align*}
+u(t,x) = \sum^\infty_{n=0}T_n(t)X_n(x)?
+\end{align*}
+Recall that we've expanded things via Fourier series (generally to deal with $u_0$) or general eigenfunction expansions from the Sturm-Liouville theory. So, can we also expand $f(t,x)$ in this way?
 
 
 
