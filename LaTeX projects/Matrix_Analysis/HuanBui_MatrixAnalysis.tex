@@ -45,12 +45,46 @@
 
 \newcommand{\M}{\mathcal{M}}
 
+\newcommand{\E}{\mathcal{E}}
 
 \newcommand{\ima}{\text{Im}}
 \newcommand{\lin}{\overset{\text{linear}}{\longrightarrow}}
 \newcommand{\T}{\mathcal{T}}
 \newcommand{\poly}{\mathbb{P}}
 \newcommand{\s}{\mathcal{S}}
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
 
 \begin{document}
 	\begin{titlepage}\centering
@@ -2430,7 +2464,8 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			\M_{11} & \M_{12} & \M_{13}\\
 			\M_{21} & \M_{22} & \M_{23}\\
 			\M_{31} & \M_{32} & \M_{33}
-			\end{bmatrix}_\oplus = \left[\maltese
+			\end{bmatrix}_\oplus =
+			\maltese
 			\circ
 			\begin{bmatrix}
 			\M_{11} & \M_{12} & \M_{13}\\
@@ -2438,7 +2473,7 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			\M_{31} & \M_{32} & \M_{33}
 			\end{bmatrix}_\times 
 			\circ 
-			\maltese^{-1}\right].
+			\maltese^{-1}.
 			\end{align*}
 			Since these two expressions represent the same linear map $T$,
 			\begin{align*}
@@ -2486,7 +2521,7 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			\begin{enumerate}
 				\item By part 1, we can re-express
 				\begin{align*}
-				2[{\lag_\oplus}_{ij}] + 3 [{\M_\oplus}_{ij}] = 2\begin{bmatrix}
+				[(2\lag_\oplus + 3\M_\oplus)_{ij}] = 2\begin{bmatrix}
 				\lag_{11} & \lag_{12} & \lag_{13}\\
 				\lag_{21} & \lag_{22} & \lag_{23}\\
 				\lag_{31} & \lag_{32} & \lag_{33}
@@ -2538,20 +2573,21 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 				\M_{21} & \M_{22} & \M_{23}\\
 				\M_{31} & \M_{32} & \M_{33}
 				\end{bmatrix}_\times
-				\right) \circ \maltese^{-1}.
+				\right) \circ \maltese^{-1}\\
+				=\,\, &\maltese\circ \left( 2[{\lag_\times}_{ij} ] + 3[{\M_\times}_{ij} ]  \right) \circ \maltese^{-1},
 				\end{align*}
-				By problem 1, we have
+				where the notation $[A_{ij}]$ denotes the block-matrix of elements $A_{ij}$, and the last relation:
 				\begin{align*}
-				(2\lag_\times + 3\M_\times)_{ij} = 2{\lag_\times}_{ij} + 3{\M_\times}_{ij}.
+				[(2\lag_\times + 3\M_\times)_{ij}] = 2[{\lag_\times}_{ij}] + 3[{\M_\times}_{ij}].
 				\end{align*}
-				Therefore,
+				comes from Problem 1. It follows that
 				\begin{align*}
-				2[{\lag_\oplus}_{ij}] + 3[{\M_\oplus}_{ij}]
-				&= \maltese\circ [2{\lag_\times}_{ij} + 3{\M_\times}_{ij}]\circ \maltese^{-1}\\
-				&= \maltese \circ [(2\lag_\times + 3\M_\times)_{ij}] \circ \maltese^{-1}\\
-				&= [(2\lag_\oplus + 3\M_\oplus)_{ij}],
+				[(2\lag_\oplus + 3\M_\oplus)_{ij}]
+				&= \maltese\circ \left( 2[{\lag_\times}_{ij} ] + 3[{\M_\times}_{ij} ]  \right) \circ \maltese^{-1}\\
+				&= \maltese\circ [2{\lag_\times}_{ij}]\circ \maltese^{-1} + \maltese\circ [3{\M_\times}_{ij}]\circ \maltese^{-1}\\
+				&= 2[{\lag_\oplus}_{ij}] + 3[{\M_\oplus}_{ij}].
 				\end{align*}
-				where the $[A_{ij}]$ denotes the matrix of elements $A_{ij}$. So, in the block-matrix form:
+				So, in the block-matrix form:
 				\begin{align*}
 				&2\begin{bmatrix}
 				\lag_{11} & \lag_{12} & \lag_{13}\\
@@ -2586,13 +2622,79 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			
 			
 			
-			\item 
-			
-			
-			
-			
-			
-			
+			\item Let $\E_1 + \E_2 + \E_3 = \mathcal{I}_\V$ be a resolution of identity, with $\ima(\E_i) = \W_i$, be given. Furthermore, let the linear map $\lag : \V \lin \V$ be given where
+			\begin{align*}
+			\lag = \begin{bmatrix}
+			\lag_{11} & \lag_{12} & \lag_{13}\\
+			\lag_{21} & \lag_{22} & \lag_{23}\\
+			\lag_{31} & \lag_{32} & \lag_{33}
+			\end{bmatrix}_\oplus.
+			\end{align*} 
+			\underline{To show}: 
+			\begin{align*}
+			\boxed{\lag_{ij} =  \E_{i} \circ \lag\bigg\vert_{\W_j} : \W_j \lin \W_i}
+			\end{align*}
+			Consider the restricted map $\lag\big\vert_{\W_j} : \W_j \lin \V$. Without loss of generality, let $\W_j = \W_1$ and let
+			$\begin{pmatrix}
+			w_1 & \mathbf{0}_{\W_2} & \mathbf{0}_{\W_3}
+			\end{pmatrix}_+ \in \V$ be given. We have 
+			\begin{align*}
+			\lag \begin{pmatrix}
+			w_1\\ \mathbf{0}_{\W_2} \\ \mathbf{0}_{\W_3}
+			\end{pmatrix}_+
+			= 
+			\begin{bmatrix}
+			\lag_{11} & \lag_{12} & \lag_{13}\\
+			\lag_{21} & \lag_{22} & \lag_{23}\\
+			\lag_{31} & \lag_{32} & \lag_{33}
+			\end{bmatrix}_\oplus \begin{pmatrix}
+			w_1\\ \mathbf{0}_{\W_2} \\ \mathbf{0}_{\W_3}
+			\end{pmatrix}_+ = 
+			\begin{pmatrix}
+			\lag_{11}(w_1)\\
+			\lag_{21}(w_1)\\
+			\lag_{31}(w_1)
+			\end{pmatrix}_+.
+			\end{align*}
+			Consider $v = w_1 + w_2 + w_3\in \V$ with $w_i \in \W_i$. Since $\bigoplus^3_{i=1}\W_i = \V$, there is exactly one way to express $v$ as a sum of these $w_i$'s. Now, consider
+			\begin{align*}
+			w_1 + w_2 +w_3 &= \mathcal{I}_\V(v)\\
+			&= (\E_1 + \E_2 + \E_3)(v)\\
+			&= (\E_1 + \E_2 + \E_3)(w_1 + w_2 + w_3)\\
+			&= \E_1(w_1 + w_2 + w_3) + \E_2(w_1 + w_2 + w_3) + \E_3(w_1 + w_2 + w_3).
+			\end{align*} 
+			Since $\ima(\E_i) = \W_i$, it is required that $\E_i(w_1 + w_2 + w_3) = w'_i \in \W_i$. It follows that
+			\begin{align*}
+			v = w_1 + w_2 +w_3 = w'_1 + w'_2 +w'_3.
+			\end{align*}
+			But because $v$ can be expressed in only one way as a sum of $w_i$'s $\in \W_i$'s, $w_i = w'_i$ for any $i\in \{1,2,3\}$. Hence,
+			\begin{align*}
+			\E_i(w_1 + w_2 +w_3) = w_i, \hspace{0.5cm} i \in \{1,2,3\}.
+			\end{align*}
+			In ``bad'' notation, 
+			\begin{align*}
+			\E_i \begin{pmatrix}
+			w_1\\w_2\\w_3
+			\end{pmatrix}_+ = w_i, \hspace{0.5cm} i \in \{1,2,3\}.
+			\end{align*}
+			Applying $\E_2$ to $\lag(w_1 + \mathbf{0}_{\W_2} + \mathbf{0}_{\W_3})$, we have
+			\begin{align*}
+			\E_2\circ \lag \begin{pmatrix}
+			w_1\\ \mathbf{0}_{\W_2} \\ \mathbf{0}_{\W_3}
+			\end{pmatrix}_+ = \E_2\begin{pmatrix}
+			\lag_{11}(w_1)\\
+			\lag_{21}(w_1)\\
+			\lag_{31}(w_1)
+			\end{pmatrix}_+ =  \lag_{21}(w_1).
+			\end{align*}
+			Hence, if we only consider the restricted map $\lag\big\vert_{\W_j}$, then
+			\begin{align*}
+			\E_2 \circ \lag\bigg\vert_{\W_1} = \lag_{21} : \W_1 \lin \W_1.
+			\end{align*}
+			In general, the exact same procedure can be repeated to find the other $\lag_{ij}$. We notice that the index $j$ in $\lag_{ij}$ indicates that we use $\E_j$, while the index $i$ indicates that we use the restricted map $\lag\big\vert_{\W_i}$. A general expression for this procedure is
+			\begin{align*}
+			\lag_{ij} = \E_j \circ \lag\bigg\vert_{\W_i}.
+			\end{align*}
 			
 			\newpage
 			
@@ -2602,7 +2704,71 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			
 			
 			
-			\item 
+			\item Let
+			\begin{align*}
+			\mathcal{E}_1 = \begin{bmatrix}
+			\M_{11} & \M_{12} & \M_{13}\\
+			\M_{21} & \M_{22} & \M_{23}\\
+			\M_{31} & \M_{32} & \M_{33}
+			\end{bmatrix}_\oplus.
+			\end{align*}
+			be given, where $\ima(\E_i) = \W_i$ and $\E_1 + \E_2 + \E_3 = \mathcal{I}_\V$ is a resolution of identity. Continuing with the set-up of part 4, we have
+			\begin{align*}
+			\M_{ij} &= \E_j \circ \E_1\bigg\vert_{\W_i}.
+			\end{align*}
+			From part 4, we have shown $\E_k(w_1 + w_2 + w_3) = \E_k\sum_{i=1}^3w_i = w_k$, for $i\in \{1,2,3 \}$ and $w_i \in \W_i$. Since the $\W_i$'s direct sum to $\V$, any intersection between two $\W_i$'s is trivial. So, for $v\in \V$ that also belongs to $\W_i$, the one and only way express $v = \sum^3_{i=3}w_i$ is as an element in $\W_i$:
+			\begin{align*}
+			v = w_1 + w_2 + w_3 =  \delta^j_iw_j = w_i, \hspace{0.5cm} i,j,\in \{1,2,3\}, w_j\in \W_j
+			\end{align*}
+			where the Kronecker delta
+			\begin{align*}
+			\delta^j_i = \begin{cases}
+			1,\hspace{0.5cm}i=j\\
+			0,\hspace{0.5cm}i\neq j
+			\end{cases}
+			\end{align*}
+			is introduced to simplify our notation. It follows that, for $\E_1$
+			\begin{align*}
+			\E_k(v) = \E_k(w_i) = \delta^i_kw_i, \hspace{0.5cm}\text{for any } w_i\in\W_i.
+			\end{align*}
+			This simply says that the general expression$^\dagger$
+			\begin{align*}
+			\E_j\circ\E_k\bigg\vert_{\W_i} =
+			\begin{cases}
+			\mathcal{O},\hspace{1.1 cm} i\neq k\\
+			\E_j\big\vert_{\W_1},\hspace{0.5cm} i=k,
+			\end{cases}
+			\end{align*}
+			where 
+			\begin{align*}
+			\E_j\bigg\vert_{\W_k} =
+			\begin{cases}
+			\mathcal{O},\hspace{1.2 cm} j\neq k\\
+			Id_{\W_k},\hspace{0.6cm} j=k.
+			\end{cases}
+			\end{align*}
+			where $Id_{\W_k}$ denotes the identity function on $\W_k$. Therefore, for $\E_1$, we simply set $k=1$ to get
+			\begin{align*}
+			\text{For }\E_1:\hspace{0.5cm}\M_{ij} = 
+			\begin{cases}
+			Id_{\W_1},\hspace{0.6cm}   i,j=1\\
+			\mathcal{O},\hspace{1.2cm}    i\text{ or }j\neq 1
+			\end{cases}
+			\end{align*}
+			To get the $M_{ij}$'s for $\E_2$ and $\E_3$, we simply set $k=2,3$ accordingly. So, for 
+			\begin{align*}
+			&\text{For }\E_2:\hspace{0.5cm}\M_{ij} = 
+			\begin{cases}
+			Id_{\W_2},\hspace{0.6cm}   i,j=2\\
+			\mathcal{O},\hspace{1.2cm}    i\text{ or }j\neq 3
+			\end{cases}\\
+			&\text{For }\E_3:\hspace{0.5cm}\M_{ij} = 
+			\begin{cases}
+			Id_{\W_3},\hspace{0.6cm}   i,j=3\\
+			\mathcal{O},\hspace{1.2cm}    i\text{ or }j\neq 3
+			\end{cases}
+			\end{align*}
+			
 		\end{enumerate} 
 		
 	\end{sln*}
@@ -2649,6 +2815,118 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 		\end{bmatrix}_{\Gamma\leftarrow\Omega} = [\mathcal{T}]^{-1}_{\Omega\leftarrow \Gamma}.
 		\end{align*}
 	\end{enumerate}
+
+	
+	
+	
+	\begin{sln*}\textbf{3.}
+		\begin{enumerate}
+			
+			
+			\item By the set-up in Definition 0.3, we have $[\T]_{\Omega\leftarrow \Gamma} = [\,\,\,]_\Omega\circ\T\circ \mathcal{A}_\Gamma$, and $[\mathcal{X}]_\Gamma = [\,\,\,]_\Gamma(\mathcal{X})$. Hence,
+			\begin{align*}
+			[\T]_{\Omega\leftarrow \Gamma}[\mathcal{X}]_\Gamma 
+			&= [\,\,\,]_\Omega\circ\T\circ \mathcal{A}_\Gamma \circ [\mathcal{X}]_\Gamma \\
+			&= [\,\,\,]_\Omega\circ\T\circ \mathcal{A}_\Gamma \circ [\,\,\,]_\Gamma(\mathcal{X})
+			&= [\,\,\,]_\Omega\circ\T\circ \left(\mathcal{A}_\Gamma \circ [\,\,\,]_\Gamma\right)(\mathcal{X})\\
+			&= [\,\,\,]_\Omega\circ\T(\mathcal{X})\\
+			&= [\,\,\,]_\Omega\left(\T(\mathcal{X})\right)\\
+			&= [\mathcal{T}(\mathcal{X})]_\Omega.
+			\end{align*}
+			
+			
+			
+			
+			\item \underline{Claim}:
+			\begin{align*}
+			[\T]_{\Omega\leftarrow\Gamma} = \begin{bmatrix}
+			[\T(v_1)]_\Omega & [\T(v_2)]_\Omega & \dots & [\T(v_n)]_\Omega
+			\end{bmatrix}.
+			\end{align*}
+			 To find the columns of the matrix $[\T]_{\Omega\leftarrow\Gamma}$ we let $\mathcal{X}$ be $v_i \in \{v_1,v_2,\dots,v_n\}$ the set of basis vectors of $\Gamma$. This works because 
+			\begin{align*}
+			[\mathcal{X}]_\Gamma = [v_i]_\Gamma = [\,\,\,]_\Gamma(v_i)=A^{-1}_\Gamma(v_i) = \begin{bmatrix}
+			v_1&v_2&\dots&v_n
+			\end{bmatrix}^{-1}(v_i) =  \vec{e}_i \in \mathbb{C}^n,
+			\end{align*}
+			where $\vec{e}_i$ is a standard unit vector in $\mathbb{C}^n$ with a 1 on the $i^{th}$ row and 0 everywhere else and $A_\Gamma$ is a bijective atrix responsible for the changes of basis $\mathbb{C}^n\to \V$.\\
+			 
+			From part 1, the $i^{th}$ column of $[\T]_{\Omega\leftarrow \Gamma}$ is given by 
+			\begin{align*}
+			[\T]_{\Omega\leftarrow \Gamma}[v_i]_\Gamma = [\T(v_i)]_\Omega.
+			\end{align*}
+			The matrix $[\T]_{\Omega\leftarrow\Gamma}$ can be constructed by putting the columns together in order, $v_1$ to $v_n$:
+			\begin{align*}
+			[\T]_{\Omega\leftarrow\Gamma} = \begin{bmatrix}
+			[\T(v_1)]_\Omega & [\T(v_2)]_\Omega & \dots & [\T(v_n)]_\Omega
+			\end{bmatrix},
+			\end{align*}
+ 			which is what we claimed $[\T]_{\Gamma\leftarrow \Gamma}$ to be.\\
+ 			
+ 			
+ 			
+ 			
+ 			\item Let the finite-dimensional vector space $\U$ with coordinate system $\Delta$ be given. Let $\mathcal{S}:\Z \lin \U$ be given. \underline{Claim}:
+			\begin{align*}
+ 			[\mathcal{S} \circ \T]_{\Delta\leftarrow\Gamma} = [\mathcal{S}]_{\Delta\leftarrow\Omega}[\T]_{\Omega\leftarrow\Gamma}.
+ 			\end{align*}
+ 			
+ 			Let $\Delta = (w_1,w_2,\dots,w_l)$ be a coordinate system for $\U$. We also define the bijective atrix
+ 			\begin{align*}
+ 			A_\Delta := \begin{bmatrix}
+ 			w_1&w_2&\dots&w_l
+ 			\end{bmatrix} : \mathbb{C}^l \rightarrow \U.
+ 			\end{align*}
+ 			And since $A_\Delta$ s invertible, we can write $[\,\,\,]_\Delta$ for $A^{-1}_\Delta$. \\
+ 			
+			By the set-up in definition 0.3, we have the following
+			\begin{align*}
+			[\T]_{\Omega\leftarrow \Gamma} &= [\,\,\,]_\Omega\circ \T\circ \mathcal{A}_\Gamma\\
+			[\mathcal{S}]_{\Delta\leftarrow\Omega} &= [\,\,\,]_\Delta \circ \mathcal{S} \circ \mathcal{A}_\Omega.			
+			\end{align*}
+ 			It follows that
+ 			\begin{align*}
+ 			[\mathcal{S}]_{\Delta \leftarrow \Omega}[\mathcal{T}]_{\Omega\leftarrow\Gamma}
+			&= [\,\,\,]_\Delta \circ \mathcal{S} \circ \mathcal{A}_\Omega \circ [\,\,\,]_\Omega\circ \T\circ \mathcal{A}_\Gamma\\
+			&= [\,\,\,]_\Delta \circ \mathcal{S} \circ \left( \mathcal{A}_\Omega \circ [\,\,\,]_\Omega \right) \circ \T\circ \mathcal{A}_\Gamma\\
+			&= [\,\,\,]_\Delta \circ \mathcal{S} \circ \T\circ \mathcal{A}_\Gamma\\
+			&= [\,\,\,]_\Delta \circ \left(\mathcal{S} \circ \T \right) \circ \mathcal{A}_\Gamma\\
+			&= [\mathcal{S}\circ \T]_{\Delta \leftarrow \Gamma},
+ 			\end{align*}
+			where we have used the fact that $A_\Omega [\,\,\,]_\Omega = A_\Omega A_\Omega^{-1}$ is the identity function. \\
+			
+			
+			
+			\item Let $\T$ be invertible (in which case $m=n$). \underline{Claim}:
+			\begin{align*}
+			\begin{bmatrix}
+			\mathcal{T}^{-1}
+			\end{bmatrix}_{\Gamma\leftarrow\Omega} = [\mathcal{T}]^{-1}_{\Omega\leftarrow \Gamma}.
+			\end{align*}
+			
+			Since $\T$, $A_{\Omega}$, $A_\Gamma$ are all invertible, their inverses are defined. By the set-up in definition 0.3, the matrix $[\T]_{\Omega\leftarrow\Gamma}$ can be written as the composition $[\,\,\,]_\Omega \circ \T \circ A_{\Gamma}$ for the linear function $T : \V \lin \Z$. Now, since $\T^{-1} : \Z \lin \V$ is also defined, we can express its matrix $[\T^{-1}]_{\Gamma\leftarrow\Omega}$ as the composition $[\,\,\,]_\Gamma\circ \T^{-1} \circ A_\Omega$, i.e.,
+			\begin{align*}
+			[\T^{-1}]_{\Gamma\leftarrow\Omega} = [\,\,\,]_\Gamma\circ \T^{-1} \circ A_\Omega^\dagger.
+			\end{align*}
+			Next, we consider the inverse of the matrix $[\T]_{\Omega\leftarrow\Gamma}$:
+			\begin{align*}
+			[\T]^{-1}_{\Omega\leftarrow\Gamma} &= \left([\,\,\,]_\Omega\circ \T \circ A_\Gamma \right)^{-1}\\
+			&= A^{-1}_\Gamma \circ \left( [\,\,\,]_\Gamma \circ \T \right)^{-1}\\
+			&= A^{-1}_\Gamma \circ \T^{-1} \circ [\,\,\,]_\Omega^{-1}\\
+			&= [\,\,\,]_\Gamma \circ \T^{-1} \circ A_\Omega^{\dagger\dagger}.
+			\end{align*}
+			From ($\dagger$) and $(\dagger\dagger)$, we have
+			\begin{align*}
+				[\T^{-1}]_{\Gamma\leftarrow\Omega} = [\T]^{-1}_{\Omega\leftarrow\Gamma}
+			\end{align*}
+			as claimed.
+			
+		\end{enumerate}
+	\end{sln*}
+
+
+
+
 \end{prob*}
 
 \newpage
@@ -2682,12 +2960,12 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 	\end{bmatrix}_{\Gamma_0 \leftarrow \Omega}\\
 	&= \left(\begin{bmatrix}
 	\mathcal{I}_{\mathbb{P}_3}
-	\end{bmatrix}\right)^{-1}_{\Gamma_0 \leftarrow \Delta} [\mathcal{T}]_{\Gamma_0 \leftarrow \Gamma_0} 
+	\end{bmatrix}_{\Gamma_0 \leftarrow \Delta}\right)^{-1} [\mathcal{T}]_{\Gamma_0 \leftarrow \Gamma_0} 
 	\begin{bmatrix}
 	\mathcal{I}_{\mathbb{P}_3}
 	\end{bmatrix}_{\gamma_0 \leftarrow \Omega},
 	\end{align*}
-	for $\mathcal{T} : \mathbb{P}_3 \overset{\text{linear}}{\longrightarrow} \mathbb{P}_3$
+	for $\mathcal{T} : \mathbb{P}_3 \overset{\text{linear}}{\longrightarrow} \mathbb{P}_3$.
 	
 	
 	\item Consider $\mathcal{T} : \mathbb{P}_3 \rightarrow \mathbb{P}_3$ defined by 
@@ -2698,6 +2976,255 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 	
 	
 	\end{enumerate}
+
+
+
+	\begin{sln*}
+		$\,$
+		\begin{enumerate}
+			\item 
+			\begin{enumerate}
+				\item Let $\Delta := (1 + x + x^2 + x^3, 1 + 2x+4x^2 + 8x^3, 1 + 3x+9x^2 + 27x^3, 1+ 4x +16x^2 + 64x^3) $ be given. Let $A_\Delta : \mathbb{P}_3 \lin \mathbb{C}^4$ be the atrix corresponding to $\Delta$. To show $\Delta$ is a coordinate system of $\mathbb{P}_3$, it suffices to show that $A_\Delta$ is an isomorphism, i.e., it is invertible.\\
+				
+				Consider the identity (linear) function $\mathcal{I}_{\mathbb{P}_3} : \mathbb{P}_3 \to \mathbb{P}_3$. It is invertible. Also, consider $[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\to\Delta}: \mathbb{C}^4\to \mathbb{C}^4$ the change of basis matrix from $\Delta$ to $\Gamma_0$. \\
+				
+				$A_\Delta $ can be expressed as the composition $[\mathcal{I}_{\mathbb{P}_3}] \circ A_{\Gamma_0} \circ [\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\to \Delta}  $, where $A_{\Gamma_0}$ is the inverse of $[\,\,\,]_{\Gamma_0}$, the coordinatization matrix for the coordinate system $\Gamma_0$. Since both $A_{\Gamma_0}$ and $\mathcal{I}_{\mathbb{P}_3}$ are invertible, $[\,\,\,]_\Delta$ is invertible if $[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Delta}$ is also invertible. To find (the columns of) $[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Delta}$, we can use the result from part 2:
+				\begin{align*}
+				[\mathcal{I}]_{\Gamma_0\leftarrow\Delta}
+				&= \begin{bmatrix}
+				[\mathcal{I}_{\mathbb{P}_3}(1+x+x^2+x^3)]_{\Gamma_0}\\ [\mathcal{I}_{\mathbb{P}_3}(1+2x+4x^2+8x^3)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(1+3x+9x^2+27x^3)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(1+4x+16x^2+64x^3)]_{\Gamma_0}
+				\end{bmatrix}^\top
+				= \begin{pmatrix}
+				1&1&1&1\\
+				1&2&3&4\\
+				1&4&9&16\\
+				1&8&27&64
+				\end{pmatrix}.
+				\end{align*} 
+				To show $[\mathcal{I}]_{\Gamma_0\leftarrow\Delta}$ is invertible, it suffices to calculate its determinant, which can be done in \textit{Mathematica}:
+				\begin{align*}
+				\det\left([\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Delta}\right) = 12 \neq 0.
+				\end{align*}
+				Therefore, $\Delta$ is a coordinate system of $\mathbb{P}_3$.\\
+				
+				\textit{Mathematica} code:
+		\begin{lstlisting}
+In[4]:= Det[{{1, 1, 1, 1}, {1, 2, 3, 4}, {1, 4, 9, 16}, 
+						{1, 8, 27, 64}}]
+				
+Out[4]= 12
+		\end{lstlisting}
+		
+		
+		
+		
+		
+		
+				\item For $\Omega := (x+x^2,x-6x^3,1+4x^2,1+8x^3)$, we repeat the procedure laid out above to determine whether $\Omega$ is a coordinate system for $\mathbb{P}_3$. 
+				\begin{align*}
+				[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}
+				= \begin{bmatrix}
+				[\mathcal{I}_{\mathbb{P}_3}(x+x^2)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(x-6x^3)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(1+4x^2)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(1+8x^3)]_{\Gamma_0}
+				\end{bmatrix}^\top
+				= \begin{pmatrix}
+				0&0&1&1\\
+				1&1&0&0\\
+				1&0&4&0\\
+				0&-6&0&8
+				\end{pmatrix}. 
+				\end{align*} 
+				We can calculate the determinant of $[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}$ in \textit{Mathematica}:
+				\begin{align*}
+				\det\left( [\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}  \right) = -32 \neq 0.
+				\end{align*}
+				Therefore, $\Omega$ is a coordinate system of $\mathbb{P}_3$.\\
+				
+				\textit{Mathematica} code:
+				\begin{lstlisting}
+In[6]:= Det[{{0, 0, 1, 1}, {1, 1, 0, 0},
+						 {1, 0, 4, 0}, {0, -6, 0, 8}}]
+				
+Out[6]= -32
+				\end{lstlisting}
+				
+			\end{enumerate}
+		
+		
+		
+			\item Let $\T : \mathbb{P}_3 \lin \mathbb{P}_3$ be given. By the set-up in Definition 0.3,
+			\begin{enumerate}
+				\item Verify the first identity:
+				\begin{align*}
+				[\T]_{\Delta\leftarrow \Omega} &= [\,\,\,]_{\Delta}\circ \T\circ A_\Omega\\
+				&= \left([\,\,\,]_{\Delta\leftarrow \Gamma_0} \circ [\,\,\,]_{\Gamma_0}\right) \circ \T \circ \left( [\,\,\,]_{\Gamma_0}\circ[\,\,\,]_{\Gamma_0\leftarrow\Omega}\right)\\
+				&= [\mathcal{I}_{\mathbb{P}_3}]_{\Delta\leftarrow \Gamma_0} \circ [\,\,\,]_{\Gamma_0} \circ \T \circ  [\,\,\,]_{\Gamma_0}\circ[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}\\
+				&= [\mathcal{I}_{\mathbb{P}_3}]_{\Delta\leftarrow \Gamma_0} \left( \circ [\,\,\,]_{\Gamma_0} \circ \T \circ  [\,\,\,]_{\Gamma_0} \right) \circ[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}\\
+				&= [\mathcal{I}_{\mathbb{P}_3}]_{\Delta\leftarrow \Gamma_0} \circ [\T]_{\Gamma_0 \leftarrow \Gamma_0}\circ [\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}.
+				\end{align*}
+				
+				\item Verify the second identity: The second identity follows from the first identity, by the fact that
+				\begin{align*}
+				[\mathcal{I}_{\mathbb{P}_3}]_{\Delta\leftarrow \Gamma_0} = \left(\begin{bmatrix}\mathcal{I}_{\mathbb{P}_3}\end{bmatrix}_{\Gamma_0\leftarrow\Delta}\right)^{-1}.
+				\end{align*}
+				So we have
+				\begin{align*}
+				[\T]_{\Delta\leftarrow \Omega} &= [\mathcal{I}_{\mathbb{P}_3}]_{\Delta\leftarrow \Gamma_0} \circ [\T]_{\Gamma_0 \leftarrow \Gamma_0}\circ [\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}\\
+				&=  \left(\begin{bmatrix}\mathcal{I}_{\mathbb{P}_3}\end{bmatrix}_{\Gamma_0\leftarrow\Delta}\right)^{-1} \circ [\T]_{\Gamma_0 \leftarrow \Gamma_0}\circ [\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}.
+				\end{align*}
+			\end{enumerate}
+		
+			
+			
+			
+			\item Let $\T : \mathbb{P}_3 \to \mathbb{P}_3$ be given. $T$ is defined as
+			\begin{align*}
+			\T(p(x)) := xp'(2x) + p(x).
+			\end{align*}
+			\begin{enumerate}
+				\item \underline{Claim}: $\T$ is a linear function.\\
+				$\T$ is a linear function if it satisfies the linearity conditions. Consider $p(x), q(x) \in \mathbb{P}_3$. Then we have
+				\begin{align*}
+				\T(p(x) + q(x)) &= x(p(2x) + q(2x))' + (p(x) + q(x))\\
+				&= (xp'(2x) + p(x))  + (xq'(2x) + q(x))\\ 
+				&= \T(p(x)) + \T(q(x))^\dagger.
+				\end{align*}
+				Consider $c\in \mathbb{C}$ and $p(x)\in \mathbb{P}_3$,
+				\begin{align*}
+				\T(cp(x)) &= x(cp(2x))' + cp(x)\\
+				&= cxp'(2x) + cp(x)\\ &= c(xp'(2x) + p(x))\\ &= c\T(p(x))^{\dagger\dagger}.
+				\end{align*}
+				From ($\dagger$) and ($\dagger$), $\T$ is a linear function. \\
+				
+				
+				
+				
+				\item \underline{Find} $[\T]_{\Delta\leftarrow\Omega}$.\\
+				
+				By part 2 of Problem 3
+				\begin{align*}
+				[\mathcal{T}]_{\Delta \leftarrow \Omega} &= 
+				\left(\begin{bmatrix}
+				\mathcal{I}_{\mathbb{P}_3}
+				\end{bmatrix}_{\Gamma_0 \leftarrow \Delta}\right)^{-1} [\mathcal{T}]_{\Gamma_0 \leftarrow \Gamma_0} 
+				\begin{bmatrix}
+				\mathcal{I}_{\mathbb{P}_3}
+				\end{bmatrix}_{\gamma_0 \leftarrow \Omega}.
+				\end{align*}
+				In part 1, we have found the matrices $\left(\begin{bmatrix}
+				\mathcal{I}_{\mathbb{P}_3}
+				\end{bmatrix}_{\Gamma_0 \leftarrow \Delta}\right)^{-1}$ and $\begin{bmatrix}
+				\mathcal{I}_{\mathbb{P}_3}
+				\end{bmatrix}_{\Gamma_0 \leftarrow \Omega}$ to be
+				\begin{align*}
+				\left(\begin{bmatrix}
+				\mathcal{I}_{\mathbb{P}_3}
+				\end{bmatrix}_{\Gamma_0 \leftarrow \Delta}\right)^{-1} &= \begin{pmatrix}
+				1&1&1&1\\
+				1&2&3&4\\
+				1&4&9&16\\
+				1&8&27&64
+				\end{pmatrix}^{-1} = 
+				\begin{pmatrix}
+				4&-13/3&3/2&-1/6\\
+				-6&19/2&-4&1/2\\
+				4&-7&7/2&-1/2\\
+				-1&11/6&-1&1/6
+				\end{pmatrix}\\
+				\begin{bmatrix}
+				\mathcal{I}_{\mathbb{P}_3}
+				\end{bmatrix}_{\Gamma_0 \leftarrow \Omega}
+				&= \begin{pmatrix}
+				0&0&1&1\\
+				1&1&0&0\\
+				1&0&4&0\\
+				0&-6&0&8
+				\end{pmatrix}.
+				\end{align*}
+				To find $[\T]_{\Delta\leftarrow\Omega}$ we only need to find $[\T]_{\Gamma_0\leftarrow\Gamma_0}$. To do this, we use part 2 of Problem 3, which says
+				\begin{align*}
+				[\T]_{\Gamma_0\leftarrow\Gamma_0} &= \begin{bmatrix}
+				[\T(1)]_{\Gamma_0} & [\T(x)]_{\Gamma_0} & [\T(x^2)]_{\Gamma_0} & [\T(x^3)]_{\Gamma_0}
+				\end{bmatrix}.
+				\end{align*}
+				We also have
+				\begin{align*}
+				\begin{cases}
+				\T(1) = x\frac{d}{dx}2 + 1 = 1\\
+				\T(x) = x\frac{d}{dx}(2x) + x = 3x\\
+				\T(x^2) = x\frac{d}{dx}(2x)^2 + x^2 = 9x^2\\
+				\T(x^3) = x\frac{d}{dx}(2x)^3 + x^3 = 25x^3.
+				\end{cases}
+				\end{align*}
+				Plugging these into the formula above, we get
+				\begin{align*}
+				[\T]_{\Gamma_0\leftarrow\Gamma_0} &= \begin{bmatrix}
+				[T(1)]_{\Gamma_0} & [T(x)]_{\Gamma_0} & [T(x^2)]_{\Gamma_0} & [T(x^3)]_{\Gamma_0}
+				\end{bmatrix}\\
+				&= \begin{pmatrix}
+				1&0&0&0\\
+				0&3&0&0\\
+				0&0&9&0\\
+				0&0&0&25
+				\end{pmatrix}.
+				\end{align*}
+				
+				Finally, we can compute $[\T]_{\Delta\leftarrow\Omega}$:
+				\begin{align*}
+				[\T]_{\Delta\leftarrow\Omega} &=     
+				\begin{pmatrix}
+				4&-13/3&3/2&-1/6\\
+				-6&19/2&-4&1/2\\
+				4&-7&7/2&-1/2\\
+				-1&11/6&-1&1/6
+				\end{pmatrix}
+				\begin{pmatrix}
+				1&0&0&0\\
+				0&3&0&0\\
+				0&0&9&0\\
+				0&0&0&25
+				\end{pmatrix}
+				\begin{pmatrix}
+				0&0&1&1\\
+				1&1&0&0\\
+				1&0&4&0\\
+				0&-6&0&8
+				\end{pmatrix}\\
+				&= \begin{pmatrix}
+				0&0&0&0\\
+				0&57/2&0&0\\
+				0&0&126&0\\
+				0&0&0&100/3
+				\end{pmatrix}.
+				\end{align*}
+				
+				\textit{Mathematica code:}
+				\begin{lstlisting}
+A = 
+Inverse[{{1, 1, 1, 1}, {1, 2, 3, 4}, {1, 4, 9, 16}, {1, 8, 27, 64}}]
+				
+{{4, -(13/3), 3/2, -(1/6)}, {-6, 19/2, -4, 1/2}, {4, -7, 7/
+			2, -(1/2)}, {-1, 11/6, -1, 1/6}}
+				
+B = {{1, 0, 0, 0}, {0, 3, 0, 0}, {0, 0, 9, 0}, {0, 0, 0, 25}}
+				
+				
+CC = {{0, 0, 1, 1}, {1, 1, 0, 0}, {1, 0, 4, 0}, {0, -6, 0, 8}}
+						
+In[7]:= A*B*CC
+				
+Out[7]= {{0, 0, 0, 0}, {0, 57/2, 0, 0}, {0, 0, 126, 0},
+ 			{0, 0, 0, 100/3}}
+				\end{lstlisting}
+			\end{enumerate}
+		\end{enumerate}
+		
+	\end{sln*}
+
+
+
+
+
+
 \end{prob*}
 
 \newpage
