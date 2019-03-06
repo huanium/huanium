@@ -1492,13 +1492,169 @@ The question is: Can we write the solution as a series of products:
 \begin{align*}
 u(t,x) = \sum^\infty_{n=0}T_n(t)X_n(x)?
 \end{align*}
-Recall that we've expanded things via Fourier series (generally to deal with $u_0$) or general eigenfunction expansions from the Sturm-Liouville theory. So, can we also expand $f(t,x)$ in this way?
+Recall that we've expanded things via Fourier series (generally to deal with $u_0$) or general eigenfunction expansions from the Sturm-Liouville theory. So, can we also expand $f(t,x)$ in this way?\\
 
+%Mar 6. 2019%
+Consider the (easy) inhomogeneous problem. 
+\begin{align*}
+&u_t = \alpha^2 u_{xx} + f(t,x)\\
+&\begin{cases}
+u(t,0) = 0\\
+u(t,1) = 0
+\end{cases}
+u(0,x) = u_0(x).
+\end{align*}
+We will solve with via eigenfunction expansion...
+\begin{enumerate}
+	\item Decompose $f$ into pieces so that
+	\begin{align*}
+	f(t,x) = \sum^\infty_{n=1}f_n(t)X_n(x)
+	\end{align*}
+	where $X_n$'s arise by solving the associated homogeneous problem:
+	\begin{align*}
+	&u_t = \alpha^2 u_{xx}\\
+	&\begin{cases}
+	u(t,0) = 0\\
+	u(t,1) = 0
+	\end{cases}
+	u(0,x) = u_0(x).
+	\end{align*}
+	To this end, we write the solution
+	\begin{align*}
+	u(t,x) = \sum^\infty_{n=1}T_n(t)X_n(x)
+	\end{align*}
+	where $X_n$'s solve the Strum-Liouville problem:
+	\begin{align*}
+	&X'' - \alpha^2 X_{xx} = 0\\
+	&\begin{cases}
+	X(0) = 0\\
+	X(1) = 0
+	\end{cases}
+	\end{align*}
+	For this particular problem, 
+	\begin{align*}
+	X_n(x) = \sin(n\pi x).
+	\end{align*}
+	With the assumption that the function $X \to f(t,x)$ is admissible in the Sturm-Liouville sense for all $t$, the result from $S-L$ theory gives that 
+	\begin{align*}
+	f(t,x) = \sum_{n=1}^\infty f_n(t)X_n(x),
+	\end{align*}
+	where
+	\begin{align*}
+	f_n(t) = 2\int^1_0 f(t,x)\sin(n\pi x)\,dx.
+	\end{align*}
+	
+	
+	
+	
+	\item Subject
+	\begin{align*}
+	u(t,x) = \sum^\infty_{n=1}T_n(t)X_n(x)
+	\end{align*}
+	to the IBVP, where
+	\begin{align*}
+	f(t,x) = \sum_{n=1}^\infty f_n(t)X_n(x),
+	\end{align*}
+	and
+	\begin{align*}
+	X_n(x) = \sin(n\pi x),
+	\end{align*}
+	we get
+	\begin{align*}
+	u_t(t,x) = \sum^\infty_{n=1}\dot{T}_n(t)\sin(n\pi x),
+	\end{align*}
+	and
+	\begin{align*}
+	u_{xx}(t,x) = \sum^{\infty}_{n=1}-(n\pi)^2T_n(t)\sin(n\pi x).
+	\end{align*}
+	Into the IBVP, $u_t = \alpha^2 u_{xx}$
+	\begin{align*}
+	\sum^\infty_{n=1}\dot{T}_n(t)\sin(n\pi x) = \alpha^2 \sum^{\infty}_{n=1}-(n\pi)^2T_n(t)\sin(n\pi x) + \sum_{n=1}^\infty f_n(t)\sin(n\pi x),
+	\end{align*}
+	or equivalently,
+	\begin{align*}
+	\sum^\infty_{n=1}\left[\dot{T}_n(t) + (\alpha n\pi)^2T_n(t)\right]\sin(n\pi x) = \sum_{n=1}^\infty f_n(t)\sin(n\pi x).
+	\end{align*}
+	This yields ODEs of the form:
+	\begin{align*}
+	\dot{T}_n(t) + (\alpha n\pi)^2T_n(t) = f_n(t),\hspace{0.5cm},n=1,2,3,\dots
+	\end{align*}
+	to which the solution is of the form
+	\begin{align*}
+	T_n(t) = e^{-(\alpha n\pi)^2t}\int_0^t f_n(s) e^{(\alpha n \pi)^2s} \,ds + T_n(0)e^{-(\alpha n \pi)^2t}. 
+	\end{align*}
+	Note, for
+	\begin{align*}
+	u(0,x) = \int^\infty_{n=1} T_n(0)\sin(n\pi x) = u_0(x),
+	\end{align*}
+	which means the choice of the Fourier Sine coefficients
+	\begin{align*}
+	T_n(0) = 2\int^1_0 u_0(x)\sin(n\pi x)\,dx, \hspace{0.5cm}n=1,2,3,\dots
+	\end{align*}
+	does the trick. Thus, the original IBVP is satisfied $^{(?)}$ with
+	\begin{align*}
+	u(t,x) = \sum^\infty_{n=1} \left(e^{-(\alpha n\pi)^2t}\int_0^t f_n(s) e^{(\alpha n \pi)^2s} \,ds + T_n(0)e^{-(\alpha n \pi)^2t}\right)\sin(n\pi x),
+	\end{align*}
+	where
+	\begin{align*}
+	&T_n(0) = 2\int^1_0 u_0(x)\sin(n\pi x)\,dx, \hspace{0.5cm}n=1,2,3,\dots\\
+	&f_n(t) = 2\int^1_0 f(t,x)\sin(n\pi x)\,dx, \hspace{0.5cm}n=1,2,3,\dots
+	\end{align*}
+	We write this as
+	\begin{align*}
+	u(t,x) = \sum^\infty_{n=1} \left(e^{-(\alpha n\pi)^2t}\int_0^t f_n(s) e^{(\alpha n \pi)^2s} \,ds \right)\sin(n\pi x) + \sum^\infty_{n=1}T_n(0)e^{-(n\pi \alpha)^2t}\sin(n\pi x),
+	\end{align*}
+	where the first term is the steady-state solution, and the second term is the transient solution, because in the second term, as $t\to \infty$ it goes to zero. Let's check that this works. 
+	\begin{enumerate}
+		\item Note that $u(t,0) = u(t,1) = 0.$
+		\item And
+		\begin{align*}
+		u(0,x) = 0 + \sum^\infty_{n=1}T_n(0)e^{-(n\pi \alpha)^2t}\sin(n\pi x) = u_0(x),
+		\end{align*}
+		which is true by design.
+		\item We can also check that it solves the PDE, but we won't...
+	\end{enumerate}
+	
+\end{enumerate}
 
-
-
-
-
+\begin{exmp}
+	\begin{align*}
+	\begin{cases}
+	u_t = u_{xx} + x - x^2\\
+	u(t,0) = u(t,1) = 0\\
+	u(0,x) = u_0(x).
+	\end{cases}
+	\end{align*}
+	\begin{sln*}
+		Here, $f(t,x) = x - x^2$. So
+		\begin{align*}
+		f_n(t) &= 2\int^1_0 (x-x^2)\sin(n\pi x)\,dx\\
+		&= 2\left( (x-x^2)\frac{\cos(n\pi x)}{-n\pi}\bigg\vert^1_0 - \int^1_0(1-2x)\frac{\cos(n\pi x)}{-n\pi}\,dx \right)\\
+		&= 0 + \frac{2}{n\pi}\int^1_0 (1-2x)\cos(n\pi x)\,dx\\
+		&= \frac{2}{n\pi}\left( (1-2x)\frac{\sin(n\pi x)}{n\pi}\bigg\vert^1_0 - \frac{2}{n\pi}\int^1_0(-2)\frac{\sin(n\pi x)}{n\pi}\,dx \right)\\
+		&= \frac{4}{(n\pi)^2}\int^1_0 \sin(n\pi x)\,dx\\
+		&= \frac{4}{(n\pi)^3}(-\cos(n\pi x))\bigg\vert^1_0\\
+		&= \frac{4}{(n\pi)^3}(1-(-1)^n).
+		\end{align*}
+		Also,
+		\begin{align*}
+		T_n(0) = \int^1_0u_0(x)\sin(n\pi x)\,dx,
+		\end{align*}
+		but since $u_0(x) = \sin(\pi x)$,
+		\begin{align*}
+		T_n(0) = \delta^1_n.
+		\end{align*}
+		Now,
+		\begin{align*}
+		\int_0^t f_n(s) e^{(\alpha n \pi)^2s} \,ds &= \int_0^t \frac{4}{(n\pi)^3}(1-(-1))^n e^{(\alpha n \pi)^2s} \,ds\\
+		&= \frac{4}{(n\pi)^5}(1-(-1)^n)\left(e^{(n\pi)^2t} - 1\right).
+		\end{align*}
+		All together...
+		\begin{align*}
+		u(t,x) &= \sum^\infty_{n=1} \left(e^{-(\alpha n\pi)^2t}\left(\frac{4}{(n\pi)^5}(1-(-1)^n)\left(e^{(n\pi)^2t} - 1\right) \right)\right)\sin(n\pi x) + e^{-(\pi \alpha)^2t}\sin(\pi x).
+		\end{align*}
+	\end{sln*}
+\end{exmp}
 
 
 
