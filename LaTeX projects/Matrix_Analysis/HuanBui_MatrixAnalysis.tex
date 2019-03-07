@@ -47,6 +47,7 @@
 
 \newcommand{\K}{\mathcal{K}}
 
+\newcommand{\N}{\mathcal{N}}
 
 \newcommand{\E}{\mathcal{E}}
 
@@ -2005,36 +2006,18 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			\end{bmatrix}\\
 			=
 			& \begin{bmatrix}
-			\Pi_1 \circ \T(w_1)\\
-			\Pi_2 \circ \T(w_1)\\
-			\Pi_3 \circ \T(w_1)
+			\Pi_1 \circ \T\begin{pmatrix} w_1 & \mathbf{0}_\V & \mathbf{0}_\V \end{pmatrix}^\top\\
+			\Pi_2 \circ \T\begin{pmatrix} w_1 & \mathbf{0}_\V & \mathbf{0}_\V \end{pmatrix}^\top\\
+			\Pi_3 \circ \T\begin{pmatrix} w_1 & \mathbf{0}_\V & \mathbf{0}_\V \end{pmatrix}^\top
 			\end{bmatrix}.
 			\end{align*}
 			By the definition of $\Pi_i$ we can write this as
 			\begin{align*}
 			\begin{bmatrix}
-			\Pi_1 \circ \T(w_1)\\
-			\Pi_2 \circ \T(w_1)\\
-			\Pi_3 \circ \T(w_1)
-			\end{bmatrix} &= 
-			\begin{bmatrix}
-			\T(w_1)\\\mathbf{0}_\V \\ \mathbf{0}_\V
-			\end{bmatrix} + \begin{bmatrix}
-			\mathbf{0}_\V\\ \T(w_1) \\ \mathbf{0}_\V
-			\end{bmatrix} + \begin{bmatrix}
-			\mathbf{0}_\V\\\mathbf{0}_\V \\ \T(w_1)
-			\end{bmatrix}\\
-			&= \T\left(
-			\begin{pmatrix}
-			w_1\\\mathbf{0}_\V \\ \mathbf{0}_\V
-			\end{pmatrix} + 
-			\begin{bmatrix}
-			\mathbf{0}_\V\\ w_1 \\ \mathbf{0}_\V
-			\end{bmatrix} +
-			\begin{bmatrix}
-			\mathbf{0}_\V\\\mathbf{0}_\V \\ w_1
-			\end{bmatrix}
-			\right)\\
+			\Pi_1 \circ \T\begin{pmatrix} w_1 & \mathbf{0}_\V & \mathbf{0}_\V \end{pmatrix}^\top\\
+			\Pi_2 \circ \T\begin{pmatrix} w_1 & \mathbf{0}_\V & \mathbf{0}_\V \end{pmatrix}^\top\\
+			\Pi_3 \circ \T\begin{pmatrix} w_1 & \mathbf{0}_\V & \mathbf{0}_\V \end{pmatrix}^\top
+			\end{bmatrix} 
 			&= \T\begin{pmatrix}
 			w_1\\\mathbf{0}_\V \\ \mathbf{0}_\V
 			\end{pmatrix}.
@@ -2393,7 +2376,7 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			
 			\item 
 			\begin{enumerate}
-				\item \underline{Existence: } Let the linear functions $\E_i := \Pi_i \circ \maltese^{-1} : \V \lin \W$ and $\K_i := \maltese\circ \gamma_i : \W_i \lin \V$ be given, where the $\Pi_i$'s and $\gamma_i$ are defined the same way as in Problem 1. \\
+				\item \underline{Existence}: Let the linear functions $\E_i := \Pi_i \circ \maltese^{-1} : \V \lin \W$ and $\K_i := \maltese\circ \gamma_i : \W_i \lin \V$ be given, where the $\Pi_i$'s and $\gamma_i$ are defined the same way as in Problem 1. \\
 				
 				Consider the block matrix $\lag$
 				\begin{align*}
@@ -2416,25 +2399,67 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 				w_1&\mathbf{0}_\V&\mathbf{0}_\V
 				\end{pmatrix}^\top$ and $w_1\in \W_1$, by letting $\lag$ act on $\begin{pmatrix}
 				w_1&\mathbf{0}_\V&\mathbf{0}_\V
-				\end{pmatrix}^\top$, we get
+				\end{pmatrix}^\top_\maltese$, we get
 				\begin{align*}
 				\lag\begin{pmatrix}
 				w_1\\\mathbf{0}_\V\\\mathbf{0}_\V
-				\end{pmatrix} 
-				=
+				\end{pmatrix}_\maltese 
+				&=
 				\begin{bmatrix}
 				\Pi_1 \circ \maltese^{-1} \circ \T \circ \maltese\circ \gamma_1\bigg\vert_{\W_1}(w_1)\\
 				\Pi_2 \circ \maltese^{-1} \circ \T \circ \maltese\circ \gamma_1\bigg\vert_{\W_1}(w_1)\\
 				\Pi_3 \circ \maltese^{-1} \circ \T \circ \maltese\circ \gamma_1\bigg\vert_{\W_1}(w_1)
-				\end{bmatrix}
+				\end{bmatrix}_\maltese\\
+				&=
+				\begin{bmatrix}
+				\Pi_1 \circ \maltese^{-1} \circ \T \circ \maltese
+				\begin{pmatrix}
+				w_1 & \mathbf{0}_\V & \mathbf{0}_\V
+				\end{pmatrix}^\top\\
+				\Pi_2 \circ \maltese^{-1} \circ \T \circ \maltese
+				\begin{pmatrix}
+				w_1 & \mathbf{0}_\V & \mathbf{0}_\V
+				\end{pmatrix}^\top\\
+				\Pi_3 \circ \maltese^{-1} \circ \T \circ \maltese
+				\begin{pmatrix}
+				w_1 & \mathbf{0}_\V & \mathbf{0}_\V
+				\end{pmatrix}^\top
+				\end{bmatrix}_\maltese\\
+				&= 
+				\begin{bmatrix}
+				\Pi_1 \circ \maltese^{-1}\circ \T (w_1) \\
+				\Pi_2 \circ \maltese^{-1}\circ \T (w_1) \\
+				\Pi_3 \circ \maltese^{-1}\circ \T (w_1) 
+				\end{bmatrix}_\maltese\\
+				&= 
+				\maltese\circ\maltese^{-1}\circ \T(w_1)\\
+				&= \T(w_1)
 				\end{align*} 
+				By the definition of $\maltese$, we can write this as
+				\begin{align*}
+				\lag(w_1 + \mathbf{0}_\V + \mathbf{0}_\V) = \lag(w_1) = \T(w_1).
+				\end{align*}
+				In general, the equality above also holds if we start with any $v = w_1 + w_2 + w_3 \in \V$ with $w_i \in \W_i$ for $i=\{1,2,3\}$, because as we have shown in Part 2(a) of Problem 1, $v$ can be written as
+				\begin{align*}
+				v = \begin{pmatrix}
+				w_1\\\mathbf{0}_\V \\ \mathbf{0}_\V
+				\end{pmatrix}_\maltese + 
+				\begin{pmatrix}
+				\mathbf{0}_\V\\w_2 \\ \mathbf{0}_\V
+				\end{pmatrix}_\maltese + 
+				\begin{pmatrix}
+				\mathbf{0}_\V\\\mathbf{0}_\V \\ w_3
+				\end{pmatrix}_\maltese,
+				\end{align*}
+				and the linearity of $\lag$ and $\T$ ensures $\lag(v) = \T(v)$. Hence, $\T$ can expressed as the matrix $\lag$ whose elements are defined as
+				\begin{align*}
+				\lag_{ij} = \E_i \circ \T \circ \K_j\bigg\vert_{\W_j}.
+				\end{align*}
 				
 				
-				
-				
-				
-				\item \underline{Uniqueness: }
+				\item \underline{Uniqueness}: Once again, we observe that all of the steps in the ``Existence'' part are reversible, i.e., if each $\lag_{ij}$ is defined as above, then the matrix $\lag = [\lag_{ij}]$ expressed the linear function $\T$. Conversely, given $\T$, the elements of the matrix $\lag$ of $\T$ must be defined the same way. This ensures the uniqueness of $\lag$.\\ 
 			\end{enumerate}
+		From parts (a) and (b), the linear function $\T$ can be expressed as the matrix $\lag$ defined in the problem statement in exactly one way. 
 			
 						
 						
@@ -2447,13 +2472,12 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			
 			
 			
-			
-			
+
 			
 			
 			\item 
 			\begin{enumerate}
-				\item By part 1, we can re-express
+				\item Let the notation $\lag_\oplus$ denote the matrix $\lag : \W_1\oplus\W_2\oplus\W_3\lin\W_1\oplus\W_2\oplus\W_3$, and $\M_\oplus$ is defined similarly for $\M$. By part 1, we can re-express
 				\begin{align*}
 				[(2\lag_\oplus + 3\M_\oplus)_{ij}] = 2\begin{bmatrix}
 				\lag_{11} & \lag_{12} & \lag_{13}\\
@@ -2510,11 +2534,11 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 				\right) \circ \maltese^{-1}\\
 				=\,\, &\maltese\circ \left( 2[{\lag_\times}_{ij} ] + 3[{\M_\times}_{ij} ]  \right) \circ \maltese^{-1},
 				\end{align*}
-				where the notation $[A_{ij}]$ denotes the block-matrix of elements $A_{ij}$, and the last relation:
+				where the notation $[A_{ij}]$ denotes the block-matrix of elements $A_{ij}$ where $A$ is a linear function, and the last relation:
 				\begin{align*}
 				[(2\lag_\times + 3\M_\times)_{ij}] = 2[{\lag_\times}_{ij}] + 3[{\M_\times}_{ij}].
 				\end{align*}
-				comes from Problem 1. It follows that
+				comes from Problem 1, where we have use the notation $\lag_\oplus$ to indicate the matrix $\lag : \W_1\times\W_2\times\W_3 \lin \W_1\times\W_2\times\W_3$. It follows that
 				\begin{align*}
 				[(2\lag_\oplus + 3\M_\oplus)_{ij}]
 				&= \maltese\circ \left( 2[{\lag_\times}_{ij} ] + 3[{\M_\times}_{ij} ]  \right) \circ \maltese^{-1}\\
@@ -2541,6 +2565,56 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 				2\lag_{31} + 3\M_{31} & 2\lag_{32} + 3\M_{32} & 2\lag_{33} + 3\M_{33}
 				\end{bmatrix}_\oplus.
 				\end{align*}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				\item Let $\lag_\oplus$ and $\M_\oplus$ denote the same matrices in part (a), and let $\lag_\oplus$ represent the linear function $\T$, $\M_\oplus$ represent the linear function $\N$. Let the matrix $[\lag_\oplus\circ\M_\oplus] $ express the composition $\T\circ\N$. Hence, the elements of $[\lag_\oplus\circ\M_\oplus] $ are given by
+				\begin{align*}
+				(\lag_\oplus\circ\M_\oplus)_{ij} = \E_i \circ (\lag_\oplus \circ \M_\oplus) \circ \K_j\bigg\vert_{\W_j} = \E_i \circ (\T \circ \N) \circ \K_j\bigg\vert_{\W_j} ,
+				\end{align*}
+				as we have shown in part 1. Consider the matrix element $\sum^3_{k=1}\lag_{\oplus_{ik}}\circ\M_{\oplus_{kj}}$. By part 1, we have
+				\begin{align*}
+				\lag_{\oplus_{ik}} = \E_i \circ \T \circ \K_k\bigg\vert_{\W_k}\text{ and }\M_{\oplus_{kj}} = \E_k \circ \N \circ \K_j\bigg\vert_{\W_j}.
+				\end{align*} 
+				This gives
+				\begin{align*}
+				\sum^3_{k=1}\lag_{\oplus_{ik}}\circ\M_{\oplus_{kj}}
+				&= \sum^3_{k=1} \E_i \circ \T \circ \left(\K_k\bigg\vert_{\W_k}\circ \E_k \right)\circ \N \circ \K_j\bigg\vert_{\W_j}\\
+				&= \E_i \circ \T \circ \left(\sum^3_{k=1}\K_k\bigg\vert_{\W_k}\circ \E_k\right)  \circ \N \circ \K_j\bigg\vert_{\W_j}
+				\end{align*}
+				By definition, we have
+				\begin{align*}
+				\K_k\bigg\vert_{\W_k} = \maltese\circ \gamma_k\bigg\vert_{\W_k}\text{ and }\E_k= \Pi_k\circ\maltese^{-1},
+				\end{align*}
+				which implies
+				\begin{align*}
+				\sum^3_{k=1}\K_k\bigg\vert_{\W_k}\circ \E_k &= \sum^3_{k=1} \maltese\circ \gamma_k\bigg\vert_{\W_k}\circ \Pi_k\circ\maltese^{-1}\\
+				&= \maltese \circ \left(\sum^3_{k=1} \gamma_k\bigg\vert_{\W_k}\circ \Pi_k \right)\maltese^{-1}\\
+				&= \maltese\circ\maltese^{-1},\hspace{0.2cm}\text{by Part 3(b) of Problem 1}\\
+				&= Id.
+				\end{align*}
+				It follows that,
+				\begin{align*}
+					\sum^3_{k=1}\lag_{\oplus_{ik}}\circ\M_{\oplus_{kj}} &= \E_i \circ \T\circ\N\circ\K_j\bigg\vert_{\W_j}\\
+					&= \E_i \circ (\lag_\oplus\circ \M_\oplus)\circ\K_j\bigg\vert_{\W_j}\\
+					&= (\lag_\oplus\circ\M_\oplus)_{ij}.
+				\end{align*}
+				Therefore, the matrix elements of $[\lag_\oplus\circ \M_\oplus]$ is given by
+				\begin{align*}
+				(\lag_\oplus\circ\M_\oplus)_{ij} = \sum^3_{k=1}\lag_{\oplus_{ik}}\circ\M_{\oplus_{kj}}.
+				\end{align*}
+				
 			\end{enumerate}
 			
 			
@@ -2571,11 +2645,11 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			Consider the restricted map $\lag\big\vert_{\W_j} : \W_j \lin \V$. Without loss of generality, let $\W_j = \W_1$ and let
 			$\begin{pmatrix}
 			w_1 & \mathbf{0}_{\W_2} & \mathbf{0}_{\W_3}
-			\end{pmatrix}_+ \in \V$ be given. We have 
+			\end{pmatrix}_\maltese^\top \in \V$ be given. We have 
 			\begin{align*}
 			\lag \begin{pmatrix}
 			w_1\\ \mathbf{0}_{\W_2} \\ \mathbf{0}_{\W_3}
-			\end{pmatrix}_+
+			\end{pmatrix}_\maltese
 			= 
 			\begin{bmatrix}
 			\lag_{11} & \lag_{12} & \lag_{13}\\
@@ -2583,12 +2657,12 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			\lag_{31} & \lag_{32} & \lag_{33}
 			\end{bmatrix}_\oplus \begin{pmatrix}
 			w_1\\ \mathbf{0}_{\W_2} \\ \mathbf{0}_{\W_3}
-			\end{pmatrix}_+ = 
+			\end{pmatrix}_\maltese = 
 			\begin{pmatrix}
 			\lag_{11}(w_1)\\
 			\lag_{21}(w_1)\\
 			\lag_{31}(w_1)
-			\end{pmatrix}_+.
+			\end{pmatrix}_\maltese.
 			\end{align*}
 			Consider $v = w_1 + w_2 + w_3\in \V$ with $w_i \in \W_i$. Since $\bigoplus^3_{i=1}\W_i = \V$, there is exactly one way to express $v$ as a sum of these $w_i$'s. Now, consider
 			\begin{align*}
@@ -2609,17 +2683,17 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 			\begin{align*}
 			\E_i \begin{pmatrix}
 			w_1\\w_2\\w_3
-			\end{pmatrix}_+ = w_i, \hspace{0.5cm} i \in \{1,2,3\}.
+			\end{pmatrix}_\maltese = w_i, \hspace{0.5cm} i \in \{1,2,3\}.
 			\end{align*}
 			Applying $\E_2$ to $\lag(w_1 + \mathbf{0}_{\W_2} + \mathbf{0}_{\W_3})$, we have
 			\begin{align*}
 			\E_2\circ \lag \begin{pmatrix}
 			w_1\\ \mathbf{0}_{\W_2} \\ \mathbf{0}_{\W_3}
-			\end{pmatrix}_+ = \E_2\begin{pmatrix}
+			\end{pmatrix}_\maltese = \E_2\begin{pmatrix}
 			\lag_{11}(w_1)\\
 			\lag_{21}(w_1)\\
 			\lag_{31}(w_1)
-			\end{pmatrix}_+ =  \lag_{21}(w_1).
+			\end{pmatrix}_\maltese =  \lag_{21}(w_1).
 			\end{align*}
 			Hence, if we only consider the restricted map $\lag\big\vert_{\W_j}$, then
 			\begin{align*}
@@ -2913,20 +2987,20 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 
 
 
-	\begin{sln*}
+	\begin{sln*}\textbf{4.}
 		$\,$
 		\begin{enumerate}
 			\item 
 			\begin{enumerate}
-				\item Let $\Delta := (1 + x + x^2 + x^3, 1 + 2x+4x^2 + 8x^3, 1 + 3x+9x^2 + 27x^3, 1+ 4x +16x^2 + 64x^3) $ be given. Let $A_\Delta : \mathbb{P}_3 \lin \mathbb{C}^4$ be the atrix corresponding to $\Delta$. To show $\Delta$ is a coordinate system of $\mathbb{P}_3$, it suffices to show that $A_\Delta$ is an isomorphism, i.e., it is invertible.\\
+				\item Let $\Delta := (1 + x + x^2 + x^3, 1 + 2x+4x^2 + 8x^3, 1 + 3x+9x^2 + 27x^3, 1+ 4x +16x^2 + 64x^3) $ be given. To show that $\Delta$ is a coordinate system of $\V$, it suffices to show there exists an isomorphism $[\mathcal{I}]_{{\Gamma_0}\leftarrow\Delta} : \mathbb{C}^4_{\Delta_0}\to\mathbb{C}^4_{\Gamma_0}$. We can construct $[\mathcal{I}]_{{\Gamma_0}\leftarrow\Delta}$ column by column by letting $[\,\,\,]_{\Gamma_0}$ act on the elements of $\Delta$:
 				
-				Consider the identity (linear) function $\mathcal{I}_{\mathbb{P}_3} : \mathbb{P}_3 \to \mathbb{P}_3$. It is invertible. Also, consider $[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\to\Delta}: \mathbb{C}^4\to \mathbb{C}^4$ the change of basis matrix from $\Delta$ to $\Gamma_0$. \\
-				
-				$A_\Delta $ can be expressed as the composition $[\mathcal{I}_{\mathbb{P}_3}] \circ A_{\Gamma_0} \circ [\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\to \Delta}  $, where $A_{\Gamma_0}$ is the inverse of $[\,\,\,]_{\Gamma_0}$, the coordinatization matrix for the coordinate system $\Gamma_0$. Since both $A_{\Gamma_0}$ and $\mathcal{I}_{\mathbb{P}_3}$ are invertible, $[\,\,\,]_\Delta$ is invertible if $[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Delta}$ is also invertible. To find (the columns of) $[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Delta}$, we can use the result from part 2:
 				\begin{align*}
 				[\mathcal{I}]_{\Gamma_0\leftarrow\Delta}
 				&= \begin{bmatrix}
-				[\mathcal{I}_{\mathbb{P}_3}(1+x+x^2+x^3)]_{\Gamma_0}\\ [\mathcal{I}_{\mathbb{P}_3}(1+2x+4x^2+8x^3)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(1+3x+9x^2+27x^3)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(1+4x+16x^2+64x^3)]_{\Gamma_0}
+				[(1+x+x^2+x^3)]_{\Gamma_0}\\
+				[(1+2x+4x^2+8x^3)]_{\Gamma_0} \\ 
+				[(1+3x+9x^2+27x^3)]_{\Gamma_0} \\ 
+				[(1+4x+16x^2+64x^3)]_{\Gamma_0}
 				\end{bmatrix}^\top
 				= \begin{pmatrix}
 				1&1&1&1\\
@@ -2935,9 +3009,9 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 				1&8&27&64
 				\end{pmatrix}.
 				\end{align*} 
-				To show $[\mathcal{I}]_{\Gamma_0\leftarrow\Delta}$ is invertible, it suffices to calculate its determinant, which can be done in \textit{Mathematica}:
+				To show $[\mathcal{I}]_{\Gamma_0\leftarrow\Delta}$ is an isomorphism, it suffices to check if its determinant is nonzero, which can be done in \textit{Mathematica}:
 				\begin{align*}
-				\det\left([\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Delta}\right) = 12 \neq 0.
+				\det\left([\mathcal{I}]_{\Gamma_0\leftarrow\Delta}\right) = 12 \neq 0.
 				\end{align*}
 				Therefore, $\Delta$ is a coordinate system of $\mathbb{P}_3$.\\
 				
@@ -2956,9 +3030,9 @@ Out[4]= 12
 		
 				\item For $\Omega := (x+x^2,x-6x^3,1+4x^2,1+8x^3)$, we repeat the procedure laid out above to determine whether $\Omega$ is a coordinate system for $\mathbb{P}_3$. 
 				\begin{align*}
-				[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}
+				[\mathcal{I}]_{\Gamma_0\leftarrow\Omega}
 				= \begin{bmatrix}
-				[\mathcal{I}_{\mathbb{P}_3}(x+x^2)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(x-6x^3)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(1+4x^2)]_{\Gamma_0} \\ [\mathcal{I}_{\mathbb{P}_3}(1+8x^3)]_{\Gamma_0}
+				[(x+x^2)]_{\Gamma_0} \\ [(x-6x^3)]_{\Gamma_0} \\ [(1+4x^2)]_{\Gamma_0} \\ [(1+8x^3)]_{\Gamma_0}
 				\end{bmatrix}^\top
 				= \begin{pmatrix}
 				0&0&1&1\\
@@ -2967,7 +3041,7 @@ Out[4]= 12
 				0&-6&0&8
 				\end{pmatrix}. 
 				\end{align*} 
-				We can calculate the determinant of $[\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}$ in \textit{Mathematica}:
+				We can calculate the determinant of $[\mathcal{I}]_{\Gamma_0\leftarrow\Omega}$ in \textit{Mathematica}:
 				\begin{align*}
 				\det\left( [\mathcal{I}_{\mathbb{P}_3}]_{\Gamma_0\leftarrow\Omega}  \right) = -32 \neq 0.
 				\end{align*}
