@@ -3251,7 +3251,7 @@ Out[7]= {{0, 0, 0, 0}, {0, 57/2, 0, 0}, {0, 0, 126, 0},
 	\lag_{31} & \lag_{32} & \lag_{33}
 	\end{bmatrix}_\oplus.
 	\end{align*}
-	Let $\Delta$ be the concatenation $\Gamma_1 \vert\vert \gamma_2\vert\vert \Gamma_3$ of the coordinate systems $\Gamma_i$. As we know, $\Delta$ is a coordinate system of $\V$. \\
+	Let $\Delta$ be the concatenation $\Gamma_1 \vert\vert \Gamma_2\vert\vert \Gamma_3$ of the coordinate systems $\Gamma_i$. As we know, $\Delta$ is a coordinate system of $\V$. \\
 	
 	Prove that $[\lag]_{\Delta \leftarrow \Delta}$ equals the partitioned matrix
 	\begin{align*}
@@ -3263,23 +3263,79 @@ Out[7]= {{0, 0, 0, 0}, {0, 57/2, 0, 0}, {0, 0, 126, 0},
 	\end{align*}
 	 
 	
-	\begin{sln*}\textbf{5.} Let $\W_1 \oplus \W_2 \oplus \W_3 = \V$ be given, and $\Gamma_i$ is a coordinate system of $\W_i$, for $i = \{1,2,3\}$. And let
+	\begin{sln*}\textbf{5.} Consider a $3\times 3$ block-matrix, which consists of the linear function $\lag_{ij} : \W_j \lin \W_i$ at the $i^{th}$ row and $j^{th}$ column and the zero function everywhere else. Let $[\lag_{ij}]_\oplus : \V \lin \V$ denote this matrix. By this construction, we have
 		\begin{align*}
-		\lag_{ij} = \W_j \lin \W_i
-		\end{align*}
-		and
-		\begin{align*}
-		\lag := \begin{bmatrix}
+		\sum^3_{i=1}\sum^3_{k=1}[\lag_{ij}]_\oplus = \begin{bmatrix}
 		\lag_{11} & \lag_{12} & \lag_{13}\\
 		\lag_{21} & \lag_{22} & \lag_{23}\\
 		\lag_{31} & \lag_{32} & \lag_{33}
 		\end{bmatrix}_\oplus.
 		\end{align*}
-		$\Delta$ is given as the concatenation $\Gamma_1||\Gamma_2||\Gamma_3$. From the first homework, we know that $\Delta$ is a coordinate system of $\V$. \\
 		
-		Let $g_{11},g_{12},\dots,g_{1n}$ form the basis of $\Gamma_1$, $g_{21},g_{22},\dots,g_{2m}$ form the basis of $\Gamma_2$, and $g_{31},g_{32},\dots,g_{3l}$ form the basis of $\Gamma_3$. 
-	\end{sln*}
+	Consider the coordinate system $\Gamma_k$ where $k\in \{1,2,3\}$. Let $\Gamma_k$ be formed by a (finite) collection of basis elements, called $g_{lk}$'s. Consider the mapping $[\lag_{ij}]_\oplus(g_{lk})_\oplus$ and the matrix $\begin{bmatrix}[\lag_{ij}]_\oplus\end{bmatrix}_{\Delta\leftarrow\Delta}$. \\
 	
+	We observe that $[\lag_{ij}]_\oplus(g_{lk})_\oplus$ is $\mathbf{0}_\V$ if $k\neq j$ and $\maltese\left([\lag_{ij}]_\oplus(g_{lj}) + \mathbf{0}_\V + \mathbf{0}_\V \right)$ if $j=k$, where $\maltese$ is defined in Definition 0.4. What this says is that $[\lag_{ij}]_\oplus(g_{lk})_\oplus$ gives a column vector with $[\lag_{ij}]_\oplus(g_{lj})$ on the $i^{th}$ row and $\mathbf{0}_\V$ everywhere else. This means that if we consider the coordinatization $\begin{bmatrix}
+	[\lag_{ij}]_\oplus(g_{lj})_\oplus
+	\end{bmatrix}_\Delta$, we will end up with a column vector with $0$'s everywhere except $\begin{bmatrix}[\lag_{ij}]_\oplus(g_{lj})\end{bmatrix}_{\Gamma_i}$ on the $i^{th}$ row$^\dagger$. \\
+	
+	Now, we can construct $\begin{bmatrix}[\lag_{ij}]_\oplus\end{bmatrix}_{\Delta\leftarrow\Delta}$ column-by-column as
+	\begin{align*}
+	\begin{bmatrix}[\lag_{ij}]_\oplus\end{bmatrix}_{\Delta\leftarrow\Delta}
+	&=
+	\begin{bmatrix}
+	\begin{bmatrix}
+	\begin{bmatrix}
+	[\lag_{ij}]_\oplus(g_{11})_\oplus
+	\end{bmatrix}_\Delta
+	\\\dots\\
+	\begin{bmatrix}
+	[\lag_{ij}]_\oplus(g_{a1})_\oplus
+	\end{bmatrix}_\Delta
+	\end{bmatrix}^\top
+	&
+	\begin{bmatrix}
+	\begin{bmatrix}
+	[\lag_{ij}]_\oplus(g_{12})_\oplus
+	\end{bmatrix}_\Delta
+	\\\dots\\
+	\begin{bmatrix}
+	[\lag_{ij}]_\oplus(g_{b2})_\oplus
+	\end{bmatrix}_\Delta
+	\end{bmatrix}^\top
+	&
+	\begin{bmatrix}
+	\begin{bmatrix}
+	[\lag_{ij}]_\oplus(g_{11})_\oplus
+	\end{bmatrix}_\Delta
+	\\\dots\\
+	\begin{bmatrix}
+	[\lag_{ij}]_\oplus(g_{a1})_\oplus
+	\end{bmatrix}_\Delta
+	\end{bmatrix}^\top
+	\end{bmatrix}
+	\end{align*}
+	where $a,b,c$ are the number of elements in $\Gamma_1$, $\Gamma_2$, $\Gamma_3$, respectively. From $(\dagger)$, we know that two of three matrix-blocks in the expression above will be the zero-block because $j$ is either 1,2, or 3. Consider a general non-zero block (located at the $j^{th}$ column)
+	\begin{align*}
+	\begin{bmatrix}
+	\begin{bmatrix}
+	[\lag_{ij}]_\oplus(g_{11})_\oplus
+	\end{bmatrix}_\Delta
+	&\dots&
+	\begin{bmatrix}
+	[\lag_{ij}]_\oplus(g_{a1})_\oplus
+	\end{bmatrix}_\Delta
+	\end{bmatrix},
+	\end{align*}
+	we immediately recognize that this is exactly how the matrix
+	\begin{align*}
+	\begin{bmatrix}
+	[\lag_{ij}]_\oplus
+	\end{bmatrix}_{\Gamma_i \leftarrow \Gamma_j}
+	\end{align*}
+	is constructed column-by-column. Therefore, we observe that the matrix $\begin{bmatrix}[\lag_{ij}]_\oplus\end{bmatrix}_{\Delta\leftarrow\Delta}$ can be written as a 
+	
+	
+	\end{sln*}
 \end{prob*}
 
 
