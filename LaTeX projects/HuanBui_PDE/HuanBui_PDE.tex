@@ -32,6 +32,10 @@
 \newcommand{\p}{\partial}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\lag}{\mathcal{L}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+
 
 
 \usepackage{subfig}
@@ -1622,7 +1626,7 @@ We will solve with via eigenfunction expansion...
 	\begin{cases}
 	u_t = u_{xx} + x - x^2\\
 	u(t,0) = u(t,1) = 0\\
-	u(0,x) = u_0(x).
+	u(0,x) = u_0(x) = \sin(\pi x).
 	\end{cases}
 	\end{align*}
 	\begin{sln*}
@@ -1646,21 +1650,151 @@ We will solve with via eigenfunction expansion...
 		\end{align*}
 		Now,
 		\begin{align*}
-		\int_0^t f_n(s) e^{(\alpha n \pi)^2s} \,ds &= \int_0^t \frac{4}{(n\pi)^3}(1-(-1))^n e^{(\alpha n \pi)^2s} \,ds\\
+		\int_0^t f_n(s) e^{( n \pi)^2s} \,ds &= \int_0^t \frac{4}{(n\pi)^3}(1-(-1))^n e^{( n \pi)^2s} \,ds\\
 		&= \frac{4}{(n\pi)^5}(1-(-1)^n)\left(e^{(n\pi)^2t} - 1\right).
 		\end{align*}
 		All together...
 		\begin{align*}
-		u(t,x) &= \sum^\infty_{n=1} \left(e^{-(\alpha n\pi)^2t}\left(\frac{4}{(n\pi)^5}(1-(-1)^n)\left(e^{(n\pi)^2t} - 1\right) \right)\right)\sin(n\pi x) + e^{-(\pi \alpha)^2t}\sin(\pi x).
+		u(t,x) &= \sum^\infty_{n=1} \left(e^{-( n\pi)^2t}\left(\frac{4}{(n\pi)^5}(1-(-1)^n)\left(e^{(n\pi)^2t} - 1\right) \right)\right)\sin(n\pi x) + e^{-(\pi )^2t}\sin(\pi x).
 		\end{align*}
 	\end{sln*}
 \end{exmp}
 
+%Mar 8, 2019%
+Physically, what does this solution say? First, we have a diffusion term. But not only that, we have $u_t \sim x-x^2$, i.e., we're adding heat to the middle of the rod and allowing this heat to diffuse. We can also approximate the solution to get
+\begin{align*}
+u(t,x) &= \sum^\infty_{n=1} \left(e^{-( n\pi)^2t}\left(\frac{4}{(n\pi)^5}(1-(-1)^n)\left(e^{(n\pi)^2t} - 1\right) \right)\right)\sin(n\pi x) + e^{-(\pi )^2t}\sin(\pi x)\\
+&\approx \frac{8}{\pi^5}\sin(\pi x) + \left(1 - \frac{8}{\pi^5}\right)e^{-\pi^2 t}\sin(\pi x).
+\end{align*}
+So this makes sense, because the temperature distribution is $\sin(\pi x)$ scaled down by some number. 
 
 
 
+\newpage
 
 
+\section{Integral Transformation}
+An integral transformation/operator is a map taking a function $f$ to another function $F = \I[f]$ by the rule:
+\begin{align*}
+\boxed{\I[f](s) = \int^B_A \K(s,t)f(t)\,dt}
+\end{align*}
+where $\K(s,t)$ is called an \textbf{integral kernel}.\\
+
+\begin{prop}
+	Integral operators are linear (when taken to be defined on some appropriate vector space of functions). 
+	\begin{proof}\textit{-ish}\\
+		
+		Let $f,g$ be given. Then
+		\begin{align*}
+		\I[\alpha f+ \beta g](s) &= \int^B_A \K(s,t)\left(\alpha f(t) + \beta g(t)\right)\,dt\\
+		&= \alpha \int^B_A \K(s,t)f(t)\,dt + \beta \int^B_A \K(s,t)g(t)\,dt\\
+		&= \alpha\I[f](s) + \beta\I[g](s).
+		\end{align*}
+	\end{proof}
+\end{prop}
+
+\textbf{Note}: The study of integral transformations is a main focus of functional analysis. \\
+
+\textbf{Note}: We can think of this as moving between spaces: momentum and position. \\
+
+In many cases, an integral transformation $\I$ will have an inverse, denoted $\I^{-1}$, so that, in particular, if $F(s) = \I[f](s)$ then $f(t) = \I^{-1}[F](t)$, i.e.,
+\begin{align*}
+\I^{-1}\circ \I = \text{Identity}.
+\end{align*}
+For us, presently, we will work with integral transformations to take difficult PDEs and transform them into simple PDEs which are easier to solve . Taking the solution to the easier PDE and applying the inverse transformation will yield the solution to the harder PDE.\\
+
+Idea: Hard PDE $\to$ Easier PDE $\to$ Solution to easy PDE $\to$ Solution to hard PDE.\\
+
+\textbf{Note}: there's some resemblance between this and ``change of basis.''\\
+
+\subsection{Some common transformations}
+
+
+\subsubsection{The Fourier Transform}
+
+Works with $f:\R \to \mathbb{C}$.
+
+
+\begin{align*}
+\F[t](\xi) = \hat{f}(\xi) = \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty} e^{-ix\xi}f(x)\,dx = F(\xi).
+\end{align*}
+The inverse looks almost exactly the same:
+\begin{align*}
+\F^{-1}[F](x) = \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty} e^{ix\xi}F(\xi)\,d\xi = f(x).
+\end{align*}
+This yields (in the vector space $L^2(\R)$)
+\begin{align*}
+\F^{-1}\circ \F = \text{Identity}.
+\end{align*}
+
+\textbf{Disadvantage}: complex-valued things\\
+
+\textbf{Advantage}: almost always works, and takes differentiation to polynomial multiplication.\\
+
+\textbf{Note}: $\F$ is a unitary operator.
+
+\subsubsection{The Fourier Sine Transform}
+
+\begin{align*}
+\F_s[f](w) = \frac{2}{\pi}\int^\infty_{0}\sin(wt)f(t)\,dt.
+\end{align*}
+The inverse is
+\begin{align*}
+\F^{-1}_s[F](t) = \int_{0}^\infty\sin(wt)F(w)\,dw.
+\end{align*}
+
+\subsubsection{The Fourier Cosine Transform}
+
+\begin{align*}
+\F_c[f](w) = \frac{2}{\pi}\int^\infty_{0}\cos(wt)f(t)\,dt.
+\end{align*}
+The inverse is
+\begin{align*}
+\F^{-1}_c[F](t) = \int_{0}^\infty\cos(wt)F(w)\,dw.
+\end{align*}
+
+\subsubsection{The Discrete/Finite Fourier Transform (Fourier Series)}
+
+Given a function $f : [0,L] \to \R$ or $\mathbb{C}$, the finite Fourier transform
+
+\begin{align*}
+\F[f](n) = \hat{f}(n) = a_n = \frac{1}{L}\int^L_0 f(x)e^{-2\pi inx/L}\,dx.
+\end{align*}
+The inverse is
+\begin{align*}
+\F^{-1}(n) = \F^{-1}[\hat{f}(n)] = \sum^\infty_{n=-\infty} a_n e^{2\pi inx/L}. 
+\end{align*}
+
+\textbf{Property:}
+\begin{align*}
+f(x) = \sum^\infty_{n=-\infty} \hat{f}(n)e^{inx} = \F^{-1}\circ \F[f].
+\end{align*} 
+
+\subsubsection{The Analogous Sine Transform}
+
+
+\begin{align*}
+\F_s[f](n) = a_n = \frac{2}{L}\int^L_0 f(x)\sin\left(\frac{\pi nx}{L}\right)\,dx.
+\end{align*}
+The inverse is
+\begin{align*}
+\F^{-1}_s[a_n](x) = \sum^\infty_{n=1}a_n \sin\left(\frac{n\pi x}{L}\right).
+\end{align*}
+
+\textbf{Disadvantage:} Half-range expansions...
+
+\subsection{The Laplace Transform}
+
+\textbf{Note:} the Laplace transform is analogous to the Moment Generating Function in Probability theory. 
+
+\begin{align*}
+\lag[f](s) = \int^\infty_0 e^{-st}f(t)\,dt.
+\end{align*}
+The (difficult) inverse is
+\begin{align*}
+\lag^{-1}[F](t) = \frac{1}{2\pi i} \int^{C+i\infty}_{C-i\infty}F(s)e^{st}\,ds,
+\end{align*}
+which is a complex contour integral.
 
 
 
@@ -2947,6 +3081,22 @@ We will solve with via eigenfunction expansion...
 
 
 
+\newpage
+\subsection{Problem set 5}
+
+
+
+
+
+\newpage
+\subsection{Problem set 6}
+
+
+
+
+
+\newpage
+\subsection{Problem set 7}
 
 
 
