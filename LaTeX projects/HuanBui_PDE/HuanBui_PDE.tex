@@ -3074,10 +3074,270 @@ which is a complex contour integral.
 \newpage
 \subsection{Problem set 4}
 
+\begin{exer*}\textbf{1. Problem 1, Lesson 9, Farlow}
+	\begin{align*}
+	u(x,t) = e^{-(\pi\alpha)^2t}\sin(\pi x) + \frac{1}{(3\pi \alpha)^2}\left[1 - e^{-(3\pi \alpha)^2 t}\right]\sin(3\pi x).
+	\end{align*}
+	\begin{sln*}
+		We can plot $u(x,t)$ for a few time points:
+		\begin{lstlisting}
+U[t_, x_] := 
+E^(-Pi^2 t)*Sin[Pi*x] + 
+1/(3*Pi)^2*(1 - E^(-(3 Pi)^2 t))*Sin[3 Pi*t];
 
+Show[Plot[U[0, x], {x, 0, 1}], Plot[U[0.05, x], {x, 0, 1}],
+Plot[U[0.01, x], {x, 0, 1}], Plot[U[0.08, x], {x, 0, 1}], 
+AxesLabel -> {x, u}]
+		\end{lstlisting}
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.7]{pde4_1.png}
+		\end{figure}
+	
+	The solution makes sense, because the IBVP basically describes a rod with fixed zero temperature at the ends and an initial temperature distribution of $\sin(\pi x)$ being subjected to some heat source. 
+	\end{sln*}
+\end{exer*}
 
+\newpage
 
+\begin{exer*}\textbf{2. Problem 2, Lesson 9, Farlow}\\
+	Solve the IBVP:
+	\begin{align*}
+	&\text{PDE: } u_t = u_{xx} + \sin(\pi x) + \sin(2\pi x), \hspace{0.2cm} 0 < x < 1\hspace{0.2cm} 0 < t < \infty\\
+	&\text{BCs: }\begin{cases}
+	u(0,t) = 0\\
+	u(1,t) = 0
+	\end{cases}\hspace{0.2cm} 0 < t < \infty\\
+	&\text{IC: }u(x,0) = 0\hspace{0.2cm}0\leq x\leq 1.
+	\end{align*}
+	
+	\begin{sln*}
+		We use the eigenfunction expansion method to solve this problem. The first step is finding the eigenvectors by converting the homogeneous problem:
+		\begin{align*}
+		&\text{PDE: } u_t = u_{xx}, \hspace{0.2cm} 0 < x < 1\hspace{0.2cm} 0 < t < \infty\\
+		&\text{BCs: }\begin{cases}
+		u(0,t) = 0\\
+		u(1,t) = 0
+		\end{cases}\hspace{0.2cm} 0 < t  \infty
+		\end{align*}
+		into the associated S-L problem 
+		\begin{align*}
+		&\text{PDE: } X_{xx} = -\lambda^2 X, \hspace{0.2cm} 0 < x < 1\hspace{0.2cm}\\
+		&\text{BCs: }\begin{cases}
+		X(0) = 0\\
+		X(1) = 0
+		\end{cases}\hspace{0.2cm},
+		\end{align*}
+		to which the solutions (or the eigenvectors) have the form:
+		\begin{align*}
+		X_n(x) = \sin(n\pi x).
+		\end{align*}
+		
+		Next, we want to write $f(x,t) = \sin(\pi x) + \sin(2\pi x)$ in terms of the eigenvectors. Observe that we don't need Fourier Sine series here since $f(x,t)$ is already given to us as a sum of two eigenvectors:
+		\begin{align*}
+		f(t,x) = \sin(\pi x) + \sin(2\pi x) = \sum^\infty_{n=1}f_n(t)X_n(x) = f_1(t) \times X_1(x) + f_2(t) \times X_2(x).
+		\end{align*}
+		This means
+		\begin{align*}
+		&f_1(t) = f_2(t) = 1\\
+		&f_n(t) = 0, \hspace{0.2cm}n > 2.
+		\end{align*}
+		Subject 
+		\begin{align*}
+		u(t,x) = \sum^\infty_{n=1} T_n(t)X_n(x)
+		\end{align*}
+		to the IBVP, where
+		\begin{align*}
+		f(t,x) = \sum^\infty_{n=1}f_n(t)X_n(x) = \sum^\infty_{n=1}f_n(t)\sin(n\pi x)
+		\end{align*}
+		gives
+		\begin{align*}
+		\dot{T}_n(t) + (n\pi)^2T_n(t) = f_n(t),
+		\end{align*}
+		to which the solution is of the form
+		\begin{align*}
+		T_n(t) = e^{-(n\pi)^2t}\int^t_0 f_n(s)e^{(n\pi)^2s}\,ds + T_n(0)e^{-(n\pi)^2t}.
+		\end{align*}
+		Since we only have non-zero $f_1(t) = f_2(t) = 1$, 
+		\begin{align*}
+		T_1(t) &= e^{-(\pi)^2t}\int^t_0 e^{(\pi)^2s}\,ds + T_1(0)e^{-(\pi)^2t}\\
+		&= e^{-(\pi)^2t}\left(\frac{-1 + e^{\pi^2t}}{\pi^2}  + T_1(0)\right),
+		\end{align*}
+		and 
+		\begin{align*}
+		T_2(t) &= e^{-(2\pi)^2t}\int^t_0 e^{(2\pi)^2s}\,ds + T_2(0)e^{-(2\pi)^2t}\\
+		&= e^{-(2\pi)^2t}\left(\frac{-1 + e^{4\pi^2t}}{4\pi^2}  + T_2(0)  \right),
+		\end{align*}
+		and
+		\begin{align*}
+		T_n(t) = T_n(0)e^{-(n\pi)^2t}, \hspace{0.2cm}n > 2.
+		\end{align*}
+		Next, note that because 
+		\begin{align*}
+		u(0,x) = u_0(x) = 0 = \sum^\infty_{n=1}T_n(0)\sin(n\pi x),
+		\end{align*}
+		we have
+		\begin{align*}
+		T_n(0) = 0,
+		\end{align*}
+		which means all $T_n(t) = 0$ for $n>2$ are zero. Therefore, 
+		\begin{align*}
+		u(t,x) &= \sum^\infty_{n=1}\left( e^{-(n\pi)^2t}\int^t_0 f_n(s)e^{(n\pi)^2s}\,ds \right)\sin(n\pi x)\\
+		&= e^{-(\pi)^2t}\left(\frac{-1 + e^{\pi^2t}}{\pi^2}\right)\sin(\pi x) + e^{-(2\pi)^2t}\left(\frac{-1 + e^{4\pi^2t}}{4\pi^2} \right)\sin(2\pi x)\\
+		&= \frac{1}{\pi^2}\left(1 - e^{-\pi^2 t}\right)\sin(\pi x) + \frac{1}{(2\pi)^2}e^{-(2\pi)^2t}\left(1 - e^{-(2\pi)^2t}\right)\sin(2\pi x).
+		\end{align*}
+		
+		
+	\end{sln*}
+\end{exer*}
 
+\newpage
+
+\begin{exer*}\textbf{3. Problem 5, Lesson 9, Farlow}\\
+	Solve the IBVP:
+	\begin{align*}
+	&\text{PDE: } u_t = u_{xx} + \sin(\pi x), \hspace{0.2cm} 0 < x < 1\hspace{0.2cm} 0 < t < \infty\\
+	&\text{BCs: }\begin{cases}
+	u(0,t) = 0\\
+	u(1,t) = 0
+	\end{cases}\hspace{0.2cm} 0 < t < \infty\\
+	&\text{IC: }u(x,0) = 1\hspace{0.2cm}0\leq x\leq 1.
+	\end{align*}
+	
+	\begin{sln*}
+		We use the eigenfunction expansion method to solve this problem. The first step is finding the eigenvectors by converting the homogeneous problem:
+		\begin{align*}
+		&\text{PDE: } u_t = u_{xx}, \hspace{0.2cm} 0 < x < 1\hspace{0.2cm} 0 < t < \infty\\
+		&\text{BCs: }\begin{cases}
+		u(0,t) = 0\\
+		u(1,t) = 0
+		\end{cases}\hspace{0.2cm} 0 < t  \infty
+		\end{align*}
+		into the associated S-L problem 
+		\begin{align*}
+		&\text{PDE: } X_{xx} = -\lambda^2 X, \hspace{0.2cm} 0 < x < 1\hspace{0.2cm}\\
+		&\text{BCs: }\begin{cases}
+		X(0) = 0\\
+		X(1) = 0
+		\end{cases}\hspace{0.2cm},
+		\end{align*}
+		to which the solutions (or the eigenvectors) have the form:
+		\begin{align*}
+		X_n(x) = \sin(n\pi x).
+		\end{align*}
+		
+		Next, we want to write $f(x,t) = \sin(\pi x)$ in terms of the eigenvectors. Observe that we don't need Fourier Sine series here since $f(x,t)$ is already given to us as a sum of two eigenvectors:
+		\begin{align*}
+		f(t,x) = \sin(\pi x) = \sum^\infty_{n=1}f_n(t)X_n(x) = f_1(t) \times X_1(x).
+		\end{align*}
+		This means
+		\begin{align*}
+		f_n(t) = \delta^1_n.
+		\end{align*}
+		Subject 
+		\begin{align*}
+		u(t,x) = \sum^\infty_{n=1} T_n(t)X_n(x)
+		\end{align*}
+		to the IBVP, where
+		\begin{align*}
+		f(t,x) = \sum^\infty_{n=1}f_n(t)X_n(x) = \sum^\infty_{n=1}f_n(t)\sin(n\pi x)
+		\end{align*}
+		gives
+		\begin{align*}
+		\dot{T}_n(t) + (n\pi)^2T_n(t) = f_n(t),
+		\end{align*}
+		to which the solution is of the form
+		\begin{align*}
+		T_n(t) = e^{-(n\pi)^2t}\int^t_0 f_n(s)e^{(n\pi)^2s}\,ds + T_n(0)e^{-(n\pi)^2t}.
+		\end{align*}
+		Since we only have non-zero $f_1(t) = 1$, 
+		\begin{align*}
+		T_1(t) &= e^{-(\pi)^2t}\int^t_0 e^{(\pi)^2s}\,ds + T_1(0)e^{-(\pi)^2t}\\
+		&= e^{-(\pi)^2t}\left(\frac{-1 + e^{\pi^2t}}{\pi^2}  + T_1(0)\right),
+		\end{align*}
+		and
+		\begin{align*}
+		T_n(t) = T_n(0)e^{-(n\pi)^2t}, \hspace{0.2cm}n > 2.
+		\end{align*}
+		Next, note that because 
+		\begin{align*}
+		u(0,x) = u_0(x) = 1 = \sum^\infty_{n=1}T_n(0)\sin(n\pi x),
+		\end{align*}
+		we have
+		\begin{align*}
+		T_n(0) = 2\int^1_0  \sin(n \pi x)\,dx = \begin{cases}
+		4/(n\pi), \hspace{0.2cm}n \text{ odd}\\
+		0, \hspace{0.2cm}n \text{ even}.
+		\end{cases}
+		\end{align*}
+		Therefore, 
+		\begin{align*}
+		u(t,x) &= \sum^\infty_{n=1}\left( e^{-(n\pi)^2t}\int^t_0 f_n(s)e^{(n\pi)^2s}\,ds \right)\sin(n\pi x)\\
+		&= e^{-(\pi)^2t}\left(\frac{-1 + e^{\pi^2t}}{\pi^2} + \frac{4}{\pi}\right)\sin(\pi x) + \sum^\infty_{n=2}\frac{4}{n\pi}e^{-(n\pi)^2t}\sin(n\pi x),\hspace{0.2cm}n \text{ odd}\\
+		&= \left(\frac{1-e^{\pi^2t}}{\pi^2} + \frac{4}{\pi}e^{-\pi^2t}\right)\sin(\pi x) + \sum^\infty_{j=0}\frac{4}{(2j+1)\pi}e^{-(2j+1)^2\pi^2t}\sin\left[(2j+1)\pi x\right]
+		\end{align*}
+		
+	\end{sln*}
+	
+	
+\end{exer*}
+
+\newpage
+
+\begin{exer*}\textbf{4. Problem 1, Lesson 10, Farlow}
+	Prove the identities
+	\begin{enumerate}
+		\item $\F_s[f'] = -\omega \F_c[f]$\\
+		\item $\F_s[f''] = \frac{2}{\pi}\omega f(0) - \omega^2 \F_s[f]$\\
+		\item $\F_c[f'] = \frac{-2}{\pi}f(0) + \omega\F_s[f]$\\
+		\item $\F_c[f''] = \frac{-2}{\pi}f'(0) - \omega^2 \F_c[f]$.
+	\end{enumerate}
+	What assumptions do you need to make about the function $f$?
+\begin{sln*}
+	We have to assume that $f$ has to be at least twice piecewise differentiable, and that $f\to 0$ as $t\to \infty$.   
+	\begin{enumerate}
+		\item The first identity can be shown by integration by parts
+		\begin{align*}
+		\F_s[f'] &= \frac{2}{\pi}\int^\infty_0 f'\sin(\omega t)\,dt\\
+		&= \frac{2}{\pi}\left( f\sin(\omega t)\bigg\vert^\infty_0 - \int^1_0 \omega f\cos(\omega t)\,dt \right)\\
+		&= \frac{2}{\pi}f\sin(\omega t)\bigg\vert_0^\infty - \omega \F_c[f]\\
+		&= -\omega \F_c[f].
+		\end{align*}
+		
+		
+		\item We use the first identity
+		\begin{align*}
+		 \F_s[f''] &= -\omega\F_c[f']\\
+		 &= -\omega \frac{2}{\pi}\int^\infty_0 f'\cos(\omega t)\,dt\\
+		 &= -\frac{2\omega}{\pi}\left( f\cos(\omega t)\bigg\vert^\infty_0 + \omega \int^\infty_0  f'' \sin(\omega t)\,dt  \right)\\
+		 &= \frac{2}{\pi}\omega f(0) - \frac{2\omega^2}{\pi}\int^\infty_0 f''\sin(\omega t)\,dt\\
+		 &= \frac{2}{\pi}\omega f(0) - \omega^2 \F_s[f].
+		\end{align*}
+		
+		
+		
+		
+		\item We use the first and second identities:
+		\begin{align*}
+		\F_c[f'] &= -\frac{1}{\omega}\F_s[f'']\\
+		&= -\frac{1}{\omega}\left( \frac{2}{\pi}\omega f(0) - \omega^2 \F_s[f]  \right)\\
+		&= -\frac{2}{\pi} f(0) + \omega \F_s[f].
+		\end{align*}
+		
+		\item We use the first and third identities:
+		\begin{align*}
+		\F_c[f''] &= -\frac{2}{\pi} f'(0) + \omega \F_s[f']\\
+		&= -\frac{2}{\pi} f'(0) + \omega\left(-\omega \F_c[f]\right)\\
+		&=  \frac{-2}{\pi} f'(0) - \omega^2 \F_c[f].
+		\end{align*}
+		
+		
+	\end{enumerate}
+	
+\end{sln*}
+
+\end{exer*}
 
 
 
