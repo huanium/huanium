@@ -1794,12 +1794,141 @@ The (difficult) inverse is
 \begin{align*}
 \lag^{-1}[F](t) = \frac{1}{2\pi i} \int^{C+i\infty}_{C-i\infty}F(s)e^{st}\,ds,
 \end{align*}
-which is a complex contour integral.
+which is a complex contour integral.\\
 
 
 
+% Mar 11, 2019 %
+
+\subsection{The Fourier Series}
+We had:
+\begin{align*}
+\F_s[f](\omega) = \frac{2}{\pi}\int^1_0 f(x)\sin(\omega x)\,dx\\
+\F_c[f](\omega) = \frac{2}{\pi}\int^1_0 f(x)\cos(\omega x)\,dx\\
+\F[f](\xi) = \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}f(x)e^{-ix\xi}\,dx.
+\end{align*}
+
+\begin{prop} Some identities:
+	\begin{enumerate}
+		\item $\F_s[f'] = -\omega \F_c[f]$\\
+		\item $\F_s[f''] = \frac{2}{\pi}\omega f(0) - \omega^2 \F_s[f]$\\
+		\item $\F_c[f'] = \frac{-2}{\pi}f(0) + \omega\F_s[f]$\\
+		\item $\F_c[f''] = \frac{-2}{\pi}f'(0) - \omega^2 \F_c[f]$.\\
+		\item $\F[f'](\xi) = i\xi \F[f] $\\
+		\item $F[f''](\xi) = -\xi^2\F[f](\xi)$
+	\end{enumerate}
+\end{prop}
 
 
+\begin{rmk}
+	In our alternative notation, this says
+	\begin{align*}
+	\hat{f'}(\xi) = i\xi \hat{f}(\xi).
+	\end{align*}
+	We notice that the $\hat{\,}$ map converts differentiation to polynomial multiplication.\\
+\end{rmk}
+
+
+\begin{proof}[Proof of propositions 5,6]
+	\begin{enumerate}
+		\item Proof of 5.: The supposition that $f,f'$ have existent Fourier Transforms, i.e.,
+	\begin{align*}
+	\int^\infty_{-\infty}f(x)e^{-ix\xi}\,dx, \int^\infty_{-\infty}f'(x)e^{-ix\xi}\,dx
+	\end{align*}
+	exist for all $\xi$, requires in particular, that
+	\begin{align*}
+	\lim_{t\to\pm\infty} f(x) = \lim_{t\to\pm\infty} f'(x) = 0.
+	\end{align*}
+	So, interpreting these as improper Riemann integrals:
+	\begin{align*}
+	\F[f'](\xi) &= \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}f'(x)e^{-ix\xi}\,dx\\
+	&= \frac{1}{\sqrt{2\pi}}\lim_{t\to\infty}\int^t_{-t}f'(x)e^{-ix\xi}\,dx\\
+	&= \frac{1}{\sqrt{2\pi}}\lim_{t\to\infty}\left( f(x)e^{-ix\xi}\bigg\vert_{-t}^t - \int^t_{-t}f(x)(-i\xi)e^{-ix\xi}\,dx  \right)\\
+	&= \frac{1}{\sqrt{2\pi}}\lim_{t\to\infty}\left( f(t)e^{0it\xi} - f(-t)e^{it\xi} -i\xi\int^t_{-t}f(x)e^{-ix\xi}\,dx \right)\\
+	&= i\xi \F[f](\xi).
+	\end{align*}
+	
+	\item Proof of 6.: 
+	\begin{align*}
+	\F[f'](\xi) &= i\xi\F[f'](s)\\
+	&= (i\xi)^2\F[f](\xi)\\
+	&= -\xi^2 \F[f](\xi).
+	\end{align*}
+	
+	\end{enumerate}
+\end{proof}
+
+
+There's a \textbf{full version} of the Fourier transform that we won't discuss here.\\
+
+
+Rather, let us use the $\F_s$ transform to solve half-infinite rod heat equation:
+\begin{align*}
+\begin{cases}
+u_t = \alpha^2 u_{xx}, \hspace{0.5cm}0 < x < \infty, t> 0\\
+u(t,0) = A, \hspace{0.5cm} t> 0\\
+u(0,x) = 0, \hspace{0.5cm} x\geq 0.
+\end{cases}
+\end{align*}
+We start with $u_t = \alpha^2 u_{xx}$. Let's compute the Fourier Sine transform in the variable $x$ (this is sometimes called the \textbf{Partial Fourier Transform}):
+\begin{align*}
+\F[u_t(t,x)](\omega) &= \frac{2}{\pi}\int^\infty_0 u_t(t,x)\sin(\omega x)\,dx\\
+&= \frac{2}{\pi}\frac{\p}{\p t}\left(\int^\infty_0 u(t,x)\sin(\omega x)\,dx  \right)\\
+&= \frac{\p}{\p t}\F_s[u(t,x)](\omega).
+\end{align*}
+We shall call
+\begin{align*}
+U(t,\omega) = \F_s[u(t,x)](\omega).
+\end{align*}
+So,
+\begin{align*}
+\F_s[u_t(t,x)](\omega) = \frac{\p U}{\p t}.
+\end{align*}
+On the other hand,
+\begin{align*}
+\F_s[u_{xx}](\omega) &= \frac{2}{\pi}\int^\infty_0 u_{xx}\sin(\omega x)\,dx\\
+&= \frac{2}{\pi}\omega u(t,0) - \omega^2 \F_s[u(t,x)](\omega).
+\end{align*}
+But $u(t,0) = A$ by the boundary condition, so
+\begin{align*}
+\F_s[u_{xx}](\omega) &= \frac{2A}{\pi}\omega - U(t,\omega).
+\end{align*}
+Subject to $u_t = \alpha^2 u_{xx}$, we claim:
+\begin{align*}
+\frac{\p U}{\p t} = \alpha^2\left( \frac{2A\omega}{\pi} - \omega^2U(t,\omega) \right),
+\end{align*}
+or equivalently,
+\begin{align*}
+\frac{\p U}{\p t} + \alpha^2\omega^2 U = \frac{2A\omega^2\alpha^2}{\pi}, 
+\end{align*}
+which is nothing but a linear ODE. Now, can we get an initial condition for this ODE? Yes! Since $u(0,x) = 0$ for all $x$,
+\begin{align*}
+U(0, \omega) = \F_s[u(0,x)](\omega) = \F_s[0](\omega) = 0.
+\end{align*}
+Thus, we have transformed an initial condition for our PDE in $u$ into an initial condition in $U$. We get an IVP:
+\begin{align*}
+\begin{cases}
+\frac{\p U}{\p t} + \alpha^2\omega^2 U = \frac{2A\omega^2\alpha^2}{\pi}\\
+U(0,\omega) = 0,
+\end{cases}
+\end{align*}
+whose solution is
+\begin{align*}
+U(t,\omega) = e^{-\omega^2\alpha^2t}\int^t_0\frac{2A}{\pi}\omega^2\alpha^2e^{\omega^2\alpha^2s}\,ds.
+\end{align*}
+So,
+\begin{align*}
+U(t,\omega) = \frac{2A}{\pi}\left(1 - e^{-\omega^2\alpha^2 t}\right).
+\end{align*}
+So, then
+\begin{align*}
+u(t,x) = \F_s^{-1}[U(t,\omega)] &= \F_s^{-1}\left[ \frac{2A}{\pi}\left(1 - e^{-\omega^2\alpha^2 t}\right) \right](x)\\
+&= A\text{erfc}\left(\frac{x}{2\alpha\sqrt{t}}\right),
+\end{align*}
+where 
+\begin{align*}
+\text{erfc}(y) = \frac{2}{\sqrt{\pi}}\int^\infty_y e^{-t^2}\,dt.
+\end{align*}
 
 
 
