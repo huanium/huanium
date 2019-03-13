@@ -1923,12 +1923,147 @@ U(t,\omega) = \frac{2A}{\pi}\left(1 - e^{-\omega^2\alpha^2 t}\right).
 So, then
 \begin{align*}
 u(t,x) = \F_s^{-1}[U(t,\omega)] &= \F_s^{-1}\left[ \frac{2A}{\pi}\left(1 - e^{-\omega^2\alpha^2 t}\right) \right](x)\\
-&= A\text{erfc}\left(\frac{x}{2\alpha\sqrt{t}}\right),
+&= A\times \text{erfc}\left(\frac{x}{2\alpha\sqrt{t}}\right),
 \end{align*}
 where 
 \begin{align*}
 \text{erfc}(y) = \frac{2}{\sqrt{\pi}}\int^\infty_y e^{-t^2}\,dt.
 \end{align*}
+
+
+% Mar 13, 2019%
+
+
+
+\subsection{From the Fourier Series to the Fourier Transform}
+First, let us find the connection between cosine-sine version of Fourier Series and $\sum () e^{inx}$. Here is a fact: if $f$ is a periodic of period $2L$ and ``nice,'' then
+\begin{align*}
+f(x) = \frac{a_0}{2} + \sum^\infty_{n=1}a_n\cos\left(\frac{n\pi x}{L}\right) + \sum^\infty_{n=1}b_n\sin\left(\frac{n\pi x}{L}\right) 
+\end{align*}
+where
+\begin{align*}
+a_n = \frac{1}{L}\int^L_{-L}f(x)\cos\left(\frac{n\pi x}{L}\right)\,dx
+\end{align*}
+and
+\begin{align*}
+b_n = \frac{1}{L}\int^L_{-L}f(x)\sin\left(\frac{n\pi x}{L}\right)\,dx
+\end{align*}
+for $n=0,1,2,\dots$. We note that ``nice'' is just piecewise differentiable, or weaker, $f \in L^2([0,L])$. \\
+
+We want to connect this with the complex representation of Fourier Series:
+\begin{align*}
+f(x) = \sum_{n\in \mathbb{Z}} C_n e^{inx\pi/L},
+\end{align*}
+where 
+\begin{align*}
+C_n = \frac{1}{2L}\int^L_{-L}f(x)e^{-in\pi x/L}\,dx.
+\end{align*}
+Recall the Euler's identity:
+\begin{align*}
+&e^{i\theta} = \cos\theta + i\sin\theta\\
+&e^{-\theta} = \cos\theta - i\sin\theta.
+\end{align*}
+So,
+\begin{align*}
+C_n &= \frac{1}{2L}\int^L_{-L}f(x)\cos\frac{n\pi x}{L}\,dx - i\frac{1}{2L}\int^L_{-L}f(x)\sin\frac{n\pi x}{L}\,dx\\
+&= \frac{a_n - ib_n}{2},\hspace{0.5cm}n=0,1,2,3,\dots
+\end{align*}
+For $n=-m$, $m=0,1,2,3,\dots$ then
+\begin{align*}
+C_{-m} = C_n &= \frac{1}{2L}\int^L_{-L}f(x)e^{im\pi x/L}\,dx\\
+&= \frac{1}{2L}\int^L_{-L}f(x)\cos\frac{m\pi x}{L}\,dx + i\frac{1}{2L}\int^L_{-L}f(x)\sin\frac{m\pi x}{L}\,dx\\
+&= \frac{a_m + ib_m}{2}.
+\end{align*}
+In other words, for all $n=0,1,2,\dots$
+\begin{align*}
+&2C_n = a_n - ib_n\\
+&2C_{-n} = a_n + ib_n,
+\end{align*}
+then
+\begin{align*}
+a_n = C_n + C_{-n}
+\end{align*}
+and
+\begin{align*}
+b_n = \frac{C_{-n} - C_n}{i} = i(C_n - C_{-n}).
+\end{align*}
+Plugging these coefficients into the Fourier Series, we get
+\begin{align*}
+f(x) &= C_0 + \sum^\infty_{n=1}(C_n + C_{-n})\cos\frac{n\pi x}{L} + \sum^\infty_{n=0}i(C_n - C_{-n})\sin\frac{n\pi x}{L}\\
+&= C_0 + \sum^\infty_{n=1}C_n\left(\cos\frac{n\pi x}{L} + i\sin\frac{n\pi x}{L}\right) + \sum^\infty_{n=1}C_{-n}\left(\cos\frac{n\pi x}{L} - i\sin\frac{n\pi x}{L}\right)\\
+&= C_0 + \sum^\infty_{n=1}C_ne^{in\pi x/L} + C_{-n}e^{-in\pi x/L}\\
+&= \sum_{n\in \mathbb{Z}}C_ne^{in\pi x/L},
+\end{align*}
+which is exactly the complex representation of the Fourier Series. \\
+
+
+So, given a $2L$-periodic nice function $f$, we can write
+\begin{align*}
+f(x) &= \sum_{n\in \mathbb{Z}}C_ne^{in\pi x/L}\\
+&= \sum_{n\in \mathbb{Z}}\left(\frac{1}{2L}\int^L_{-L}f(x')e^{-in\pi x'/L}\,dx'\right)e^{in\pi x/L}\\
+&= \sum_{n\in \mathbb{Z}}\left(\frac{1}{2\pi}\int^L_{-L}f(x')e^{-in\pi x'/L}\,dx' \right)  e^{in\pi x/L}\frac{\pi}{L}\\
+&\approx \sum g_L\left(\frac{n\pi x}{L}\right)\frac{\pi}{L}.
+\end{align*}
+What if we want to represent a function that is not $2L$-periodic. Suppose I have a Gaussian function (which is clearly not $2L$-periodic). What we do now is just have the Gaussian from $-L$ to $L$, and make $f$ periodic in $L$ (copy this part and paste everywhere). The idea is this: the Fourier Series will converge to the $2L$-periodization of $f$. \\
+
+Notice that this, in particular, approximates the Gaussian function in the window $[-L,L]$. By taking $L\to\infty$, we can use this idea to capture all of $f$.\\
+
+Now, consider the last expression above, we see that it is some sort of Riemann sum. As $L \to \infty$, 
+\begin{align*}
+\sum g_L\left(\frac{n\pi x}{L}\right)\frac{\pi}{L} \to \int^\infty_{-\infty}g(\xi)\,d\xi,
+\end{align*}
+where
+\begin{align*}
+g_L(\xi) = e^{i\xi x}\frac{1}{2\pi}\int^L_{-L}f(\,\,\,)e^{-i(\,\,\,)}\,dx' \to e^{i\xi x}\frac{1}{2\pi}\int^\infty_{-\infty}f(x')e^{-ix'\xi}\,dx'.
+\end{align*}
+So,
+\begin{align*}
+f(x) &= \int^\infty_{-\infty}g(\xi)e^{i\xi x}\,d\xi\\
+&= \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}\left(\frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}f(x')e^{-i\xi x'}\,dx' \right)e^{i\xi x}\,d\xi\\
+&=\frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}\hat{f}(\xi)e^{i\xi x}\,d\xi\\
+&= \F^{-1}[\hat{f}](x).
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
