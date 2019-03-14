@@ -1581,7 +1581,7 @@ We will solve with via eigenfunction expansion...
 	\end{align*}
 	This yields ODEs of the form:
 	\begin{align*}
-	\dot{T}_n(t) + (\alpha n\pi)^2T_n(t) = f_n(t),\hspace{0.5cm},n=1,2,3,\dots
+	\dot{T}_n(t) + (\alpha n\pi)^2T_n(t) = f_n(t),\hspace{0.5cm}n=1,2,3,\dots
 	\end{align*}
 	to which the solution is of the form
 	\begin{align*}
@@ -3458,7 +3458,8 @@ AxesLabel -> {x, u}]
 
 \newpage
 
-\begin{exer*}\textbf{3. Problem 5, Lesson 9, Farlow}\\
+\begin{exer*}\textbf{4. Problem 5, Lesson 9, Farlow}\\
+	
 	Solve the IBVP:
 	\begin{align*}
 	&\text{PDE: } u_t = u_{xx} + \sin(\pi x), \hspace{0.2cm} 0 < x < 1\hspace{0.2cm} 0 < t < \infty\\
@@ -3549,7 +3550,137 @@ AxesLabel -> {x, u}]
 
 \newpage
 
-\begin{exer*}\textbf{4. Problem 1, Lesson 10, Farlow}
+\begin{exer*}\textbf{3. Problem 5, Lesson 9, Farlow}\\
+	
+	
+	Solve:
+	\begin{align*}
+	&\text{PDE: } u_t = u_{xx}\hspace{0.5cm} 0 < x < 1\\
+	&\text{BCs: } \begin{cases}
+	u(0,t) = 0\\
+	u(1,t) = \cos t
+	\end{cases}\hspace{0.5cm} 0 < t < \infty\\
+	&\text{IC: } u(x,0) = x\hspace{0.5cm}0\leq x\leq 1
+	\end{align*}
+	by
+	
+	\begin{enumerate}
+		\item Transforming into one with zero BCs.\\
+		\item Solving the resulting problem by expanding it in terms of eigenfunctions.\\
+	\end{enumerate}
+	
+	
+	
+	
+	\begin{sln*}
+		$\,$
+		\begin{enumerate}
+			\item Transforming the IBVP into one with zero BCs.\\
+			
+			To do this, we consider the steady-state where $u_t = 0$, which gives $u_xx = 0$, i.e., $S(x,t) = Cx+D$. Applying the BCs, we get
+			\begin{align*}
+			&D = 0\\
+			&C = \cos t.
+			\end{align*}
+			So, the steady-state solution is 
+			\begin{align*}
+			S(x,t) = x\cos t,
+			\end{align*}
+			and the full solution is
+			\begin{align*}
+			u(x,t) = U(x,t) + x\cos t.
+			\end{align*}
+			Applying the BCs to this $u$ to obtain the BCs for $U$:
+			\begin{align*}
+			&U(0,t) = u(0,t) - S(0,t) = 0-0 = 0\\
+			&U(1,t) = u(1,t) - S(1,t) = \cos t - \cos t = 0.
+			\end{align*}
+			And the initial condition becomes
+			\begin{align*}
+			U(x,0) = u(x,0) - S(x,0) = x - x = 0.
+			\end{align*}
+			We have transformed the BCs into one with zeros. But the PDE has turned inhomogeneous: 
+			\begin{align*}
+			U_t = u_t - S_t = u_{xx} + x\sin t = U_{xx} + x\sin t.
+			\end{align*}
+			The new IBVP is then
+			\begin{align*}
+			&\text{PDE: } U_t = U_{xx} + x\sin t \hspace{0.5cm} 0 < x < 1\\
+			&\text{BCs: } \begin{cases}
+			U(0,t) = 0\\
+			U(1,t) = 0
+			\end{cases}\hspace{0.5cm} 0 < t < \infty\\
+			&\text{IC: } U(x,0) = 0\hspace{0.5cm}0\leq x\leq 1
+			\end{align*}
+			$\,$\\
+			
+			
+			
+			\item Now we consider eigenfunction expansion. The eigenfunction to the ODE. To do this, we consider the homogeneous problem, and convert it into an associated S-L problem to get the ODE:
+			\begin{align*}
+			&\text{PDE: }  X_{xx} = -\lambda^2 X \hspace{0.5cm} 0 < x < 1\\
+			&\text{BCs: } \begin{cases}
+			X(0) = 0\\
+			X(1) = 0
+			\end{cases}
+			\end{align*}
+			to which the eigenfunctions have the form
+			\begin{align*}
+			X_n(x) = \sin(n\pi x).
+			\end{align*}
+			Now we want to write $x\sin t$ in terms of these eigenfunctions:
+			\begin{align*}
+			x\sin t = \sum^\infty_{n=1}f_n(t)X_n(x) = \sum^\infty_{n=1}f_n(t)\sin(n\pi x).
+			\end{align*}
+			So integrating in Mathematica gives
+			\begin{align*}
+			f_n(t) &= 2\int^1_0 x\sin t\sin(n\pi x)\,dx\\
+			&= 
+			\begin{cases}
+			(-1)^{n+1}\frac{2\sin t}{n\pi}, \hspace{0.5cm} n \geq 1\\
+			0, \hspace{0.5cm} n =0.
+			\end{cases}
+			\end{align*}
+			Now, we also have 
+			\begin{align*}
+			&U_t(x,t) = \sum^\infty_{n=1}\dot{T}_n(t)\sin(n\pi x)\\
+			&U_{xx}(x,t) = \sum^\infty_{n=1}-(n\pi)^2T_n(t)\sin(n\pi x).
+			\end{align*}
+			Since $U_t = U_{xx} + \sum^\infty_{n=1}f_n(t)\sin(n\pi x)$, we have the following ODE:
+			\begin{align*}
+			\dot{T}_n(t) + (n\pi)^2T_n(t) = (-1)^{n+1}\frac{2\sin t}{n\pi},
+			\end{align*}
+			whose solution is
+			\begin{align*}
+			T_n(t) &= e^{-(n\pi)^2t}\int^\tau_0 (-1)^{n+1}\frac{2\sin \tau}{n\pi}e^{(n\pi)^2\tau}\,d\tau + T_n(0)e^{-(n\pi)^2t} \\
+			&= (-1)^{n+1}\frac{2}{n\pi}\int^\tau_0 e^{-(n\pi)^2(t-\tau)}\sin\tau \,d\tau.
+			\end{align*}
+			Therefore, the full solution, $u(x,t) = S(x,t) + U(x,t)$, is
+			\begin{align*}
+			\boxed{u(x,t) = x\cos t + \sum^\infty_{n=1}\sin(n\pi x)\left((-1)^{n+1}\frac{2}{n\pi}\int^\tau_0 e^{-(n\pi)^2(t-\tau)}\sin\tau \,d\tau\right)}
+			\end{align*}
+			
+			Mathematica code:
+			\begin{lstlisting}
+F[n_] := Simplify[Integrate[x*Sin[n*Pi*x], {x, 0, 1}]]
+			
+In[12]:= Table[F[n], {n, 0, 10}]
+			
+Out[12]= {0, 1/\[Pi], -(1/(2 \[Pi])), 1/(3 \[Pi]), -(1/(4 \[Pi])), 1/(
+		5 \[Pi]), -(1/(6 \[Pi])), 1/(7 \[Pi]), -(1/(8 \[Pi])), 1/(
+		9 \[Pi]), -(1/(10 \[Pi]))}
+			\end{lstlisting}
+		\end{enumerate}
+	\end{sln*}
+\end{exer*}
+
+
+
+
+
+\newpage
+
+\begin{exer*}\textbf{5. Problem 1, Lesson 10, Farlow}
 	Prove the identities
 	\begin{enumerate}
 		\item $\F_s[f'] = -\omega \F_c[f]$\\
