@@ -12,6 +12,7 @@
 \newtheorem{defn}{Definition}[section]
 \newtheorem{prop}{Proposition}[section]
 \newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
 \newtheorem{exmp}{Example}[section]
 \newtheorem{prob}{Problem}[section]
 \newtheorem{sln}{Solution}[section]
@@ -2023,6 +2024,179 @@ f(x) &= \int^\infty_{-\infty}g(\xi)e^{i\xi x}\,d\xi\\
 &=\frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}\hat{f}(\xi)e^{i\xi x}\,d\xi\\
 &= \F^{-1}[\hat{f}](x).
 \end{align*}
+
+% Mar 15, 2019 % 
+
+
+We had, for a ``nice'' function $f:\R \to \R$ or $\mathbb{C}$,
+\begin{align*}
+\F[f](\xi) = \hat{f}(\xi) = \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty} f(x)e^{ix\xi}\,dx,
+\end{align*}
+for any $\xi \in \R$. This is the Fourier Transform of $f$. It has an inverse
+
+
+
+
+
+
+
+
+\begin{align*}
+\F^{-1}[F](x) = \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}F(\xi)e^{ix\xi}\,d\xi
+\end{align*}
+with $\F^{-1}\circ \F = Id$.\\
+
+\begin{exmp}
+	Let $f(x) = \mathbb{1}_{[-1,1]}$. Then
+	\begin{align*}
+	\F[f](\xi) = \frac{1}{\sqrt{2\pi}}\frac{e^{-i\xi} - e^{i\xi}}{-i\xi} = \frac{2}{\pi}\frac{\sin(\xi)}{\xi}.
+	\end{align*}
+	We see that the Fourier Transform takes something localized and spread it.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1]{fourier_1.png}
+	\end{figure}
+\end{exmp}
+
+$\,$\\
+
+\begin{exmp}
+ 	Let 
+ 	\begin{align*}
+ 	f(x) =
+ 	\begin{cases}
+ 	e^{-x}, \hspace{0.5cm} x\geq 0\\
+ 	e^{x}, \hspace{0.5cm} x < 0.
+ 	\end{cases}
+ 	\end{align*}	
+ 	Then
+ 	\begin{align*}
+ 	\hat{f}(\xi) &= \frac{1}{\sqrt{2\pi}}\left(\int^\infty_0 e^{-(x+i\xi)}\,dx + \int^\infty_0 e^{-x + i\xi x}\,dx \right)\\
+ 	&= \frac{1}{\sqrt{2\pi}}\left(\int^\infty_0 e^{-x(1+i\xi)} - e^{-x(1-i\xi)}\,dx\right)\\
+ 	&= \frac{-1}{\sqrt{2\pi}}\left(-\frac{1}{1+i\xi} + \frac{1}{1-i\xi}\right)\\
+ 	&= \frac{1}{2\pi}\frac{-2i\xi}{1+\xi^2}\\
+ 	&= -i\sqrt{\frac{2}{\pi}}\frac{\xi}{1+\xi^2}.
+ 	\end{align*}
+ 	\begin{figure}[h!]
+ 		\centering
+ 		\includegraphics[scale=1]{fourier_2.png}
+ 	\end{figure}
+\end{exmp}
+
+
+
+\newpage
+
+
+\begin{exmp}
+	Consider the Gaussian function
+	\begin{align*}
+	f(x) = e^{-x^2}
+	\end{align*}
+	then we can show
+	\begin{align*}
+	\hat{f}(\xi) = \frac{1}{\sqrt{2}}e^{-(\xi/2)^2}.
+	\end{align*}
+	We say that the Gaussian function is in some sense the ``eigenfunction'' of the Fourier Transform.
+\end{exmp}
+$\,$\\
+
+\begin{prop}
+	\begin{align*}
+	\sqrt{\pi} = \int^\infty_{-\infty}e^{-x^2}\,dx.
+	\end{align*}
+	
+	\begin{proof}
+		\begin{defn}
+			\begin{align*}
+			I = \int^\infty_{-\infty}e^{-x^2}\,dx = \int^\infty_{-\infty}e^{-y^2}\,dy\\
+			\end{align*}
+			So
+			\begin{align*}
+			I^2 = \left(\int^\infty_{-\infty}e^{-x^2}\,dx\right)\left(\int^\infty_{-\infty}e^{-y^2}\,dy\right).
+			\end{align*}
+			So,
+			\begin{align*}
+			I^2 = \iint_{\mathbb{R}}e^{-(x^2+y^2)\,dxdy}
+			\end{align*}
+			We change into polar coordinate
+			\begin{align*}
+			0 \leq r \leq \infty\\
+			0 \leq \theta \leq 2\pi.
+			\end{align*}
+			So
+			\begin{align*}
+			I^2 = \int^\infty_0 \int^{2\pi}_0 e^{-r^2}r\,d\theta dr = -\pi\int^\infty_{-\infty}2re^{-r^2}\,dr = -\pi.
+			\end{align*}
+		\end{defn}
+	\end{proof}
+	
+\end{prop}
+
+
+$\,$\\
+
+
+We have seen that 
+\begin{enumerate}
+	\item $\F$ is a linear map.
+	\item $\F[f'](\xi) = i\xi \F[f](\xi)$
+	\item $\F[f''](\xi) = -\xi^2 \F[f](\xi)$.
+\end{enumerate}
+
+But $\widehat{fg} \neq \hat{f}\hat{g}$. Though this pointwise product isn't preserved under the Fourier Transform, another product is the \textbf{Convolution Product}:
+
+\begin{defn}
+	Given ``nice'' $g,f : \mathbb{R} \to \mathbb{R}$. The convolution of $f$ and $g$, denoted by $f\ast g : \mathbb{R} \to \mathbb{R}$ defined by
+	\begin{align*}
+	(f\ast g)(x) = \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}f(y)g(x-y)\,dy.
+	\end{align*}
+\end{defn}
+
+\begin{prop}
+	\begin{align*}
+	f\ast g = g \ast f.
+	\end{align*}
+\end{prop}
+
+\begin{exmp}
+	\begin{align*}
+	f(x) = x \hspace{0.5cm} g(x) = e^{-x^2}.
+	\end{align*}
+	Then
+	\begin{align*}
+	(f\ast g)(x) &= \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}e^{-y^2}(x-y)\,dy\\
+	&= \frac{x}{\sqrt{2\pi}}\sqrt{\pi}\\
+	&= \frac{x}{\sqrt{2}}.
+	\end{align*}
+\end{exmp}
+
+\begin{thm}
+	 For $f,g$ ``nice'' enough,
+	\begin{align*}
+	\F[f\ast g](\xi) = \hat{f}(\xi)\hat{g}(\xi)
+	\end{align*}
+	\begin{proof}
+		\begin{align*}
+		\F[f\ast g] &= \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}(f\ast g)(x)e^{-i x \xi}\,dx\\
+		&= \frac{1}{\sqrt{2\pi}}\int^\infty_{-\infty}\left(\frac{1}{\sqrt{2\pi}}  \int^\infty_{-\infty}f(y)g(x-y)\,dy \right)e^{-i x \xi}\,dx\\
+		&= \frac{1}{2\pi}\int^\infty_{-\infty}\int^\infty_{-\infty}f(y)g(x-y)e^{-i(x-y)\xi}e^{-iy\xi}\,dydx\\
+		&= 
+		\frac{1}{2\pi}\int^\infty_{-\infty}f(y)e^{-iy\xi}\int^\infty_{-\infty}g(x-y)e^{-i(x-y)\xi}\,dxdy,
+		\end{align*}
+		where the last line comes from Fubini's theorem. Change of variables: $u=x-y$:
+		\begin{align*}
+		\F[f\ast g] = \hat{g}(\xi)\hat{f}(\xi).
+		\end{align*}
+	\end{proof}
+\end{thm}
+
+
+
+
+
+% Mar %
+
 
 
 
