@@ -3670,14 +3670,15 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 	
 	\begin{sln*}
 		$\,$\\
-		Since $\ima(T) = \W + \Z$, $T^{-1}[\W + \Z] = T^{-1}[\ima(T)] = \V$. We also have
+		
+		Since $\ima(T) = \W + \Z$, $T^{-1}[\W + \Z] = T^{-1}[\ima(T)] = \V$. Also,
 		\begin{align*}
 		T^{-1}[\W] &= \left\{ w \in \V \big\vert T(w) \in \W \right\} \subseteq \V\\
 		T^{-1}[\Z] &= \left\{ z \in \V \big\vert T(z) \in \Z \right\} \subseteq \V,
 		\end{align*}
 		which means
 		\begin{align*}
-		T^{-1}[\W] + T^{-1}[\Z] = \left\{ w+z \in \V \big\vert T(w)\in\W, T(z)\in \Z \right\}.
+		T^{-1}[\W] + T^{-1}[\Z] = \left\{ w+z \in \V \big\vert T(w)\in\W, T(z)\in \Z, w,z\in \V \right\}.
 		\end{align*}
 		It follows directly from this definition that 
 		\begin{align*}
@@ -3725,7 +3726,7 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 	\lag_{31} & \lag_{32} & \lag_{33}
 	\end{bmatrix}_\times$? Justify your claims.\\
 	
-	\item Suppose that $\W_1\oplus\W_2\oplus\W_3\oplus = \V$ and the $\W_i$'s are non-trivial subspaces of $\V$. Suppose that for each $i,j\in \{1,2,3\}$:
+	\item Suppose that $\W_1\oplus\W_2\oplus\W_3 = \V$ and the $\W_i$'s are non-trivial subspaces of $\V$. Suppose that for each $i,j\in \{1,2,3\}$:
 	\begin{align*}
 	\lag_{ij} : \W_j \lin \W_i.
 	\end{align*} 
@@ -3764,7 +3765,7 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 		\begin{align*}
 		\lag_{ij} = \Pi_i \circ \lag \circ \gamma_j,
 		\end{align*}
-		where the $\Pi_i$'s and $\gamma_j$'s are coordinate projections onto and injections into $\V$. Let $\V_2 = \V_{2.1} \times \V_{2.2}$. We claim that the matrix-block form of $\lag$ in this case is
+		where the $\Pi_i$'s and $\gamma_j$'s are coordinate projections from $\V$ onto $\V_i$ and injections from $\V_j$ into $\V$. Let $\V_2 = \V_{2.1} \times \V_{2.2}$. We claim that the matrix-block form of $\lag$ in this case is
 		\begin{align*}
 		\begin{bmatrix}
 		\lag_{11} & \lag_{1|2.1} & \lag_{1|2.2} & \lag_{13}\\
@@ -3792,12 +3793,266 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 		\lag_{2.2|2.1} & \lag_{2.2|2.2}
 		\end{bmatrix}.
 		\end{align*}
+		We can mimic what we have done to define $\lag_{ij}$ to define these new block-matrix elements. Let $\delta_{n.m}$ be defined as the coordinate injection from $\V_{n.m}$ into $\V_2$, $n,m \in \{1,2\}$. Also, define $\rho_{n.m}$ as the coordinate projection from $\V$ onto $\V_{n.m}$, $n,m\in \{1,2\}$. Consider the linear function $\lag_{22} : \V_2 \to \V_2$, which we claim to be
+		\begin{align*}
+		\lag_{22} = \begin{bmatrix}
+		\lag_{2.1|2.1} & \lag_{2.1|2.2}\\
+		\lag_{2.2|2.1} & \lag_{2.2|2.2}
+		\end{bmatrix}.
+		\end{align*}
+		By exactly the same way we have defined the $\lag_{ij}$'s of $\lag$ using the coordinate projections and injections, we have
+		\begin{align*}
+		\lag_{2.1|2.1} = \rho_{2.1}\circ \lag_{22} \circ \delta_{2.1}\\
+		\lag_{2.2|2.1} = \rho_{2.2}\circ \lag_{22} \circ \delta_{2.1}\\
+		\lag_{2.1|2.2} = \rho_{2.1}\circ \lag_{22} \circ \delta_{2.2}\\
+		\lag_{2.2|2.2} = \rho_{2.2}\circ \lag_{22} \circ \delta_{2.2}
+		\end{align*}
+		In terms of the linear function $\lag$,
+		\begin{align*}
+		&\lag_{2.1|2.1} = \rho_{2.1}\circ \Pi_2 \circ \lag \circ \gamma_2 \circ \delta_{2.1}\\
+		&\lag_{2.2|2.1} = \rho_{2.2}\circ \Pi_2 \circ \lag \circ \gamma_2 \circ \delta_{2.1}\\
+		&\lag_{2.1|2.2} = \rho_{2.1}\circ \Pi_2 \circ \lag \circ \gamma_2 \circ \delta_{2.2}\\
+		&\lag_{2.2|2.2} = \rho_{2.2}\circ \Pi_2 \circ \lag \circ \gamma_2 \circ \delta_{2.2}.
+		\end{align*}
+		Next, consider $\lag_{i2} = \Pi_i \circ \lag \circ \gamma_2$. We define
+		\begin{align*}
+		&\lag_{i|2.1} = \Pi_i \circ \lag \circ \gamma_2 \circ \delta_{2.1}\\
+		&\lag_{i|2.2} = \Pi_i \circ \lag \circ \gamma_2 \circ \delta_{2.2},
+		\end{align*} 
+		for $i\in \{1,3\}$. Finally, consider $\lag_{2j} = \Pi_2 \circ \lag \circ \gamma_j$. We define
+		\begin{align*}
+		&\lag_{2.1|j} = \rho_{2.1} \circ \Pi_2 \circ \lag \circ \gamma_j\\
+		&\lag_{2.2|j} = \rho_{2.2} \circ \Pi_2 \circ \lag \circ \gamma_j,
+		\end{align*}
+		for $j \in \{1,3\}$. \\
+		
+		We can now verify that $\lag$ can be represented as the 4-block-by-4-block as above. Consider
+		\begin{align*}
+		v = \begin{pmatrix}
+		a \\ \begin{pmatrix}
+		b\\c
+		\end{pmatrix}\\
+		d
+		\end{pmatrix} \in \V_1 \times \V_2 \times \V_3
+		\end{align*}
+		with $\V_2 = \V_{2.1}\times \V_{2.2}$. $v$ can be written as
+		\begin{align*}
+		v = \begin{pmatrix}
+		a \\ \begin{pmatrix}
+		\mathbf{0}\\\mathbf{0}
+		\end{pmatrix}\\
+		\mathbf{0}
+		\end{pmatrix} +
+		\begin{pmatrix}
+		\mathbf{0} \\ \begin{pmatrix}
+		b\\\mathbf{0}
+		\end{pmatrix}\\
+		\mathbf{0}
+		\end{pmatrix} + 
+		\begin{pmatrix}
+		\mathbf{0} \\ \begin{pmatrix}
+		\mathbf{0} \\ c
+		\end{pmatrix}\\
+		\mathbf{0}
+		\end{pmatrix} + 
+		\begin{pmatrix}
+		\mathbf{0} \\ \begin{pmatrix}
+		\mathbf{0} \\ \mathbf{0}
+		\end{pmatrix}\\
+		d
+		\end{pmatrix}.
+		\end{align*}
+		
+		We can check that $\lag(v)$ is the same as applying the 4-block-by-4-block matrix expression to $v$ by going through every term in the above expression of $v$. For example, we can consider $\begin{pmatrix}
+		a & \begin{pmatrix}
+		\mathbf{0} & \mathbf{0}
+		\end{pmatrix}^\top & \mathbf{0}
+		\end{pmatrix}^\top$. Then
+		\begin{align*}
+		\begin{bmatrix}
+		\lag_{11} & \lag_{1|2.1} & \lag_{1|2.2} & \lag_{13}\\
+		\lag_{2.1|1} & \lag_{2.1|2.1} & \lag_{2.1|2.2} & \lag_{2.1|3}\\
+		\lag_{2.2|1} & \lag_{2.2|2.1} & \lag_{2.2|2.2} & \lag_{2.2|3}\\
+		\lag_{31} & \lag_{3|2.1} & \lag_{3|2.2} & \lag_{33}
+		\end{bmatrix}_\times \begin{pmatrix}
+		a \\ \begin{pmatrix}
+		\mathbf{0}\\\mathbf{0}
+		\end{pmatrix}\\
+		\mathbf{0}
+		\end{pmatrix} = \begin{pmatrix}
+		\lag_{11}(a)\\
+		\begin{pmatrix}
+		\lag_{2.1|1}(a)\\
+		\lag_{2.2|1}(a)
+		\end{pmatrix}\\
+		\lag_{31}(a)
+		\end{pmatrix}.
+		\end{align*}
+		We can look at 
+		\begin{align*}
+		\begin{pmatrix}
+		\lag_{2.1|1}(a)\\
+		\lag_{2.2|1}(a)
+		\end{pmatrix} &= 
+		\begin{pmatrix}
+		\rho_{2.1} \circ  \lag \circ \gamma_1(a)\\
+		\rho_{2.2} \circ  \lag \circ \gamma_1(a)
+		\end{pmatrix}\\
+		&=
+		\begin{pmatrix}
+		\rho_{2.1} \circ \Pi_2 \circ \lag_{21}(a)\\
+		\rho_{2.2} \circ \Pi_2 \circ \lag_{21}(a)
+		\end{pmatrix}\\
+		&= \lag_{21}(a), \hspace{0.5cm}\text{by the construction of }\rho_{2.1}, \rho_{2.2}.
+		\end{align*}
+		Hence
+		\begin{align*}
+		\begin{bmatrix}
+		\lag_{11} & \lag_{1|2.1} & \lag_{1|2.2} & \lag_{13}\\
+		\lag_{2.1|1} & \lag_{2.1|2.1} & \lag_{2.1|2.2} & \lag_{2.1|3}\\
+		\lag_{2.2|1} & \lag_{2.2|2.1} & \lag_{2.2|2.2} & \lag_{2.2|3}\\
+		\lag_{31} & \lag_{3|2.1} & \lag_{3|2.2} & \lag_{33}
+		\end{bmatrix}_\times \begin{pmatrix}
+		a \\ \begin{pmatrix}
+		\mathbf{0}\\\mathbf{0}
+		\end{pmatrix}\\
+		\mathbf{0}
+		\end{pmatrix} = \begin{pmatrix}
+		\lag_{11}(a)\\
+		\begin{pmatrix}
+		\lag_{2.1|1}(a)\\
+		\lag_{2.2|1}(a)
+		\end{pmatrix}\\
+		\lag_{31}(a)
+		\end{pmatrix} = \begin{pmatrix}
+		\lag_{11}(a)\\
+		\lag_{21}(a)\\
+		\lag_{31}(a)
+		\end{pmatrix}.
+		\end{align*}
+		We can repeat this checking process and find that the middle two ``columns'' of the 4-by-4 block expression correspond to the second column of the 3-by-3 block expression, and that the last column of the 4-by-4 expression corresponds to the the third column of the 3-by-3 expression.\\
+
+		This will complete our justification.\\ 
 		
 		
 		
 		
 		
-		\item
+		\item From the previous problem set, we know that
+		\begin{align*}
+		\begin{bmatrix}
+		\lag_{11} & \lag_{12} & \lag_{13}\\
+		\lag_{21} & \lag_{22} & \lag_{23}\\
+		\lag_{31} & \lag_{32} & \lag_{33}
+		\end{bmatrix}_\oplus = \maltese \circ \begin{bmatrix}
+		\lag_{11} & \lag_{12} & \lag_{13}\\
+		\lag_{21} & \lag_{22} & \lag_{23}\\
+		\lag_{31} & \lag_{32} & \lag_{33}
+		\end{bmatrix}_\times \circ \maltese^{-1}
+		\end{align*}
+		where $\maltese$ is the isomorphism $\W_1 \times \W_2 \times \W_3 \lin \W_1\oplus\W_2\oplus\W_3$ defined in the last problem set. Since $\W_1 = \W_{1.1}\oplus\W_{1.2}$, we can define a similar isomorphism $\clubsuit : \W_{1.1}\times \W_{1.2} \lin \W_{1.1}\oplus\W_{1.2}$ where for $w_{1.1}\in \W_1$ and $w_{1.2}\in \W_{1.2}$,
+		\begin{align*}
+		\clubsuit\begin{pmatrix}
+		w_{1.1}\\w_{1.2}
+		\end{pmatrix} = w_{1.1} + w_{1.2}.
+		\end{align*}
+		Also, define the linear functions $\sigma_{1.m} := \rho_{1.m}\circ \clubsuit^{-1} : \W_1 \to \W_{1.m}$ and $\omega_{1.m} := \clubsuit \circ \delta_{1.m} : \W_{1.m} \to \W_{1}$, where $\rho_{1.m}$ and $\delta_{1.m}$ are linear functions defined similarly as in Part 1, $m=\{1,2\}$. \\  
+		
+		
+		Considering the previous part of this problem, we know that the block-matrix expression for $\lag_{\times}$ corresponding to $\W_{1} = \W_{1.1}\times \W_{1.2}$ is
+		\begin{align*}
+		\begin{bmatrix}
+		\lag_{1.1|1.1} & \lag_{1.1|1.2} & \lag_{1.1|2} & \lag_{1.1|3}\\
+		\lag_{1.2|1.1} & \lag_{1.2|1.2} & \lag_{1.2|2} & \lag_{1.2|3}\\
+		\lag_{2|1.1} & \lag_{2|1.2} & \lag_{22} & \lag_{23}\\
+		\lag_{3|1.1} & \lag_{3|1.2} & \lag_{32} & \lag_{33}
+		\end{bmatrix}_\times,
+		\end{align*}
+		where the matrix elements are defined in the same way as in Part 1. We claim that the 4-by-4 block-matrix expression for $\lag_{\oplus}$ is
+		\begin{align*}
+		\begin{bmatrix}
+		\lag_{1.1|1.1} & \lag_{1.1|1.2} & \lag_{1.1|2} & \lag_{1.1|3}\\
+		\lag_{1.2|1.1} & \lag_{1.2|1.2} & \lag_{1.2|2} & \lag_{1.2|3}\\
+		\lag_{2|1.1} & \lag_{2|1.2} & \lag_{22} & \lag_{23}\\
+		\lag_{3|1.1} & \lag_{3|1.2} & \lag_{32} & \lag_{33}
+		\end{bmatrix}_\oplus.
+		\end{align*}
+		Recall the linear functions $\E_i := \Pi_i \circ \maltese^{-1} : \V \to \V_i$ and $\K_j := \maltese\circ \gamma_j : \W_j \to \V$ from the last problem set. We have also defined
+		\begin{align*}
+		\lag_{ij} = \E_i \circ \lag_\oplus \circ \K_j.
+		\end{align*}	
+		We claim that 
+		\begin{align*}
+		\lag_{11} = \begin{bmatrix}
+		\lag_{1.1|1.1} & \lag_{1.1|1.2}\\
+		\lag_{1.2|1.1} & \lag_{1.2|1.2}
+		\end{bmatrix}, \lag_{12} = \begin{bmatrix}
+		\lag_{1.1|2}\\ \lag_{1.2|2}
+		\end{bmatrix}, \lag_{13} = \begin{bmatrix}
+		\lag_{1.1|3}\\\lag_{1.2|3}
+		\end{bmatrix},
+		\end{align*}
+		\begin{align*}
+		\lag_{21} = \begin{bmatrix}
+		\lag_{2|1.1}&\lag_{2|1.2}
+		\end{bmatrix}, \lag_{31} = \begin{bmatrix}
+		\lag_{3|1.1}&\lag_{3|1.2}
+		\end{bmatrix}.
+		\end{align*}
+		The definitions of these matrix elements are similar to those in Part 1, except that we have to use the isomorphism $\clubsuit$ to obtain the appropriate inputs for the $\lag_{ij}$'s. Consider the elements of $\lag_{11}$. We claim that
+		\begin{align*}
+		\lag_{1.i|1.j} = \sigma_{1.i} \circ \E_1 \circ \lag_\oplus \circ \K_1 \circ \omega_{1.j}.
+		\end{align*}
+		For the elements of $\lag_{21}$ and $\lag_{31}$, we claim that
+		\begin{align*}
+		\lag_{i|1.j} = \E_i \circ \lag_\oplus \circ \K_{1} \circ \omega_{1.j}.
+		\end{align*}
+		For the elements of $\lag_{12}$ and $\lag_{13}$, we claim that
+		\begin{align*}
+		\lag_{1.i|j} = \sigma_{1.i} \circ \E_1 \circ \lag_\oplus \circ \K_j.
+		\end{align*}
+		The justification for these definitions can be reproduced from the example in Part 1., except instead of consider a $v$ in the Cartesian product, we now considering a $v$ in the direct sum:
+		\begin{align*}
+		v = 
+		\begin{pmatrix}
+		a & \begin{pmatrix}
+		\mathbf{0}\\\mathbf{0}
+		\end{pmatrix}_\clubsuit&
+		\mathbf{0}
+		\end{pmatrix}^\top_\maltese,
+		\end{align*}
+		which can be expressed as
+		\begin{align*}
+		\begin{pmatrix}
+		a & \begin{pmatrix}
+		\mathbf{0}\\\mathbf{0}
+		\end{pmatrix}_\clubsuit&
+		\mathbf{0}
+		\end{pmatrix}^\top_\maltese
+		+
+		\begin{pmatrix}
+		\mathbf{0} & \begin{pmatrix}
+		b\\\mathbf{0}
+		\end{pmatrix}_\clubsuit&
+		\mathbf{0}
+		\end{pmatrix}^\top_\maltese
+		+
+		\begin{pmatrix}
+		\mathbf{0} & \begin{pmatrix}
+		\mathbf{0}\\c
+		\end{pmatrix}_\clubsuit&
+		\mathbf{0}
+		\end{pmatrix}^\top_\maltese
+		+
+		\begin{pmatrix}
+		\mathbf{0} & \begin{pmatrix}
+		\mathbf{0}\\\mathbf{0}
+		\end{pmatrix}_\clubsuit&
+		d
+		\end{pmatrix}^\top_\maltese.
+		\end{align*}
+		Verifying the above definitions is now only a matter of evaluating $\lag_\oplus$ applied to each term in this expression for $v$ and compare the result to the 4-by-4 block representation applied to the same term. This will complete our justification.
+		
 	\end{enumerate}
 \end{sln*}
 \end{prob*}
@@ -3859,7 +4114,7 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 		\end{pmatrix}
 		&=
 		(f\cdot p_1 - g\cdot p_2) + (h\cdot p_1 - k\cdot p_1)\\ 
-		&= (f+h)\cdot p_1 + (g+h)\cdot p_2 \\
+		&= (f+h)\cdot p_1 - (g+k)\cdot p_2 \\
 		&= \psi\begin{pmatrix}
 		f+h\\g+k
 		\end{pmatrix}\\
@@ -3927,9 +4182,9 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 	\end{align*}
 	Let $q_1 = f \in \mathbb{P}_{10}$ and $q_2 = -g \in \mathbb{P}_{5}$, then
 	\begin{align*}
-	q_1 \cdot p_1 + q_2 \cdot p_2 = \mathbb{1},
+	q_1 \cdot p_1 + q_2 \cdot p_2 = \mathbb{1}.
 	\end{align*}
-	verifying the existence of $q_1$ and $q_2$. 
+	This verifies the existence of $q_1$ and $q_2$. 
 \end{enumerate}
 \end{sln*}
 
@@ -3944,7 +4199,7 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 
 \begin{prob*}\textbf{4.}\\
 	\begin{enumerate}
-		\item What would you do to prove the last claim of problem 2 in a general case of non-zero relatively prime polynomials $p_1$ and $p_2$? You do not need to carry out the proof, but you DO need to set it all up along the lines of Problem 2. Make sure you cover all o the cases!
+		\item What would you do to prove the last claim of problem 2 in a general case of non-zero relatively prime polynomials $p_1$ and $p_2$? You do not need to carry out the proof, but you DO need to set it all up along the lines of Problem 2. Make sure you cover all of the cases!
 		\item Prove that the following claims are equivalent.
 		\begin{enumerate}
 			\item Non-zero polynomials $p_1$ and $p_2$ are relatively prime.
@@ -3977,7 +4232,7 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 	\begin{enumerate}
 		\item Case 1: Both $p_1$ and $p_2$ are zero-degree polynomials.\\
 		
-		In this case, $p_1$ and $p_2$ are two constant, non-zero polynomials. Let $p_2(z) = C \in \mathbb{C}$ for any $z\in \mathbb{C}$, $C\neq 0$. If we let $q_1(z)$ be the constant $0$ and $q_2()$ be the constant $1/C$ for any $z\in \mathbb{C}$ then
+		In this case, $p_1$ and $p_2$ are two constant, non-zero polynomials. Let $p_2(z) = C \in \mathbb{C}$ for any $z\in \mathbb{C}$, $C\neq 0$. If we let $q_1(z)$ be the constant $0$ and $q_2(z)$ be the constant $1/C$ for any $z\in \mathbb{C}$ then
 		\begin{align*}
 		q_1(z) p_1(z) + q_2(z)p_2(z) = 0 + \frac{1}{C}C = 0 + 1 = 1,
 		\end{align*}
@@ -4003,12 +4258,12 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 		f \\ g
 		\end{pmatrix} := f \cdot p_1 + g\cdot p_2.
 		\end{align}
-		We can then show that $\psi$ is a linear function. Next, we show that it is injective, which implies surjectivity by the Rank-Nullity Theorem. By the surjectivity of $\psi$, we know that given $\mathbb{1} \in \ima(\psi)$, there must exist a pair $f,-g\in \mathbb{P}_{n-1} \times \mathbb{P}_{m-1}$ such that $\psi\begin{pmatrix}
+		We can then show that $\psi$ is a linear function. Next, we show that it is injective, which implies surjectivity by the Rank-Nullity Theorem. By the surjectivity of $\psi$, we know that given $\mathbb{1} \in \ima(\psi)$, there must exist a pair $f\in \mathbb{P}_{n-1}$,$ -g \in \mathbb{P}_{m-1}$ such that $\psi\begin{pmatrix}
 		f\\-g
 		\end{pmatrix} = \mathbb{1}$. \\
 		
 	\end{enumerate}
-	From parts (a), (b), and (c), we can conclude that there always exist polynomials $q_1$, $q_2$ such that for non-zero relatively prime polynomials $p_1, p_2$, $q_1\cdot p_1 + q_2 \cdot p_2 = \mathbb{1}$.\\
+	From parts (a), (b), and (c), we can conclude that there exist polynomials $q_1$, $q_2$ such that for non-zero relatively prime polynomials $p_1, p_2$, $q_1\cdot p_1 + q_2 \cdot p_2 = \mathbb{1}$.\\
 	
 	
 	\item 
@@ -4063,20 +4318,20 @@ Out[7]= {{1/2, 12, 58, -(88/3)}, {-(15/2), -(93/2), -150, 94},
 	
 	
 	\item \begin{itemize}
-		\item $[a.\implies b.]$ Let non-zero polynomials $f,g,h,q_1,q_2$ be given such that
+		\item $[a.\implies b.]$ Let non-zero polynomials $f,g,h$ be given such that
 		\begin{align*}
-		q_1 \cdot f + q_2 \cdot g = h.
+		q_1 \cdot f + q_2 \cdot g = h,
 		\end{align*}
-		From Part 3., we know that 
+		for some polynomials $q_1, q_2$. From Part 3., we know that 
 		\begin{align*}
 		h = q_1 \cdot f + q_2 \cdot g &= q_1 \cdot \hat{f}\cdot \gcd(f,g) + q_2 \cdot \hat{g}\cdot \gcd(f,g)\\
 		&= (q_1 \cdot \hat{f} + q_2 \cdot \hat{g})\cdot \gcd(f,g),
 		\end{align*}
 		for relatively prime $\hat{f}$ and $\hat{g}$. This implies $h$ is a polynomial multiple of $\gcd(p_1,p_2)$. \\
 		
-		\item $[b.\implies a.]$ Let $h$ be written as $k\cdot \gcd(f,g)$ where $k$ is a non-zero polynomial. From Part 3., there exist polynomials $s_1, s_2$ such that
+		\item $[b.\implies a.]$ Let $h$ be written as $k\cdot \gcd(f,g)$ where $k$ is some polynomial. From Part 3., there exist polynomials $s_1, s_2$ such that
 		\begin{align*}
-		s_1 \cdot f + s_2 \cdot p_2 = \gcd(f,g).
+		s_1 \cdot f + s_2 \cdot g = \gcd(f,g).
 		\end{align*}
 		Multiplying both sides by the polynomial $k$, we have
 		\begin{align*}
