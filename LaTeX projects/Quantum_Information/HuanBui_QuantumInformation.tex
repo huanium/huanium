@@ -10,6 +10,11 @@
 \newtheorem{defn}{Definition}[section]
 \newtheorem{rmk}{Remark}[section]
 \newtheorem{exmp}{Example}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem{prop}{Proposition}[section]
+
+
+
 \usepackage{empheq}
 \usepackage{tensor}
 
@@ -33,7 +38,7 @@
 
 Greetings,\\
 
-\textit{Quantum Information Theory, A Quick Guide to} is compiled based on my own exploration of \textit{Quantum Computation and Quantum Information} by Nielsen and Chuang and John Preskill's Caltech Physics 219/Computer Science 219 lecture notes. There will also be additional elements and structures from \textit{The Theory of Quantum Information} by John Watrous of University of Waterloo and other resources that can be found online. \textit{Quantum Information Theory, A Quick Guide to} requires some understanding of linear algebra, matrix analysis, probability theory, and of course quantum mechanics. There will be review chapters on these topics, but some familiarity is expected.  \\
+\textit{Quantum Information Theory, A Quick Guide to} is compiled based on my own exploration of \textit{Quantum Computation and Quantum Information} by Nielsen and Chuang and John Preskill's Caltech Physics 219/Computer Science 219 lecture notes. There will also be additional elements and structures from \textit{The Theory of Quantum Information} by John Watrous of University of Waterloo, \textit{The Theory of Error-Correcting Codes} by F.J. MacWilliams, N.J.A. Sloane, and other resources that can be found online. \textit{Quantum Information Theory, A Quick Guide to} requires some understanding of linear algebra, matrix analysis, probability theory, and of course quantum mechanics. There will be review chapters on these topics, but some familiarity is expected.  \\
 
 The development of this text comes in different layers. The first layer, that I'm building now in February 2019 and perhaps a better part of my junior year (Fall 2019 to Spring 2020), will on the key concepts and the grand scheme of things. This will be somewhat a survey of what quantum information and quantum computation are and introductory topics in these subjects. Ideas and content will be derived from Nielsen and Chuang's text and Preskill's notes. The later waves of development will focus more on the (numerous) theoretical aspects of quantum information as explored in Watrous' book. \\
 
@@ -45,17 +50,185 @@ Enjoy!
 \newpage
 
 \section{Mathematical Preliminaries}
+\newpage
 \subsection{Linear Algebra \& Matrix Analysis}
+\newpage
 \subsection{Analysis \& Probability Theory}
+\newpage
+
+\section{Classical Coding Theory}
+
+
+
+
+\subsection{History}
+
+
+\subsubsection{Hamming}
+
+\subsubsection{Shannon}
+
+
+
+\subsection{Classical Linear Codes}
+
+We shall restrict our consideration to only binary codes. Consider a binary code where $k$ bits are encoded in a binary string of length $n$, i.e., among $2^n$ strings of length $n$, we have a $2^k$-element subset of strings - or \textbf{codewords}. A $k$-bit message is one of these codewords. \\
+
+For binary codes, this subset of $2^k$ codewords form a subspace $C$ of the finite field $\mathbb{F}^n_2$, i.e., linear combinations of codewords are codewords, i.e., the set of codewords are closed under addition. \\
+
+We note that
+\begin{align}
+\dim(C) = k,
+\end{align}
+i.e., the subspace $C$ is spanned by a basis of $k$ vectors $v_1,v_2,\dots,v_k$, each of length $n$. A general codeword in $C$ can be expressed as
+\begin{align}
+v(\alpha_1,\alpha_2,\alpha_2,\dots,\alpha_k) = \sum_i \alpha_i v_i,
+\end{align}
+for $i\in \{1,2,\dots,k\}$ and $\alpha_i \in \{0,1\}$, and addition is modulo 2. (Remember that we are working with the binary system here.) We should very clear about terminologies here. The \textbf{message} is $\alpha = (\alpha_1,\alpha_2,\dots,\alpha_k)$, while the codeword, or the $n$-length vector $v(\alpha_1,\alpha_2,\dots,\alpha_k)$ encodes the $k$-bit message $\alpha$. In the language of linear algebra, we can think of the message is a coordinatization of a codeword with respect to some basis. Or, the message is encoded as the codeword, by some encoding mechanism, or \textbf{generator}, which we discuss shortly. 
+
+ 
+
+\subsection{Generator Matrix}
+
+As in linear algebra where we can generate an isomorphism by concatenating the basis vectors into an atrix, we can concatenate the $k$ basis vectors $v_1,v_2,\dots , v_k$ into a $k\times n$ matrix
+\begin{align}
+G = \begin{bmatrix}
+v_1\\v_2\\\vdots\\v_k
+\end{bmatrix},
+\end{align}
+called the \textbf{generator matrix} of the code. In matrix notation, a general codeword can now be expressed in terms of $G$:
+\begin{align}
+v(\alpha) = \alpha G.
+\end{align}
+We say that the matrix $G$ encodes the message $\alpha$.\\
+
+Notice how $G$ acts right-to-left. This is due to the fact that $G$ is a concatenation of row, rather than column, vectors. If we were to make $G$ a matrix of $n$-length column vectors, our notation can get very messy. It is conventional to keep $G$ this way. 
+
+
+
+\subsection{Parity-Check Matrix}
+Another way to characterize the $k$-dimensional subspace of $\mathbb{F}^n_2$ is to specify the $n-k$ linear constraints. We define the \textbf{parity-check matrix} such that
+\begin{align}
+Hv = 0
+\end{align}
+for all those and only those vectors $v \in C$. $H$ is called the parity-check matrix of code (subspace) $C$. The rows of $H$ are $n-k$ linearly independent vectors that are \textit{orthogonal} to all vectors in the code space, i.e., $\Im(G)$. Here, \textit{orthogonality} is defined in the binary sense: two $n$-length binary strings are orthogonal if they ``collide,'' i.e., take the value 1, at an evan number of locations.
+
+\begin{exmp}
+	Show that $v_1 = 0110001$ and $v_2 = 0011101$ are orthogonal. \\
+	
+	\begin{sln}
+		The inner product is assumed to be given by
+		\begin{align}
+		\langle v_1 , v_2 \rangle = \sum^7_{n=1}v_{1n}v_{2n} = 0 + 0 + 1 + 0 + 0 + 0 + 1 = 0,
+		\end{align}
+		since $1_2+1_2 = 0_2$ and $1_2\cdot 1_2 = 1_2$ in $\mathbb{F}_2$. So, $v_1$ and $v_2$ are orthogonal codes. \\
+	\end{sln}
+\end{exmp}
+
+
+
+
+
+\begin{prop}
+	The rows of $G$ are orthogonal to the rows of $H$, i.e., 
+	\begin{align}
+	HG^\top = 0.
+	\end{align}
+\end{prop}
+
+As a side note, we notice that $\Im(G) = C = \ker(H)$.
+
+
+\subsection{Errors in Classical Codes and The Syndrome of an Error}
+
+For a classical bit, the only kind of error is a \textbf{bit flip}. We can formally characterize an error occurring to an $n$-length code $v$ by an $n$-length vector $e$ where the 1's in $e$ mark the locations where errors occur in $v$. When afflicted by the error $e$,
+\begin{align}
+v \to v+ e.
+\end{align}
+
+\begin{exmp}
+	Consider the code $v = 0011101$. There is an error on the $2^{nd}$ and $5^{th}$ bits in $v$. Express $v$ in terms of the corrected versipn, $v_c$ and the error $e$.\\
+	
+	\begin{sln}
+		We simply perform 2 bit-flips at positions $2$ and $5$ on the code $v$ and keep a record of the bit flips on $e$.
+		\begin{align}
+		v = 0011101 = v_c + e = 0111001 + 0100100.
+		\end{align}
+	\end{sln}
+\end{exmp}
+
+
+It is natural to ask the question of detecting an error, since we are almost never told whether a received code is error-free. Here's when the parity-check matrix $H$ becomes handy. Recall that $H$ sends a correct codeword in $C$ to 0, so if we express $v = v_C + e$, then
+\begin{align}
+Hv = H(v_C + e) = 0 + He = He.
+\end{align} 
+
+We call $He$ the \textbf{syndrome of the error $e$}. We also let $\mathcal{E}$ denote the set of errors $\{e_i\}$ that we wish to be able to correct. \\
+
+Error correction is possible if all errors $e_i$ have distinct syndromes, i.e., the map $H$ on $\mathcal{E}$ is one-to-one. If this is the case, then given an $He$, we can find the corresponding error $e$ such that given the error code $v = v_C + e$, we can perform an error-correction by performing a correcting bit flip:
+\begin{align}
+(v_C + e) + e = v_C.
+\end{align}
+
+However, in the case of the map $H$ not one-to-one, i.e., $He_1 = He_2$ but $e_1 \neq e_2$, it is not possible to accurately identify the error, i.e., an error $e_1$ can be misinterpreted as $e_2$. In which case, an attempt to recover the correct code will corrupt the code:
+\begin{align}
+(v_C + e_1) + e_2 = v_C + (e_1 + e_2) \neq v_C,
+\end{align} 
+even though $v_C + (e_1 + e_2) \in C$. 
+
+\subsection{Distance of a code}
+
+
+\subsection{Dual code}
+
+\subsection{Finding Generator and Parity-Check Matrices}
+
+\subsection{An example}
+
+
+
+\newpage
+
+
+
+
+
+
 
 \section{Quantum Mechanical Preliminaries}
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Introduction to Quantum Computation and Information}
+\newpage
 \subsection{Quantum bits}
+\newpage
 \subsection{Quantum computation}
+\newpage
 \subsection{Quantum algorithms}
+\newpage
 \subsection{Experimental Quantum Information Processing}
+\newpage
 \subsection{Quantum Information}
+\newpage
 
 \newpage
 
