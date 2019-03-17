@@ -44,6 +44,7 @@
 \newcommand{\lag}{\mathcal{L}}
 \newcommand{\E}{\mathcal{E}}
 \newcommand{\V}{\mathcal{V}}
+\newcommand{\nn}{\nonumber}
 
 %\usepgfplotslibrary{external}
 %\tikzexternalize
@@ -66,7 +67,7 @@
 
 Greetings,\\
 
-\textit{Classical Field Theory, A Quick Guide to} is compiled based on my independent study PH492: Topics in Classical Field Theory notes with professor Robert Bluhm. Sean Carroll's \textit{Spacetime and Geometry: An Introduction to General Relativity}, along with other resources, serves as the main guiding text. This text also references a number of other texts such as \textit{Quantum Field Theory} by Ryder, \textit{Quantum Field Theory} by Mandl and Shaw, \textit{Gauge Theories Of The Strong, Weak, And Electromagnetic Interactions} by Quigg.   \\
+\textit{Classical Field Theory, A Quick Guide to} is compiled based on my independent study PH492: Topics in Classical Field Theory notes with professor Robert Bluhm. Sean Carroll's \textit{Spacetime and Geometry: An Introduction to General Relativity}, along with other resources, serves as the main guiding text. This text also references a number of other texts such as \textit{Quantum Field Theory} by Ryder, \textit{Quantum Field Theory} by Mandl and Shaw, \textit{Gauge Theories Of The Strong, Weak, And Electromagnetic Interactions} by Quigg, \textit{A First Book of Quantum Field Theory} by A. Lahiri and P. B. Pal.   \\
 
 This text is a continuation of \textit{General Relativity and Cosmology, A Quick Guide to}. Familiarity with classical mechanics, linear algebra, vector calculus, and especially general relativity is expected. There will be a quick review of general relativity where important concepts are revisited and important derivations highlighted, but familiarity with basic notions such as geodesics, Christoffel symbols, the Riemann curvature tensors, etc. is assumed. \\ 
 
@@ -279,7 +280,7 @@ where the Hamiltonian density is given by (again, turned from a sum into an inte
 \begin{align}
 \mathcal{H}(x) = \pi_r(x)\dot{\phi_r}(x) - \lag(\phi_r, \phi_{r,a}).
 \end{align}
-\subsection{Symmetries and Conservation Laws}
+\subsection{Symmetries and Conservation Laws (primer)}
 Recall the Heisenberg's equation of motion of an operator $O(t)$:
 \begin{align}
 i\hbar \frac{dO(t)}{dt} = [O(t), H],
@@ -1409,7 +1410,10 @@ This also hints to us that mass comes from some mechanism that breaks gauge symm
 
 \newpage
 
-\section{Symmetries and Conservation Laws}
+\section{Symmetries and Conservation Laws in Field Theory}
+
+\subsection{Hamiltonian formalism (primer)}
+
 \subsection{Overview of Noether's Theorem: A Consequence of Variational Principle}
 So far, we have seen quite a lot of \textit{miraculous} coincidences, such as the fact that the Lagrangian somehow gives the Klein-Gordon equation and so on. We have also made a leap of faith from our traditional point-like description of particles $x^\mu$ to field-like descriptions $\phi$ and somehow the physics hasn't changed, i.e. we recognize that if the action is unchanged by a re-parameterization of $x^\mu$ and $\phi$, then there exist one or more conserved quantities. This is the idea of Noether's theorem. In this subsection we will get an overview of Noether's theorem and apply it to illustrate conservation rules.\\
 
@@ -1597,6 +1601,189 @@ such that $\p_\mu T^{\mu\nu} = 0$ and $T^{\mu\nu}$ is symmetric. We will not go 
 
 \subsection{Noether's Theorem on Symmetries and Conservation Laws}
 
+Informally, Noether's theorem states that every differentiable symmetry of the action of a physical system has a corresponding conservation law. In this subsection we will look at slightly different derivation of Noether's (first) theorem.\\
+
+Consider a general action:
+\begin{align}
+S = \int_\Omega d^x\, \lag\left( \phi^A(x), \p_\mu \phi^A(x)\right).
+\end{align}
+Next, consider infinitesimal spacetime and a transformation:
+\begin{align}
+X^\mu \to X^{'\mu} = X^\mu + \delta X^\mu \nonumber \\
+\phi^A(x) \to \phi^{'A}(x') = \phi^{'A}(x) + \delta \phi^{A}(x).
+\end{align}
+Then
+\begin{align}
+\delta S = \int_{\Omega'} d^4x'\, \lag\left( \phi^{'A}(x'), \p'_\mu \phi^{'A}(x') \right) - \int_\Omega d^4x\, \lag\left( \phi^A(x), \p_\mu \phi^A(x)\right).
+\end{align}
+Now we re-label $x' \to x$, since it is just a dummy variable in the integral:
+\begin{align}
+\delta S &= \int_{\Omega'} d^4x\, \lag\left( \phi^{'A}(x), \p'_\mu \phi^{'A}(x) \right) - \int_\Omega d^4x\, \lag\left( \phi^A(x), \p_\mu\phi^A(x)\right)\nonumber\\
+&= \int_\Omega d^4x\left[\lag\left( \phi^{'A}(x), \p'_\mu \phi^{'A}(x) \right) - \lag\left( \phi^A(x), \p_\mu\phi^A(x)\right)\right] \nonumber\\
+&\hspace{1cm} + \int_{\Omega' - \Omega} d^4x\, \lag\left(\phi^{'A}(x), \p_\mu\phi^{'A}(x) \right).
+\end{align}
+
+Note that
+\begin{align}
+\int_{\Omega'-\Omega}d^x = \int_{\delta \Omega} dS_\lambda\,\delta X^\lambda.
+\end{align}
+So,
+\begin{align}
+\int_{\Omega' - \Omega} d^4x\, \lag\left(\phi^{'A}(x), \p_\mu\phi^{'A}(x) \right) = \int_{\delta \Omega} dS_\lambda\, \delta X^\lambda \lag\left(\phi^{'A}, \p_\mu \phi^{'A}\right),
+\end{align}
+where to leading order terms:
+\begin{align}
+\delta X^\lambda \lag\left(\phi^{'A}, \p_\mu \phi^{'A}\right) = \delta X^\lambda \lag\left(\phi^A, \p_\mu\phi^A\right).
+\end{align}
+By Gauss' law, 
+\begin{align}
+\int_{\delta \Omega} dS_\lambda\, \delta X^\lambda \lag\left(\phi^A, \p_\mu \phi^A \right)  = \int_\Omega d^x\,\p_\lambda \left[ \delta X^\lambda \lag\left(\phi^, \p_\mu\phi^A\right)\right],
+\end{align}
+where $\p_\mu$ denotes the divergence.\\
+
+Next, we define:
+\begin{align}
+\bar{\delta} f(x) &= f'(x) - f(x) \nonumber\\
+&= \left[ f'(x') - f(x) \right] - \left[f'(x') - f'(x)\right]\nonumber\\
+&= \delta f(x) - \p_\mu f(x)\delta X^\mu,
+\end{align}
+where $f'$ denotes a ``new'' $f$ rather than the derivative of $f$ and
+\begin{align}
+\delta f(x) = f'(x') - f(x)
+\end{align}
+\begin{align}
+f'(x') &= f'(x+\delta x)\nonumber\\
+&= f'(x) + \delta X^\mu \p_\mu f'(x)\nonumber\\
+&\approx f'(x) + \delta X^\mu \p_\mu f(x).
+\end{align}
+
+Then we have
+\begin{align}
+&\lag\left(\phi^{'A}, \p'_\mu \phi^{'A}(x)\right) - \lag\left(\phi^A(x),\p_\mu\phi^A(x)\right) \nonumber\\
+=\,\,\,&\lag\left(\phi^A(x) + \bar{\delta}\phi^A(x), \p_\mu\phi^A + \bar{\delta}\p_\mu\phi^A \right) - \lag\left(\phi^A(x), \p_\mu \phi^A(x)\right).
+\end{align}
+Since $\bar{\delta}$ and $\p_\mu$ commute, we have
+\begin{align}
+&\lag\left(\phi^{'A}, \p'_\mu \phi^{'A}(x)\right) - \lag\left(\phi^A(x),\p_\mu\phi^A(x)\right) \nonumber\\
+=\,\,\,&\lag\left( \phi^A(x) + \bar{\delta}\phi^A(x), \p_\mu\phi^A + \p_\mu\bar{\delta}\phi^A\right) - \lag\left(\phi^A(x), \p_\mu \phi^A(x)\right)\nonumber\\
+\approx\,\,\,& \lag\left(\phi^A, \p_\mu\phi^A\right) + \frac{\p \lag}{\p \phi^A}\bar{\delta}\phi^A + \frac{\p \lag}{\p (\p_\mu \phi^A)}\p_\mu (\bar{\delta}\phi^A) - \lag\left(\phi^A, \p_\mu\phi^A \right) \nn \\
+=\,\,\,& \left(\frac{\p \lag }{\p \phi^A} - \p_\mu\frac{\p \lag}{\p( \p_\mu \phi^A) }\right)\bar{\delta}\phi^A + \left(\p_\mu \frac{\p \lag}{\p( \p_\mu \phi^A)}\bar{\delta}\phi^A + \frac{\p \lag}{\p( \p_\mu \phi^A)}\p_\mu\phi^A\right)\nn\\
+=\,\,\, & \left(\frac{\p \lag }{\p \phi^A} - \p_\mu\frac{\p \lag}{\p( \p_\mu \phi^A )}\right)\bar{\delta}\phi^A + \p_\mu \left(\frac{\p \lag}{\p( \p_\mu \phi^A)}\bar{\delta}\phi^A\right),
+\end{align}
+where the last equality comes from doing reverse product rule.\\
+
+Putting everything together,
+\begin{align}
+\delta S &= \int_\Omega d^4x\,\left(\frac{\p \lag}{\p \phi^A} - \p_\mu \frac{\p \lag}{\p( \p_\mu\phi^A)}\right)\bar{\delta}\phi^A + \int_\Omega d^4x\,\p_\mu \left(\frac{\p \lag}{\p( \p_\mu\phi^A)}\bar{\delta}\phi^A\right)\nn\\
+&\hspace{1cm} + \int_{\Omega' - \Omega}d^4x \, p_\mu \left(\delta X^\mu \lag\right)\nn\\
+&= \int_\Omega d^4x\, \left(\frac{\p \lag}{\p \phi^A} - \p_\mu \frac{\p \lag}{\p( \p_\mu\phi^A)}\right)\bar{\delta}\phi^A + \int_\Omega d^4x\, \p_\mu\left[\frac{\p \lag}{\p( \p_\mu \phi^A)} \bar{\delta}\phi^A + \lag \delta X^\mu\right].
+\end{align}
+Now, use $\bar{\delta}\phi^A \equiv \delta \phi^A - \p_\mu \phi^A \delta X^\mu$, then
+\begin{align}
+&\p_\mu\left[\frac{\p \lag}{\p( \p_\mu \phi^A)} \bar{\delta}\phi^A + \lag \delta X^\mu\right]\nn\\
+=\,\,\, & \p_\mu \left[ \frac{\p \lag}{\p( \p_\mu\phi^A)}\delta \phi^A - \frac{\p \lag}{\p( \p_\mu \phi^A)}(\p_\nu \phi^A)( \delta X^\nu) + \lag \delta X^\mu\right]\nn\\
+=\,\,\, & \p_\mu \left(\frac{\p \lag}{\p( \p_\mu\phi^A)}\delta \phi^A \right) - \p_\mu\left[\left(\frac{\p \lag}{\p( \p_\mu \phi^A)}\p^\nu\phi^A - \eta^{\mu\nu}\lag\right)\delta X_\nu\right].
+\end{align}
+Let us call
+\begin{align}
+\boxed{T^{\mu\nu} = \frac{\p \lag}{\p( \p_\mu\phi^A)}\p^\nu\phi^A - \eta^{\mu\nu}\lag}
+\end{align}
+the \textbf{energy-momentum stress tensor}. Then the variation in the action becomes
+\begin{align}
+\delta S = \int_\Omega d^4x\,\left(\frac{\p \lag}{\p( \p_\mu \phi^A)} - \p_\mu\frac{\p \lag}{\p( \p_\mu\phi^A)}\right)\bar{\delta}\phi^A + \int_\Omega d^4x\, \p_\mu\left(\frac{\p \lag}{\p( \p_\mu\phi^A)} - T^{\mu\nu}\delta X_\nu\right).
+\end{align}
+Let us define the \textbf{4-current}
+\begin{align}
+\boxed{J^\mu = \frac{\p \lag}{\p( \p_\mu\phi^A)} - T^{\mu\nu}\delta X_\nu}
+\end{align}
+Then we get
+\begin{align}
+\boxed{\delta S = \int_\Omega d^4x\,\left(\frac{\p \lag}{\p( \p_\mu \phi^A)} - \p_\mu\frac{\p \lag}{\p( \p_\mu\phi^A)}\right)\bar{\delta}\phi^A
++ \int_\Omega d^4x\,\p_\mu J^\mu}
+\end{align}
+where $\p_\mu J^\mu$ is the divergence of $J$. \\
+
+If we require the action be invariant under transformations such as
+\begin{align}
+\phi^A \to \phi^A + \delta \phi^A
+\end{align}
+and/or 
+\begin{align}
+X^\mu \to X^\mu + \delta X^\mu
+\end{align}
+then $\delta S = 0$. And if $\phi^A$ is on shell and obeys the equations of motion, then the integrand in the first term of the action is also zero (this is just the Euler-Lagrange equation)
+\begin{align}
+\frac{\p \lag}{\p( \p_\mu \phi^A)} - \p_\mu\frac{\p \lag}{\p( \p_\mu\phi^A)} = 0.
+\end{align}
+These together give a conserved current, i.e. the four-current is divergence free:
+\begin{align}
+\boxed{\p_\mu J^\mu = 0}
+\end{align}
+This is a major stepping stone towards the result of Noether's first theorem:
+
+\begin{thm}
+	When a theory has a symmetry and the equations of motion hold, there exists a conserved quantity. 
+\end{thm}
+
+So what is this conserved quantity in the theory we are working with? Consider $\p_\mu J^\mu = 0$, then
+\begin{align}
+\int d^3x \, \p_\mu J^\mu &= 0\nn\\
+\int d^3x \left(\p_0 J^0 + \p_j J^j\right) &= 0\nn\\
+\frac{d}{dt}\int d^3x\, J^0 + \int d^3x\, \p_j J^j &= 0\nn\\
+\frac{d}{dt}\int d^3x\, J^0 + \int d^3x\, \div{\vec{J}} &= 0.
+\end{align}
+Let $J^\mu = (\rho,\vec{J})$, where $\rho$ is the \textbf{charge density}, then
+\begin{align}
+\frac{d}{dt}\int d^3x\, \rho + \int d^3x\, \div{\vec{J}} &= 0\nn\\
+\frac{dQ}{dt} + \int_S d\vec{A}\cdot \vec{J} &= 0,
+\end{align}
+where we have used Gauss' law on the second term. Now, since we want $\vec{J} \to \vec{0}$ on the boundary for the field to be physical, the second term on the left hand side is just going to be zero. This implies that
+\begin{align}
+\boxed{\frac{dQ}{dt} = 0}
+\end{align}
+We have the conservation of charge. \\
+
+In the following subsubsection, we shall consider a few illuminating examples to see how for every symmetry, we can obtain a conserved quantity, as Noether's theorem says.\\
+
+\subsubsection{Space-time translations}
+
+
+
+
+
+\subsubsection{Lorentz transformations}
+
+
+
+
+
+\subsubsection{Internal symmetries}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 
 
@@ -1614,7 +1801,7 @@ V(\phi) = V(-\phi),
 \end{align}
 Then by inspection the Lagrangian is also invariant under parity transformations:
 \begin{align}
-\lag' &= \frac{1}{2}(-\p_\mu\phi)(-p^\mu\phi) - V(-\phi)\\
+\lag' &= \frac{1}{2}(-\p_\mu\phi)(-\p^\mu\phi) - V(-\phi)\\
 &= \frac{1}{2}(\p_\mu\phi)(\p^\mu\phi) - V(\phi)\\
 &= \lag.
 \end{align}
@@ -1624,7 +1811,9 @@ V(\phi) = \frac{1}{2}m^2\phi^2 + \frac{1}{4}\lambda\phi^4
 \end{align}
 where $m^2 > 0, \lambda > 0$. If we plot $V(\phi)$ versus $\phi$, we see that there is a unique minimum at $\phi = 0$. 
 \begin{figure}[h!]
-	FIGURE HERE
+	\centering
+	\includegraphics[scale=1]{curve2.png}
+	\caption{Plot of potential $V(\phi\cdot \phi)$ with $m^2 > 0$. We notice a unique global minimum.}
 \end{figure}
 
 The ground state, or the state of lowest energy, in field theory is called the \textbf{vacuum expectation value}, denoted $\langle \phi \rangle$. In our example the state of lowest energy has zero energy, so
@@ -1645,10 +1834,16 @@ Now, let us suppose that
 \begin{align}
 V(\phi) = -\frac{1}{2}m^2\phi^2 + \frac{1}{4}\lambda \phi^4
 \end{align}
-then the plot of $V(\phi)$ versus $\phi$ becomes
+then the plot of $V(\phi)$ versus $\phi$ becomes Figure \ref{curve}.\\
 \begin{figure}[h!]
-	FIGURE HERE
+	\centering
+	\includegraphics[scale=1]{curve.png}
+	\caption{Plot of potential $V(\phi\cdot \phi)$ with $m^2 < 0$. We notice two global minima.}
+	\label{curve}
 \end{figure}
+
+
+
 We observe that there are two possible vacuum solutions. So, we might wonder, well, which one is the vacuum solution? While either one \textit{can} be a solution, nature spontaneously picks one. Let us look at what which $\phi$'s does $V(\phi)$ obtain minimal values:
 \begin{align}
 \frac{dV}{d\phi} = m^2\phi + \lambda \phi^3 = 0,
@@ -3304,6 +3499,45 @@ which describes a massive particle with a vector field.\\
 
 
 
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+\subsection{Euler-Lagrange Equations (A. Lahiri + P. B. Pal)}
+
+
+
+\newpage
+
+
+\subsection{Hamiltonian Formalism (A. Lahiri + P. B. Pal)}
+
+
+
+\newpage
+
+
+
+\subsection{Noether's Theorem (A. Lahiri + P. B. Pal)}
+
+\subsubsection{Space-time translations}
+
+\subsection{Lorentz transformations}
+
+\subsection{Internal symmetries}
+
+
+
+\newpage
 
 
 
