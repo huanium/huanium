@@ -3192,7 +3192,7 @@ For large time, $u(t,x) \approx 0$. Precisely, heat diffuses to zero:
 		\item $y'' - \lambda y = 0\hspace{0.5cm} y(0) + y'(0) = 0, y(1) = 0.$\\
 		
 		\begin{sln*}
-			First, we identity:
+			First, we identify:
 			\begin{align*}
 			&p(x) = 1,\hspace{0.5cm} q(x) = 0,\hspace{0.5cm} r(x) = -1.\\
 			&a_1 = 1\hspace{0.5cm} b_1 = 1,\hspace{0.5cm}a_2 = 1,\hspace{0.5cm} b_2 = 0.
@@ -3309,7 +3309,7 @@ For large time, $u(t,x) \approx 0$. Precisely, heat diffuses to zero:
 		\item $y'' + \lambda y = 0\hspace{0.5cm} y'(0) = 0, y(1) + y'(1) = 0. $\\
 		\noindent\rule{\textwidth}{0.5pt}
 		\begin{sln*}
-			First, we identity:
+			First, we identify:
 			\begin{align*}
 			&p(x) = 1,\hspace{0.5cm} q(x) = 0,\hspace{0.5cm} r(x) = 1.\\
 			&a_1 = 0\hspace{0.5cm} b_1 = 1,\hspace{0.5cm}a_2 = 1,\hspace{0.5cm} b_2 = 1.
@@ -3345,7 +3345,7 @@ For large time, $u(t,x) \approx 0$. Precisely, heat diffuses to zero:
 			\end{pmatrix} = A\begin{pmatrix}
 			C_1\\C_2
 			\end{pmatrix} = \begin{pmatrix}
-			-\sqrt{\lambda} &  \sqrt{\lambda}  \\  \cos\sqrt{\lambda} - \sqrt{\lambda}\sin\sqrt{\lambda}  & \sin\sqrt{\lambda} + \sqrt{\lambda}\cos\sqrt{\lambda}
+			0 &  \sqrt{\lambda}  \\  \cos\sqrt{\lambda} - \sqrt{\lambda}\sin\sqrt{\lambda}  & \sin\sqrt{\lambda} + \sqrt{\lambda}\cos\sqrt{\lambda}
 			\end{pmatrix}
 			\begin{pmatrix}
 			C_1\\C_2
@@ -3353,56 +3353,21 @@ For large time, $u(t,x) \approx 0$. Precisely, heat diffuses to zero:
 			\end{align*}
 			To get non-trivial solutions, we require $\det(A) = 0$, i.e., 
 			\begin{align*}
-			0 &= -\sqrt{\lambda}(\sin\sqrt{\lambda} + \sqrt{\lambda}\cos\sqrt{\lambda} ) - \sqrt{\lambda}(\cos\sqrt{\lambda} - \sqrt{\lambda}\sin\sqrt{\lambda})\\
-			0 &=  \sin\sqrt{\lambda} + \sqrt{\lambda}\cos\sqrt{\lambda} + \cos\sqrt{\lambda} - \sqrt{\lambda}\sin\sqrt{\lambda}\\
-			0 &= (1-\sqrt{\lambda})\sin\sqrt{\lambda} + (1+\sqrt{\lambda})\cos\sqrt{\lambda}.
+			0 =  - \sqrt{\lambda}(\cos\sqrt{\lambda} - \sqrt{\lambda}\sin\sqrt{\lambda}).
 			\end{align*}
 			This means
 			\begin{align*}
-			\boxed{\tan\sqrt{\lambda} = \frac{\sqrt{\lambda} + 1}{\sqrt{\lambda} - 1}}
+			\boxed{\tan\sqrt{\lambda} = \f{1}{\sqrt{\lambda}}}
 			\end{align*}
 			Numerically approximate in Mathematica gives
 			\begin{empheq}[box=\fbox]{align} 
-			&\lambda_1 \approx 1.97184\nonumber\\
+			&\lambda_1 \approx --- \nonumber\\
 			&\lambda_n \approx n \hspace{0.5cm} n \text{ large}\nonumber 
 			\end{empheq}
-			While we can't find $C_1$ and $C_2$ exactly, we can find their ratio from the linear system:
-			\begin{align*}
-			\frac{C_1}{C_2} = \frac{-\sqrt{\lambda}}{-\sqrt{\lambda}} = 1.
-			\end{align*}
-			The unnormalized eigenfunction thus has the form
-			\begin{align*}
-			y_n(x,\lambda_n) = \cos\sqrt{\lambda_n} x + \sin\sqrt{\lambda_n} x.
-			\end{align*}
-			The normalizing condition requires
-			\begin{align*}
-			1 = \int^1_0 \cos\sqrt{\lambda_n} x + \sin\sqrt{\lambda_n}  x\,dx.
-			\end{align*}
-			Integrating and normalizing gives the form for an eigenfunction:
-			\begin{align*}
-			\boxed{ \frac{\sqrt{\lambda_n}}{1 - \cos\sqrt{\lambda_n} + \sin\sqrt{\lambda_n}}\left( \cos\sqrt{\lambda_n} x + \sin\sqrt{\lambda_n} x \right) }
-			\end{align*}
 			
-			Mathematica code:
-			\begin{lstlisting}
-			tan[L_] := Tan[Sqrt[L]] - (Sqrt[L] + 1)/(Sqrt[L] - 1); 
-			inv = 0.000000001; FindRoot[
-			tan[L] == inv, {L, 2}]
-			{L -> 1.97184}
+			NEEDS SOME CORRECTION HERE
 			
-			Show[Plot[Tan[Sqrt[L]], {L, 0, 10}], 
-			Plot[(Sqrt[L] + 1)/(Sqrt[L] - 1), {L, 0, 10}]]
-			
-			Integrate[Cos[L*x] + Sin[L*x], {x, 0, 1}]
-			(1 - Cos[L] + Sin[L])/L
-			\end{lstlisting}
-			\begin{figure}[h!]
-				\centering
-				\includegraphics[scale=0.7]{pde_3_2.png}
-			\end{figure}
 		\end{sln*}
-		
-		
 		
 		
 		
@@ -3651,23 +3616,16 @@ For large time, $u(t,x) \approx 0$. Precisely, heat diffuses to zero:
 		\end{align*}
 		The PDE tells us that
 		\begin{align*}
-		T_t X = X_{xx} T - XT.
-		\end{align*}
-		Applying the BCs, we get
-		\begin{align*}
-		\begin{cases}
-		T_t(t)X(0) = X_{xx}(0)T(t)\\
-		T_t(t)X(1) = X_{xx}(1)T(t),
-		\end{cases}
+		T_t X = X_{xx} T - XT,
 		\end{align*}
 		i.e.,
 		\begin{align*}
-		\frac{T_t(t)}{T(t)} = \frac{X_{xx}}{X} = -\lambda^2,
+		\f{T_t}{T} = \f{X_{xx}}{X} - 1 = -\lambda^2 - 1.
 		\end{align*}
-		where $\mu$ is a constant. So,
+		where $\lambda$ is a constant. So,
 		\begin{align*}
 		\begin{cases}
-		T(t) = e^{-\lambda^2 t}\\
+		T(t) = e^{-(\lambda^2 + 1)t}\\
 		X(x) = A\cos\lambda x + B\sin\lambda x
 		\end{cases}
 		\end{align*}
@@ -3678,7 +3636,7 @@ For large time, $u(t,x) \approx 0$. Precisely, heat diffuses to zero:
 		\end{align*}
 		So the general solution (to the homogeneous case)is
 		\begin{align*}
-		u(x,t) = \sum_{n=0}^\infty e^{-(n\pi)^2 t}B_n \sin(n\pi x),
+		u(x,t) = \sum_{n=0}^\infty e^{-((n\pi)^2 + 1)  t}B_n \sin(n\pi x),
 		\end{align*}
 		where $B_n$ can be solved by applying the IC:
 		\begin{align*}
@@ -3692,17 +3650,8 @@ For large time, $u(t,x) \approx 0$. Precisely, heat diffuses to zero:
 		\end{align*}
 		So the solution to the homogeneous PDE is
 		\begin{align*}
-		u(x,t) = e^{-\pi^2 t}\sin(\pi x).
+		\boxed{u(x,t) = e^{-(\pi^2 + 1) t}\sin(\pi x)}.
 		\end{align*}
-		Since we have essentially been treating this IBVP as one with a homogeneous PDE, we should check whether our general solution satisfies the PDE:
-		\begin{align*}
-		u_t &= u_{xx} - u\\
-		-\pi^2 u &\neq -(\pi^2 + 1)u.
-		\end{align*} 
-		We see that the solution to the homogeneous case does not quite work yet. However, we notice that multiplying the existing solution by $e^{-t}$ can ``fix'' this problem without changing the spatial part of the solution. So, the working solution is
-		\begin{align*}
-		\boxed{u(x,t) = e^{-(\pi^2 +1 )t}\sin\pi x}
-		\end{align*} 
 		Now, if we apply the transformation $u(x,t) = e^{-t}w(x,t)$ in advance, then the extra factor of $e^{-t}$ will be taken care of in advance, and the IBVP will be transformed into one with both homogeneous PDE and BCs that involves $w(x,t)$ rather than $v(x,t)$. First, we can look at how the PDE changes:
 		\begin{align*}
 		u_t &\to -e^{-t}w(x,t) + e^{-t}w_t(x,t)\\
@@ -4134,6 +4083,46 @@ Out[12]= {0, 1/\[Pi], -(1/(2 \[Pi])), 1/(3 \[Pi]), -(1/(4 \[Pi])), 1/(
 
 \newpage
 \subsection{Problem set 5}
+
+\begin{exer*}
+	\begin{sln*}
+		hello
+	\end{sln*}
+\end{exer*}
+
+\newpage
+
+\begin{exer*}
+	\begin{sln*}
+		hello
+	\end{sln*}
+\end{exer*}
+
+\newpage
+
+\begin{exer*}
+	\begin{sln*}
+		hello
+	\end{sln*}
+\end{exer*}
+
+\newpage
+
+\begin{exer*}
+	\begin{sln*}
+		hello
+	\end{sln*}
+\end{exer*}
+
+\newpage
+
+
+
+
+
+
+
+
 
 
 
