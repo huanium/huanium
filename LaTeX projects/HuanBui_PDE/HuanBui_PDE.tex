@@ -2220,7 +2220,7 @@ But $\widehat{fg} \neq \hat{f}\hat{g}$. Though this pointwise product isn't pres
 
 
 
-% Mar 18, 2019%
+
 
 
 %\newcommand{\o}{\omega}
@@ -2247,15 +2247,112 @@ But $\widehat{fg} \neq \hat{f}\hat{g}$. Though this pointwise product isn't pres
 
 
 
+% Mar 18, 2019%
+
+
+\section{Application of the Fourier Transform:}
+
+Consider the PDE:
+\begin{align*}
+&u_t = \alpha^2 u_{xx}, \hspace{0.5cm} t>0, x\in \R\\
+&u_0(x) = u_0(x), \hspace{0.5cm} x\in \R.
+\end{align*}
+There is an implicit assumption that $u(t,x)$ is integrable on $(-\ift, \ift)$ for each $t$. In particular, the tails of $u(t,x)$ are small so that we can apply the Fourier Transform.\\
+
+Let's apply the FT to the PDE, in the $x$-variable. Sometimes this is called the partial FT in the literature. So, writing $U(t,\xi) = \F[u(t,x)](\xi)$, we have that
+
+\begin{align*}
+\F[u_t](\xi) &= \F_x[u_t](\xi) = \f{1}{\sqrt{2\pi}}\int_\R u_t(t,x) e^{-i x \xi}\,dx\\
+&= \f{\p}{\p t}\f{1}{\sqrt{2\pi}}\int_\R u(t,x)e^{-ix\xi}\,dx\\
+&= \f{\p}{\p t}\F[u](\xi)\\
+&= \f{\p}{\p t}U(t,\xi).
+\end{align*}
+Also, we have
+\begin{align*}
+\F[\alpha^2 u_{xx}(t.x)](\xi) &= \alpha^2 \F[u_xx(t,x)](\xi)\\
+&= \alpha^2(-\xi^2)\F[u(t,x)](\xi), \hspace{0.5cm}\text{from last week...}\\
+&= -\al^2\xi^2 U(t,\xi).
+\end{align*}
+So, together we have
+\begin{align*}
+\F[u_t](\xi) = \F[\alpha^2 u_{xx}(t.x)](\xi) \implies \f{\p}{\p t}U(t,\xi) = -\al^2\xi^2 U(t,\xi)
+\end{align*}
+when $U(t,\xi) = \F[u(t,x)](\xi)$. Notice that this is an ODE in the variable $t$ for each fixed $\xi$. We can ask, what about initial conditions? Note the following:
+\begin{align*}
+U(0,\xi) = \F[u(0,x)](\xi) = \F[u_0(x)](\xi) = \hat{u}_0(\xi).
+\end{align*}
+So, we have converted the initial IBVP into an IVP for each fixed $\xi$ given above. That means we wish to solve the following IVP:
 \begin{align}
-\ift\lp \lb\lc\f{hello}{goodbye}\rc\rb \rp \\
-\exp(hello)\\
-\w\\
-\lam\\
-\al\\
-\be\\
-\x
+\begin{cases}
+\f{\p}{\p t}U(t,\xi) = -\al^2\xi^2 U(t,\xi) \\
+U(0,\xi) = \hat{u}_0(\xi).
+\end{cases}
 \end{align}
+The solution to this IVP, for each $\xi$ is
+\begin{align*}
+U(t,\xi) = \hat{u}_0(\xi)e^{-\al^2 \xi^2 t}.
+\end{align*}
+So now we take the inverse:
+\begin{align*}
+u(t,x) = \F^{-1}[U(t,\xi)](x) = \F^{-1}\lb \hat{u}_0(\xi)e^{-\al^2 \xi^2 t} \rb(x).
+\end{align*}
+By our \textbf{convolution/multiplication} property, it is necessary that 
+\begin{align*}
+u(t,x) = \lp \F^{-1}[\hat{u}_0] \rp \ast \lp \F^{-1}\lb e^{-\al^2\xi^2 t} \rb \rp(x).
+\end{align*}
+But of course,
+\begin{align*}
+\F^{-1}[\hat{u}_0](x) = u_0(x).
+\end{align*}
+Second,
+\begin{align*}
+\F^{-1}\lb e^{-\al^2\xi^2 t} \rb(x) &= \f{1}{\sqrt{2\pi}}\int_\R e^{-\al^2\xi^2 t}e^{i\xi x}\,d\xi.
+\end{align*}
+Change of variables: letting $\xi \to -\al\sqrt{t}\,\xi = s$. So, $ds = -\al \sqrt{t}\,d\xi$. So,
+\begin{align*}
+\F^{-1}\lb e^{-\al^2\xi^2 t} \rb(x) 
+&= \f{1}{\sqrt{2\pi}} \f{1}{\al\sqrt{t}}\int_{\R}e^{-s^2}e^{-ix(s/\al\sqrt{t})}\,ds, \hspace{0.5cm}\text{we've added (-) \& flipped bounds}\\
+&= \f{1}{\al\sqrt{t}}\lb \f{1}{\sqrt{2\pi}} \int_{\R}e^{-s^2}e^{i(x/\al\sqrt{t})s}\,ds \rb\\
+&= \f{1}{\al\sqrt{t}}\lb \F[e^{-s^2}]\lp \f{x}{\al \sqrt{t}} \rp  \rb\\
+&= \f{1}{\al\sqrt{t}}\f{1}{\sqrt{2}} e^{-(x/\al\sqrt{t})^2/2^2}\\
+&= \frac{1}{\al \sqrt{2t}}e^{-x^2/4\al^2 t}\\
+&= H_t(x).
+\end{align*} 
+This is called the \textbf{heat kernel}. \\
+
+So,
+\begin{align*}
+u(t,x) &= (u_0 \ast H_t)(x)\\
+&= \f{1}{\sqrt{2\pi}} \int_\R u_0(y)H_t(x-y)\,dy\\
+&= \f{1}{\sqrt{2\pi}} \int_\R u_0(y)\frac{1}{\al \sqrt{2t}}e^{-(x-y)^2/4\al^2 t}\,dy\\
+&= \f{1}{2\al\sqrt{\pi t}} \int^\ift_{-\ift} u_0(y)e^{-(x-y)^2/4\al^2 t}\,dy.
+\end{align*}
+For small $t$, and $\al = 1$
+\begin{align*}
+u(t,x) = \f{1}{2\sqrt{\pi t}}\int_\R u_0(y)e^{-(x-y)^2/4t}\,dy,
+\end{align*}
+which concentrates the integral around $x=y$, so that
+\begin{align*}
+u(t,x) \approx \int u_0(y)\delta(x-y)\,dy = u_0(x).
+\end{align*}
+Precisely, 
+\begin{align*}
+\lim_{t\to 0}u(t,x) = u_0(x).
+\end{align*}
+For large time, $u(t,x) \approx 0$. Precisely, heat diffuses to zero:
+\begin{align*}
+\lim_{t\to \ift}u(t,x) = 0.
+\end{align*}
+
+
+% After Spring break % 
+
+
+
+
+
+
+
 
 
 
