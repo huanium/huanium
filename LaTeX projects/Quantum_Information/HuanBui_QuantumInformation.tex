@@ -12,7 +12,7 @@
 \newtheorem{exmp}{Example}[section]
 \newtheorem{sln}{Solution}[section]
 \newtheorem{prop}{Proposition}[section]
-
+\newtheorem{thm}{Theorem}[section]
 
 
 \usepackage{empheq}
@@ -136,8 +136,6 @@ for all those and only those vectors $v \in C$. $H$ is called the parity-check m
 	\end{align}
 \end{prop}
 
-As a side note, we notice that $\Im(G) = C = \ker(H)$.
-
 
 \subsection{Errors in Classical Codes and The Syndrome of an Error}
 
@@ -177,9 +175,51 @@ However, in the case of the map $H$ not one-to-one, i.e., $He_1 = He_2$ but $e_1
 even though $v_C + (e_1 + e_2) \in C$. 
 
 \subsection{Distance of a code}
+The \textit{distance} $d$ of a code $C$ is the minimum weight of any vector $v\in C$, where the \textit{weight} is the number of 1's in the string $v$.\\
 
+\begin{thm}
+	A code with minimum distance $d = 2t+1$ can correct $t$ errors; the code assigns a distinct syndrome to each $e \in \mathcal{E}$, where each $\mathcal{E}$ contains all vectors of weight $t$ or less. 
+	
+	\begin{proof}
+		Sketch: If $He_1 = He_2$, then
+		\begin{align}
+		0 = He_1 + He_2 = H(e_1 + e_2),
+		\end{align}
+		and therefore $e_1 + e_2 \in C$. But if $e_1$ and $e_2$ are unequal and each has weight no larger than $t$, then the weight of $e_1 + e_2$ is greater than zero and no larger than $2t$. Since $d = 2t+1$, there is no such vector in $C$. Therefore $He_1$ and $He_2$ cannot be equal.
+	\end{proof}
+\end{thm}
 
 \subsection{Dual code}
+We have seen that 
+\begin{align}
+HG^\top = 0.
+\end{align}
+Taking the transpose, we get
+\begin{align}
+GH^\top = 0.
+\end{align}
+In this point of view, we can think of $H^\top$ as the \textit{generator matrix} and $G$ as the \textit{parity-check matrix} of an $n-k$-dimensional code, denoted $C^\perp$ and called \textbf{the dual of $C$}. $C^\perp$ is the orthogonal complement of $C$ in $\mathbb{F}_2$. We note that $C$ and $C^\perp$ can intersect, since a vector can be self-orthogonal (if it has even weight). \\
+
+A code contains its dual if all of its codewords have even weight and are mutually orthogonal. If $n=2k$, it is possible tat $C = C^\perp$, in which case we say $C$ is \textit{self-dual}. We note this formally as
+\begin{align}
+\sum_{v\in C}(-1)^{v\cdot v} = \begin{cases}
+2^k,\hspace{0.5cm} u\in C^\perp\\
+0,\hspace{0.5cm} u\notin C^\perp.
+\end{cases}
+\end{align}
+The non-trivial content of the identity is the statement that the sum vanishes for $u\notin C^\perp$. This follows because
+\begin{align}
+\sum_{v\in\{0,1\}^k}(-1)^{v\cdot w} = 0, \hspace{0.5cm}w\neq 0,
+\end{align}
+where $u,w$ are strings of length $k$. We can express $v\in G$ as $v = \alpha G$, where $\alpha$ is a $k$-vector. Then
+\begin{align}
+\sum_{v\in C}(-1)^{v\cdot u} = \sum_{\alpha \in \{0,1\}^k} (-1)^{\alpha\cdot Gu} = 0,
+\end{align}
+for $Gu \neq 0$. Since $G$ the generator matrix of $C$ is the parity check matrix for $C^\top$, we conclude that the sum vanishes for $u\notin C^\perp$.
+
+
+
+
 
 \subsection{Finding Generator and Parity-Check Matrices}
 
