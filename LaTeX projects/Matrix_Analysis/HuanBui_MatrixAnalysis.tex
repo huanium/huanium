@@ -31,7 +31,7 @@
 	urlcolor={blue!80!black}
 }
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\F}{\mathbb{F}}
+\newcommand{\F}{\mathcal{F}}
 \newcommand{\p}{\partial}
 
 \newcommand{\V}{\mathbf{V}}
@@ -40,6 +40,8 @@
 \newcommand{\Y}{\mathbf{Y}}
 \newcommand{\U}{\mathbf{U}}
 \newcommand{\X}{\mathbf{X}}
+
+\newcommand{\A}{\mathcal{A}}
 
 \newcommand{\xpan}{\text{span}}
 
@@ -60,6 +62,14 @@
 \newcommand{\T}{\mathcal{T}}
 \newcommand{\poly}{\mathbb{P}}
 \newcommand{\s}{\mathcal{S}}
+
+\newcommand{\gives}{\rotatebox[origin=c]{180}{$\Rsh$}	}
+
+
+\newcommand{\bigzero}{\mbox{\normalfont\Large\bfseries 0}}
+\newcommand{\rvline}{\hspace*{-\arraycolsep}\vline\hspace*{-\arraycolsep}}
+
+
 
 \usepackage{subfig}
 \usepackage{listings}
@@ -1008,34 +1018,238 @@ A natural question to ask now is whether every idempotent $\E \in \lag(\V)$ can 
 			\item Show that $\ima(\E) + \ker(\E) = \V$.\\
 			
 			Let $v\in \V$ be given, then $v = \E(v) + v - \E(v)$. Now, observe that
-			\begin{align}
+			\begin{align*}
 			\E(v - \E(v)) = \E(v) - \E^2(v) = \E(v) - \E(v) = 0.
-			\end{align}
+			\end{align*}
 			Therefore, $\E(v)\in \ima(\E)$ and $ (v - \E(v)) \in \ker(\E)$. So, $\ima(\E) + \ker(\E) = \V$.
-			
-			
-			
-			
-			
-			
-			
 			
 			
 			\item Show that $\ima(\E)\oplus \ker(\E) = \V$.\\
 			
-			We want to show that $\ima(\E) \bigcap \ker(\E) = \{\mathbf{0}\}$. So, let $v\in \ima(\E) \bigcap \ker(\E) $ be given. Then $v\in \ima(\E)$, but 
+			We want to show that $\ima(\E) \bigcap \ker(\E) = \{\mathbf{0}\}$. So, let $v\in \ima(\E) \bigcap \ker(\E) $ be given. Then $v\in \ima(\E)$, which implies $\E(\E(x)) = \E(x) = v = \mathbf{0}$ for some $x$. Hence, the intersection is the trivial subspace.
+	
+			
+			
 		\end{enumerate}
 	\end{proof} 
 \end{thm} 
 
+\begin{prop}
+	A by product of this previous item is this fact. For any $x\in \V$
+	\begin{align}
+	\E(\E(x)) = \E(x) \iff \E = \E^2,
+	\end{align}
+	i.e., $\E$ is an idempotent exactly when it acts as an identity function on its own image.\\
+\end{prop}
 
+
+\begin{thm}
+	If $\E^2 = \E$ and $\mathcal{G}^2 = \mathcal{G} $ in $\lag(\V)$ and 
+	\begin{align*}
+	&\ima(\mathcal{G}) = \ima(\E)\\
+	&\ker(\mathcal{G}) = \ker(\E)
+	\end{align*}
+	then
+	\begin{align*}
+	\E = \mathcal{G}.
+	\end{align*}
+	
+	\begin{proof}
+		Let $\W = \ima(\E) = \ima(\mathcal{G})$ and $\Z = \ker(\E) = \ker(\mathcal{G})$. Note that $\W \oplus \Z = \V$. Consider $v\in \V$. Then
+		\begin{align*}
+		\E(v) = \E(w+z) = \E(w) + \E(z) = \E(w) + \mathbb{0} = \E(w) = w,
+		\end{align*}
+		where $v = z+w$ is unique by directness. We can do the same thing with $G$, and get $G = E$.
+	\end{proof}
+\end{thm}
+
+
+\begin{thm}
+	For each decomposition $V = \W \oplus \Z$, there exists a unique idempotent whose image is $\W$ and kernel is $\Z$.
+\end{thm}
+
+Now, notice that for $v = w + z$, we have $v = w + z = \E(w) + \F(z) = \E(v) + \F(v) = Id(v)$. So we have a little theorem:
+
+\begin{thm}
+	If $\E$ and $\F$ are idempotents such that $\ima(\E) = \ker(\F)$ and $\ker(\E) = \ima(\F)$ then
+	\begin{align*}
+	\E + \F = Id. 
+	\end{align*}
+\end{thm} 
+
+As a result we get another two results:
+
+	\begin{enumerate}
+		\item If $\E^2 = \E \in \lag(\V)$ then $(Id - \E)^2 = (Id - \E)$ also an idempotent.
+		
+		\item 
+		\begin{align*}
+		&\ima(\E) = \ker(Id - \E)\\
+		&\ker(\E) = \ima(Id - \E)
+		\end{align*}
+	\end{enumerate}
+
+We say that in this case idempotents come in pairs. So, to informally summarize, if $V = \W \oplus \Z$, then there is a pair of idempotents. More concretely, if $V = \W \oplus \Z$, then there exist unique idempotents $\E$ and $\F$ such that $\E + \F = Id$ and $\W = \ima(\E) = \ker(\F)$ and $\Z = \ker(\E) = \ima(\F)$. The converse is also true. If there exist idempotents $\E$ and $\F$ such that if $\E + \F = Id$ and $\W = \ima(\E) = \ker(\F)$ and $\Z = \ker(\E) = \ima(\F)$ then $\V = \W \oplus \Z$.\\
+
+All is good, but what if the vector space $\V$ is decomposed into three pieces as $\V = \W \oplus \Z \oplus \U$? Well, we simply repeat what we have done before to $\V = \W \oplus (\Z \oplus \U)$. We know that there exist a unique $\E_\W$ such that $\E_\W^2 = \E_\W$ and that $\ima(\E_\W) = \W$ and $\ker(\E_\W) = \U\oplus \Z$. Similarly,  there exist a unique $\E_\U$ such that $\E_\U^2 = \E_\U$ and that $\ima(\E_\U) = \V$ and $\ker(\E_\U) = \W\oplus \Z$; and there exist a unique $\E_\W$ such that $\E_\W^2 = \E_\W$ and that $\ima(\E_\W) = \W$ and $\ker(\E_\W) = \U\oplus \Z$.\\
+
+There are a few observations we can make:
+\begin{enumerate}
+	\item Let $v\in \V$ be given, then $(\E_\W + \E_\U + \E_\Z)(v) = (\E_\W + \E_\U + \E_\Z)(w + u + z) = w + u + z = v$. So $\E_\W + \E_\U + \E_\Z = Id$.
+	
+	\item $\E_\W\circ \E_\Z(v) = \E_\W(z) = \mathbf{0}_\V$. So, in general, $\E_i \circ \E_j = \mathcal{O}$ for $i \neq j$ and $\E_i$ if $i=j$.  
+\end{enumerate}
+
+
+What about the converse? Given the linear functions such that $\E_j^2 = \E$ such that $\ima(\E_i) = \ker(\E_j + \E_k)$, then does $V = \Z \oplus \W + \U$ hold? The answer is yes! We can restate this for rigorously:
+
+\begin{thm}
+	Suppose $\E_1, \E_2, \E_3$ are idempotents such that $\E_1 + \E_2 + \E_3 = Id$ and $\E_i \circ \E_j = \delta^j_i \E_i$ then 
+	\begin{align*}
+	\ima(\E_1) \oplus \ima(\E_2) \oplus \ima(\E_3) = \V
+	\end{align*}
+	and
+	\begin{align*}
+	\ker(\E_1) = \ima(\E_2) \oplus \ima(\E_3), 
+	\end{align*}
+	etc.
+\end{thm}
+
+
+
+The following two statements are equivalent:
+\begin{enumerate}
+	\item $\W \oplus \Z \oplus \U = \V$.
+	
+	\item There are idempotents $\E_1, \E_2, \E_3 \in \lag(\V)$ such that 
+	\begin{align*}
+	\ima(\E_1) = \W, \ima(\E_2) = \Z, \ima(\E_3) = \U
+	\end{align*} 
+	and
+	\begin{align*}
+	&\E_1 + \E_2 + \E_3 = Id\\
+	&\E_j \circ \E_i = \delta^j_i \E_i
+	\end{align*}
+	
+	\begin{proof}
+		\begin{itemize}
+			\item The forward direction has been shown.
+			
+			\item We will show how (2) implies (1). We first show that $\ima(\E_1) + \ima(\E_2) + \ima(\E_3) = \V$, then
+			\begin{align*}
+			\V \ni v = Id(v) = (\E_1 + \E_2 + \E_3)(v) = \E_1(v) + \E_2(v) + \E_3(v) \in \ima(\E_1) + \ima(\E_2) + \ima(\E_3).
+			\end{align*}
+			It is straightforward to show that $V = \ima(\E_1) + \ima(\E_2) + \ima(\E_3)$. To show directness, suppose that $x_1 + x_2 + x_3 = \mathbf{0}$, $x_i \in \ima(\E_i)$. We want to show that $x_i = \mathbf{0}$ for any $i \in \{1,2,3\}$. By construction, we have that
+			\begin{align*}
+			\E_1(x_1) + \E_2(x_2) + \E_3(x_3) = \mathbf{0},
+			\end{align*}
+			so
+			\begin{align*}
+			\E_1\left( \E_1(x_1) + \E_2(x_2) + \E_3(x_3) \right) = \E_1(\mathbf{0}) = \mathbf{0}.
+			\end{align*}
+			But this implies that 
+			\begin{align*}
+			\E_1(\E_1(x_1)) = \E_1(x_1) = x_1 = \mathbf{0}.
+			\end{align*}
+			Similarly, we get $x_j = \mathbf{0}$ for all $j$. By one of the equivalent statements about directness, we get that $\ima(\E_1) \oplus \ima(\E_2) \oplus \ima(\E_3) = \V$. 
+		\end{itemize}
+	\end{proof}
+\end{enumerate}
+
+
+
+We can also (of course) look at the kernel. Observe that $\E_1(\E_2(v)) = \mathbf{0}$. So $\ima(\E_2) \subseteq \ker(\E_1)$. Similarly, $\ima(\E_3) \subseteq \ker(\E_1)$. So, $\ima(\E_3) + \ima(\E_2) \subseteq \ker(\E_1)$. But we also know that the images of $\E_1$ and $E_2$ intersect trivially, so this sum is direct. So we have $\ima(\E_3) \oplus \ima(\E_2) \subseteq \ker(\E_1).$ But we also know that $V = \ima(\E_1) \oplus \ker(\E_1) = \ima(\E_1) \oplus \ima(\E_2) \oplus \ima(\E_3) $, so
+\begin{align*}
+\ima(\E_2) \oplus \ima(\E_3) = \ker(\E_1)
+\end{align*}
+as desired. \\
+
+So, just a recap of what we have done so far, the following statements are equivalent for $\mathcal{A} \in \lag(\V)$:
+\begin{enumerate}
+	\item $\A^2 = \A$.
+	\item $\A(x) = x$ for $x\in \ima(\A)$.
+	\item $(Id - \A)^2 = (Id - \A)$.
+	\item $\ima(\A) = \ker(Id - \A)$.
+	\item $\ima(Id - \A) = \ker(\A)$.
+\end{enumerate}
 
 
 
 \newpage
 \section{Block-representations of operators}
+
+\subsection{Matricial representation of linear functions}
+
+Let us start with a Cartesian product of two vector spaces and a linear function $\lag$ mapping this Cartesian product to itself $\lag : \V \times \W \lin \V \times \W$, where a typical element in $\V\times \W$ is given by
+\begin{align*}
+\begin{pmatrix}
+v\\w
+\end{pmatrix} = \begin{pmatrix}
+v\\ \mathbf{0}
+\end{pmatrix} + \begin{pmatrix}
+\mathbf{0} \\ w
+\end{pmatrix}.
+\end{align*}
+Formally, we can represent the linear function $\lag$ as a block-matrix function
+\begin{align*}
+\begin{pmatrix}
+\begin{matrix}
+F_{11}
+\end{matrix}
+& \rvline & F_{12} \\
+\hline
+F_{21} & \rvline &
+F_{22}
+\end{pmatrix}\begin{pmatrix}
+v\\w
+\end{pmatrix} \stackrel{\Delta}{=} \begin{pmatrix}
+F_{11}(v) + F_{12}(w)\\
+F_{21}(v) + F_{22}(w)
+\end{pmatrix}.
+\end{align*}
+So we have 
+\begin{align*}
+F_{11} : \V \lin \V\\
+F_{12} : \W \lin \V\\
+F_{21} : \V \lin \W\\
+F_{22} : \W \lin \W.
+\end{align*}
+It can be illuminating if we show what the linear functions $F_{ij}$ does in a block-matrix form:
+\begin{align*}
+\begin{tabular}{c|c|c|}
+	& $\V$ & $\W$\\
+	\hline
+$\V$& $\gives$& $\gives$\\	
+$\W$& $\gives$ & $\gives$
+\end{tabular}.
+\end{align*}
+Now, since $F_{ij}$ are all linear, the block-matrix function 
+\begin{align*}
+\begin{pmatrix}
+\begin{matrix}
+F_{11}
+\end{matrix}
+& \rvline & F_{12} \\
+\hline
+F_{21} & \rvline &
+F_{22}
+\end{pmatrix} : \V \times \W \to \V \times \W
+\end{align*}
+is linear as well. \\
+
+A natural question to ask would be: ``Can every linear function be represented this way?'' The answer is Yes, and we shall see how this is done. \\
+
+Notice that... (\textbf{left off page 32})
+
+
+
+
+
+
+
+
 \subsection{Direct sums of operators}
-\subsection{Coordinatization \& matricial representation of linear functions}
+\subsection{Coordinatization}
 Consider a finite-dimensional linear space $V$ with basis $\{V_i \}$, $i=1,2,\dots,m$. An element $\tilde{V}$ in $V$ can be expressed in exactly one way:
 \begin{align*}
 \tilde{V} = \sum_{i=1}^m a_iV_i,
@@ -1058,23 +1272,26 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 
 \newpage
 \section{Invariant subspaces}
+\subsection{Triangularization}
 \subsection{Reducing subspaces}
 \newpage 
 \section{Polynomials applied to operators}
-\subsection{Minimal polynomials of block-$\Delta^r$ operators}
 \subsection{Minimal polynomials at a vector}
+\subsection{Existence of eigenvalues}
+\subsection{Global minimal polynomials}
+\subsection{(Minimal) polynomials of block-$\Delta^r$ operators}
+\subsection{Minimal polynomials of block-diagonal operators}
 \newpage 
 \section{Eigentheory}
+\subsection{Minimal polynomials and the spectrum}
 \subsection{Spectral Mapping Theorem}
 \newpage 
-\section{Triangularization}
-\subsection{Compression to invariant subspaces}
-\subsection{Simultaneously $\Delta$-ity of commuting families}
-\newpage 
+
 \section{Diagonalization}
 \subsection{Spectral resolutions}
-\subsection{Compressions to reducing subspaces}
-\subsection{Simultaneous diagonalizability for commuting families}
+\subsection{Compressions to invariant subspaces}
+\newpage
+\section{Simultaneous triangularization and  diagonalization for commuting families}
 \newpage
 \section{Primary decomposition over $\mathbb{C}$ and generalized eigenspaces}
 \newpage 
@@ -1090,6 +1307,8 @@ where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{
 \section{Determinant \& Trace}
 \subsection{Classical adjoints}
 \subsection{Cayley-Hamilton theorem}
+\subsection{General Laplace expansions}
+\subsection{Cauchy-Binet formula}
 
 \newpage
 
