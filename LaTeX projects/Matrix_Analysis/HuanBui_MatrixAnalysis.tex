@@ -1180,6 +1180,8 @@ So, just a recap of what we have done so far, the following statements are equiv
 
 \subsection{Matricial representation of linear functions}
 
+\subsubsection{In Cartesian products}
+
 Let us start with a Cartesian product of two vector spaces and a linear function $\lag$ mapping this Cartesian product to itself $\lag : \V \times \W \lin \V \times \W$, where a typical element in $\V\times \W$ is given by
 \begin{align*}
 \begin{pmatrix}
@@ -1239,9 +1241,223 @@ is linear as well. \\
 
 A natural question to ask would be: ``Can every linear function be represented this way?'' The answer is Yes, and we shall see how this is done. \\
 
-Notice that... (\textbf{left off page 32})
+Notice that 
+\begin{align}
+\lag\begin{pmatrix}
+v\\\mathbf{0}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\begin{matrix}
+F_{11}
+\end{matrix}
+& \rvline & F_{12} \\
+\hline
+F_{21} & \rvline &
+F_{22}
+\end{pmatrix}\begin{pmatrix}
+v\\\mathbf{0}
+\end{pmatrix} = \begin{pmatrix}
+F_{11}(v) \\ F_{21}(v)
+\end{pmatrix}.
+\end{align}
+In particular, 
+\begin{align}
+\Pi_\V \circ \lag \begin{pmatrix}
+v \\ \mathbf{0}
+\end{pmatrix} = F_{11}(v),
+\end{align}
+where $\Pi_\V : \V\times \W \to \V$ is a coordinate projection from $\V\times \W$ onto $\V$. In fact, we can also defined the linear function $\gamma_\V$ that is a coordinate injection from $\V$ into $\V\times\W$. So, given $\lag : \V\times \W \lin \V\times \W$, we let:
+\begin{align}
+F_{11} := \Pi_\V \circ \lag \circ \gamma_\V\\
+F_{12} := \Pi_\V \circ \lag \circ \gamma_\W\\
+F_{21} := \Pi_\W \circ \lag \circ \gamma_\V\\
+F_{22} := \Pi_\W \circ \lag \circ \gamma_\W.
+\end{align}
+Now, we can easily check that $\lag$ is indeed
+\begin{align}
+\begin{pmatrix}
+\begin{matrix}
+F_{11}
+\end{matrix}
+& \rvline & F_{12} \\
+\hline
+F_{21} & \rvline &
+F_{22}
+\end{pmatrix}.
+\end{align}
+We do this by considering $\begin{pmatrix}
+v & w
+\end{pmatrix}^\top \in \V \times \W$. We know that
+\begin{align}
+&F_{11}(v) + F_{12}(w) = \Pi_1 \circ \lag\begin{pmatrix}
+v \\ \mathbf{0}
+\end{pmatrix}
++
+\Pi_1 \circ \lag \begin{pmatrix}
+\mathbf{0} \\ w
+\end{pmatrix}
+=
+\Pi_1 \circ \lag\begin{pmatrix}
+v\\w
+\end{pmatrix}\\
+&F_{21}(v) + F_{22}(w) = \Pi_2 \circ \lag\begin{pmatrix}
+v \\ \mathbf{0}
+\end{pmatrix}
++
+\Pi_2 \circ \lag \begin{pmatrix}
+\mathbf{0} \\ w
+\end{pmatrix}
+=
+\Pi_2 \circ \lag\begin{pmatrix}
+v\\w
+\end{pmatrix}.
+\end{align}
+So,
+\begin{align*}
+\begin{pmatrix}
+F_{11}(v) + F_{12}(w)\\F_{21}(v) + F_{22}(w)
+\end{pmatrix}
+= \begin{pmatrix}
+\Pi_1 \circ \lag\begin{pmatrix}
+v\\w
+\end{pmatrix}\\
+\Pi_2 \circ \lag\begin{pmatrix}
+v\\w
+\end{pmatrix}
+\end{pmatrix}
+=
+\lag\begin{pmatrix}
+v\\w
+\end{pmatrix}.
+\end{align*}
+So, if we start with any $\lag$, we can represent $\lag$ as a matrix of the linear functions $F_{ij}$.
 
 
+
+\subsubsection{In direct sums}
+We don't oten work with Cartesian products. So we want to use the idea developed above to break a vector space into direct sums. Suppose that we are given $V = \Z \oplus \W$. Let us use the bad notation
+\begin{align*}
+\begin{pmatrix}
+w\\z
+\end{pmatrix}_+ = w + z,
+\end{align*}
+so that we can mimic our previous idea. Recall the idea 
+\begin{align*}
+\begin{tabular}{c|c|c|}
+& $\V$ & $\W$\\
+\hline
+$\V$& $\gives$& $\gives$\\	
+$\W$& $\gives$ & $\gives$
+\end{tabular},
+\end{align*}
+given 
+\begin{align*}
+&F_{11} : \W \to \W\\
+&F_{12} : \Z \to \W\\
+&F_{21} : \W \to \Z\\
+&F_{22} : \Z \to \Z,
+\end{align*}
+we can define a linear function
+\begin{align*}
+\begin{pmatrix}
+\begin{matrix}
+F_{11}
+\end{matrix}
+& \rvline & F_{12} \\
+\hline
+F_{21} & \rvline &
+F_{22}
+\end{pmatrix} : \V \to \V
+\end{align*}
+by 
+\begin{align*}
+\begin{pmatrix}
+\begin{matrix}
+F_{11}
+\end{matrix}
+& \rvline & F_{12} \\
+\hline
+F_{21} & \rvline &
+F_{22}
+\end{pmatrix}\begin{pmatrix}
+w\\z
+\end{pmatrix}_+ = \begin{pmatrix}
+F_{11}(w) + F_{12}(z)\\
+F_{21}(w) + F_{22}(z)
+\end{pmatrix}_+.
+\end{align*}
+Now, we want to find something that is similar to $\Pi_i$ defined before. Since we are dealing with direct sums rather than Cartesian products, \textbf{idempotents} are perfect candidates. In fact, if 
+\begin{align*}
+\lag = \begin{pmatrix}
+\begin{matrix}
+F_{11}
+\end{matrix}
+& \rvline & F_{12} \\
+\hline
+F_{21} & \rvline &
+F_{22}
+\end{pmatrix},
+\end{align*}
+then 
+\begin{align*}
+\lag\begin{pmatrix}
+w\\ \mathbf{0}
+\end{pmatrix}_+ = \begin{pmatrix}
+F_{11}(w)\\
+F_{21}(w)
+\end{pmatrix}_+
+\end{align*}
+So it is easy to see that
+\begin{align*}
+&\E \circ \lag \begin{pmatrix}
+w & \mathbf{0}
+\end{pmatrix}^\top = F_{11}(w) \in \W\\
+&(Id - \E) \circ \lag \begin{pmatrix}
+w & \mathbf{0}
+\end{pmatrix}^\top = F_{21}(w) \in \Z.
+\end{align*}
+The same argument applies to find $F_{12}$ and $F_{22}$. So we can once again check that 
+\begin{align*}
+\lag 
+=
+\begin{pmatrix}
+\E \circ \lag\bigg\vert_\W & \rvline & \E\circ\lag\bigg\vert_\Z\\
+\hline
+(Id - \E) \circ \lag\bigg\vert_\W & \rvline & (Id - \E)\circ \lag \bigg\vert_\Z
+\end{pmatrix}.
+\end{align*}
+So, if we have a linear function $\lag : \V \to \V$ and with respect to the decomposition $|V = \W \oplus \Z$ and that $\lag$ has the block form $\begin{pmatrix}
+A & \rvline & B\\
+\hline
+C & \rvline & D
+\end{pmatrix}$ then it means
+\begin{align*}
+A := \E \circ \lag \bigg\vert_\W : \W \lin \W,
+\end{align*}
+and so on, where $\E$ is an idempotent with $\ima(\E) = \W$ and $\ker(\E) = \Z$. \\
+
+There is a little caveat: direct sum is commutative, BUT here the order of $\W$ and $\Z$ matters in the definition of the block-matrix representation of $\lag$. 
+
+\begin{exmp}
+	Consider the linear function $G : \V \to \V$ an idempotent, such that $\V = \ima(G) \oplus \ker(G)$. So,
+	\begin{align*}
+	G = \begin{pmatrix}
+	Id \bigg\vert_{\ima(G)} & \rvline & \mathcal{O}\\
+	\hline
+	\mathcal{O} & \rvline & \mathcal{O}
+	\end{pmatrix}.
+	\end{align*}
+\end{exmp}
+
+
+
+
+
+
+
+\subsection{Properties of Block-matrix representation}
+We will show in the homework the following properties:
 
 
 
