@@ -17,6 +17,7 @@
 \newtheorem{exmp}{Example}[section]
 \newtheorem{prob}{Problem}[section]
 \newtheorem{sln}{Solution}[section]
+\newtheorem{thm}{Theorem}[section]
 \newtheorem*{prob*}{Problem}
 \newtheorem*{sln*}{Solution}
 \usepackage{empheq}
@@ -687,11 +688,54 @@ Consider a non-singleton linear space $V$. The following statements are equivale
 	\begin{enumerate}
 		\item Condition for direct sum: If all $U_j$ are subspaces of $V$, then $\sum_1^m U_j$ is a direct sum $\iff$ the only way to write 0 as $\sum_1^m u_j$, where $u_j \in U_j$ is to take $u_j = 0$ for all $j$.  
 		\item If $U, W$ are subspaces of $V$ and $U \bigcap W = \{ 0\}$ then $U+W$ is a direct sum. 
+		
+		\item Let $U_j$ be finite-dimensional and are subspaces of $V$. 
+		\begin{align*}
+		U_1 \oplus \dots\oplus U_m \iff \dim(U_1+\dots+U_m) = \sum_1^m\dim(U_j)
+		\end{align*}
+		
+		\item Let $U_1,\dots,U_m$ be subspaces of $V$. Define a linear map $\Gamma : U_1\times\dots\times U_m \rightarrow U_1 + \dots + U_m$ by:
+		\begin{align*}
+		\Gamma(u_1,\dots,u_m) = \sum_1^m u_j.
+		\end{align*}
+		$U_1 + \dots + U_m$ is a direct sum $\iff \Gamma$ is injective. 
 	\end{enumerate}
+
+
+		\item Subspace addition is associative.
+		
+		\item Subspace addition is commutative.
 \end{prop}
 
 
+
+\subsection{Products and Direct Sums}
+
+
+Here is a connection between direct sums and products of vector spaces. Suppose $\Z_1$ and $\Z_2$ are subspaces of $\W$ and $z_1 \in \Z_1$, $z_2 \in \Z_2$. Consider the function $\maltese : \Z_1 \times \Z_2 \lin \Z_1 \oplus \Z_2 \prec \W$ defined by
+\begin{align}
+\maltese \begin{pmatrix}
+z_1\\z_2
+\end{pmatrix} \stackrel{\Delta}{=} z_1 + z_2.
+\end{align}
+
+We can show that
+\begin{enumerate}
+	\item $\maltese$ is a linear function. 
+	
+	\item $\maltese$ is an isomorphism, i.e., $\Z_1 \times \Z_2 \sim \Z_1 \oplus \Z_2$.
+\end{enumerate}
+
+
+
+
+
+
 \subsection{Products of Vector Spaces}
+
+
+
+
 \begin{defn}
 	Product of vectors spaces
 	\begin{align*}
@@ -735,21 +779,8 @@ Consider a non-singleton linear space $V$. The following statements are equivale
 		\end{align*}
 	\end{enumerate}
 \end{prop}
-\subsection{Products \& Direct Sums}
-\begin{prop}
-	$\,$
-	\begin{enumerate}
-	\item Let $U_1,\dots,U_m$ be subspaces of $V$. Define a linear map $\Gamma : U_1\times\dots\times U_m \rightarrow U_1 + \dots + U_m$ by:
-	\begin{align*}
-	\Gamma(u_1,\dots,u_m) = \sum_1^m u_j.
-	\end{align*}
-	$U_1 + \dots + U_m$ is a direct sum $\iff \Gamma$ is injective. 
-	\item Let $U_j$ be finite-dimensional and are subspaces of $V$. 
-	\begin{align*}
-	U_1 \oplus \dots\oplus U_m \iff \dim(U_1+\dots+U_m) = \sum_1^m\dim(U_j)
-	\end{align*}
-	\end{enumerate}
-\end{prop}
+
+
 
 \subsection{Rank-Nullity Theorem}
 Suppose $Z_1$ and $Z_2$ are subspaces of a finite-dimensional vector space $W$. Consider $z_1\in Z_1$, $z_2\in Z_2$, and a function $\phi : Z_1 \times Z_2 \to Z_1 + Z_2 \prec W$ defined by
@@ -944,6 +975,59 @@ We can readily verify that $Z_1 \cap Z_2$ is a subspace of $W$. With this, $\dim
 
 \newpage
 \section{Idempotents \& Resolutions of Identity}
+\begin{defn}
+	An \textbf{Operator} is a linear function from a vector space to itself:
+	\begin{align*}
+	\E : \V \lin \V.
+	\end{align*}
+\end{defn}
+
+
+\begin{defn}
+	\textbf{Idempotents:} are operators with the property $\E^2 = \E$, i.e., 
+	\begin{align*}
+	\E \circ \E = \E.
+	\end{align*}
+	
+	Recall that if $V = \W \oplus \Z$, then there exists an idempotent $\E \in \lag(\V)$ such that
+	\begin{align*}
+	&\W = \ima(\E)\\
+	&\Z = \ker(\E).
+	\end{align*}
+\end{defn}
+In fact, if $\V = \W \oplus \Z$ then there exists at least \textbf{two} idempotents $\E$, $\W = \ima(\E), \Z = \ker(\E)$ and $\F$, $\W = \ker(\F)$, $\Z = \ima(\F)$.\\
+
+A natural question to ask now is whether every idempotent $\E \in \lag(\V)$ can be generated this way. The answer is \textbf{Yes}, but to answer to this, we need to show \textbf{existence} and \textbf{uniqueness}. \\
+
+\begin{thm}
+	If $\E \circ \E = \E^2 = \E$, then $\V = \ima(\E)\oplus \ker(\E)$.
+	
+	\begin{proof}
+		$\,$
+		\begin{enumerate}
+			\item Show that $\ima(\E) + \ker(\E) = \V$.\\
+			
+			Let $v\in \V$ be given, then $v = \E(v) + v - \E(v)$. Now, observe that
+			\begin{align}
+			\E(v - \E(v)) = \E(v) - \E^2(v) = \E(v) - \E(v) = 0.
+			\end{align}
+			Therefore, $\E(v)\in \ima(\E)$ and $ (v - \E(v)) \in \ker(\E)$. So, $\ima(\E) + \ker(\E) = \V$.
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			\item Show that $\ima(\E)\oplus \ker(\E) = \V$.\\
+			
+			We want to show that $\ima(\E) \bigcap \ker(\E) = \{\mathbf{0}\}$. So, let $v\in \ima(\E) \bigcap \ker(\E) $ be given. Then $v\in \ima(\E)$, but 
+		\end{enumerate}
+	\end{proof} 
+\end{thm} 
+
 
 
 
