@@ -2244,6 +2244,7 @@ But $\widehat{fg} \neq \hat{f}\hat{g}$. Though this pointwise product isn't pres
 %\newcommand{\b}{\beta}
 %\newcommand{\x}{\xi}
 
+\newpage
 
 
 
@@ -2344,6 +2345,139 @@ For large time, $u(t,x) \approx 0$. Precisely, heat diffuses to zero:
 \lim_{t\to \ift}u(t,x) = 0.
 \end{align*}
 
+
+% Mar 20, 2019 %
+
+Just a recap of what we've done so far: We have studied the heat equation on the full real line $\R$:
+\begin{align*}
+&u_t = \al^2 u_{xx}, \hspace{0.5cm}, t>0, x\in \R\\
+&u(0,x) = u_0.
+\end{align*}
+We've found with the help of the FT, 
+\begin{align*}
+u(t,x) = (H_t \ast u_0)(x) = \f{1}{\sqrt{2\pi}}\int_\R H_t(x-y)u_0(y)\,dy
+\end{align*}
+where
+\begin{align*}
+H_t(x) = \f{1}{\sqrt{2t}} e^{-x^2/4t\al}
+\end{align*}
+is called the \textbf{heat kernel}, which has many important prperties useful in analysis, geometry, mathematical physics, etc. Recall that we used to have an infinite series, now we have an integral - which we can think of as a limit of this infinite series.
+
+\newpage
+
+\section{Laplace Transform and Application}
+
+Now we move on to the Laplace transform and then a nice PDE which is well-adapted to it. Recall, for a function $f : [0,\ift) \to \R$,
+\begin{align*}
+\lag[f](s) = \int_0^\infty e^{-st}f(t)\,dt,
+\end{align*}
+which is easy to compute. This map is invertible on a certain class of functions (vector space). So, in particular, it is one-to-one, and so $\lag[f] = \lag[g] \implies f=g$. This is a basis for using tables of Laplace transforms.\\
+
+It also have an explicit formula for the inverse
+\begin{align*}
+\lag^{-1}[F(s)](t) = \f{1}{2\pi i}\int_{C-i\infty}^{C+ i\infty}e^{st}F(s)\,ds,
+\end{align*}
+which is in fact a complex line integral, which is often somewhat difficult to compute. \\
+
+One upside to $\lag$ is that it can handle functions $f$ which do not have $\lim_{t\to \ift} f(t) = 0$, which is a requirement for the FT. The class of functions $\lag$ can handle is called \textbf{exponentially bounded}. More precisely, if given an $f : [0,\ift) \to \R$, s.t 
+\begin{align*}
+\vert f(t) \vert \leq Me^{at}
+\end{align*}
+for any $t, M > 0, a\in\R$, then $\lag[f](s)$ makes sense for all $s>a$.\\
+
+
+
+\begin{exmp}
+	Let $f(t) = 1$. Then
+	\begin{align*}
+	\lag[1](s) = \int_0^t e^{-st}\,dt = -\f{-e^{st}}{s}\bigg\vert^{t=\infty}_{t = 0} = \f{1}{s},
+	\end{align*}	
+	defined for $s>0$. 
+\end{exmp}
+
+
+\begin{exmp}
+	Let $f(t) = t$. Then
+	\begin{align*}
+	\lag[f](s) = \int_0^\infty te^{-st}\,dt = -\f{te^{-st}}{s}\bigg\vert^\infty_0 - \int_0^\infty -\f{e^{-st}}{s}\,dt = \f{1}{s}\f{1}{s} = \f{1}{s^2}.
+	\end{align*}
+	$\,$\\
+\end{exmp}
+
+
+
+Using integration by parts, it is easy to see that 
+\begin{align*}
+\lag[\sin(\w t)](s) = \f{1}{\w^2 + s^2}.
+\end{align*}
+
+
+\begin{prop}
+	Given $u(t,x)$, set
+	\begin{align*}
+	U(s,x) = \lag_t[u(t,x)](s),
+	\end{align*}
+	then the following are true
+	\begin{enumerate}
+		\item $\lag[u_t(t,x)](s) = sU(s,x) - u(0,x)$.
+		
+		\begin{proof}
+			\begin{align*}
+			\lag[u_t](s) &= \int_0^\infty u_t e^{-st}\,dt \\ 
+			&=  u(t,x)e^{-st}\bigg\vert^\infty_0 - \int_0^\infty u(t,x)se^{-st}\,dt \\
+			&= sU(s,x) - u(0,x).
+			\end{align*}
+		\end{proof}
+		
+		\item $\lag[u_{xx}(t,x)](s) = \f{\p^2}{\p x^2}U(s,x)$.
+		
+		The proof is left as an exercise.\\
+	\end{enumerate}
+\end{prop}
+
+\begin{defn}
+For exponentially bounded functions $f,g$, we define
+\begin{align*}
+(f\ast g)(t) = \int_0^t f(t-\tau)g(\tau)\,d\tau = \int_0^t f(\tau)g(t-\tau)\,d\tau.
+\end{align*}
+to be the \textbf{convolution} .
+\end{defn}
+
+
+\begin{prop}
+	\begin{align*}
+	\lag[f\ast g] = \lag[f]\lag[g].
+	\end{align*}
+	
+	The proof is in Marlow's.
+\end{prop}
+
+
+\begin{exmp}
+	\begin{align*}
+	\lag^{-1}\lb \f{1}{s} \cdot \f{1}{s^2 + 1}\rb(t) = \lag[1]\lag[\sin(t)] = (1\ast \sin)(t).
+	\end{align*}
+	We can compute
+	\begin{align*}
+	(1\ast \sin)(t) = \int_0^t 1 \cdot \sin(\tau)\,d\tau = -\cos(\tau)\bigg\vert^t_0 = 1-\cos(t).
+	\end{align*}
+\end{exmp}
+
+
+We can use the LT to solve a heat conduction problem. Consider
+\begin{align*}
+\begin{cases}
+u_t = u_{xx}, \hspace{0.5cm} x>0, t>0\\
+u_x(t,0) - u_t(t,0) = 0 \hspace{0.5cm} t>0\\
+u(0,x) = u_0, \hspace{0.5cm} x\geq 0.
+\end{cases}
+\end{align*}
+
+We will write
+\begin{align*}
+u(s,x) = \lag_t[u(t,x)](s),
+\end{align*}
+and solve the problem.
 
 % After Spring break % 
 
