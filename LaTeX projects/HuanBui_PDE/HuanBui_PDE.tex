@@ -2468,7 +2468,7 @@ We can use the LT to solve a heat conduction problem. Consider
 \begin{align*}
 \begin{cases}
 u_t = u_{xx}, \hspace{0.5cm} x>0, t>0\\
-u_x(t,0) - u_t(t,0) = 0 \hspace{0.5cm} t>0\\
+u_x(t,0) - u(t,0) = 0 \hspace{0.5cm} t>0\\
 u(0,x) = u_0, \hspace{0.5cm} x\geq 0.
 \end{cases}
 \end{align*}
@@ -2477,7 +2477,204 @@ We will write
 \begin{align*}
 u(s,x) = \lag_t[u(t,x)](s),
 \end{align*}
-and solve the problem.
+and solve the problem. %Mar 20, 2019% Then
+\begin{align*}
+\lag_t[u_t](s) = s\lag[u] - u(0,x) = sU(s,x) - u_0.
+\end{align*}
+We also know that 
+\begin{align*}
+\lag_t[u_{xx}] = \f{\p^2}{\p x^2}U(s,x).
+\end{align*}
+So we have
+\begin{align*}
+\f{\p^2}{\p x^2}U(s,x) = sU(s,x) - u_0.
+\end{align*}
+In other words,
+\begin{align*}
+\f{\p^2}{\p x^2}U(s,x) - sU(s,x) =  - u_0.
+\end{align*}
+To solve, we seek a particular solution. 
+\begin{align*}
+U_p(s,x) = Ax + B.
+\end{align*}
+So,
+\begin{align*}
+\f{\p^2}{\p x^2}U_p(s,x) - sU_p(s,x) = 0 - s(Ax+B) = -u_0,
+\end{align*}
+which has to hold for all $x > 0$. So we conclude $A=0$ and so $B = u_0/s$. So,
+\begin{align*}
+U_p(s,x) = \f{u_0}{s}.
+\end{align*}
+And given that the homogeneous solution is
+\begin{align*}
+U_h(s,x) = C_1 e^{x\sqrt{s}} + C_2e^{-x\sqrt{s}}.
+\end{align*}
+So the general solution is
+\begin{align*}
+U(s,x) = C_1 e^{x\sqrt{s}} + C_2e^{-x\sqrt{s}} + \f{u_0}{s}.
+\end{align*}
+As we physically cannot expect that $u(t,x) \to \pm \ift$ as $x\to \infty$, we set $C_1 = 0$. So the solution is
+\begin{align*}
+U(s,x) = Ce^{-x\sqrt{s}} + \f{u_0}{s}.
+\end{align*}
+Now we appeal to the BCs, to which we apply the Laplace transform:
+\begin{align*}
+U(s,0) = \lag_t[u(t,0)](s) = \lag[u_x(t,0)](s) = \f{\p}{\p x}U(s,0).
+\end{align*}
+So, in view of the general solution,
+\begin{align*}
+C + \f{u_0}{s} = -\sqrt{s}Ce^{-0\cdot\sqrt{s}},
+\end{align*}
+so,
+\begin{align*}
+C + \sqrt{s}C = -\f{u_0}{s},
+\end{align*}
+or
+\begin{align*}
+C = -\f{u_0}{s}\f{1}{1 + \sqrt{s}}.
+\end{align*}
+All together,
+\begin{align*}
+U(s,x) = -\f{u_0}{s}\f{1}{1 + \sqrt{s}}e^{-x\sqrt{s}} + \f{u_0}{s} = -u_0 \lp \f{1}{s + s^{3/2}}e^{-x\sqrt{s}} - \f{1}{s} \rp.
+\end{align*}
+We look at the table of Laplace inverses and find
+\begin{align*}
+u(t,x) = u_0 - u_0 \lp \text{erfc}\lp\f{x}{2\sqrt{t}}\rp - \text{erfc}\lp \sqrt{t} + \f{x}{2\sqrt{t}}e^{x+t} \rp \rp
+\end{align*}
+with
+\begin{align*}
+\text{erfc}(x) = \f{2}{\sqrt{\pi}}\int^\infty_x e^{-\xi^2}\,d\xi.
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\section{Duhamel's Principle}
+
+
+\textbf{Idea}: The convolution allows you to push forward information concerning time-dependent boundary conditions. \\
+
+Hard problem:
+\begin{align*}
+u_t = u_{xx}, \hspace{0.5cm} 0 < x < 1, t>0
+u(t,0) = 0\\
+u(t,1) = f(t),\hspace{0.5cm} t>0\\
+u(0,x) = 0, \hspace{0.5cm} x\in [0,1].
+\end{align*}
+
+
+Easy problem:
+\begin{align*}
+w_t = w_{xx}, \hspace{0.5cm} 0 < x < 1, t>0
+w(t,0) = 0\\
+w(t,1) = 1,\hspace{0.5cm} t >0\\
+w(0,x) = 0, \hspace{0.5cm} x\in [0,1].
+\end{align*}
+
+
+We can use the Laplace transform (half-line problem) to solve the Easy problem. 
+\begin{align*}
+W(s,x) - \lag[w(t,x)](s).
+\end{align*}
+Plugging in gives
+\begin{align*}
+sW(s,x) - W(0,x) = \f{\p^2 W}{\p x^2}(s,x).
+\end{align*}
+By the IC:
+\begin{align*}
+\f{\p^2 W}{\p x^2}(s,x) - sW(s,x) = 0.
+\end{align*}
+Here,
+\begin{align*}
+W(s,x) = C_1 e^{x\sqrt{s}} + C_2 e^{-x\sqrt{s}}.
+\end{align*}
+We can apply the BCs to get
+\begin{align*}
+W(s,0) = \lag[w(t,0)](s) = \lag[0] = 0
+\end{align*}
+and
+\begin{align*}
+W(s,1) = \lag[w(t,1)](s) = \lag[1](s) = \f{1}{s}.
+\end{align*}
+So,
+\begin{align*}
+W(s,0) = C_1 + C_2 = 0.
+\end{align*}
+So, $C_1 = C = -C_2$. Thus,
+\begin{align*}
+W(s,x) = C e^{x\sqrt{s}} - C e^{-x\sqrt{s}}.
+\end{align*}
+And of course,
+\begin{align*}
+W(s,1) = \f{1}{s} = C\lp e^{x\sqrt{s}} - e^{-x\sqrt{s}}\rp.
+\end{align*}
+Thus,
+\begin{align*}
+C = \f{1}{s\lp e^{\sqrt{s}} - e^{-\sqrt{s}}\rp}.
+\end{align*}
+All together,
+\begin{align*}
+W(s,x) = \f{1}{s}\lp \f{e^{x\sqrt{s}} - e^{-x\sqrt{s}}}{e^{\sqrt{s}} - e^{x\sqrt{s}}} \rp = \f{1}{s}\f{\sinh(x\sqrt{s})}{\sinh(\sqrt{s})}.
+\end{align*}
+By tables, 
+\begin{align*}
+w(t,x) = \lag^{-1}[W(s,x)](t) = x + \f{2}{\pi}\sum^\infty_{n=1}\f{(-1)^n}{n}e^{-(n\pi)^2t}\sin(n\pi x).
+\end{align*}
+
+We mirror this with the hard problem:
+\begin{align*}
+U(s,x) = \lag[u(t,x)](s)
+\end{align*}
+and
+\begin{align*}
+F(s) = \lag[f(t)](s).
+\end{align*}
+
+By exactly the same approach, we obtain
+\begin{align*}
+U(s,x) &= F(s)\f{\sinh(x\sqrt{s})}{\sinh(\sqrt{s})}\\
+ &= F(s)s\f{1}{s}\f{\sinh(x\sqrt{s})}{\sinh(\sqrt{s})}\\
+ &= F(s)\cdot sW(s,x) = F(s)\cdot \lag[w_t(t,x)](s).
+\end{align*}
+So,
+\begin{align*}
+U(s,x) = F(s) \cdot \lag[w_t(t,x)](s) = \lag[f(t)](s) \cdot \lag[w_t(t,x)](s).
+\end{align*}
+So, by the convolution property,
+\begin{align*}
+u(t,x) = f\ast w_t = \int^t_0 f(t-\tau)w_t(\tau,x)\,d\tau.
+\end{align*}
+We can integrate by parts, which gives us
+\begin{align*}
+u(t,x) = f(0)w(x,t) + \int^t_0 f'(t-\tau)w(\tau,x)\,d\tau,
+\end{align*}
+where $w(\tau,x)$ is given exactly by the solution to the easy problem.
+
+
+
+
+
 
 % After Spring break % 
 
