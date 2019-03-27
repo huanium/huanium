@@ -2359,7 +2359,7 @@ u(t,x) = (H_t \ast u_0)(x) = \f{1}{\sqrt{2\pi}}\int_\R H_t(x-y)u_0(y)\,dy
 \end{align*}
 where
 \begin{align*}
-H_t(x) = \f{1}{\sqrt{2t}} e^{-x^2/4t\al}
+H_t(x) = \f{1}{\sqrt{2t}} e^{-x^2/4\al^2 t}
 \end{align*}
 is called the \textbf{heat kernel}, which has many important prperties useful in analysis, geometry, mathematical physics, etc. Recall that we used to have an infinite series, now we have an integral - which we can think of as a limit of this infinite series.
 
@@ -4415,40 +4415,305 @@ Out[12]= {0, 1/\[Pi], -(1/(2 \[Pi])), 1/(3 \[Pi]), -(1/(4 \[Pi])), 1/(
 \newpage
 \subsection{Problem set 5}
 
-\begin{exer*}
-	\begin{sln*}
-		hello
+\begin{exer*}\textbf{1.} Problem 1, Lesson 11, Farlow.\\
+	
+	What is the Fourier series expansion of the square sine wave
+	\begin{align*}
+	&f(x) = \begin{cases}
+	-1 \hspace{0.5cm} -1 < x < 0\\
+	\,\,\,\,1 \hspace{0.5cm} 0 \leq x < 1
+	\end{cases}\\
+	&f(x+2) = f(x) \hspace{0.5cm}\text{(periodic condition)}
+	\end{align*} 
+	Graph the first 2,3,4 terms of the series to see how it is converging to $f(x)$. Also graph the frequency spectrum of $f(x)$.
+	
+	\begin{sln*}\textbf{1.}
+		$\,$
+		$f(x)$ can be represented by
+		\begin{align*}
+		f(x) = \f{a_0}{2} + \sum^\infty_{n=1}\lb  a_n\cos(n\pi x) + b_n\sin(n\pi x)  \rb,
+		\end{align*}
+		where
+		\begin{align*}
+		a_n &= \int^1_{-1}f(x)\cos(n\pi x)\,dx\\
+		&= \int^1_0 \cos(n\pi x)\,dx + \int^0_{-1}(-1)\cos(n\pi x)\,dx \\
+		&= 0.
+		\end{align*}
+		and
+		\begin{align*}
+		b_n &= \int^1_0 \sin(n\pi x)\,dx + \int^0_{-1}(-1)\sin(n\pi x)\,dx\\
+		&= \frac{2-2 \cos (\pi  n)}{\pi  n}\\
+		&= \begin{cases}
+		0, \hspace{0.5cm} n \text{ even}\\
+		\f{4}{n\pi }, \hspace{0.5cm} n \text{ odd}
+		\end{cases}.
+		\end{align*}
+		So, the Fourier series expansion of $f(x)$ is
+		\begin{align*}
+		f(x) = \sum^\infty_{j=0}\f{4}{(2j+1)\pi} \sin\lp (2j+1)\pi x \rp.
+		\end{align*}
+		
+		Graph of the first 2,3,4 terms of the series:
+		\begin{lstlisting}
+ffs[x_, nmax_] := Sum[4/Pi/(2 n + 1)*Sin[(2 n + 1) Pi*x], {n, 0, nmax}]
+
+pn[n_] := Plot[ffs[x, n], {x, -1, 1}]
+
+Show[p, pn[2], pn[3], pn[4], PlotRange -> {-1.3, 1.3}]
+		\end{lstlisting}
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.75]{ffs1.png}
+		\end{figure}
+	
+		Frequency spectrum of $f(x)$:
+		
+		\begin{lstlisting}
+data := Table[{n, (2 - 2 Cos[Pi*n])/(n*Pi)}, {n, 0.000000000001, 10}]
+
+Show[ListPlot[data], AxesLabel -> {n, c}]
+		\end{lstlisting}
+	
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.75]{ffs2.png}
+		\end{figure}
+		
 	\end{sln*}
 \end{exer*}
 
 \newpage
 
-\begin{exer*}
-	\begin{sln*}
-		hello
+\begin{exer*}\textbf{2. }Problem 2, Lesson 11, Farlow.\\
+	
+	Show that if we differentiate the Fourier series expansion of the sawtooth wave term by term, we arrive at an infinite series that clearly does not represent the derivative of the sawtooth curve. 
+	
+	\begin{sln*}\textbf{2. }
+	The Fourier series expansion of the sawtooth wave is
+		\begin{align*}
+		f(x) = \f{2L}{\pi}\lb \sin(\pi x/L) - \f{1}{2}\sin(2\pi x/L) + \f{1}{3}\sin(3\pi x/L) - \dots \rb.
+		\end{align*}
+		
+	Differentiating $f(x)$ with respect to $x$ gives
+	\begin{align*}
+	\f{df(x)}{dx} &= \f{2L}{\pi}\lb \f{\pi}{L}\cos(\pi x/L) - \f{1}{2}\f{2\pi}{L}\cos(2\pi x/L) + \f{1}{3}\f{3\pi}{L}\cos(3\pi x/L) - \dots  \rb\\
+	&= 2\lb \cos(\pi x/L) - \cos(2\pi x/L) + \cos(3\pi x/L)   - \dots  \rb,
+	\end{align*}
+	which looks like (taking $L=1$)
+	
+	\begin{lstlisting}
+ffs2[x_, nmax_] := 2*Sum[Cos[n*Pi*x]*(-1)^(n + 1), {n, 1, nmax}]
+pn2[n_] := Plot[ffs2[x, n], {x, -1, 1}]
+Show[pn2[15], PlotRange -> {10, -5}]
+	\end{lstlisting}
+
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.45]{der.png}
+	\end{figure}	
+
+	whereas the derivative of the sawtooth curve given in the book:\\
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.45]{saw.png}
+	\end{figure}
+ 
+	is given by
+	\begin{align*}
+	&f'(x) = 1, \hspace{0.5cm}-L < x < L\\
+	&f'(x+2L) = f(x), \hspace{0.5cm} \text{(periodic condition)}
+	\end{align*}
+	whose Fourier series expansion is just a constant. 
 	\end{sln*}
 \end{exer*}
 
 \newpage
 
-\begin{exer*}
-	\begin{sln*}
-		hello
+\begin{exer*}\textbf{3. }Problem 3, Lesson 12, Farlow.\\
+	
+	Solve the IVP:
+	\begin{align*}
+	&PDE: u_t = \alpha^2 u_{xx}\hspace{0.5cm} -\infty < x < \infty \\
+	&IC: u(x,0) = e^{-x^2} \hspace{0.5cm} -\infty < x < \infty
+	\end{align*}
+	by using the Fourier transform.
+	
+	\begin{sln*}\textbf{3. }
+		We first transform the problem:
+		\begin{align*}
+		&\F_x[u_t](\xi) = \alpha^2 \F_x[u_{xx}](\xi)\\
+		&\F_x[u(x,0)](\xi) = \F_x\lb e^{-x^2} \rb(\xi).
+		\end{align*}
+		
+		Let $U(\xi, t) = \F_x[u(x,t)](\xi)$. Since we are working with the Fourier transform in $x$, we can take the $t-$derivative outside of the FT to get an ODE:
+		\begin{align*}
+		\F_x[u_t(x,t)](\xi) = \f{d\F_x[u(x,t)](\xi)}{dt} = \alpha^2 \F_x[u_{xx}](\xi) =\boxed{\f{dU(\xi,t)}{dt} = -\alpha^2 \xi^2 U(\xi, t)}
+		\end{align*}
+		FT the IC gives:
+		\begin{align*}
+		U(\xi, 0) = \F_x\lb e^{-x^2} \rb(\xi).
+		\end{align*}
+		Solving the ODE gives:
+		\begin{align*}
+		U(\xi, t) = U(\xi, 0)e^{-\alpha^2 \xi^2 t}.
+		\end{align*}
+		Now, we take the inverse:
+		\begin{align*}
+		u(x,t) &= \F_x^{-1}[U(\xi,t)] \\
+		&= \F_x^{-1}\lb U(\xi, 0)e^{-\alpha^2 \xi^2 t}\rb \\
+		&= \F_x^{-1}[U(\xi,0)] \ast \F^{-1}_x[e^{\alpha^2 \xi^2 t}]\\
+		&= u(x,0) \ast \F^{-1}_x[e^{-\alpha^2 \xi^2 t}], \hspace{0.5cm} \text{convolution theorem}\\
+		&= e^{-x^2} \ast \F^{-1}_x[e^{-\alpha^2 \xi^2 t}]\\
+		&= e^{-x^2} \ast \lb \f{1}{\sqrt{2\pi}}  \int^\infty_{-\infty} e^{-\alpha^2 \xi^2 t}e^{ix\xi}\,d\xi \rb.
+		\end{align*}
+		Change of variables: let $s = -\alpha \sqrt{t} \xi$, so that $ds = -\alpha \sqrt{t}$, we have
+		\begin{align*}
+		u(x,t) &= e^{-x^2} \ast \lb \f{1}{\sqrt{2\pi}}  \f{1}{\alpha\sqrt{t}} \int^\infty_{-\infty} e^{-s^2}e^{-ix(s/\alpha\sqrt{t})}\,ds \rb\\
+		&= e^{-x^2}\ast \f{1}{\alpha\sqrt{t}}\lb \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty}e^{-s^2}e^{-is(x/\alpha\sqrt{t})}\,ds   \rb\\
+		&= e^{-x^2} \ast \f{1}{\alpha\sqrt{t}} \F[e^{-s^2}\lp \f{x}{\alpha \sqrt{t}} \rp] \\
+		&= e^{-x^2} \ast \f{1}{\alpha\sqrt{t}} \f{1}{\sqrt{2}}e^{-(x/\alpha \sqrt{t})^2 / 2^2}\\
+		&= e^{-x^2} \ast \f{1}{\alpha\sqrt{2t}}e^{-x^2/4\alpha^2 t}\\
+		&= \f{1}{\sqrt{2\pi}}\f{1}{\alpha\sqrt{2t}}\int^\infty_{-\infty} e^{-y^2}e^{-(x-y)^2/4\alpha^2 t}\,dy\\
+		&= \f{1}{2\alpha\sqrt{\pi t}} \int^\infty_{-\infty} e^{-y^2}e^{-(x-y)^2/4\alpha^2 t}\,dy.
+		\end{align*}
+		So the solution to the IVP is
+		\begin{align*}
+		\boxed{u(x,t) = \f{1}{2\alpha\sqrt{\pi t}} \int^\infty_{-\infty} e^{-y^2}e^{-(x-y)^2/4\alpha^2 t}\,dy}
+		\end{align*}
+		
+		
+		
 	\end{sln*}
 \end{exer*}
 
 \newpage
 
-\begin{exer*}
-	\begin{sln*}
-		hello
+\begin{exer*}\textbf{4. }Problem 5, Lesson 12, Farlow.\\
+	
+	Verify that the convolution of two functions $f$ and $g$ can be written as either 
+	\begin{align*}
+	(f\ast g)(x) = \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} f(x-\xi)g(\xi)\, d\xi
+	\end{align*}
+	or
+	\begin{align*}
+	(f\ast g)(x) = \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} f(\xi)g(x - \xi)\, d\xi.
+	\end{align*}
+	
+	
+	\begin{sln*}\textbf{4.}
+	We can show the two expressions are equivalent by change of variables. Let 
+	\begin{align*}
+	(f\ast g)(x) = \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} f(x-\xi)g(\xi)\, d\xi
+	\end{align*}
+	and $y = x - \xi$. Then $\xi = x-y$ and $d\xi = -dy$. So,
+	\begin{align*}
+	\f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} f(\xi)g(x - \xi)\, d\xi
+	&= \f{1}{\sqrt{2\pi}} \int^{-\infty}_{+\infty} -f(x-y)g(y)\,dy\\
+	&= \f{1}{\sqrt{2\pi}} \int^{\infty}_{-\infty} f(x-y)g(y)\,dy\\
+	&= \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} f(x-\xi)g(\xi)\, d\xi,
+	\end{align*}
+	where we just replace the dummy variable $y$ with $\xi$. Therefore, the two expressions are equivalent. This also shows that $(f\ast g)(x) = (g\ast f)(x)$. 
 	\end{sln*}
 \end{exer*}
 
 \newpage
 
+\begin{exer*}\textbf{5. }Problem 2, Lesson 12, Farlow.\\
+	
+	Verify that the Fourier and inverse Fourier transforms are linear transformations.
+	
+	\begin{sln*}
+		Let ``nice'' functions $f(x)$ and $g(x)$ and $\alpha,\beta \in \C$ be given. \begin{enumerate}
+			\item The Fourier transform is linear.
+			\begin{align*}
+			\alpha\F[ f(x)](\xi) + \beta\F[ g(x)](\xi) &= \alpha\f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} ( f(x))e^{-ix\xi}\,dx + \beta\f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} ( g(x))e^{-ix\xi}\,dx\\
+			&=\f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} (\alpha f(x))e^{-ix\xi}\,dx + \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} (\beta g(x))e^{-ix\xi}\,dx\\
+			&= \f{1}{\sqrt{2\pi}}\lp \int^\infty_{-\infty}(\alpha f(x) + \beta g(x)) e^{-ix\xi}\,dx \rp\\
+			&= \F[\alpha f + \beta g](\xi).  
+			\end{align*}
+			
+			
+			\item The Inverse Fourier transform is also linear.
+			\begin{align*}
+			\alpha \F^{-1}[f(\xi)](x) + \beta \F^{-1}[g(\xi)](x) &= \al \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} f(\xi)e^{ix\xi}\,d\xi + \beta \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} g(\xi) e^{ix\xi}\,d\xi\\
+			&= \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} \al f(\xi)e^{ix\xi}\,d\xi +  \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} \beta g(\xi) e^{ix\xi}\,d\xi\\
+			&= \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} (\alpha f(\xi) + \beta g(\xi)) e^{ix\xi}\,d\xi\\
+			&= \F^{-1}[\alpha f(\xi) + \beta g(\xi)](x).
+			\end{align*}
+		\end{enumerate}	
+	\end{sln*}
+\end{exer*}
 
+\newpage
 
+\begin{exer*}\textbf{6. }In this exercise, you'll derive the formula given as Item 3 in Table 12.1 in our textbook. The formula essentially says that the Fourier transform of a Gaussian function is another Gaussian function. Precisely, this is the identity
+	\begin{align*}
+	\F[e^{-x^2}](\xi) = \f{1}{\sqrt{2}}e^{-(\xi/2)^2}
+	\end{align*}
+	which holds for all $\xi \in \R$. To this end, do the following:
+	
+	\begin{enumerate}
+		\item Fix any $x \in \R$ and define, for $t \in [0,1]$,
+		\begin{align*}
+		f(t) = \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} e^{-(x+ i(t/2)\xi)^2}\,dx.
+		\end{align*}
+		Compute $f'(t)$ for $0 < t < 1$. Hint: You may differentiate right through the integral sign. In our answer, it is useful to keep the entire term which comes down from the chain rule together, i.e., keep your answer as a single integral.
+		
+		\begin{sln*}\textbf{6.1}
+			We simply follow what the hint says:
+			\begin{align*}
+			\f{df(t)}{dt} &= \f{d}{dt}\f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} e^{-(x+ i(t/2)\xi)^2}\,dx\\
+			&= \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} \f{d}{dt}e^{-(x+ i(t/2)\xi)^2}\,dx\\
+			&= \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} \f{d}{dt}e^{-(x+ i(t/2)\xi)^2}\,dx\\
+			&= \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} -\lp\f{d}{dt}(x + i(t/2)\xi)^2\rp e^{-(x + i(t/2)\xi)^2}\,dx\\
+			&= \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty}-2(x + i(t/2)\xi)\f{i\xi}{2} e^{-(x + i(t/2)\xi)^2}\,dx\\
+			&= \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} -i\xi (x + i(t/2)\xi)e^{-(x + i(t/2)\xi)^2}\,dx.
+			\end{align*}
+		\end{sln*}
+	
+		\item By making a change of variables, $x \to y = x + i(t/2)\xi$, use symmetry to conclude that $f'(t) = 0$ for all $0 < t < 1$. Hint: In making the change of variables, you can pretend that the imaginary unit $i$ can be treated as a real constant. Truthfully, this is not exactly correct but it works in this case. The true change of variables makes use of Cauchy's integral formula from complex analysis, which you will learn if you take MA352 in the fall. 
+		
+		\begin{sln*}\textbf{6.2} By change of variables: $y = x + i(t/2)\xi$, we have $dy = dx$, so:
+			\begin{align*}
+			\f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} -i\xi (x + i(t/2)\xi)e^{-(x + i(t/2)\xi)^2}\,dx = -\f{i\xi}{\sqrt{2\pi}} \int^\infty_{-\infty} y e^{-y^2}\,dy.
+			\end{align*}
+			Since $y$ is an odd function, $e^{-y^2}$ is an even function, and that the domain of integration is symmetric, $f'(t) = 0$.
+			
+		\end{sln*}
+	
+	
+	
+		\item Recalling the result from introductory calculus that $f$ is identically constant if and only if $f'$ is identically zero, the previous step guarantees that $f(0) = f(1)$. Use this equation and the fact that 
+		\begin{align*}
+		\int^\infty_{-\infty} e^{-x^2}\,dx = \sqrt{\pi}
+		\end{align*}
+		which we derived in class to deduce the formula on top.
+		
+		\begin{sln*}\textbf{6.3} Let $t = 0$, then 
+			\begin{align*}
+			f(0) = \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} e^{-x^2}\,dx = \f{\sqrt{\pi}}{\sqrt{2\pi}} = \f{1}{2}.
+			\end{align*}
+			Since $f'(t) = 0$ for any $0 < t < 1$, we have $f(1) = f(0)$, so,
+			\begin{align*}
+			f(0) = f(1) = \f{1}{\sqrt{2\pi}} \int^\infty_{-\infty} e^{-(x+ i(1/2)\xi)^2}\,dx = \f{1}{2}.
+			\end{align*}
+			
+			Hence,
+			\begin{align*}
+			\F[e^{-x^2}](\xi) &= \f{1}{\sqrt{2\pi}}\int^{\infty}_{-\infty} e^{-x^2} e^{-ix\xi}\,dx\\
+			&=  \f{1}{\sqrt{2\pi}}\int^{\infty}_{-\infty} e^{-(x^2 + 2i(1/2)\xi + (i\xi)^2/2^2 )} e^{(i\xi)^2/2^2}\,dx\\
+			&= e^{-\xi^2/4}\f{1}{\sqrt{2\pi}}\int^{\infty}_{-\infty} e^{-(x + i(1/2)\xi )^2} \,dx\\
+			&= e^{-(\xi/2)^2} \lp \f{1}{\sqrt{2\pi}}\int^{\infty}_{-\infty} e^{-(x + i(1/2)\xi )^2} \,dx  \rp\\
+			&= e^{-(\xi/2)^2} f(1)\\
+			&= \f{1}{2}e^{-(\xi/2)^2}.
+			\end{align*}
+			This verifies the given identity. 
+			
+		\end{sln*}
+	\end{enumerate}
+
+\end{exer*}
 
 
 
