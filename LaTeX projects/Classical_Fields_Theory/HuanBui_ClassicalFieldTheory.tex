@@ -25,7 +25,7 @@
 \newtheorem{prop}{Proposition}[section]
 \newtheorem{propty}{Properties}[section]
 \newtheorem{rmk}{Remark}[section]
-\newtheorem{exmp}{Example}[section]
+\newtheorem{exmp}{Exercise}[section]
 \newtheorem*{prob*}{Problem}
 \newtheorem{prob}{Problem}[section]
 \newtheorem*{sln*}{Solution}
@@ -46,6 +46,18 @@
 \newcommand{\V}{\mathcal{V}}
 \newcommand{\nn}{\nonumber}
 
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
 %\usepgfplotslibrary{external}
 %\tikzexternalize
 
@@ -957,6 +969,8 @@ So, $D_\mu\phi$ transforms correctly. Since we have added the electromagnetic ve
 \boxed{\lag = \vert D_\mu \phi\vert^2 - m^2\vert \phi\vert^2 - \frac{1}{4}F_{\mu\nu}F^{\mu\nu} }
 \end{align}
 In the next section, we will look at the underlying motivations for the choices we have made regarding ``fixing'' our notion of the derivatives and $\Lambda$.
+
+
 \subsubsection{Motivations in the derivation of the E\&M Lagrangian}
 In the previous section, we have look at the basics of gauge transformations and global and local symmetry. We have also come across a number of ``clever'' choices, but those choices have so far been unjustified. in this section, we will try to develop an understanding for ``why'' the complete Lagrangian of electromagnetism and matter has the following form
 \begin{align}
@@ -2535,6 +2549,7 @@ Note that since O(2) is U(1) are very similar, we will not work out the details 
 \subsection{Review of General Relativity \& Curved Spacetime}
 
 \subsubsection{General Relativity}
+
 Taking the speed of light, $c$, to be 1, the Einstein equation for general relativity is
 \begin{align}
 R_{\mu\nu} - \frac{1}{2}Rg_{\mu\nu} = 8\pi GT_{\mu\nu}.
@@ -2586,7 +2601,11 @@ Next, invoking the definition of the Christoffel symbols, we can compute
 \end{align}
 
 \subsection{Lagrangian Formulation}
-\subsubsection{Introduction to the Lagrangian Formulation of General Relativity}
+
+\subsection{Overview}
+
+
+
 The action is
 \begin{align}
 S = \int \lag (\Phi^i, D_\mu \Phi^i)\,d^nx.
@@ -2626,8 +2645,350 @@ The \textbf{covariant d'Alembertian} now becomes
 \begin{align}
 S_H = \int \sqrt{-g}\,d^nx.
 \end{align}
+
+
+
+\subsubsection{Introduction to the Lagrangian Formulation of General Relativity}
+
+Recall that the action in flat spacetime has the form:
+\begin{align}
+S = \int \lag \,d^4x.
+\end{align}
+
+This is due to the fact that the metric is just $\eta_{\mu\nu} = \text{diag}(1,-1,-1,-1)$. But in curved spacetime, however, the metric is $g_{\mu\nu} \neq \eta_{\mu\nu}$. In some sense we can find how the form of the action changes as we move from flat to general curved spacetime. Consider the transformation $x^\mu \to x^{\mu'}$, then $dx^\mu \to X^{\mu'}_\nu dx^\nu$. The Jacobian matrix for this transformation is 
+\begin{align}
+\lb X^{\mu'}_\nu \rb = \lb\f{\p x^{\mu'}}{\p x^\nu}\rb
+\end{align} 
+and
+\begin{align}
+g_{\mu'\nu'} = X^\alpha_{\mu'}X^\beta_{\nu'}g_{\alpha\beta}.
+\end{align}
+So the ``volume'' element becomes:
+\begin{align}
+d^4x \to  d^4x' = \bigg\vert \f{\p x^{\mu'}}{\p x^\nu}  \bigg\vert d^4x.
+\end{align}
+Since we want our volume element to be invariant, we have to compensate with a factor of 
+\begin{align}\label{det}
+g = \det(g_{\mu\nu}) = \vert g_{\mu\nu} \vert.
+\end{align}
+But we are not quite there yet. Notice that the metric tensor has the form
+\begin{align}
+[g_{\mu\nu}] = \begin{pmatrix}
++ &&&\\
+&-&&\\
+&&-&\\
+&&&-
+\end{pmatrix},
+\end{align}
+which means $\det(g_{\mu\nu}) < 0$. So, we use $-g > 0$. From Eq. \eqref{det}, we get that 
+\begin{align}
+g' = \bigg\vert \f{\p x}{\p x'} \bigg\vert^2 g.
+\end{align}
+So,
+\begin{align}
+g' = \bigg\vert \f{\p x'}{\p x} \bigg\vert^{-2} g,
+\end{align}
+which means
+\begin{align}
+\sqrt{-g'} = \bigg\vert \f{\p x'}{\p x} \bigg\vert^{-1}\sqrt{-g},
+\end{align}
+since $-g, -g' > 0$. Therefore,
+\begin{align}
+d^4 x \sqrt{-g} = d^4 x' \bigg\vert \f{\p x'}{\p x} \bigg\vert^{-1} \bigg\vert \f{\p x'}{\p x} \bigg\vert \sqrt{-g'} = d^4 x' \sqrt{-g'}.
+\end{align} 
+We have 
+\begin{align}
+d^4x\sqrt{-g} = d^4x' \sqrt{-g'}
+\end{align}
+as desired. Now, just for sanity check, we can return to flat spacetime where $g'_{\mu\nu} = g_{\mu\nu} = \eta_{\mu\nu} = \text{diag}(1,-1,-1,-1)$. Then, $-g = 1$ hence $\sqrt{-g} = 1$, which says $d^4x \sqrt{-g} = d^4x = d^4x' = d^4x'\sqrt{-g'}$. So, for curved spaces the action is given by
+\begin{align}
+\boxed{S = \int \,d^4x \sqrt{-g}\lag}
+\end{align}
+
+
+For pure gravity (no matter), the action is called the \textbf{Einstein-Hilbert action}
+\begin{align}
+\boxed{S = \int \, d^4x \sqrt{-g}\f{1}{16\pi G}R}
+\end{align}
+where $R$ is the \textbf{Ricci scalar}, defined by a contraction
+\begin{align}
+R = \tensor{R}{^\mu_\mu} = \tensor{R}{^{\mu\nu}_{\mu\nu}} = g^{\mu\nu} R_{\mu\nu} 
+\end{align}
+where $R_{\mu\nu}$ is defined in terms of other contractions
+\begin{align}
+R_{\mu\nu} = \tensor{R}{^\lambda_{\mu\lambda\nu}} = g^{\lambda \rho} R_{\rho\mu\lambda\nu}.
+\end{align}
+We also recall that
+\begin{align}
+\tensor{R}{^\rho_{\sigma\mu\nu}} = \p_\mu \Gamma^\rho_{\nu\sigma} - \p_\nu \Gamma^\rho_{\mu\sigma} - \Gamma^\rho _{\mu\lambda}\Gamma^\lambda_{\nu\sigma} - \Gamma^\rho_{\nu\lambda} \Gamma^\lambda_{\mu\sigma}
+\end{align}
+where the \textbf{Christoffel symbols} are defined in terms of the metric tensor:
+\begin{align}
+\Gamma^\lambda_{\mu\nu} = \f{1}{2}g^{\lambda\sigma}\lp \p_\mu g_{\nu\sigma} + \p_\nu g_{\sigma\mu} - \p_\sigma g_{\mu\nu} \rp.
+\end{align}
+
+
+
+
+
+
+
+
 \subsubsection{Variations on the metric tensor}
-Variation on the metric tensor $g_{\mu\nu}$.
+
+\subsubsection{Without matter, $T_{\mu\nu} = 0$}
+
+To find the physical laws or the equations of motion, we need to vary the action with respect to $g_{\mu\nu}$ and $g^{\mu\nu}$ since it is written in terms of the metric (the field of interest is the metric). To start, we must pick $g_{\mu\nu}$ or $g^{\mu\nu}$ as the fundamental field. The choice shouldn't matter, but for certain conveniences, we shall pick $g^{\mu\nu}$ as the fundamental field. 
+
+Now, $g_{\mu\nu}$ (the metric tensor) and $g^{\mu\nu}$ (its inverse) obey
+\begin{align}
+g^{\mu\nu}g_{\nu\sigma} = \delta^\nu_\sigma,
+\end{align}  
+which is covariantly constant. So,
+\begin{align}
+(\delta g^{\mu\nu}) g_{\nu\sigma} + g^{\mu\nu}(\delta g_{\nu\sigma}) = 0,
+\end{align}
+i.e.,
+\begin{align}
+(\delta g^{\mu\nu}) g_{\nu\sigma} = -g^{\mu\nu}(\delta g_{\nu\sigma})
+\end{align}
+Multiplying with $g^{\sigma\rho}$ we get
+\begin{align}
+(\delta g^{\mu\nu})g_{\nu\sigma}g^{\sigma\rho} &= -g^{\mu\nu}g^{\sigma\rho}(\delta g_{\nu\sigma})\\
+(\delta g^{\mu\nu})\delta^\nu_\rho &=  -g^{\mu\nu}g^{\sigma\rho}(\delta g_{\nu\sigma})
+\end{align}
+i.e.,
+\begin{align}
+\delta g^{\mu\rho} = -g^{\mu\nu}g^{\sigma\rho}\delta g_{\nu\sigma}.
+\end{align}
+We an rewrite this as
+\begin{align}
+\delta g^{\mu\nu} = -g^{\mu\alpha} g^{\nu\beta}\delta g_{\alpha\beta}.
+\end{align}
+Likewise, 
+\begin{align}
+\delta g_{\mu\nu} = -g_{\mu\alpha}g_{\nu\beta}\delta g^{\alpha\beta}.
+\end{align}
+
+Now, consider 
+\begin{align}
+\sqrt{-g}\lag \sim \sqrt{-g}R = \sqrt{-g}g^{\mu\nu}R_{\mu\nu}
+\end{align}
+We have,
+\begin{align}
+\delta(\sqrt{-g}\lag) &\sim \delta (\sqrt{-g} R)\nn\\
+&=\delta\lb \sqrt{-g}g^{\mu\nu}R_{\mu\nu} \rb\nn\\
+&= (\delta \sqrt{-g})g^{\mu\nu}R_{\mu\nu} + \sqrt{-g}(\delta g^{\mu\nu})R_{\mu\nu} + (\sqrt{-g})g^{\mu\nu}(\delta R_{\mu\nu}).  
+\end{align}
+
+First, we want to find $\delta \sqrt{-g}$ in terms of $\delta g^{\mu\nu}$. We already know that $g = \det(g_{\mu\nu})$, so we use the following identity for matrices
+\begin{align}
+\ln(\det(M)) = \Tr(\ln(M)),
+\end{align}
+which can be a fun exercise to verify. Varying this identity, we get
+\begin{align}
+\delta \ln(\det(M)) = \delta \Tr(\ln(M)),
+\end{align}
+i.e.,
+\begin{align}
+\f{1}{\det(M)}\delta \det(M) = \Tr(\delta \ln(M)) = \Tr(M^{-1}\delta M).
+\end{align}
+If we let $M = [g_{\mu\nu}]$ and $M^{-1} = [g^{\mu\nu}]$ then we have
+\begin{align}
+\ln(g) = \Tr(\ln[g_{\mu\nu}]).
+\end{align}
+Varying with respect to the metric, we get
+\begin{align}
+\f{1}{g}(\delta g) = \Tr(g^{\mu\nu}\delta g_{\mu\nu}).
+\end{align}
+But since $g^{\mu\nu}\delta g_{\mu\nu}$ is just a number, $\Tr(g^{\mu\nu}\delta g_{\mu\nu}) = g^{\mu\nu}\delta g_{\mu\nu}$. Hence,
+\begin{align}
+\boxed{\delta g = g g^{\mu\nu}\delta g_{\mu\nu} = -gg_{\mu\nu}\delta g^{\mu\nu}}.
+\end{align}
+Then
+\begin{align}
+\delta \sqrt{-g} &= \delta (-g)^{1/2\nn}\\
+& = \f{1}{2}(-g)^{-1/2}\delta (-g) \nn\\
+&= \f{-1}{2}\f{1}{\sqrt{-g}}\delta g \nn\\
+&= \f{-1}{2}\f{1}{\sqrt{-g}}(-g)g_{\mu\nu}\delta g^{\mu\nu}\nn\\
+&= \f{-1}{2}\sqrt{-g}g_{\mu\nu} \delta g^{\mu\nu}
+\end{align}
+i.e.,
+\begin{align}
+\boxed{\delta \sqrt{-g} = \f{-1}{2}\sqrt{-g}g_{\mu\nu} \delta g^{\mu\nu} = \f{1}{2}\sqrt{-g}g^{\mu\nu}\delta g_{\mu\nu}}
+\end{align}
+Now, what about $\delta R = \delta R_{\mu\nu}$? Recall that
+\begin{align}
+\delta (\sqrt{-g} R) &= (\delta \sqrt{-g})(g^{\mu\nu}R_{\mu\nu}) + \sqrt{-g}(\delta g^{\mu\nu})R_{\mu\nu} + (\sqrt{-g})g^{\mu\nu}(\delta R_{\mu\nu})\nn\\
+&= (\delta \sqrt{-g})R + \sqrt{-g}(\delta g^{\mu\nu})R_{\mu\nu} + (\sqrt{-g})g^{\mu\nu}(\delta R_{\mu\nu})\nn\\
+&= \f{-1}{2}\sqrt{-g}g_{\mu\nu}( \delta g^{\mu\nu})R + \sqrt{-g}(\delta g^{\mu\nu})R_{\mu\nu} + (\sqrt{-g})g^{\mu\nu}(\delta R_{\mu\nu})
+\end{align} 
+Since we have found $\delta \sqrt{-g}$ in terms of $\delta g^{\mu\nu}$, 
+\begin{align}
+\delta (\sqrt{-g}R ) = \sqrt{-g}\lp R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R \rp\delta g^{\mu\nu} + \sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu}.
+\end{align}
+We immediately recognize the Einstein tensor $G_{\mu\nu}$ 
+\begin{align}
+G_{\mu\nu} = R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R.
+\end{align}
+From the Einstein equations, we know that 
+\begin{align}
+G_{\mu\nu} = 8\pi G T_{\mu\nu}.
+\end{align}
+But since there is no matter, $T_{\mu\nu} = 0$, i.e., $G_{\mu\nu} = 0$. So, if we do the variations correctly, we should get
+\begin{align}
+R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R = 0.
+\end{align}
+
+It turns out that after some simplification
+\begin{align}\label{R}
+\boxed{\int \,d^4x \sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu} = 0}
+\end{align}
+which means we don't have to worry about the third term in the expansion of $\delta \sqrt{-g}R$ that involves $\delta R_{\mu\nu}$. Therefore, with
+\begin{align}
+S = \int \,d^4x \sqrt{-g}\f{1}{16\pi G}R,
+\end{align}
+we have
+\begin{align}
+16\pi G \delta S = \int\,d^4x \sqrt{-g}\lp R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R \rp\delta g^{\mu\nu} = 0,
+\end{align}
+since we require varying the action gives zero, which implies 
+\begin{align}
+\boxed{R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R = 0}
+\end{align}
+as expected.\\
+
+
+
+
+
+
+\begin{exmp}
+	Verify Eq. \eqref{R}.\\
+	
+	\begin{sln}
+		We tackle this with integration by parts. We want to show that
+		\begin{align}
+		\int \,d^4x \sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu} = 0
+		\end{align}
+		Consider the term
+		\begin{align}
+		\sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu}.
+		\end{align}
+		By integration by parts, 
+		\begin{align}
+		hello
+		\end{align}
+	\end{sln}
+\end{exmp}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+With non-zero cosmological constant $\Lambda$ and no matter ($T_{\mu\nu} = 0$), the action simply becomes:
+\begin{align}
+S = \f{1}{16\pi G}\int \,d^4x \sqrt{-g}(R - 2\Lambda).
+\end{align}
+Then,
+\begin{align}\label{ricci}
+R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R + \Lambda g_{\mu\nu} = 0.
+\end{align}
+
+\begin{exmp}
+	Verify Eq. \eqref{ricci}.\\
+	
+	\begin{sln}
+		We make use of Eq. \eqref{R}.
+	\end{sln}
+\end{exmp}
+
+\subsubsection{With matter, $T_{\mu\nu} \neq 0$}
+
+A natural question is how we can add matter into the action. It turns out that we simply add a matter Lagrangian to the Lagrangian density:
+\begin{align}
+S = \int\,d^4x \sqrt{-g}\lp \f{1}{16\pi G}(R - 2\Lambda) + \lag_{matter} \rp,
+\end{align}
+where the matter Lagrangian term $\lag_{matter}$ also involves the metric:
+\begin{align}
+\lag = -\f{1}{2}(\p_\mu\phi)g^{\mu\nu}(\p_\nu\phi) - \f{1}{2}m^2\phi^2,
+\end{align}
+where $\phi$ is a scalar field. One thing to notice is that there is an interaction between the field and the metric. This makes things a little more complicated. 
+
+If we want to vary this action, we will have to include the term
+\begin{align}
+\delta \lp \sqrt{-g}\lb -\f{1}{2}(\p_\mu\phi)g^{\mu\nu}(\p_\nu\phi) - \f{1}{2}m^2\phi^2 \rb \rp.
+\end{align}
+These extra terms will contribute to $T_{\mu\nu}$. So we simply define
+\begin{align}
+\boxed{\delta S = \delta S_g+ \delta S_M = \int\,d^4x \sqrt{-g}\f{1}{16\pi G}(R - 2\Lambda) + \int\,d^4x \sqrt{-g}\lag_M}
+\end{align}
+and 
+\begin{align}
+\boxed{\delta \lp \sqrt{-g}\lag_M \rp = -\f{1}{2}\sqrt{-g}T_{\mu\nu}\delta g^{\mu\nu}}
+\end{align}
+or
+\begin{align}
+\boxed{T_{\mu\nu} = \f{-2}{\sqrt{-g}}\f{\delta}{\delta g_{\mu\nu}} \lb \sqrt{-g}\lag_M \rb }
+\end{align}
+With that, for $\Lambda = 0$,
+\begin{align}
+\delta S &= \int\,d^4x \f{\sqrt{-g}}{16\pi G}\lp R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R \rp \delta g^{\mu\nu} + \delta(\sqrt{-g}\lag_M)\nn\\
+&= \int\,d^4x \lb \f{1}{16\pi G}\lp R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R \rp - \f{1}{2}T_{\mu\nu} \rb\sqrt{-g}\delta g^{\mu\nu}\nn\\
+&= 0.
+\end{align}
+Therefore,
+\begin{align}
+\f{1}{16\pi G}\lp R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R \rp = \f{1}{2}T_{\mu\nu}.
+\end{align}
+So, we get the Einstein equations
+\begin{align}
+\boxed{R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R = 8\pi G T_{\mu\nu}}
+\end{align}
+Now, if 
+\begin{align}
+\lag_M = -\f{1}{4}F^{\mu\nu}F_{\mu\nu}
+\end{align}
+then 
+\begin{align}
+\sqrt{-g}\lag_M = -\f{1}{4}F^{\mu\nu}g^{\mu\alpha}g^{\nu\beta}F_{\alpha\beta}
+\end{align}
+and we can show that
+\begin{align}
+F_{\mu\nu} = D_{\mu}A_\nu - D_\nu A_\mu = \p_\mu A_\nu - \p_\nu A_\mu.
+\end{align}
+We can vary this with respect to $g^{\mu\nu}$ to get $T^{\mu\nu}$ (which we can readily verify)
+\begin{align}\label{stress}
+\boxed{T_{\mu\nu} = F_{\mu\lambda}\tensor{F}{_\nu^\lambda} - \f{1}{4}g_{\mu\nu}F_{\alpha\beta}F^{\alpha\beta}}
+\end{align}
+We can actually check and see that this is actual energy-momentum stress tensor. For instance, 
+\begin{align}
+T_{00} \sim (\vec{E}^2 + \vec{B}^2) \sim \text{ Energy density}\\
+T_{0j} \sim \text{Poynting vectors}.
+\end{align}
+
+
+
+
+
+
+\begin{exmp}
+	Verify Eq. \eqref{stress}.\\
+	
+	\begin{sln}
+		We gotta do what we gotta do.
+	\end{sln}
+\end{exmp}
 
 
 \subsection{Properties of Einstein Equations}
