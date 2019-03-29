@@ -2720,7 +2720,7 @@ R_{\mu\nu} = \tensor{R}{^\lambda_{\mu\lambda\nu}} = g^{\lambda \rho} R_{\rho\mu\
 \end{align}
 We also recall that
 \begin{align}
-\tensor{R}{^\rho_{\sigma\mu\nu}} = \p_\mu \Gamma^\rho_{\nu\sigma} - \p_\nu \Gamma^\rho_{\mu\sigma} - \Gamma^\rho _{\mu\lambda}\Gamma^\lambda_{\nu\sigma} - \Gamma^\rho_{\nu\lambda} \Gamma^\lambda_{\mu\sigma}
+\tensor{R}{^\rho_{\sigma\mu\nu}} = \p_\mu \Gamma^\rho_{\nu\sigma} - \p_\nu \Gamma^\rho_{\mu\sigma} + \Gamma^\rho _{\mu\lambda}\Gamma^\lambda_{\nu\sigma} - \Gamma^\rho_{\nu\lambda} \Gamma^\lambda_{\mu\sigma}
 \end{align}
 where the \textbf{Christoffel symbols} are defined in terms of the metric tensor:
 \begin{align}
@@ -2734,9 +2734,9 @@ where the \textbf{Christoffel symbols} are defined in terms of the metric tensor
 
 
 
-\subsubsection{Variations on the metric tensor}
 
-\subsubsection{Without matter, $T_{\mu\nu} = 0$}
+
+\subsubsection{Variation on the metric tensor, without matter: $T_{\mu\nu} = 0$}
 
 To find the physical laws or the equations of motion, we need to vary the action with respect to $g_{\mu\nu}$ and $g^{\mu\nu}$ since it is written in terms of the metric (the field of interest is the metric). To start, we must pick $g_{\mu\nu}$ or $g^{\mu\nu}$ as the fundamental field. The choice shouldn't matter, but for certain conveniences, we shall pick $g^{\mu\nu}$ as the fundamental field. 
 
@@ -2863,25 +2863,103 @@ as expected.\\
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 \begin{exmp}
 	Verify Eq. \eqref{R}.\\
 	
 	\begin{sln}
-		We tackle this with integration by parts. We want to show that
+		We want to show that
 		\begin{align}
-		\int \,d^4x \sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu} = 0
+		\int \,d^4x \sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu} = 0.
 		\end{align}
-		Consider the term
+		Recall that the Ricci tensor is a contraction of the Riemann tensor, which is given by
 		\begin{align}
-		\sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu}.
+		\tensor{R}{^\rho_{\sigma\mu\nu}} = \p_\mu \Gamma^\rho_{\nu\sigma} - \p_\nu \Gamma^\rho_{\mu\sigma} + \Gamma^\rho _{\mu\lambda}\Gamma^\lambda_{\nu\sigma} - \Gamma^\rho_{\nu\lambda} \Gamma^\lambda_{\mu\sigma}.
 		\end{align}
-		By integration by parts, 
+		Consider arbitrary variations of the connection:
 		\begin{align}
-		hello
+		\Gamma^\rho_{\nu\mu} \to \Gamma^\rho_{\nu\mu} + \delta \Gamma^\rho_{\nu\mu}.
 		\end{align}
+		Since $\delta \Gamma^\rho_{\nu\mu}$ is a difference between the two connections, it is a tensor. Hence we take its covariant derivative:
+		\begin{align}
+		D_\lambda (\delta \Gamma^\rho_{\nu\mu}) = \p_\lambda (\delta \Gamma^\rho_{\nu\mu}) + \Gamma^\rho_{\lambda\sigma} \delta \Gamma^\sigma_{\nu\mu} - \Gamma^\sigma_{\lambda\nu} \delta \Gamma^\rho_{\sigma\mu} - \Gamma^\sigma_{\lambda\mu} \delta \Gamma^\rho_{\nu\sigma}.
+		\end{align}
+		We can then show to first order (in \ref{exxer}) that
+		\begin{align}\label{approx}
+		\delta \tensor{R}{^\rho_{\mu\lambda\nu}} \approx D_\lambda (\delta \Gamma^\rho_{\nu\mu}) - D_\nu (\delta \Gamma^\rho_{\lambda\mu}),
+		\end{align}
+		so, variation on the contraction is
+		\begin{align}
+		\delta R_{\mu\nu} = \delta \tensor{R}{^\lambda_{\mu\lambda\nu}} \approx D_\lambda (\delta \Gamma^\lambda_{\nu\mu}) - D_\nu (\delta \Gamma^\lambda_{\lambda\mu}).
+		\end{align}
+		So we can write
+		\begin{align}\label{step}
+		\int \,d^4x \sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu} &= \int \,d^4x \sqrt{-g}g^{\mu\nu} \lb D_\lambda (\delta \Gamma^\lambda_{\nu\mu}) - D_\nu (\delta \Gamma^\lambda_{\lambda\mu})  \rb\\
+		&= \int \,d^4x \sqrt{-g}   D_\sigma \lb g^{\mu\nu} (\delta \Gamma^\sigma_{\nu\mu}) - g^{\mu\sigma} (\delta \Gamma^\lambda_{\lambda\mu})  \rb.
+		\end{align}
+		We will verify the second equality in \ref{exer}. Now,
+		\begin{align}
+		\delta \Gamma^\sigma_{\mu\nu} = -\f{1}{2}\lb g_{\lambda\mu}D_\nu (\delta g^{\lambda\sigma}) + g_{\lambda\nu} D_\mu (\delta g^{\lambda\sigma}) - g_{\mu\alpha}g_{\nu\beta} D^\sigma (\delta g^{\alpha\beta}) \rb.
+		\end{align}
+		Therefore,
+		\begin{align}
+		\int \,d^4x \sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu} &= \int\,d^4x \sqrt{-g} D_\sigma \lb g_{\mu\nu}D^\sigma (\delta g^{\mu\nu}) - D_\lambda (\delta g^{\sigma\lambda}) \rb.
+		\end{align}
+		But notice that this result is an integral with respect to the natural volume element of the covariant divergence of a vector. So, by Stokes' theorem, this is equal to a boundary contribution at infinity, which we can (in a hand-wavy manner) set to zero by making the variation vanish at infinity, i.e., 
+		\begin{align}
+		\int \,d^4x \sqrt{-g}g^{\mu\nu}\delta R_{\mu\nu} &= 0,
+		\end{align}
+		as we wanted. So, this term does not contribute the action variation.  \qed \\
+		
+		
+		
+		
 	\end{sln}
 \end{exmp}
 
+\begin{exmp}\label{exer}
+	Verify the following approximation in Eq. \eqref{approx}
+	\begin{align}
+	\delta \tensor{R}{^\rho_{\mu\lambda\nu}} \approx D_\lambda (\delta \Gamma^\rho_{\nu\mu}) - D_\nu (\delta \Gamma^\rho_{\lambda\mu})
+	\end{align}
+	to first order.\\
+	
+	\begin{sln}
+		\textbf{Do this} \qed\\
+	\end{sln}
+\end{exmp}
+
+
+
+
+
+
+
+
+
+\begin{exmp}\label{exxer}
+	Verify the equality used in Eq. \eqref{step}
+	\begin{align}
+	g^{\mu\nu} \lb D_\lambda (\delta \Gamma^\lambda_{\nu\mu}) - D_\nu (\delta \Gamma^\lambda_{\lambda\mu})\rb
+	=
+	D_\sigma \lb g^{\mu\nu} (\delta \Gamma^\sigma_{\nu\mu}) - g^{\mu\sigma} (\delta \Gamma^\lambda_{\lambda\mu})  \rb
+	\end{align}
+	
+	\begin{sln}
+		\textbf{Do this} \qed\\
+	\end{sln}
+\end{exmp}
 
 
 
@@ -2905,15 +2983,50 @@ Then,
 R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R + \Lambda g_{\mu\nu} = 0.
 \end{align}
 
+
+
+
+
+
 \begin{exmp}
 	Verify Eq. \eqref{ricci}.\\
 	
 	\begin{sln}
-		We make use of Eq. \eqref{R}.
+		We simply repeat what we have done before:
+		\begin{align}
+		16 \pi G (\delta S) &= \int \, d^4x \delta \lp \sqrt{-g}(R - 2\Lambda) \rp \nn\\
+		&= \int \, d^4x \delta (\sqrt{-g} R) - 2\Lambda \delta \sqrt{-g} \nn\\
+		&= \int \, d^4x \delta \lp\sqrt{-g} g^{\mu\nu}R_{\mu\nu}\rp- 2\Lambda \delta \sqrt{-g} \nn\\
+		&= \int \, d^4x \delta \lp\sqrt{-g} g^{\mu\nu}R_{\mu\nu}\rp- 2\Lambda \delta \sqrt{-g} \nn\\
+		&= \int \, d^4x \sqrt{-g} \lp R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R \rp \delta g^{\mu\nu}- 2\Lambda \lp -\f{1}{2}\sqrt{-g} g_{\mu\nu} \rp \delta g^{\mu\nu} \nn\\
+		&= \int \, d^4x \sqrt{-g}\lp R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R + \Lambda g_{\mu\nu} \rp \delta g^{\mu\nu}\nn\\
+		&= 0.
+		\end{align}
+		Since we require $\delta S = 0$,
+		\begin{align}
+		R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R + \Lambda g_{\mu\nu} = 0
+		\end{align}
+		must hold. \qed \\
 	\end{sln}
 \end{exmp}
 
-\subsubsection{With matter, $T_{\mu\nu} \neq 0$}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Variations on the metric tensor, with matter: $T_{\mu\nu} \neq 0$}
 
 A natural question is how we can add matter into the action. It turns out that we simply add a matter Lagrangian to the Lagrangian density:
 \begin{align}
@@ -2931,7 +3044,7 @@ If we want to vary this action, we will have to include the term
 \end{align}
 These extra terms will contribute to $T_{\mu\nu}$. So we simply define
 \begin{align}
-\boxed{\delta S = \delta S_g+ \delta S_M = \int\,d^4x \sqrt{-g}\f{1}{16\pi G}(R - 2\Lambda) + \int\,d^4x \sqrt{-g}\lag_M}
+\delta S = \delta S_g+ \delta S_M = \delta \lp\int\,d^4x \sqrt{-g}\f{1}{16\pi G}(R - 2\Lambda) + \int\,d^4x \sqrt{-g}\lag_M\rp
 \end{align}
 and 
 \begin{align}
@@ -2939,7 +3052,7 @@ and
 \end{align}
 or
 \begin{align}
-\boxed{T_{\mu\nu} = \f{-2}{\sqrt{-g}}\f{\delta}{\delta g_{\mu\nu}} \lb \sqrt{-g}\lag_M \rb }
+\boxed{T_{\mu\nu} = \f{-2}{\sqrt{-g}}\f{\delta}{\delta g^{\mu\nu}} \lb \sqrt{-g}\lag_M \rb }
 \end{align}
 With that, for $\Lambda = 0$,
 \begin{align}
@@ -2960,8 +3073,8 @@ Now, if
 \lag_M = -\f{1}{4}F^{\mu\nu}F_{\mu\nu}
 \end{align}
 then 
-\begin{align}
-\sqrt{-g}\lag_M = -\f{1}{4}F^{\mu\nu}g^{\mu\alpha}g^{\nu\beta}F_{\alpha\beta}
+\begin{align}\label{em}
+\sqrt{-g}\lag_M = -\f{1}{4}\sqrt{-g}F_{\mu\nu}g^{\mu\alpha}g^{\nu\beta}F_{\alpha\beta}
 \end{align}
 and we can show that
 \begin{align}
@@ -2982,11 +3095,67 @@ T_{0j} \sim \text{Poynting vectors}.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \begin{exmp}
 	Verify Eq. \eqref{stress}.\\
 	
 	\begin{sln}
-		We gotta do what we gotta do.
+		We start from the definition of the energy-momentum stress tensor:
+		\begin{align}
+		T_{\mu\nu} = \f{-2}{\sqrt{-g}}\f{\delta}{\delta g^{\mu\nu}} \lb \sqrt{-g}\lag_M \rb.
+		\end{align}
+		To make the simplification a little easier, we shall assume $\delta$ is with respect to $g^{\mu\nu}$ implicitly, so we just write:
+		\begin{align}
+		\f{-1}{2}\sqrt{-g}T_{\mu\nu}\delta g^{\mu\nu} = \delta\lb \sqrt{-g}\lag_M \rb
+		\end{align}
+		instead. By \eqref{em}
+		\begin{align}
+		\delta\lb \sqrt{-g}\lag_M \rb &= \delta \lp  -\f{1}{4}\sqrt{-g}F_{\mu\nu}g^{\mu\alpha}g^{\nu\beta}F_{\alpha\beta} \rp \nn\\
+		&= -\f{1}{4}(\delta \sqrt{-g})F_{\alpha\beta}F^{\alpha\beta} -\f{1}{4}\sqrt{-g}\delta\lp F_{\mu\nu}g^{\mu\alpha}g^{\nu\beta}F_{\alpha\beta} \rp.
+		\end{align}
+		We know that
+		\begin{align}
+		\delta \sqrt{-g} = -\f{1}{2}\sqrt{-g} g_{\mu\nu}\delta g^{\mu\nu}.
+		\end{align}
+		And,
+		\begin{align}
+		\delta \lp F_{\mu\nu}g^{\mu\alpha}g^{\nu\beta}F_{\alpha\beta} \rp &= g^{\nu\beta}F_{\mu\nu}F_{\alpha\beta}\delta g^{\mu\alpha} + g^{\mu\alpha}F_{\mu\nu}F_{\alpha\beta}\delta g^{\nu\beta}.
+		\end{align}
+		With respect to $g^{\mu\nu}$:
+		\begin{align}
+		\delta \lp F_{\mu\nu}g^{\mu\alpha}g^{\nu\beta}F_{\alpha\beta} \rp
+		&= g^{\nu\beta}F_{\mu\nu}F_{\alpha\beta}\delta g^{\mu\alpha} + g^{\mu\alpha}F_{\mu\nu}F_{\alpha\beta}\delta g^{\nu\beta}\nn\\
+		&= F_{\mu\nu}F_{\alpha\beta}\lb \delta ^\nu_\alpha g^{\nu\beta} + \delta^\mu_\beta g^{\mu\alpha} \rb \delta g^{\mu\nu}\nn\\
+		&= \lb F_{\mu\nu}F_{\alpha\beta}\delta^\nu_\alpha g^{\nu\beta} - F_{\nu\mu}F_{\alpha\beta}\delta^\mu_\beta g^{\mu\alpha} \rb\delta g^{\mu\nu}\nn\\
+		&= \lb \tensor{F}{_\mu^\beta}F_{\nu\beta} - \tensor{F}{_\nu^\alpha}F_{\alpha\mu} \rb\delta g^{\mu\nu}\nn\\
+		&= \lb \tensor{F}{_\mu^\beta}F_{\nu\beta} + \tensor{F}{_\nu^\alpha}F_{\mu\alpha} \rb\delta g^{\mu\nu}\nn\\
+		&= 2\lp F_{\mu\lambda} \tensor{F}{_\nu^\lambda} \rp \delta g^{\mu\nu},
+		\end{align}
+		where we have used the anti-symmetric property of $F_{\mu\nu}$ (and $F^{\mu\nu}$) and $\lambda$ is a dummy variable replacing $\alpha, \beta$ in the contraction. So, putting everything together,
+		\begin{align}
+		T_{\mu\nu} &= \f{-2}{\sqrt{-g}}\f{\delta}{\delta g^{\mu\nu}} \lb \sqrt{-g}\lag_M \rb\nn\\
+		&= \f{-2}{\sqrt{-g}}\lb \lp \f{1}{8}\sqrt{-g}g_{\mu\nu} F_{\alpha\beta}F^{\alpha\beta} \rp -\f{1}{4}\sqrt{-g}\lp ???  \rp\rb\nn\\
+		&= -\f{1}{4}g_{\mu\nu}F_{\alpha\beta}F^{\alpha\beta} + \f{1}{2}\lb 2\lp F_{\mu\lambda} \tensor{F}{_\nu^\lambda} \rp \rb\nn\\
+		&=  -\f{1}{4}g_{\mu\nu}F_{\alpha\beta}F^{\alpha\beta} + F_{\mu\lambda}\tensor{F}{_\nu^\lambda}.
+		\end{align}
+		Thus we have shown
+		\begin{align}
+		T_{\mu\nu} &= F_{\mu\lambda}\tensor{F}{_\nu^\lambda} -\f{1}{4}g_{\mu\nu}F_{\alpha\beta}F^{\alpha\beta}.
+		\end{align}
+		\qed \\
 	\end{sln}
 \end{exmp}
 
