@@ -1467,7 +1467,7 @@ There is a little caveat: direct sum is commutative, BUT here the order of $\W$ 
 	\hline
 	\mathcal{O} & \rvline & \mathcal{O}
 	\end{pmatrix}.
-	\end{align*}
+	\end{align*}\qed
 \end{exmp}
 
 
@@ -1943,15 +1943,524 @@ It follows immediately that
 
 \newpage
 \section{Invariant subspaces}
+
 \subsection{Triangularization}
+
+Consider $\V = \W_1 \oplus \Z$, with $\W \in \mathfrak{Lat}(\lag)$ and is one-dimensional. Then
+\begin{align*}
+\lag = \begin{tabular}{c|c|c|}
+& $\W_1$ & $\Z$\\
+\hline
+$\W_1$& $\mathcal{A}$ & $\mathcal{B}$ \\	
+$\Z$& $\mathcal{O}$  & $\mathcal{D}$ 
+\end{tabular}=
+\begin{pmatrix}
+``\lambda_1'' & \rvline & \mathcal{B}\\
+\hline
+\mathcal{O} & \rvline & \mathcal{D}
+\end{pmatrix}.
+\end{align*}
+Now, for $\mathcal{D} : \Z \lin \Z$ we can do the same thing we did for $\lag$ if $\Z$ is not one-dimensional. Let's say that $\Z = \W_2 \oplus \U$, with $\W_2 \in \mathfrak{Lat}(\lag)$, is one-dimensional, then
+\begin{align*}
+\mathcal{D} = \begin{pmatrix}
+``\lambda_2'' & \rvline & \mathcal{B'}\\
+\hline
+\mathcal{O} & \rvline & \mathcal{D'}
+\end{pmatrix}
+\end{align*}
+and so on. So, 
+\begin{align*}
+\lag = \begin{pmatrix}
+"\lambda_2" & \rvline & \mathcal{B}_1 & \rvline & \mathcal{B}_2\\
+\hline
+\mathcal{O} & \rvline & "\lambda_2" & \rvline &\square\\
+\hline
+\mathcal{O} & \rvline & \mathcal{O}& \rvline &\hat{\mathcal{D}}\\
+\end{pmatrix},
+\end{align*}
+and so on until we get an upper triangular block-matrix. We have a theorem:
+
+\begin{thm}
+	\textbf{Schur's Theorem:} Every $n\times n$ (complex-valued) matrix is similar to an upper triangular matrix.
+	
+	\begin{proof}
+		We prove by induction. The base case of $n=1$ is trivial. Suppose that $n_0$ is the smallest size for which there is a counter example $\mathcal{A}$ ($n_0 \geq 2$). Now, $\mathcal{A}$ is a linear function, and hence has an eigenvector called $w_0$. We know that $\xpan(w_0) \in \mathfrak{Lat}(\mathcal{A})$. It follows that we can write
+		\begin{align*}
+		\mathbb{C}^n = \xpan(w_0) \oplus \Z.
+		\end{align*} 
+		With respect to this decomposition, $\mathcal{A}$ has the form
+		\begin{align*}
+		\mathcal{A} = \begin{pmatrix}
+		\lambda & \rvline & \mathcal{B}\\
+		\hline
+		\mathcal{O} & \rvline & \mathcal{D}
+		\end{pmatrix}.
+		\end{align*}
+		Now, pick a basis of $\Z$, called $\Gamma_2 : (w_{1},\dots,w_{n_0 - 1})$. Let the basis of $\xpan(w_0)$ be $\Gamma_1$. We have $\Gamma = \Gamma_1 || \Gamma_2$. We know that
+		\begin{align*}
+		[\mathcal{A}]_\Gamma = \begin{bmatrix}
+		[\mathcal{A}(w_0)]_\Gamma & [\mathcal{A}(w_1)]_\Gamma & \dots & [\mathcal{A}(w_{n_0 - 1 })]_\Gamma
+		\end{bmatrix}
+		=
+		\begin{pmatrix}
+		\lambda & \rvline & \square\\
+		\hline
+		\mathcal{O} & \rvline & [T]_{\Gamma_2 \leftarrow \Gamma_2}
+		\end{pmatrix}.
+		\end{align*}
+		We know that $\mathcal{A} \sim [\mathcal{A}]_\Gamma$. We also know (or assume) that $\mathcal{A}$ is the smallest counterexample. Then $\mathcal{D}$ cannot be a counter example since it is smaller than $\mathcal{A}$, i.e., $\mathcal{A} = S^{-1} \circ T \circ S$ for some upper triangular $T$. Hence
+		\begin{align*}
+		\mathcal{A} = \begin{pmatrix}
+		\lambda & \rvline & \square\\
+		\hline
+		\mathcal{O} & \rvline & S^{-1}\circ T \circ S
+		\end{pmatrix}
+		=
+		\begin{pmatrix}
+		1 & \rvline & \mathcal{O}\\
+		\hline
+		\mathcal{O} & \rvline & S^{-1}
+		\end{pmatrix}
+		\begin{pmatrix}
+		\lambda & \rvline & \triangle\\
+		\hline
+		\mathcal{O} & \rvline & T
+		\end{pmatrix}
+		\begin{pmatrix}
+		1 & \rvline & \mathcal{O}\\
+		\hline
+		\mathcal{O} & \rvline & S
+		\end{pmatrix}
+		\end{align*}
+		But notice that the left and right block-matrices are inverses of each other, so
+		\begin{align*}
+		\mathcal{A} \sim \begin{pmatrix}
+		\lambda & \rvline & \triangle\\
+		\hline
+		\mathcal{O} & \rvline & T
+		\end{pmatrix},
+		\end{align*}
+		which is an upper triangular matrix, since $T$ is upper triangular. Hence, $\mathcal{A}$ is similar to an upper triangular matrix. But this is a contradiction, i.e., there is no such $\mathcal{A}$. 
+	\end{proof}
+\end{thm}
+
+
+
 \subsection{Reducing subspaces}
+
+
+
+
+
+
+
 \newpage 
+
+
+
+
+
+
+
+
+
 \section{Polynomials applied to operators}
+
+In this section we will explore a class of functions $\rho_\lag : \mathbb{P} \lin \mathfrak{L}(\V)$.  We first know from the problems that $\rho_\lag$ is 
+
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Linear
+		\item Multiplicative.
+	\end{enumerate}
+\end{prop}
+
+
 \subsection{Minimal polynomials at a vector}
+
+We have shown that for each $\mathbf{0} \neq v_0 \in \V$ there is some $\mathbb{0} \neq P \in \mathbb{P}$ such that $(P(\lag))(v_0) = \mathbf{0}$. Now, let us consider
+\begin{align*}
+\left\{ 
+P \in \mathbb{P} 
+\bigg\vert
+(P(\lag))(v_0) = \mathbf{0}  
+\right\} 
+\subseteq \mathbb{P}.
+\end{align*}
+It is easy to show that this is a subspace. But also notice that it also has an absorption property, i.e., if $(P(\lag))(v_0) = \mathbf{0} $ then $(q(\lag) \cdot P(\lag))(v_0) = (q\cdot P)(\lag)(v_0) = \mathbf{0}  $ for any $q\in \mathbb{P}$. We call subspaces like these (with an additional absorption property) an \textbf{ideal}. 
+
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+	\item There is the smallest unique monic polynomial.
+	\item There exists a unique and smallest $P(\lag)$ such that $P(\lag)(v_0) = \mathbf{0}$. 
+	\item There exists a $P(\lag)$ such that $P(\lag)(v) = \mathbf{0}$ for all $v\in \V$.
+	\item There exists a unique and smallest $P(\mathcal{A})$ such that $P(\mathcal{A}) = \mathcal{O}$ for any $\mathcal{A} \in \mathbb{M}_{n\times n}$ 
+\end{enumerate}
+\end{prop}
+	
+	
+
+
+
+
+
+
+
+
 \subsection{Existence of eigenvalues}
 \subsection{Global minimal polynomials}
-\subsection{(Minimal) polynomials of block-$\Delta^r$ operators}
+
+	If we think about it a little, it is true that
+\begin{align*}
+[P(\lag)]_{\Gamma\leftarrow\Gamma} = P\left([\lag]_{\Gamma\leftarrow\Gamma}\right).
+\end{align*}
+Let us call 
+\begin{align*}
+\mathcal{A} = [\lag]_{\Gamma\leftarrow\Gamma}.
+\end{align*}
+It is true that $\mathcal{A}$ is nothing but an element in the space of matrices, and so for some $k$
+\begin{align*}
+P(\A) = \A^k - a_0 \A^{0} - \dots - a_{k-1}\A^{k-1} = \mathcal{O}.
+\end{align*}
+So, we look at the ideal:
+\begin{align*}
+\left\{ P \in \mathbb{P} \bigg\vert P(\A) = \mathcal{O} \right\}.
+\end{align*}
+There exists a singe minimal monic element that sends $\A$ to $\mathcal{O}$ (from the problems). But if $P(\A) = \mathcal{O}$, then $(P(\A))(v_0) = \mathbf{0}$ for any $v\in \V$. Therefore,
+\begin{align*}
+P(\A) \in 
+\left\{ 
+P \in \mathbb{P} 
+\bigg\vert
+(P(\lag))(v_0) = \mathbf{0}  
+\right\} .
+\end{align*}
+In particular, all elements in this ideal are divisors of $P$ where $P(\A) = \mathcal{O}$. (We also showed why this is true in the homework - has to do with the \textbf{generator} of the ideal.) It turns out that $P(\A)$ is also the smallest degree monic polynomial to annihilates $\A$. We call $P(\A)$ the \textbf{global minimum polynomial of $\A$}, denoted $\mu_\A$.
+
+What about \textbf{local minimum polynomials}? These are the minimal polynomials at the vectors $v\in \V$ constructed from looking at the first $\A^k(v_0)$ that can be expressed as a linear combination of the previous ones. We denote the local minimal polynomial of $\A$ at $v_0$ $\mu_{\A,v_0}$. As we have shown before,
+\begin{align*}
+\boxed{\mu_{\A,v_0} \text{ divides } \mu_\A}
+\end{align*}  
+since $\mu_\A$ is necessarily a multiple of $\mu_{\A,v_0}$, as shown in the problems. \\
+
+Another point to notice is that a polynomial has at most finitely man monic divisors. So, suppose that
+\begin{align*}
+\mu_\A(z) = (z- r_1)^{\gamma_1}\dots (z - r_k)^{\gamma_k}.
+\end{align*}
+Consider a bunch of local minimal polynomials $\mu_{\A,v_1}(z), \mu_{\A,v_2}(z), \dots \mu_{\A,v_135}(z) $. Then consider a subspace
+\begin{align*}
+\left\{
+v \bigg\vert (\mu_{\A,v_7})(v) = \mathbf{0}
+\right\} = \ker\left( \mu_{\A,v_7} \right).
+\end{align*}
+The union of these 135 subspaces is the whole space, $\V$. And so, by problem set 2, one of these subspaces must equal to whole union, i.e., equals the whole space. So, $\mu_{\A,v_i} = \mathbf{0}$ for all $v\in \V$ for at least one $i$, i.e., $\mu_{\A, v_i}$ annihilates $\A$. But because $\mu_{\A,v_i}$ divides $\mu_{\A} = q\cdot \mu_{\A,v_i}$, we have
+\begin{align*}
+\mu_{\A,v_i} = \mu_{\A}
+\end{align*} 
+for at least one $i$. 
+
+
+
+
+
+\subsection{Existence of eigenvalues}
+
+In this section we will see why we are interested in these minimal polynomials. Suppose we have $\mu_\A(z) = (z- r_1)^{\gamma_1}\dots (z - r_k)^{\gamma_k}$. Then
+\begin{align*}
+\mu_\A(\A) = (\A- r_1 I)^{\gamma_1}\circ \dots \circ (\A - r_k I)^{\gamma_k} = \mathcal{O}.
+\end{align*}
+Now, we can show (by induction) that none of these factors can be invertible (multiplying an inverse of one factor to both sides and show that we get a smaller annihilating polynomial). Therefore, we are guaranteed that $(\A - r_i I)(v) = \mathbf{0}$ for some non-zero vector $v$ for any $r_i$ roots of $\mu_{\A}$. So, we have that \textbf{all roots of $\mu_\A$ are eigenvalues of $\A$}. \\
+
+But are there other eigenvalues that are NOT roots of $\mu_\A$? The answer, fortunately, is no. Consider a vector $(z - \lambda)$, where $\lambda$ is an eigenvalue of $\A$ but is not a root of $\mu_\A$. It follows that $\mu_\A(z)$ and $(z- \lambda)$ are relatively prime (since they share no common roots). Hence, by the problems, there exist $q,p\in \mathbb{P}$ such that 
+\begin{align*}
+p(z)\mu_\A(z) + q(z)(z-\lambda) = \mathbb{1}, 
+\end{align*}
+i.e.,
+\begin{align*}
+p(\A)\mu_\A(\A) + q(\A)(\A-\lambda I) = I.
+\end{align*}
+But since $\mu_{\A}(\A) = \mathcal{O}$, we have
+\begin{align*}
+q(\A)(\A-\lambda I) = I.
+\end{align*}
+This implies $(\A-\lambda I)$ is invertible, hence $\ker(\A - \lambda I) = \{ \mathbf{0} \}$, thus $\lambda$ is not an eigenvalue of $\A$, a contradiction. So no such $\lambda$ exists. So, we have a theorem:
+
+\begin{thm}
+	All roots of $\mu_\A$ are \textbf{exactly} the eigenvalues of $\A$. \qed
+\end{thm}
+
+We notice that this is a much easier way to find eigenvalues than through using characteristic polynomials since the degrees of minimal polynomials are often much smaller. This leads us to an interesting point. Notice that $\mu_\A(z)$ has degree at most $n^2$ for an $n\times n$ matrix $\A$ (recall how we constructed $\mu_\A$ by going through $I,\A,\A^2,\dots$ and that $\dim(\mathbb{M})_{n\times n} = n^2$). However, the characteristic polynomial of $\A$ has degree at most $n$. By Cayley-Hamilton theorem, $\deg(\mu_\A) \leq \deg(\text{char} (\A))$, so
+
+\begin{thm}
+	For $\A \in \M_{n\times n}$, $\deg(\mu_\A) \leq n$. \qed 
+\end{thm}
+
+
+\begin{thm}
+	Similar matrices have the same minimal polynomial.
+	
+	\begin{proof}
+		Recall that 
+		\begin{align*}
+		[P(\lag)]_{\Gamma\leftarrow\Gamma} = P\left([\lag]_{\Gamma\leftarrow\Gamma}\right).
+		\end{align*}
+		This simple says if $P(z)$ happens to be annihilating and is smallest, then $P(\lag) = \mathcal{O}$. It is helpful to think of polynomials as belong to the linear function, not to matrices, as they are nothing but representations of the linear function, not that linear function itself. Now, of course the converse is not true (consider two identity matrices of different sizes).
+	\end{proof}
+\end{thm}
+
+\begin{thm}
+	\begin{align*}
+	\boxed{\mu_{\A^\top} = \mu_\A}
+	\end{align*}
+	
+	\begin{proof}
+		If $\A\in \M_{n\times n}$ and $a_0 I + a_1 \A + \dots + a_k \A^k = \mathcal{O}$. Apply the transformation to this,
+		\begin{align*}
+		\sum^k_j a_j (\A^j)^\top = \sum^k_j a_j (\A^\top)^j = \mathcal{O}.
+		\end{align*}
+		So, if $P(\A) = \mathcal{O}$, then $P(\A^\top) = \mathcal{O}$. But if $P(\A^\top) = \mathcal{O}$, then $P(\A) = \mathcal{O}$. Therefore, $\mu_\A = \mu_{\A^\top}$.  
+	\end{proof}
+\end{thm}
+
+
 \subsection{Minimal polynomials of block-diagonal operators}
+
+We observe that if
+\begin{align*}
+T = \begin{pmatrix}
+\A & \mathcal{O}\\
+\mathcal{O} & \M
+\end{pmatrix}
+\end{align*}
+then
+\begin{align*}
+T^0 = \begin{pmatrix}
+\A^0 & \mathcal{O}\\
+\mathcal{O} & \M^0
+\end{pmatrix}, 
+T^2 = \begin{pmatrix}
+\A^2 & \mathcal{O}\\
+\mathcal{O} & \M^2
+\end{pmatrix}, 
+\dots,
+T^n = \begin{pmatrix}
+\A^n & \mathcal{O}\\
+\mathcal{O} & \M^n
+\end{pmatrix}.
+\end{align*}
+Thus we can convince ourselves that
+\begin{align*}
+P(T) = \begin{pmatrix}
+P(\A) & \mathbb{0}\\
+\mathbb{0} & P(\M)
+\end{pmatrix}.
+\end{align*}
+We can in fact think about of $\mu_T$ relates to $\mu_\A$ and $\mu_\M$. A polynomial, say $P$, annihilates $T \iff$ $P$ annihilates both $\A$ and $\M \iff$ $\mu_\A$ and $\mu_\M$ both divide $P \iff$ $P$ is a common multiple of $\mu_\A, \mu_\M$. Now, since $\mu_T$ is the minimal polynomial, whose multiples are such $P$'s, we get
+\begin{align*}
+\boxed{\mu_T = \text{LCM}(\mu_\A, \mu_\M)}
+\end{align*}  
+In particular, for a diagonal matrix, say
+\begin{align*}
+T = \begin{pmatrix}
+\alpha_1 & & \\
+& \ddots & \\
+& & \alpha_k
+\end{pmatrix},
+\end{align*}
+the minimal polynomial 
+\begin{align*}
+\mu_T = \text{LCM}(z-\alpha_1, z-\alpha_2, \dots, z-\alpha_k) = (z- \alpha_1)\dots(z-\alpha_j),
+\end{align*}
+for distinct $\alpha_i$, $i\neq j \leq k$.
+
+\begin{exmp}
+	Let 
+	\begin{align*}
+	T = \begin{pmatrix}
+	3 &&&\\
+	&4&&\\
+	&&1&\\
+	&&&3
+	\end{pmatrix}.
+	\end{align*}
+	Then it is clear that 
+	\begin{align*}
+	\mu_T(z) = (z-3)(z-4)(z-1).
+	\end{align*}
+	And thus the ``spectrum'' of $T$ is 
+	\begin{align*}
+	\sigma_{\mathbb{C}}(T) = \{1,3,4\}.
+	\end{align*}
+	\qed
+\end{exmp}
+
+
+
+
+
+
+
+
+\subsection{(Minimal) polynomials of block-$\Delta^r$ operators}
+
+
+Consider 
+\begin{align*}
+T = \begin{pmatrix}
+\A & \K \\
+\mathcal{O} & \M
+\end{pmatrix}.
+\end{align*}
+Then, like before
+\begin{align*}
+T^0 = \begin{pmatrix}
+I & \mathcal{O}\\
+\mathcal{O} & I
+\end{pmatrix}, 
+T^2 = \begin{pmatrix}
+\A^2 & \triangle\\
+\mathcal{O} & \M^2
+\end{pmatrix}, 
+\dots,
+T^n = \begin{pmatrix}
+\A^n & \triangle'\\
+\mathcal{O} & \M^n
+\end{pmatrix}.
+\end{align*}
+So, 
+\begin{align*}
+P(T) = \begin{pmatrix}
+P(\A) & \square\\
+\mathcal{O} & P(\M)
+\end{pmatrix}.
+\end{align*}
+If $P(T) = \mathcal{O}$, then $P(\A) = \mathcal{O}$ and $P(\M) = \mathcal{O}$. Thus, $P$ is a common multiple (not necessarily least) of $\mu_\A$ and $\mu_\M$. (Notice that we no longer have $\iff$ like with block-diagonal matrices.) 
+
+Thus we have 
+\begin{align*}
+\text{LCM}(\mu_\A,\mu_\M) \big\vert P(T).
+\end{align*}
+But we also know that 
+\begin{align*}
+(\mu_\A \cdot \mu_\M)(T) &= \mu_\A (T) \cdot \mu_\M(T)\\
+&= \begin{pmatrix}
+\mathcal{O} & \mathcal{O}\\
+\mathcal{O} & \mu_\A(\M)
+\end{pmatrix}
+\begin{pmatrix}
+\mu_\M(\A) & \mathcal{O}\\
+\mathcal{O} & \mathcal{O}
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+\mathcal{O} & \mathcal{O}\\
+\mathcal{O} & \mathcal{O}
+\end{pmatrix}\\
+&= [0].
+\end{align*}
+Therefore,
+\begin{align*}
+\boxed{\text{LCM}(\mu_\A, \mu_\M) \big\vert \mu_T \big\vert \mu_\A \mu_\M}
+\end{align*}
+and hence
+\begin{align*}
+\boxed{\sigma_{\mathbb{C}}(T) =  \sigma_{\mathbb{C}}(\A) \cup \sigma_{\mathbb{C}}(\M)  }
+\end{align*}
+i.e., linear factors of $T$ are exactly those that appear in $\mu_\A$ or $\mu_\M$ (or both). \\
+
+Of course ``equality'' occurs when $\mu_\A$ and $\mu_\M$ are relatively prime. 
+
+\begin{exmp}
+	Consider 
+	\begin{align*}
+	T = 
+	\begin{pmatrix}
+	\begin{matrix}
+	3 & \rvline & 1\\
+	\hline
+	& \rvline & 4
+	\end{matrix} 
+	& \rvline &
+	\begin{matrix}
+	2 & 8 \\
+	5 & 1
+	\end{matrix}\\
+	\hline
+	&\rvline & 
+	\begin{matrix}
+	2 & \rvline & 7\\
+	\hline
+	& \rvline & 3
+	\end{matrix}
+	\end{pmatrix}.
+	\end{align*}
+	Then
+	\begin{align*}
+	\sigma_{\mathbb{C}}(T) 
+	&= \sigma_{\mathbb{C}}
+	\begin{pmatrix}
+	3 & \rvline & 1\\
+	\hline
+	& \rvline & 4
+	\end{pmatrix}  
+	\cup
+	\sigma_{\mathbb{C}}  
+	\begin{pmatrix}
+	2 & \rvline & 7\\
+	\hline
+	& \rvline & 3
+	\end{pmatrix} \\
+	&= \sigma_{\mathbb{C}}[3] \cup \sigma_{\mathbb{C}}[4] \cup \sigma_{\mathbb{C}}[2] \cup \sigma_{\mathbb{C}}[3]\\
+	&= \{ 2,3,4 \}.    
+	\end{align*}
+	We could have guessed this result - these are just the values on the diagonal of $T$. What, then, is $\mu_T(z)$? Unfortunately, we don't know:
+	\begin{align*}
+	\mu_T(z) = (z-2)(z-4)(z-3)^{1\text{ or }2}.
+	\end{align*}\qed
+\end{exmp}
+
+\begin{exmp}
+	If $T = \begin{pmatrix}
+	a&b\\c&d
+	\end{pmatrix}$ then $p(z) = (z-a)(z-d) - bc$ annihilates $T$. 
+	
+	\begin{proof}
+		\begin{align*}
+		p(T) &= (T-aI)(T_dI) - bcI\\
+		&= \begin{pmatrix}
+		0 & b\\c & d-a
+		\end{pmatrix}
+		\begin{pmatrix}
+		a-d&b\\c& 0
+		\end{pmatrix}
+		-
+		\begin{pmatrix}
+		bc & 0\\0 & bc
+		\end{pmatrix}\\
+		&=
+		\begin{pmatrix}
+		bc & 0\\0 & bc
+		\end{pmatrix}
+		-
+		\begin{pmatrix}
+		bc & 0\\0 & bc
+		\end{pmatrix}\\
+		&= [0].
+		\end{align*}
+	\end{proof}
+\end{exmp}
+
+We have a theorem:
+
+\begin{thm}
+	If $T = \begin{pmatrix}
+	a&b\\c&d
+	\end{pmatrix}$ is NOT a multiple of identity, then $\mu_T(z) = (z-a)(z-d) - bc$.\qed
+\end{thm}
+
+
 \newpage 
 \section{Eigentheory}
 \subsection{Minimal polynomials and the spectrum}
@@ -1965,6 +2474,55 @@ It follows immediately that
 \section{Simultaneous triangularization and  diagonalization for commuting families}
 \newpage
 \section{Primary decomposition over $\mathbb{C}$ and generalized eigenspaces}
+
+Before getting into primary decomposition, we first establish a few stepping stones to get to and understand the theorems to come. Suppose we have relatively prime polynomials $p_1$ and $p_2$. Then
+\begin{align*}
+\ker(p_1(\lag)) \cap \ker(p_2(\lag)) = \{ \mathcal{O} \}.
+\end{align*}
+
+\begin{proof}[Sketch]
+	We know (from the problem sets) that given relatively prime $p_1$ and $p_2$, there exist $q_1, q_2$ such that 
+	\begin{align*}
+	q_1(z)p_1(z) + q_2(z)p_2(z) = \mathbb{1}.
+	\end{align*}
+	Thus, for $\lag$ as argument,
+	\begin{align*}
+	q_1(\lag)p_1(\lag) + q_2(\lag)p_2(\lag) = I,
+	\end{align*}
+	which we can write as
+	\begin{align*}
+	\left(q_1(\lag)p_1(\lag) + q_2(\lag)p_2(\lag)\right)(v) = v,
+	\end{align*}
+	i.e.,
+	\begin{align*}
+	q_1(\lag)[(p_1(\lag)(v))] + q_2(\lag)[(p_2(\lag)(v))] = v.
+	\end{align*}
+	Now, if $v\in \ker(p_1(\lag)) \cap \ker(p_2(\lag))$, then
+	\begin{align*}
+	q_1(\lag)(\mathbf{0}) + q_2(\lag)(\mathbf{0}) = v \implies v = \mathbf{0}.
+	\end{align*} 
+	This shows that
+	\begin{align*}
+	\ker(p_1(\lag)) \cap \ker(p_2(\lag)) = \{ \mathbf{0} \}.
+	\end{align*}
+\end{proof}
+
+Now, let's say we're given 
+\begin{align*}
+\mu_\A(z) = (z-\lambda_1)^{k_1} \dots (z - \lambda_n)^{k_n}.
+\end{align*}
+Let us call
+\begin{align*}
+&p_1 = (z-\lambda_1)^{k_1} \dots (z - \lambda_{n-1})^{k_{n-1}}\\
+&p_2 = (z - \lambda_n)^{k_n}.
+\end{align*}
+It is clear that $p_1$, $p_2$ are relatively prime. So, $\ker(p_1(\lag)) \cap \ker(p_2(\lag)) = \{ \mathbf{0} \}$. 
+
+
+
+
+
+
 \newpage 
 \section{Cyclic decomposition and Jordan form}
 \subsection{Square roots of operators}
