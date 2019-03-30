@@ -1032,6 +1032,7 @@ A natural question to ask now is whether every idempotent $\E \in \lag(\V)$ can 
 			
 		\end{enumerate}
 	\end{proof} 
+\qed
 \end{thm} 
 
 \begin{prop}
@@ -1061,11 +1062,12 @@ A natural question to ask now is whether every idempotent $\E \in \lag(\V)$ can 
 		\end{align*}
 		where $v = z+w$ is unique by directness. We can do the same thing with $G$, and get $G = E$.
 	\end{proof}
+\qed
 \end{thm}
 
 
 \begin{thm}
-	For each decomposition $V = \W \oplus \Z$, there exists a unique idempotent whose image is $\W$ and kernel is $\Z$.
+	For each decomposition $V = \W \oplus \Z$, there exists a unique idempotent whose image is $\W$ and kernel is $\Z$.\qed
 \end{thm}
 
 Now, notice that for $v = w + z$, we have $v = w + z = \E(w) + \F(z) = \E(v) + \F(v) = Id(v)$. So we have a little theorem:
@@ -1074,7 +1076,7 @@ Now, notice that for $v = w + z$, we have $v = w + z = \E(w) + \F(z) = \E(v) + \
 	If $\E$ and $\F$ are idempotents such that $\ima(\E) = \ker(\F)$ and $\ker(\E) = \ima(\F)$ then
 	\begin{align*}
 	\E + \F = Id. 
-	\end{align*}
+	\end{align*}\qed
 \end{thm} 
 
 As a result we get another two results:
@@ -1112,7 +1114,7 @@ What about the converse? Given the linear functions such that $\E_j^2 = \E$ such
 	\begin{align*}
 	\ker(\E_1) = \ima(\E_2) \oplus \ima(\E_3), 
 	\end{align*}
-	etc.
+	etc.\qed
 \end{thm}
 
 
@@ -1177,6 +1179,24 @@ So, just a recap of what we have done so far, the following statements are equiv
 
 \newpage
 \section{Block-representations of operators}
+
+\subsection{Coordinatization}
+Consider a finite-dimensional linear space $V$ with basis $\{V_i \}$, $i=1,2,\dots,m$. An element $\tilde{V}$ in $V$ can be expressed in exactly one way:
+\begin{align*}
+\tilde{V} = \sum_{i=1}^m a_iV_i,
+\end{align*}
+where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{V}$ and $a_i$'s the coordinates. 
+\begin{prop}
+	$\,$
+	\begin{enumerate}
+		\item Inverse of a bijective atrix outputs the coordinates. Suppose $A = [V_i]$. Then
+		\begin{align*}
+		\tilde{V} = \sum_{i=1}^ma_iV_i \iff A^{-1}(Z) = \begin{pmatrix}
+		a_1&\dots&a_m
+		\end{pmatrix}^\top
+		\end{align*}
+	\end{enumerate}
+\end{prop}
 
 \subsection{Matricial representation of linear functions}
 
@@ -1460,6 +1480,353 @@ There is a little caveat: direct sum is commutative, BUT here the order of $\W$ 
 We will show in the homework the following properties:
 
 
+\begin{enumerate}
+	\item \textbf{Addition:} If 
+	\begin{align*}
+	L = \begin{pmatrix}
+	A & \rvline & B\\
+	\hline
+	C & \rvline & D
+	\end{pmatrix}
+	\end{align*}
+	and
+	\begin{align*}
+	S = \begin{pmatrix}
+	P & \rvline & Q\\
+	\hline
+	R & \rvline & T
+	\end{pmatrix}
+	\end{align*}
+	then
+	\begin{align*}
+	L + S = \begin{pmatrix}
+	A + P & \rvline & B+Q\\
+	\hline
+	C + R & \rvline & D + T
+	\end{pmatrix}.
+	\end{align*}
+	It is not too hard to show why this is true:
+	\begin{align*}
+	[L+S]_{11}(w) = \E [L+S](w) = \E \circ L(w) + \E\circ S(w) = A(w) + P(w) = [A+P](w).
+	\end{align*}
+	
+	
+	
+	\item \textbf{Scaling:}
+	\begin{align*}
+	\alpha \begin{pmatrix}
+	A & \rvline & B\\
+	\hline
+	C & \rvline & D
+	\end{pmatrix} = \begin{pmatrix}
+	\alpha A & \rvline & \alpha B\\
+	\hline
+	\alpha C & \rvline & \alpha D
+	\end{pmatrix}.
+	\end{align*}
+	
+	
+	\item \textbf{Composition} also works nicely:
+	\begin{align}
+	\begin{pmatrix}
+	A & \rvline & B\\
+	\hline
+	C & \rvline & D
+	\end{pmatrix} \circ \begin{pmatrix}
+	P & \rvline & Q\\
+	\hline
+	R & \rvline & T
+	\end{pmatrix} 
+	=
+	\begin{pmatrix}
+	A\circ P + B \circ R & \rvline & A \circ Q + B \circ T \\
+	\hline
+	C \circ P + D \circ R & \rvline & C \circ Q + D \circ T
+	\end{pmatrix} .
+	\end{align}
+	It is also quite straightforward to show why this is true. Consider $[L\circ S]_{11}$:
+	\begin{align*}
+	[L\circ S]_{11}(w) &= \E[L\circ S](w)\\
+	&= \E \circ L[\E + (Id. - \E)]\circ S(w)\\
+	&= \E \circ L \circ \E \circ S(w) + \E \circ L (Id. - \E) \circ S(w)\\
+	&= \E \circ L \circ P(w) + \E \circ L \circ R(w)\\
+	&= A\circ P(w)  +  B \circ R(w)\\
+	&= [A\circ P + B \circ R](w).
+	\end{align*}
+	
+	
+	\item Suppose 
+	\begin{align*}
+	L = \begin{pmatrix}
+	A & \rvline & B\\
+	\hline
+	C & \rvline & D
+	\end{pmatrix}.
+	\end{align*}
+	If we pick a basis $\beta$ for $\W$ and $\gamma$ for $\Z$ then we can write the atrix
+	\begin{align*}
+	[L]_{\beta||\gamma \leftarrow \beta||\gamma} = [c_i \dots c_k].
+	\end{align*}
+	where $\beta||\gamma$ is a concatenation of the bases and the columns:
+	\begin{align*}
+	c_i &= [L(b_i)]_{\beta||\gamma}\\
+	&= \begin{bmatrix}
+	\begin{pmatrix}
+	A & \rvline & B\\
+	\hline
+	C & \rvline & D
+	\end{pmatrix} \begin{pmatrix}
+	b_i \\ \mathbf{0}
+	\end{pmatrix}_+
+	\end{bmatrix}_{\beta||\gamma} \\
+	&= \begin{bmatrix}
+	\begin{pmatrix}
+	A(b_i)\\
+	C(b_i)
+	\end{pmatrix}_+
+	\end{bmatrix}_{\beta||\gamma}\\
+	&= \begin{bmatrix}
+	[A(b_i)]_\beta\\
+	[C(b_i)]_\gamma
+	\end{bmatrix}
+	\end{align*}
+	where $b_i$ is the $i^{th}$ element of the basis set $\beta$. If we repeat this procedure for all $b_i$'s and $g_i$'s, we will get:
+	\begin{align*}
+	[L]_{\beta||\gamma \leftarrow \beta||\gamma} = 
+	\begin{pmatrix}
+	[A]_{\beta\leftarrow \beta} & \rvline & [B]_{\gamma\leftarrow \beta}\\
+	\hline
+	[C]_{\beta\leftarrow \gamma} & \rvline & [D]_{\gamma\leftarrow \gamma}
+	\end{pmatrix}
+	\end{align*}
+	where a block, say $[C]_{\beta\leftarrow\gamma}$ is generated by
+	\begin{align*}
+	[C]_{\gamma\leftarrow\beta} = \begin{bmatrix}
+	[C(b_1)]_\gamma & [C(b_1)]_\gamma & \dots [C(b_n)]_\gamma
+	\end{bmatrix}.
+	\end{align*}
+	
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Equality of rank and trace for idempotents; Resolution of Identity Revisited}
+
+
+
+Consider an illuminating example with an idempotent matrix: $\E = \E^2 \in \mathbb{M}_{n\times n}$. We know that $\ima(\E) \oplus \ker(\E) = \mathbb{C}^n$. So, $\E : \ima(\E) \oplus \ker(\E) \lin \ima(\E) \oplus \ker(\E)$ can be represented as
+\begin{align*}
+\E =
+\begin{pmatrix}
+\E_{11} & \rvline & \E_{12}\\
+\hline
+\E_{21} & \rvline & \E_{22}
+\end{pmatrix}
+\end{align*} 
+where 
+\begin{align*}
+&\E_{11} = \E \circ \E\bigg\vert_{\ima(\E)} = Id.\\
+&\E_{12} = \E \circ \E\bigg\vert_{\ker(\E)} = \mathcal{O}\\
+&\E_{21} = (Id. - \E) \circ \E \bigg\vert_{\ima(\E)} = \mathcal{O}\\
+&\E_{22} = (Id. - \E) \circ \E \bigg\vert_{\ker(\E)} = \mathcal{O},
+\end{align*}
+i.e.,
+\begin{align*}
+\E \sim \begin{pmatrix}
+Id.\bigg\vert_{\ima(\E)} & \rvline & \mathcal{O}\\
+\hline
+\mathcal{O} & \rvline & \mathcal{O}
+\end{pmatrix}.
+\end{align*}
+The idea we have just explored in the beginning is that we can pick a basis for $\ima(\E)$ and $\ker(\E)$ and concatenate to get a basis for the whole space so that we can write
+\begin{align*}
+[\E]_{\gamma_1||\gamma_2 \leftarrow \gamma_1||\gamma_2} =
+\begin{bmatrix}
+[Id.]_{\gamma_1\leftarrow \gamma_1} & \rvline & [\mathcal{O}]_{\gamma_2 \leftarrow \gamma_1}\\
+\hline
+[\mathcal{O}]_{\gamma_1 \leftarrow \gamma_2} & \rvline & [\mathcal{O}]_{\gamma_2 \leftarrow \gamma_2}
+\end{bmatrix}.
+\end{align*}
+Now since
+\begin{align*}
+&[Id.]_{\gamma_1\leftarrow \gamma_1} = I\\
+&[\mathcal{O}]_{\gamma_i \leftarrow \gamma_j} = 0,
+\end{align*}
+we can write
+\begin{align*}
+\E = 
+\begin{pmatrix}
+I & \rvline & 0\\
+\hline
+0 & \rvline & 0
+\end{pmatrix}.
+\end{align*}
+
+We have a theorem:
+
+\begin{thm}
+	Every idempotent $\E \in \mathbb{M}_n$ is similar to  matrix of the form
+	\begin{align*}
+	\begin{bmatrix}
+	1 & & \dots & &0 \\
+	& 1 & & &\\
+	\vdots & & \ddots & &\vdots\\
+	& & & 0 &\\
+	0 & & & &0\\
+	\end{bmatrix}
+	\end{align*}
+	where the $k$ 1's along the diagonal is $\rank(\E)$, which also happens to be the trace of $\E$, i.e.,
+	\begin{align*}
+	\dim(\ima(\E)) = \rank(\E) = \Tr(\E).
+	\end{align*}
+	\qed
+\end{thm}
+
+Consequently, we have:
+\begin{prop}
+	\begin{enumerate}
+	\item Since $\rank(\E) = \Tr(\E)$, if $\Tr(M)$ is not an integer or negative, then $M$ is not an idempotent.
+	
+	\item Suppose we have a resolution of identity of $m$ idempotents: 
+	\begin{align*}
+	\E_1 + \E_2 + \dots + \E_m = I_{\mathbb{C}^n}
+	\end{align*}
+	then 
+	\begin{align*}
+	\Tr(\E_1 + \E_2 + \dots + \E_m) = \Tr(I_{\mathbb{C}^n}) = n,
+	\end{align*}
+	i.e.,
+	\begin{align*}
+	\sum_{i=1}^m \Tr(\E_i) = n,
+	\end{align*}
+	i.e.,
+	\begin{align*}
+	\sum_{i=1}^m \rank(\E_i) = n.
+	\end{align*}
+	
+	
+	
+	\item Consider the same resolution of identity. Let us consider 
+	\begin{align*}
+	\ima(\E_1 + \E_2 + \dots + \E_m)
+	\end{align*}
+	and
+	\begin{align*}
+	\ima(\E_1) + \ima(\E_2) + \dots + \ima(\E_m).
+	\end{align*}
+	Next, consider
+	\begin{align*}
+	(\E_1 + \E_2 + \dots + \E_m)(x) = \E_1(x) + \E_2(x) + \dots + \E_m(x) \in \sum^m_{i=1}\ima(\E_i)
+	\end{align*}
+	Therefore,
+	\begin{align*}
+	\mathbb{C}^n = \ima(I_{\mathbb{C}^n}) = \ima\left( \sum^m_{i=1}\E_m \right) \subseteq \sum^m_{i=1}\ima(\E_i) \subseteq \mathbb{C}^n.
+	\end{align*}
+	So,
+	\begin{align*}
+	\sum^m_{i=1}\ima(\E_i) = \mathbb{C}^n.
+	\end{align*}
+	But we also know that
+	\begin{align*}
+	\sum^m_{i=1}\dim(\ima(\E_i)) = \sum^m_{i=1}\rank(\E_i) = n.
+	\end{align*}
+	So, we have a direct sum:
+	\begin{align*}
+	\boxed{\bigoplus^m_{i=1} \ima(\E_i) = \mathbb{C}^n}
+	\end{align*}
+	In particular,
+	\begin{align*}
+	\dim\left( \bigoplus^m_{i=2} \ima(\E_i)  \right) = n - \dim(\ima(\E_1)) = \dim(\ker(\E_1)).
+	\end{align*}
+	But we also know that 
+	\begin{align*}
+	\bigoplus^m_{i=2} \ima(\E_i) \supseteq \ima \left( \sum^m_{i=2}\E_i \right) = \ima(I - \E_1) = \ker(\E_1).
+	\end{align*}
+	But since
+	\begin{align*}
+	\dim(\ker(\E_1)) = \dim\left( \bigoplus^m_{i=2} \ima(\E_i)  \right), 
+	\end{align*}
+	it must be true that
+	\begin{align*}
+	\boxed{\ker(\E_1) = \bigoplus^m_{i=2} \ima(\E_i)}
+	\end{align*}
+	This implies
+	\begin{align*}
+	\ima(\E_2) \subseteq \ker(\E_1),
+	\end{align*}
+	which means
+	\begin{align*}
+	\E_1 \circ \E_2 = \mathcal{O}.
+	\end{align*}
+	In general, for $i \neq j$
+	\begin{align*}
+	\boxed{\E_i \circ \E_j = \mathcal{O}_{n\times n}}
+	\end{align*}
+	This leads us to the next item:
+	\item If $\E_1, \E_2, \dots, \E_m$ are idempotents and $\sum^m_{i=1}\E_i = I$ then 
+	\begin{align*}
+	\begin{cases}
+	&\E_i \circ \E_j = \mathcal{O}\\
+	&\bigoplus^m_{i=1}\ima(\E_i) = \mathbb{C}^n.
+	\end{cases}
+	\end{align*}
+	\end{enumerate}
+\end{prop}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1472,24 +1839,105 @@ We will show in the homework the following properties:
 
 
 \subsection{Direct sums of operators}
-\subsection{Coordinatization}
-Consider a finite-dimensional linear space $V$ with basis $\{V_i \}$, $i=1,2,\dots,m$. An element $\tilde{V}$ in $V$ can be expressed in exactly one way:
+
+
+In the last subsection, we have worked with idempotents and resolution of identity. Now, suppose we have any linear function $\lag : \V \lin \V$, where $\V$ is finite dimensional. Suppose we have a non-trivial $\lag$-invariant proper subspace $\W$ of $\V$. Then we can write
 \begin{align*}
-\tilde{V} = \sum_{i=1}^m a_iV_i,
+\V = \W \oplus \square.
 \end{align*}
-where $\{ a_i\}$ is unique. We call $\{ a_i \}$ the coordinate tuple of $\tilde{V}$ and $a_i$'s the coordinates. 
-\begin{prop}
-	$\,$
-	\begin{enumerate}
-		\item Inverse of a bijective atrix outputs the coordinates. Suppose $A = [V_i]$. Then
-		\begin{align*}
-		\tilde{V} = \sum_{i=1}^ma_iV_i \iff A^{-1}(Z) = \begin{pmatrix}
-		a_1&\dots&a_m
-		\end{pmatrix}^\top
-		\end{align*}
-	\end{enumerate}
-\end{prop}
-\subsection{Equality of rank and trace for idempotents; Resolution of Identity Revisited}
+Let $v_1,v_2,\dots,v_m \in \W$ a basis of $\W$, and $v_{m+1}, v_{m+2},\dots, v_{n}$ be a basis of $\square$. We immediately know that 
+\begin{align*}
+\xpan(v_1,v_2,\dots,v_m) \oplus \xpan(v_{m+1}, v_{m+2},\dots, v_{n}) = \V.
+\end{align*}
+Now, with respect to the decomposition $\V = \W \oplus \square$, we can represent $\lag$ as
+\begin{align*}
+\begin{tabular}{c|c|c|}
+& $\W$ & $\square$\\
+\hline
+$\W$& $\lag_{11}$& $\lag_{12}$\\	
+$\square$& $\lag_{21}$ & $\lag_{22}$
+\end{tabular}
+\end{align*}
+where, like what we have done before
+\begin{align*}
+&\lag_{11} = \E \circ \lag\bigg\vert_{\W}\\
+&\lag_{12} = \E \circ \lag\bigg\vert_{\square}\\
+&\lag_{21} = (Id.-\E) \circ \lag\bigg\vert_{\W}\\
+&\lag_{22} = (Id.-\E) \circ \lag\bigg\vert_{\square}.
+\end{align*}
+But notice that since $\W \in \mathfrak{Lat}(\lag)$
+\begin{align*}
+\lag(w) \in \W = \ima(\E) = \ker(Id.- \E),
+\end{align*}
+i.e.,
+\begin{align*}
+(Id. - \E)\circ \lag \bigg\vert_{\W} = \mathcal{O}.
+\end{align*}
+As a little aside, the converse is also true:
+\begin{align*}
+&(Id. -\E)\circ \lag\bigg\vert_{\W} = \mathcal{O} \\
+\implies &\ima\left(\lag\bigg\vert_\W\right) \subseteq \ker(Id. - \E) = \ima(\E) = \W \\
+\implies &\W \in \mathfrak{Lat}(\lag).
+\end{align*}
+So, we have established that 
+\begin{align*}
+&\lag_{12} = \mathcal{O} \iff \begin{tabular}{c|c|c|}
+& $\W$ & $\square$\\
+\hline
+$\W$& & \\	
+$\square$& $\mathcal{O}$ & 
+\end{tabular} \iff \W \in \mathfrak{Lat}(\lag)\\
+&\lag_{21} = \mathcal{O} \iff \begin{tabular}{c|c|c|}
+& $\W$ & $\square$\\
+\hline
+$\W$&  & $\mathcal{O}$ \\	
+$\square$&  & 
+\end{tabular} \iff \square \in \mathfrak{Lat}(\lag).
+\end{align*}
+So, if $\W, \square \in \mathfrak{Lat}(\lag)$ and $\W \oplus \square = \V$ then $\lag$ can be represented by
+\begin{align*}
+\begin{tabular}{c|c|c|}
+& $\W$ & $\square$\\
+\hline
+$\W$& $\mathcal{A}$ & $\mathcal{O}$ \\	
+$\square$& $\mathcal{O}$  & $\mathcal{B}$ 
+\end{tabular}.
+\end{align*}
+But of course the question is whether we know there is an invariant subspace of $\lag$ to start. While we don't really have a clue as to how to \textit{find} one for any linear function $\lag$, we can surely \textit{construct} one. For $v_0 \neq \mathbf{0} \in \V$. We want to construct $\W \in \mathfrak{Lat}(\lag)$ such with $v_0 \in \W$, i.e.,
+\begin{align*}
+v_0 \in \W, \lag(v_0) \in \W, \dots, \lag^n(v_0) \in \W.
+\end{align*}
+Say $\lag^k(v_0)$ is that first one that is a linear combination of previous ones, i.e.,
+\begin{align*}
+\lag^k(v_0) = \sum^{k-1}_{0} a_i \lag^i (v_0)
+\end{align*}
+then, say for $k = 3$, we have
+\begin{align*}
+\left(\lag^3 - a_0 \lag^0 - a_1 \lag^1 - a_2 \lag^2 \right)(v_0) = \mathbf{0}.
+\end{align*}
+By the fundamental theorem of algebra, we can factor out the ``polynomial'' above to get
+\begin{align*}
+(\lag - r_1 I)(\lag - r_2 I)(\lag - r_3 I)(v_0) = \mathbf{0}.
+\end{align*}
+But since $v_0 \neq \mathbf{0}$, at least one of $\lag - r_i I$ is NOT injective, i.e., for some $\hat{v} \neq \mathbf{0}$, 
+\begin{align*}
+\lag(\hat{v}) = r_i \hat{v}.
+\end{align*} 
+We have just shown that $r_i$ is an eigenvalue for $\lag$ and $\hat{v}$ is an eigenvector for $\lag$. 
+
+\begin{thm}
+	Every linear function on $\mathbb{C}$ on finite dimensional vector space has an eigenvector.\qed
+\end{thm}
+
+It follows immediately that
+\begin{thm}
+	Every linear function on $\mathbb{C}$ on finite dimensional vector space has a one-dimensional invariant subspace. \qed
+\end{thm}
+
+
+
+
+
 
 
 
