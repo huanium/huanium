@@ -2637,12 +2637,255 @@ where $q_1$ annihilates $\mathcal{C}$ and $q_2$ annihilates $\mathcal{D}$. So, w
 	
 	
 	\begin{proof}
-		We induct on $k$. The base case where $k=1$ is trivially true. Consider the inductive hypothesis. Suppose that $k=1,2,\dots,m$ hold. We want to show that the case where $k = m+1$ also holds. 
+		We induct on $k$. The base case where $k=1$ is trivially true. Consider the inductive hypothesis. Suppose that $k=1,2,\dots,m$ hold. We want to show that the case where $k = m+1$ also holds, i.e., 
+		\begin{align*}
+		\mu_\A = (z- \lambda_1)^{q_1}\dots (z - \lambda_m)^{q_m}(z - \lambda_{m+1})^{q_{m+1}}.
+		\end{align*}
+		Let $p_1 = (z- \lambda_1)^{q_1}\dots (z - \lambda_m)^{q_m}$ and $p_2 = (z - \lambda_{m+1})^{q_{m+1}}$, i.e., by the lemma we just proved, $\A = \begin{pmatrix}
+		\mathcal{B} & \mathcal{O}\\
+		\mathcal{O} & \mathcal{C}
+		\end{pmatrix}$ with respect to the decomposition $\V = \ker(p_1(\A)) \oplus \ker(p_2(\A))$ and $\mu_\mathcal{B} = p_1$ and $\mathcal{C} = p_2$. \\
+		
+		By the inductive hypothesis, $\ker(p_1(\A)) = \ker(\mathcal{B} - \lambda_1 I){q_1} \oplus \dots \oplus \ker(\mathcal{B} - \lambda_m)^{q_m}$, and with respect to this decomposition, $\mathcal{B} = \begin{pmatrix}
+		\mathcal{B}_1 & & \\
+		&\ddots&\\
+		&&\mathcal{B_m}
+		\end{pmatrix}$ and $\mu_{\mathcal{B}_i}(z) = (z - \lambda_i)^{q_i}$. Hence, by the problem sets, $\A$ can be represented as
+		\begin{align*}
+		\A = 
+		\begin{pmatrix}
+		\begin{matrix}
+		\mathcal{B}_1 & &\\
+		& \ddots &\\
+		& & \mathcal{B}_m
+		\end{matrix}& \rvline & \\
+		\hline
+		& \rvline & \mathcal{C}
+		\end{pmatrix}
+		\end{align*}
+		with respect to the decomposition $\V = \ker(\mathcal{B} - \lambda_1 I){q_1} \oplus \dots \oplus \ker(\mathcal{B} - \lambda_m)^{q_m} \oplus \ker(\A - \lambda_{m+1} I )^{q_{m+1}}$.
+		
+		So, the next step is to show $\ker(\mathcal{B} - \lambda_i I)^{q_i} = \ker(\A - \lambda_i I)^{q_i}$ for all $i$. First, we know that
+		\begin{align*}
+		\ker(\A - \lambda_i I)^{q_i} \subseteq \ker\left( (\A - \lambda_1)^{q_1}\dots (\A - \lambda_m I)^{q_m} \right)
+		\end{align*},
+		since the factors can commute among themselves. Hence, we just rewrite this as
+		\begin{align*}
+		\ker(\A - \lambda_i I)^{q_i} \subseteq \ker(q_1(\A)).
+		\end{align*}
+		Similarly, we can show 
+		\begin{align*}
+		\ker(\mathcal{B} - \lambda_i I)^{q_i} \subseteq \ker(q_1(\A)).
+		\end{align*}
+		Now, recall that 
+		\begin{align*}
+		\A = \begin{pmatrix}
+		\mathcal{B} & \mathcal{O}\\
+		\mathcal{O} & \mathcal{C}
+		\end{pmatrix},
+		\end{align*}
+		thus,
+		\begin{align*}
+		(\A - \lambda_i I)^{q_i} = \begin{pmatrix}
+		(\mathcal{B} - \lambda_i)^{q_i} & \mathcal{O}\\
+		\mathcal{O} & \square
+		\end{pmatrix}.
+		\end{align*}
+		Consider $x \in \ker\left((\A - \lambda_i I)^{q_i}\right)$, i.e., 
+		\begin{align*}
+		&(\A - \lambda_i I)^{q_i}(x) = \mathbf{0}\\
+		\iff &\begin{pmatrix}
+		\mathcal{B} & \mathcal{O}\\
+		\mathcal{O} & \mathcal{C}
+		\end{pmatrix}\begin{pmatrix}
+		x\\\mathbf{0}
+		\end{pmatrix}_+\\
+		\iff &(\mathcal{B} - \lambda_i I)^{q_i}(x) = \mathbf{0}\\
+		\iff &x \in \ker\left( (\mathcal{B} - \lambda_i I)^{q_i} \right).
+		\end{align*}
+		So we have just shown that 
+		\begin{align*}
+		\ker\left( (\A - \lambda_i I)^{q_i} \right) = \ker\left( (\mathcal{B} - \lambda_i I)^{q_i}\right)
+		\end{align*}
+		for all $i$. This completes our proof. 
 	\end{proof}
 \end{thm}
 
+
+
+
+
 \newpage 
 \section{Cyclic decomposition and Jordan form}
+
+We can immediately follow the primary decomposition theorem with another theorem:
+
+\begin{thm}
+	Ever $\lag : \V \lin \V$, where $\V$ is finite dimensional, can be expressed as a direct sum of operators:
+	\begin{align*}
+	\lag = \lag_1 \oplus \lag_2 \oplus \dots \oplus \lag_m,
+	\end{align*}
+	where 
+	\begin{align*}
+	\lag_i = \lambda_i I + \mathcal{N}_i,
+	\end{align*}
+	where $\mathcal{N}_i$ is nilpotent. 
+\end{thm}
+
+It is worthwhile to study some properties of nilpotents.
+
+\subsection{Nilpotents}
+
+First, we want to look at the structure of nilpotents. Given a nilpotent $\mathcal{N} : \V \lin \V$, such that, say $\mathcal{N}^8 = \mathcal{O}$ (and hence $\mu_\mathcal{N}(z) = z^8$) and $v_0 \in \V$, we write
+\begin{align*}
+\langle v_0 \rangle = \xpan \left\{ v_0 ,\mathcal{N}(v_0),\dots, \mathcal{N}^7(v_0) \right\} = \{ P(\mathcal{N})(v_0) \big\vert \deg(P) \leq 7 \} \in \mathfrak{Lat}(\mathcal{N}),
+\end{align*}
+a cyclic invariant subspace. 
+
+\begin{thm}
+	For any nilpotent $\mathcal{N}$ as above, there exist some $v_1, v_2,\dots v_k \in \V$ such that 
+	\begin{align*}
+	\V = \langle v_0 \rangle \oplus \langle v_1 \rangle \oplus \dots \oplus \langle v_k \rangle
+	\end{align*} \qed
+\end{thm}
+
+We will look at the proof later, but with respect to this decomposition, $\mathcal{N}$ is block-diagonal:
+\begin{align*}
+\mathcal{N}= \begin{pmatrix}
+\mathcal{N}_1 & \mathcal{O} & \mathcal{O}\\
+\mathcal{O}& \ddots & \mathcal{O}\\
+\mathcal{O} & \mathcal{O} & \mathcal{N}_k
+\end{pmatrix}.
+\end{align*}
+Let us suppose that the $v_0$ up to $\mathcal{N}^5(v_0)$ are linear independent, then 
+\begin{align*}
+\mathcal{N}^6(v_0) = \sum^5_{i=0}a_i \mathcal{N}^i (v_0),
+\end{align*}
+i.e.,
+\begin{align*}
+(\mathcal{N}^6 - a_5\mathcal{N}^5 - \dots a_0 I)(v_0) =  q(\mathcal{N})(v_0)  = \mathbf{0}.
+\end{align*}
+But recall that the global minimal polynomial for $\mathcal{N}$ is $\mu_\mathcal{N}(z) = z^8$, and that the local minimal polynomial divides th global. This means that $q(\mathcal{N}) = \mathcal{N}^k$ for some $k \leq 8$. So, the local minimal polynomial has to have degree 6. This implies $\mathcal{N}^6(v_0) = \mathbf{0}$. Therefore, $v_0 ,\mathcal{N}(v_0),\dots , \mathcal{N}^5(v_0)$ is a basis of $\langle v_0 \rangle$. So, the first block along the diagonal of $\mathcal{N}$ can be written as 
+\begin{align*}
+\mathcal{N}_1 &= 
+\begin{tabular}{c|c|c|c|c|}
+& $\xpan(v_0)$ & $\xpan(\mathcal{N}(v_0))$ & \dots & $\xpan(\mathcal{N}^5(v_0))$\\
+\hline
+$\xpan(v_0)$& $0$ & $0$  & \dots & 0\\	
+$\xpan(\mathcal{N}(v_0))$& $1$ & $0$ &\dots& $0$\\
+$\vdots$ &\vdots&1&&\vdots \\
+$\vdots$ &\vdots&\vdots&& \vdots\\
+$\xpan(\mathcal{N}^5(v_0))$ &0 &0 & \dots& 0
+\end{tabular}\\
+&= \begin{pmatrix}
+0 & 0 &  && 0\\
+1 & 0 &  && \\
+ & 1 & \ddots && \\
+ &  & \ddots &\ddots&\\
+0 & 0 &  &1& 0
+\end{pmatrix}
+\end{align*}
+
+Of course, conventionally, we would prefer upper triangular matrices, so we simply reverse the order of the basis elements to get 
+\begin{align*}
+\mathcal{N}_1 = \begin{pmatrix}
+0 & 1 &  && 0\\
+  & 0 & 1 && \\
+ & & \ddots& \ddots & \\
+&  & &\ddots&1\\
+0 &  &  && 0
+\end{pmatrix}
+\end{align*}
+
+\begin{thm} \textbf{Cyclic Decomposition for Nilpotents:} \\
+	If $\mathcal{N} : \V \lin \V$, $\V$ is finite dimensional, is nilpotent then $\V = \bigoplus^k_{1} \langle v_i \rangle_\mathcal{N}$ for some non-zero $v_i$.\\
+	
+	In fact, we can choose any $v_1$ to start with. And with respect to this decomposition, $\mathcal{N}$ has the form $\mathcal{N}_1 \oplus \dots \oplus \mathcal{N}_k$ \qed
+\end{thm}
+
+
+\begin{thm}
+	If $\mathcal{N}: \V \lin \V$ nilpotent, $\V$ is finite dimensional, then there is a basis $\psi$ (which can be constructed by concatenation) for $\V$ such that 
+	\begin{align*}
+	[\mathcal{N}]_{\psi \leftarrow \psi} = \begin{pmatrix}
+	[\mathcal{N}_1] & & \\
+	& \ddots &\\
+	& & [\mathcal{N}_k]
+	\end{pmatrix} ,
+	\end{align*}
+	where each block $[\mathcal{N}_i]$ has the form
+	\begin{align*}
+	[\mathcal{N}_i] = \begin{pmatrix}
+	0 & 1 &  && 0\\
+	& 0 & 1 && \\
+	& & \ddots& \ddots & \\
+	&  & &\ddots&1\\
+	0 &  &  && 0
+	\end{pmatrix}
+	\end{align*}\qed
+\end{thm}
+
+
+\subsection{Jordan canonical form theorem}
+
+\begin{thm}
+	\begin{align*}
+	\boxed{\A, \mathcal{B} \text{ similar } \iff \A, \mathcal{B} \text{ have the same JCF}}
+	\end{align*}\qed
+\end{thm}
+
+We can ``improve'' the previous idea by considering $\A - \lambda I = \mathcal{N}$, i.e., $\A = \lambda I + \mathcal{N}$, and so
+\begin{align*}
+[\lambda I + \mathcal{N}]_{\psi \leftarrow \psi} = [\lambda I]_{\psi \leftarrow \psi} + [\mathcal{N}]_{\psi\leftarrow\psi}  = \begin{pmatrix}
+\A_1 & & \\
+& \ddots & \\
+& & \A_k
+\end{pmatrix}
+\end{align*}
+where each $\A_i$ is called a \textbf{Jordan block}, denoted $J_{\lambda, size}$. For example,
+\begin{align*}
+J_{\lambda, 2} = \begin{pmatrix}
+\lambda & 1\\0& \lambda 
+\end{pmatrix}.
+\end{align*}
+
+\begin{thm}\textbf{Jordan canonical form theorem:}\\
+	Every matrix is similar to a \textit{unique (up to changing order of appearance)} direct sum of Jordan blocks. \qed
+	
+	\begin{proof}
+		There are two parts to this proof. First, we want to show that this holds for nilpotents $\mathcal{N}$. Then, we extend it and show it also holds for $\A = \lambda I + \mathcal{N}$.
+	\end{proof}
+\end{thm}
+
+\textbf{Step 1:} Let us revisit the idea of Weyr characteristic. Consider 
+\begin{align*}
+\mathcal{N} = \begin{pmatrix}
+J_{0,9} & & \\
+& \ddots & \\
+& & J_{0,1}
+\end{pmatrix}.
+\end{align*}
+Let's say that from$\mathcal{N}$ we find that
+\begin{align*}
+\{ \mathbf{0} \} \stackrel{+8}{\subset} \ker(\mathcal{N}) \stackrel{+7}{\subset} \ker(\mathcal{N}^2) \stackrel{+7}{\subset} \ker(\mathcal{N}^3) \subset \dots \subset \ker(\mathcal{N}^9) = \V
+\end{align*}
+where the numbers indicate the increase in the dimension. Then, if we were given only the Weyr characteristics, i.e., the inclusion chain above, is it possible for us to generate $\mathcal{N}$? It turns out that the answer is YES. Basically, each number, going from left-to-right, gives us some extra information about $\mathcal{N}$. For instance, the first dimension increase gives us the number of Jordan blocks in $\mathcal{N}$. The difference between the second and the first number gives us the number of $J_{0,1}$ blocks. The different between the third and the second number gives us the number of $J_{0,2}$ blocks, and so on. (The most straightforward way to see how this works is to generate an example and go through the algorithm.)\\
+
+So, we can see that no matter how the decomposition might differ, this Jordan construction is determined by just $\mathcal{N}$ (since we can reconstruct the Jordan form of $\mathcal{N}$ by just looking at the Weyr characteristics). So, if we have two similar idempotents, then they have the same Weyr characteristics, i.e., they must also have the same Jordan canonical form. But since we also know that if two nilpotents have the same Jordan-block decomposition then they are similar. Therefore, the \textbf{Weyr characteristics of $\mathcal{N}$ completely determines the Jordan block sizes and their multiplicities, i.e., completely determines the Jordan form of $\mathcal{N}$ (of course, up to order of appearance)}. \\
+
+Similar matrices have the same Weyr characteristics, similar nilpotents have the same Jordan form. Conversely, if two nilpotents have the same Jordan form, hen they are similar to it, and so to each other. Therefore, we say that \textbf{Jordan form is a ``complete invariant'' for similarity of nilpotents.}\\
+
+
+\textbf{Step 2:} But what about $\A + \lambda I + \mathcal{N}$? We observe that if $A = \lambda I + \mathcal{N}$ then the Weyr characteristics of $\A - \lambda I$ determines the Jordan form of $\A$. But what if we don't know $\lambda$? What if all we know is that $\A = \square \cdot I + \mathcal{N}$? It turns out that we can simply use $\Tr(\A)$ to figure out what $\lambda$ is because $\A$ in matrix form has only $\lambda$'s along the diagonal:
+\begin{align*}
+\lambda = \frac{\Tr(\A)}{\text{Size of }\A}. 
+\end{align*}
+(recall that $\Tr(\A)$ does not change in different representations, i.e., it is ``similarity-invariant'').\\
+
+Now, similar matrices have the same Jordan forms. 
+
+  
+
 \subsection{Square roots of operators}
 \subsection{Similarity of a matrix and its transpose}
 \subsection{Similarity of a matrix and its conjugate}
