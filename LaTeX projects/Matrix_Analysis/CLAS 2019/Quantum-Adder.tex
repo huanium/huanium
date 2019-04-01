@@ -115,30 +115,46 @@
 \tableofcontents
 \end{frame}
 
-\section{Quantum Entanglement}
+\section{Qubits \& Quantum Gates}
 
 \begin{frame}
-\frametitle{Quantum Bits - Qubits}
+\frametitle{Qubits \& Quantum Gates}
 
-\textit{Qubits:}
+\textit{Qubits}:
 \begin{align*}
-\ket{\psi} = a\ket{0} + b\ket{1},
+\ket{\psi} = a\ket{0} + b\ket{1}, \text{ where } \abs{a}^2 + \abs{b}^2 = 1. 
 \end{align*}
-where $\abs{a}^2 + \abs{b}^2 = 1$. \\
-$\,$\\
-\textit{Measurement: } Probabilistic
+Probabilistic: when a measurement is made...
 \begin{align*}
 P(\ket{\psi} \to \ket{0}) = \abs{a}^2\hspace{0.5cm}
 P(\ket{\psi} \to \ket{1}) = \abs{b}^2
 \end{align*}
+
+\textit{Quantum Gates}: Represented by unitary matrices $\rightarrow$ Reversible. Act on spaces of one or many qubits. Example: 
+\begin{align*}
+Hadamard: H = \frac{1}{\sqrt{2}}\begin{bmatrix}
+1&1\\1&-1
+\end{bmatrix}, \hspace{0.5cm}
+CNOT_1 = \begin{bmatrix}
+1&0&0&0\\
+0&1&0&0\\
+0&0&0&1\\
+0&0&1&0
+\end{bmatrix}
+\end{align*}
+
+\textit{Measurements}: Irreversible $\rightarrow$ Not quantum gates.
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Entanglement}
-Consider a quantum state $\ket{\psi}$. It is not always possible to find $\ket{x}$ and $\ket{y}$ such that $\ket{\psi} = \ket{x} \otimes \ket{y}$.   
+\frametitle{Multi-qubit systems}
 
+\begin{itemize}
 
+\item Representing a multi-qubit state as many single-qubit states?
+\item Representing a multi-qubit gate as many single-qubit gates?
+\end{itemize}
 \end{frame}
 
 
@@ -162,7 +178,7 @@ What do we need to entangle two qubits?
 
 
 
-\section{Matrix Theory}
+\section{Some Matrix Theory}
 
 \begin{frame}
 \frametitle{Tensor Products}
@@ -236,31 +252,74 @@ A \textit{generic state}: For $\abs{a_{00}}^2 + \abs{a_{01}}^2 + \abs{a_{10}}^2 
 \frametitle{Tensor Products (cont.)}
 Not every $\ket{\psi} \in \V\otimes \W$ is an elementary tensor. \\
 $\,$\\
-\underline{Example}: There are no states $\ket{c}, \ket{d}$ such that
+\underline{Example}: There are no states $\ket{c}, \ket{d} \in \mathbb{C}^2$ such that
 \begin{align*}
-\ket{c} \otimes \ket{d} = \begin{bmatrix}
+\ket{c} \otimes \ket{d} = \ket{\beta_{00}} &= \begin{bmatrix}
 \frac{1}{\sqrt{2}} & 0 & 0 & \frac{1}{\sqrt{2}}
-\end{bmatrix}^\top \rightarrow \textbf{Entangled}.
+\end{bmatrix}^\top \\
+&= \frac{1}{\sqrt{2}}\ket{00} + \frac{1}{\sqrt{2}}\ket{11}
+\end{align*}
+\underline{Examples}: Bell states
+\begin{align*}
+\ket{\beta_{10}} = \frac{1}{\sqrt{2}}\ket{00} - \frac{1}{\sqrt{2}}\ket{11}\\
+\ket{\beta_{01}} = \frac{1}{\sqrt{2}}\ket{01} + \frac{1}{\sqrt{2}}\ket{10}\\
+\ket{\beta_{11}} = \frac{1}{\sqrt{2}}\ket{01} - \frac{1}{\sqrt{2}}\ket{10}\\
 \end{align*}
 \end{frame}
 
 \begin{frame}
 \frametitle{Tensor Products (cont.)}
-\textit{Bilinearity}:
-\begin{align*}
-&\ket{a} \otimes (\alpha\ket{v} + \beta\ket{w}) = \alpha\ket{av} + \beta\ket{aw}\\
-&(\alpha\ket{v} + \beta\ket{w}) \otimes \ket{b} = \alpha\ket{vb} + \beta\ket{wb}
-\end{align*}
-\textit{Of operators:} $\A \in \mathfrak{\lag}(\V), \mathcal{B} \in \mathfrak{\lag}(\W)$, $\A\otimes \B \in \mathfrak{\lag}(\V \otimes \W)$ is defined by
+\textit{For operators:} $\A \in \mathfrak{\lag}(\V), \mathcal{B} \in \mathfrak{\lag}(\W)$, $\A\otimes \B \in \mathfrak{\lag}(\V \otimes \W)$ is defined by
 \begin{align*}
 (\A \otimes \B)(\ket{v}\otimes \ket{w}) = (\A\ket{v})\otimes (\B\ket{w}).
 \end{align*}
-But not all $C \in \mathfrak{\lag}(\V\otimes \W)$ can be written as $\A \otimes \B$, $\A \in \mathfrak{\lag}(\V), \mathcal{B} \in \mathfrak{\lag}(\W)$\\ $\rightarrow$ \textbf{Entangled}.
+Not all $C \in \mathfrak{\lag}(\V\otimes \W)$ can be written as $\A \otimes \B$, $\A \in \mathfrak{\lag}(\V), \mathcal{B} \in \mathfrak{\lag}(\W)$.\\
+$\,$\\
+\underline{Example}:
+\begin{align*}
+CNOT_1 = \begin{bmatrix}
+1&0&0&0\\
+0&1&0&0\\
+0&0&0&1\\
+0&0&1&0
+\end{bmatrix} 
+\hspace{0.5cm}
+SWAP = 
+\begin{bmatrix}
+1&0&0&0\\
+0&0&1&0\\
+0&1&0&0\\
+0&0&0&1
+\end{bmatrix} 
+\end{align*}
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Example: Entanglement}
+\frametitle{$SWAP \neq S_1 \otimes S_2$}
+Consider the 2-qubit $SWAP$ map:
+\begin{align*}
+SWAP = 
+\begin{bmatrix}
+1&0&0&0\\
+0&0&1&0\\
+0&1&0&0\\
+0&0&0&1
+\end{bmatrix} \in \lag(\V\otimes \W).
+\end{align*}
+Observe: 
+\begin{align*}
+SWAP(\ket{0}\otimes \ket{1}) = \ket{1}\otimes \ket{0}.
+\end{align*}
+Suppose for $S_1 \in \lag(\V), S_2 \in \lag(\W)$
+\begin{align*}
+SWAP = S_1 \otimes S_2
+\end{align*}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example: 2-Qubit Entanglement Circuit}
 \begin{center}
 	$\,$\Qcircuit @C=.7em @R=.4em  {
 		\lstick{a: \ket{0}} & \qw & \qw & \targ & \meter & \qw \\
@@ -282,28 +341,22 @@ CNOT_b = C_b = \begin{bmatrix}
 0&0&0&1\\
 0&0&1&0\\
 0&1&0&0
-\end{bmatrix}
+\end{bmatrix}\hspace{0.5cm}
+\begin{cases}
+\ket{00} \to \ket{00}\\
+\ket{10} \to \ket{10}\\
+\ket{01} \to \ket{11}\\
+\ket{11} \to \ket{01}
+\end{cases}
 \end{align*}
-$\rightarrow$ Unitary Operations $\equiv$ Quantum Gates
+%$\rightarrow$ Unitary Operations $\equiv$ Quantum Gates
 \end{frame}
 
 \begin{frame}
 \frametitle{Example: Entanglement (cont.)}
 Notice:
 \begin{align*}
-(I \otimes H_b)(\ket{0} \otimes \ket{0}) &= (I\ket{0}) \otimes (H_b\ket{0})\\
-\begin{bmatrix}
-\frac{1}{\sqrt{2}}\begin{bmatrix}
-1&1\\
-1&-1
-\end{bmatrix}& \mathcal{O}\\
-\mathcal{O} & \frac{1}{\sqrt{2}}\begin{bmatrix}
-1&1\\1&-1
-\end{bmatrix}
-\end{bmatrix}\begin{bmatrix}
-1\\0\\0\\0
-\end{bmatrix}
-&=
+(I\ket{0}) \otimes (H_b\ket{0}) &= (I \otimes H_b)(\ket{0} \otimes \ket{0}) \\
 \begin{bmatrix}
 1\\0
 \end{bmatrix}
@@ -314,13 +367,25 @@ Notice:
 \end{bmatrix}
 \begin{bmatrix}
 1\\0
+\end{bmatrix}
+&=
+\begin{bmatrix}
+\frac{1}{\sqrt{2}}\begin{bmatrix}
+1&1\\
+1&-1
+\end{bmatrix}& \mathcal{O}\\
+\mathcal{O} & \frac{1}{\sqrt{2}}\begin{bmatrix}
+1&1\\1&-1
+\end{bmatrix}
+\end{bmatrix}\begin{bmatrix}
+1\\0\\0\\0
 \end{bmatrix}\\
 \begin{bmatrix}
 \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0&0
 \end{bmatrix}^\top &= \begin{bmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0&0
 \end{bmatrix}^\top 
 \end{align*}
-$\rightarrow$ Possible to write $H$ as $I \otimes H_b$.
+$\rightarrow$ Possible to write $H$ as $I \otimes H_b$. Not possible for $CNOT_b$.
 \end{frame}
 
 
@@ -363,7 +428,8 @@ C_b(I \otimes H)\left(\begin{bmatrix}
 = 
 \begin{bmatrix}
 1/\sqrt{2}\\0\\0\\1/\sqrt{2}
-\end{bmatrix}\\ &= \frac{1}{\sqrt{2}}\ket{0}\otimes\ket{0} + \frac{1}{\sqrt{2}}\ket{1}\otimes\ket{1} \rightarrow \textbf{Entangled}
+\end{bmatrix}\\ &= \frac{1}{\sqrt{2}}\ket{0}\otimes\ket{0} + \frac{1}{\sqrt{2}}\ket{1}\otimes\ket{1}\\
+&\rightarrow \textbf{Entangled}
 \end{align*}
 \end{frame}
 
@@ -376,12 +442,13 @@ C_b(I \otimes H)\left(\begin{bmatrix}
 \frametitle{Tensor Products (cont.)}
 Other properties:
 \begin{itemize}
+	\item Bilinear: linear in both arguments.
 	\item Associative
 	\item Distributive
 	\item Not commutative
 	\item $(\A \otimes \B)^\dagger = \A^\dagger \otimes \B^\dagger$.
 	\item $\Tr(\A\otimes \B) = \Tr(\A)\cdot \Tr(\B)$.
-	\item $\det(\A \otimes \B) = (\det(\A))^m\cdot \det(\B)^n$, where $m$ is the dimension of $\A$ and $n$ of $\B$. 
+	\item $\det(\A \otimes \B) = (\det(\A))^m\cdot \det(\B)^n$, where $m = \text{size}(\A), n =\text{size}(\B)$. 
 \end{itemize}
 \end{frame}
 
@@ -411,6 +478,11 @@ Entanglement circuit, revisited
 		\lstick{a: \ket{0}} & \qw & \qw & \targ & \meter & \qw \\
 		\lstick{b: \ket{0}} & \qw & \gate{H} & \ctrl{-1}& \meter & \qw 
 	}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.7]{ibmq}
+\end{figure}
 \end{center}
 
 
@@ -434,27 +506,21 @@ Entanglement circuit, revisited
 
 \begin{frame}
 \frametitle{Recap}
-What did we learn on the show tonight, Craig? 
 
-Q-circuit user guide \cite{eastin2004q}
-
-quantum addition of classical numbers \cite{cherkas2016quantum}
-
-
-Mike and Ike \cite{nielsen2002quantum}
-
-Handbook of Linear Algebra \cite{hogben2006handbook}
-
-addition on quantum computer \cite{draper2000q}
-
-QFT quick math \cite{baconQFT}
-
-Matrix analysis (where I read about unitary matrices) \cite{horn1990matrix}
+\begin{itemize}
+	\item Representing multi-qubit systems with tensor products.
+	\item Representing multi-qubit operators with tensor products.
+	\item Not all multi-qubit states are a tensor product of 1-qubit states.
+	\item Not all multi-qubit gates are a tensor product of 1-qubit gates.
+	\item Entanglement on IBM-Q.
+\end{itemize}
 
 \end{frame}
 
 \begin{frame}
 \frametitle{References}
+
+
 
 \bibliographystyle{amsalpha}
 \bibliography{references}{}
