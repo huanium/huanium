@@ -2680,14 +2680,96 @@ where $w(\tau,x)$ is given exactly by the solution to the easy problem.
 
 
 
+\newpage
 
 
 
 
+% April 1, 2019 %
 
+\section{Elliptic problems - Laplace - Poisson - Helmholtz}
 
+Fundamental object: The Laplacian is defined in Cartesian coordinates as
 
+\begin{align*}
+\boxed{\Delta u = \nabla^2 u = u_{xx} + u_{yy}}
+\end{align*}
 
+In polar coordinates: $r = \sqrt{x^2 + y^2}, \theta = \tan^{-1}(y/x)$
+
+\begin{align*}
+\boxed{\Delta u = \nabla^2 u = u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta}}
+\end{align*}
+
+Why are the two description equivalent? Just the chain rule! If
+\begin{align*}
+u(x,y) = U(r,\theta) = U(r(x,y), \theta(x,y)),
+\end{align*}
+then we have
+\begin{align*}
+u_{xx} = \f{\p^2 u}{\p x^2} &= \f{\p^2}{\p x^2}U(r(x,y), \theta(x,y))\\
+&= \f{\p}{\p x}\left( \f{\p U}{\p r}\f{\p r}{\p x} +  \f{\p U}{\p \theta}\f{\p \theta}{\p x} \right)\\
+&= \f{\p}{\p x}\f{\p U}{\p r}\f{\p r}{\p x} + \f{\p U}{\p r}\f{\p^2 r}{\p x^2} + \f{\p }{\p x}\f{\p U}{\p \theta}\f{\p \theta}{\p x} + \f{\p U}{\p \theta}\f{\p^2 \theta}{\p x^2}\\
+&= \f{\p^2 U}{\p r^2}\left(\f{\p r}{\p x}\right)^2 + \f{\p^2 U}{\p r \p \theta}\f{\p \theta}{\p x}\f{\p r}{\p x} + \f{\p U}{\p r}\f{\p^2 r}{\p x^2} \\
+&\,\,\,\,\,\,\,\,\,\,\,\,\,+  \f{\p^2 U}{\p r^2}\left(\f{\p \theta}{\p x}\right)^2 \f{\p^2 U}{\p \theta \p r}\f{\p \theta}{\p x}\f{\p r}{\p x} + \f{\p U}{\p \theta}\f{\p^2 \theta}{\p x^2}\\
+&= U_{rr}\lp\f{\p r}{\p x}\rp^2 + 2U_{r\theta} \f{\p r}{\p x} \f{\p \theta}{\p x} + U_r \f{\p^2 r}{\p x^2} + U_{\theta\theta} \lp \f{\p \theta}{\p x}\rp^2 + U_\theta \f{\p^2 \theta}{\p x^2}.
+\end{align*}
+Now, add this to $u_{yy}$. So,
+\begin{align*}
+\nabla^2 u = U_{rr} \lp \lp \f{\p r}{\p x} \rp^2 + \lp \f{\p r}{\p y} \rp^2 \rp+ 2U_{r\theta} \lp \f{\p r}{\p x}\f{\p \theta}{\p x}  +  
+\f{\p r}{\p y}\f{\p \theta}{\p y} \rp \\
++ U_r\lp\f{\p^2 r}{\p x^2} + \f{\p^2 r}{\p y^2} \rp + U_{\theta\theta} \lp \lp \f{\p\theta}{\p x} \rp^2 +  \lp\f{\p\theta}{\p y} \rp^2\rp.
+\end{align*}
+Calculating the partials, we should get
+\begin{align*}
+&\f{\p r}{\p x} = \f{x}{\sqrt{x^2 +y^2}}\\
+&\f{\p r}{\p y} = \f{y}{\sqrt{x^2 +y^2}}\\
+&\f{\p^2 r}{\p x^2} = \f{y^2}{(x^2+y^2)^{3/2}}\\
+&\f{\p^2 r}{\p y^2} = \f{x^2}{(x^2+y^2)^{3/2}}\\
+&\f{\p \theta}{\p x} = \f{-y}{x^2+y^2}\\
+&\f{\p \theta}{\p y} = \f{x}{x^2+y^2}\\
+&\f{\p^2 \theta}{\p x^2} = \f{2xy}{\sqrt{(x^2+y^2)^2}}\\
+&\f{\p^2 \theta}{\p y^2} = \f{-2xy}{\sqrt{(x^2+y^2)^2}}
+\end{align*}
+so that
+\begin{align*}
+\nabla^2 u = U_{rr} + \f{1}{r}U_r + \f{1}{r^2}U_{\theta\theta}
+\end{align*}
+as claimed. \\
+
+Often, our problem will be posed on a circle/disk, and so solving $\nabla^2 u = 0$ is easiest in polar coordinates. \\
+
+Summary, in 2D
+\begin{align*}
+\boxed{\nabla^2 u = u_{xx}  + u_{yy} = U_{rr} + \f{1}{r}U_r + \f{1}{r^2}U_{\theta\theta}}
+\end{align*}
+In 3D, in Cylindrical coordinates
+\begin{align*}
+\boxed{\nabla^2 u = u_{xx}  + u_{yy} + u_{zz} = U_{rr} + \f{1}{r}U_r + \f{1}{r^2} U_{\theta\theta} + U_{zz} }
+\end{align*}
+In Spherical coordinates:
+\begin{align*}
+\boxed{\nabla^2 u  = U_{rr} + \f{2}{r}U_r  +\f{1}{r^2}U_{\theta\theta} + \f{\cot\theta}{r^2}U_\theta + \f{1}{r^2\sin^2\theta}U_{\theta\theta}  }
+\end{align*}
+Why is the Laplacian important? By studying second-order difference quotients, we'll find that
+\begin{itemize}
+	\item If at a point $(x,y)\in\R^2$, $\nabla^2 u(x,y) > 0$, then $u(x,y)$ is \textbf{less} \textbf{than} the average of $u$ among its neighboring points.
+	\item If at a point $(x,y)\in\R^2$, $\nabla^2 u(x,y) < 0$, then $u(x,y)$ is \textbf{greater} \textbf{than} the average of $u$ among its neighboring points.
+	\item If at a point $(x,y)\in\R^2$, $\nabla^2 u(x,y) = 0$, then $u(x,y)$ is \textbf{equal to} the average of $u$ among its neighboring points.
+\end{itemize}
+
+What does this mean? Let's say the average of $u$ is 
+\begin{align*}
+\bar{u} = \f{1}{\text{circumference}}\int_{circle} u(x,y)\,ds.
+\end{align*}
+Then if $\nabla^2 u = 0$, then $u(x,y) = \bar{u}$. How does this translate physically? 
+\begin{enumerate}
+	\item For the heat equation: 
+	\begin{align*}
+	u_t = \alpha^2 \nabla^2 u.
+	\end{align*}
+	Let's suppose that $\nabla^2 u > 0$ at $(x,y)$. Then the temperature of $(x,y)$'s neighbors is higher, no average. So, $u_t > 0$, i.e., the temperature at $(x,y)$ increases in time. This is what we expect. The neighbors heat $(x,y)$ up. 
+\end{enumerate}
 
 
 
