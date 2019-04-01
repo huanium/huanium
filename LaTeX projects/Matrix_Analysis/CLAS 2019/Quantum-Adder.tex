@@ -57,6 +57,7 @@
 \newcommand{\X}{\mathbf{X}}
 
 \newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
 
 \newcommand{\xpan}{\text{span}}
 
@@ -103,7 +104,7 @@
 }
 \date{CLAS, May 2, 2019}
  
-\logo{\includegraphics[height=0.5cm]{colby.png}}
+%\logo{\includegraphics[height=0.3cm]{colby.png}}
  
 \begin{document}
  
@@ -140,8 +141,10 @@ Physics terms and math terms.
 
 What do we need to make this simple circuit?
 
-How does matrix theory (might) play a role here?
-
+\begin{itemize}
+	\item Tensor Products 
+	\item Unitary Operations
+\end{itemize}
 \end{frame}
 
 
@@ -154,10 +157,170 @@ How does matrix theory (might) play a role here?
 \section{Matrix Theory}
 
 \begin{frame}
-\frametitle{Discrete and Quantum Fourier Transform}
-Constructing a DFT matrix.
-Properties of this matrix.
-Orthonormal basis.
+\frametitle{Tensor Products}
+The \textit{tensor product} of $\V = \mathbb{C}^{\Sigma_1}$ and $\W = \mathbb{C}^{\Sigma_2}$ is
+\begin{align*}
+\V \otimes \W = \mathbb{C}^{\Sigma_1 \times \Sigma_2}.
+\end{align*}
+\textit{Elementary tensors} span $\V\otimes \W$. For $\ket{v} \in \V$ and $\ket{w} \in \W$, 
+\begin{align*}
+\ket{v}\otimes \ket{w}\equiv \ket{v}\ket{w} \equiv \ket{vw}  \in \V \otimes \W.
+\end{align*} 
+
+\underline{Example}: Representing the classical number ``1'' with two qubits:
+\begin{align*}
+1_2 \equiv \ket{01} = \ket{0} \otimes \ket{1} = \begin{bmatrix}
+1\\0
+\end{bmatrix}\otimes 
+\begin{bmatrix}
+0\\1
+\end{bmatrix}
+=
+\begin{bmatrix}
+1\begin{bmatrix}
+0\\1
+\end{bmatrix}\\
+0\begin{bmatrix}
+0\\1
+\end{bmatrix}
+\end{bmatrix} = \begin{bmatrix}
+0\\1\\0\\0
+\end{bmatrix}.
+\end{align*}
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{Tensor Products (cont.)}
+
+$\xpan(\ket{00}, \ket{01}, \ket{10}, \ket{11}) = \V\otimes \W$, where
+\begin{align*}
+\ket{00} = \begin{bmatrix}
+0&0&0&0
+\end{bmatrix}^\top, \ket{10} = \begin{bmatrix}
+0&0&1&0
+\end{bmatrix}^\top, \ket{11} = \begin{bmatrix}
+0&0&0&1
+\end{bmatrix}^\top.
+\end{align*}
+\textit{A generic state}: For $\abs{a_{00}}^2 + \abs{a_{01}}^2 + \abs{a_{10}}^2 + \abs{a_{11}}^2 = 1$,
+\begin{align*}
+\ket{\psi} = a_{00}\ket{00} + a_{01}\ket{01} + a_{10}\ket{10} + a_{11}\ket{11}.
+\end{align*}
+Not every element of $\V\otimes \W$ is an elementary tensor. \\
+$\,$\\
+\underline{Example}: There are no states $\ket{\psi}, \ket{\phi}$ such that
+\begin{align*}
+\ket{\psi} \otimes \ket{\phi} = \begin{bmatrix}
+\frac{1}{\sqrt{2}} & 0 & 0 & \frac{1}{\sqrt{2}}
+\end{bmatrix}^\top \rightarrow \textbf{Entangled}.
+\end{align*}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Tensor Products (cont.)}
+\textit{Bilinearity}:
+\begin{align*}
+&\ket{a} \otimes (\alpha\ket{v} + \beta\ket{w}) = \alpha\ket{av} + \beta\ket{aw}\\
+&(\alpha\ket{v} + \beta\ket{w}) \otimes \ket{b} = \alpha\ket{vb} + \beta\ket{wb}
+\end{align*}
+
+For $\A \in \mathfrak{\lag}(\V), \mathcal{B} \in \mathfrak{\lag}(\W)$, $\A\otimes \B \in \mathfrak{\lag}(\V \otimes \W)$ is defined by
+\begin{align*}
+(\A \otimes \B)(\ket{v}\otimes \ket{w}) = (\A\ket{v})\otimes (\B\ket{w})
+\end{align*}
+$\rightarrow$ Useful when we apply a transformation to only one of two qubits.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example: Entanglement}
+\begin{center}
+	$\,$\Qcircuit @C=.7em @R=.4em  {
+		\lstick{a: \ket{0}} & \qw & \qw & \targ & \meter & \qw \\
+		\lstick{b: \ket{0}} & \qw & \gate{H} & \ctrl{-1}& \meter & \qw 
+	}
+\end{center}
+\begin{align*}
+Hadamard = \frac{1}{\sqrt{2}}\begin{bmatrix}
+1&1\\1&-1
+\end{bmatrix}, CNOT_b = C_b = \begin{bmatrix}
+1&0&0&0\\
+0&0&0&1\\
+0&0&1&0\\
+0&1&0&0
+\end{bmatrix}
+\end{align*}
+\begin{align*}
+C_b(I \otimes H)\left(\begin{bmatrix}
+1\\0
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+1\\0
+\end{bmatrix}
+\right)
+&= C_b\left(\begin{bmatrix}
+1&0\\0&1
+\end{bmatrix}\begin{bmatrix}
+1\\0
+\end{bmatrix}\otimes \frac{1}{\sqrt{2}}\begin{bmatrix}
+1&1\\1&-1
+\end{bmatrix}\begin{bmatrix}
+1\\0
+\end{bmatrix}\right)\\
+&=
+C_b
+\begin{bmatrix}
+1/\sqrt{2}&1/\sqrt{2}&0&0
+\end{bmatrix}^\top\\
+&= 
+\begin{bmatrix}
+1/\sqrt{2}&0&0&1/\sqrt{2}
+\end{bmatrix}^\top \rightarrow \textbf{Entangled}
+\end{align*}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+\frametitle{Tensor Products (cont.)}
+Other properties:
+\begin{itemize}
+	\item Associative
+	\item Distributive
+	\item Not commutative
+	\item $(\A \otimes \B)^\dagger = \A^\dagger \otimes \B^\dagger$.
+	\item $\Tr(\A\otimes \B) = \Tr(\A)\cdot \Tr(\B)$.
+	\item $\det(\A \otimes \B) = (\det(\A))^m\cdot \det(\B)^n$, where $m$ is the dimension of $\A$ and $n$ of $\B$. 
+\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Unitary Operations}
+\begin{itemize}
+	\item Quantum Fourier Transform
+	\item Control-phase
+	\item 
+\end{itemize}
 \end{frame}
 
 \begin{frame}
