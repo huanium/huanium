@@ -136,7 +136,7 @@ P(\ket{\psi} \to \ket{1}) = \abs{b}^2
 
 \begin{frame}
 \frametitle{Entanglement}
-When qubits ``coordinate'':
+Consider a quantum state $\ket{\psi}$. It is not always possible to find $\ket{x}$ and $\ket{y}$ such that $\ket{\psi} = \ket{x} \otimes \ket{y}$.   
 
 
 \end{frame}
@@ -222,10 +222,18 @@ $\xpan(\ket{00}, \ket{01}, \ket{10}, \ket{11}) = \V\otimes \W$, where
 0&0&0&1
 \end{bmatrix}^\top.
 \end{align*}
+Linear independence $\rightarrow$ $(\ket{00}, \ket{01}, \ket{10}, \ket{11})$ form a computational basis. \\
+$\,$\\
 A \textit{generic state}: For $\abs{a_{00}}^2 + \abs{a_{01}}^2 + \abs{a_{10}}^2 + \abs{a_{11}}^2 = 1$,
 \begin{align*}
 \ket{\psi} = a_{00}\ket{00} + a_{01}\ket{01} + a_{10}\ket{10} + a_{11}\ket{11}.
 \end{align*}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Tensor Products (cont.)}
 Not every $\ket{\psi} \in \V\otimes \W$ is an elementary tensor. \\
 $\,$\\
 \underline{Example}: There are no states $\ket{c}, \ket{d}$ such that
@@ -234,7 +242,6 @@ $\,$\\
 \frac{1}{\sqrt{2}} & 0 & 0 & \frac{1}{\sqrt{2}}
 \end{bmatrix}^\top \rightarrow \textbf{Entangled}.
 \end{align*}
-
 \end{frame}
 
 \begin{frame}
@@ -277,7 +284,43 @@ CNOT_b = C_b = \begin{bmatrix}
 0&1&0&0
 \end{bmatrix}
 \end{align*}
-$\rightarrow$ Unitary Operations
+$\rightarrow$ Unitary Operations $\equiv$ Quantum Gates
+\end{frame}
+
+\begin{frame}
+\frametitle{Example: Entanglement (cont.)}
+Notice:
+\begin{align*}
+(I \otimes H_b)(\ket{0} \otimes \ket{0}) &= (I\ket{0}) \otimes (H_b\ket{0})\\
+\begin{bmatrix}
+\frac{1}{\sqrt{2}}\begin{bmatrix}
+1&1\\
+1&-1
+\end{bmatrix}& \mathcal{O}\\
+\mathcal{O} & \frac{1}{\sqrt{2}}\begin{bmatrix}
+1&1\\1&-1
+\end{bmatrix}
+\end{bmatrix}\begin{bmatrix}
+1\\0\\0\\0
+\end{bmatrix}
+&=
+\begin{bmatrix}
+1\\0
+\end{bmatrix}
+\otimes
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+1&1\\1&-1
+\end{bmatrix}
+\begin{bmatrix}
+1\\0
+\end{bmatrix}\\
+\begin{bmatrix}
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0&0
+\end{bmatrix}^\top &= \begin{bmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0&0
+\end{bmatrix}^\top 
+\end{align*}
+$\rightarrow$ Possible to write $H$ as $I \otimes H_b$.
 \end{frame}
 
 
@@ -345,20 +388,6 @@ Other properties:
 
 
 
-\begin{frame}
-\frametitle{Unitary Operations}
-\begin{itemize}
-	\item Quantum Fourier Transform
-	\item Control-phase
-	\item 
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Unitary Operations: QFT}
-
-\end{frame}
-
 
 
 
@@ -375,21 +404,13 @@ Other properties:
 \begin{frame}
 \frametitle{Simulation on IBM-Q}
 
-A sample quantum circuit.
+Entanglement circuit, revisited
 
 \begin{center}
-$\,$\Qcircuit @C=.7em @R=.4em  {
-	\lstick{\ket{\psi}} & \qw & \qw & \ctrl{1} &
-	\gate{H} & \meter & \control \cw\\
-	\lstick{\ket{0}} & \qw & \targ & \targ & \qw &
-	\meter & \cwx\\
-	\lstick{\ket{0}} & \gate{H} & \ctrl{-1} & \qw &
-	\qw & \gate{X} \cwx & \gate{Z} \cwx &
-	\rstick{\ket{\psi}} \qw
-}
-
-
-
+	$\,$\Qcircuit @C=.7em @R=.4em  {
+		\lstick{a: \ket{0}} & \qw & \qw & \targ & \meter & \qw \\
+		\lstick{b: \ket{0}} & \qw & \gate{H} & \ctrl{-1}& \meter & \qw 
+	}
 \end{center}
 
 
