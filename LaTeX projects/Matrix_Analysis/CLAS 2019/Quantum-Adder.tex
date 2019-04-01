@@ -91,7 +91,7 @@
  
  
 %Information to be included in the title page:
-\title{Matrix Theory in a Simple Quantum Adder}
+\title{Matrix Theory in a 2-Qubit Entangler}
 \author[Huan Q. Bui] % (optional)
 {Huan Q. Bui}
 
@@ -115,35 +115,43 @@
 \tableofcontents
 \end{frame}
 
-\section{Quantum what?}
+\section{Quantum Entanglement}
 
 \begin{frame}
-\frametitle{Quantum what?}
-Some ideas about quantum mechanics.\\
+\frametitle{Quantum Bits - Qubits}
 
-Bits and qubits. Quantum states. Measurement. Collapsing. Reversible.\\
-
-Quantum computation? Information?
-
-The big picture.
+\textit{Qubits:}
+\begin{align*}
+\ket{\psi} = a\ket{0} + b\ket{1},
+\end{align*}
+where $\abs{a}^2 + \abs{b}^2 = 1$. \\
+$\,$\\
+\textit{Measurement: } Probabilistic
+\begin{align*}
+P(\ket{\psi} \to \ket{0}) = \abs{a}^2\hspace{0.5cm}
+P(\ket{\psi} \to \ket{1}) = \abs{b}^2
+\end{align*}
 \end{frame}
+
 
 \begin{frame}
-\frametitle{Terminology}
+\frametitle{Entanglement}
+When qubits ``coordinate'':
 
-Physics terms and math terms.
 
 \end{frame}
+
 
 
 \begin{frame}
 \frametitle{Recipe}
 
-What do we need to make this simple circuit?
-
+What do we need to entangle two qubits?
 \begin{itemize}
-	\item Tensor Products 
-	\item Unitary Operations
+	\item Tensor products
+	\item Hadamard gate
+	\item CNOT gate
+	\item Measure
 \end{itemize}
 \end{frame}
 
@@ -207,22 +215,22 @@ The \textit{tensor product} of $\V = \mathbb{C}^{\Sigma_1}$ and $\W = \mathbb{C}
 $\xpan(\ket{00}, \ket{01}, \ket{10}, \ket{11}) = \V\otimes \W$, where
 \begin{align*}
 \ket{00} = \begin{bmatrix}
-0&0&0&0
+1&0&0&0
 \end{bmatrix}^\top, \ket{10} = \begin{bmatrix}
 0&0&1&0
 \end{bmatrix}^\top, \ket{11} = \begin{bmatrix}
 0&0&0&1
 \end{bmatrix}^\top.
 \end{align*}
-\textit{A generic state}: For $\abs{a_{00}}^2 + \abs{a_{01}}^2 + \abs{a_{10}}^2 + \abs{a_{11}}^2 = 1$,
+A \textit{generic state}: For $\abs{a_{00}}^2 + \abs{a_{01}}^2 + \abs{a_{10}}^2 + \abs{a_{11}}^2 = 1$,
 \begin{align*}
 \ket{\psi} = a_{00}\ket{00} + a_{01}\ket{01} + a_{10}\ket{10} + a_{11}\ket{11}.
 \end{align*}
-Not every element of $\V\otimes \W$ is an elementary tensor. \\
+Not every $\ket{\psi} \in \V\otimes \W$ is an elementary tensor. \\
 $\,$\\
-\underline{Example}: There are no states $\ket{\psi}, \ket{\phi}$ such that
+\underline{Example}: There are no states $\ket{c}, \ket{d}$ such that
 \begin{align*}
-\ket{\psi} \otimes \ket{\phi} = \begin{bmatrix}
+\ket{c} \otimes \ket{d} = \begin{bmatrix}
 \frac{1}{\sqrt{2}} & 0 & 0 & \frac{1}{\sqrt{2}}
 \end{bmatrix}^\top \rightarrow \textbf{Entangled}.
 \end{align*}
@@ -236,12 +244,11 @@ $\,$\\
 &\ket{a} \otimes (\alpha\ket{v} + \beta\ket{w}) = \alpha\ket{av} + \beta\ket{aw}\\
 &(\alpha\ket{v} + \beta\ket{w}) \otimes \ket{b} = \alpha\ket{vb} + \beta\ket{wb}
 \end{align*}
-
-For $\A \in \mathfrak{\lag}(\V), \mathcal{B} \in \mathfrak{\lag}(\W)$, $\A\otimes \B \in \mathfrak{\lag}(\V \otimes \W)$ is defined by
+\textit{Of operators:} $\A \in \mathfrak{\lag}(\V), \mathcal{B} \in \mathfrak{\lag}(\W)$, $\A\otimes \B \in \mathfrak{\lag}(\V \otimes \W)$ is defined by
 \begin{align*}
-(\A \otimes \B)(\ket{v}\otimes \ket{w}) = (\A\ket{v})\otimes (\B\ket{w})
+(\A \otimes \B)(\ket{v}\otimes \ket{w}) = (\A\ket{v})\otimes (\B\ket{w}).
 \end{align*}
-$\rightarrow$ Useful when we apply a transformation to only one of two qubits.
+But not all $C \in \mathfrak{\lag}(\V\otimes \W)$ can be written as $\A \otimes \B$, $\A \in \mathfrak{\lag}(\V), \mathcal{B} \in \mathfrak{\lag}(\W)$\\ $\rightarrow$ \textbf{Entangled}.
 \end{frame}
 
 
@@ -254,42 +261,66 @@ $\rightarrow$ Useful when we apply a transformation to only one of two qubits.
 	}
 \end{center}
 \begin{align*}
-Hadamard = \frac{1}{\sqrt{2}}\begin{bmatrix}
+H\begin{bmatrix}
+1\\0
+\end{bmatrix}_b = \frac{1}{\sqrt{2}}\begin{bmatrix}
 1&1\\1&-1
-\end{bmatrix}, CNOT_b = C_b = \begin{bmatrix}
+\end{bmatrix}\begin{bmatrix}
+1\\0
+\end{bmatrix}_b = \frac{1}{\sqrt{2}}\ket{0}_b + \frac{1}{\sqrt{2}}\ket{1}_b
+\end{align*}
+\begin{align*}
+CNOT_b = C_b = \begin{bmatrix}
 1&0&0&0\\
 0&0&0&1\\
 0&0&1&0\\
 0&1&0&0
 \end{bmatrix}
 \end{align*}
+$\rightarrow$ Unitary Operations
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example: Entanglement (cont.)}
+\begin{center}
+	$\,$\Qcircuit @C=.7em @R=.4em  {
+		\lstick{a: \ket{0}} & \qw & \qw & \targ & \meter & \qw \\
+		\lstick{b: \ket{0}} & \qw & \gate{H} & \ctrl{-1}& \meter & \qw 
+	}
+\end{center}
 \begin{align*}
 C_b(I \otimes H)\left(\begin{bmatrix}
 1\\0
-\end{bmatrix}
+\end{bmatrix}_a
 \otimes
 \begin{bmatrix}
 1\\0
-\end{bmatrix}
+\end{bmatrix}_b
 \right)
 &= C_b\left(\begin{bmatrix}
 1&0\\0&1
 \end{bmatrix}\begin{bmatrix}
 1\\0
-\end{bmatrix}\otimes \frac{1}{\sqrt{2}}\begin{bmatrix}
+\end{bmatrix}_a\otimes \frac{1}{\sqrt{2}}\begin{bmatrix}
 1&1\\1&-1
 \end{bmatrix}\begin{bmatrix}
 1\\0
-\end{bmatrix}\right)\\
+\end{bmatrix}_b\right)\\
 &=
-C_b
 \begin{bmatrix}
-1/\sqrt{2}&1/\sqrt{2}&0&0
-\end{bmatrix}^\top\\
-&= 
+1&0&0&0\\
+0&0&0&1\\
+0&0&1&0\\
+0&1&0&0
+\end{bmatrix}
 \begin{bmatrix}
-1/\sqrt{2}&0&0&1/\sqrt{2}
-\end{bmatrix}^\top \rightarrow \textbf{Entangled}
+1/\sqrt{2}\\1/\sqrt{2}\\0\\0
+\end{bmatrix}
+= 
+\begin{bmatrix}
+1/\sqrt{2}\\0\\0\\1/\sqrt{2}
+\end{bmatrix}\\ &= \frac{1}{\sqrt{2}}\ket{0}\otimes\ket{0} + \frac{1}{\sqrt{2}}\ket{1}\otimes\ket{1} \rightarrow \textbf{Entangled}
 \end{align*}
 \end{frame}
 
@@ -324,8 +355,8 @@ Other properties:
 \end{frame}
 
 \begin{frame}
-\frametitle{Control-phase gate}
-Again?
+\frametitle{Unitary Operations: QFT}
+
 \end{frame}
 
 
