@@ -2768,7 +2768,36 @@ Then if $\nabla^2 u = 0$, then $u(x,y) = \bar{u}$. How does this translate physi
 	\begin{align*}
 	u_t = \alpha^2 \nabla^2 u.
 	\end{align*}
-	Let's suppose that $\nabla^2 u > 0$ at $(x,y)$. Then the temperature of $(x,y)$'s neighbors is higher, no average. So, $u_t > 0$, i.e., the temperature at $(x,y)$ increases in time. This is what we expect. The neighbors heat $(x,y)$ up. 
+	Let's suppose that $\nabla^2 u > 0$ at $(x,y)$. Then the temperature of $(x,y)$'s neighbors is higher, no average. So, $u_t > 0$, i.e., the temperature at $(x,y)$ increases in time. This is what we expect. The neighbors heat $(x,y)$ up. \\
+	\item $\nabla^2 u$ as a ``relaxation measure.''
+\end{enumerate}
+
+% April 3, 2019%
+
+We will be primarily focused on three problems:
+\begin{enumerate}
+	\item \textbf{Laplace's equations}: $$\boxed{\nabla^2 u = 0}$$ In the view of the relaxing measure interpretation, this says we seek a function $u$ which at all points $(x,y)$, $u(x,y)$ is equal to the average of $u$ among all its neighboring points, i.e., $u$ is ``lazy.''\\
+	
+	We will pose Laplace's equation along with various boundary conditions to form boundary value problems.\\
+	
+	Laplace's equations arise in a number of contexts:
+	\begin{itemize}
+		\item Steady-state solution to the heat equation.
+		\item Electrostatics: If there is no \textbf{charge} in a region $\Omega$, then the electric potential will satisfy Laplace's equation on $\Omega$.
+		\item In Newtonian gravity: If there is no \textbf{mass} in a region $\Omega$, then the gravitational potential will satisfy Laplace's equation on $\Omega$.
+	\end{itemize}
+	\item \textbf{Poisson's equations:} $$\boxed{ \nabla^2 u = f }$$ This says that $u$ will be related to the average value among its neighbors based on $f$ (the sign of $f$).\\
+	
+	Contexts:
+	\begin{itemize}
+		\item Steady state to $u_t = \nabla^2 u - f(x,y)$.
+		\item Electrostatics: $\nabla^2 u = -\rho$, which describes the electric potential in a region with charge density $\rho$. 
+		\item Similarly with Newtonian gravity.
+		
+	\item \textbf{Helmholtz equations: (Eigen-equation)}
+	$$ \nabla^2 u + \lambda u = 0 $$
+	This arises in understanding the ``modes'' of the vibration of a drum(head).
+	\end{itemize}
 \end{enumerate}
 
 
@@ -2779,6 +2808,80 @@ Then if $\nabla^2 u = 0$, then $u(x,y) = \bar{u}$. How does this translate physi
 
 
 
+
+\subsection{Boundary Value Problems for Laplace's Equation}
+
+A boundary value problem for Laplace's equation in a region $\Omega$ with boundary $\p \Omega$ asks for a function $u$ satisfying
+\begin{enumerate}
+	\item $\nabla^2 u = 0 $ inside $\Omega$, or for all $(x,y)\in \Omega$
+	\item some knowledge of $u$ along $\p \Omega$. This is called a boundary condition.
+\end{enumerate}
+
+	
+	\begin{exmp}
+		Steady-state solutions to IBVPs for the heat equation. Consider
+		\begin{align*}
+		\begin{cases}
+		u_t = u_{xx} + \sin(\pi x), \hspace{0.5cm} t>0, 0<x<1\\
+		u(t,0) = u(t,1) = 0,\hspace{0.5cm} \forall t >0\\
+		u(0,x) = \sin(3\pi x),\hspace{0.5cm} x\in [0,1]
+		\end{cases}
+		\end{align*}
+		Provided it exists, the steady state solution is a solution for which $u_t = 0$. This is in general a function $u = u(x)$. Assuming that $u_t = 0$, we have that
+		\begin{align*}
+		&u_{xx} = -\sin(\pi x)\\
+		&u(0) = u(1) = 0.
+		\end{align*}
+		With the interpretation that $u_t = 0$ is gotten by $t\to \infty$, the IC shouldn't matter. Trivially, we see that 
+		\begin{align*}
+		u(x) = \f{1}{\pi^2}\sin(\pi x).
+		\end{align*}
+		So this works. A note: \textbf{a steady state solutions doesn't always exist}. It is possible that $u_t$ doesn't go to 0 as $t\to \infty$. 
+		\qed
+	\end{exmp}
+
+
+	We study 3 principal types of boundary conditions (BC) for Laplace's equation. These are
+	\begin{enumerate}
+		\item \textbf{Dirichlet Conditions}
+		\begin{itemize}
+			\item Simplest of all: specifies value of $u(x,y)$ along $\p\Omega$
+			\begin{exmp}
+				$\Omega$ = unit disk. $\p \Omega$ = unit circle:
+				\begin{align*}
+				\begin{cases}
+				\nabla^2 u = u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_\theta\theta = 0, \hspace{0.5cm} \Omega = \{0<r<1, \theta \in [0,2\pi]\}\\
+				u(1,\theta) = f(\theta), \hspace{0.5cm} \forall \theta\in [0,2\pi]
+				\end{cases}
+				\end{align*}
+				This is also called the \textbf{interior Dirichlet problem}\qed
+			\end{exmp}
+			\begin{exmp}
+				$\Omega$ = outside of umit disk. $\delta \Omega$ = unit circle.
+				\begin{align*}
+				\begin{cases}
+				\nabla^2 u =0,\hspace{0.5cm} r> 1, \theta \in [0,2\pi]\\
+				u(1,\theta) = f(\theta), \hspace{0.5cm} \theta \in [0,2\pi]
+				\end{cases}
+				\end{align*}
+				This is also called the \textbf{exterior Dirichlet problem}\qed
+			\end{exmp}
+			\begin{exmp}
+				Annulus:
+				\begin{align*}
+				\begin{cases}
+				\nabla^2 u =0,\hspace{0.5cm} 1 < r < 2, \theta \in [0,2\pi]\\
+				u(1,\theta) = f_1(\theta), \hspace{0.5cm} \theta \in [0,2\pi]\\
+				u(2,\theta) = f_2(\theta), \hspace{0.5cm} \theta \in [0,2\pi]\\
+				\end{cases}
+				\end{align*}
+				This is also called the \textbf{mixed Dirichlet problem}\qed
+			\end{exmp}
+		\end{itemize}
+		\item \textbf{Neumann Conditions}
+		\item \textbf{Robin Conditions (Mixed Type)}
+	\end{enumerate}
+	All are described in terms of the knowledge of $u$ along $\p \Omega$.
 
 
 
