@@ -2926,9 +2926,61 @@ A boundary value problem for Laplace's equation in a region $\Omega$ with bounda
 			\end{align*}
 			\item \textit{Compatibility condition:} We must have that 
 			\begin{align*}
-			\int_{\p\Omega} g(\omega)\,d\omega = 0.
+			\int_{\p\Omega} g(\omega)\,d\omega = 0,
 			\end{align*}
-			Why?
+			to avoid the existence issue. Essentially, the integral of $g$ over the boundary is 0. \\
+			
+			Why are these conditions necessary? 
+			\begin{enumerate}
+				\item \textit{Physical reasons:} Suppose that the Neumann problem is obtained as the steady-state problem associated with the IBVP:
+				\begin{align*}
+				\begin{cases}
+				u_t = \alpha^2 \nabla^2 u \hspace{0.5cm} \text{on $(0,\infty)\times \Omega$}\\
+				\grad{u}\cdot \vec{n} = g, \hspace{0.5cm} t>0, x\in \Omega \\
+				u(0,x) = u_0(x)
+				\end{cases}
+				\end{align*}
+				
+				If $g(x)$ is non-zero, then we know that th energy across $\p \Omega$ is either leaking or entering. If a steady-state solution is to make sense, we need to have, at all times, the net flux of heat energy through the boundary to be zero:
+				\begin{align*}
+				0 = \int_{\p\Omega} \grad{u}\cdot \vec{n} = \int_{\p\Omega}g.
+				\end{align*}
+				
+				
+				\item \textit{Mathematical}: Recall the \textbf{divergence theorem:} If $f,g$ are twice differentiable, in $\Omega$ and $\Omega$ has smooth boundary $\p\Omega$ then
+				\begin{align*}
+				\int_\Omega (\nabla^2 f)g\,dx = \int_{\p\Omega}g(x)\grad{f}\cdot \vec{n}\,ds - \int_\Omega \grad{g}\cdot \grad{f}\,dx.
+				\end{align*}
+				Provided that $u$ solves the IBVP, by setting $f= u$ and $g = 1$, the divergence theorem says
+				\begin{align*}
+				\int_\Omega \nabla^2 u\,dx = \int_{\p\Omega} \grad{u}\cdot\vec{n}\,ds - \int_\Omega \grad{u}\cdot \grad{1}\,dx = \int_{\p\Omega} \grad{u}\cdot\vec{n}\,ds.
+				\end{align*} 
+				So, by the IBVP,
+				\begin{align*}
+				0 = \int_{\p\Omega} \grad{u}\cdot\vec{n}\,ds = \int_{\p\Omega}g\,ds.
+				\end{align*}
+				
+				\begin{exmp}
+					Consider
+					\begin{align*}
+					\nabla^2 u = 0 \hspace{0.5cm} \text{on $\Omega$ = unit circle}\\
+					\grad{u}\cdot \vec{n} = \frac{\p u}{\p r}(1,\theta) = \sin(2\theta), \hspace{0.5cm}\text{for all} \theta \in [0,2\pi].
+					\end{align*}
+					Question: does $g$ meet the compatibility condition? YES!
+					\begin{align*}
+					\int_{\p\Omega}g\,ds = \int^{2\pi}_0 \sin(2\theta)\,d\theta = 0
+					\end{align*}
+					There's a solution. In fact, we can verify that it is
+					\begin{align*}
+					U(r,\theta) = \frac{-r^2\cos(2\theta)}{2}.
+					\end{align*}
+					Indeed,
+					\begin{align*}
+					\nabla^2 u = u_{rr} +\f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta} = \cos(2\theta) - \cos(2\theta) + 2\cos(2\theta) = 0.
+					\end{align*}
+				\end{exmp}
+			\end{enumerate}
+		
 		\end{itemize}
 		
 		
