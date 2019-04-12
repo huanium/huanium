@@ -2989,30 +2989,126 @@ A boundary value problem for Laplace's equation in a region $\Omega$ with bounda
 	All are described in terms of the knowledge of $u$ along $\p \Omega$.
 
 
+\newpage
 
+\section{Dirichlet Problem on the Circle}
 
+\begin{align*}
+\begin{cases}
+\nabla^2 = u_{rr} + \frac{1}{r}u_r + \frac{1}{r^2}u_{\theta\theta} = 0, \quad 0<r<1, \theta\in[0,2\pi]\\
+u(1,\theta) = g(\theta), \quad \theta \in [0,2\pi]
+\end{cases}
+\end{align*}
+To solve, we separate variables.
+\begin{align*}
+u(r,\theta) = R(r)\Theta(\theta).
+\end{align*}
+Plugging this in, we get
+\begin{align*}
+R''\Theta + \frac{1}{r}R'\Theta + \frac{1}{r^2}R\Theta'' = 0
+\end{align*}
+and so
+\begin{align*}
+\f{r^2R''}{R} + \f{rR'}{R} = -\f{\Theta''}{\Theta} = k.
+\end{align*}
+We obtain 
+\begin{align*}
+&r^2R'' + rR' - kR = 0\\
+&\Theta'' + k\Theta = 0.
+\end{align*}
+The ansatz is
+\begin{align*}
+R(r) = r^n.
+\end{align*}
+So,
+\begin{align*}
+n(n-1)r^2r^{n-2} + nrr^{n-1} - kr^n = 0,
+\end{align*}
+i.e.,
+\begin{align*}
+(n(n-1) + n - k)r^n = 0 \iff n^2 - k = 0.
+\end{align*}
+Since we seek periodic solution, we want
+\begin{align*}
+k = m^2
+\end{align*}
+so that
+\begin{align*}
+\Theta(\theta) = A\cos(m\theta) + B\sin(m\theta)
+\end{align*}
+where $m\in\mathbb{N}$. So, we have determined $k = m^2$ where $m=0,1,2,\dots$. So $n = \pm m$. So, our solution, for each $m=0,1,2,\dots$ is
+\begin{align*}
+R(r) = Ar^m + Br^{-m}.
+\end{align*}
+Here we rule out the $r^{-m}$ solution for $m=1,2,\dots$ (since we have singularity at $r=0$). Hence, for each $m=0,1,2,\dots$ we have the solution
+\begin{align*}
+\boxed{u_n(r,\theta) = r^m(A_m\cos m\theta + B_m\sin m\theta )}
+\end{align*}
+So we expect the general solution to be of the form
+\begin{align*}
+\boxed{u(r,\theta) = \sum^\infty_{n=0}r^n(A_n\cos n\theta + B_n\sin n\theta )}
+\end{align*}
+And we also want
+\begin{align*}
+g(\theta) = u(1,\theta).
+\end{align*}
+So this gives us
+\begin{align*}
+g(\theta) = u(1,\theta) = \sum^\infty_{n=0}r^n(A_n\cos n\theta + B_n\sin n\theta )
+\end{align*}
+This equation will hold provided that $A_n$'s and $B_n$'s are the Fourier sine and cosine coefficients for $g$, i.e., 
+\begin{align*}
+&A_0 = \f{1}{2\pi}\int^{2\pi}_0 g(\alpha)\,d\alpha\\
+&A_n = \f{1}{\pi}\int^{2\pi}_0 \cos(n\alpha)g(\alpha)\,d\alpha\\
+&B_n = \f{1}{\pi}\int^{2\pi}_0 \sin(n\alpha)g(\alpha)\,d\alpha.
+\end{align*}
+So given the problem 
+\begin{align*}
+\begin{cases}
+\nabla^2 = u_{rr} + \frac{1}{r}u_r + \frac{1}{r^2}u_{\theta\theta} = 0, \quad 0<r<1, \theta\in[0,2\pi]\\
+u(1,\theta) = g(\theta), \quad \theta \in [0,2\pi]
+\end{cases}
+\end{align*}
+the equation 
+\begin{align*}
+\boxed{u(r,\theta) = \sum^\infty_{n=0}r^n(A_n\cos n\theta + B_n\sin n\theta )}
+\end{align*}
+solves the IBVP provided the $A_n,B_n$'s are chosen as above.\\
 
+Note: if $\Omega$ is a disk of radius $R$, then the solution is instead
+\begin{align*}
+\boxed{u(r,\theta) = \sum^\infty_{n=0}\left(\f{r}{R}\right)^n(A_n\cos n\theta + B_n\sin n\theta )}
+\end{align*}
+where the constants $A_n,B_n$'s are once again given by the exact same formulas.\\
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+We would like to write this solution another way that directly involves $g$
+\begin{align*}
+u(r,\theta) = \f{1}{2\pi}\int^{2\pi}_0 g(\alpha)\,d\alpha + \sum^\infty_{n=1}\left(\f{r}{R}\right)^n\left(\f{1}{\pi}\int^{2\pi}_0 \cos(n\alpha)g(\alpha)\cos n\theta\,d\alpha \right.\\\left. + \f{1}{\pi}\int^{2\pi}_0 \sin(n\alpha)g(\alpha)\sin n\theta\,d\alpha \right).
+\end{align*}
+Now we can just write this a single integral:
+\begin{align*}
+u(r,\theta) = \f{1}{2\pi}\int^{2\pi}_0 \left( g(\alpha) + 2\sum^\infty_{n=1}\left(\f{r}{R}\right)^n g(\alpha)\left( \cos(n\alpha)\cos n\theta + \sin(n\alpha)\sin n\theta\right)\right)\,d\alpha.
+\end{align*}
+And so,
+\begin{align*}
+u(r,\theta) = \f{1}{2\pi}\int^{2\pi}_0 g(\alpha)\left( 1 + 2\sum^\infty_{n=1}\left(\f{r}{R}\right)^n \left( \cos(n\alpha)\cos n\theta + \sin(n\alpha)\sin n\theta\right)\right)\,d\alpha .
+\end{align*}
+Now, let
+\begin{align*}
+P &= 1 + 2\sum^\infty_{n=1}\left(\f{r}{R}\right)^n \left( \cos(n\alpha)\cos n\theta + \sin(n\alpha)\sin n\theta\right)\\
+&= 1 + 2\sum^\infty_{n=1}\left(\f{r}{R}\right)^n \cos(n(\theta-\alpha))\\
+&= 1 + \sum^\infty_{n=1}\left(\f{r}{R}\right)^n \lp e^{in(\theta-\alpha) + e^{-in(\theta-\alpha)}} \rp\\
+&= 1 + \sum^\infty_{n=1}\left(\f{r}{R}\right)^n e^{in(\theta-\alpha)} + \sum^\infty_{n=1}\left(\f{r}{R}\right)^n e^{-in(\theta-\alpha)}\\
+&= 1 + \sum^\infty_{n=1} \lp \f{r}{R}e^{i(\theta-\alpha)} \rp^n + \sum^\infty_{n=1} \lp \f{r}{R}e^{-i(\theta-\alpha)} \rp^n.
+\end{align*}
+We notice that this is a geometric series and it converges on $\Omega$ where $r/R < 1$. So,
+\begin{align*}
+P = 1 + \f{\f{r}{R}e^{i(\theta-\alpha)}}{1 - \f{r}{R}e^{i(\theta-\alpha)}} + \f{\f{r}{R}e^{-i(\theta-\alpha)}}{1-\f{r}{R}e^{-i(\theta-\alpha)}}
+\end{align*}
+which we can simplify to
+\begin{align*}
+P = 1 + \f{re^{i(\theta-\alpha)}}{R - re^{i(\theta-\alpha)}} + \f{re^{-i(\theta-\alpha)}}{R-re^{-i(\theta-\alpha)}}.
+\end{align*}
 
 
 
