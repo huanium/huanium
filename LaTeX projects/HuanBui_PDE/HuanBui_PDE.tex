@@ -5140,6 +5140,330 @@ Show[pn2[15], PlotRange -> {10, -5}]
 \subsection{Problem set 6}
 
 
+\begin{exer*}\textbf{1. Problem 3, Lesson 31, Farlow.} What is Laplace's equation $\laplacian u = 0$ in polar coordinates if $u$ depends only on $r$? What are the solutions of this equation? These are the \textit{circularly symmetric potentials} in two dimensions.
+	
+	\begin{sln*}\textbf{1.}
+		In polar coordinates, with $u = u(r)$,
+		\begin{align*}
+		\laplacian u &= u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta}\\
+		&= u_{rr} + \f{1}{r}u_r.
+		\end{align*}
+		So the Laplace's equation becomes
+		\begin{align*}
+		u_{rr} + \f{1}{r}u_r = 0.
+		\end{align*}
+		Let $u_r = x(r)$, then $u_{rr} = x_r$ and
+		\begin{align*}
+		x_r + \f{1}{r}x = 0.
+		\end{align*}
+		Multiplying both sides by the integration factor $\exp\lb \int \f{1}{r}\,dr \rb = r$, we get
+		\begin{align*}
+		(r\cdot x(r))' = 0,
+		\end{align*}
+		which says $r\cdot x(r)$ is constant, i.e., $x(r) \propto \f{1}{r}$, and thus
+		\begin{align*}
+		u(r) = \int x(r)\,dr = \int \f{1}{r}\,dr = C_1 + C_2 \ln(r).
+		\end{align*}
+		So the solution to the Laplace's equation in the circularly symmetric case is
+		\begin{align*}
+		\boxed{u(r) = C_1 + C_2 \ln(r)}
+		\end{align*}
+	\end{sln*}
+\end{exer*}
+
+
+
+
+\newpage
+
+
+\begin{exer*}\textbf{2. Problem 4, Lesson 31, Farlow.} What is Laplace's equation in spherical coordinates if the solution $u$ depends only on $r$? Can you find the solutions of this equation? These are the \textit{spherically symmetric potentials} in three dimensions.
+	
+	\begin{sln*}\textbf{2.} In spherical coordinates, with $u = u(r)$,
+		\begin{align*}
+		\laplacian u &= u_{rr} + \f{2}{r}u_r + \f{1}{r^2}u_{\theta\theta} + \f{\cot\theta}{r^2}u_\phi + \f{1}{r^2\sin^2\phi}u_{\theta\theta}\\
+		&= u_{rr} + \f{2}{r}u_r.
+		\end{align*}
+		So the Laplace's equation becomes
+		\begin{align*}
+		u_{rr} + \f{2}{r}u_r = 0.
+		\end{align*}
+		Let $u_r = x(r)$, then $u_{rr} = x_r$ and
+		\begin{align*}
+		x_r + \f{2}{r}x = 0.
+		\end{align*}
+		Multiplying both sides by the integration factor $\exp\lb \int \f{2}{r}\,dr \rb = r^2$, we get
+		\begin{align*}
+		(r^2 \cdot x(r))' = 0,
+		\end{align*}
+		which says $r^2 \cdot x(r)$ is constant, i.e., $x(r) \propto \f{1}{r^2}$, and thus
+		\begin{align*}
+		u(r) = \int x(r)\,dr = \int \f{1}{r^2}\,dr = C_1 + C_2 \f{1}{r}.
+		\end{align*}
+		So the solution to the Laplace's equation in the circularly symmetric case is
+		\begin{align*}
+		\boxed{u(r) = C_1 + C_2 \f{1}{r}}
+		\end{align*}
+		Physically, this form resembles the gravitational and Coulomb's potentials.
+		
+	\end{sln*}
+\end{exer*}
+
+
+
+
+\newpage
+
+\begin{exer*}\textbf{3. Problem 1, Lesson 32, Farlow.} Based on intuition, can you find the solution to the Dirichlet problem 
+	\begin{align*}
+	\text{PDE: } &\laplacian u = 0, \hspace{0.5cm} 0 < r < 1\\
+	\text{BC: }  &u(1,\theta) = \sin\theta, \hspace{0.5cm} 0 \leq \theta < 2\pi? 
+	\end{align*}
+	
+	\begin{sln*}\textbf{3. }
+		Thinking in terms of separation of variables, $u(r,\theta) = R(r)\Theta(\theta)$, we can guess that $\Theta(\theta)$ has to be periodic like $\sin(\theta)$. Next, we can think of $R(r)$ as a function that scales $\Theta(\theta)$ so that at $r = 1$, the maximum of $u(r,\theta)$ is 1 (at $\theta = \pi/2$) and -1 at $\theta = 3\pi/2$. So we can guess that $u(r,\theta) = r\sin\theta$. It is first clear that $u(1,\theta) = \sin\theta$. If $\nabla^2 u = 0 $ then we are done:
+		\begin{align*}
+		\laplacian u = u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta}= 0 + \f{1}{r}\sin(\theta) - \f{1}{r^2}r\cos\theta = 0.
+		\end{align*}
+		So the solution is indeed
+		\begin{align*}
+		\boxed{u(r,\theta) = r\sin\theta}
+		\end{align*}
+	\end{sln*}
+\end{exer*}
+
+
+
+
+\newpage
+
+\begin{exer*}\textbf{4. Problem 2, Lesson 32, Farlow.} Does the following Neumann problem
+	\begin{align*}
+	\text{PDE: } &\laplacian u = 0, \hspace{0.5cm} 0 < r < 1\\
+	\text{BC: } &\f{\p u}{\p r} = \sin^2\theta
+	\end{align*}
+have a solution inside the circle?
+	
+	\begin{sln*}\textbf{4. }
+		We check the compatibility condition for the Neumann problem:
+		\begin{align*}
+		\int_{\p \Omega} g\,ds = \int^{2\pi}_0 \sin^2\theta \, d\theta = 2\pi - \int^{2\pi}_0\cos^2\theta\,d\theta = 2\pi - \int^{2\pi}_0 \sin^2\theta\,d\theta = \pi \neq 0.
+		\end{align*}
+		Since the compatibility condition fails to hold, the Neumann problem fails to have a solution. Of course, we could have told by noticing that $\sin^2\theta$ is non-negative for any $\theta \in [0,2\pi)$. 
+	\end{sln*}
+\end{exer*}
+
+
+
+
+\newpage
+
+\begin{exer*}\textbf{5. Problem 5, Lesson 32, Farlow.} Now that you know the physical interpretation of the Laplacian, what is the general nature of solutions to the Helmholtz BVP
+	\begin{align*}
+	\text{PDE: } & \laplacian u = -\lambda^2u, \hspace{0.5cm} 0 < r< 1\\
+	\text{BC: } & u(1,\theta) = 0, \hspace{0.5cm}  0 \leq \theta < 2\pi
+	\end{align*} 
+	
+	\begin{sln*}\textbf{5.} 
+		If we think about the Laplacian as a measure of relaxation, then $\laplacian u = -\lambda^2 u$ says that the difference between the value of $u$ at $r,\theta$ and the average of $u$ among all ts neighboring points is the same as some multiple of the value of $u$. Applying this to the region near the boundary at which $u = 0$, we see that not only the difference between $u(r,\theta)$ and its neighboring points has to be (near) zero but $u$ has to also be (near) zero itself. This tells us that $u= 0$. 
+	\end{sln*}
+\end{exer*}
+
+
+
+
+\newpage
+
+\begin{exer*}\textbf{6. Problem 2, Lesson 33, Farlow.} What is the solution to the interior Dirichlet problem 
+	\begin{align*}
+	\text{PDE : } u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta} = 0, \hspace{0.5cm} 0 < r < 1
+	\end{align*}
+	with the following BCs:
+	\begin{enumerate}
+		\item $u(1,\theta) = 1 + \sin\theta + \f{1}{2}\cos\theta$
+		
+		\item $u(1,\theta) = 2$
+		
+		
+		\item $u(1,\theta) = \sin\theta$
+		
+		
+		\item $u(1,\theta) = \sin 3\theta$
+		
+		 
+	\end{enumerate}
+	What do solutions look like? Do they satisfy Laplace's equation? 
+	
+	\begin{sln*}\textbf{6.} We know that the general solution to the interior Dirichlet problem looks like
+		\begin{align*}
+		u(r,\theta) = \sum^\infty_{n=0} r^n \lb A_n \cos(n\pi) + B\sin(n\pi) \rb
+		\end{align*}
+		where $A_n, B_n$ are obtained from the sine and cosine series expansion of $g(\theta)$. 
+		\begin{enumerate}
+			\item Here, $A_0 = 1, B_0 = 0, B_1 = 1, A_1 = 1/2$ are the only non-zero coefficients. So, the solution is
+			\begin{align*}
+			u(r,\theta) = 1 + r\sin\theta + \f{1}{2}r\cos\theta.
+			\end{align*}
+			We should check that this solution satisfies the Laplace's equation: 
+			\begin{align*}
+			\laplacian u &= u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta}\\
+			&= 0 + \f{1}{r}\lp \sin\theta + \f{1}{2}\cos\theta \rp+ \f{1}{r^2}\lp -r\sin\theta - \f{1}{2}r\cos\theta \rp\\
+			&=0 .
+			\end{align*}
+			
+			
+			
+			\item Here, only $A_0 = 2$ is a non-zero coefficient, so the solution is just
+			\begin{align*}
+			u(r,\theta) = 2.
+			\end{align*} 
+			And of course this satisfies Laplace's equation:
+			\begin{align*}
+				\laplacian u &= u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta} = 0.
+			\end{align*}
+			
+			
+			\item Here $B_1 = 1$ is the only non-zero coefficient. So the solution is
+			\begin{align*}
+			u(r,\theta) = r\sin\theta.
+			\end{align*}
+			We check that this solution satisfies the Laplace's equation:
+			\begin{align*}
+				\laplacian u &= u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta}\\
+				&= 0 + \f{1}{r}\sin\theta - \f{1}{r^2}r\sin\theta\\
+				&= 0.
+			\end{align*}
+			In fact, this is Problem 1, Lesson 32, Farlow where we guessed the solution. 
+			
+			
+			\item Here $B_3 = 1$ is the only non-zero coefficient. So the solution is
+			\begin{align*}
+			u(r,\theta) = r^3\sin 3\theta.
+			\end{align*}
+			We should check that this satisfies the Laplace's equation:
+			\begin{align*}
+			\laplacian u &= u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta}\\
+			&= 6r\sin 3\theta + \f{1}{r}(3r^2)\sin 3\theta + \f{1}{r^2}r^3(-9)\sin 3\theta\\
+			&= (6 + 3 - 9)r\sin3\theta\\
+			&= 0.
+			\end{align*}
+		\end{enumerate}
+		
+	\end{sln*}
+\end{exer*}
+
+
+
+
+\newpage
+
+\begin{exer*}\textbf{7. Problem 5, Lesson 33, Farlow.} Solve 
+	\begin{align*}
+	\text{PDE: } & \laplacian u = 0, \hspace{0.5cm} 0 < r < 1\\
+	\text{BC: } & u(1,\theta) = \begin{cases}
+	\sin\theta, \hspace{0.5cm} 0 \leq \theta < \pi\\
+	0, \hspace{0.5cm} \pi \leq \theta < 2\pi
+	\end{cases}
+	\end{align*}
+	Roughly, what does the solution look like? 
+	
+	\begin{sln*}\textbf{7.} We know that the general solution to the interior Dirichlet problem looks like
+		\begin{align*}
+		u(r,\theta) = \sum^\infty_{n=0}r^n \lb A_n\cos n\theta + B_n \sin n\theta\rb,
+		\end{align*}
+		where
+		\begin{align*}
+		A_0 = \f{1}{2\pi}\int^{2\pi}_0 g(\phi)\,d\phi = \f{1}{2\pi}\int^{\pi}_0 \sin\phi\,d\phi = \f{1}{\pi}.
+		\end{align*}
+		Next we evaluate coefficients $A_n$ at $n\neq 0$:
+		\begin{align*}
+		A_n &= \f{1}{\pi}\int^{2\pi}_0 \cos(n\phi)g(\phi)\,d\phi \\
+		&= \f{1}{\pi}\int^{\pi}_0 \cos(n\phi)\sin\phi\,d\phi \\
+		&= \f{1}{2\pi}\int^{\pi}_0 \sin(1+n)\phi + \sin(1-n)\phi\,d\phi\\
+		&= \frac{1}{2\pi}\lp\f{1 - \cos(n+1)\pi}{1+n} + \f{1 - \cos(1-n)\pi}{1-n}\rp \text{ if }n\neq 1, \hspace{0.5cm} = 0 \text{ if } n = 1\\
+		&= \frac{1}{2\pi}\lp\f{1 - \cos(n+1)\pi}{1+n} + \f{1 - \cos(n-1)\pi}{1-n}\rp\\
+		&= \frac{1}{2\pi}\lp\f{1 - \cos(n+1)\pi}{1+n} + \f{1 - \cos(n+1)\pi}{1-n}\rp\\
+		&= \f{1}{2\pi}\lp\f{2 - 2\cos(n+1)\pi}{1-n^2}\rp\\
+		&= \f{1 - \cos(n+1)\pi}{1 - n^2}\\
+		&= \f{1 + \cos n\pi}{\pi(1-n^2)}\\
+		&= \begin{cases}
+		0, \hspace{0.5cm} n \text{ odd}\\
+		\f{2}{\pi(1-n^2)}, \hspace{0.5cm} n \text{ even}
+		\end{cases}
+		\end{align*}
+		Finally, we evaluate coefficients $B_n$ at $n\leq 0$:
+		\begin{align*}
+		B_n &= \f{1}{\pi}\int^{2\pi}_0 \sin(n\phi)g(\phi)\,d\phi \\
+			&= \f{1}{\pi}\int^{\pi}_0 \sin(n\phi)\sin\phi\,d\phi \\
+			&= \f{1}{2\pi}\int^{\pi}_0 \cos(n-1)\phi - \cos(n+1)\phi\,d\phi\\
+			&= \frac{1}{2\pi}\lp\f{\sin(n-1)\pi}{n-1} - \f{\sin(n+1)\pi}{n+1}\rp \text{ if }n\neq \pm 1, \hspace{0.5cm} = \pm 1/2 \text{ if } n = \pm 1\\
+			&= \frac{1}{2\pi}\lp\f{-\sin n\pi}{n-1} + \f{\sin n\pi}{n+1}\rp\\
+			&= -\f{\sin n\pi}{\pi(n^2 - 1)}\\
+			&= \begin{cases}
+			1/2, \hspace{0.5cm} n = 1\\
+			0, \hspace{0.5cm} \text{otherwise}
+			\end{cases}
+		\end{align*}
+		So, putting everything together, the general solution is
+		\begin{align*}
+		\boxed{u(r,\theta) = \f{1}{2}r\sin\theta + \f{2}{\pi}\lp \f{1}{2} + \sum^\infty_{j = 1}\f{r^{2j}}{(1-(2j)^2)}\cos(2j\theta) \rp}
+		\end{align*}
+		We can expand this to see a few terms...
+		\begin{align*}
+		u(r,\theta) = \f{1}{2}r\sin\theta + \f{2}{\pi}\lp \f{1}{2} - \f{r^2}{3}\cos 2\theta - \f{r^4}{15}\cos 4\theta  - \dots \rp
+		\end{align*}
+	\end{sln*}
+\end{exer*}
+
+
+
+
+\newpage
+
+\begin{exer*}\textbf{8. Problem 6, Lesson 33, Farlow.} Verify this: We can solve the BVP (nonhomogeneous BC)
+	\begin{align*}
+	\text{PDE: }& \laplacian u  = 0 \hspace{0.5cm} \text{inside }D\\
+	\text{BC: } & u =f \hspace{0.5cm} \text{on the boundary of }D
+	\end{align*}
+	by 
+	\begin{enumerate}
+		\item Finding any function $V$ that satisfies the BC: $V = f$ on the boundary of $D$. 
+		\item Solving the new BVP:
+		\begin{align*}
+		\text{PDE: }& \laplacian W  = \laplacian V \hspace{0.5cm} \text{inside }D\\
+		\text{BC: } & W = 0 \hspace{0.5cm} \text{on the boundary of }D
+		\end{align*}
+		\item Observing that $u = V - W$ is the solution to our problem. 
+	\end{enumerate}
+	In other words, we can transform the nonhomogeneity from the BC to the PDE.
+	
+	\begin{sln*}\textbf{8.} 
+		For $V = f$ on the boundary of $D$, we have $V - u = 0$ on the boundary of $D$. Call this $W$, then $W = 0$ on the boundary of $D$. Take the Laplacian of $V-u$ inside $D$, and use the linearity of this operator to get
+		\begin{align*}
+		\laplacian (V-u) = \laplacian V - \laplacian u = \laplacian V =  0 = \laplacian W.
+		\end{align*}
+		Thus, we indeed end up with a new BVP with homogeneous BC:
+		\begin{align*}
+		\text{PDE: }& \laplacian W  = \laplacian V \hspace{0.5cm} \text{inside }D\\
+		\text{BC: } & W = 0 \hspace{0.5cm} \text{on the boundary of }D
+		\end{align*}
+	\end{sln*}
+\end{exer*}
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5149,7 +5473,8 @@ Show[pn2[15], PlotRange -> {10, -5}]
 
 
 
-
+\newpage
+\subsection{Problem set 8}
 
 
 
