@@ -3107,33 +3107,119 @@ P = 1 + \f{\f{r}{R}e^{i(\theta-\alpha)}}{1 - \f{r}{R}e^{i(\theta-\alpha)}} + \f{
 \end{align*}
 which we can simplify to
 \begin{align*}
-P = 1 + \f{re^{i(\theta-\alpha)}}{R - re^{i(\theta-\alpha)}} + \f{re^{-i(\theta-\alpha)}}{R-re^{-i(\theta-\alpha)}}.
+P 
+&= 1 + \f{re^{i(\theta-\alpha)}}{R - re^{i(\theta-\alpha)}} + \f{re^{-i(\theta-\alpha)}}{R-re^{-i(\theta-\alpha)}}\\
+&= \f{R^2 - 2R\cos(\theta-\alpha) + r^2 + rRe^{i(\theta-\alpha)} -r^2 + rRe^{-i(\theta-\alpha)} - r^2 }{D}  \\
+&= \f{R^2 - r^2}{R^2 - 2rR\cos(\theta-\alpha) + r^2}.
 \end{align*}
+So,
+\begin{align*}
+u(r,\theta) &= \f{1}{2\pi}\int^{2\pi}_0 g(\alpha)P\,d\alpha \\
+&= \f{1}{2\pi}\int^{2\pi}_0 \f{R^2-r^2}{R^2 - 2rR\cos(\theta-\alpha)+r^2}g(\alpha)\,d\alpha\\
+&= \boxed{\f{1}{2\pi}\int^{2\pi}_0 P(\theta-\alpha) g(\alpha) \,d\alpha}
+\end{align*}
+where 
+\begin{align*}
+P(\theta) = \f{R^2-r^2}{R^2 - 2rR\cos\theta + r^2}.
+\end{align*}
+This is called the \textbf{convolution on torus}. \\
+
+Observe that at $r=0$, $P(\theta) = 1$, 
+\begin{align*}
+u(0,\phi) = \int^{2\pi}_0 g(\alpha)\,d\alpha = \text{average of } g. 
+\end{align*}
+\textbf{Conclusion:} $u(r,\theta)$ is always equal to the average value along any circle centering at $(r,\theta)$.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.75]{poisson.png}
+\end{figure}
 
 
 
 
+\subsection{Dirichlet's Lift}
+Suppose you to solve Poisson's equation
+\begin{align*}
+(1)\hspace{0.5cm}\begin{cases}
+\nabla^2 u = f \text{ on }\Omega\\
+u=0 \text{ on $\p\Omega$}
+\end{cases}.
+\end{align*}
+If we can find any function $V$ such that $\nabla^2 V = f$, then we will set
+\begin{align*}
+u  =V - W,
+\end{align*}
+so that
+\begin{align*}
+f = \laplacian u = \laplacian V - \laplacian W = f - \laplacian W.
+\end{align*}
+Then we can solve the related problem
+\begin{align*}
+(2)\hspace{0.5cm}\begin{cases}
+\nabla^2 W = 0 \text{ on }\Omega\\
+W=V \text{ on $\p\Omega$}
+\end{cases}
+\end{align*}
+and we'd have the solution to Poisson's problem.\\
+
+How about the other way? Suppose we want to solve
+\begin{align*}
+(3)\hspace{0.5cm}\begin{cases}
+\nabla^2 u = 0 \text{ on }\Omega\\
+u=f \text{ on $\p\Omega$}
+\end{cases}.
+\end{align*}
+If we can seek a function $V:\Omega \to \R$ such that $V = f$ along the boundary, then we can solve the related problem
+\begin{align*}
+(4)\hspace{0.5cm}\begin{cases}
+\nabla^2 W = \laplacian V \text{ on }\Omega\\
+W = 0 \text{ on $\p\Omega$}
+\end{cases}.
+\end{align*}
+Note $u = V-W$ solves the original problem.\\
 
 
 
+\subsection{Some other domains}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\textbf{Exterior of a Circle:} Consider
+\begin{align*}
+\hspace{0.5cm}\begin{cases}
+\nabla^2 u = 0 \text{ on }\Omega\\
+u=g \text{ on $\p\Omega$}
+\end{cases}
+\end{align*}
+where $\Omega$ is the exterior of a circle of radius $R$ and $\p\Omega$ is the circle of radius $R$. Once again, we separate variables.
+\begin{align*}
+u(r,\theta) = R(r)\Theta(\theta),
+\end{align*}
+and thus
+\begin{align*}
+\nabla^2 u = u_{rr} + \f{1}{r}u_r + \f{1}{r^2}u_{\theta\theta} = 0.
+\end{align*}
+So,
+\begin{align*}
+\f{r^2R'' + rR'}{R} = -k = \f{-\Theta''}{\Theta}.
+\end{align*}
+So,
+\begin{align*}
+\begin{cases}
+r^2R'' + rR = -kR\\
+\Theta'' - k\theta = 0,
+\end{cases}
+\end{align*}
+where we have shown that $k = -n^2$. So, for $n\neq 0$
+\begin{align*}
+\begin{cases}
+\Theta_n(\theta) = A_n\cos(n\theta) + B_n\sin(n\pi)\\
+R(r) = C_nr^n + D_nr^{-n}
+\end{cases}.
+\end{align*}
+For $n=0$, 
+\begin{align*}
+R(r) = C_0+D_0\ln(r).
+\end{align*}
+Now, we will reject the $r^n$ solution.
 
 
 
