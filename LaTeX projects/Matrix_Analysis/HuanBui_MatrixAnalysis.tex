@@ -7330,7 +7330,58 @@ This polynomial $p_0$ is said to be \textbf{the generator} of the ideal $\W$.
 		for each $j$. Prove that $v_1,\dots,v_n$ is a basis of $\V$.
 		
 		\begin{sln*}\textbf{4.2}
+			To show that $v_1,\dots,v_n$ is a basis of $\V$, we can show $v_1,\dots,v_n$ is an linearly independent list and span $\V$. However, this would be redundant since if $v_1,\dots,v_n$ is linearly independent then $\dim(\xpan(v_1,\dots,v_n)) = n = \dim(\V)$, and because $\xpan(v_1,\dots,v_n) \prec \V$, this says $\xpan(v_1,\dots,v_n) = \V$, i.e., $v_1,\dots,v_n$ is a basis for $\V$. So, it suffices to show $v_1,\dots,v_n$ is a linearly independent list. We will do this by contradiction. \\
 			
+			Suppose for some $a_j \neq 0$, $j=1,2,\dots,n$
+			\begin{align*}
+			\sum^n_{j=1}a_j v_j = \mathbf{0}.
+			\end{align*}
+			This means
+			\begin{align*}
+			\norm{\sum^n_{j=1} a_j(e_j - v_j)}^2 
+			&= \norm{ \sum^n_{j=1}	a_j e_j - \sum^n_{j=1}a_jv_j }^2 \\
+			&= \norm{\sum^n_{j=1}a_je_j}^2 \\
+			&= \bigg\la \sum^n_{j=1}a_je_j, \sum^n_{i=1}a_ie_i \bigg\ra  \\
+			&= \sum^n_{j=1}\sum^n_{i=1}\la a_j e_j , a_ie_i \ra\\
+			&= \sum^n_{j=1}\abs{a_j}^2.
+			\end{align*}
+			But we also have
+			\begin{align*}
+			\norm{\sum^n_{j=1} a_j(e_j - v_j)}^2 
+			&= \bigg\la    \sum^n_{j=1}a_j(e_j - v_j) , \sum^n_{i=1}a_i(e_i - v_i)\bigg\ra\\
+			&= \sum^n_{j=1}\sum^n_{i=1}\bigg\la  a_j(e_j - v_j) , a_i(e_i - v_i)\bigg\ra\\
+			&\leq \sum^n_{j=1}\sum^n_{i=1} \bigg\vert \big\la a_j(e_j - v_j), a_i(e_i - v_i) \big\ra \bigg\vert,
+			\end{align*}
+			where 
+			\begin{align*}
+			\bigg\vert \big\la a_j(e_j - v_j), a_i(e_i - v_i) \big\ra \bigg\vert 
+			&\leq \norm{a_j(e_j - v_j)} \cdot \norm{a_i(e_i - v_i)} \hspace{0.5cm} \text{Cauchy-Schwarz inequality} \\
+			&= \abs{a_j}\cdot \abs{a_i} \cdot \norm{e_j - v_j}\cdot \norm{e_i - v_i}\\
+			&< \abs{a_j}\cdot \abs{a_i}\cdot \frac{1}{\sqrt{n}} \cdot \frac{1}{\sqrt{n}} \hspace{0.5cm}\text{by hypothesis}\\
+			&= \abs{a_j}\cdot \abs{a_i}\cdot \frac{1}{n}.
+			\end{align*}
+			Thus,
+			\begin{align*}
+			\norm{\sum^n_{j=1} a_j(e_j - v_j)}^2
+			&< \sum^n_{j=1}\sum^n_{i=1} \abs{a_j}\cdot \abs{a_i}\cdot \frac{1}{n}\\
+			&= \frac{1}{n}\sum^n_{i=1} \abs{a_j}\cdot \abs{a_i}\\
+			&= \frac{1}{n}\left( \sum^n_{j=1}\vert a_j\vert \right)^2.
+			\end{align*}
+			By the previous problem, we know that
+			\begin{align*}
+			\left( \sum^n_{j=1}\vert a_j\vert \right)^2 
+			&\leq \left( \sqrt{n}\cdot \sqrt{\sum^n_{j=1}\abs{a_j}^2 } \right)^2
+			= n\cdot \sum^n_{j=1}\abs{a_j}^2.
+			\end{align*}
+			Therefore,
+			\begin{align*}
+			\norm{\sum^n_{j=1} a_j(e_j - v_j)}^2 < \sum^n_{j=1}\abs{a_j}^2.
+			\end{align*}
+			But we have shown that
+			\begin{align*}
+			\norm{\sum^n_{j=1} a_j(e_j - v_j)}^2 = \sum^n_{j=1}\abs{a_j}^2,
+			\end{align*}
+			so we have a contradiction. Hence, $\sum^n_{j=1}a_jv_j = \mathbf{0}$ implies $a_j = 0$ for all $j=1,2,\dots,n$, i.e., $v_1,v_2\dots,v_n$ is a linearly independent list. So, $v_1, v_2,\dots,v_n$ is a basis for $\V$.
 		\end{sln*}
 	\end{enumerate}
 	
@@ -7345,14 +7396,71 @@ This polynomial $p_0$ is said to be \textbf{the generator} of the ideal $\W$.
 
 \begin{prob*}\textbf{5.}
 	\begin{enumerate}
-		\item Suppose that $z_1, z_2, \dots, z_n$ is an orthonormal list of elements of a (not necessarily finite-dimensional) vector space $\V$, and $w$ is an element of $\V$ that is not in the span of $_1,z_2,\dots,z_n$. \textbf{Use Gramians} to argue that there is an element $y\in \V$ such that $z_1, z_2,\dots,z_n, y$ is an orthonormal list and
+		\item Suppose that $z_1, z_2, \dots, z_n$ is an orthonormal list of elements of a (not necessarily finite-dimensional) vector space $\V$, and $w$ is an element of $\V$ that is not in the span of $z_1,z_2,\dots,z_n$. \textbf{Use Gramians} to argue that there is an element $y\in \V$ such that $z_1, z_2,\dots,z_n, y$ is an orthonormal list and
 		\begin{align*}
 		\xpan(z_1,z_2,\dots,z_n,y) = \xpan(z_1,z_2,\dots,z_n,w).
 		\end{align*}
 		
 		
 		\begin{sln*}\textbf{5.1}
-			
+			Let $w$ and the $z_i$'s be given. We first want to show that there exists $y\in \V$ such that $\la y,z_i\ra = 0$ for any $i=1,2,\dots,n$. Consider
+			\begin{align*}
+			y = w - \alpha_1 z_1 - \alpha_2 z_2 - \dots - \alpha_n z_n.
+			\end{align*}
+			We first observe that $y \neq \mathbf{0}$ because $w \notin \xpan(z_1,\dots,z_n)$ and thus $\norm{y} \neq 0$. Next, we want to show there exist $\alpha_1,\alpha_2,\dots,\alpha_n \in \mathbb{C}$ such that
+			\begin{align*}
+			\la y ,z_i \ra = 0 = \la w - \alpha_1 z_1 - \alpha_2 z_2 - \dots - \alpha_n z_n, z_i \ra
+			\end{align*}
+			 for any $i \in \{1,2,\dots,n\}$. But this is equivalent to showing there exist $\alpha_1,\alpha_2,\dots,\alpha_n \in \mathbb{C}$ such that
+			 \begin{align*}
+			 \la w ,z_i \ra = \alpha_1\la z_1,z_i \ra + \dots \alpha_n\la z_n,z_i \ra
+			 \end{align*}
+			 for any $i \in \{1,2,\dots,n \}$, i.e., 
+			 \begin{align*}
+			 \text{Gamian}(\gamma) = 
+			 \begin{bmatrix}
+			 \la z_1 , z_1 \ra & \dots & \la z_n,z_1 \ra\\
+			  \vdots & \ddots&\vdots\\
+			  \la z_1, z_n \ra & \dots & \la z_n,z_n \ra
+			 \end{bmatrix}\begin{pmatrix}
+			 \alpha_1 \\ \vdots \\ \alpha_n
+			 \end{pmatrix} = \begin{pmatrix}
+			 \la w,z_1 \ra\\
+			 \vdots\\
+			 \la w,z_n \ra
+			 \end{pmatrix}
+			 \end{align*}
+			 has a unique solution, i.e. the Gramian matrix is invertible. But since the Gramian matrix is square, it suffices to show it is injective. Suppose $\text{Gamian}(\gamma) = \mathbf{0}$. Then,
+			 \begin{align*}
+			 \sum^n_{i=1}\alpha_i \la z_i,z_1 \ra = \dots = \sum^n_{i=1}\alpha_i \la z_i,z_n \ra = 0,
+			 \end{align*}
+			 which means $\sum^n_{i=1}\alpha_i w_i \perp z_1,\dots, z_n$. In particular, $\sum^n_{i=1}\alpha_i z_i \perp \sum^n_{i=1}\alpha_i z_i \iff \sum^n_{i=1}\alpha_i z_i = \mathbf{0}$. But since the $w_i$'s are nonzero vectors (because each has length 1), $\alpha_i = 0$ for all $i \in  \{1,2,\dots,n \}$. This shows the Gramian is injective and therefore invertible. \\
+			 
+			 So, we have shown that there exist $\alpha_1,\dots,\alpha_n \in \mathbb{C}$ such that $y$ as given above is orthogonal to all the $z_i$'s. Thus, the normalized $y$, denoted $y_N$ and defined as
+			 \begin{align*}
+			 y_N = \frac{w - \alpha_1 z_1 - \alpha_2 z_2 - \dots - \alpha_n z_n}{\norm{w - \alpha_1 z_1 - \alpha_2 z_2 - \dots - \alpha_n z_n}}
+			 \end{align*}
+			 is not only orthogonal to all $z_i$'s but also has length 1. Hence, $z_1,\dots,z_n,y_N$ form an orthonormal list. \\
+			 
+			 Now, consider the subspaces $\xpan(z_1,\dots,z_n,y_N)$ and $\xpan(z_1,\dots,_n,w)$. By definition,
+			 \begin{align*}
+			 \xpan(z_1,\dots,z_n,y_N) &= \left\{ a_1 z_1 + \dots a_n z_n + b y_N \bigg\vert a_1,\dots,a_n,b \in \mathbb{C} \right\}\\
+			 \xpan(z_1,\dots,z_n,w) &= \left\{ a_1 z_1 + \dots a_n z_n + b w \bigg\vert a_1,\dots,a_n,b \in \mathbb{C} \right\}.
+			 \end{align*}
+			 But for $y = \norm{y}y_N = w - \alpha_1 z_1 - \alpha_2 z_2 - \dots - \alpha_n z_n$,
+			 \begin{align*}
+			 w = \alpha_1 z_1 + \dots + \alpha_n z_n + y = \alpha_1 z_1 + \dots + \alpha_n z_n + \norm{y} y_N.
+			 \end{align*}
+			 So,
+			 \begin{align*}
+			 \xpan(z_1,\dots,z_n,w) &= \left\{ c_1z_1 + \dots + c_n z_n + d y_N\bigg\vert c_1,\dots,c_n,d \in \mathbb{C} \right\}\\
+			 &=\xpan(z_1,\dots,z_n,y_N).
+			 \end{align*}
+			 Therefore, given $w\in \V$ and the $z_i$'s, we have shown there exists a vector $y \in \V$ that satisfies all the requirements. In particular, 
+			 \begin{align*}
+			 y = \frac{w - \alpha_1 z_1 - \alpha_2 z_2 - \dots - \alpha_n z_n}{\norm{w - \alpha_1 z_1 - \alpha_2 z_2 - \dots - \alpha_n z_n}}
+			 \end{align*}
+			 
 		\end{sln*}
 	
 	
