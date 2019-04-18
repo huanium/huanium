@@ -7031,7 +7031,7 @@ This polynomial $p_0$ is said to be \textbf{the generator} of the ideal $\W$.
 		
 			
 		\begin{sln*}\textbf{1.2}
-			We define $\la \cdot,\cdot \ra : \U \times \U \to \mathbb{C}$ such that for $u,v \in \U$,
+			We define $\la \cdot,\cdot \ra : \U \times \U \to \mathbb{F}$ such that for $u,v \in \U$,
 			\begin{align*}
 			\la u ,v \ra = \frac{\norm{u+ v}^2  - \norm{u-v}^2 + \norm{u + iv}^2i - \norm{u - iv}^2i   }{4}.
 			\end{align*} 
@@ -7068,8 +7068,8 @@ This polynomial $p_0$ is said to be \textbf{the generator} of the ideal $\W$.
 				&\hspace{0.5cm}+ \norm{w+ v}^2  - \norm{w-v}^2 + \norm{w + iv}^2i - \norm{w - iv}^2i\\
 				&=  \left(\norm{u+ v}^2 + \norm{w+ v}^2\right) - \left(\norm{u-v}^2 + \norm{w-v}^2 \right) \\ 
 				&\hspace{0.5cm}+ i \left( \norm{u + iv}^2  + \norm{w + iv}^2 \right) - i\left(\norm{u - iv}^2 + \norm{w - iv}^2 \right) \\
-				&= 2\left( \norm{ v + \frac{ u + w}{2}}^2 + \norm{w - u}^2 \right) 
-				- 2\left( \norm{ - 2v + u + w}^2 + \norm{\frac{w - u}{2}}^2 \right) \\
+				&= 2\left( \norm{ v + \frac{ u + w}{2}}^2 + \norm{\frac{w - u}{2}}^2 \right) 
+				- 2\left( \norm{ \frac{u + w}{2} - v}^2 + \norm{\frac{w - u}{2}}^2 \right) \\
 				&\hspace{0.5cm} + 2i\left( \norm{ iv + \frac{u + w}{2}}^2 + \norm{\frac{w - u}{2}}^2 \right)
 				- 2i\left( \norm{ -iv + \frac{u + w}{2}}^2 + \norm{\frac{w - u}{2}}^2 \right)\\
 				&= 2\left( \norm{ \frac{u + w}{2}+ v}^2 - \norm{\frac{u + w}{2} -v}^2 + i\norm{\frac{u+w}{2}+iv}^2 - i\norm{\frac{u+w}{2}-iv}^2 \right)\\
@@ -7098,8 +7098,22 @@ This polynomial $p_0$ is said to be \textbf{the generator} of the ideal $\W$.
 				\end{align*}
 				as desired. \qed
 				
+				\item \textbf{Conjugate symmetry:} We want to show $\la u,v \ra = \overline{\la v,u \ra}$. 
+				\begin{align*}
+				\overline{\la v,u \ra} 
+				&= \frac{\overline{\norm{v+u}^2  - \norm{v-u}^2 + \norm{v + iu}^2i - \norm{v - iu}^2i  } }{4}\\
+				&= \frac{\overline{\norm{u+ v}^2}  - \overline{\norm{u-v}^2} + \overline{\norm{v + iu}^2i} - \overline{\norm{v - iu}^2i  } }{4} \\
+				&= \frac{{\norm{u+ v}^2}  - {\norm{u-v}^2} - i\overline{\norm{v + iu}^2} + i\overline{\norm{v - iu}^2  } }{4}\\
+				&= \frac{{\norm{u+ v}^2}  - {\norm{u-v}^2} - i{\norm{v + iu}^2} + i{\norm{v - iu}^2i  } }{4}\\
+				&= \frac{{\norm{u+ v}^2}  - {\norm{u-v}^2} - i{\norm{(-i)(v + iu)}^2} + i{\norm{(-i)(v - iu)}^2i  } }{4}\\
+				&= \frac{{\norm{u+ v}^2}  - {\norm{u-v}^2} - i{\norm{u -iv}^2} + i{\norm{u + iv}^2i  } }{4}\\
+				&= \la u,v \ra.
+				\end{align*}\qed
 				
-				\item \textbf{Homogeneity in first slot:} For $\lambda \in \mathbb{C}$, we want to show that $\la \lambda u,v\ra = \lambda \la u , v \ra$.
+				
+				\item \textbf{Homogeneity in first slot:} For $\lambda \in \mathbb{C}$, we want to show that $\la \lambda u,v\ra = \lambda \la u , v \ra$. \\
+				
+				\textbf{Note to Leo:} I was in the lab the entire Wednesday afternoon so I couldn't come to office hours for your advice on this part of the problem. I tried using the definition of the inner product given above, but I couldn't ``pull the $\lambda$ out of $\la \lambda a ,b\ra$'' to show that $\lambda \la a,b \ra = \la \lambda a , b\ra$. I figured that I could try showing homogeneity in first slot holds for $\lambda$'s that are zero, positive integers, positive rationals, negative rationals, real numbers, and ultimately complex numbers. I don't know if this is a good idea. But at least I make some progress this way...
 				
 				\begin{enumerate}
 					\item If $\lambda = 0$, then $\la \lambda u ,v \ra = \la \mathbf{0},v\ra = 0 =  0\la u,v \ra = \lambda\la u,v \ra$.
@@ -7110,7 +7124,7 @@ This polynomial $p_0$ is said to be \textbf{the generator} of the ideal $\W$.
 					\end{align*}
 					
 					
-					\item If $\lambda$ is a rational number, then let $\lambda = m/n$ where $m,n \in \mathbb{N}, n\neq 0$. Then
+					\item If $\lambda$ is a positive rational number, then let $\lambda = m/n$ where $m,n \in \mathbb{N}, n\neq 0$. Then
 					\begin{align*}
 					\la \lambda u,v \ra = \bigg\la \frac{m}{n}u,v \bigg\ra = m\bigg\la \frac{1}{n}u,v \bigg\ra.
 					\end{align*}
@@ -7127,26 +7141,57 @@ This polynomial $p_0$ is said to be \textbf{the generator} of the ideal $\W$.
 					\la \lambda u,v \ra = \lambda \la u,v\ra.
 					\end{align*}
 					
+					\item If $\lambda = -1$, then $\la -u,v \ra = $
+					
+					\item If $\lambda = i$, then $\la , \ra$
 					
 					\item If $\lambda$ is a real number. 
-					
 					
 					
 					\item If $\lambda$ is a complex number.
 				\end{enumerate}
 				
 				
-				\item \textbf{Conjugate symmetry:} We want to show $\la u,v \ra = \overline{\la v,u \ra}$. 
+				
+				
+				\item We can show that \textit{additivity in second slot} can be derived from the properties above:
 				\begin{align*}
-				\overline{\la v,u \ra} 
-				&= \frac{\overline{\norm{v+u}^2  - \norm{v-u}^2 + \norm{v + iu}^2i - \norm{v - iu}^2i  } }{4}\\
-				&= \frac{\overline{\norm{u+ v}^2}  - \overline{\norm{u-v}^2} + \overline{\norm{v + iu}^2i} - \overline{\norm{v - iu}^2i  } }{4} \\
-				&= \frac{{\norm{u+ v}^2}  - {\norm{u-v}^2} - i\overline{\norm{v + iu}^2} + i\overline{\norm{v - iu}^2  } }{4}\\
-				&= \frac{{\norm{u+ v}^2}  - {\norm{u-v}^2} - i{\norm{v + iu}^2} + i{\norm{v - iu}^2i  } }{4}\\
-				&= \frac{{\norm{u+ v}^2}  - {\norm{u-v}^2} - i{\norm{(-i)(v + iu)}^2} + i{\norm{(-i)(v - iu)}^2i  } }{4}\\
-				&= \frac{{\norm{u+ v}^2}  - {\norm{u-v}^2} - i{\norm{u -iv}^2} + i{\norm{u + iv}^2i  } }{4}\\
-				&= \la u,v \ra.
+				\la a,b+c \ra = \overline{\la b+c,a  \ra} = \overline{\la b,a \ra + \la c,a \ra} = \overline{\la b,a \ra} + \overline{\la c,a\ra} =\la a,b\ra + \la a,c \ra.
 				\end{align*}\qed
+				
+				\item Conjugate symmetry, homogeneity in first slot, and additivity in second slot can combine to give partial conjugate linear in second slot:
+				\begin{align*}
+				\la a, ..... \ra
+				\end{align*}
+				
+%				Now we are ready to show \textit{homogeneity in first slot}. Consider $\la \lambda u,v \ra$. 
+%				\begin{align*}
+%				\la \lambda u ,v \ra = \frac{1}{4}\left[ \norm{\lambda u + v}^2 - \norm{\lambda u - v}^2 + i\norm{\lambda u + iv}^2 - i\norm{\lambda u - iv}^2 \right].
+%				\end{align*}
+%				Next, we have that
+%				\begin{align*}
+%				\norm{\lambda u +v}^2 
+%				&= \la \lambda u +v , \lambda u + v \ra \\
+%				&= \la \lambda u, \lambda u \ra + \la \lambda u ,v \ra + \la v,\lambda u \ra+ \la v,v\ra\\
+%				&= \norm{\lambda u}^2 + \norm{v}^2 + \la \lambda u ,v \ra + \la v,\lambda u \ra.
+%				\end{align*}
+%				\begin{align*}
+%				\norm{\lambda u - v}^2 
+%				&= \la \lambda u -v , \lambda u - v \ra \\
+%				&= \la \lambda u, \lambda u \ra + \la \lambda u ,-v \ra + \la -v,\lambda u \ra+ \la -v,-v\ra\\
+%				&= \norm{\lambda u}^2 + \norm{v}^2 - \la \lambda u ,v \ra - \la v,\lambda u \ra.
+%				\end{align*}
+%				So,
+%				\begin{align*}
+%				\norm{\lambda u +v}^2 - \norm{\lambda u - v}^2 &= 2\la \lambda u, v \ra + 2\la v,\lambda u \ra.
+%				\end{align*}
+%				
+%				Now, we are ready to show 
+				
+
+
+				
+				
 				
 				
 				\end{enumerate}
