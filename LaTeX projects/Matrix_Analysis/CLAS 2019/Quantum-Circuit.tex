@@ -126,33 +126,63 @@
 
 
 \begin{frame}
-\frametitle{Qubits \& Quantum Gates}
+\frametitle{Qubits}
 \textit{Qubit:} A quantum system with measurable eigenstates $\ket{0}$ and $\ket{1}$,
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.35]{atom1.png}
+\end{figure}
 \begin{align*}
 \ket{0} = \begin{bmatrix}
 1\\0
 \end{bmatrix}\hspace{0.5cm} \ket{1} = \begin{bmatrix}
 0\\1
-\end{bmatrix} \hspace{0.5cm} \rightarrow \text{like a Classical Bit.}
+\end{bmatrix} \hspace{0.5cm} 
+%\rightarrow \text{like a Classical Bit.}
 \end{align*}
-But before measurement,
 \begin{align*}
-\text{Wavefunction}: \ket{\psi} = a\ket{0} + b\ket{1} \in \mathbb{C}^2,\hspace{0.5cm} \abs{a}^2 + \abs{b}^2 = 1.
+&\text{Wavefunction}: \ket{\psi} = a\ket{0} + b\ket{1},\hspace{0.5cm} \abs{a}^2 + \abs{b}^2 = 1.\\
+&\,\\
+&\text{Probabilistic: } Pr(\ket{\psi} \to \ket{0}) = \abs{a}^2\hspace{0.5cm}
+%P(\ket{\psi} \to \ket{1}) = \abs{b}^2.
 \end{align*}
 
-Probabilistic:
-\begin{align*}
-P(\ket{\psi} \to \ket{0}) = \abs{a}^2\hspace{0.5cm}
-P(\ket{\psi} \to \ket{1}) = \abs{b}^2.
-\end{align*}
 
-\textit{Quantum gate:} linear transformation on $\ket{\psi}$ of one or many qubits. 
 \end{frame}
 
 
 
 
+\begin{frame}
+\frametitle{Quantum Gates}
 
+\textit{Quantum gate:} linear transformation on $\ket{\psi}$ of one or many qubits. \\
+$\,$\\
+A common single-qubit quantum gate: Hadamaar gate.
+\begin{align*}
+ H \stackrel{\Delta}{=}\frac{1}{\sqrt{2}}\begin{bmatrix}
+1&1\\1&-1
+\end{bmatrix}
+\end{align*}
+For example, applying $H$ to $\ket{0}$:
+\begin{align*}
+H\ket{0} = H\begin{bmatrix}
+1\\0
+\end{bmatrix} = \frac{1}{\sqrt{2}}\begin{bmatrix}
+1\\1
+\end{bmatrix} = \frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}.
+\end{align*}
+
+%\begin{align*}
+%\text{Control-Not: } CNOT \stackrel{\Delta}{=} \begin{bmatrix}
+%1 & 0 & 0 & 0\\
+%0 & 0 & 0 & 1\\
+%0 & 0 & 1 & 0\\
+%0 & 1 & 0 & 0
+%\end{bmatrix}.
+%\end{align*}
+
+\end{frame}
 
 
 
@@ -180,7 +210,8 @@ P(\ket{\psi} \to \ket{1}) = \abs{b}^2.
 
 \begin{frame}
 \frametitle{Multiple Qubits}
-How to express two qubits, $\ket{\psi_1}\in \V_1, \ket{\psi_2}\in \V_2$ as one \textit{composite} state?
+Like classical circuits, quantum circuits require multiple qubits.\\
+$\rightarrow$ How to express the quantum state of two qubits $\ket{\psi_1}\in \V_1, \ket{\psi_2}\in \V_2$?
 \begin{align*}
 \ket{\psi_1\psi_2} \stackrel{?}{\sim} \ket{\psi_1}, \ket{\psi_2}
 \end{align*}
@@ -188,7 +219,7 @@ What if there are more than two $\ket{\psi_i}$'s $\in \V_i$'s
 \begin{align*}
 \ket{\psi_1\psi_2\dots\psi_n} \stackrel{?}{\sim} \ket{\psi_1},\ket{\psi_2},\dots,\ket{\psi_n}?
 \end{align*}
-Questions:
+Mathematically,
 \begin{itemize}
 	\item Is there a vector space that contains $\ket{\psi_1\psi_2\dots\psi_n}$?
 	\item What is the vector space containing $\ket{\psi_1\psi_2\dots\psi_n}$?
@@ -222,17 +253,17 @@ Questions:
 \begin{block}{Postulate (QM): \tiny{\cite{nielsen2002quantum}}}
 	The state space of a composite physical system is the \textit{tensor product} of the state spaces of the component physical systems.
 \end{block}
-For $\ket{\psi_1}\in \V_1, \dots, \ket{\psi_n}\in \V_n$, 
+For $\ket{\psi_1}\in \V_1, \ket{\psi_2} \in \V_2$, 
 \begin{align*}
-\ket{\psi_1\dots\psi_n} \in \V_1\otimes \dots \otimes \V_n,
+\ket{\psi_1\psi_2} \in \V_1\otimes   \V_2,
 \end{align*}
-where the joint state $\ket{\psi_1\dots\psi_n}$ is given by
+where the joint state $\ket{\psi_1\psi_2}$ is given by
 \begin{align*}
-\ket{\psi_1\dots\psi_n} = \ket{\psi_1}\ket{\psi_2}\dots\ket{\psi_n} = \ket{\psi_1}\otimes \dots \otimes \ket{\psi_n}.
+\ket{\psi_1\psi_2} = \ket{\psi_1}\ket{\psi_2} = \ket{\psi_1}\otimes   \ket{\psi_2}.
 \end{align*}
-$\ket{\psi_1\dots\psi_n}$ is an \textit{elementary tensor} in $\V_1\otimes \dots \otimes \V_n$. \\
-$\,$\\
-Not all $\ket{\phi} \in \V_1\otimes \dots \otimes \V_n$ are elementary.
+%$\ket{\psi_1\dots\psi_n}$ is an \textit{elementary tensor} in $\V_1\otimes \dots \otimes \V_n$. \\
+%$\,$\\
+%Not all $\ket{\phi} \in \V_1\otimes \dots \otimes \V_n$ are elementary.
 
 
 
@@ -287,14 +318,17 @@ Giving the $\hat{f} : \V\otimes \W \lin \X$ is the same as giving $f : \V\times 
 
 
 \begin{frame}
-\frametitle{Tensor Product \tiny{\cite{cern}}}
+\frametitle{Tensor Product: Vectors \tiny{\cite{cern}}}
 Let $v_1,\dots,v_n$ be a basis for $\V$ and $w_1,\dots,w_m$ be a basis for $\W$,
 \begin{itemize}
-	\item For $i\in [1,n],\, j \in [1,m]$, 
+	\item $v_i \otimes w_j$'s are elementary.
+	\item  
 	$\{ v_i \otimes w_j\}$ is a basis of $\V\otimes \W$:
 	\begin{align*}
-	v\otimes w = \sum^n_i \alpha_i v_i \otimes \sum^m_j \beta_j w_j =  \sum^{n,m}_{i,j}\alpha_i\beta_j(v_i \otimes w_j)
+	v\otimes w = \sum^n_i \alpha_i v_i \otimes \sum^m_j \beta_j w_j =  \sum^{n,m}_{i,j}\alpha_i\beta_j(v_i \otimes w_j).
 	\end{align*}
+	
+	\item Not all $v\otimes w \in \V\otimes \W$ are elementary.
 	\item $\dim(\V\otimes \W) = \dim(\V)\dim(\W) = nm$.
 \end{itemize}
 
@@ -311,21 +345,22 @@ Let $v_1,\dots,v_n$ be a basis for $\V$ and $w_1,\dots,w_m$ be a basis for $\W$,
 
 
 \begin{frame}[fragile]
-\frametitle{Tensor Product}
+\frametitle{Tensor Product: Operators}
 Let $\lag\otimes\M \in \mathfrak{L}(\V\otimes \W)$, where $\lag \in \mathfrak{L}(\V)$, and $\M \in \mathfrak{L}(\W)$. 
-\begin{align*}
-(\lag\otimes\M)(v\otimes w) \stackrel{?}{\sim} \F(v,w) \stackrel{\Delta}{=}\lag(v)\otimes \M(w).
-\end{align*} 
-One way to see this...
+%\begin{align*}
+%(\lag\otimes\M)(v\otimes w) \stackrel{?}{\sim}\lag(v)\otimes \M(w).
+%\end{align*} 
+
 \begin{center}
 	\begin{tikzcd}[row sep=9ex, column sep=15ex]
 		\V \otimes \W  \arrow[r, "\lag\otimes\M"]  & \V\otimes\W
 		\\ \V \times \W \arrow[ur, "\F"'] \arrow[u, hook, "\phi"]
 	\end{tikzcd}
 \end{center}
-By uniqueness,
+$\F(v,w) = \lag(v)\otimes \M(w)$. By uniqueness,
 \begin{align*}
-(\lag\otimes \M)\circ \phi = \F \iff \boxed{(\lag\otimes \M)(v\otimes w) = \lag(v) \otimes \M(w)}
+%(\lag\otimes \M)\circ \phi = \F \iff
+ \boxed{(\lag\otimes \M)(v\otimes w) = \lag(v) \otimes \M(w)}
 \end{align*}
 
 \end{frame}
