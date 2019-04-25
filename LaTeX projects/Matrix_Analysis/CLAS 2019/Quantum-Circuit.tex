@@ -328,7 +328,7 @@ Let $v_1,\dots,v_n$ be a basis for $\V$ and $w_1,\dots,w_m$ be a basis for $\W$,
 	v\otimes w = \sum^n_i \alpha_i v_i \otimes \sum^m_j \beta_j w_j =  \sum^{n,m}_{i,j}\alpha_i\beta_j(v_i \otimes w_j).
 	\end{align*}
 	
-	\item Not all $v\otimes w \in \V\otimes \W$ are elementary.
+	\item Not all $x \in \V\otimes \W$ are elementary.
 	\item $\dim(\V\otimes \W) = \dim(\V)\dim(\W) = nm$.
 \end{itemize}
 
@@ -488,10 +488,10 @@ Not commutative.
 
 
 \begin{frame}
-\frametitle{Composite State as a Kronecker Product}
-\underline{Example}: Representing the classical numbers ``1'' and ``0'' with two qubits:
+\frametitle{Multiple Qubits with Kronecker Product}
+\underline{Example}: Representing 2-qubits with the Kronecker Product:
 \begin{align*}
-&1_2 \equiv \ket{01} = \ket{0} \otimes \ket{1} = \begin{bmatrix}
+&\ket{01} = \ket{0} \otimes \ket{1} = \begin{bmatrix}
 1\\0
 \end{bmatrix}\otimes 
 \begin{bmatrix}
@@ -508,7 +508,7 @@ Not commutative.
 \end{bmatrix} = \begin{bmatrix}
 0\\1\\0\\0
 \end{bmatrix}\\
-&0_2 \equiv \ket{00} = \ket{0} \otimes \ket{0} = \begin{bmatrix}
+&\ket{00} = \ket{0} \otimes \ket{0} = \begin{bmatrix}
 1\\0
 \end{bmatrix}\otimes 
 \begin{bmatrix}
@@ -525,32 +525,32 @@ Not commutative.
 \end{bmatrix} = \begin{bmatrix}
 1\\0\\0\\0
 \end{bmatrix}\\
-&\hspace{0.5cm}\ket{10} = \begin{bmatrix}
+&\ket{10} = \begin{bmatrix}
 0&0&1&0
-\end{bmatrix}^\top, \ket{11} = \begin{bmatrix}
+\end{bmatrix}^\top\\ &\ket{11} = \begin{bmatrix}
 0&0&0&1
 \end{bmatrix}^\top.
 \end{align*}
-In fact, $\ket{00}, \ket{01}, \ket{10}, \ket{11}$ form a basis for $\otimes^2\mathbb{C}^{2}$, the 2-qubit system.
+$\rightarrow \ket{00}, \ket{01}, \ket{10}, \ket{11}$ form a basis for a 2-qubit system.
 \end{frame}
 
 
 \begin{frame}
 \frametitle{Entanglement}
-Not every $\ket{\psi} \in \V\otimes \W$ is an elementary tensor. \\
+Not every $\ket{\psi} \in \V\otimes \W$ is an elementary tensor.  \\
 $\,$\\
 \underline{Example}: There are no states $\ket{c}, \ket{d} \in \mathbb{C}^2$ such that
 \begin{align*}
-\ket{c} \otimes \ket{d} = \ket{\beta_{00}} &= \begin{bmatrix}
+\ket{c} \otimes \ket{d}  &= \begin{bmatrix}
 \frac{1}{\sqrt{2}} & 0 & 0 & \frac{1}{\sqrt{2}}
 \end{bmatrix}^\top \\
 &= \frac{1}{\sqrt{2}}\ket{00} + \frac{1}{\sqrt{2}}\ket{11} \textbf{$\rightarrow$ Entangled}
 \end{align*}
 \underline{Examples}: Bell states, also entangled \cite{Bell}
 \begin{align*}
-\ket{\beta_{10}} = \frac{1}{\sqrt{2}}\ket{00} - \frac{1}{\sqrt{2}}\ket{11}\\
-\ket{\beta_{01}} = \frac{1}{\sqrt{2}}\ket{01} + \frac{1}{\sqrt{2}}\ket{10}\\
-\ket{\beta_{11}} = \frac{1}{\sqrt{2}}\ket{01} - \frac{1}{\sqrt{2}}\ket{10}\\
+\frac{1}{\sqrt{2}}\ket{00} - \frac{1}{\sqrt{2}}\ket{11}\\
+\frac{1}{\sqrt{2}}\ket{01} + \frac{1}{\sqrt{2}}\ket{10}\\
+\frac{1}{\sqrt{2}}\ket{01} - \frac{1}{\sqrt{2}}\ket{10}\\
 \end{align*}
 
 
@@ -566,20 +566,26 @@ Not all $C \in \mathfrak{\lag}(\V\otimes \W)$ can be written as $\A \otimes \B$,
 $\,$\\
 \underline{Example}:
 \begin{align*}
-CNOT_1 = \begin{bmatrix}
+CNOT_2 = \begin{bmatrix}
 1&0&0&0\\
-0&1&0&0\\
 0&0&0&1\\
-0&0&1&0
-\end{bmatrix} 
-\hspace{0.5cm}
-SWAP = 
-\begin{bmatrix}
-1&0&0&0\\
 0&0&1&0\\
-0&1&0&0\\
-0&0&0&1
-\end{bmatrix} 
+0&1&0&0
+\end{bmatrix} \hspace{0.5cm}
+\begin{cases}
+\ket{00} \to \ket{00}\\
+\ket{10} \to \ket{10}\\
+\ket{01} \to \ket{11}\\
+\ket{11} \to \ket{01}
+\end{cases}
+%\hspace{0.5cm}
+%SWAP = 
+%\begin{bmatrix}
+%1&0&0&0\\
+%0&0&1&0\\
+%0&1&0&0\\
+%0&0&0&1
+%\end{bmatrix} 
 \end{align*}
 \end{frame}
 
@@ -639,16 +645,17 @@ CNOT_b = C_b = \begin{bmatrix}
 		\lstick{b: \ket{0}} & \qw & \gate{H} & \ctrl{-1}& \meter & \qw 
 	}
 \end{center}
+One way to see how this works...
 \begin{align*}
-C_b(I \otimes H)\left(\begin{bmatrix}
+CNOT_b\left(I  \begin{bmatrix}
 1\\0
 \end{bmatrix}_a
 \otimes
-\begin{bmatrix}
+H\begin{bmatrix}
 1\\0
 \end{bmatrix}_b
 \right)
-&= C_b\left(\begin{bmatrix}
+&= CNOT_b\left(\begin{bmatrix}
 1&0\\0&1
 \end{bmatrix}\begin{bmatrix}
 1\\0
@@ -658,12 +665,7 @@ C_b(I \otimes H)\left(\begin{bmatrix}
 1\\0
 \end{bmatrix}_b\right)\\
 &=
-\begin{bmatrix}
-1&0&0&0\\
-0&0&0&1\\
-0&0&1&0\\
-0&1&0&0
-\end{bmatrix}
+CNOT_b
 \begin{bmatrix}
 1/\sqrt{2}\\1/\sqrt{2}\\0\\0
 \end{bmatrix}
@@ -683,22 +685,22 @@ C_b(I \otimes H)\left(\begin{bmatrix}
 
 \begin{frame}
 \frametitle{Entanglement (cont.)}
-Notice:
+Another way to see how this works...
 \begin{align*}
-(I\ket{0}) \otimes (H_b\ket{0}) &= (I \otimes H_b)(\ket{0} \otimes \ket{0}) \\
-\begin{bmatrix}
-1\\0
-\end{bmatrix}
-\otimes
-\frac{1}{\sqrt{2}}
-\begin{bmatrix}
-1&1\\1&-1
-\end{bmatrix}
-\begin{bmatrix}
-1\\0
-\end{bmatrix}
+CNOT_b\left[(I\ket{0}) \otimes (H_b\ket{0})\right] &= CNOT_b(I \otimes H_b)(\ket{0} \otimes \ket{0}) \\
+%\begin{bmatrix}
+%1\\0
+%\end{bmatrix}
+%\otimes
+%\frac{1}{\sqrt{2}}
+%\begin{bmatrix}
+%1&1\\1&-1
+%\end{bmatrix}
+%\begin{bmatrix}
+%1\\0
+%\end{bmatrix}
 &=
-\begin{bmatrix}
+CNOT_b\begin{bmatrix}
 \frac{1}{\sqrt{2}}\begin{bmatrix}
 1&1\\
 1&-1
@@ -709,12 +711,15 @@ Notice:
 \end{bmatrix}\begin{bmatrix}
 1\\0\\0\\0
 \end{bmatrix}\\
-\begin{bmatrix}
-\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0&0
-\end{bmatrix}^\top &= \begin{bmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0&0
-\end{bmatrix}^\top 
+%\begin{bmatrix}
+%\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0&0
+%\end{bmatrix}^\top 
+&= CNOT_b\begin{bmatrix}\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0&0
+\end{bmatrix}^\top \\
+&= \begin{bmatrix}\frac{1}{\sqrt{2}} & 0 & 0& \frac{1}{\sqrt{2}}
+\end{bmatrix}^\top
 \end{align*}
-$\rightarrow$ Possible to write $H$ as $I \otimes H_b$. Not possible for $CNOT_b$.
+%$\rightarrow$ Possible to write $H$ as $I \otimes H_b$. Not possible for $CNOT_b$.
 \end{frame}
 
 
@@ -768,6 +773,7 @@ Entanglement circuit, revisited
 \begin{itemize}
 \item Representing multi-qubit systems with tensor products.
 \item Representing multi-qubit operators with tensor products.
+\item Compute with the Kronecker product.
 \item Entanglement, mathematically.
 \item 2-qubit entangler, mathematically.
 \item Entanglement on IBM-Q.
