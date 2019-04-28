@@ -3406,14 +3406,159 @@ And of course:
 \end{exmp}
 
 
+\newpage
+
+\section{Laplace Equations in Spherical Coordinates}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1]{sphere.png}
+	\caption{Sketch by Jerry Bao}
+\end{figure}
+
+Points in the ball of radius $R$ are described by $(r,\theta,\phi)$ with $0 \leq r \leq R$, $\pi \leq \theta \leq \pi$, and $0 \leq \phi \leq \pi$. In this coordinate system,
+\begin{align*}
+\begin{cases}
+\laplacian u = (r^2 u_r)_r  + \f{1}{\sin\phi}(u\phi \sin\phi )_\phi + \f{1}{\sin^2\phi}u_{\theta\theta} = 0\\
+u(R,\theta,\phi) = g(R,\theta,\phi)\hspace{0.5cm} \text{on $\p \Omega = R-$sphere}.
+\end{cases}
+\end{align*}
+Solving this problem for a general $g$ is often difficult, so we look at special cases. 
+
+\begin{enumerate}
+	\item \textbf{Assume that $g(\theta.\phi)$ is constant}, i.e., spherically symmetric. We infer that $u(r,\theta,\phi) = u(r)$. Thus, 
+	\begin{align*}
+	u_\theta = u_\phi = 0.
+	\end{align*}
+	Hence the PDE now turns into an ODE:
+	\begin{align*}
+	\laplacian u = (r^2 u_r)_r = r^2 u_{rr} + 2ru_r = 0.
+	\end{align*}
+	Change of variables: let $v = u_r$, then
+	\begin{align*}
+	r^2 v_r + 2rv &= 0\\
+	v_r + \f{2}{r}v &= 0\\
+	\lp ve^{2\ln(r)}\rp' &= 0\\
+	ve^{2\ln(r)} &= C\\
+	vr^2 &= C\\
+	v &= \f{C}{r^2}.
+	\end{align*}
+	And so,
+	\begin{align*}
+	u_r = Cr^{-2}.
+	\end{align*}
+	Hence
+	\begin{align*}
+	\boxed{u = \f{-C}{r} + b}
+	\end{align*}
+	For the problem in the ball, $C = 0$ for solution to be bounded. Thus,
+	\begin{align*}
+	u(r) = b.
+	\end{align*}
+	Now, matching this with the boundary conditions, we get
+	\begin{align*}
+	u(1) = g.
+	\end{align*}
+	And so the solution is
+	\begin{align*}
+	u(r,\theta,\phi) = g = \text{constant}. 
+	\end{align*}
+	So, for example, if we were to charge a metal sphere with 10 volts:
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.75]{ball.png}
+		\caption{Sketch by Jerry Bao}
+	\end{figure}
+	To find the interior electric field, we solve Laplace's equation 
+	\begin{align*}
+	\begin{cases}
+	\laplacian u = 0.\\
+	u(r) = 10 \text{V}
+	\end{cases},
+	\end{align*}
+	which gives 
+	\begin{align*}
+	\vec{E} = \nabla u(r,\theta,\phi) = 0
+	\end{align*}
+	everywhere inside the ball.
+	
+	
+	\item \textbf{Spherical shells:} 
+	$\,$
+	\begin{figure}[htb!]
+		\centering
+		\includegraphics[scale=1]{shell.png}
+		\caption{Spherical shells by Jerry Bao}
+	\end{figure}
+
+	Suppose we have the problem
+	\begin{align*}
+	\begin{cases}
+	\laplacian u = 0\\
+	u(R_1,\theta,\phi) = A\\
+	u(R_2, \theta, \phi) = B
+	\end{cases}
+	\end{align*}
+	where $\Omega$ is the region between the shells of radii $R_1$ and $R_2$ respectively. We know that solutions have the form 
+	\begin{align*}
+	u(r) = \f{a}{r} + b.
+	\end{align*}
+	And so,
+	\begin{align*}
+	\begin{cases}
+	\f{a}{R_1} + b = A \implies a + bR_1 = AR_1\\
+	\f{a}{R_2} + b = B \implies a + bR_2 = BR_2
+	\end{cases}.
+	\end{align*}
+	Subtracting the top by the bottom gives
+	\begin{align*}
+	b = \f{BR_2 - AR_1}{R_2 - R_1}.
+	\end{align*}
+	So,
+	\begin{align*}
+	a = AR_1 - \f{BR_1R_2 - AR_1^2}{R_2 - R_1}   = \f{(A-B)R_1R_2}{R_2 - R_1}.
+	\end{align*}
+	Therefore,
+	\begin{align*}
+	\boxed{u(r) = \f{(A-B)R_1R_2}{r(R_2 - R_1)} + \f{BR_2 - AR_1}{R_2 - R_1}}
+	\end{align*}
+	We have the following sketches (credit to Jerry Bao):
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.5]{u.png}
+	\end{figure}
 
 
 
 
-
-
-
-
+	\item \textbf{Assume that $\Omega = R-$ball and $g = g(\phi)$ where $0\leq \phi \leq \pi$}. Here, $u(r,\theta,\phi) = u(r,\phi)$ and we have
+	\begin{align*}
+	\begin{cases}
+	(r^2 u_r)_r + \f{1}{\sin\phi}( u_\phi \sin\phi)_\phi = 0\\
+	u(R,\phi) = g(\phi)
+	\end{cases}.
+	\end{align*} 
+	We once again solve using separation of variables. Assume that
+	\begin{align*}
+	u(r,\theta) = R(r)\Phi(\phi).
+	\end{align*}  
+	Subjecting this to the PDE:
+	\begin{align*}
+	(r^2 R')' \Phi + \f{1}{\sin\phi}(\Phi' \sin\phi )' R = 0
+	\end{align*}
+	or equivalently,
+	\begin{align*}
+	\f{(r^2 R')'}{R} = -\f{(\Phi' \sin\phi)'}{\Phi \sin\phi} = n(n-1)
+	\end{align*}
+	where $n(n-1) = k$. This gives two ODE's:
+	\begin{align*}
+	\boxed{r^2R'' + 2rR' - n(n-1)R = 0}
+	\end{align*}
+	and
+	\begin{align*}
+	\boxed{(\Phi' \sin\phi )' + n(n-1)\Phi\sin\phi = 0}
+	\end{align*}
+\end{enumerate}
 
 
 
