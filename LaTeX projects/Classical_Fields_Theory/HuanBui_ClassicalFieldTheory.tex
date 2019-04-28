@@ -3177,7 +3177,7 @@ T_{0j} \sim \text{Poynting vectors}.
 
 
 
-\section{Diffeomorphism}
+\section{Diffeomorphism, Vierbein Formalism, and general spacetime symmetries}
 
 
 \subsection{Overview of Diffeomorphisms and the Lie Derivative}
@@ -3561,7 +3561,244 @@ As we push the 3-dimensional surface to infinity where $\xi^\alpha = 0$, $S \to 
 
 
 
-\subsubsection{Local Lorentz Transformation}
+\subsubsection{Local Lorentz Transformation \& Vierbein Formalism}
+Lorentz symmetry are local symmetries in local  frames. Local Lorentz frames exist at every point, so we can always coordinate transform into a local Lorentz frame at a point $P$, so that the metric is Minkowskian, i.e., 
+\begin{align}
+g_{\mu\nu} \to g_{\mu'\nu'} = X^\alpha_{\mu'}X^\beta_{\nu'}g_{\alpha\beta} = \eta_{\mu'\nu'}
+\end{align}
+at point $P$. However, if there is curvature, then $\tensor{R}{^{\lambda'}_{\mu'\nu'\sigma'}} \neq 0$ at $P$ still holds, since the Riemann curvature tensor depends on $\p\Gamma$, the partial derivatives of the Christoffel symbols. 
+
+There is another way, though, to go without using a coordinate transformation. That is to use \textbf{Vierbeins}. 
+
+Roughly speaking, \textbf{Vierbeins} are local vectors in a tangent space that performs ``a change of basis.''
+\begin{align}
+\boxed{g_{\mu\nu} = \tensor{e}{^a_\mu}\tensor{e}{^b_\nu}\eta_{ab}}
+\end{align}
+With Vierbeins, we can redefined general relativity by making them dynamical. Any tensor can be written as
+\begin{align}
+A_\mu = \tensor{e}{_\mu^a}A_a
+\end{align}
+where $A_\mu$ is a component in local Lorentz basis. There's also the concept of an inverse Vierbein:
+\begin{align}
+\tensor{e}{^\mu_a}\tensor{e}{_\nu^a} = \delta^\mu_\nu\\
+\tensor{e}{^\mu_a}\tensor{e}{_\mu^b} = \delta^a_b.
+\end{align}
+Then, 
+\begin{align}
+g^{\mu\nu} = \tensor{e}{^\mu_a}\tensor{e}{^\nu_b}\eta^{ab}.
+\end{align}
+It is easy to verify that $g^{\mu\alpha}g_{\alpha\nu} = \delta^\mu_\nu$:
+\begin{align}
+g^{\mu\alpha}g_{\alpha\nu} &= \tensor{e}{^\mu_c}\tensor{e}{^\alpha_d}\eta^{cd}\tensor{e}{_\alpha^f}\tensor{e}{_\nu^g}\eta_{fg}\\
+&= \tensor{e}{^\mu_c}\delta_d^f\tensor{e}{_\nu^g}\eta^{cd}\eta_{fg}\\
+&= \tensor{e}{^\mu_c}\tensor{e}{_\nu^g}\eta^{cf}\eta_{fg}\\
+&= \tensor{e}{^\mu_c}\tensor{e}{_\nu^g}\delta^c_g\\
+&= \tensor{e}{^\mu_c}\tensor{e}{_\nu^c}\\
+&= \delta^\mu_\nu.
+\end{align}\qed
+
+Next, we can also look at the determinant of $g_{\mu\nu}$, where $g_{\mu\nu} = \tensor{e}{_\mu^a}\tensor{e}{_\nu^b}\eta_{ab} = \tensor{e}{_\mu^a}\eta_{ab}\tensor{e}{_\nu^b}$:
+\begin{align}
+g &= \det(g) \\
+&= e \lp \det(\eta) e \rp\\
+&= e (-1) e\\
+&= e^2.
+\end{align}
+Therefore,
+\begin{align}
+\boxed{\sqrt{-g} = e}
+\end{align}
+So, the action under Vierbein formalism is
+\begin{align}
+\boxed{S = \int\,\sqrt{-g}\,d^4x \lag(g_{\mu\nu}, A_\mu ,\dots) = \int\,e\,d^4x\lag(\tensor{e}{_\mu^a}, A_a,\dots)}
+\end{align}
+
+One of the advantages of the Vierbein formalism is the ability to incorportate \textbf{spinors} that deescribe Fermions into the action and Lagrangian. Spinors are neither vectors nor tensors nor scalars. In other words, there are no vector/tensor representation for Fermions. They are just spinors - a completely different mathematical object. There is no problem dealing with Fermions in special relativity, since special relativity has spinor representation under the Lorentz group. However, general relatibity has no representation for these under diffeomorphisms if we don't use Vierbeins.
+
+In particular, in the relativistic quantum theory developed by Paul Dirac, the Dirac Lagrangian is given by
+\begin{align}
+\lag = i (\p_\mu \bar{\psi})\gamma^\mu\psi,
+\end{align} 
+which is a mixture of spinors and vectors, where $\gamma^\mu$ is the four-component spinor. The theory actually makes use of a four components, with two describing ordinary Fermions, while the other two describes anti-particles. \\
+
+Back to general relativity. Vierbeins allow us to include Fermions into general relativity, making them vectors in spacetime. Since there is no unique local Lorentz basis at any point $P$, we can rotate or boost. And so, these vectors in spacetime must follows transformation rules:
+\begin{align}
+\tensor{e}{_\mu^a} \to \tensor{e}{_\mu^a} + \tensor{\epsilon}{^a_b}\tensor{e}{_\mu^b}.
+\end{align}
+But Vierbeins are also vectors under diffeomorphisms:
+\begin{align}
+\tensor{e}{_\mu^a} \to \tensor{e}{_\mu^a} + (D_\mu \xi^\alpha)\tensor{e}{_\alpha^a} + \xi^\alpha D_\alpha \tensor{e}{_\mu^a}.
+\end{align}
+With these, we can also look at how the metric transforms. First, under diffeomorphism:
+\begin{align}
+g_{\mu\nu} 
+&= \tensor{e}{_\mu^a}\tensor{e}{_\nu^b}\eta_{ab}\\
+&\to 
+\lp \tensor{e}{_\mu^a} + (D_\mu \xi^\alpha)\tensor{e}{_\alpha^a} + \xi^\alpha D_\alpha \tensor{e}{_\mu^a} \rp
+\lp \tensor{e}{_\nu^b} + (D_\nu \xi^\alpha)\tensor{e}{_\alpha^b} + \xi^\alpha D_\alpha \tensor{e}{_\mu^b} \rp 
+\eta_{ab}.
+\end{align}
+Expand this out to first order, we get
+\begin{align}
+g_{\mu\nu} &\to g_{\mu\nu} + (D_\mu \xi^\alpha)\tensor{e}{_\alpha^a}\tensor{e}{_\nu^b}\eta_{ab} 
+ + \xi^\alpha D_\alpha \tensor{e}{_\mu^a}\tensor{e}{_\nu^b}\eta_{ab} \nn \\
+&\hspace{0.5cm} + \tensor{e}{_\mu^a}(D_\nu \xi^\alpha)\tensor{e}{_\alpha^b}\eta_{ab} 
++ \tensor{e}{_\mu^a}\xi^\alpha D_\alpha \tensor{e}{_\mu^b}\eta_{ab}\\
+&= g_{\mu\nu} + (D_\mu \xi^\alpha)g_{\alpha\nu} + (D_\nu \xi^\alpha)_{\mu\alpha} + \xi^\alpha D_\alpha\lp \tensor{e}{_\mu^a}\tensor{e}{_\nu^b}\eta_{ab} \rp\\
+&= g_{\mu\nu} + (D_\mu \xi^\alpha)g_{\alpha\nu} + (D_\nu \xi^\alpha)_{\mu\alpha} + \xi^\alpha D_\alpha g_{\mu\nu}\\
+&= g_{\mu\nu} +  (D_\mu \xi^\alpha)g_{\alpha\nu} + (D_\nu \xi^\alpha)_{\mu\alpha}\\
+&= g_{\mu\nu} + \lag_\xi g_{\mu\nu}
+\end{align}
+as expected, where we have used the fact that the metric is covariantly constant. On other hand, what about under local Lorentz transformations?
+\begin{align}
+g_{\mu\nu} &= \tensor{e}{_\mu^a}\tensor{e}{_\nu^b}\eta_{ab}\\
+&\to \lp \tensor{e}{_\mu^a} + \tensor{\epsilon}{^a_c}\tensor{e}{_\mu^b} \rp
+\lp \tensor{e}{_\nu^b} + \tensor{\epsilon}{^b_c}\tensor{e}{_\nu^c} \rp\eta_{ab}\\
+&= g_{\mu\nu} + \tensor{\epsilon}{^a_c}\tensor{e}{_\mu^b}\tensor{e}{_\nu^b}\eta_{ab} +  \tensor{e}{_\mu^a}\tensor{\epsilon}{^b_c}\tensor{e}{_\nu^c}\eta_{ab} + \dots\\
+&= g_{\mu\nu} + \tensor{\epsilon}{_{bc}}\tensor{e}{_\mu^b}\tensor{e}{_\nu^b} +  \tensor{e}{_{ac}}\tensor{\epsilon}{^b_c}\tensor{e}{_\nu^c}\\
+&= g_{\mu\nu} + \tensor{\epsilon}{_{bc}}\tensor{e}{_\mu^b}\tensor{e}{_\nu^b} +  \tensor{e}{_{bc}}\tensor{\epsilon}{^b_c}\tensor{e}{_\nu^c}\\
+&= g_{\mu\nu} + \epsilon_{bc}\lp \tensor{e}{_\mu^b}\tensor{e}{_\nu^b} + \tensor{\epsilon}{^b_c}\tensor{e}{_\nu^c}\rp\\
+&= g_{\mu\nu} + \epsilon_{cb}\lp \tensor{e}{_\mu^c}\tensor{e}{_\nu^c} + \tensor{\epsilon}{^c_b}\tensor{e}{_\nu^b}\rp.
+\end{align}
+But due the anti-symmetry in Lorentz transformations:
+\begin{align}
+\epsilon_{bc} = -\epsilon_{cb}
+\end{align}
+it must hold that 
+\begin{align}
+-\lp \tensor{e}{_\mu^b}\tensor{e}{_\nu^b} + \tensor{\epsilon}{^b_c}\tensor{e}{_\nu^c}\rp = \lp \tensor{e}{_\mu^c}\tensor{e}{_\nu^c} + \tensor{\epsilon}{^c_b}\tensor{e}{_\nu^b}\rp
+\end{align}
+which means
+\begin{align}
+\tensor{e}{_\mu^c}\tensor{e}{_\nu^c} + \tensor{\epsilon}{^c_b}\tensor{e}{_\nu^b} = 0,
+\end{align}
+and so
+\begin{align}
+g_{\mu\nu} \to g_{\mu\nu}
+\end{align}
+under local Lorentz transformations. Therefore, the metric is invariant under local Lorentz transformation, as we wanted. Now, note that the metric has 10 independent components due to its symmetry: $g_{\mu\nu} = g_{\nu\mu}$. Meanwhile, the Vierbeins have 16 independent components. These 6 extra components are Lorentz degrees of freedom. This means we can make 6 local Lorentz transformations with $\epsilon_{ab} = \epsilon_{ba}$, i.e., we can gauge away 6 of these components using local Lorentz transformations, giving 10 effectively independent components. 
+
+Now, if we consider how a Lagrangian made entire out of scalars, how would it transform under local Lorentz transformations using the Vierbeins? Consider $\lag = A_\mu A^\mu $, then under the Vierbein formalism:
+\begin{align}
+A_\mu A^\mu = \lp\tensor{e}{_\mu^a }A_a \rp\lp \tensor{e}{^\mu_b}A^b \rp.
+\end{align}
+Under local Lorentz transformations,
+\begin{align}
+A_\mu A^\mu &\to 
+\lp \tensor{e}{_\mu^a} + \tensor{\epsilon}{^a_c}\tensor{e}{_\mu^c} \rp
+\lp A_a + \tensor{\epsilon}{_a^c}A_c \rp
+\lp \tensor{e}{^\mu_b} + \tensor{\epsilon}{_b^c}\tensor{e}{^\mu_c} \rp
+\lp A^b + \tensor{\epsilon}{^b_c}A^c \rp
+\nn\\
+&= 
+A_\mu A^\mu + \tensor{\epsilon}{^a_c}\tensor{e}{_\mu^c}A_a\tensor{e}{^\mu_b}A^b 
++ \tensor{e}{_\mu^a}\tensor{\epsilon}{_a^c}A_c\tensor{e}{^\mu_b}A^b \nn\\
+&\hspace{0.5cm}
++ \tensor{e}{_\mu^a}A_a\tensor{\epsilon}{_b^c}\tensor{e}{^\mu_c}A^b 
++  \tensor{e}{_\mu^a} A_a\tensor{e}{^\mu_b}\tensor{\epsilon}{^b_c}A^c.
+\end{align}
+Now, notice that
+\begin{align}
+\tensor{\epsilon}{^a_c}\tensor{e}{_\mu^c}A_a\tensor{e}{^\mu_b}A^b 
++ \tensor{e}{_\mu^a}\tensor{\epsilon}{_a^c}A_c\tensor{e}{^\mu_b}A^b 
+=& \epsilon_{ac}\lp \tensor{e}{_\mu^c}A^c\tensor{e}{^\mu_b}A^b + \tensor{\epsilon}{_a^c}A^a\tensor{e}{^\mu_b}A^b \rp\\
+=& \epsilon_{ca}\lp \tensor{e}{_\mu^a}A^a\tensor{e}{^\mu_b}A^b + \tensor{\epsilon}{_c^a}A^a\tensor{e}{^\mu_b}A^b \rp\\
+=& -\epsilon_{ac}\lp \tensor{e}{_\mu^c}A^c\tensor{e}{^\mu_b}A^b + \tensor{\epsilon}{_a^c}A^a\tensor{e}{^\mu_b}A^b \rp\\
+=& 0.
+\end{align}
+Therefore, if the action is given in terms of scalars:
+\begin{align}
+S = \int\,e\,d^4x\,\lag(g_{\mu\nu}, \phi, A_\mu,\dots)
+\end{align}
+where the Lagrangian is a scalar, then the action is invariant under local Lorentz transformations. But without Vierbeins, Fermions are not allowed in the theory. Under the Vierbein formalism, we not only have a scalar action that is invariant under local Lorentz transformations, but also Fermions incorporated into the theory. \\
+
+But there is more to the story. We can ask about what happens to derivatives in the Vierbein formalism. In the general relativity that we are familiar with, we have seen the notion of the covariant derivative:
+\begin{align}
+D_\mu A_\nu = \p_\mu A_\nu - \Gamma^\lambda_{\mu\nu}A_\lambda.
+\end{align}
+But what about $D_\nu \tensor{e}{_\mu^a}$? It turns out that this is not a tensor under both local Lorentz transformations and diffeomorphism unless we change the definition of the derivative once again. To make this work, we need a second type of connection:
+\begin{align}
+D_\nu \tensor{e}{_\mu^a} = \p_\nu \tensor{e}{_\mu^a} - \Gamma^\lambda_{\nu\mu}\tensor{e}{_\lambda^a} + \tensor{\omega}{_\nu^a_b}\tensor{e}{_\mu^b}
+\end{align}
+where $\omega$ is called the \textbf{spin connection}, which makes $D_\nu \tensor{e}{_\mu^a}$ a tensor. It also turns out that
+\begin{align}
+\tensor{\omega}{_\nu^{ab}} = -\tensor{\omega}{_\nu^{ba}},
+\end{align}
+and so there are 24 independent components for the spin connection. We can then bring the definition of the spin connection to the Riemann curvature tensor, which has the following form
+\begin{align}
+\tensor{R}{^\lambda_{\mu\nu\sigma}} = \Gamma\Gamma - \Gamma\Gamma + \p\Gamma - \p\Gamma.
+\end{align}
+Adding the spin connection gives us \textbf{torsion}, and the Riemann space becomes Riemann-Cartan space. 
+
+
+\subsubsection{Riemann-Cartan spacetime}
+
+Note: This subsubsection is taken from Robert Bluhm's notes.
+
+In graviattional theories that include fields with intrinsic spin, such as spin-$\f{1}{2}$ fermions, a new geometrical quantity known as torsion $\tensor{T}{^\lambda_{\mu\nu}}$ can be introduced. It is defined as
+\begin{align}
+\boxed{\tensor{T}{^\lambda_{\mu\nu}} = \tensor{\Gamma}{^\lambda_{\mu\nu}} - \tensor{\Gamma}{^\lambda_{\nu\mu}}}
+\end{align}
+In general relativity, where the connection $\tensor{\Gamma}{^\lambda_{\mu\nu}}$ is symmetric, the torsion $\tensor{T}{^\lambda_{\mu\nu}}$ simply vanishes. So in which case(s) does the torsion not vanish? The curvature tensor is the relevant geometrical quantity in general relativity, which is sourced by energy-momentum. The spacetime in general relativity that we have been dealing with so far is (pseudo)-Riemannian. However, as we have pointed out earlier, general relativity theory in this space cannot include fermions. When spin is present, this acts as a source of spacetime torsion, and the resulting spacetime generalizes to hat is called a Riemann-Cartan spacetime.  
+
+In a gravitational theory in Riemann-Cartan spacetime using vierbein formalism, both the vierbein and the spin connection are treated as independent fields. Thus a generic action can be written as
+\begin{align}
+S = \int\,d^4x\, e \lag(\tensor{e}{_\mu^a}, \tensor{\omega}{_\mu^a_b}, \phi, \psi, A^\mu, D_{\mu}\psi,\dots),
+\end{align}
+where $e = \sqrt{-g}$  and $\phi, \psi, A^\mu, D_{\mu}\psi,\dots$ denote conventional matter fields and their derivatives. If this action is varied with respect to the vierbein, the result is Einstein's equations relating the curvature to the energy momentum density. Alternatively, if the action is varied with respect to the spin connection, the result is the equations relation the torsion with the spin density. 
+
+Using a vierbein treatment and allowing a Riemann-Cartan geometry, it becomes straightforward to introduce fermions. The starting point is the usual description in terms of Dirac theory in special relativity. Quantities such as the Dirac matrices $\gamma^a$ are defined in a local Lorentz frame where the matrix is Minkowskian $\eta_{ab}$. The vierbein is then used to define the corresponding quantity in the spacetime frame, for example, the Dirac matrices become $\tensor{e}{^\mu_a}\gamma^a$. Partial derivatives acting on fermions fields become covariant derivatives involving the spin connection,
+\begin{align}
+\p_\mu \psi \to D_\mu\psi = \p_\mu\psi + \f{i}{4}\omega_{\mu ab}\sigma^{ab}\psi,
+\end{align} 
+where $\sigma^{ab}$ is the commutation $\f{i}{2}[\gamma^a, \gamma^b]$. 
+
+The Lagrangian in the vierbein formalism must be a scalar with respect to both diffeomorphism and local Lorentz transformations. For tensor quantities, scalar combinations of tensors can be combined using either spacetime components or local components. For example, a quadratic mass term for a vector field can be written as
+\begin{align}
+\lag &= A^\mu g_{\mu\nu}A^\nu\\
+&= \tensor{e}{^\mu_a}A^a \tensor{e}{_\mu^c}\tensor{e}{_\nu^d}\eta_{cd}\tensor{e}{^\nu_b}A^b\\
+&= \delta^c_a A^a \eta_{cd}\delta^d_b A^b\\
+&= A^a \eta_{ab}A^b,
+\end{align}
+which we have shown before. So, the vierbein drops out of scalar combinations that do not involve derivatives, so that the combination can be witten in terms of the local components $A^a$ and the local metric $\eta_{ab}$. 
+
+In deriving the equations of motion of the a gravitational theory involving tensor quantities, such as a vector, it must there be decided whether the basic quantities to vary in the scalar Lagrangian are the spacetime components $A^\mu$ or the local quantities $A^a$. This choice affects how the vierbein appears. It therefore also affects the definition of the energy-momentum in a vierbein formalism, which is obtained inside the action as
+\begin{align}
+T^{\mu^\mu}_e = \f{1}{e} e^{\nu a} \f{\delta(e\lag)}{\delta\tensor{e}{_\mu^a}}.
+\end{align}
+The result of varying with respect to th vierbein is Einstein's equations (with $\Lambda = 0$),
+\begin{align}
+G^{\mu\nu} = 8\pi GT^{\mu\nu}_e.
+\end{align}
+In general, he form of the energy-momentum tensor in the vierbein formalism $T^{\mu\nu}_e$ will differ from that of the energy-momentum obtained using the metric. This is especially the case when there is torsion. However, for consistency, the energy-momentum tensor $T^{\mu\nu}_e$ is a vierbein treatment must be divergence-free,
+\begin{align}
+D_\mu T^{\mu\nu}_e = 0,
+\end{align} 
+meaning that it is still a conserved quantity. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage
