@@ -3550,23 +3550,146 @@ Solving this problem for a general $g$ is often difficult, so we look at special
 	\begin{align*}
 	\f{(r^2 R')'}{R} = -\f{(\Phi' \sin\phi)'}{\Phi \sin\phi} = n(n-1)
 	\end{align*}
-	where $n(n-1) = k$. This gives two ODE's:
+	where $n(n+1) = k$. This gives two ODE's:
 	\begin{align*}
-	\boxed{r^2R'' + 2rR' - n(n-1)R = 0}
+	\boxed{r^2R'' + 2rR' + n(n+1)R = 0}
+	\end{align*}
+	which is called the \textbf{Euler's equations} and
+	\begin{align*}
+	\boxed{(\Phi' \sin\phi )' + n(n+1)\Phi\sin\phi = 0}
+	\end{align*}
+	which is called the \textbf{Legendre's equation}. Solutions to the Euler's equation is:
+	\begin{align*}
+	R(r) = ar^n + br^{-(n+1)}.
+	\end{align*}
+	To solve the Legendre's equation, we do a substitution: $x = \cos\phi$ to get:
+	\begin{align*}
+	\boxed{(1-x^2)\f{d^2\Phi}{dx^2} -2x\f{d\Phi}{dx} + n(n+1)\Phi = 0}
+	\end{align*}
+	where $-1\leq x \leq 1$. To obtain the (one) bounded solution, it has to be the case that $n\in \mathbb{N}$. The solutions are
+	\begin{align*}
+	&P_0(x) = 1\\
+	&P_1(x) = x\\
+	&P_2(x) = \f{1}{2}(3x^1 - 1)\\
+	&\dots\\
+	&\boxed{P_n(x) = \f{1}{2^n n!}\f{d^n}{dx^n}\lp (x^2 - 1)^n \rp}
+	\end{align*} 
+	These are called the Legendre's Polynomials, and the last formula is called Rodriguez's Formula. 
+	
+	So we have that
+	\begin{align*}
+	\Phi(\phi) = a_nP_n(x) = a_nP_n(\cos\phi)
+	\end{align*}
+	are solutions, and so by the principle of superposition we expect
+	\begin{align*}
+	\boxed{u(r,\phi) = \sum^\infty_{n=0}a_nr^nP_n(\cos\phi)}
+	\end{align*}
+	where we have reject solutions with $r^n$ by boundedness. What about BC? We want that:
+	\begin{align*}
+	g(\phi) = u(1,\phi) = \sum^\infty_{n=0}a_nP_n(\cos\phi).
+	\end{align*}
+	So,
+	\begin{align*}
+	\int^\pi_0 g(\phi)P_m(\cos\phi)\sin\phi\,d\phi =  \sum^\infty_{n=0}  \int^\pi_0 a_nP_n(\cos\phi)P_m(\cos\phi)\sin\phi \,d\phi.
+	\end{align*}
+	With Rodriguez's Formula:
+	\begin{align*}
+	\int^\pi_0 P_n(\cos\phi)P_m(\cos\phi)\sin\phi \,d\phi &= 
+	\int^{1}_{-1} P_n(x)P_m(x) \,dx\\
+	&= \begin{cases}
+	\f{2}{2m+1}\hspace{0.5cm} n=m\\
+	0\hspace{0.5cm}\text{else}
+	\end{cases}.
+	\end{align*}
+	So, for $\Omega = 1-$ball, and $\p\Omega = 1-$sphere, the solution to 
+	\begin{align*}
+	\begin{cases}
+	\laplacian u = 0 \text{ on }\Omega
+	u(1,\theta,\phi) = g(\phi)
+	\end{cases}
+	\end{align*}
+	is given by
+	\begin{align*}
+	\boxed{u(r,\phi) = \sum^\infty_{n=0} a_nr^nP_n(\cos\phi) }
+	\end{align*}
+	where
+	\begin{align*}
+	\boxed{a_n = \f{2n+1}{2}\int^\pi_0 g(\phi)P_n(\cos\phi)\sin\phi\,d\phi }
 	\end{align*}
 	and
 	\begin{align*}
-	\boxed{(\Phi' \sin\phi )' + n(n-1)\Phi\sin\phi = 0}
+	\boxed{P_n(x) = \f{1}{2^n n!}\f{d^n}{dx^n}\lp (x^2 - 1)^n \rp}
 	\end{align*}
 \end{enumerate}
 
 
 
+% April 29, 2019
+
+\newpage
 
 
 
+\section{Poisson's Problem}
+Suppose we have the problem
+\begin{align*}
+\begin{cases}
+\laplacian u  = f(r,\theta) \hspace{0.5cm} \Omega = \text{ unit circle}, \theta\in [0,2\pi], 0\leq r \leq 1\\
+u(1,\theta) = 0 \hspace{0.5cm}\forall \theta \in [0,2\pi]
+\end{cases}.
+\end{align*}
+Let us look at a couple of interpretations of this. The solution is the steady-state temperature with time-independent heat source $f$ and zero temperature on the boundary. Another interpretation is electrostatics. Essentially the solution is the electric potential in $\Omega$ given a charged source of $-f(r,\theta)$, while the boundary is grounded. 
+
+What is the general idea? We consider an easier problem with point sources. Suppose that we're looking at a circle of radius $R$ with a single point source of charge $-q$. We want to understand what happens along the boundary of the circle. The total electrical energy inside the circle is $q$, and this should be equal to the total flux over the boundary:
+\begin{align*}
+q = -\int^{2\pi}_0 u_r(r)r\,d\theta = -2\pi u_r(r)\cdot r.
+\end{align*}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{charge3.png}
+\end{figure}
 
 
+So, the solution is
+\begin{align*}
+u_r(r) = \f{-q}{2\pi r}.
+\end{align*}
+And we find that the potential due to this point charge is
+\begin{align*}
+u(r) = \f{-q}{2\pi}\ln(r) = \f{q}{2\pi}\ln\lp \f{1}{r} \rp.
+\end{align*}
+So, thinking in terms of charge density, we can forget about $q$ and focus on the function $(1/2\pi) \ln(1/r)$. Going to geometry at hand. Suppose that a point charge $q=1$ is placed inside the circle at $(\rho,\phi)$, while we're standing at point $(r,\theta)$. The distance $R$ between us and the charge is
+\begin{align*}
+R = \sqrt{r^2 - 2r\rho\cos(\theta-\phi) + \rho^2}
+\end{align*} 
+by the law of cosine. We know that
+\begin{align*}
+u_{test}(r,\theta) = \f{1}{2\pi}\ln\lp \f{1}{r}\rp
+\end{align*}
+satisfies the Poisson's equation with point charge at $\rho,\phi$, but it won't satisfy the zero boundary condition. So, how do we get the boundary conditions  to be satisfied? 
+
+To get zero boundary conditions, we imagine another charge. Here is the idea: equipotential lines. Placing the charge on the outside creates constant potential lines which are circles. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{charge.png}
+\end{figure}
+
+\textbf{Method of images:} 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.5]{charge2.png}
+\end{figure}
+Place a charge $q=-1$ at $(1/\rho,\phi)$ making thee circle of radius 1 a line of constant potential. 
+\begin{align*}
+R = \sqrt{r^2 -2r\rho\cos(\theta-\phi) + \rho^2}\\
+\bar{R} = \sqrt{r^2 - \f{2r}{\rho}\cos(\theta - \phi) + \f{1}{\rho^2}}.
+\end{align*}
+Our new solution becomes:
+\begin{align*}
+u(r,\theta) = \f{1}{2\pi}\ln\lp \f{1}{R} \rp - \f{1}{2\pi}\ln\lp \f{1}{\bar{R}} \rp
+\end{align*}
 
 
 
