@@ -3681,28 +3681,119 @@ To get zero boundary conditions, we imagine another charge. Here is the idea: eq
 	\centering
 	\includegraphics[scale=0.5]{charge2.png}
 \end{figure}
-Place a charge $q=-1$ at $(1/\rho,\phi)$ making thee circle of radius 1 a line of constant potential. 
+Place a charge $q=-1$ at $(1/\rho,\phi)$ making the circle of radius 1 a line of constant potential. 
 \begin{align*}
 R = \sqrt{r^2 -2r\rho\cos(\theta-\phi) + \rho^2}\\
 \bar{R} = \sqrt{r^2 - \f{2r}{\rho}\cos(\theta - \phi) + \f{1}{\rho^2}}.
 \end{align*}
-Our new solution becomes:
+Our new ``candidate'' solution becomes:
 \begin{align*}
-u(r,\theta) = \f{1}{2\pi}\ln\lp \f{1}{R} \rp - \f{1}{2\pi}\ln\lp \f{1}{\bar{R}} \rp
+\boxed{u_c(r,\theta) = \f{1}{2\pi}\ln\lp \f{1}{R} \rp - \f{1}{2\pi}\ln\lp \f{1}{\bar{R}} \rp}
 \end{align*}
 
 
+% May 1, 2019 %
+
+The claim is that $u_c(1,\theta)$ is constant for all $\theta$. Let us investigate $u_c$ on the boundary:
+\begin{align*}
+u_c(1,\theta) &= \f{1}{2\pi}\ln\lp \f{\bar{R}}{R} \rp \\
+&= \f{1}{2\pi}\cdot \f{1}{2} \cdot\ln \lp \f{1 - \f{2}{\rho}\cos(\theta-\phi) + \f{1}{\rho^2}}{1 - 2\rho\cos(\theta-\phi) + \rho^2} \rp\\
+&= \f{1}{4\pi}\ln\lp \f{1}{\rho^2} \cdot \f{1 - \f{2}{\rho}\cos(\theta-\phi) + \f{1}{\rho^2}}{\f{1}{\rho^2} - \f{2}{\rho}\cos(\theta-\phi) + 1} \rp\\
+&= \f{1}{4\pi}\ln\lp \f{1}{\rho^2} \rp\\
+&= \f{1}{2\pi}\ln\lp\f{1}{\rho}\rp
+\end{align*}
+which is constant and independent of $\theta$. So then our ``adapted candidate'' 
+\begin{align*}
+G(r,\theta,\rho,\phi) = u_{adapted} = \f{1}{2\pi}\ln\lp \f{1}{R} \rp - \f{1}{2\pi}\ln(\bar{R}) - \f{1}{2\pi}\ln\lp \f{1}{\rho} \rp
+\end{align*}
+which we can also write as
+\begin{align*}
+G(r,\theta,\rho,\phi) &= \f{1}{2\pi}\ln\lp \f{\rho\bar{R}}{R} \rp \\
+&= \f{1}{2\pi}\ln\lp \f{\rho \sqrt{r^2 - 2\f{r}{\rho}\cos(\theta-\rho) + \f{1}{\rho^2}}}{\sqrt{r^2 - 2r\rho\cos(\theta-\rho) + \rho^2}} \rp\\
+&= \boxed{\f{1}{4\pi}\ln \lp \f{\rho^2r^2 - 2r\rho\cos(\theta-\phi) + 1}{r^2 - 2r\rho\cos(\theta-\rho) + \rho^2} \rp}
+\end{align*}
+So, given a point charge of charge 1 at $\rho,\phi$, $G(r,\theta,\rho,\phi)$ satisfies
+\begin{align*}
+\begin{cases}
+\laplacian u = \text{ Delta function } = \begin{cases}
+1 \hspace{0.5cm} \text{at $(\rho,\phi)$}\\
+0 \hspace{0.5cm} \text{else}
+\end{cases}\\
+u(1,\theta) = 0
+\end{cases}
+\end{align*}
+The next step is building up to $f(r,\theta)$ by assigning this ``bumping'' function to the value $f$ at every point. This means
+\begin{align*}
+\boxed{u(r,\theta) = \int^1_0 \int^\pi_{-\pi} G(r,\theta,\rho,\phi)f(\rho,\phi)\rho\,d\phi\,d\rho}
+\end{align*}
+We see that $u(1,\theta) = 0$ and $\laplacian u = 0$ on $\Omega$. This gives the solution, and we call $G$ the \textbf{Green's function}.
 
 
 
 
 
+\newpage
 
 
 
+\section{Summary}
 
+\begin{enumerate}
+	\item The heat equation (parabolic problems)
+	\begin{align*}
+	\f{\p u}{\p t} = \laplacian u.
+	\end{align*}
+	and
+	\begin{align*}
+	\begin{cases}
+	u_t = u_{xx}\\
+	u(0,x) = u_0(x)
+	\end{cases}.
+	\end{align*}
+	When $\Omega = \R$ we found that
+	\begin{align*}
+	\boxed{u(t,x) = \f{1}{\sqrt{4\pi t}} \int_\R u_0(y)e^{\f{-(x-y)^2}{4t}}\,dy}
+	\end{align*}
+	
+	
+	\item Laplace and Poisson (elliptic problems)
+	\begin{align*}
+	\begin{cases}
+	\laplacian u = 0\\
+	u = g
+	\end{cases}
+	\end{align*}
+	which are also time-independent. 
+	
+	
+	\item The wave equation (hyperbolic problem)
+	\begin{align*}
+	\f{\p^2 u }{\p t^2} = \laplacian u \hspace{0.5cm} x\in\R\\
+	u(t,x) = u_0(x)\hspace{0.5cm} t > 0.
+	\end{align*}
 
-
+	Observe that if
+	\begin{align*}
+	u(t,x) = u_0(x-t),
+	\end{align*}
+	called the \textbf{d'Lambert's solution}, and assuming that $u_0(x) \in \mathbb{C}^2$,
+	\begin{align*}
+	\f{\p^2 u}{\p t^2} = \f{\p }{\p t}\lp -u_0'(x-t) \rp = u_0''(x-t),
+	\end{align*}
+	and
+	\begin{align*}
+	\laplacian u = \f{\p^2}{\p t^2}u_0(x-t) = u_0''(x-t).
+	\end{align*}
+	So this is a solution. 
+	
+	Here we're assuming that $u_0$ is twice differentiable. $u$ moves at finite speed (finite speed of propagation), and remains localized. There's also no smoothing - in contrast to the heat equation. 
+	
+	Consider the heat solution
+	\begin{align*}
+	u(t,x) = \f{1}{\sqrt{4\pi t}} \int_\R u_0(y)e^{\f{-(x-y)^2}{4t}}\,dy
+	\end{align*}
+	is a bell curve under the BC of the wave equation (say $u_0(x)$ is a square pulse). However, this has infinite speed of propagation and does not remain localized. The heat equation has smoothing property. 
+\end{enumerate}
 
 
 
