@@ -124,6 +124,21 @@
 \frame{\titlepage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{frame}[fragile]
+\begin{center}
+	$\,$\Qcircuit @C=.7em @R=.4em  {
+		\lstick{a: \ket{0}} & \qw & \qw & \targ & \meter & \qw \\
+		\lstick{b: \ket{0}} & \qw & \gate{H} & \ctrl{-1}& \meter & \qw 
+	}
+\end{center}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
  
 \begin{frame}
 \frametitle{Presentation layout}
@@ -201,12 +216,13 @@ Example: Hadamard gate.
 \end{center}
 \pause
 What does $H$ do to, say  $\ket{0}$?
+\pause
 \begin{align*}
-H\ket{0} = H\begin{bmatrix}
+H\ket{0} \onslide<7->{= H\begin{bmatrix}
 1\\0
-\end{bmatrix} = \frac{1}{\sqrt{2}}\begin{bmatrix}
+\end{bmatrix} \onslide<8->{= \frac{1}{\sqrt{2}}\begin{bmatrix}
 1\\1
-\end{bmatrix} = \frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}.
+\end{bmatrix} \onslide<9->{ = \frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}}}}
 \end{align*}
 
 
@@ -308,11 +324,11 @@ $\,$\\
 Ex: $p(x)\cdot q(y)$ is a ``combined state.'' But there are NO $p(x), q(y)$ s.t. $$p(x)\cdot q(y) = xy + 1,$$ even though $xy + 1$ is a legitimate ``combined state.''\\
 \pause
 $\,$\\
-Back to qubits. Consider this combined state:
+Back to qubits. Consider this combined state:\pause
 \begin{align*}
 \frac{1}{\sqrt{2}}\begin{bmatrix}
 1\\0\\0\\1
-\end{bmatrix} = \frac{1}{\sqrt{2}}\ket{00} + \frac{1}{\sqrt{2}}\ket{11} \longrightarrow \textbf{Entangled}
+\end{bmatrix} \onslide<6->{= \frac{1}{\sqrt{2}}\ket{00} + \frac{1}{\sqrt{2}}\ket{11} \onslide<7->{ \longrightarrow \textbf{Entangled}}}
 \end{align*}
 
 \end{frame}
@@ -322,7 +338,7 @@ Back to qubits. Consider this combined state:
 \begin{frame}
 \frametitle{Kronecker Product}
 \pause
-$\A$ is a matrix acting on $\ket{a}$, $\B$ is a matrix acting on $\ket{b}$ 
+$\A$ is a matrix acting on $\ket{a}$, $\B$ on $\ket{b}$ 
 \pause
 \begin{align*}
 \A\ket{a} \boxtimes \mathcal{B}\ket{b} = (\A \otimes \mathcal{B})(\ket{a} \boxtimes \ket{b})
@@ -337,11 +353,11 @@ If
 m & n \\ o & p
 \end{bmatrix}
 \hspace{0.5cm}\text{ and }
-\pause
 \mathcal{B} = \begin{bmatrix}
-q & r & s \\ t & u & v \\ w&x&y
+q & r & s \\ t & u & v \\ w & x & y
 \end{bmatrix}
 \end{align*} 
+
 \end{frame}
 
 
@@ -372,14 +388,14 @@ mt & mu & mv & nt & nu & nv\\
 mw & mx & ms & nw & nx & ny\\
 oq & or & os & pq & pr & ps\\
 ot & ou & ov & pt & pu & pv\\
-ow & ox & oy & pw & px & pys\\
+ow & ox & oy & pw & px & py\\
 \end{bmatrix}}}
 \end{align*}
 \end{frame}
 
 \begin{frame}
 \frametitle{Kronecker Product}
-Check that $I\ket{0}\boxtimes H\ket{0} = (I\otimes H)(\ket{0}\boxtimes \ket{0})$:
+Check that $I\ket{0}\boxtimes H\ket{0} = (I\otimes H)\ket{00}$:
 \begin{center}
 	$\,$\Qcircuit @C=.7em @R=.4em  {
 		\lstick{a: \ket{0}} & \qw & \qw & \targ & \meter & \qw \\
@@ -389,7 +405,7 @@ Check that $I\ket{0}\boxtimes H\ket{0} = (I\otimes H)(\ket{0}\boxtimes \ket{0})$
 \pause
 LHS: 
 \begin{align*}
-I\ket{0} \boxtimes H\ket{1} \onslide<2->{&= \onslide<3->{\begin{bmatrix}
+I\ket{0} \boxtimes H\ket{0} \onslide<3->{&= \onslide<3->{\begin{bmatrix}
 1 & 0 \\  0 & 1
 \end{bmatrix}\begin{bmatrix}
 1 \\ 0
@@ -412,10 +428,12 @@ I\ket{0} \boxtimes H\ket{1} \onslide<2->{&= \onslide<3->{\begin{bmatrix}
 
 \begin{frame}
 \frametitle{Kronecker Product}
+Check that $I\ket{0}\boxtimes H\ket{0} = (I\otimes H)\ket{00}$:\pause\\
+$\,$\\
 RHS:
 \pause
 \begin{align*}
-(I \otimes H)(\ket{0} \boxtimes \ket{0}) \onslide<2->{= \begin{bmatrix}
+(I \otimes H)\ket{00} \onslide<3->{= \begin{bmatrix}
 \frac{1}{\sqrt{2}}\begin{bmatrix}
 1&1\\1&-1
 \end{bmatrix} & \mathcal{O}\\
@@ -424,7 +442,7 @@ RHS:
 \end{bmatrix} 
 \end{bmatrix}\begin{bmatrix}
 1\\0\\0\\0
-\end{bmatrix} \onslide<3->{= \frac{1}{\sqrt{2}}\begin{bmatrix}
+\end{bmatrix} \onslide<4->{= \frac{1}{\sqrt{2}}\begin{bmatrix}
 1\\1\\0\\0
 \end{bmatrix}}}
 \end{align*}
@@ -451,16 +469,16 @@ $\otimes $ and $\boxtimes $ are very much alike.
 	\boxtimes
 	\begin{bmatrix}
 	c\\d
-	\end{bmatrix} &= (a\ket{0} + b\ket{1})\boxtimes (c\ket{0} + d\ket{1})\\
-	\onslide<2->{
-	&= ac\ket{00} + ad\ket{01} + bc\ket{10} + bd\ket{11}. }
+	\end{bmatrix} \onslide<6->{&= (a\ket{0} + b\ket{1})\boxtimes (c\ket{0} + d\ket{1})\\
+	\onslide<7->{
+	&= ac\ket{00} + ad\ket{01} + bc\ket{10} + bd\ket{11}. }}
 	\end{align*}
-	\pause
+	\onslide<8->{
 	\item Associative
-	\pause
-	\item NOT commutative. \pause Ex: $\ket{01} \neq \ket{10}$.
-	\pause
-	\item Elementariness.
+	\onslide<9->{
+	\item NOT commutative. \onslide<10->{ Ex: $\ket{01} \neq \ket{10}$.
+	\onslide<11->{
+	\item Elementariness.}}}}
 	
 \end{enumerate}
 \end{frame}
@@ -469,6 +487,7 @@ $\otimes $ and $\boxtimes $ are very much alike.
 
 \begin{frame}
 \frametitle{Some properties and Elementariness revisited}
+\pause
 Ex: 
 \begin{center}
 	$\,$\Qcircuit @C=.7em @R=.4em  {
@@ -485,15 +504,15 @@ CNOT_b = \begin{bmatrix}
 0 & 0 & 0 & 1\\
 0 & 0 & 1 & 0\\
 0 & 1 & 0 & 0
-\end{bmatrix} \hspace{0.5cm} \onslide<2-> {\longrightarrow \begin{cases}
+\end{bmatrix} \hspace{0.5cm} \onslide<5-> {\longrightarrow \begin{cases}
 \ket{00} \to \ket{00}\\
 \ket{10} \to \ket{10}\\
 \ket{01} \to \ket{11}\\
 \ket{11} \to \ket{01}
 \end{cases}}
 \end{align*}
-\pause
-Also called ``entangled.''
+\onslide<6->{
+Also called ``entangled.''}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -509,11 +528,12 @@ Time to decode:
 	}
 \end{center}
 \begin{itemize}
+	\pause
 	\item[1] Step 1:\pause
 	\begin{align*}
 	&a : \ket{0} \to \ket{0}\\
 	&b : \ket{0} \to \frac{1}{\sqrt{2}}\ket{0}+ \frac{1}{\sqrt{2}}\ket{1}\\
-	&\onslide<2->{\ket{a'}\boxtimes \ket{b'} = \frac{1}{\sqrt{2}}\begin{bmatrix}
+	&\onslide<2->{\ket{a'b'} = \frac{1}{\sqrt{2}}\begin{bmatrix}
 	1 & 1 & 0 & 0
 	\end{bmatrix}^\top}
 	\end{align*} 
@@ -573,7 +593,7 @@ which is:
 \begin{frame}
 \frametitle{Tensor Product}
 \pause
-$\otimes$ and $\boxtimes$ are really the same! $\rightarrow$ Tensor products.\\
+$\otimes$ and $\boxtimes$ are really ``the same!'' \pause $\rightarrow$ Tensor products.\\
 $\,$\\
 \pause
 Why tensor product? \pause
@@ -587,6 +607,7 @@ Why tensor product? \pause
 
 \begin{frame}[fragile]
 \frametitle{Tensor Product}
+\pause
 \begin{center}
 	\begin{tikzcd}[row sep=15ex, column sep=20ex]
 		\V \otimes \W  \arrow[r, "linear"', "\hat{f}"]  & \X
@@ -617,10 +638,9 @@ If the target space $\X$ is $\V \otimes \W$. $\lag$ is an operator on $\V$, $\M$
 	\end{tikzcd}
 \end{center} 
 
-
-\pause by uniqueness
+ \onslide<5->{$\rightarrow$ by uniqueness}
 \begin{align*}
-(\lag\otimes \M)(v\otimes w) = \lag[v]\otimes \M[w].
+\onslide<4->{(\lag\otimes \M)(v\otimes w)} \onslide<5->{=} \onslide<3->{\lag[v]\otimes \M[w]}
 \end{align*} 
 
 \end{frame}
@@ -645,8 +665,8 @@ $\nu$ a basis for $\V$, $\omega$ for $\W$ $\rightarrow$ can make a basis $\tau$ 
 \begin{align*}
 \boxed{[\lag\otimes \M]_{\tau\leftarrow \tau} = [\lag]_{\nu\leftarrow\nu} \otimes [\M]_{\omega\leftarrow\omega}}
 \end{align*}
-\pause
-$\rightarrow$ Can calculate this via the Kronecker product
+%\pause
+%$\rightarrow$ Can calculate this via the Kronecker product
 \end{frame}
 
 
