@@ -81,6 +81,14 @@
 \newcommand{\la}{\langle}
 \newcommand{\ra}{\rangle}
 
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+
+
 
 \newcommand{\bigzero}{\mbox{\normalfont\Large\bfseries 0}}
 \newcommand{\rvline}{\hspace*{-\arraycolsep}\vline\hspace*{-\arraycolsep}}
@@ -151,8 +159,10 @@ Enjoy!
 \tableofcontents
 \newpage
 
-\section{List of Special Matrices \& Their Properties}
+\section{List of Special Matrices/Operators \& Their Properties}
 \begin{enumerate}
+	\item \textbf{Normal}: $\lag$ is normal $\iff \lag^*\lag = \lag\lag^*$.    
+	
 	\item \textbf{Hermitian/Self-adjoint}: $H = H^\dagger$. A Hermitian matrix is matrix that is equal to its own conjugate transpose:
 	\begin{align*}
 	H \text{ is Hermitian } \iff H_{ij} = \bar{H}_{ji}
@@ -163,10 +173,14 @@ Enjoy!
 		\item $H$ is Hermitian $ \iff \langle w, Hv\rangle = \langle Hw, v \rangle$, where $\langle, \rangle$ denotes the inner product.
 		\item $H$ is Hermitian $ \iff \langle v, Hv\rangle \in \R$.
 		\item $H$ is Hermitian $\iff$ it is \textit{unitarily diagonalizable} with \textit{real eigenvalues}.
+		\item $H$ is Hermitian $\iff H$ is normal and $ \sigma_\C (H) \subset \R$.
 	\end{enumerate}
 	\item \textbf{Unitary}: $U^*U = UU^* = I = U^\dagger U = UU^\dagger$. The real analogue of a unitary matrix is an orthogonal matrix. The following list contain the properties of $U$:
 	\begin{enumerate}
-		\item $U$ preserves the inner product:
+		
+		\item $U$ is normal and $\sigma_\C(U) \subseteq \Pi = \{ e^{i\theta \vert \theta \in \R} \}$.
+		
+		\item $U$ preserves the inner product (is an isometry)
 		\begin{align*}
 		\langle Ux, Uy \rangle = \langle x,y\rangle.
 		\end{align*}
@@ -190,6 +204,7 @@ Enjoy!
 		where $H$ is a Hermitian matrix. 
 		
 		\item Any square matrix with unit Euclidean norm is the average of two unitary matrices.
+		
 	\end{enumerate}
 	\end{prop}
 	\item \textbf{Idempotent:} $M$ idempotent $\iff M^2 = M$.
@@ -2901,9 +2916,158 @@ Similar matrices have the same Weyr characteristics, similar nilpotents have the
 Now, similar matrices have the same Jordan forms. 
 
   
+  
+  
+\subsection{Diagonalizability}
+
+Recall that Every $n\times n$ matrix is triangularizable; i.e., every square matrix is similar to an upper or lower triangular matrix. Equivalently, any linear operator $\lag \in \LL(\V)$ can be represented by an upper triangular matrix for some basis. 
+
+So which matrices are diagonalizable? To answer this, we can reverse engineer: if $\A \sim \mathcal{D}$, where $\mathcal{D}$ is diagonal, then their minimal polynomials are the same: $\mu_\A = \mu_\mathcal{D}$, and
+\begin{align*}
+\mu_\mathcal{D}(z) = (z-d_1)\dots (z- d_k)
+\end{align*}
+where all $d_i$'s are distinct, i.e., $\mu_\mathcal{D}$ has no repeated roots, i.e., all roots of $\mu_\mathcal{D}$ have multiplicity 1. Next, we observe that for a given Jordan block $\jor_{\lambda,\beta}$, its minimal polynomial is $\mu_\jor(z) = (z-\lambda)^\beta$. Now, if $\A \sim \jor_1\oplus\J_2\oplus \dots \oplus \J_k$, then $\mu_\A = \text{lcm}(\mu_{\jor_1}, \dots,\mu_{\jor_k})$. So in particular, $\mu_{\jor_i}$ is a factor of $\mu_\A$ for each $i$. So if $\mu_\A$ has no repeated roots, then no $\mu_{\jor_i}$ have no repeated roots, i.e., $\mu_{\jor_i}(z) = z - \lambda_i$, i.e., $\jor$ has size 1. This says $\A$ is similar to a direct sum of $1\times 1$ Jordan blocks, i.e., similar to a diagonal matrix. We the following:
+
+\begin{thm}
+	The following statements are equivalent:
+	\begin{enumerate}
+		\item $\A$ is a diagonalizable. 
+		\item $\mu_\A$ has no repeated roots.
+		\item There is a basis of $\C^n$ made up entirely of eigenvectors of $\A$, called an $\A$-eigenbasis of $\C^n$.
+	\end{enumerate} \qed
+\end{thm}
+
+Of course, we can always check for repeated roots by looking at $\mu_\A$ and $\mu_A'$. If $\mu_\A$ has repeated roots, then there exists a root $r$ such that $\mu_A(r) = \mu_\A'(r) = 0$. To check if $\mu_\A$ and $\mu_\A'$ have no common roots, we use the division algorithm and find the greatest common divisor of the polynomials. If the $\gcd$ turns out to be the constantly one polynomial, then the polynomial have no common roots. 
+
+\begin{thm}
+	\textbf{Spectral Mapping Theorem:} Let a matrix $\A$ be given, then
+	\begin{align*}
+	\sigma_\C(p(\A)) = p \left[ \sigma_\C(\A)\right].
+	\end{align*}\qed
+\end{thm}
+
+
+For example,
+\begin{align*}
+&\sigma_\C(\alpha(\A)) = \alpha \left[\sigma_\C(\A)\right]\\
+&\sigma_\C(\A + \beta\mathcal{I}) = \sigma_\C(\A) + \beta
+\end{align*}
+
+Now, suppose that $\A$ is invertible. Then for an eigenvector $v$,
+\begin{align*}
+\A^{-1}v = \lambda v \iff \frac{1}{v}v = \A v.
+\end{align*}
+
+\begin{thm}
+	\begin{align*}
+	\gamma \in \sigma_\C(\A^{-1}) \iff \frac{1}{\gamma} \in \sigma_\C(\A).
+	\end{align*}\qed
+\end{thm}
+
+
+
+\subsection{Simultaneous triangularizability and diagonalizability}
+
+We first look at \textbf{simultaneous diagonalizability}. Suppose we have $\A,\B \in \LL(\V)$, and an invertible $\mathcal{S}$ such that $\mathcal{S}^{-1}\A\mathcal{S}$ and $\mathcal{S}^{-1}\B\mathcal{S}$ are diagonal. Then 
+\begin{align*}
+\s^{-1}\A\s\s^{-1}\B\s = \s^{-1}\A\B\s = \s^{-1}\B\A\s = \s^{-1}\B\s\s^{-1}\A\s \iff \A\B = \B\A.
+\end{align*}
+
+So we have the necessary conditions for simultaneous diagonalizability:
+\begin{enumerate}
+	\item Individual diagonalizability
+	\item Commutativity. 
+\end{enumerate}
+
+It turns out that they are also sufficient. 
+
+\begin{thm}$(\dagger)$
+	The following are equivalent for a collection of $\F \in \mathbb{M}_n$:
+	\begin{enumerate}
+		\item $\F$ is a commutative collection and all element of $\F$ are individually diagonalizable. 
+		
+		\item There is an invertible $\s$ such that $\s^{-1}\A\s$ is diagonal for every $\A \in \F$. 
+	\end{enumerate}\qed
+\end{thm}
+
+To prove this, we first prove the following smaller theorem:
+
+\begin{thm}
+	$\A$ is diagonalizable $\iff$ $\A = \alpha_1\E_1 + \dots \alpha_k \E_k$ for some non-zero idempotents such that $\E_1 + \dots \E_k = \mathcal{I}$.
+\end{thm}
+
+\begin{proof}
+	$(\implies)$ $\A$ diagonalizable if and only if $\s^{-1}\A\s = \beta_1\F_1 + dots \beta_m\F_m$ diagonal, where $\F_i$'s are non-zero idempotents that resolve identity. Then.
+	\begin{align*}
+	\A = \s \lb \beta_1\F_1 + dots \beta_m\F_m \rb \s^{-1} = \sum^{m}_{i=1}\beta_i (\s\F_i\s^{-1}).
+	\end{align*} 
+	Now, since each $\s\F_i\s^{-1}$ is also an idempotent, we can write
+	\begin{align*}
+	\A = \sum^{m}_{i=1}\beta_i\E_i,
+	\end{align*}
+	where $\sum^m_{i=1}\E_m = \s^{-1}\lp\sum^m_{i=1}\F_i \rp\s = \mathcal{I}$. \qed\\
+	
+	
+	$(\impliedby)$ Now, suppose that $\A = \sum^k_{i=1}\alpha_i\E_i$ where $\E_i$'s idempotent that together resolve identity. Then we know that $\V = \bigoplus \ima(\E_i) = \mathbb{C}^p$. Now, let $\Gamma_i$ be a basis for $\ima(\E_i)$, then $\Gamma = \Gamma_1 \vert\vert \Gamma_2 \vert\vert\ dots \vert\vert\Gamma_k$ is a basis for $\C^p$. With respect to this decomposition, we can express $\A$ as a block-diagonal matrix with block-entries:
+	\begin{align*}
+	\A_{ij} = \E_i \circ \A \circ \E_j\bigg\vert_{\ima(\E_j)} = \delta^i_j \alpha_i\E_i\bigg\vert_{\ima(\E_i)} = \alpha \mathcal{I}\bigg\vert_{\ima(\E_i)}.
+	\end{align*}
+	So it is obvious that
+	\begin{align*}
+	[\A]_{\Gamma\leftarrow\Gamma} = \begin{bmatrix}
+	\alpha_1 & & \\
+	& \ddots & \\
+	& & \alpha_k
+	\end{bmatrix}
+	\end{align*}
+	So, $\A$ is diagonalizable.\qed  \\
+\end{proof}
+
+Before we prove Theorem $(\dagger)$, we must show that $\alpha_i$'s are exactly the eigenvalues of $\A$, that $\ima(\E_i) = \mathbf{E}_{\A(\alpha_i)}$ for any $i$, and the representation of $\A$ as $\A = \sum^k_{i=1}\alpha_k\E_k$ is unique, where the $\alpha_i$'s are distinct. The proof will not be reproduced here, since it is one of the problems in the back. But the key to this is Lagrange's Interpolation formula:
+\begin{align*}
+p_i(z) = \prod^k_{j=1, j\neq i} \frac{z - \alpha_j}{\alpha_i - \alpha_j}
+\end{align*} 
+where (you can check) that $p_i(\A) = \E_i$. Another key to the the proof is the fact that any idempotent can be written as a diagonal with zero everywhere and a block-identity along the diagonal. Once this is done, we will have ``mined'' another theorem
+
+\begin{thm}
+	Each \textbf{spectral idempotent} of a diagonalizable $\A$ is a polynomial in $\A$, i.e., is of the form $p(\A)$ for some polynomial $p$ (given by the Lagrange Interpolation formula). \qed
+\end{thm}
+
+Now we are ready for the proof of Theorem $(\dagger)$. We will dod this by induction on $n$. 
+\begin{proof}
+	$(\implies)$ The base case where $n=1$ is trivially true. Now, suppose that the theorem holds for all $1\leq n < n_0$. We want to show that it also holds for $n_0$. If $\F$ contains only scalar multiples of identity, then we are done So, let us assume that $\F$ contains $\A$'s that are not multiples of identity. Then, by the theorem we just proved
+	\begin{align*}
+	\A = \sum^k_{i=1}\alpha_i\E_i,
+	\end{align*}
+	for some idempotents $\E_i$ that together resolve identity, and distinct $\alpha_i$'s which are exactly the eigenvalues of $\A$. Now, since the $\alpha_i$'s are distinct, $n_0 \geq 2$. Next, recall that $\E_i = p_i(\A)$, for some polynomial $p_i$ and that every $\B \in \F$ commutes with $\A$. This means $\B$ commutes with $p_i(\A)$, and in particular, commutes with every $\E_i$. So, the block-matrix representation, the block-entries of $\B$ can be written as
+	\begin{align*}
+	\B_{ij} = \E_i B \E_j\bigg\vert_{\ima(\E_j)} = \E_i \E_j B = \delta^i_j\B\bigg\vert_{\text{restricted}}.
+	\end{align*}
+	So, $\B$ is block-diagonal:
+	\begin{align*}
+	\B = \begin{bmatrix}
+	\B_{11} & & \\
+	& \ddots &\\
+	& & \B_{kk} 
+	\end{bmatrix}.
+	\end{align*}
+	Now, since $\A$ and $\B$ commute, $\A_{ij}$ commutes with $\B_{ij}$. But $\B_{ij}$ are individually diagonalizable by hypothesis, so we can go on and find a basis for which each $[\B_{ij}]$ is diagonal, concatenate, and form the basis for the entire underlying space, making $\B$ diagonalizable. \\
+	
+	The proof in the other direction is easy. This will be reproduced in the problems. \qed
+\end{proof}
+
+
+
+
 
 \subsection{Square roots of operators}
+
+
+
 \subsection{Similarity of a matrix and its transpose}
+
+One of the problems in the back covers this. The key here is Jordan forms.
+
 \subsection{Similarity of a matrix and its conjugate}
 \subsection{Jordan forms of $\mathcal{AB}$ and $\mathcal{BA}$}
 \subsection{Power-convergent operators}
@@ -2919,38 +3083,624 @@ Now, similar matrices have the same Jordan forms.
 \newpage
 
 \section{Inner products and norms} 
-\newpage 
+
+%There are many ways to define ``distance.'' However, the Pythagorean distance stands out for many reasons, most important of which is its associated with the dot product. 
+
+
+\begin{defn}\textbf{Inner product}
+	An inner product $\phi: \V \times \V \to \C$ on a vector space $\V$ is a function satisfying the following conditions:
+	\begin{enumerate}
+		\item $\phi$ is partially linear in the first slot, partially conjugate linear in the second, i.e.,
+		\begin{align*}
+		&\phi(\alpha v_1 + \beta v_2, w) = \alpha \phi(v_1, w) + \beta\phi(v_2,w)\\
+		&\phi(w,\alpha v_1 + \beta v_2) = \bar{\alpha}\phi(w,v_1)+ \bar{\beta}\phi(w,v_2).
+		\end{align*} 
+		\item Conjugate symmetry: $\bar{\phi(v,w)} = \phi(w,v)$.
+		\item Definiteness: $\phi(v,v) \geq 0$, equality holds if and only if $v = \mathbf{0}$
+	\end{enumerate}\qed
+\end{defn}
+
+
+
+\begin{defn}\textbf{Standard inner product on $\C^n$}
+	\begin{align*}
+	\la \begin{pmatrix}
+	a\\b\\c
+	\end{pmatrix}, \begin{pmatrix}
+	\alpha,\beta,\gamma
+	\end{pmatrix} \ra = a\bar{\alpha} + b\bar{beta} + c\bar{\gamma},
+	\end{align*}
+	so that 
+	\begin{align*}
+	\la \begin{pmatrix}
+	a\\b\\c
+	\end{pmatrix}, \begin{pmatrix}
+	a,b,c
+	\end{pmatrix} \ra = \abs{a}^2 + \abs{b}^2 + \abs{c}^2 = \norm{\begin{pmatrix}
+		a\\b\\c
+		\end{pmatrix}}^2.
+	\end{align*}
+	\qed
+\end{defn}
+
+
+
+
+\begin{defn}\textbf{Inner product space} An inner product space is a vector space with an inner product. 
+	\qed
+\end{defn}
+
+
+
+We also observe that if $(v,\phi)$ is an inner product space, then $\norm{v} := \sqrt{\phi(v,v)}$ defines a ``norm'' such that
+\begin{enumerate}
+	\item $\norm{\,\,} : \V \to [0,\infty)$\\
+	\item $\norm{v} = 0 \iff v = \mathbf{0}$\\
+	\item $\norm{\alpha v} = \abs{\alpha}\cdot \norm{v}$\\
+	\item $\norm{u + v} \leq \norm{u} + \norm{v}$ (triangle inequality)\\
+	\item $\norm{\la u,v \ra} \leq \norm{u}\cdot \norm{v}$ (Cauchy-Schwarz inequality).
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Orthogonality}
+
+Let's have a preliminary ``definition:'' $u,v$ orthogonal $\iff$ $\la u,v\ra = 0$.
+
+But there's a little more to the story. For any $S \subseteq \V$, we let $$S^\perp = \left\{ v\in \V \big\vert \la v,s \ra = 0 \text{ for any } s \in S \right\}.$$
+We observe three things:
+\begin{enumerate}
+	\item $\mathbf{0}_\V \in \S^\perp$.
+	\item $\mathbf{0}_\V \in \V^\perp = \left\{ v\in \V \big\vert \la v,w\ra =0 \text{ for any } w\in \V \right\}$.
+	\item Suppose $v_0 \in \V^\perp$, then $\la v_0,v_0\ra = 0$, then $v_0 = \mathbf{0}$. 
+\end{enumerate}
+
+\begin{thm}
+	If $\W \prec \V$, where $\V$ is finite-dimensional, then $\W \oplus \W^\perp = \V$.
+\end{thm}\qed
+
+\begin{proof}
+	There are two things we need to do to prove this:
+	\begin{enumerate}
+		\item Showing that $\W \cap \W^\perp = \{ \mathbf{0} \}$
+		\item $\W + \W^\perp = \V$.
+	\end{enumerate}
+
+	The first item is already true, so we need to show the second item. Let $w_1,\dots, w_k$ be a basis for $\W$ and let $v\in \V$ be given. We want to show that there exist $\alpha_1, \dots, \alpha_k \in \C$ such that $\sum^k_{i=1} \alpha_i w_i + y = v$ for some $y\in \W^\perp$, i.e., we want to show that there exist the $\alpha_i$'s such that 
+	\begin{align*}
+		v - \sum^k_{i=1}\alpha_iw_i \in \W^\perp,
+	\end{align*}
+	i.e., there exist the $\alpha_i$'s such that for $j = 1,2,3,\dots,k$
+	\begin{align*}
+	\la v - \sum^k_{i=1}\alpha_iw_i, w_j \ra = 0.
+	\end{align*}
+	Thus we have a system of equations, which can be put into matrix form
+	\begin{align*}
+	\begin{bmatrix}
+	\la w_1, w_1 \ra & \dots & \la w_k, w_1 \ra\\
+	\vdots& \ddots & \vdots\\
+	\la w_1,w_k \ra&\dots & \la w_k,w_k\ra
+	\end{bmatrix}
+	\begin{bmatrix}
+	\alpha_1\\\vdots\\\alpha_k
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	\la v,w_1 \ra \\ \vdots \\ \la v,w_k \ra
+	\end{bmatrix}.
+	\end{align*}
+	We shall show that the above matrix, called the \textbf{Gramian} matrix, is invertible. But since it is a square matrix, we can just show it is injective. Suppose that 
+	\begin{align*}
+	G(\gamma) = \mathbf{0},
+	\end{align*}
+	where $\gamma = \begin{bmatrix}
+	\alpha_1&\dots&\alpha_k
+	\end{bmatrix}^\top$, then for any $j = 1,2,\dots,k$
+	\begin{align*}
+	0 = \sum^k_{i=1}\gamma_i \la w_i, w_j \ra.
+	\end{align*}
+	So, $\sum^k_{i=1}\gamma_iw_i \perp w_j$ for any $j=1,2,\dots,k$. In particular, 
+	\begin{align*}
+	\sum^k_{i=1}\gamma_iw_i \perp \sum^k_{i=1}\gamma_iw_i \iff \sum^k_{i=1}\gamma_iw_i = \mathbf{0}. 
+	\end{align*}
+	Thus $\gamma_i 0$ for any $i=1,2,\dots,k$. Hence, $G$ is injective, i.e., it is invertible. \qed
+	
+
+	
+\end{proof}
+
+	\textbf{Note} that this theorem \textbf{does not} hold for infinite dimensional cases. We will not go into the details of why this is the case, but it is an important thing to keep in mind. 
+	
+	
+	Now, we make the following observation that an orthonormal list in an inner product space is linearly independent. This is quite easy to show. Suppose $\sum^k_{i=1}\alpha_iv_i = \mathbf{0}$ where $v_1,\dots, v_k$ are mutually orthogonal unit vectors. Then we have
+	\begin{align*}
+	0 = \la \mathbf{0}, v_i \ra = \alpha_i \la v_i ,v_i \ra +0 = \alpha_i.
+	\end{align*} 
+	This means all $v_i$'s are linearly independent. We have a theorem.
+	
+	\begin{thm}
+		Every finite dimensional inner product space (that is non-trivial) has an orthonormal basis, and in fact any orthonormal list can be enlarged to one. \qed
+	\end{thm}
+ 
 \subsection{Riesz representation theorem}
+
+\begin{thm}\textbf{Riesz Representation Theorem}
+	Suppose $\V$ is an finite-dimensional inner product space (fdips) and $\rho : \V \lin \C$. Then there exists exactly one $w_0 \in \V$ such that 
+	\begin{align*}
+	\rho(v) = \la  v, w_0\ra
+	\end{align*}
+	for any $v\in \V$.\qed	
+\end{thm}
+
+
+\begin{proof}
+	By rank-nullity theorem, we first have that
+	\begin{align*}
+	\rank(\rho) + \text{nullity}(\rho) = \dim(\V).
+	\end{align*}
+	Now, $\rho$ maps to $\C$, so its rank is either 0 or 1. If its rank is zero,then $\rho \equiv 0$, so $w_0 = \mathbf{0}$ unique. If its rank if 1, then we look at 
+	\begin{align*}
+	\ker(\rho) \oplus \ker{\rho}^\perp = \V,
+	\end{align*}
+	which tells us that $\ker(\rho)^\top$ has dimension one. Thus, $\ker(\rho)^\top = \xpan(z_0)$, where $z_0$ is some unit vector. Now, 
+	\begin{align*}
+	\rho(z_0) \neq 0 \implies \frac{1}{\rho(z_0)}z_0 \in \xpan(z_0),
+	\end{align*}
+	and
+	\begin{align*}
+	\rho\lp \frac{1}{\rho(z_0)} \rp = \rho(z_1) = \frac{1}{\rho(z_0)}\rho(z_0) = 1.
+	\end{align*}
+	And so, $\xpan(z_0) = \xpan(z_1)$. Thus for any $v\in \V$, $v = w + \alpha z_1$ where $w \in \ker(\rho)$ and $z_1 \in \ker(\rho)^\perp$ uniquely. So, 
+	\begin{align*}
+	\rho(v) = \rho(w + \alpha z_1) = 0 + \alpha\rho(z_1) = \alpha.
+	\end{align*}
+	So the next question is for which vector $h$ such that $\rho(v) = \la v,h \ra$ for all $v$? Well, we already know that $\rho(v) = \alpha$. After a bit of thinking, if we set $h = z_1 / \norm{z_1}$, then
+	\begin{align*}
+	\rho(v) = \rho(w + \alpha z_1) = \alpha \la z_1, \frac{z_1}{\norm{z_1}}  \ra = \alpha \frac{\norm{z_1}}{\norm{z_1}} = \alpha.
+	\end{align*}
+	And so, let us pick $w_0 = \frac{z_1}{\norm{z_1}}$, then we have
+	\begin{align*}
+	\rho(v) = \la v,w_0 \ra
+	\end{align*}
+	for any $v\in \V$. Showing uniqueness of $w_0$ is not too hard: Assume that $\rho(v) = \la v,w_0 \ra = \la v,w_1 \ra$. Then 
+	\begin{align*}
+	\la v,w_0 \ra - \la v,w_1 \ra = \la v, w_0 - w_1\ra = 0 \iff w_0 = w_1.
+	\end{align*} 
+	This completes the proof.\qed
+\end{proof}
+
+What are the consequences of this theorem? Well, suppose that  we have $\lag : \V \lin \V$, where $\V$ is an fdips. Then consider
+\begin{align*}
+f() := \la \lag(), y_0 \ra,
+\end{align*}
+where $f:\V \lin \C$. So, $f$ must be like 
+\begin{align*}
+f() = \la (),w_0 \ra
+\end{align*}
+for some unique $w_0 \in \V$ and $w_0$ depends on $y_0$ and $\lag$. So let us write $w_0 = \lag(y_0)$. Now, consider $w_\lag : \V \to \V$. Now,
+\begin{align*}
+f() = \la (),w_0 \ra = \la \lag(), y_0\ra \implies \la x,w_\lag(\alpha y_0) \ra = \la \lag x, \alpha y_0 \ra = \dots = \la x,\alpha w_\lag(y_0) \ra.
+\end{align*}
+So we have
+\begin{align*}
+w_\lag(\alpha y_0) = \alpha w_\lag(y_0).
+\end{align*}
+We can indeed show that additivity also works here as well. And so $w_\lag : \V lin \V$ has the property that 
+\begin{align*}
+\la \lag(), y\ra = \la (), w_\lag(y) \ra.
+\end{align*}
+We call $w_\lag$ the \textbf{adjoint} of $\lag$, denoted $\lag^*$. Note that in this text I will use both $\lag^*$ and $\lag^\dagger$ notations. Another (mathematical) thing to notice is that $\lag^*$ depends on the inner product, but not the basis. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Adjoints}
-\subsection{Grammians}
+
+
+
+
+Now, let's say we have $\lag : \V \lin \U$ where both $\V,\U$ are fdips. Let $\Gamma$ be an orthonormal basis for $\V$ and $\Omega$ be an orthonormal basis for $\U$. Then we can show that
+\begin{align*}
+\boxed{[\lag^*]_{\gamma\leftarrow\Omega} = \lp \bar{[\lag]_{\Omega\leftarrow\Gamma}} \rp^\top}
+\end{align*}
+This is an exercise at the back. There's no good way to do this problem except entry-by-entry. Of course, ``think indices.''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Orthogonal complements and orthogonal decompositions}
+
+
+
 \subsection{Ortho-projections}
+
+
+
 \subsection{Closest point solutions}
+
+
+
+
+
 \subsection{Gram-Schmidt and orthonormal bases}
 
 \newpage
 
 \section{Isometries and unitary operators}
+
+The OPTIONAL problems covers this in detail. I will add the theorems to this section later. (source: Leo's Optional Practice Problem Set).
+
 \newpage 
 
 \section{Ortho-triangularization}
+
+\begin{thm}\textbf{Schur's Theorem:} 
+	For each operator $\lag : \V \lin \V$ where $\V$is an fdips there is an orthonormal basis $\Gamma$ of $\V$ such that $[\lag]_{\Gamma\leftarrow\Gamma}$ is upper triangular. \qed
+\end{thm}
+
+
+\begin{proof}
+	Here is a sketch of the proof. The full proof (I believe) is in the back. The theorem is trivially true for the one-dimensional case. So let us look at the two-dimensional case. Now, there is a unit eigenpair $(\lambda,v_0)$ for $\lag$ (existence of eigenvalues). Now, let $\W = \xpan(v_0)$. This subspace is one-dimensional. Then, $\V = \W \oplus \W^\perp$. Let $v_1$ be a unit vector in $\W^\perp$. Then $\Gamma(v_0, v_1)$ is an orthonormal basis of $\V$. Then
+	\begin{align*}
+	[\lag]_{\Gamma\leftarrow\Gamma} = \begin{bmatrix}
+	\lambda & \square\\
+	& \triangle
+	\end{bmatrix},
+	\end{align*}
+	which is upper triangular. Next, we look at the three-dimensional case. Once again, 
+	\begin{align*}
+	[\lag]_{\Gamma\leftarrow\Gamma} = \begin{bmatrix}
+	\lambda & \square\\
+	& \M
+	\end{bmatrix},
+	\end{align*}
+	where $\M$ is a $2\times 2$ block. But we have already proven the two-dimensional case (we can find a basis such that $\M$ is upper triangular...) And so by induction we get $[\lag]_{\Gamma\leftarrow\Gamma}$ upper-triangular. 
+\end{proof}
+
+
+
 \newpage 
 
-\section{Spectral resolutions}
-\newpage 
+\section{Ortho-diagonalization; Self-adjoint and Normal Operators; Spectral Theorems}
 
-\section{Ortho-diagonalization; self-adjoint and normal operators; spectral theorems}
+\subsection{Towards the Spectral Theorem}
+We make a few observations before diving into the good stuff:
+\begin{enumerate}
+	\item Suppose $\M \in \mathbb{M}_n$, and $\M = \begin{bmatrix}
+	\A & \B \\ \mathcal{C} & \mathcal{D}
+	\end{bmatrix}$ then $\M^* = \begin{bmatrix}
+	\A^* & \mathcal{C}^* \\ \B^* & \mathcal{D}^*
+	\end{bmatrix}$. 
+	
+	\item Suppose $\M$ is normal, then $\M\M^* = \M^* \M$, which means that if $\M = \begin{bmatrix}
+	\A & \B \\ \mathcal{C} & \mathcal{D}
+	\end{bmatrix}$ 
+	then (by the fact that $\tr(\A^*\A) = \tr(\A\A^*)$ and $\tr(\A^*\A) = 0 \iff \A=0$) we have $\tr(\B\B^*) = \tr(\mathcal{C}^*\mathcal{C})$.
+	
+	\item Suppose that $\A$ is block-upper triangular i.e., $\mathcal{C} = 0$, and that $\A$ is normal, then $\A$ has to be diagonal. And so every normal operator has a matrix representation that is diagonal. 
+	
+	\item What about the converse? - we might ask ourselves. 
+\end{enumerate}
+
+
+
+\subsection{The Spectral Theorem}
+
+The following statements are equivalent:
+\begin{enumerate}
+	\item $\A$ is normal then there is an orthonormal basis of the underlying space made up entirely of the eigenvectors of $\A$.
+	\item $\A: \V \lin \V$, then there exist an appropriate orthonormal basis $\Gamma$ such that $[\A]_{\Gamma\leftarrow\Gamma}$ is diagonal.
+	\item $\V = \bigoplus_{i=1}^k \mathbf{E}_{\lambda_i}$ where $\mathbf{E}_{\lambda_i}$ are mutually orthogonal $\lambda_i$-eigenspaces of $\A$. 
+	\item \textbf{Spectral Resolution:} $\A = \sum^k_{i=1}\lambda_i\E_i$, where $\E_i$'s are \textbf{ortho-projections} (which are non-negative self-adjoint operators, i.e., $\E_i^2 = \E_i = \E_i^*$ and $\sigma_\C(\E_i) \subseteq \{0,1 \}$) and the distinct $\lambda_i$'s are exactly the eigenvalues of $\A$. 
+\end{enumerate}
+
+
+It's probably crucial that we make the following distinction:
+\begin{enumerate}
+	\item Diagonalizable $\implies$ operator can be written as a linear combination of idempotents which resolve identity.
+	\item Normal $\implies$ operator can be written as a linear combination of \textbf{ortho-projections}
+\end{enumerate}
+
+Recall that for idempotents, $\V = \ima(\E) \oplus \ker(\E)$. For ortho-projections, $\ima(\E) \perp \ker(\E)$. 
+
+
+
+\subsection{Spectral Theorem for Matrices}
+
+It follows naturally that 
+
+\begin{thm}
+	Matrix $\M$ is normal $\iff$ $\M$ is unitarily equivalent to a diagonal matrix. \qed
+\end{thm}
+
+In fact, the right-to-left direction holds by a simple check. Suppose that $\A^*\M\A = \mathcal{D}$ is diagonal, and $\A$ is unitary. Does this mean $\M$ is normal? The answer is YES. $\M = \A \mathcal{D} \A^*$ then $\M^* = \A \mathcal{D}^* \A^*$. And so,
+\begin{align*}
+\M^* \M = \A \mathcal{D}^* \A^*\A \mathcal{D} \A^* = \A \mathcal{D}^*\mathcal{D}\A^* = \A \mathcal{D}\mathcal{D}^*\A^* = \A \mathcal{D} \A^*\A \mathcal{D}^* \A^*  =\M\M^*.
+\end{align*}
+So $\M$ is indeed normal. \qed
+
+\begin{thm}\textbf{Schur's Theorem - extended}
+	Every $n\times n$ matrix is unitarily equivalent to a triangular matrix. \qed
+\end{thm}
+
+
+
+
+
+
 \newpage 
 
 \section{Positive (semi-)definite operators}
+
+Now, if we go back to normal matrices. If $\A$ is normal, then $\A = \sum^k_{i=1}\lambda_i \E_i$ where $\lambda_i$'s are the eigenvalues of $\A$ and $\E_i$'s are ortho-projections that resolve identity. Now, what else can we ``mine'' from the spectral theorem? Well, if $A$ is normal, then it is unitarily equivalent to a diagonal matrix, so $\A = \Uni^* \mathcal{D} \Uni$ where $\mathcal{D}$ is diagonal whose entries are the eigenvalues of $\A$. Then it follows that $\A^2 = \Uni^* \mathcal{D}^2 \Uni$. In fact, if we define
+\begin{align*}
+f(\A) := \sum^k_{i=1}f(\lambda_i)\E_i
+\end{align*}
+then we have 
+\begin{align*}
+f(\A) = \Uni^* \begin{bmatrix}
+f(\lambda_1) && \\
+& \ddots & \\
+& & f(\lambda_k)
+\end{bmatrix}.
+\end{align*}
+
+
+Now, let's go a bit further. Suppose that $\A$ is not only normal but also has $\sigma_\C(\A) \subseteq [0,\infty)$ (so $\A$ is now non-negative). Then 
+\begin{align*}
+\sqrt{\A}\cdot \sqrt{\A} = \lp \sum^k_{i=1}\sqrt{\lambda_i} E_i \rp \lp \sum^k_{j=1}\sqrt{\lambda_j}\E_j  \rp = \sum^k_{i=1}\lambda_i\E_i = \A.
+\end{align*}
+
+But if we look at $\sqrt{\A}$, we can see that $\sqrt{\A}$ is also non-negative, hence self-adjoint, hence normal. And so we have
+
+\begin{thm}
+	Every non-negative normal matrix $\A$ has a \textbf{unique} non-negative normal square root $\sqrt{\A}$. \qed
+\end{thm}
+
+\textbf{The uniqueness proof is provided in the PRACTICE problem set. I will reproduce the proof here later. }
+
+
+\subsection{Underlying Space Resolution For Normal Operators}
+
+\begin{thm}
+	Suppose that $\V$ is an fdips, and $\lag$ is a linear operator on $\V$, then 
+	\begin{align*}
+	&\ker(\lag^*) = \ima(\lag)^\perp\\
+	&\ker(\A)^\perp = \ker({\A^*}^*)^\perp = \ima(\A^*).
+	\end{align*}
+\end{thm}
+
+
+\begin{proof}
+	Then consider the following string of arguments (for any $x\in \V$)
+	\begin{align*}
+	y \in \ima(\lag)^\perp &\iff \la \lag x,y \ra = 0\\
+	&\iff \la x, \lag^*y \ra = 0\\
+	&\iff \lag^* y = \mathbf{0}\\
+	&\iff y\in \ker(\lag^*).
+	\end{align*}\qed
+\end{proof}
+
+
+
+Now, it turns out that 
+\begin{align*}
+&\ker(\A^*\A) = \ker(\A)\\
+&\ker(\A\A^*) = \ker(\A^*)
+\end{align*}
+
+\begin{proof}
+	\begin{align*}
+	\la \A^*\A x,x \ra = \la \A x,\A x \ra = \norm{\A x}^2.
+	\end{align*}
+	If $\A^*\A x = \mathbf{0}$, then $\norm{\A x}^2 = 0$, then $\A x = 0$. And if $\A x = \mathbf{0}$, then $\A^*\A x = \mathbf{0}$, so $\la \A^*\A x,x\ra = 0$. 
+\end{proof}
+
+And so we have the following:
+\begin{align*}
+\A x = \mathbf{0} \iff \A^*\A x = \mathbf{0}, \text{ i.e., } \ker(\A) = \ker(\A^*\A).
+\end{align*}
+
+So now, we automatically have that (using the fact that $\A^*\A$ is self-adjoint - one can check this by inspection)
+\begin{align*}
+\ker(\A^*\A) &= \ker(\A)\\
+(\ker(\A^*\A))^\perp &= \ker(\A)^\perp\\
+\ima({(\A^*\A)}^*) &= \ima(\A^*)\\
+\ima(\A^*\A) = \ima(\A^*).
+\end{align*}
+
+Similarly, we also have 
+\begin{align*}
+\ima(\A\A^*) = \ima(\A).
+\end{align*}
+
+
+Now, $x\in \ker(\A^*) \iff \A^* x = \mathbf{0} \iff \norm{\A^* x}^2 = 0\iff
+\la \A^* x, \A^* x \ra = 0\iff \la \A\A^* x, x \ra = 0.$
+Similarly, $x\in \ker(\A) \iff \la \A^*\A x,x \ra = 0$. And so, if $\A$ is normal, then $\ker(\A) = \ker(\A^*)$. Thus
+\begin{thm}
+	$\A$ normal $\implies \ker(\A) = \ker(\A^*) = \ima(\A)^\perp$.
+\end{thm}
+
+
+Now, since we also know that $\A^*\A$ is non-negative (so it's self-adjoint), there is \textbf{exactly} one $\sqrt{\A^*\A}$ non-negative. And similarly, $\A\A^*$ is non-negative, so there is \textbf{exactly} one $\sqrt{\A\A^*}$ non-negative. Now, we observe that
+\begin{align*}
+x \in \ker(\sqrt{\A^*\A}) &\iff \norm{\sqrt{\A^*\A x}}^2 = 0\\
+&\iff \la \sqrt{\A^*\A} x , \sqrt{\A^\A} x \ra = 0\\
+&\iff \la \sqrt{\A^*\A}^* \sqrt{\A^*\A}  x,x  \ra = 0\\
+&\iff \la \A^*\A x,x \ra = 0\\
+&\iff \norm{\A x}^2 = 0 \\
+&\iff x\in \ker(\A),
+\end{align*}
+since $\A$ is nn-negative. Therefore, we have just shown that
+\begin{align*}
+\ker(\A^*\A) =\ker(\sqrt{\A^*\A}) = \ker(\A).
+\end{align*}
+And similarly, of course,
+\begin{align*}
+\ker(\A\A^*) = \ker(\sqrt{\A\A^*}) = \ker(\A^*).
+\end{align*}
+
+Lastly, 
+\begin{align*}
+\ima(\sqrt{\A^*\A}) = \lp \ker({(\sqrt{\A^*\A})}^*) \rp^\perp = \ker(\sqrt{\A^*\A})^\perp = \ker(\A)^\perp = \ima(\A^*).
+\end{align*}
+So we just showed that
+\begin{align*}
+& \ima(\sqrt{\A^*\A}) = \ima(\A^*\A) = \ima(\A^*)\\
+& \ima(\sqrt{\A\A^*}) = \ima(\A\A^*) = \ima(\A).
+\end{align*}
+
+
+Now, as we will show in one of the practice problems, we have the following amazing theorem:
+
+\begin{thm}
+	\begin{align*}
+	\norm{\sqrt{\A^*\A} x} = \norm{\A x}.
+	\end{align*}\qed
+\end{thm}
+
+
+
+
+
+
+
+
+
 \subsection{Classification of inner products}
 \subsection{Positive square roots}
 \newpage 
 
 \section{Polar decomposition}
+
+Let $\A$ any linear function $\A : \V \lin \W$ be given. Let us define a new function:
+$
+\phi: \ker(\A)^\perp \to \ima(\A) 
+$
+as
+\begin{align*}
+\phi \lb \sqrt{\A^*\A} x\rb := \A x.
+\end{align*}
+It can be easily shown that $\phi$ is not only linear but it is also an isometry (length-preserving). The key here is to recognize that 
+\begin{align*}
+\phi = \A \circ \lb \sqrt{\A^*\A} \bigg\vert_{\ker(\A)^\perp} \rb^{-1}.
+\end{align*}
+
+
+
+Now, let us turn $\A$ into an operator by requiring the $\W$ is $\V$ itself, then $\dim(\ker(\A)) = \dim(\ima(\A)^\perp)$. Then, we can define another isometry $\psi: \ker(\A ) \to \ima(\A)^\perp$. To do this, we simply pick an orthonormal basis $\Gamma$ of $\ker(\A)$ and an orthonormal basis $\Omega$ of $\ima(\A)^\perp$, then send one basis element to another one in the other space. It is very easy to show that $\psi$ is an isometry. 
+
+
+Now, by rank-nullity theorem, $\dim(\ker(\A)) = \dim(\ima(\A)^\perp) = \dim(\V)  - \dim(\ima(\A))$. Now, pick any isometry $\psi$ and define
+$
+\Uni : \V \to \V 
+$
+by 
+\begin{align*}
+\Uni(v_1 + v_2) = \phi(v_1) + \psi(v_2). 
+\end{align*}
+And hence, we have just shown that
+\begin{align*}
+\A = \Uni \circ \sqrt{\A^*\A}.
+\end{align*}
+This $\Uni$ is an isometry, and it is surjective, hence it is injective, i.e, it is \textbf{unitary}. 
+
+Similarly, if we start with the adjoint of $\A$, then we will end up with
+\begin{align*}
+\A = \sqrt{\A\A^*}\circ \hat{\Uni},
+\end{align*}
+where $\hat(\Uni)$ is also unitary. So...
+
+\begin{thm}
+	For any $\A : \V \lin \V$, there exists a unitary $\Uni_1: \V \lin \V$ such that $\A = \sqrt{\A\A^*} \circ \Uni_1$ and there exists a unitary $\Uni_2 : \V \lin \V$ such that $\A = \Uni_2 \circ \sqrt{\A^*\A}$. \qed
+\end{thm}
+
+Now, if we think back to complex numbers where we have $z = \abs{z}e^{i\theta}$, this is the analog of that, but in matrices and operators. Hence it makes sense to call this decomposition the \textbf{polar decomposition} of $\A$. 
+
+But there's more to the story. It turns out that we can use the same $\Uni$ for $\Uni_1$ and $\Uni_2$. Here's the proof:
+\begin{proof}
+	\begin{align*}
+	\A = \Uni \circ \sqrt{\A^*\A} = \lp \Uni \circ \sqrt{\A^*\A} \Uni^* \rp \Uni = \N \Uni.
+	\end{align*}
+	Recognize that
+	\begin{align*}
+	\N^2 = (\Uni \A^*)(\A \Uni^*) = \Uni \sqrt{\A^*\A} \Uni^*\Uni \sqrt{\A^*\A} \Uni^* =  \A \A^*,
+	\end{align*}
+	which says $\N$ is exactly $\sqrt{\A^*\A}$. So, 
+	\begin{align*}
+	\A = \N \Uni = = \sqrt{\A^*\A}\Uni \implies \A=  \Uni \sqrt{\A^*\A} = \sqrt{\A\A^*}\Uni.
+	\end{align*}
+	So we can use the same unitary in the power decomposition. But note that the unitary $\Uni$ itself is not necessarily unique. $\Uni$ is only unique if $\A$ is invertible. 
+\end{proof}
+
+
+
+
+
+
+
+
+
 \newpage 
 
-\section{Single value decomposition}
+\section{Singular value decomposition}
+
+
+
+
+Now, using our results from the polar decomposition of operators, we can imagine a case for $\A$ a square matrix. Then, $\A = \Uni \sqrt{\A^*\A}$ as before, where $\sqrt{\A^*\A}$ is non-negative, self-adjoint, normal, etc. And so, we can write $\A$ as
+\begin{align*}
+\A = \Uni \lp \hat{\Uni} \mathcal{D} \hat{\Uni}^* \rp
+\end{align*}
+where $\mathcal{D}$ is a diagonal matrix. This says that 
+\begin{align*}
+\A = (\Uni \hat{\Uni}) \mathcal{D} \hat{\Uni}^{-1} = \Uni_1 \mathcal{D} \Uni_2
+\end{align*}
+and 
+\begin{align*}
+\mathcal{D} = \begin{bmatrix}
+s_1 & & \\
+& \ddots & \\
+& & s_k
+\end{bmatrix}
+\end{align*}
+where $s_i$'s are exactly the eigenvalues of $\sqrt{\A^*\A}$. They are also called the \textbf{singular values} of $\A$. And thus, this is the \textbf{Singular Value Decomposition (SVD)} for square matrices. 
+
+
+
+
 \subsection{Spectral/operator norm}
 \subsection{Singular values and approximation}
 \subsection{Singular values and eigenvalues}
@@ -3590,7 +4340,7 @@ Now, similar matrices have the same Jordan forms.
 			$$ \lag[\mathbf{M}] \subseteq \lag[\lag^{-(h+1)}[\W]] = \lag[\lag^{-1}[\lag^{-h}[\W]]] \subseteq \lag[\lag^{-1}[\mathbf{M}]].  $$
 			But because $\lag^{-1}[\mathbf{M}] = \{ v\in \V \vert \lag(v)\in \mathbf{M} \}$, $\lag[\lag^{-1}[\mathbf{M}]] \subseteq \mathbf{M}$. Therefore, we have $\lag[\mathbf{M}] \subseteq \mathbf{M}^{(ii)}$.\\ 
 			
-			From (i) and (ii), $\mathbf{M}$ is invariant under $\lag$ if $\mathbf{M}$ is a subspace that falls between two consecutive subspaces in the chain shown in part 1.. 
+			From (i) and (ii), $\mathbf{M}$ is invariant under $\lag$ if $\mathbf{M}$ is a subspace that falls between two consecutive subspaces in the chain shown in part 1.
 			
 		\end{enumerate}
 	\end{sln*}
