@@ -46,6 +46,8 @@
 \newcommand{\be}{\beta}
 \newcommand{\x}{\xi}
 
+\newcommand{\W}{\mathcal{W}}
+
 \newcommand{\f}[2]{\frac{#1}{#2}}
 
 \newcommand{\ift}{\infty}
@@ -60,7 +62,7 @@
 \newcommand{\rc}{\right\}}
 
 
-\title{Calculus of Variations\\in\\Partial Differential Equations}
+\title{Calculus of Variations\\and\\Partial Differential Equations}
 \author{Huan Q. Bui}
 \date{May 18, 2019}
 \begin{document}
@@ -77,15 +79,23 @@
 \newpage
 \pagenumbering{arabic}
 
+
+
+
+
 \section{Introduction}
 
-One of the many things I love about studying both physics and mathematics is seeing how ideas in one field can connect to ideas in the other. 
+\noindent From an applied viewpoint, calculus of variations poses a fascinating indirect approach to solving optimization problems: considering small deviations from a solution (variations) and finding solutions based on what makes non-solutions are sub-optimal. In a way, the idea of calculus of variations is much like the scientific process where the necessary conditions for the truth - a solution to a problem, or a theory of a natural phenomenon - is often obtained by trial and error. It is thus not surprising that calculus of variation gives a \textit{natural} and appealing way for finding physical laws. Calculus of variations appears in almost all corners of physics, often under the name of the Principle of Least Action: from Lagrangian's formalism of classical mechanics to the foundations of classical and quantum field theory and the Standard Model.\\
 
 
+Calculus of variations and differential equations go almost hand-in-hand in physics. Physical laws are often written as differential equations. And while many theories, such as the Schr\"{o}dinger's equation or the Eintein's field equations, were postulated, it has been shown from time to time that these laws could be obtained from variational methods, which are often purely mathematical. \\
 
-\section{Calculus of Variations}
 
-From an applied viewpoint, calculus of variations poses a fascinating indirect approach to solving optimization problems: considering small deviations from a solution (variations) and finding solutions based on what makes non-solutions are sub-optimal. In a way, the idea of calculus of variations is much like the scientific process where the necessary conditions for the truth - a solution to a problem, or a theory of a natural phenomenon - is often obtained by trial and error. It is thus not surprising that calculus of variation gives a \textit{natural} method for finding physical laws. Calculus of variations appears in almost all corners of physics, often under the name of the Principle of Least Action. Lagrangian's formalism of classical mechanics gives solutions so natural and elegant that it has supersedes Newtonian mechanics. The principle of least action is also one of the fundamental ideas of classical and quantum field theory. Once-postulated Einstein's field equations and Schr\"{o}dinger's equation turned out to be derivable from calculus of variations.   
+This paper attempts to provide an overview of the connection between calculus of variations and (partial) differential equations. Starting with physically-motivated examples, the Euler-Lagrange equations and how physical laws (differential equations) can be obtained from variational methods. Through a general initial boundary value problem of an inhomogeneous Laplace's equation with Dirichlet boundary condition, the paper will also show how this problem in partial differential equation can be written as a minimization problem solvable by variational methods. \\
+
+
+What else here?
+
 
 \subsection{Euler-Lagrange's Equation}
 
@@ -160,7 +170,7 @@ T &= \int_{0}^{L} \frac{ds}{v} = \int_a^b \f{\sqrt{1 + x'^2}}{v}\,dy,
 \end{align}
 where $v$ is the speed. To express $v$ in terms of height $y$, we use conservation of energy. Assuming the total energy is zero, we get
 \begin{align}
-[\text{Potential Energy}] + [\text{Kinetic energy}] = -mgy + \frac{1}{2}mv^2 = 0.
+[\text{Potential Energy}] - [\text{Kinetic energy}] = mgy - \frac{1}{2}mv^2 = 0.
 \end{align}
 Thus,
 \begin{align}
@@ -212,9 +222,99 @@ This is the parameterization for a \textbf{cycloid}, the curved traced by a poin
 
 
 
+\section{Euler-Lagrange equations as PDE's}
+
+One aspect of the Brachistochrone problem that makes it a ``classic'' apart from its unexpected solution and interesting history is the prescription it provides for finding the ``equation of motion'' for certain physical systems:
+\begin{enumerate}
+	\item 1. Determine the Lagrangian.
+	\item 2. \begin{enumerate}
+		\item Either apply the Euler-Lagrange equation to the Lagrangian to get a system of relationships among the physical quantities
+		\item Or if it is unclear how to proceed with the Euler-Lagrange equations, vary the action functional with respect to some independent variable and obtain the Euler-Lagrange equation. 
+	\end{enumerate}
+	\item Simplify and obtain the physical law desired. 
+\end{enumerate}
+
+For example, suppose we would like to ``derive'' Hooke's law from only the energy terms. We first set up the Lagrangian:
+\begin{align}
+\lag = [Potential energy] - [Kinetic energy] = \f{1}{2}kx^2 - \f{1}{2}m\dot{x}^2.
+\end{align} 
+where $x$ is the position and $\dot{x}$ is the velocity of the particle. In independent variable here is time, $t$. Applying the Euler-Lagrangian equation:
+\begin{align}
+\f{\p \lag}{\p x} = \f{d}{dt}\f{\p \lag}{\p \dot{x}} \implies kx = -\f{d}{dt}(m\dot{x}) = -m\ddot{x}.
+\end{align}
+This is of course a silly example just to demonstrate how this method works. This method only becomes useful when the Lagrangian is known but it is not clear what the ``equations of motion'' are. For example, suppose we would like to know 
 
 
+\section{PDE's as Minimization Problems}
 
+Consider the following initial boundary value problem. 
+
+\begin{align}
+(\ast) \begin{cases}
+\nabla^2 u = 0 \hspace{0.5cm} \text{in $\Omega$}\\
+u = f \hspace{0.5cm} \text{on $\p\Omega$}.
+\end{cases}
+\end{align}
+
+It turns out that
+\begin{align}
+\boxed{\text{$u$ solves $(\ast)$} \iff \text{$u$ minimizes $S[w] = \frac{1}{2}\vert \nabla w\vert^2\,dx$}} 
+\end{align}
+\begin{proof}[Sketch of Proof]
+	$\,$
+	\begin{enumerate}
+		\item $(\implies)$ We want to show that for any solution $u$ of $(\ast)$, $S[u] \leq S[w+u]$ for any admissible $w$. In context of calculus of variations, the function $w$ satisfying the boundary conditions is the analogue of the deviation $\eta$ in the derivation of the Euler-Lagrange equation. Thus, it is natural to consider the perturbed solution $u' = u + w$ and what the action functional associated with it. Let a solution $u$ to $(\ast)$ be given. Then $\nabla^2u = 0$. Let an admissible $w$ satisfying the boundary condition $w = f$ in $\p \Omega$ be given. Then it is true that
+		\begin{align}
+		\int_\Omega w\nabla^2 u\,dx = 0.
+		\end{align}
+		Integration by parts gives
+		\begin{align}
+		\int_\Omega w\nabla^2 u\,dx &= w\nabla u\bigg\vert_{\p\Omega} - \int_\Omega \nabla u \dot \nabla w\,dx \nonumber \\
+		&= - \int_\Omega \nabla u \cdot \nabla w\,dx.
+		\end{align}
+		Now, we look at the action associated with the solution $u$ perturbed by some amount $w$: 
+		\begin{align}
+		S[u'] = S[u+w] &= \f{1}{2}\int_\Omega \vert \nabla(u+w) \vert^2\,dx \nonumber \\
+		&=  \f{1}{2}\int_\Omega \nabla(u+w) \cdot \nabla(u+w)\,dx \nonumber \\
+		&= \f{1}{2}\int_\Omega \lp\nabla u \cdot \nabla u + 2 \nabla u \cdot \nabla w + \nabla w \cdot \nabla w \rp \,dx\nonumber, \hspace{0.5cm}\text{by linearity of $\nabla$}\\
+		&= \f{1}{2}\int_\Omega \nabla u \cdot \nabla u + \nabla w \cdot \nabla w\,dx\nonumber\\
+		&= \f{1}{2}\int_\Omega \vert \nabla u \vert^2\,dx + \f{1}{2}\int_\Omega \vert \nabla w \vert^2\,dx\nonumber\\
+		&= S[u] + S[w]\nonumber\\
+		&\geq S[u].
+		\end{align}
+		Thus, $S[u] \leq S[u + w]$ for any admissible perturbation $w$. This means $u$ minimizes the action $S[\,]$.
+		
+		   
+		\item $(\impliedby)$ Here we want to show that if $u$ minimizes the action functional $S[\,]$ then $u$ solves $(\ast)$. Here the idea of calculus of variations comes in handy. Suppose that $u$ satisfies the boundary condition $u=f$ in $\p\Omega$ and minimizes the action $S[\,]$. Now, consider some perturbation in $u$, i.e., we let
+		\begin{align}
+		u \to u + \epsilon w
+		\end{align}
+		for some constant $\epsilon$ and function $w$ that satisfies the boundary condition of $(\ast)$. Once again, we consider the action associated with this perturbed $u$:
+		\begin{align}
+		S[u + \epsilon w] &= \frac{1}{2}\int_\Omega \vert \nabla (u + \epsilon w)\vert^2\,dx \nonumber\\
+		&= \f{1}{2}\int_\Omega \vert \nabla u \vert^2 + 2\epsilon \nabla u \nabla w + \epsilon^2\vert \nabla w \vert^2\,dx\,\hspace{0.5cm}\text{by linearity of $\nabla$}.
+		\end{align} 
+		Now, because $u$ minimizes $S[\,]$, ${\p S}/{\p \epsilon} = 0 $ at $\epsilon = 0$, so we have
+		\begin{align}
+		0 
+		&= \f{\p}{\p \epsilon}S[u+\epsilon w]\bigg\vert_{\epsilon =0}\nonumber\\
+		&= \int_\Omega \nabla u \cdot \nabla w \,dx + \int_\Omega \epsilon \vert \nabla w \vert^2\,dx \bigg\vert_{\epsilon=0}\nonumber\\
+		&= \int_{\Omega}\nabla u \cdot \nabla w\,dx.
+		\end{align}
+		But recall we have argued that 
+		\begin{align*}
+		\int_\Omega w\nabla^2u\,dx = -\int_\Omega \nabla u  \cdot \nabla w\,dx.
+		\end{align*}
+		Therefore,
+		\begin{align}
+		\int_\Omega \nabla u\cdot \nabla w\,dx = 0,
+		\end{align}
+		which must hold for any perturbation $w$. This means $\nabla^2u = 0$. But since $u$ also satisfies the boundary condition of $(\ast)$, $u$ solves $(\ast)$. 
+	\end{enumerate}
+\end{proof} 
+
+
+\section{Above and Beyond}
 
 \footnotesize
  \begin{thebibliography}{99}
