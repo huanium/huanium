@@ -1,0 +1,607 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{authblk}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+
+
+
+
+
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+\begin{document}
+\begin{titlepage}\centering
+ \clearpage
+ \title{\textsc{\bf{QUANTUM MECHANICS}}\\\smallskip A Quick Guide\\}
+ \author{\bigskip Huan Q. Bui}
+  \affil{Colby College\\$\,$\\ PHYSICS \& MATHEMATICS\\ Statistics \\$\,$\\Class of 2021\\}
+ \date{\today}
+ \maketitle
+ \thispagestyle{empty}
+\end{titlepage}
+
+\subsection*{Preface}
+\addcontentsline{toc}{subsection}{Preface}
+
+Greetings,\\
+
+\textbf{Quantum Mechanics, A Quick Guide to...} is my reading notes from Shankar's \textit{Principles of Quantum Mechanics, Second Edition}. Additional material will come from my class notes and my comments/interpretations/solutions.
+
+Enjoy!
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Mathematical Introduction}
+
+\subsection{Linear Vector Spaces}
+
+We should familiar with defining characteristics of linear vector spaces at this point. Here are some important definitions/theorems again:
+
+\begin{defn}
+	A linear vector space $\textbf{V}$ is a collection of objects called \textit{vectors} for which there exists
+	
+	\begin{enumerate}
+		\item A definite rule for summing, and
+		\item A definite rule for scaling, with the following features:
+		
+		
+		\begin{itemize}
+			\item Closed under addition: for $x,y \in \V$, $x+y \in \V$.
+			\item Closed under scalar multiplication: $x\in \V$, then $ax \in \V$ for some scalar $a$.
+			\item Scalar multiplication is distributive. 
+			\item Scalar multiplication is associative.
+			\item Addition is commutative.
+			\item Addition is associative.
+			\item There exists a (unique) null element in $\V$.
+			\item There exists a (unique) additive inverse. 
+		\end{itemize}
+	\end{enumerate}
+\end{defn}
+
+
+Vector spaces are defined over some field. The field can be real numbers, complex numbers, or it can also be finite. As for good practice, we will begin to label vectors with Dirac bra-ket notation. So, for instance, $\ket{v} \in \V$ denotes vector $v \in \V$. Basic manipulations of these vectors are intuitive:
+\begin{enumerate}
+	\item $\ket{0}$ is unique, and is the null element.
+	\item $0\ket{V} = \ket{0}$.
+	\item $\ket{-V} = -\ket{V}$.
+	\item $\ket{-V}$ is a unique additive inverse of $\ket{V}$.
+\end{enumerate} 
+
+The reasons for choosing to use the Dirac notation will become clear later on. Another important basic concept is \textit{linear (in)dependence}. Of course, there are a number of equivalent statement for linear independence. We shall just give one here:
+
+\begin{defn}
+	A set of vectors is said to be linearly independent if the only linear relation 
+	\begin{align}
+	\sum^n_{i=1}a_i\ket{i} = \ket{0}
+	\end{align}
+	is the trivial one where the components $a_i = 0$ for any $i$. 
+\end{defn}
+
+
+
+The next two basic concepts are \textit{dimension} and \textit{basis}. 
+
+\begin{defn}
+	A vector space $\V$ has dimension $n$ if it can accommodate a maximum of $n$ linearly independent vectors. We denote this $n$-dimensional vector space as $\V^n$.
+\end{defn}
+
+We can show that 
+
+\begin{thm}
+	Any vector $\ket{v} \in \V^n$ can be written (uniquely) as a linear combination of any $n$ linearly independent vectors.  
+\end{thm}
+
+
+\begin{defn}
+	A set of $n$ linearly independent vectors in a $n$-dimensional space is called a \textit{basis}. So if $\ket{1},\dots,\ket{n}$ form a basis for $\V^n$, then any $\ket{v}\in \V$ can be written uniquely as
+	\begin{align}
+	\ket{v} = \sum^n_{i=1}a_i\ket{i}.
+	\end{align}
+\end{defn}
+
+It is nice to remember the following:
+\begin{align}
+\boxed{\text{Linear Independence} = \text{Basis} + \text{Span}}
+\end{align}
+
+When a collection of vectors span a vector space $\V$, it just means that any $\ket{v} \in \V$ can be written as a linear combination of (some of) these vectors. 
+
+
+The algebra of linear combinations is quite intuitive. If $\ket{v} = \sum_i a_i\ket{i}$ and $\ket{w} = \sum_i b_i\ket{i}$ then 
+
+\begin{enumerate}
+	\item $\ket{v + w} = \sum_i (a_i + b_i)\ket{i}$.
+	\item $c\ket{v} = c\sum_i a_i\ket{i} = \sum_i ca_i\ket{i}$.
+\end{enumerate}
+
+
+
+A linear algebra text will of course provide a much better coverage of these topics. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Inner Product Spaces}
+
+
+A generalization of the familiar dot product is the \textit{inner product} or the \textit{scalar product}. An inner product between two vectors $\ket{v}$ and $\ket{w}$ is denoted $\braket{v|w}$. An inner product has to satisfy the following properties:
+
+\begin{enumerate}
+	\item Conjugate symmetry (or skew-symmetry):$\braket{v}{w} = \braket{w}{v}^*$.
+	\item Positive semi-definiteness: $\braket{v}{v} \geq 0$.
+	\item Linearity in ket: $\braket{v}{aw + bz} = a\braket{v}{w} + b\braket{v}{z}$.
+	\item Conjugate-linearity in bra: $\braket{av + bz}{w} = \bar{a}\braket{v}{w} + \bar{b}\braket{z}{w}$.
+\end{enumerate}
+
+
+
+
+\begin{defn}
+	An inner product space is a vector space with an inner product. 
+\end{defn}
+
+
+\begin{defn}
+	$\innerproduct{v}{w} = 0 \iff \ket{v} \perp \ket{w}$. 
+\end{defn}
+
+
+\begin{defn}
+	The \textit{norm} (or length) of $\ket{v}$ is defined as 
+	\begin{align}
+	\norm{v} = \sqrt{\braket{v}}.
+	\end{align}
+	Unit vectors have unit norm. Unit vectors are said to be \textit{normalized}.  
+\end{defn}
+
+
+
+
+\begin{defn}
+	A set of basis vectors all of unit norm, which are pairwise orthogonal will be called an \textit{orthonormal basis} or ONB. 
+\end{defn}
+
+
+Let $\ket{v} = \sum_i a_i\ket{i}$ and $\ket{w} = \sum_i b_i \ket{j}$, then 
+\begin{align}
+\braket{v}{w} = \sum_i a_i^*b_i \braket{i}{j}.
+\end{align}
+
+
+\newpage
+
+
+\section{Review of Classical Mechanics}
+
+
+\newpage
+
+
+
+
+\section{All is Not Well with Classical Mechanics}
+
+
+
+\newpage
+
+
+
+\section{The Postulates \textendash a General Discussion}
+
+
+\newpage
+
+
+
+\section{Simple Problems in One Dimension}
+
+
+\newpage
+
+
+
+\section{The Classical Limit}
+
+
+
+\newpage
+
+
+\section{The Harmonic Oscillator}
+
+
+
+\newpage
+
+
+
+\section{The Path Integral Formulation of Quantum Theory}
+
+
+
+\newpage
+
+
+
+\section{The Heisenberg Uncertainty Relation}
+
+
+
+\newpage
+
+
+
+\section{Systems with $N$ Degrees of Freedom}
+
+
+
+\newpage
+
+
+
+\section{Symmetries and Their Consequences}
+
+
+\newpage
+
+
+
+\section{Rotational Invariance and Angular Momentum}
+
+
+
+
+\newpage
+
+
+
+
+\section{The Hydrogen Atom}
+
+
+\newpage
+
+
+
+\section{Spin}
+
+
+
+\newpage
+
+
+
+\section{Additional of Angular Momentum}
+
+
+\newpage
+
+
+
+\section{Variational and WKB Methods}
+
+
+
+\newpage
+
+
+\section{Time-Independent Perturbation Theory}
+
+
+\newpage
+
+
+
+\section{Time-Dependent Perturbation Theory}
+
+
+\newpage
+
+
+\section{Scattering Theory}
+
+
+\newpage
+
+
+\section{The Dirac Equation}
+
+
+\newpage
+
+
+
+\section{Path Integrals\textendash II}
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Selected Problems and Solutions}
+
+
+\subsection{Mathematical Introduction}
+
+
+
+\newpage
+
+
+\subsection{Review of Classical Mechanics}
+
+
+\newpage
+
+
+
+
+\subsection{All is Not Well with Classical Mechanics}
+
+
+
+\newpage
+
+
+
+\subsection{The Postulates \textendash a General Discussion}
+
+
+\newpage
+
+
+
+\subsection{Simple Problems in One Dimension}
+
+
+\newpage
+
+
+
+\subsection{The Classical Limit}
+
+
+
+\newpage
+
+
+\subsection{The Harmonic Oscillator}
+
+
+
+\newpage
+
+
+
+\subsection{The Path Integral Formulation of Quantum Theory}
+
+
+
+\newpage
+
+
+
+\subsection{The Heisenberg Uncertainty Relation}
+
+
+
+\newpage
+
+
+
+\subsection{Systems with $N$ Degrees of Freedom}
+
+
+
+\newpage
+
+
+
+\subsection{Symmetries and Their Consequences}
+
+
+\newpage
+
+
+
+\subsection{Rotational Invariance and Angular Momentum}
+
+
+
+
+\newpage
+
+
+
+
+\subsection{The Hydrogen Atom}
+
+
+\newpage
+
+
+
+\subsection{Spin}
+
+
+
+\newpage
+
+
+
+\subsection{Additional of Angular Momentum}
+
+
+\newpage
+
+
+
+\subsection{Variational and WKB Methods}
+
+
+
+\newpage
+
+
+\subsection{Time-Independent Perturbation Theory}
+
+
+\newpage
+
+
+
+\subsection{Time-Dependent Perturbation Theory}
+
+
+\newpage
+
+
+\subsection{Scattering Theory}
+
+
+\newpage
+
+
+\subsection{The Dirac Equation}
+
+
+\newpage
+
+
+
+\subsection{Path Integrals\textendash II}
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
