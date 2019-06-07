@@ -58,7 +58,8 @@
 
 
 \newcommand{\V}{\mathbf{V}}
-
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
 
 
 
@@ -452,6 +453,250 @@ Then, for
 \ket{v} = \sum_i v_i \ket{i}, 
 \end{align}
 we have
+\begin{align}
+\Omega\ket{v} = \Omega \sum_i v_i \ket{i} = \sum_i v_i \Omega\ket{i} = \sum_i v_i \ket{i'}.
+\end{align}
+Because we know $\Omega$ and $\ket{i}$, $\ket{i'}$ is also known, as in its components in the basis $\ket{j}$ (un-primed) are known:
+\begin{align}
+\braket{j}{i'} = \bra{j}\Omega\ket{i} \equiv \Omega_{ji},
+\end{align}
+where the $n^2$ numbers $\Omega_{ji}$ are the matrix elements of $\Omega$ in this basis. Now, if
+\begin{align}
+\Omega\ket{v} = \ket{v'}
+\end{align}
+then the components of the transformed ket $\ket{v'}$ can be expressed in terms of the components of $\ket{v}$ and the matrix elements $\Omega_{ji}$:
+\begin{align}
+v_i' = \braket{i}{v'} = \bra{i}\Omega\ket{v} = \bra{i}\Omega \sum_j v_j \ket{j} = \sum_j v_j \bra{i}\Omega\ket{j} = \sum_j \Omega_{ij}v_j.
+\end{align}
+We can see the above equation in matrix form as well:
+\begin{align}
+\begin{bmatrix}
+v_1'  \\ \vdots \\ v_n'
+\end{bmatrix}
+=
+\begin{bmatrix}
+\bra{1}\Omega\ket{1} &  \dots & \bra{1}\Omega\ket{n} \\
+\vdots & \ddots & \vdots\\	
+\bra{n}\Omega\ket{1} & \dots & \bra{n}\Omega\ket{n} \\
+\end{bmatrix}
+\begin{bmatrix}
+v_1 \\ \vdots \\ v_n 
+\end{bmatrix}.
+\end{align}
+The elements of the first column are simply the components of the first transformed basis vector $\ket{1'} = \Omega\ket{1}$ in the given basis. Likewise, the elements of the j$^{\text{th}}$ column represent the image of the j$^\text{th}$ basis vector after $\Omega$ acts on it. 
+
+
+\subsection{Matrix Elements of Products of Operators}
+
+To get the matrix elements of a product of two operators, we do the following. Suppose we have operators $\Omega$ and $\Lambda$, then
+\begin{align}
+(\Omega\Lambda)_{ij} = \bra{i}\Omega\Lambda\ket{j} = \bra{i}\Omega \mathcal{I} \Lambda \ket{j}.
+\end{align}
+Now, we observe that 
+\begin{align}
+\mathcal{I} = \sum_k \ket{k}\bra{k}. 
+\end{align}
+So, 
+\begin{align}
+(\Omega \Lambda)_{ij} = \sum_k \bra{i}\Omega\ket{k}\bra{k}\Lambda \ket{j} = \sum_k \Omega_{ik}\Lambda_{kj}.
+\end{align}
+
+
+
+\subsection{The Adjoint of an Operator}
+Recall that for a scalar $\alpha$
+\begin{align}
+\bra{\alpha v} = \bra{v}\alpha^*,
+\end{align}
+then we have a similar thing with operators if
+\begin{align}
+\Omega\ket{v} = \ket{v'}
+\end{align}
+then 
+\begin{align}
+\bra{\Omega v} = \bra{v}\Omega^\dagger,
+\end{align}
+where $\Omega^\dagger$ is \textit{the} adjoint of $\Omega$. The relationship between $\Omega^\dagger$ and $\Omega$ can be seen in a basis. We consider the matrix elements of $\Omega^\dagger$ in a basis:
+\begin{align}
+(\Omega^\dagger)_{ij} = \bra{i}\Omega^\dagger \ket{j} = \bra{\Omega i}\ket{j} = \bra{j}\ket{\Omega i}^* = \bra{j} \Omega \ket{i}^* = \Omega_{ji}^*.
+\end{align}
+We see that
+\begin{align}
+\Omega^\dagger_{ij} = \Omega^*_{ji},
+\end{align}
+i.e., in matrix form, $\Omega^\dagger$ is the conjugate transpose of $\Omega$. 
+
+The rule for taking adjoins of equations is rather simple: When a product of operators, bras, kets, ad explicit numerical coefficients is encountered, reverse the order of all factors and make the substitution $\Omega \leftrightarrow \Omega^\dagger$, $\ket{} \leftrightarrow \bra{}$, $a \leftrightarrow a^*$. 
+
+
+\subsection{Hermitian, Anti-Hermitian, and Unitary Operators}
+
+\begin{defn}
+	An operator $\Omega$ is Hermitian $\iff \Omega = \Omega^\dagger$.
+\end{defn}
+
+
+\begin{defn}
+	An operator $\Omega$ is anti-Hermitian $\iff \Omega = -\Omega^\dagger$.
+\end{defn}
+
+Shankar's book ignores a bigger class of operators called \textit{normal} operators. Normal operators commute with their adjoints. In a sense, normal operators act \textit{like numbers}. Hermitian (or self-adjoint) operators are a subset of normal operators. So, the number-likeness of normal operators carries over to Hermitian operators and anti-Hermitian operators as well. Hermitian and anti-Hermitian operators are like pure real and pure imaginary numbers. Just as every number maybe be decomposed into a sum of pure real and pure imaginary parts, it turns out that we can decompose every operator into its Hermitian and anti-Hermitian parts. 
+\begin{align}
+\Omega = \f{\Omega + \Omega^\dagger}{2} + \f{\Omega - \Omega^\dagger}{2}.
+\end{align}
+One can verify that the first terms is Hermitian, and the second term is anti-Hermitian. 
+
+
+
+
+\begin{defn}
+	An operator $\mathcal{U}$ is unitary $\iff \mathcal{U}\mathcal{U}^\dagger = \mathcal{I}$. 
+\end{defn}
+
+Unitary operators are like complex numbers of unit modulus. 
+
+
+\begin{thm}
+	Unitary operators preserves the inner product between the vectors they act on.
+	\begin{proof}
+		Suppose
+		\begin{align}
+		\ket{v'} &= \mathcal{U}\ket{v}\\
+		\ket{w'} &= \mathcal{U}\ket{w}.
+		\end{align}
+		Then
+		\begin{align}
+		\braket{v'}{w'} = \braket{\mathcal{U}v}{\mathcal{U}w} = \bra{v}\mathcal{U}^\dagger\mathcal{U}\ket{w} = \braket{v}{w}.
+		\end{align}
+	\end{proof}
+\end{thm} 
+
+
+
+\begin{thm}
+	The columns (or rows) of a unitary matrix form an ONB.
+	\begin{proof}
+		Refer to a linear algebra text. The key is to consider an inner product between any two columns/rows.
+	\end{proof}
+\end{thm}
+
+
+\subsection{Active and Passive Transformation}
+
+Suppose all $\ket{v}$ is unitarily transformed to $\ket{v'}$:
+\begin{align}
+\ket{v} \to \U \ket{v}.
+\end{align}
+Then under this transformation, the matrix elements of any operator $\Omega$ are modified as follows:
+\begin{align}
+\ket{v'}\Omega\ket{v} \to \ket{\U v'} \Omega \ket{\U v} = \bra{v'}\U^\dagger \Omega \U \ket{v}.
+\end{align}
+It is clear that the same change is equivalent to leaving the vectors alone and subjecting all operators to the change
+\begin{align}
+\Omega \to \U^\dagger \Omega \U.
+\end{align}
+
+\textit{Active transformation} refers to changing the vectors, while \textit{passive transformation} refers to changing the operators.
+
+
+
+
+
+\subsection{The Eigenvalue Problem}
+I won't say much about what eigenvectors and eigenvalues are because we should be familiar with these concepts at this point. But just to introduce some terminology, each operator has certain kets of its own called \textit{eigenkets}, on which its action is simply that of scaling. So, eigenkets are just a different word for eigenvectors of an operator:
+\begin{align}
+\Omega\ket{v} = \omega\ket{v}.
+\end{align}
+
+Shankar's book talks about the characteristic equation and characteristic polynomial. While these are legitimate ways to find eigenvalues and eigenvectors, it is often very difficult. I'd prefer Leo Livshits' and Sheldon Axler's way and use minimal polynomials instead. I would steer away from determinants and characteristic polynomials at this point. 
+
+
+\begin{thm}
+	Eigenvalues of a Hermitian operator are real. 
+	\begin{proof}
+		Suppose 
+		\begin{align}
+		\Omega\ket{w} = a\ket{w},
+		\end{align}
+		then
+		\begin{align}
+		\bra{w}\Omega\ket{w} = a\braket{w},
+		\end{align}
+		and thus
+		\begin{align}
+		a^* \braket{w} = \bra{w}\Omega^\dagger\ket{w} = \bra{w}\Omega\ket{w} = a\braket{w}.
+		\end{align}
+		So we have
+		\begin{align}
+		(a - a^*)\braket{w} = 0.
+		\end{align}
+		Because $\ket{w}$ are eigenkets, they are cannot be the zero vector. This means $a = a^*$.
+	\end{proof}
+\end{thm}
+
+
+Some might worry about the existence of eigenvalues of Hermitian operators. But worry no more, because Hermitian operators are a subclass of normal operators, which are a subclass of diagonalizable operators. This simply says Hermitian matrices are diagonalizable, and all its eigenvalues are real. But it turns out there is a little bit more to this. 
+
+
+\begin{thm}
+	For every Hermitian operator $\Omega$, there exists an ONB comprised entirely of the eigenvectors of $\Omega$. 
+\end{thm}
+
+Once again, this should be no surprise if one has studied normal operators. Hermitian operators inherit this property from its normalness. This property of normal operators are called the Spectral Theorem (for normal operators, of course). The proof of all this can be found in many linear algebra texts. 
+
+
+\begin{thm}
+	The eigenvalues of a unitary operator are complex numbers of unit modulus. 
+	\begin{proof}
+		The key to the proof is using inner products. 
+	\end{proof}
+\end{thm}
+
+
+
+\subsubsection{Simultaneous Diagonalization of Two Hermitian Operators}
+
+I would say the topic of simultaneous diagonalizability is covered quite well in Leo Livshits' course and hence in my \href{https://huanqbui.com/LaTeX\%20projects/Matrix_Analysis/HuanBui_MatrixAnalysis.pdf}{Matrix Analysis} notes. But here I will just give the most important results. 
+
+\begin{thm}
+	If $\Omega$ and $\Lambda$ are two commuting Hermitian operators, there exists a basis of common eigenvectors that diagonalizes them both. 
+\end{thm} 
+
+This result is not too surprising if we have studied simultaneous diagonalizability before. A more general theorem says that 
+\begin{align}
+\text{Simultaneous diagonalizbility} \iff \text{Individual diagonalizability} + \text{Commutativity}.
+\end{align}
+It is clear that because all Hermitian operators are diagonalizable, if two Hermitian operators commute, they are simultaneously diagonalizable.
+
+
+
+\subsubsection{The Propagator}
+
+In quantum mechanics (and classical mechanics of course), it is quite common to have some final state vector be obtained from an initial state vector multiplied by some matrix, which is independent of the initial state. We call this matrix the \textit{propagator}. 
+
+
+The central problem in quantum mechanics is finding the state of a quantum system $\ket{\psi}$, which obeys the Schr\"{o}dinger equation:
+\begin{align}
+i\hbar \ket{\dot{\psi}} = J\ket{\psi}
+\end{align}
+where the Hermitian operator $H$ is called the \textit{Hamiltonian}. We will see much more of this as we move on.
+
+
+
+\subsection{Functions of Operators and Related Concepts}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
