@@ -114,7 +114,9 @@
 
 Greetings,\\
 
-\textbf{Quantum Mechanics, A Quick Guide to...} is my reading notes from Shankar's \textit{Principles of Quantum Mechanics, Second Edition}. Additional material will come from my class notes and my comments/interpretations/solutions.
+\textbf{Quantum Mechanics, A Quick Guide to...} is my reading notes from Shankar's \textit{Principles of Quantum Mechanics, Second Edition}. Additional material will come from my class notes and my comments/interpretations/solutions.\\
+
+A strong background in linear algebra will be very helpful. I will try to cover some of the mathematical background, but a lot of familiarity will be assumed. \\
 
 Enjoy!
 
@@ -268,6 +270,198 @@ Let $\ket{v} = \sum_i a_i\ket{i}$ and $\ket{w} = \sum_i b_i \ket{j}$, then
 \begin{align}
 \braket{v}{w} = \sum_i a_i^*b_i \braket{i}{j}.
 \end{align}
+
+
+
+\begin{thm}
+	\textbf{Gram-Schmidt:} Given a linearly independent basis, we can form linear combinations of the basis vectors to obtain an orthonormal basis. 
+\end{thm}
+
+Suppose that the Gram-Schmidt process gives us an ONB then we have
+\begin{align}
+\braket{i}{j} = \delta_{ij}.
+\end{align}
+As a result,
+\begin{align}
+\braket{v}{w} = \sum_i v_i^*w_i.
+\end{align}
+Alternatively, we can think this as doing the standard inner products of vectors whose entries are the components of the vectors $\ket{v}$, $\ket{w}$ in the basis:
+\begin{align}
+\ket{v} \to \begin{bmatrix}
+v_1\\v_2\\\vdots\\v_n
+\end{bmatrix}\hspace{0.5cm}
+\ket{w} \to \begin{bmatrix}
+w_1\\w_2\\\vdots\\w_n
+\end{bmatrix} \implies \braket{v}{w} = \begin{bmatrix}
+v_1^* & v_2^* & \dots & v_n^*
+\end{bmatrix}\begin{bmatrix}
+w_1\\ w_2 \\\vdots \\ w_n
+\end{bmatrix}.
+\end{align}
+We can also easily see that 
+\begin{align}
+\braket{v}{v} = \sum_i \abs{v_i}^2 \geq 0.
+\end{align}
+
+\subsection{Dual Spaces and Dirac Notation}
+Here we deal with some technical details involving the \textit{ket} (the column vectors) and the \textit{bra} (the row vectors). Column vectors are concrete manifestations of an abstract vector $\ket{v}$ in a basis, and we can work backward to go from the column vectors to the kets. We can do a similar thing with the bra vectors - since there's nothing special about writing the entries is a column versus in a row. However, we will do the following. We know that associated with every ket $\ket{v}$ is a column vector. So let its adjoint, which is a row vector, be associated with the bra, called $\bra{v}$. Now, we have two vector spaces, the space of kets and the dual space of bras. There is a basis of vectors $\ket{i}$ for expanding kets and a similar basis $\bra{i}$ for expanding bras. 
+
+\subsubsection{Expansion of Vectors in an ONB}
+It is extremely useful for us to be able to express a vector in an ONB. Suppose we have a vector $\ket{v}$ in an ONB $\ket{i}$. Then, let $\ket{v}$ be written as
+\begin{align}
+\ket{v} = \sum_i v_i \ket{i}.
+\end{align}
+To find the components $v_i$, we take the inner product of $\ket{v}$ with $\ket{j}$:
+\begin{align}
+\braket{j}{v} = \sum_i v_i \braket{j}{i} = \sum_i v_i\delta_{ij} = v_j.
+\end{align}
+With this, we can rewrite the vector $\ket{v}$ in the basis $\ket{i}$ as
+\begin{align}
+\ket{v} = \sum_i \ket{i}\braket{i}{v}.
+\end{align}
+
+
+
+\subsubsection{Adjoint Operations}
+Here is a few details regarding taking the adjoints of vectors. Suppose that
+\begin{align}
+\ket{v} = \sum_i v_i\ket{i} = \sum_i \ket{i}\braket{i}{v}.
+\end{align}
+Then,
+\begin{align}
+\bra{v} = \sum_i\ket{i}v_i^*.
+\end{align}
+Now, because $v_i = \braket{i}{v}$, we have $v_i^* = \braket{v}{i}$. Thus, 
+\begin{align}
+\bra{v} = \sum_i \braket{v}{i}\bra{i}.
+\end{align}
+In plain words, the rule for taking the adjoint is the following. To take the adjoint of an equation involving bras and kets and coefficients, reverse the order of all factors, exchanging bras and kets and complex conjugating all coefficients. 
+
+
+\subsubsection{Gram-Schmidt process}
+Again, the Gram-Schmidt process lets us convert a linearly independent basis into an orthonormal one. For a two-dimensional case, procedure is the following:
+\begin{enumerate}
+	\item Rescale the first by its own length, so it becomes a unit vector. This is the first (orthonormal) unit vector.
+	\item Subtract from the second vector its projection along the first, leaving behind only the part perpendicular to the first. (Such a part will remain since by assumption the vectors are nonparallel).
+	\item Rescale the left over piece by its own length. We now have the second basis vector: it s orthogonal to the first and of unit length.
+\end{enumerate}
+
+In general, let $\ket{I}, \ket{II}, \dots$ be a linearly independent basis. The first vector of the orthonormal basis will be
+\begin{align}
+\ket{1} = \f{\ket{I}}{\norm{\ket{I}}}.
+\end{align}
+For the second vector in the basis, consider
+\begin{align}
+\ket{2'} = \ket{II} - \ket{1}\braket{1}{II}.
+\end{align}
+We can see that $\ket{2'}$ is orthogonal to $\ket{1}$:
+\begin{align}
+\braket{1}{2'} = \braket{1}{II} - \braket{1}\braket{1}{II} = 0.
+\end{align}
+So dividing $\ket{2'}$ by its norm gives us, $\ket{2}$, the second element in the ONB. To find the third element in the ONB, we have to first make sure it is orthogonal to both $\ket{I}$ and $\ket{II}$, so let us consider
+\begin{align}
+\ket{3'}= \ket{III} - \ket{1}\braket{1}{III} - \ket{2}\braket{2}{III}.
+\end{align}
+Once again we have $\ket{3'}$ orthogonal to both $\ket{1}$ and $\ket{2}$. Normalizing $\ket{3'}$ gives us $\ket{3}$, the third element in the ONB. We can now see how this process continues to the last element. 
+
+
+
+\subsubsection{Schwarz and Triangle Inequality}
+Just two small yet very important details:
+\begin{thm}
+	Schwarz Inequality:
+	\begin{align}
+	\abs{\braket{v}{w}} \leq \norm{v}\norm{w}
+	\end{align}
+\end{thm}
+
+
+\begin{thm}
+	Triangle Inequality:
+	\begin{align}
+	\norm{v+w} \leq \norm{v} + \norm{w}.
+	\end{align}
+\end{thm}
+
+
+
+\subsection{Subspaces, Sum and Direct Sum of Subspaces}
+I'm not too happy with the definitions given by Shankar's book. He also uses the notation for direct sum to indicate vector space addition, which is very confusing. Any linear algebra textbook would provide better definitions. For equivalent statements about directness of vector space sums, check out my \href{https://huanqbui.com/LaTeX\%20projects/Matrix_Analysis/HuanBui_MatrixAnalysis.pdf}{Matrix Analysis} notes. 
+
+
+
+
+\subsection{Linear Operators}
+Again, a rigorous definition of an operator can be found in almost any linear algebra textbook. But here,we can simply think of an operator as just some linear transformation from a vector space to itself. Say, if $\Omega$ is some operator that sends $\ket{v}$ to $\ket{v'}$, we write
+\begin{align}
+\Omega\ket{v} = \ket{v'}.
+\end{align}
+By definition, $\ket{v}$ and $\ket{v'}$ are contained in the same vector space. Now, we note that $\Omega$ can also act on bras:
+\begin{align}
+\bra{v}\Omega = \bra{v'}.
+\end{align}
+But of course the order of writing things is different, and once again, $\bra{v}$ and $\bra{v'}$ are contained in the same (dual) space. 
+
+
+Next, because $\Omega$ is linear, we have the following familiar rules:
+\begin{align}
+\Omega \alpha \ket{v_i} &= \alpha\Omega \ket{v_i}.\\
+\Omega \{ \alpha \ket{v_i} + \beta\ket{v_j} \} &= \alpha\Omega\ket{v_i} + \beta\Omega \ket{v_j}.\\
+\bra{v_i}\alpha\Omega &= \bra{v_i}\Omega \alpha\\
+\{\bra{v_i}\alpha + \bra{v_j}\beta \}\Omega &= \alpha\bra{v_i}\Omega + \beta \bra{v_j}\Omega.
+\end{align}
+
+
+One of the nice features of linear operators is that the action of an operator is completely determined by what it does to the basis vectors. Suppose 
+\begin{align}
+\ket{v} = \sum_i v_i \ket{i}
+\end{align}
+and 
+\begin{align}
+\Omega\ket{i} = \ket{i'},
+\end{align}
+then
+\begin{align}
+\Omega \ket{v} = \sum_i \Omega v_i \ket{i}= \sum_iv_i \Omega\ket{i} = \sum_iv_i\ket{i'}.
+\end{align}
+
+
+
+The next point of interest is \textit{products} of operators. As we might have seen, operators don't always commute. A product of operators applied to a vector just means operators are applied in sequence. The \textit{commutator} of two operators $\Omega, \Lambda$ is defined as
+\begin{align}
+\Omega\Lambda - \Lambda\Omega \equiv \lb \Omega,\Lambda \rb.
+\end{align}
+In general, $\lb \Omega,\Lambda\rb$ is not zero. Suppose three operators $\Omega, \Lambda, \Theta$ are involved, then we have two useful relations:
+\begin{align}
+&\lb \Omega, \Lambda\Theta \rb = \Lambda\lb \Omega, \Theta \rb + \lb \Omega, \Lambda \rb \Theta\\
+&\lb \Lambda\Omega, \Theta \rb = \Lambda\lb \Omega, \Theta \rb + \lb \Lambda, \Theta \rb \Omega.
+\end{align}
+We notice that the form resembles the chain rule in calculus. 
+
+
+
+
+
+\subsection{Matrix Elements of Linear Operators}
+One thing we will hear very often in quantum mechanics is the idea of matrix elements. The idea, it turns out, is very simple. Suppose we have a basis $\ket{i}$, and an operator $\Omega$ such that
+\begin{align}
+\Omega\ket{i} = \ket{i'}.
+\end{align}
+Then, for
+\begin{align}
+\ket{v} = \sum_i v_i \ket{i}, 
+\end{align}
+we have
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage
