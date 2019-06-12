@@ -686,6 +686,207 @@ where the Hermitian operator $H$ is called the \textit{Hamiltonian}. We will see
 \subsection{Functions of Operators and Related Concepts}
 
 
+In this section, we look at whether it makes sense to define functions of operators. We will only restrict ourselves to functions that can be written as a power series. Consider a series
+\begin{align}
+f(x) = \sum_{n=0}^\infty = a_n x^n
+\end{align}
+where $x$ is a scalar. We defined the same function of an operator to be
+\begin{align}
+f(\Omega) = \sum_{n=0}^\infty a_n\Omega^n.
+\end{align}
+Now, this definition only makes sense if we have convergence. Consider this example:
+\begin{align}
+e^\Omega = \sum^\infty_{n=0}\f{\Omega^n}{n!},
+\end{align}
+where $\Omega$ is Hermitian. In the eigenbasis of $\Omega$, $\Omega$ is diagonal. This means we can add and/or take powers of $\Omega$ by add and/or take powers of the diagonal entries. We can find that
+\begin{align}
+e^\Omega = \begin{bmatrix}
+\sum^\infty_{m=0}\f{\omega^m_1}{m!}&&\\
+&&\\
+&&\sum^\infty_{m=0}\f{\omega^m_n}{m!}
+\end{bmatrix}
+\end{align}
+where $\omega_i$ are the eigenvalues of $\Omega$. We note that each entry in the expression above converges to $e^{\omega_i}$.
+
+
+
+\subsubsection{Derivatives of Operators with Respect to Parameters}
+Now, consider some operator $\Theta(\lambda)$ that depends on a parameter $\lambda$. The derivative of $\Theta$ with respect to $\lambda$ is defined to be
+\begin{align}
+\f{d\Theta(\lambda)}{d\lambda} = \lim_{\Delta\lambda \to 0} \lb \f{\Theta(\lambda + \Delta \lambda) - \Theta(\lambda)}{\Delta \lambda} \rb.
+\end{align}
+If $\Theta(\lambda)$ is written as a matrix, then the matrix of $d\Theta/d\lambda$ is obtained by differentiating the matrix elements of $\Theta(\lambda)$. A case that might be interesting to us is 
+\begin{align}
+\Theta(\lambda) = e^{\lambda\Omega}.
+\end{align}
+It turns out that if $\Omega$ is Hermitian or ``nice enough'' then 
+\begin{align}
+\f{d\Theta(\lambda)}{d\lambda} = \Omega e^{\lambda\Omega} = e^{\lambda\Omega}\Omega = \Theta(\lambda)\Omega = \Omega \Theta(\lambda).
+\end{align}
+Conversely, if we have
+\begin{align}
+\f{d\Theta(\lambda)}{d\lambda} = \Theta(\lambda)\Omega
+\end{align}
+then 
+\begin{align}
+\Theta(\lambda) = ce^{\lambda\Omega}
+\end{align}
+where $c$ is some operator. But we have to be careful that $c$ might not commute with $e^{\lambda\Omega}$.
+
+The business of whether two operators commute or don't can make things slightly more complicated. If $\Theta$ and $\Omega$ commute, i.e., $[\Theta, \Omega] = 0$, then the rules of exponentiation carries over very nicely:
+\begin{align}
+&e^{a\Omega}e^{b\Omega} = e^{(a + b)\Omega}\\
+&e^{a\Omega}e^{b\Theta} = e^{a\Omega + b\Theta}\\
+&e^{a\Omega}e^{b\Theta}e^{-a\Omega} = e^{b\Theta}.
+\end{align}
+If $[\Omega, \Theta] \neq 0$, then the second and third equations no longer hold. Likewise, in differentiating a product, we have to be extra careful:
+\begin{align}
+\f{d}{d\lambda}e^{\lambda\Omega}e^{\lambda\Theta} = \Omega e^{\lambda\Omega}e^{\lambda\Theta} + e^{\lambda\Omega}e^{\lambda\Theta}\Theta.
+\end{align}
+While $[\Omega, e^{\lambda\Omega}] = 0$, because $\Theta$ and $\Omega$ might not commute, we can't bring $\Omega$ over to the right of $e^{\lambda\Theta}$. 
+
+
+\subsection{Generalization to Infinite Dimensions}
+
+
+\subsubsection{The Dirac delta function}
+Consider the ordered $n$-tuple $\{ f_n(x_1), \dots, f_n(x_n) \}$ as components of a ket $\ket{f_n}$ in a vector space $\V^n(\mathbb{R})$:
+\begin{align}
+\ket{f_n} \leftrightarrow \begin{bmatrix}
+f_n(x_1) \\ \vdots \\ f_n(x_n)
+\end{bmatrix}.
+\end{align}
+The basis vectors in this space are:
+\begin{align}
+\ket{x_i} \leftrightarrow \begin{bmatrix}
+0 \\ 0 \\ \vdots \\ 1 \\ 0 \\ \vdots \\ 0
+\end{bmatrix} \leftarrow i^{th} \text{place}.
+\end{align}
+The basis vectors satisfy \textit{orthogonality} and \textit{completeness}:
+\begin{align}
+&\braket{x_i}{x_j} = \delta_{ij}\\
+&\sum_{i=1}^n \ket{x_i}\bra{x_i} = \Id.
+\end{align}
+With this,
+\begin{align}
+\ket{f_n} = \sum_{i=1}^n f_n(x_i)\ket{x_i}.
+\end{align}
+We next define the inner product in this space:
+\begin{align}
+\braket{f_n}{g_n} \ sum^n_{i=1}f_n(x_i)g_n(x_i).
+\end{align}
+The functions $f_n$ and $g_n$ are said to be orthogonal if $\braket{f_n}{g_n} = 0$. We also have that
+\begin{align}
+\braket{f_n}{f_n} = \sum^n_{i=1}[f_n(x_i)]^2.
+\end{align}
+For finite $n$, nothing ``bad'' can really happen here. But what if $n$ is infinity? What we need is the redefinition of the inner product for finite $n$ in such a way that as $n$ goes to infinity, we get a smooth limit. A natural choice is
+\begin{align}
+\braket{f_n}{g_n} = \sum^n_{i=1} f_n(x_i)g_n(x_i)\f{L}{n+1}
+\end{align}
+where $L$ is the length of the interval. If we now let $n$ go to infinity, we get
+\begin{align}
+&\braket{f}{g} = \int^L_0 f(x)g(x)\,dx\\
+&\braket{f} = \int^L_0 f^2(x)\,dx.
+\end{align}
+Now, if we consider complex functions as well in some interval $a\leq x \leq b$, the inner product becomes:
+\begin{align}
+\braket{f}{g} = \int^b_a f^*(x)g(x)\,dx.
+\end{align}
+But what are the basis vectors in this space and are they normalized? We know that 
+\begin{align}
+\braket{x}{x'} = 0
+\end{align}
+if $x \neq x'$. But what if $x = x'$? It turns out that we cannot simply require $\braket{x}{x} = 1$. The best way to see this is to deduce the correct normalization. We start with the completeness relation:
+\begin{align}
+\int^b_a \ket{x'}\bra{x'}\,dx' = \Id. 
+\end{align}
+Now, consider this
+\begin{align}
+\int^b_a \braket{x}{x'}\braket{x'}{f}\,dx' = \bra{x}\Id \ket{f} = \braket{x}{f}.
+\end{align}
+This is nothing but the projection of $\ket{f}$ along the basis ket $\ket{x}$, which is just $f(x)$. So, we also have $f(x') = \braket{x'}{f}$. Let the inner product $\braket{x}{x'}$ be some unknown function $\delta(x,x')$. Since $\delta(x,x')$ vanishes if $x\neq x'$, we can restrict the integral to an infinitesimal region near $x'=x$. With these, the equality above gives
+\begin{align}
+\int^{x+\epsilon}_{x-\epsilon}\delta(x,x')f(x')\,dx' = f(x).
+\end{align}
+In this infinitesimal region, $f(x)$ can assumed to be constant, and thus can be pulled out of the integral, leaving
+\begin{align}
+f(x)\int^{x+\epsilon}_{x-\epsilon} \delta(x,x')\,dx' = f(x).
+\end{align}
+And so we have
+\begin{align}
+\int^{x+\epsilon}_{x-\epsilon} \delta(x,x')\,dx' = 1. 
+\end{align}
+Clearly, $\delta(x,x')$ cannot be finite at $x=x'$. It should be infinite in such a way that its integral is 1. Since $\delta(x,x')$ depends only on the difference $x-x'$, we can write it as $\delta(x-x')$. So, the function $\delta(x-x')$ has the properties:
+\begin{align}
+\begin{cases}
+\delta(x-x') = 0, \hspace{0.5cm} x \neq x'\\
+\int^b_a \delta(x-x')\,dx' = 1\hspace{0.5cm} a < x < b
+\end{cases}.
+\end{align}
+This is called the \textbf{Dirac delta function} and it fixes the normalization of the basis vectors:
+\begin{align}
+\braket{x}{x'} = \delta(x-x').
+\end{align}
+
+The Dirac delta function is ``strange'' in the sense that its value is either zero or infinite. It's thus useful to view it as the limit of a Gaussian:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{gauss.png}
+\end{figure}
+
+of the form
+\begin{align}
+g_\Delta(x-x') = \f{1}{\sqrt{\pi \Delta^2}}e^{-(x-x')^2/\Delta^2}.
+\end{align}
+It is clear that the area under the curve is one (one can easily check this). Also, $\Delta \to 0$, $g_\Delta$ becomes closer and closer to $\delta(x-x')$ (the area under the curve is the same, while the width of the peak becomes smaller and smaller). 
+
+
+From Gaussian model, we know that the delta function is not only real but also even:
+\begin{align}
+\delta(x-x') = \delta(x'-x).
+\end{align}
+Next, we consider the derivative of $\delta(x-x')$ with respect to $x$:
+\begin{align}
+\delta'(x-x') = \f{d}{dx}\delta(x-x').
+\end{align}
+Once again, we consider the Gaussian model. We consider $dg_\Delta(x-x')/dx = -dg_\Delta(x-x')/dx'$ as a function of $x'$:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{dgauss.png}
+\end{figure}
+
+
+
+
+
+
+
+
+\subsubsection{Operators in Infinite Dimensions}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
