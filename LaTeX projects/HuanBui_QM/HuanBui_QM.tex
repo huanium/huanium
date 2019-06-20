@@ -34,6 +34,9 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\lag}{\mathcal{L}}
+
+\newcommand{\ham}{\mathcal{H}}
+
 \newcommand{\I}{\mathcal{I}}
 \newcommand{\K}{\mathcal{K}}
 \newcommand{\F}{\mathcal{F}}
@@ -805,7 +808,7 @@ Now, consider this
 \int^b_a \braket{x}{x'}\braket{x'}{f}\,dx' = \bra{x}\Id \ket{f} = \braket{x}{f}.
 \end{align}
 This is nothing but the projection of $\ket{f}$ along the basis ket $\ket{x}$, which is just $f(x)$. So, we also have $f(x') = \braket{x'}{f}$. Let the inner product $\braket{x}{x'}$ be some unknown function $\delta(x,x')$. Since $\delta(x,x')$ vanishes if $x\neq x'$, we can restrict the integral to an infinitesimal region near $x'=x$. With these, the equality above gives
-\begin{align}
+\begin{align}\label{delt}
 \int^{x+\epsilon}_{x-\epsilon}\delta(x,x')f(x')\,dx' = f(x).
 \end{align}
 In this infinitesimal region, $f(x)$ can assumed to be constant, and thus can be pulled out of the integral, leaving
@@ -847,7 +850,7 @@ From Gaussian model, we know that the delta function is not only real but also e
 \end{align}
 Next, we consider the derivative of $\delta(x-x')$ with respect to $x$:
 \begin{align}
-\delta'(x-x') = \f{d}{dx}\delta(x-x').
+\delta'(x-x') = \f{d}{dx}\delta(x-x') = -\f{d}{dx'}\delta(x-x').
 \end{align}
 Once again, we consider the Gaussian model. We consider $dg_\Delta(x-x')/dx = -dg_\Delta(x-x')/dx'$ as a function of $x'$:
 \begin{figure}[!htb]
@@ -855,7 +858,42 @@ Once again, we consider the Gaussian model. We consider $dg_\Delta(x-x')/dx = -d
 	\includegraphics[scale=0.5]{dgauss.png}
 \end{figure}
 
+As $g_\Delta$ shrinks,, each bump at $\pm \epsilon$ will become, up to a scale factor, the $\delta$ function, such that
+\begin{align*}
+\int\delta'(x-x')f(x')\,dx' \propto   f(x+\epsilon) - f(x-\epsilon) = 2\epsilon\f{df}{dx'}\bigg\vert_{x=x'}.
+\end{align*}
+The constant of proportionality turns out to be $\epsilon/2$, and so
+\begin{align}
+\int \delta'(x-x')f(x')\,dx' = \f{df}{dx'}\bigg\vert_{x=x'} = \f{df(x)}{dx}.
+\end{align}
+In short, we can describe the $\delta'$ function as 
+\begin{align}
+\delta'(x-x') = \delta(x-x')\f{d}{dx'}.
+\end{align}
 
+In this way, we can describe higher derivatives of $\delta$:
+\begin{align}
+\f{d^n \delta(x-x')}{dx^n} = \delta(x-x')\f{d^n}{dx'^n}.
+\end{align}
+
+
+
+Next, we will develop an alternative representation of the delta function. Suppose we're given a function $f(x)$. The Fourier transform is given by
+\begin{align}
+\F[f](k) = \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty}e^{-ikx}f(x)\,dx.
+\end{align}
+And the inverse is given by
+\begin{align}
+\F^{-1}[f](x) = \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty}e^{ikx'}f(k)\,dk.
+\end{align}
+Feeding the inverse formula into the transform formula, we get
+\begin{align}
+f(x') = \int^{\infty}_{-\infty} \lp \f{1}{2\pi} \int^{\infty}_{-\infty}e^{ik(x-x')\,dk} \rp f(x)\,dx.
+\end{align}
+Comparing this result to \eqref{delt}, we see that
+\begin{align}
+\boxed{\f{1}{2\pi}\int^\infty_{-\infty}e^{ik(x-x')\,dk} = \delta(x-x')}
+\end{align}
 
 
 
@@ -863,6 +901,181 @@ Once again, we consider the Gaussian model. We consider $dg_\Delta(x-x')/dx = -d
 
 
 \subsubsection{Operators in Infinite Dimensions}
+
+Let us revisit the linear transformation:
+\begin{align}
+\Omega \ket{f} =\ket{\tilde{f}}
+\end{align}
+in the vector space whose basis is $\ket{x}$.
+
+Let us assume that this action takes place in an infinite-dimensional vector space. Consider the differential operator. We can write the equation above as
+\begin{align}
+D_x\ket{f(x)} = \ket{df/dx}.
+\end{align}
+
+What are the matrix elements of the operator $D$ in the $\ket{x}$ basis? To find the matrix elements, we do exactly as before:
+\begin{align}
+\bra{x}D\ket{f} = \braket{x}{\f{df}{dx}} = \f{df(x)}{dx},
+\end{align}
+followed by
+\begin{align}
+\int \bra{x}D\ket{x'}\bra{x'}D\ket{f}\,dx' = \f{df}{dx}.
+\end{align}
+We deduce that 
+\begin{align}
+\bra{x}D\ket{x'} = D_{xx'} = \delta'(x-x') = \delta(x-x')\f{d}{dx'}.
+\end{align}
+
+We notice that $D$ is not Hermitian because if
+\begin{align}
+D_{xx'} = D^*_{x'x}
+\end{align}
+then 
+\begin{align}
+D_{xx'} = \delta'(x-x') = D^*_{x'x} = \delta'(x'-x) = -\delta'(x-x'),
+\end{align}
+which is obviously not true. But we can convert $D$ to a Hermitian matrix by multiplying it with a purely imaginary number. Consider
+\begin{align}
+K = -iD.
+\end{align}
+Then
+\begin{align}
+K^*_{x'x} = [-i\delta'(x'-x)]^* = i\delta'(x'-x) = -i\delta'(x-x') = K_{xx'}.
+\end{align}
+It turns out that this is not enough to make $K$ Hermitian, as we shall show now. Suppose we have $\ket{f}$ and $\ket{g}$ in the function space whose images in the $x$ basis are $f(x)$ and $g(x)$ in the interval $a-b$. If $K$ is Hermitian, we must have that
+\begin{align}
+\bra{g}K\ket{f} = \bra{g}\ket{Kf} = \bra{Kf}\ket{g}^* = \bra{f}K^\dagger\ket{g}^* = \bra{f}K\ket{g}^*.
+\end{align}
+So, we ask
+\begin{align}
+\int^b_a \int^b_a \braket{g}{x}\bra{x}K\ket{x'}\braket{x'}{f}\,dx\,dx'  \stackrel{?}{=} \lp \int^b_a\int^b_a   \braket{f}{x}\bra{x}K\ket{x'}\braket{x'}{g}\,dx\,dx'  \rp^*.
+\end{align}
+Or, equivalently, we ask that if $K = -iD$, then
+\begin{align}
+ \int^b_a g^*(x)\lb -i\f{df(x)}{dx} \rb \,dx  \stackrel{?}{=}    \left\{ \int^b_a  f^*(x)\lb -i\f{dg(x)}{dx} \rb\,dx  \right\} = i\int^b_a \f{dg^*}{dx}f(x)\,dx.
+\end{align}
+Integrating the left hand side by parts gives
+\begin{align}
+-ig^*(x)f(x)\bigg\vert^b_a + i \int^b_a \f{dg^*}{dx}f(x)\,dx.
+\end{align}
+So for equality to hold, we require that 
+\begin{align}\label{cond}
+\boxed{-ig^*(x)f(x)\bigg\vert^b_a= 0}
+\end{align}
+Thus, in contrast to the finite-dimensional case, $K_{xx'} = K^*_{x'x}$ is not a sufficient condition for $K$ to be Hermitian. We must also look at the behavior of the functions at the end points $a$ and $b$. So what kinds of functions make this work? One set of such functions are the possible configurations $f(x)$ of the string clamped at $x=0$ and at $x=L$. These functions of course have zero boundary conditions. But this condition \eqref{cond} can also be fulfilled in another way. \\
+
+
+Consider functions in 3-dimensional space, parameterized by $r,\theta,\phi$. Suppose that these functions are single-valued, say, $f(\theta) = f(\theta+2\pi)$. In the space of these functions, $K = -iD$ is Hermitian. This is very easy to verify since the condition \eqref{cond} is met:
+\begin{align}
+-ig^*(x)f(x)\big\vert_0^{2\pi} =-ig(2\pi)f(2\pi) + ig^*(0)f(0) = 0.
+\end{align}
+
+In quantum mechanics, we are interested in functions over the full interval $-\infty \leq x \leq \infty$. These functions into two classes: those that vanish at infinity and those that don't. Functions that don't vanish at infinity behave as $e^{-ikx}$, where $k$ is real. It is clear that if $K$ is sandwiched between two functions of the first class or two functions where one comes from each class, then $K$ is Hermitian, because the boundary terms vanish. But if $K$ is sandwiched between two functions of the second class, then whether $K$ is Hermitian depends on whether
+\begin{align}
+e^{ikx}e^{-ik'x}\bigg\vert_{-\infty}^\infty \stackrel{?}{=} 0.
+\end{align}
+
+If $k' = k$ then $K$ is Hermitian. If $k'\neq k$ then the answer is unclear because $e^{i(k-k')x}$ oscillates. It turns out that there exists a way of defining a limit for such functions that connect make up their minds: the limit as $\abs{x} \to \infty$. This limit is defined to be the average over a large interval. According to this prescription, we have, say as $x\to \infty$:
+\begin{align}
+\lim_{x\to\infty} e^{ikx}e^{-ik'x} = \lim_{L\to\infty, \Delta\to\infty}\f{1}{\Delta}\int^{L+\Delta}_L e^{i(k-k')x}\,dx = 0 \hspace{0.5cm} k\neq k'.
+\end{align}
+And thus $K$ is Hermitian in this space as well. \\
+
+Next, we are interested in the eigenvalue problem of $K$. Let us start with
+\begin{align}
+K\ket{k} = k\ket{k}.
+\end{align}
+Following the standard procedure,
+\begin{align}
+\bra{x}K\ket{k} = k\braket{x}{k} &\implies \int \bra{x}K\ket{x'}\bra{x'}\ket{k}\,dx' = k\psi_k(x)\\ &\implies -i\f{d}{dx}\psi_k(x) = k\psi_k(x)
+\end{align}
+where $\psi_k(x) = \braket{x}{k}$. This is a very simple differential equation whose solution is
+\begin{align}
+\psi_k(x) = Ae^{ikx}.
+\end{align}
+Let us chose $A$ to be such that the function is normalized. In this case $A = 1/\sqrt{2\pi}$. And so,
+\begin{align}
+\ket{k} \sim \f{1}{\sqrt{2\pi}} e^{ikx},
+\end{align}
+and
+\begin{align}
+\braket{k}{k'} = \int^\infty_{-\infty} \braket{k}{x}\braket{x}{k'}\,dx = \f{1}{2\pi}\int^\infty_{-\infty}e^{-i(k-k')x}\,dx = \delta(x-x').
+\end{align}
+
+
+Now, because $K$ is Hermitian, functions that are expanded in the $x$ basis with components $f(x) = \braket{x}{f}$ must also have an expansion in the $K$ basis. What are the components in this expansion? We first look at the components in the $K$ basis, starting with $\ket{k}$:
+\begin{align}
+f(k) = \braket{k}{f} = \int^\infty_{-\infty} \braket{k}{x}\braket{x}{f}\,dx = \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} e^{-ikx}f(x)\,dx. 
+\end{align}
+To get back to the $x$ basis, we simply apply the inverse transform:
+\begin{align}
+f(x) = \braket{x}{f} = \int^\infty_{-\infty}   \braket{x}{k}\braket{k}{f}\,dk = \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} e^{ikx}f(k)\,dk.
+\end{align}
+Thus the familiar Fourier transform gives us the passage from one complete basis to another. What about the matrix elements of $K$ in the $k$ basis? It turns out that these elements are trivial:
+\begin{align}
+\bra{k}K\ket{k'} = k'\braket{k}{k'} = k'\delta(k-k').
+\end{align}
+So, the $k$ basis is generated by the Hermitian operator $K$. So what generates the $x$ basis? Let us call this operator $X$, and that 
+\begin{align}
+X\ket{x} = x\ket{x}. 
+\end{align}
+Its matrix elements in the $x$ basis are
+\begin{align}
+\bra{x'}X\ket{x} = x\delta(x'-x).
+\end{align}
+To find its actions on functions, let us define
+\begin{align}
+X\ket{f} = \ket{\tilde{f}}.
+\end{align}
+And so
+\begin{align}
+\bra{x}X\ket{f} = \int  \bra{x}X\ket{x'}\bra{x'}\ket{f}\,dx' = xf(x) = \braket{x}{\tilde{f}} = \tilde(f)(x).
+\end{align}
+Therefore,
+\begin{align}
+\tilde{f}(x) = xf(x).
+\end{align}
+So, $X$ has the effect of multiplying a function $f$ by $x$:
+\begin{align}
+X\ket{f(x)} = \ket{xf(x)}.
+\end{align}
+We notice that there is a nice reciprocity between $X$ and $K$. Let us compute the matrix elements of $X$ in the $k$ basis:
+\begin{align}
+\bra{k}X\ket{k'} &= \f{1}{2\pi}\int^\infty_{-\infty} e^{-ikx} x e^{ik'x} \,dx \\
+&= i\f{d}{dk} \lp \f{1}{2\pi}\int^\infty_{-\infty} e^{i(k'-k)x}\,dx \rp = i\delta'(k-k').
+\end{align}
+So, if $\ket{g(k)}$ is a ket whose image in the $k$ basis is $g(k)$ then
+\begin{align}
+X\ket{g(k)} = \ket{\f{idg(k)}{dk}}.
+\end{align}
+
+Thus we have the following. In the $x$ basis, $X$ acts as $x$. In the $k$ basis, $X$ acts as $-id/dx$. On the other hand, in the $k$ basis, $K$ acts as $k$, and in the $x$ basis as $-id/dk$. Operators with such an interrelationship are said to be \textbf{conjugate} of each other. Now, the conjugate operators $K$ and $X$ don't commute. Let us calculate their commutator. Suppose we have some ket $\ket{f}$. Then,
+\begin{align}
+&X\ket{f} \to xf(x)\\
+&K\ket{f} \to -i\f{df(x)}{dx}.
+\end{align} 
+This is just the definition of these operators. Next,
+\begin{align}
+&XK\ket{f} \to -i x \f{df(x)}{dx}\\
+&KX\ket{f} \to -i\f{d}{dx}xf(x).
+\end{align}
+Thus, 
+\begin{align}
+[X,K]\ket{f} \to -i x \f{df(x)}{dx} + i x \f{df(x)}{dx} + if \to i\Id\ket{f}.
+\end{align}
+So, we have for $X$ and $K$ conjugate of each other,
+\begin{align}
+[X,K] = i\Id.
+\end{align}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -914,6 +1127,209 @@ Once again, we consider the Gaussian model. We consider $dg_\Delta(x-x')/dx = -d
 
 
 \section{Review of Classical Mechanics}
+
+
+\subsection{Principle of Least Action \& Lagrangian Mechanics}
+
+Suppose we have a particle in a potential $V(x)$. Newton tells us that
+\begin{align}
+m\f{d^2 x}{dt^2} = -\f{dV}{dx}.
+\end{align}
+In general coordinates,
+\begin{align}
+m_j \f{d^2x_j}{dt^2} = -\f{\p V}{\p x_j}.
+\end{align}
+In Lagrangian mechanics, we first define the \textit{Lagrangian}: $\lag = T - V$, where $T$ is the kinetic energy and $V$ is the potential energy. This makes $\lag = \lag(x,\dot{x},t)$. For each path connecting $(x_i,t_i)$ to $(x_f,t_f)$, the \textit{action} is given by
+\begin{align}
+S[x(t)] = \int^{t_f}_{t_i} \lag(x,\dot{x})\,dt.
+\end{align}
+The classical path which the particle follows is one which minimizes $S[x(t)]$. Variational methods (requiring $\delta S = 0$ and boundary terms to vanish) give us the \textbf{Euler-Lagrange equation(s)}:
+\begin{align}
+\boxed{\f{\p \lag}{\p x(t)} = \f{d}{dt}\f{\p \lag}{\p \dot{x}(t)}}
+\end{align}
+Details of this derivation can be found in many differential equation textbooks. We can easily show how Newton's Second law emerges from the Euler-Lagrange equation by setting $T = mv^2/2$. In which case, we get
+\begin{align}
+\f{d}{dt}(m\dot{x}) = m\ddot{x}= -\f{dV}{dx}.
+\end{align}  
+In general coordinates, we get the same thing:
+\begin{align}
+m\ddot{x}_{i} = -\f{\p V}{\p x_i}.
+\end{align}
+Now, we notice that we have assumed the potential $V$ to be velocity-independent. The force of a magnetic field $\mathbf{B}$ on a moving charge is excluded by this restriction ($\mathbf{F} = q\mathbf{v}\times \mathbf{B}$). We will show shortly how to accommodate this force in the Lagrangian formalism. However, this treatment will leave $\lag$ no longer in the form $T - V$. So, we will be free from the notion that $\lag$ has the form $T-V$, by only requiring that $\lag$ gives the correct equations of motion.
+
+Suppose in some generalized coordinates, we have
+\begin{align}
+\f{d}{dt}\lp \f{\p \lag}{\p \dot{q}_i} \rp = \f{\p \lag}{\p q_i}.
+\end{align}
+It turns out that the \textit{form} of the Euler-Lagrange equation is invariant under change of coordinates. The Euler-Lagrange equation above can be made to resemble Newton's Second law if one defines a quantity:
+\begin{align}
+p_i = \f{\p \lag}{\p \dot{q}_i}
+\end{align}
+as the \textbf{canonical momentum conjugate to $q_i$} and the quantity
+\begin{align}
+F_i = \f{\p \lag}{\p q_i}
+\end{align}
+as the \textit{generalized force conjugate to $q_i$}. Note that these quantities are not always linear momentum and force. They can be angular momentum and torque, for instance. In many cases, we can find conservation laws from the Lagrangian, but we won't go into the details for now.
+
+
+
+
+
+
+
+
+
+\subsection{The Electromagnetic Lagrangian}
+As promised, in this subsection we will incorporate electromagnetism into the Lagrangian formalism. Recall that the force on a charge $q$ due to an electric field $\mathbf{E}$ and a magnetic field $\mathbf{B}$ is given by
+\begin{align}
+\boxed{\mathbf{F} = q\lp \mathbf{E} + \f{\mathbf{v}}{c}\times \mathbf{B} \rp}
+\end{align}
+where $\mathbf{v} = \dot{\mathbf{r}}$ is the velocity of the charged particle, and $c$ is the speed of light. It turns out that if we use 
+\begin{align}
+\boxed{\lag_{EM} = \f{1}{2}m\mathbf{v}\cdot\mathbf{v} - q\phi + \f{q}{c}\mathbf{v}\cdot\mathbf{A}}
+\end{align}
+we get the correct electromagnetic force laws. We note that $\phi$ and $\mathbf{A}$ are the scalar and the vector potentials related to $\mathbf{E}$ and $\mathbf{B}$ via:
+\begin{align}
+\mathbf{E} = -\grad{\phi} - \f{1}{c}\f{\p \mathbf{A}}{\p t}
+\end{align}
+and 
+\begin{align}
+\mathbf{B} = \curl{\mathbf{A}}.
+\end{align}
+With respect to this Lagrangian, the Euler-Lagrange equation is
+\begin{align}
+\f{d}{dt}\lp mx_i + \f{q}{c}\mathbf{A}_i \rp = -q\f{\p\phi}{\p x_i} + \f{q}{c}\f{\p \mathbf{v}\cdot\mathbf{A}}{\p x_i}.
+\end{align}
+We can combine the $i=1,2,3$ equations into one vector equation:
+\begin{align}
+\f{d}{dt}\lp m\mathbf{v} + \f{q\mathbf{A}}{c} \rp = -q\grad{\phi} + \f{q}{c}\grad{(\mathbf{v}\cdot\mathbf{A})}.
+\end{align}
+Rewriting this gives
+\begin{align}
+\f{d}{dt}m\mathbf{v} = -q\grad{\phi} + \f{q}{c}\lb -\f{d\mathbf{A}}{dt} + \grad{(\mathbf{v}\cdot\mathbf{A})} \rb
+\end{align}
+
+
+The canonical momentum is then
+\begin{align}
+\mathbf{p} = \f{\p \lag}{\p \dot{\mathbf{x}}} = m\mathbf{v} + \f{q\mathbf{A}}{c}. 
+\end{align}
+Now, the total derivative $d\mathbf{A}/dt$ has two parts:
+\begin{align}
+\f{d\mathbf{A}}{dt} = \f{\p \mathbf{A}}{\p t} + (\mathbf{v}\cdot \grad)\mathbf{A} 
+\end{align}
+where
+\begin{align}
+\lp\mathbf{v}\cdot\grad\rp_i = \f{dx_i}{dt}\f{\p}{\p x_i}.
+\end{align}
+Thus we have
+\begin{align}
+\f{d}{dt}m\mathbf{v} = -q\grad{\phi} - \f{q}{c}\f{\p \mathbf{A}}{\p t} + \f{q}{c}\lb \grad{(\mathbf{v}\cdot \mathbf{A})} - (\mathbf{v}\cdot \grad)\mathbf{A} \rb.
+\end{align}
+Now, we use the identity
+\begin{align}
+\mathbf{v}\times (\curl{A}) = \grad{(\mathbf{v}\cdot \mathbf{A})} - (\mathbf{v}\cdot \grad)\mathbf{A}
+\end{align}
+to get
+\begin{align}
+\f{d}{dt}m\mathbf{v} = -q\grad{\phi} - \f{q}{c}\f{\p \mathbf{A}}{\p t} + \f{q}{c}\mathbf{v}\times (\curl{A}).
+\end{align}
+Using the definition of $\mathbf{E}$ and $\mathbf{B}$ in relation to $\phi$ and $\mathbf{A}$ we indeed get the correct force law:
+\begin{align}
+\f{d}{dt}m\mathbf{v} = \mathbf{F} = q\lp \mathbf{E} + \f{\mathbf{v}}{c}\times\mathbf{B} \rp
+\end{align}
+
+
+
+
+
+\subsection{The two-body problem}
+The two-body problem can be solved more elegantly in the \textit{center-of-mass coordinate system} where
+\begin{align}
+\mathbf{r} = \mathbf{r}_1 - \mathbf{r}_2
+\end{align}
+and 
+\begin{align}
+\mathbf{r}_{CM} = \f{m_1\mathbf{r}_1 + m_2\mathbf{r_2}}{m_1 + m_2}.
+\end{align}
+The inverse formulas are as follow:
+\begin{align}
+&\mathbf{r}_1 = \mathbf{r}_{CM} + \f{m_2\mathbf{r}}{m_1 + m_2}\\
+&\mathbf{r}_2 = \mathbf{r}_{CM} - \f{m_1\mathbf{r}}{m_1 + m_2}
+\end{align}
+The original Lagrangian is
+\begin{align}
+\lag = \f{1}{2}m_1\abs{\dot{\mathbf{r}}_1}^2 + \f{1}{2}m_2\abs{\dot{\mathbf{r}}_2}^2 - V(\mathbf{r}_1 - \mathbf{r}_2). 
+\end{align}
+In CM coordinate system, the Lagrangian becomes:
+\begin{align}
+\lag =\f{1}{2}(m_1 + m_2)\abs{\dot{\mathbf{r}}_{CM}}^2 + \f{1}{2}\f{m_1m_2}{m_1+m_2}\abs{\mathbf{r}}^2 - V(\mathbf{r}).
+\end{align}
+By doing this, we have in a sense ``decoupled'' the problem:
+\begin{align}
+\lag(\mathbf{r},\dot{\mathbf{r}}, \mathbf{r}_{CM}, \dot{\mathbf{r}}_{CM},t) = \lag(\mathbf{r},\dot{\mathbf{r}},t) + \lag(\mathbf{r}_{CM}, \dot{\mathbf{r}}_{CM},t).
+\end{align}
+The first fictitious particle is the center of mass of the system. The motion of the center of mass is often uninteresting, so we can always go to the center of mass frame, so that the term $\lag(\mathbf{r}_{CM}, \dot{\mathbf{r}}_{CM},t)$ vanishes completely from the total Lagrangian. The second fictitious particle has \textit{reduced mass}:
+\begin{align}
+\mu = \f{m_1m_2}{m_1+m_2}
+\end{align}
+moves under the potential $V(\mathbf{r})$. Now, we only need to solve this one-body problem. 
+
+
+\subsection{The Hamiltonian Formalism}
+Recall the canonical momentum in Lagrangian mechanics:
+\begin{align}
+p_i = \f{\p \lag}{\p \dot{q}_i}.
+\end{align}
+
+In the Hamiltonian formalism one exchanges the roles of $\dot{q}$ and $p$: one replaces the Lagrangian $\lag(q,\dot{q})$ by a Hamiltonian $\ham(q,p)$ which generates the equations of motion, and $\dot{q}$ becomes a derived quantity:
+\begin{align}
+\dot{q}_i = \f{\p \ham}{\p p_i}.
+\end{align}
+But of course the question is, how can we make such a change? It turns out that there exists procedure for effecting such a change, called a \textit{Legendre transformation}. Suppose we have a function $f(x)$ with
+\begin{align}
+u(x) = \f{df(x)}{dx}.
+\end{align}
+How do we invert $u(x)$ to get $x(u)$? If we define a function (called the \textbf{Legendre transformation})
+\begin{align}
+\boxed{g(u) = x(u)u - f(x(u))}
+\end{align}
+then
+\begin{align}
+\f{dg}{du} = \f{dx}{du}u + x(u) - \f{df}{dx}\f{dx}{du} = x(u).
+\end{align}
+In going from $f$ to $g$, we simply exchange the roles of $x$ and $u$. $f$ and $g$ are called the Legendre transforms of each other. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{The Electromagnetic Force in the Hamiltonian Scheme}
+\subsection{Cyclic Coordinates, Poisson Brackets, and Canonical Transformations}
+\subsubsection{Canonical Transformations}
+\subsubsection{Active Transformations}
+\subsection{Symmetries and Their Consequences}
+\subsubsection{A Useful Relation between $\mathbf{S}$ and $\mathbf{E}$}
+
+
 
 
 \newpage
