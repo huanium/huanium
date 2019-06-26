@@ -3346,21 +3346,6 @@ This is an exercise at the back. There's no good way to do this problem except e
 
 
 
-\section{Orthogonal complements and orthogonal decompositions}
-
-
-
-\section{Ortho-projections}
-
-
-
-\section{Closest point solutions}
-
-
-
-
-
-\section{Gram-Schmidt and orthonormal bases}
 
 \newpage
 
@@ -3706,12 +3691,279 @@ s_1 & & \\
 where $s_i$'s are exactly the eigenvalues of $\sqrt{\A^*\A}$. They are also called the \textbf{singular values} of $\A$. And thus, this is the \textbf{Singular Value Decomposition (SVD)} for square matrices. 
 
 
+The following statements of the singular value decomposition theorem are equivalent:
+
+\begin{enumerate}
+	\item For any matrix $\A \in \mathbb{M}_{n\times n}$, we can always find an orthonormal basis $v_1,\dots,v_n$ such that $\A(v_1),\dots,\A(v_n)$ are orthogonal.
+	
+	
+	\item For any matrix $\A \in \mathbb{M}_{n\times n}$, there exists a unitary matrix $\Uni \in \mathbb{M}_{n\times n}$ (whose columns are $v_1,\dots,v_n$) such that
+	\begin{align*}
+	\A\circ \Uni &= \A \begin{bmatrix}
+	v_1&\dots&v_n
+	\end{bmatrix} \\
+	&= \begin{bmatrix}
+	\A v_1 & \dots & \A v_n
+	\end{bmatrix}\\
+	&= \underbrace{\begin{bmatrix}
+	z_1 & \dots & z_n
+	\end{bmatrix}}_{\text{Unitary}}
+	\circ 
+	\begin{bmatrix}
+	\alpha_1 & & \\
+	&\ddots & \\
+	& & \alpha_n
+	\end{bmatrix}
+	\end{align*}
+	where $\alpha_i$'s are nonnegative numbers that scale the columns of the unitary matrix in front of it.
+	
+	
+	\item Equivalently, $\A$ can be written as
+	\begin{align}
+	\A = \mathcal{W} \circ \begin{bmatrix}
+	\alpha_1 & & \\
+	&\ddots & \\
+	& & \alpha_n
+	\end{bmatrix} \circ \Uni^\dagger
+	\end{align}
+\end{enumerate}
+
+
+
+It is easy to see that the $\alpha_i$'s in the equivalent statements of the theorem are exactly the singular values of $\A$. Suppose that $\A - \Uni_1 D \Uni_2$ where $D \geq 0$ and $\Uni_1, \Uni_2$ are unitary matrices. Then $\A^\dagger = \Uni_2^\dagger D \Uni_1^\dagger$. Thus, 
+\begin{align*}
+\A^\dagger \A = \Uni_2^\dagger D^2 \Uni_2 = (\Uni_2^\dagger D \Uni_2)^2 \geq 0.
+\end{align*}
+In other words,
+\begin{align*}
+\sqrt{\A^\dagger \A} = \Uni_2^\dagger D \Uni_2
+\end{align*}
+and
+\begin{align*}
+\sqrt{\A \A^\dagger} = \Uni_1 D \Uni_1^\dagger
+\end{align*}
+or that $\sqrt{\A^\dagger \A}$ and $\sqrt{\A \A^\dagger}$ are unitarily equivalent, thus have the same eigenproperties. 
+
+
+\section{Singular Value Decomposition for non-square matrices}
+What if $\A$ is not a square matrix? What would change? Suppose that $\A \in \mathbb{M}_{4\times 7}$. A clever solution to this ``problem'' is to actually turn $\A$ into a square matrix by filling in zeros. Let 
+\begin{align*}
+\hat{\A} = \begin{bmatrix}
+\A \\ 0
+\end{bmatrix}_{7\times 7}.
+\end{align*}
+Now, we have the following maps:
+\begin{align}
+&\A : \C^7 \to \C^4\\
+&\hat{\A} : \C^7 \to \C^7
+\end{align}
+Suppose $v_1, \dots, v_n$ form an orthonormal basis for $\C^7$ such that 
+\begin{align*}
+\hat{\A}\underbrace{\begin{bmatrix}
+v_1 & \dots & v_7
+\end{bmatrix}}_{\Uni} = \begin{bmatrix}
+\A \\ 0
+\end{bmatrix}_{7\times 7}
+\underbrace{\begin{bmatrix}
+v_1 & \dots & v_7
+\end{bmatrix}}_{\Uni}
+= \begin{bmatrix}
+\begin{pmatrix}
+\A v_1 \\ 0
+\end{pmatrix} & \dots & \begin{pmatrix}
+\A v_7 \\ 0
+\end{pmatrix}
+\end{bmatrix},
+\end{align*}
+by SVD for square matrices. Then we know that $\hat{\A}{v_1},\dots,\hat{\A}_{v_7}$ are orthogonal exactly when $\A v_1, \dots, \A v_7$ are orthogonal. So we have
+\begin{align*}
+\A \Uni = \begin{bmatrix}
+\A v_1 & \dots & \A v_7
+\end{bmatrix}_{4\times 7}
+\end{align*}
+The columns of the last matrix are orthogonal to each other. But notice that there are seven columns while each column has only four entries. This means \textit{there are a lot of zeros}. So if we apply some permutation (which is also a unitary operation), then 
+\begin{align*}
+\A \circ \Uni \circ \text{Permutation}= \begin{bmatrix}
+\underbrace{\mathcal{W}_{4 \times 4}}_{\text{Unitary}} & 0_{4 \times 3}
+\end{bmatrix}_{4\times 7}
+\begin{bmatrix}
+\alpha_1 &&&&&&\\
+& \alpha_2 &&&&&\\
+&& \alpha_3 &&&&\\
+&&& \alpha_4 &&&&\\
+&&&& 0&&\\
+&&&&& 0&\\
+&&&&& &0\\
+\end{bmatrix}.
+\end{align*}
+And so, we get:
+\begin{align*}
+\A_{4 \times 7} = \Uni_1 \begin{bmatrix}
+S_{4\times 7} & 0
+\end{bmatrix} \Uni_2.
+\end{align*}
+We can do a similar thing for $\A$ ``tall.'' But what are these $\alpha_i$'s again? Suppose $\A$ is $4\times7$ again, then we know that $\A = \Uni_1 D \Uni_2$ where
+\begin{align*}
+D = \begin{bmatrix}
+\alpha_1 &&&&&&\\
+& \alpha_2 &&&&&\\
+&& \alpha_3 &&&&\\
+&&& \alpha_4 &&&&\\
+&&&& 0&&\\
+&&&&& 0&\\
+&&&&& &0\\
+\end{bmatrix} = \begin{bmatrix}
+S & 0
+\end{bmatrix}.
+\end{align*}
+Thus,
+\begin{align*}
+D^\dagger D = \begin{bmatrix}
+S^2 & 0\\
+0 & 0
+\end{bmatrix}
+\end{align*}
+and 
+\begin{align*}
+DD^\dagger= \begin{bmatrix}
+S^2
+\end{bmatrix}.
+\end{align*}
+So, again, $\A^\dagger \A \sim_\text{unitarily} \A\A^\dagger$ and $\sqrt{\A^\dagger \A} \sim_\text{unitarily} \sqrt{\A\A^\dagger}$ again, and $\alpha_i$'s are exactly the singular values of $\A$. \\
+
+In fact, using the same recipe here we can derive polar decomposition theorem for non-square matrices.
+
+
+
+
 
 
 %\section{Spectral/operator norm}
 \section{Singular values and approximation}
 %\section{Singular values and eigenvalues}
 
+
+
+The singular value decomposition theorem has many amazing applications. One of the most significant consequences of this theorem is called the ``low-rank approximation,'' which is widely used in image processing. So what is ``low-rank approximation''? Here's the statement of the problem:\\
+
+\textit{Prove that the distance (measured via Frobenius/Hilbert-Schmidt norm) from a given matrix $\A \in \mathbb{M}_n$ of rank $m$ to the nearest $n\times n$ matrix of rank $k$ (not exceeding $m$), is the square root of the sum of the squares of the smallest $n-k$ singular values of $\A$. }\\
+
+We shall give a sketch of the proof, in a few steps. \\
+
+\begin{proof}
+	Let $\A$ be given. By SVD, we write $\A = \Uni_1 D \Uni_2 $. Let $s_i$ denote the singular values of $\A$, in decreasing order from $s_i$ to $s_n$. 
+	\begin{enumerate}
+		\item Recall the Hilbert-Schmidt/Frobenius norm:
+		\begin{align*}
+		\norm{\A}_{HS} &= \sqrt{\tr(\A^\dagger\A)} \\
+		&= \sqrt{\tr\lp (\Uni_2^\dagger D^\dagger \Uni_1^\dagger)(\Uni_1 D \Uni_2) \rp} \\ 
+		&= \sqrt{\tr\lp \Uni_2^\dagger D^\dagger D \Uni_2 \rp} \\
+		&= \sqrt{\tr\lp D^\dagger D \Uni_2 \Uni_2^\dagger\rp} \hspace{0.5cm}\text{because }\tr(AB) = \tr(BA)\\
+		&= \sqrt{\tr(D^\dagger D)}\\
+		&= \sqrt{\sum s_i^2}.
+		\end{align*}
+		
+		
+		
+		\item Let $\F$ be an $n\times n$ matrix of rank $k$. Given $\A \in \mathbb{M}_n$, we observe that 
+		\begin{align*}
+		\norm{\A- \F}_{HS} &= \norm{\Uni_1 D - \Uni_2 - \F}_{HS}\\
+		&= \norm{\Uni_1 \lp (D - \Uni_1^\dagger \F \Uni_2^\dagger) \rp \Uni_2}_{HS}\\
+		&= \norm{D - \Uni_1^\dagger \F \Uni_2^\dagger}_{HS}
+		\end{align*} 
+		because Frobenius norm is unitarily invariant. 
+		
+		
+		\item Suppose $\F$ is such that 
+		\begin{align*}
+		\T = \Uni_1\F\Uni_2 = \begin{bmatrix}
+		s_1 & & &\\
+		& \ddots& &\\
+		& & s_k & \\
+		&&&0\\
+		\end{bmatrix}.
+		\end{align*}
+		Then we have
+		\begin{align*}
+		\norm{\A - \F}_{HS} = \norm{
+		\begin{bmatrix}
+		s_1 & & &\\
+		& \ddots& &\\
+		& & \ddots & \\
+		&&&s_n\\
+		\end{bmatrix}
+		-
+		\begin{bmatrix}
+		s_1 & & &\\
+		& \ddots& &\\
+		& & s_k & \\
+		&&&0\\
+		\end{bmatrix}}_{HS} 
+		= \sqrt{\sum_{i=n-k+1}^{n} s_i^2}.
+		\end{align*}
+		So, we have found a matrix of rank $k$ such that its distance to $\A$ satisfies the condition. This means the closet matrix to $\A$, called $\B$, must be such that
+		\begin{align*}
+		\norm{\A - \B}_{HS} \leq \sqrt{\sum_{i=n-k+1}^{n} s_i^2}.
+		\end{align*}
+		
+		
+		\item To show $\norm{\A - \B}_{HS}$ is indeed $\sqrt{\sum_{i=n-k+1}^{n} s_i^2}$, what we need to show next is that
+		\begin{align*}
+		\norm{\A - \B}_{HS} \geq \sqrt{\sum_{i=n-k+1}^{n} s_i^2}.
+		\end{align*}
+		To do this, let us take a little detour. In one of the problems at the end of the text, we will show that suppose that $\mathcal{P} \in \LL(\V)$ is a projection with range $\W$, for each $v \in \V, \mathcal{P}(v)$ is the element of $\W$ that is closest to $v$. The proof turns out to be very simple.
+		\begin{proof}
+			First, we write $z = \mathcal{P}_W(z) + (\id - \mathcal{P}_W)(z)$, then it follows that
+			\begin{align*}
+			\norm{z}^2 = \norm{\mathcal{P}_W(z)}^2 + \norm{(\id - \mathcal{P}_W)(z)}^2
+			\end{align*}
+			by orthogonality. Now, since $\mathcal{P}_W(z) \in \W$, and that $\norm{(\id - \mathcal{P}_W)(z)}^2$ is the smallest distance from ``the tip of $z$ to any point in $\W$'' (a proof is required but a simple picture can go a long way), $\mathcal{P}_W(z)$ is an element of $\W$ that is the closest to $z$. 
+		\end{proof}
+	Now, back to our problem. Let the closest admissible matrix to $\A$ be $\B$. Consider under SVD on $\A$:
+	\begin{align*}
+	\norm{\begin{bmatrix}
+		s_1 & & \\
+		& \ddots& &\\
+		&&s_n
+		\end{bmatrix}
+	-
+	\begin{bmatrix}
+	| & & |\\
+	c_1 & \dots & c_n\\
+	| & &|  \\
+	\end{bmatrix}}_{HS}
+	&= \norm{\begin{bmatrix}
+		| & & |\\
+		s_ne_n & \dots & s_ne_n\\
+		| & & |
+		\end{bmatrix}}_{HS}\\
+	&= \sqrt{\sum^n_{i=1}\norm{s_i e_i - c_i}_{HS}}.
+	\end{align*}
+	Consider the subspace $\W$ spanned by the columns $c_i$'s. We know that since $\B$ is admissible, this is a $k$-dimensional subspace. From the little proof, we also know that the closest $s_ie_i$ to $c_i$ is to set $\mathcal{P}_W(s_ie_i) = c_i$. And so we have
+	\begin{align*}
+	\sqrt{\sum^n_{i=1}\norm{s_i e_i - \mathcal{P}_{W}(s_ie_i)}_{HS}}
+	&=\sqrt{\sum^n_{i=1}\norm{(\id - \mathcal{P}_W)(s_i e_i)}_{HS}} 
+	\end{align*}
+	But notice that to make this quantity as small as possible, we need all the weights on $s_{i=n-k+1},\dots,s_n$. In this scenario, let us set $\W = \xpan(e_{i=n-k+1},\dots,e_n)$. Then the above expression can be written as
+	\begin{align*}
+	\sqrt{\sum^n_{i=1}s_i^2 - \sum^{k}_{i=1}s_i^2} = \sqrt{\sum_{i=n-k+1}^{n}s_i^2}.
+	\end{align*}
+	But notice that this is the \textit{smallest} we can make $\norm{\A - \B}_{HS}$, which means we have
+	\begin{align*}
+	\norm{\A - \B}_{HS} \geq \sqrt{\sum_{i=n-k+1}^{n}s_i^2}.
+	\end{align*}
+	
+	
+	\item Putting everything together, we have
+	\begin{align*}
+	\sqrt{\sum_{i=n-k+1}^{n}s_i^2} \leq \norm{\A - \B}_{HS} \geq \sqrt{\sum_{i=n-k+1}^{n}s_i^2}.
+	\end{align*}
+	Thus, for such an admissible matrix $\B$, it must be true that
+	\begin{align*}
+	\boxed{\norm{\A - \B}_{HS} \geq \sqrt{\sum_{i=n-k+1}^{n}s_i^2}}
+	\end{align*}
+	\end{enumerate}
+\end{proof}
 
 
 
