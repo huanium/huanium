@@ -1317,14 +1317,69 @@ then
 \begin{align}
 \f{dg}{du} = \f{dx}{du}u + x(u) - \f{df}{dx}\f{dx}{du} = x(u).
 \end{align}
-In going from $f$ to $g$, we simply exchange the roles of $x$ and $u$. $f$ and $g$ are called the Legendre transforms of each other. 
+In going from $f$ to $g$, we simply exchange the roles of $x$ and $u$. $f$ and $g$ are called the Legendre transforms of each other. More generally, if $f = f(x_1,\dots,x_n)$, one can eliminate a subset $\{x_i\}$ in favor of the partial derivatives $u_i = \p f/\p x_i$ by the transformation
+\begin{align}
+g(u_1,\dots,u_j,x_{j+1},\dots,x_{n}) = \sum^j_{i=1}u_ix_i - f(x_1,\dots,x_n).
+\end{align}
+We can easily check that 
+\begin{align}
+\f{\p g}{\p u_i} = x_i.
+\end{align}
+So, we define the Hamiltonian as
+\begin{align}
+\boxed{\ham(q,p) = \sum^n_{i=1}p_i \dot{q}_i - \lag(q,\dot{q})}
+\end{align}
+where the $\dot{q}$'s are functions of $p$'s and $q$'s. Now, we observe that
+\begin{align}
+\f{\p \ham}{\p p_i} &= \f{\p }{\p p_i}\lp \sum^n_{j=1}p_j \dot{q}_j - \lag(q,\dot{q})  \rp\\
+&= \dot{q}_i + \sum_{j=1}^n p_j \f{\p \dot{q}_j}{\p p_i} - \sum_{j=1}^n \underbrace{\f{\p \lag}{\p \dot{q}_j}}_{p_j}\f{\p \dot{q}_j}{\p p_i}\\
+&= \dot{q}_i.
+\end{align}
+Similarly, we have that
+\begin{align}
+\f{\p \ham}{\p q_i} &= \f{\p }{\p q_i}\lp \sum^n_{j=1}p_j \dot{q}_j - \lag(q,\dot{q})  \rp\\
+&= \sum_j p_j\f{\p \dot{q}_j}{\p q_i} - \f{\p \lag}{\p q_i} 
+- \sum_j \underbrace{\f{\p \lag}{\p \dot{q}_j}}_{p_j}\f{\p \dot{q}_j}{\p p_i}
+\\
+&=-\f{\p \lag}{\p q_i}.
+\end{align}
+We obtain the \textit{Hamilton's canonical equations} by replacing $\p \lag / \p q_i$ by $\dot{p}_i$:
+\begin{align}
+\boxed{\f{\p \ham}{\p p_i} = \dot{q}_i, \hspace{0.5cm} -\f{\p \ham}{\p q_i} = \dot{p}_i}
+\end{align}
+We have altogether $2n$ first-order equations in time for a system with $n$ degrees of freedom. Given $(q_i(0), p_i(0))$ it is possible to integrate to find $(q_i(t), p_i(t))$.\\
+
+Let us take a moment now to compare Lagrangian and Hamiltonian mechanics.\\
+
+\begin{tabular}{|p{6cm}|p{6cm}|}
+	\hline
+	\textbf{Lagrangian formalism} & \textbf{Hamiltonian formalism}\\
+	\hline
+	The state of a system with $n$ df's is described by $n$ coordinates $(q_1,\dots,q_n)$ and $n$ velocities $(\dot{q}_1,\dots,\dot{q}_n)$, or in a more compact notation by $(q_i, \dot{q}_i)$. & The state of a system with $n$ df's is described by $n$ coordinates and $n$ momenta $(q_1,\dots,q_n; p_1, \dots, p_n)$ or, more succinctly, $(q,p)$.\\
+	\hline
+	The state of the system may be represented b a point moving with a definite velocity in an $n$-dimensional configuration space. & The state of the system nay be represented by a point in $2n$-dimensional phase space with coordinates $(q_1,\dots,q_n; p_1, \dots, p_n)$.\\
+	\hline
+	The $n$ coordinates evolve according to $n$ second-order equations.&The $2n$ coordinates and momenta obey $2n$ first-order equations.\\
+	\hline
+	For a given $\lag$, several trajectories may pass through a given point in configuration space depending on $\dot{q}$. & For a given $\ham$ only one trajectory passes through a given point in phase space.\\
+	\hline
+\end{tabular}\\
 
 
 
-
-
-
-
+So what is $\ham$, physically? We know that $\lag$ can be interpreted as $T - V$ if the force is conservative. Let us looks at $\ham$ for this case. Suppose
+\begin{align}
+T &= \sum_{i=1}^n \f{1}{2}m_i \dot{x}_i^2 \\ p_i &= \f{\p \lag}{\p \dot{x}_i} = \f{\p T}{\p \dot{x}_i} = m_i \dot{x}_i,
+\end{align}
+where the coordinates are Cartesian $q_i = x_i$. This gives
+\begin{align}
+\ham 
+&= \sum^n_{i=1}p_i \dot{x}_i - \lag(q,\dot{x})\\
+&= \sum^n_{i=1}m_i \dot{x}_i^2 - \lag(q,\dot{x})\\
+&= 2T - \lag\\
+&= T + V.
+\end{align}
+So, we can interpret $\ham$ as the total energy (assuming that the force is conservative). Of course, we also assumed that the potential is not velocity-dependent, which does not apply to electromagnetism. In the next section, we will look into electromagnetism in the Hamiltonian scheme.
 
 
 
@@ -1342,11 +1397,83 @@ In going from $f$ to $g$, we simply exchange the roles of $x$ and $u$. $f$ and $
 
 
 \subsection{The Electromagnetic Force in the Hamiltonian Scheme}
+Recall the Lagrangian for electromagnetism:
+\begin{align}
+\lag_{EM} = \f{1}{2}m\mathbf{v}\cdot\mathbf{v} -q\phi + \f{q}{c}\mathbf{v}\cdot\mathbf{A}
+\end{align}
+where 
+\begin{align}
+\mathbf{p} = m\mathbf{v} + \f{q\mathbf{A}}{c}.
+\end{align}
+In the Hamiltonian scheme, we write
+\begin{align}
+\ham_{EM} 
+&= \mathbf{p}\cdot \mathbf{v} - \lag_{EM} \\
+&= \lp m\mathbf{v} + \f{q\mathbf{A}}{c} \rp \cdot \mathbf{v} - \lp \f{1}{2}m\mathbf{v}\cdot\mathbf{v} -q\phi + \f{q}{c}\mathbf{v}\cdot\mathbf{A} \rp\\
+&= \f{1}{2}m\mathbf{v}\cdot\mathbf{v} + q\phi\\
+&= T + q\phi.
+\end{align}
+Wait a minute. What's happened to the vector potential $\mathbf{A}$? How can $\ham_{EM}$ generate the correct dynamics without knowing $\mathbf{A}$? It turns out that $T$ is dependent on $\mathbf{p}$ and $\mathbf{A}$. Recall that
+\begin{align}
+\f{1}{2}m\mathbf{v}\cdot\mathbf{v} = T = \f{\abs{\mathbf{p} - q\mathbf{A}/c}^2}{2m}.
+\end{align}
+Thus we have
+\begin{align}
+\boxed{\ham_{EM} = \f{\abs{\mathbf{p} - q\mathbf{A}/c}^2}{2m} + q\phi}
+\end{align}
+
+
+
+
+
 \subsection{Cyclic Coordinates, Poisson Brackets, and Canonical Transformations}
-\subsubsection{Canonical Transformations}
-\subsubsection{Active Transformations}
-\subsection{Symmetries and Their Consequences}
-\subsubsection{A Useful Relation between $\mathbf{S}$ and $\mathbf{E}$}
+Let a Hamiltonian $\ham(q,p)$ be given. Suppose that the coordinate $q_i$ is missing in $\ham$, then 
+\begin{align}
+\dot{p}_i = -\f{\p \ham}{\p q_i} = 0,
+\end{align}
+which means the canonical momentum $p_i$ is conserved. Now, in many cases there are other quantities that are conserved, such as energy. How do we characterize these in the Hamiltonian formalism? It turns out there is a way to do this. \\
+
+Suppose $\omega(q,p)$ is some state variable that doesn't depend explicitly on time $t$. Then we have by the chain rule
+\begin{align}
+\f{d\omega}{dt} 
+&= \sum_i \lp \f{\p \omega}{\p q_i}\dot{q}_i + \f{\p \omega}{\p p_i}\dot{p}_i \rp\\
+&= \sum_i \lp \f{\p \omega}{\p q_i}\f{\p \ham}{\p p_i} - \f{\p \omega}{\p p_i}\f{\p \ham}{\p q_i} \rp\\
+&\equiv \{ \omega, \ham \}.
+\end{align}
+So, we define the Poisson bracket between two variables $\omega(q,p)$ and $\lambda(q,p)$ to be
+\begin{align}
+\boxed{\{\omega,\lambda\} = \sum_i \lp \f{\p \omega}{\p q_i}\f{\p \lambda}{\p p_i} - \f{\p \omega}{\p p_i}\f{\p \lambda}{\p q_i} \rp}
+\end{align}
+
+Let us look at this equation again
+\begin{align}
+\f{d\omega}{dt} = \sum_i \lp \f{\p \omega}{\p q_i}\f{\p \ham}{\p p_i} - \f{\p \omega}{\p p_i}\f{\p \ham}{\p q_i} \rp = \{ \omega, \ham \}
+\end{align}
+This says that any state variable whose Poisson bracket with $\ham$ vanishes is constant in time (i.e., is a conserved quantity). \\
+
+Poisson brackets have a few important properties and similarities with commutators:
+\begin{enumerate}
+	\item $\{\omega, \lambda\} = -\{ \lambda,\omega    \}$
+	\item $\{\omega, \lambda + \sigma \} = 
+	\{\omega, \lambda  \}
+	+
+	\{\omega,  \sigma \}$
+	\item $\{\omega, \lambda \sigma \} = 
+	\{\omega, \lambda  \}\sigma
+	+
+	\lambda\{\omega,  \sigma \}$
+	\item $\{ q_i,q_j \} = \{ p_i , p_j \} = 0$
+	\item $\{ q_i, p_j  \} = \delta_{ij}$
+	\item $\dot{q}_i = \{ q_i,\ham   \}$
+	\item $\dot{p}_i = \{ p_i,\ham   \}$
+\end{enumerate}
+
+Please refer to Shankar's book for the sections on \textit{Canonical Transformations, Active Transformations, and Symmetries and Their Consequences}.
+
+%\subsubsection{Canonical Transformations}
+%\subsubsection{Active Transformations}
+%\subsection{Symmetries and Their Consequences}
+%\subsubsection{A Useful Relation between $\mathbf{S}$ and $\mathbf{E}$}
 
 
 
@@ -1356,15 +1483,83 @@ In going from $f$ to $g$, we simply exchange the roles of $x$ and $u$. $f$ and $
 
 
 
-\section{All is Not Well with Classical Mechanics}
-
-
-
-\newpage
+%\section{All is Not Well with Classical Mechanics}
+%\subsection{Particles and Waves in Classical Physics}
+%\subsection{An Experiment with Waves and Particles (classical)}
+%\subsection{The Double-Slit Experiment with Light}
+%\subsection{Matter Waves (de Broglie Waves)}
+%
+%
+%\newpage
 
 
 
 \section{The Postulates \textendash a General Discussion}
+
+\subsection{The Postulates}
+
+Here we introduce the postulates of nonrelativistic quantum mechanics. We consider a system with one df (a particle in one dimension). The straightforward generalization to more particles in higher dimension will be introduced later. \\
+
+\begin{tabular}{|p{4cm}|p{8cm}|}
+	\hline
+	\textbf{Classical Mechanics} & \textbf{Quantum Mechanics}\\ \hline
+	The state of a particle at any given time is specified by the two variables $x(t)$ and $p(t)$, i.e., as a point in a two-dimensional phase space. & The state of the particle is represented by a vector $\ket{\phi(t)}$ in a Hilbert space.\\ \hline
+	Every dynamical variable $\omega$ is a function of $x$ and $p$: $\omega = \omega(x,p)$. & The independent variables $x$ and $p$ of classical mechanics are represented by Hermitian operators $X$ and $P$ with the following matrix elements in the eigenbasis of $X$: \begin{equation}
+	\bra{x}X\ket{x'} = x\delta(x-x')
+	\end{equation}
+	\begin{equation}
+	\bra{x}P\ket{x'}= -i\hbar\delta'(x-x').
+	\end{equation}
+	The operators corresponding to dependent variables $\omega(x,p)$ are given Hermitian operators
+	\begin{equation} 
+	\Omega(X,P) = \omega(x\to X, p \to P).
+	\end{equation}\\ \hline
+	If the particle is in a state given by $x$ and $p$, the measurement of the variable $\omega$ will yield a value $\omega(x,p)$. The state will remain unaffected. & If the particle is in a state $\ket{\psi}$, measurement of the variable corresponding to $\Omega$ will yield one of the eigenvalues $\omega$ with probability $P(\omega)\propto \abs{\braket{\omega}{\psi}}^2$. The state of the system will change from $\ket{\psi}$ to $\ket{\omega}$ as a result of the measurement.\\ \hline
+	The state variables change with time according to Hamilton's equations: 
+	\begin{equation}
+	\dot{x} = \f{\p \ham}{\p \dot{p}}
+	\end{equation}
+	\begin{equation}
+	\dot{p} = -\f{\p \ham}{\p x}
+	\end{equation}
+	&
+	The state vector $\ket{\psi(t)}$ obeys the Schr\"{o}dinger equation 
+	\begin{equation}
+	i\hbar\f{d}{dt}\ket{\psi(t)} = H\ket{\psi(t)}
+	\end{equation}
+	where $H(X,P)=\ham(x\to X, p\to P)$ is the quantum Hamiltonian operator and $\ham$ is the Hamiltonian for the corresponding classical problem.\\\hline
+\end{tabular}
+
+
+\subsection{Postulates I - III}
+
+\subsubsection{Collapse of the State Vector}
+\subsubsection{How to Test Quantum Theory}
+\subsubsection{Expectation Value}
+\subsubsection{The Uncertainty}
+\subsubsection{Compatible and Incompatible Variables}
+\subsubsection{The Density Matrix}
+\subsubsection{Generalization to More Degrees of Freedom}
+
+
+
+
+
+
+\subsection{The Schr\"{o}dinger Equation}
+
+
+\subsubsection{Setting up}
+\subsubsection{General Approach to the Solution}
+\subsubsection{Choosing a Basis for Solving SE}
+
+
+
+
+
+
+
+
 
 
 \newpage
@@ -1372,6 +1567,27 @@ In going from $f$ to $g$, we simply exchange the roles of $x$ and $u$. $f$ and $
 
 
 \section{Simple Problems in One Dimension}
+
+\subsection{The Free Particle}
+
+\subsubsection{Time Evolution for the Gaussian Packet}
+\subsubsection{Some General Features of Energy Eigenfunctions}
+
+
+
+\subsection{The Particle in a Box}
+
+\subsection{The Continuity Equation for Probability}
+
+\subsection{The Single-Step Potential: A Problem in Scattering}
+
+\subsection{The Double-Slit Experiment}
+
+\subsection{Some Theorems}
+
+
+
+
 
 
 \newpage
