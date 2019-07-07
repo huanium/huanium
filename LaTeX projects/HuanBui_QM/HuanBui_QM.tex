@@ -3,9 +3,11 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{amsmath}
+\usepackage{bm}
 \usepackage{authblk}
 \usepackage{amsfonts}
 \usepackage{esint}
+\usepackage{centernot}
 \usepackage{mathtools}
 \usepackage{amsthm}
 \theoremstyle{definition}
@@ -2256,7 +2258,7 @@ With this, we are able to rewrite the vector potential, electric, and magnetic f
 
 
 
-The annihilation and creation operators are to be understood as Heisenberg picture operators evaluated at $t=0$. The time-dependent annihilation operator for a free field is given by 
+The annihilation and creation operators are to be understood as Heisenberg picture operators evaluated at $t=0$. The time-dependent annihilation operator for a free field is given by  
 \begin{align}
 \hat{a}_{\mathbf{k}s}(t) = \hat{a}_{\mathbf{k}s}(0)e^{-i\omega_k t}.
 \end{align}
@@ -2292,7 +2294,7 @@ With this, we can make an approximation:
 e^{\pm i\mathbf{k}\cdot\mathbf{r}} \approx 1 \pm i\mathbf{k}\cdot\mathbf{r}
 \end{align}
 which says we replace the exponential by unity for $\abs{\mathbf{r}}$ is negligible. Under this approximation, 
-\begin{align}
+\begin{align}\label{dipoleE}
 \boxed{\hat{\mathbf{E}}(\mathbf{r},t)  \approx \hat{\mathbf{E}}(t) = i \lp \f{\hbar\omega_k}{2\epsilon_0 V} \rp^{\f{1}{2}}\mathbf{e}_x \lb \hat{a}e^{-i\omega t} - \hat{a}^\dagger e^{i\omega t} \rb}
 \end{align}
 This is called the \textbf{``dipole'' approximation}. 
@@ -2411,10 +2413,370 @@ where $\hat{\ham}_0 = \hat{\mathbf{P}}^2/2m + V(r)$ is of course the field-free 
 
 \subsection{Interaction of an atom with a classical field}
 
+So far we have not specified whether the interacting field is classical or quantum mechanical. The derivation we just looked at is valid for both classical and quantum fields. However, we will eventually show that the atom behaves differently in each case. 
 
-\subsection{Interaction of an atom with a quantized field}
+Let us first look at the the atom-field interaction with a classical field. Suppose the field is given by
+\begin{align}
+\mathbf{E}(t) = \mathbf{E}_0 \cos(\omega t)
+\end{align}
+where the dipole approximation $\mathbf{k}\cdot\mathbf{r} \ll 1$ has already been made (so that the field is uniform over the atom). Suppose that $\omega$ is the frequency of the radiation, and the field is abruptly turned on at $t = 0$. Assume that the initial state of the atom is $\ket{i}$ where
+\begin{align}
+\hat{\ham}_0 \ket{i} = E_i\ket{i}. 
+\end{align}
+For time $t > 0$, the state vector $\ket{\psi}(t)$ is a linear combination of all uncoupled states $\ket{k}$:
+\begin{align}\label{exp}
+\ket{\psi(t)} = \sum_k C_k(t) e^{-iE_k t/\hbar}\ket{k}
+\end{align}
+where
+\begin{align}
+\sum_k \abs{C_k(t)}^2= 1.
+\end{align}
+The time-dependent Schro\"{o}dinger equation is
+\begin{align}
+i\hbar \f{\p \ket{\psi(t)}}{\p t} = \lp \hat{\ham}_0 + \hat{\ham}^{(I)} \rp\ket{\psi(t)}
+\end{align}
+where
+\begin{align}
+\hat{\ham}^{(I)} = -\hat{\mathbf{d}}\cdot\mathbf{E}(t).
+\end{align}
+Substituting the expansion \eqref{exp} into the time-dependent SE, them multiplying from the left by $\bra{l}e^{-E_l t/\hbar}$ gives
+\begin{align}
+i\hbar \bra{l}e^{-E_l t/\hbar} \f{\p}{\p t}\sum_k C_k(t) e^{-iE_k t/\hbar}\ket{k} = \bra{l}e^{-i E_l t/\hbar} \lp \hat{\ham}_0 + \hat{\ham}^{(I)} \rp \sum_k C_k(t) e^{-iE_k t/\hbar}\ket{k}.
+\end{align}
+This simplifies to 
+\begin{align}
+\dot{C}_l(t) - \f{i}{\hbar}\sum_k C_k(t)\bra{l}\hat{\ham}^{(I)}\ket{k} e^{-i (E_l - E_k)t\hbar}.
+\end{align}
+Defining
+\begin{align}
+\omega_l = \f{E_l - E_K}{\hbar}
+\end{align}
+as the transition frequencies between levels $l$ and $k$ gives a set of couple-first-order differential equations for the amplitudes
+\begin{align}\label{dif}
+\dot{C}_l(t)=  - \f{i}{\hbar}\sum_k C_k(t)\bra{l}\hat{\ham}^{(I)}\ket{k} e^{-i\omega_l t}.
+\end{align}
+The initial condition is $C_i(0) = 1$: $\ket{i}$ is the only state initially populated. As time goes forward, the population in $\ket{i}$ will decrease and move to some unpopulated $\ket{f}$. The probability of the transition $i \to f$ is given by
+\begin{align}
+P_{i\to f}(t) = C^*(f)C_f(t) = \abs{C_f(t)}^2. 
+\end{align}
+For simple cases, these probabilities can be solved analytically or even numerically for more complex cases. However, for the ``weak'' field where $\abs{\bra{f}\hat{\mathbf{d}\cdot\mathbf{E}_0}\ket{i}}$ is small, we can use the time-dependent perturbation theory to approach the problem. For bookkeeping purposes we shall write the interaction Hamiltonian as $\lambda \hat{\ham}^{(1)}$ where $0 \leq \lambda \leq 1$. (At the end of the calculations we often take $\lambda \to 1$.) We then expand the probability amplitude for, say, the state $\ket{l}$ in the power series
+\begin{align}
+C_l(t) = \sum_{n = 0}^\infty \lambda^n C_l^{(n)}(t).
+\end{align} 
+Inserting this expansion into \eqref{dif} and equating the like powers of $\lambda$ we obtain up to second order
+\begin{align}
+&\dot{C}_l^{(0)} = 0\\
+&\dot{C}_l^{(1)} = -\f{i}{\hbar}\sum_k C_k^{(0)}(t)\ham^{(I)}_{lk}(t)e^{i\omega_{lk}t}\\
+&\dot{C}_l^{(2)} = -\f{i}{\hbar}\sum_k C_k^{(1)}(t)\ham^{(I)}_{lk}(t)e^{i\omega_{lk}t}
+\end{align}
+where
+\begin{align}
+\ham^{(I)}_{lk}(t) = \bra{l}\hat{\ham}^{(I)}(t)\ket{k} = \bra{l}- \hat{\mathbf{d}} \cdot\mathbf{E}(t)\ket{k}.
+\end{align}
+We observe the pattern relating the $n^{th}$ order to the $n+1^{th}$ order:
+\begin{align}
+\dot{C}_l^{(n+1)} = -\f{i}{\hbar}\sum_k C_k^{(n)}(t)\ham^{(I)}_{lk}(t)e^{i\omega_{lk}t}.
+\end{align}
+The essential assumption underlying the perturbation-theory approach is that the driving field is so weak that the atomic populations change very little. That is, if $C_i(0) = 1$ and $C_f(0) = 0$ then for $t > 0$, a good approximation is $C_i(t) \approx 1$ and $C_f(t) \ll 1$. Thus, for the expression of $\dot{C}^{(1)}_l$ the only surviving term is for the state $k$ to be the initial state $i$. This gives
+\begin{align}
+\dot{C}_f^{(1)}(t) = -\f{i}{\hbar} C_i^{(0)}(t)\ham^{(I)}_{fi}(t)e^{i\omega_{fi}t}.
+\end{align}   
+Integrating this gives
+\begin{align}\label{c1}
+{C}_f^{(1)}(t) = -\f{i}{\hbar}\int_0^t C_i^{(0)}(t')\ham^{(I)}_{fi}(t')e^{i\omega_{fi}t'}\,dt'.
+\end{align}
+Following a similar line of reasoning we get for $\dot{C}_l^{(2)}$
+\begin{align}
+\dot{C}_l^{(2)}(t) &= -\f{i}{\hbar}\sum_l \int_0^t C_l^{(1)}(t')\ham^{(I)}_{fl}(t')e^{i\omega_{fl}t'}\,dt'.
+\end{align}
+Now replacing $C_l^{(1)}$ with \eqref{c1} we get
+\begin{align}\label{c2}
+{C}_l^{(2)}(t) &= -\f{i}{\hbar}\sum_l \int_0^t 
+\lp -\f{i}{\hbar}\int_0^{t'} C_i^{(0)}(t'')\ham^{(I)}_{fi}(t'')e^{i\omega_{fi}t''}\,dt''  \rp
+\ham^{(I)}_{fl}(t')e^{i\omega_{fl}t'}\,dt'\\
+&= \lp \f{-i}{\hbar} \rp^2 \sum_l \int_0^t\,dt' \int_0^{t'}\,dt'' \lp \ham^{(I)}_{fl}(t')e^{i\omega_{fl}t'}\rp \ham^{(I)}_{fi}(t'')e^{i\omega_{fi}t''} 
+\end{align}
+We see that while \eqref{c1} gives the transition probability amplitude from $\ket{i}\to \ket{f}$, \eqref{c2} gives the transition probability amplitude from $\ket{i} \to \ket{\{ l \}} \to \ket{f}$. The total transition probability from $\ket{i}$ to $\ket{f}$ is then the square of the sum of the amplitudes:
+\begin{align}
+P_{i\to f}(t)  = \abs{ \sum_{n=0}^\infty C^{(n)}_f(t)}^2.
+\end{align}
+
+
+The dipole moment operator $\hat{\mathbf{d}} = -e\mathbf{r}$ has non-vanishing matrix elements only between states of opposite parity. Thus the first-order correction to the amplitude of the initial state (where $f=i$) vanishes:
+\begin{align}
+{C}_i^{(1)}(t) = -\f{i}{\hbar}\int_0^t C_i^{(0)}(t')\ham^{(I)}_{ii}(t')e^{i\omega_{ii}t'}\,dt' = 0,
+\end{align}
+since 
+\begin{align}
+\bra{i}\hat{\ham}^{(I)}(t)\ket{i} = 0.
+\end{align}
+Thus, to first order, 
+\begin{align}
+C_i(t) = C_i^{(0)}(t) = 1.
+\end{align}
+Thus, by \eqref{c1}
+\begin{align}
+{C}_f^{(1)}(t) &= -\f{i}{\hbar}\int_0^t C_i^{(0)}(t')\ham^{(I)}_{fi}(t')e^{i\omega_{fi}t'}\,dt' \\
+&= -\f{i}{\hbar}\int_0^t \ham^{(I)}_{fi}(t')e^{i\omega_{fi}t'}\,dt'.
+\end{align}
+Now, with
+\begin{align}
+\hat{\ham}^{(I)}(t) = - \hat{\mathbf{d}}\cdot \mathbf{E}_0 \cos(\omega t) = - \f{1}{2}\hat{\mathbf{d}}\cdot \mathbf{E}_0 \lp e^{i\omega t} + e^{-i\omega t} \rp,
+\end{align}
+the integral above becomes
+\begin{align}\label{amplitude}
+{C}_f^{(1)}(t) &= \lp-\f{i}{\hbar}\rp \lp-\f{1}{2}\rp \bra{f}\hat{\mathbf{d}}\cdot \mathbf{E}_0\ket{i}\int_0^t\lp e^{i\omega t} + e^{-i\omega t} \rp e^{i\omega_{fi}t'}\,dt'\\
+&= \boxed{\f{1}{2\hbar}\lp \hat{\mathbf{d}}\cdot\mathbf{E}_0 \rp_{fi}\cdot\lc \f{e^{i(\omega + \omega_{fi})t} - 1}{\omega + \omega_{fi}} 
+- \f{e^{i(\omega - \omega_{fi})t} - 1}{\omega - \omega_{fi}}\rc}
+\end{align}
+If $\omega \approx \omega_{fi}$, i.e., the field is near resonance then clearly the second term in the curly brackets dominates. With RWA (rotating wave approximation) we drop the first term. And so the transition probability to first order is
+\begin{align}
+\boxed{P^{(1)}_{i\to f}(t) = \abs{C^{(1)}_f(t)}^2 = \f{\abs{\lp \hat{\mathbf{d}}\cdot\mathbf{E}_0 \rp_{fi}}^2}{\hbar^2} \f{\sin^2(\Delta t/2)}{\Delta^2}}
+\end{align}
+where $\Delta = \omega - \omega_{fi}$ is called the detuning and we have used the identity
+\begin{align}
+e^{-i\theta - 1} &= \cos\theta t - i\sin\theta t - 1\\
+&=-2\sin^2 \f{\theta t}{2} - 2i\sin \f{\theta t}{2}\cos\f{\theta t}{2} \\
+&= -2\sin \f{\theta t}{2} \lp e^{i\theta t/2} \rp
+\end{align}
+so that
+\begin{align}
+\abs{ \f{-1}{2}\lp e^{i\Delta t} - 1 \rp }^2 = \sin^2 \f{\Delta t}{2}.
+\end{align}
+When $\Delta \neq 0$, the transition probability maximizes at
+\begin{align}
+\lp  P^{(1)}_{i \to f} \rp_{\text{max}} = \f{\abs{\lp \hat{\mathbf{d}}\cdot\mathbf{E}_0 \rp_{fi}}^2}{\hbar^2} \f{1}{\Delta^2}.
+\end{align}
+On resonance, i.e., $\Delta = 0$,
+\begin{align}\label{resonance}
+\lp  P^{(1)}_{i \to f} \rp_{\text{max}} = \f{\abs{\lp \hat{\mathbf{d}}\cdot\mathbf{E}_0 \rp_{fi}}^2}{\hbar^2} t^2.
+\end{align}
+Thus we have the following 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{p}
+	\includegraphics[scale=0.3]{t}
+\end{figure}
+For the perturbation approximation to be valid we require that $C^{(1)}_f(t) \ll 1$, which implies $P_{i \to f}^{(1)}(t) \ll 1$. For $\Delta \neq 0$, this places constraints on both $\abs{\lp \hat{\mathbf{d}}\cdot\mathbf{E}_0 \rp_{fi}}$ and $\Delta$. On resonance, \eqref{resonance} is only valid for a very short time. For the case of the transition probability as a function of $\Delta$, the width of the peak is proportional to $t^{-1}$ while the height is proportional to $t^2$. It turns out that the area is proportional to $t$:
+\begin{align}
+\int^{\infty}_{-\infty} \f{\sin^2 \Delta t/2}{\Delta^2} \,d\Delta = \f{\pi t}{2}
+\end{align}
+In the limit where $\Delta \approx 0$ and $t \gg 2\pi/\omega_{fi}$, the function in the integrand may be approximated by the Dirac delta function
+\begin{align}
+\lim_{t\to\infty}\f{\sin^2 \Delta t/2}{\Delta^2} = \f{\pi}{2}t\delta(\Delta).
+\end{align}
+In this case the transition probability is
+\begin{align}
+P^{(1)}_{i\to f}(t) = \f{\pi}{2}\abs{C^{(1)}_f(t)}^2 = \f{\abs{\lp \hat{\mathbf{d}}\cdot\mathbf{E}_0 \rp_{fi}}^2}{\hbar^2} t \delta(\Delta).
+\end{align}
+Now we define the time-independent transition probability \textbf{rate} as
+\begin{align}
+W_{i\to f} = \f{P^{(1)}_{i\to f}}{t} = \f{\pi}{2} \f{\abs{\lp \hat{\mathbf{d}}\cdot\mathbf{E}_0 \rp_{fi}}^2}{\hbar^2} \delta(\omega - \omega_{fi}).
+\end{align}
+In practice, the driving field will not be monochromatic so that a range of
+frequencies will have to be summed or integrated over to obtain the total transition rate.  If $[f]$ represents a set of accessible final states, then the transition rate for a monochromatic field is
+\begin{align}
+\boxed{W_{i\to [f]} = \f{\pi}{2}\sum_{[f]}\f{\abs{\lp \hat{\mathbf{d}}\cdot\mathbf{E}_0 \rp_{fi}}^2}{\hbar^2} \delta(\omega - \omega_{fi})}
+\end{align}
+This expression is often famously called Fermi's Golden Rule. Now suppose there is a broad range of frequencies. This means the amplitude of the light is now frequency dependent $\mathbf{E}_0 \to \mathbf{E}_0(\omega)$. Thus the transition probability rate induced by all the frequency components must be
+\begin{align}
+\f{P^{(1)}_{i\to f}}{t} &=  \int \, d\omega \f{\abs{\lp \hat{\mathbf{d}}\cdot\mathbf{E}_0 \rp_{fi}}^2}{\hbar^2} \f{\sin^2(\Delta t/2)}{\Delta^2}\\
+&= \f{1}{\hbar}\int \,d\omega \f{\sin^2(\Delta t/2)}{\Delta^2} \underbrace{\abs{\bra{f}\hat{\mathbf{d}\cdot\mathbf{E}_0(\omega)}\ket{i}}^2}_{F(\omega)}.
+\end{align}
+Now if $F(\omega)$ varies slowly with $\omega$ compared to $\f{\sin^2(\Delta t/2)}{\Delta^2}$ then we can take $F(\omega)$ to be its resonant value $F(\omega_{fi})$. With this we can take it out of the integral and get
+\begin{align}
+W_{i\to f} = \f{P^{(1)}_{i\to f}}{t} = \f{\pi}{2\hbar^2}F(\omega_{fi}).
+\end{align}
+The spread of the frequencies results in the dephasing of the oscillations as shown in the plot of transition probability versus time. This is due to the fact that the light in \textit{incoherent} (lacking the phase relations between the various frequency components). If the atom is driven by coherent light (like a laser), dephasing don't occur and the perturbative time-independent transition rates above generally do not adequately describe the dynamics. We will resolve this issue later. 
+
+
+
+
+
+
+ 
+\subsection{Interaction of an atom with a quantized field \& Spontaneous emission}
+
+In the previous subsection, we did not make any assumption about the relative position of the states $i$ and $f$, i.e., whether $E_i$ is greater or less than $E_f$. We simply said that so long as $\mathbf{E}_0 \neq 0$ and $E_i \neq E_f$, there is some non-zero transition probability. In this section, we will now show that for the case $E_i > E_f$, when the field is quantized, transitions will occur even when no photons are present. This is called \textit{spontaneous emission}. This is one of many differences that appear when we treat the field quantum mechanically versus classically. \\
+
+Let us revisit the single-mode free space field given by \eqref{dipoleE} after dipole approximation (where we assumed the field is uniform over the atom):
+\begin{align}
+\hat{\mathbf{E}}(\mathbf{r},t)  \approx \hat{\mathbf{E}}(t) = i \lp \f{\hbar\omega_k}{2\epsilon_0 V} \rp^{\f{1}{2}}\mathbf{e} \lb \hat{a}e^{-i\omega t} - \hat{a}^\dagger e^{i\omega t} \rb.
+\end{align}
+But also recall that this free-space field is written in the Heisenberg picture (there is a time-dependence when the field operator is expressed in the Heisenberg basis). In the Schr\"{o}dinger picture, though, the field operator becomes
+\begin{align}
+\hat{\mathbf{E}} = i \lp \f{\hbar\omega_k}{2\epsilon_0 V} \rp^{\f{1}{2}}\mathbf{e} \lb \hat{a} - \hat{a}^\dagger \rb.
+\end{align}
+
+Now, the free-space Hamiltonian $\hat{\ham}_0$ must be
+\begin{align}
+\hat{\ham}_0 = \hat{\ham}_\text{atom} + \hat{\ham}_\text{field}
+\end{align}
+where $\hat{\ham}_\text{atom}$ is just the free-atom Hamiltonian as before and $\hat{\ham}_\text{field}$ is the free-space field Hamiltonian, which we have seen before as well:
+\begin{align}
+\hat{\ham}_\text{field} = \hbar\omega\lp \hat{a}^\dagger\hat{a} + \f{1}{2} \rp.
+\end{align}
+Now, because the zero-point energy term does not contribute to the dynamics, we will simply drop it. With this, the interaction Hamiltonian is given by
+\begin{align}
+\hat{\ham}^{(I)} = -\hat{\mathbf{d}} \cdot\hat{\mathbf{E}} = - i \lp \f{\hbar\omega_k}{2\epsilon_0 V} \rp^{\f{1}{2}}\lp \hat{\mathbf{d}}\cdot\mathbf{e} \rp \lp \hat{a} - \hat{a}^\dagger\rp.
+\end{align}
+Let us define
+\begin{align}
+\bm{\mathcal{E}}_0 = i \lp \f{\hbar\omega_k}{2\epsilon_0 V} \rp^{\f{1}{2}}\mathbf{e}.
+\end{align}
+From this,
+\begin{align}
+\hat{\ham}^{(I)} = - \hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0\lp \hat{a} - \hat{a}^\dagger\rp.
+\end{align}
+
+Now, because both the atomic and field systems are quantized, the states of the combined system is the product of the states of both the atom and field. Suppose initially we're given the initial state of the atom $\ket{a}$ and $n$ photons $\ket{n}$, then the initial state of the system is
+\begin{align}
+\ket{i} = \ket{a}\ket{n}. 
+\end{align} 
+The perturbation interaction of the quantized field causes a transition to the new state 
+\begin{align}
+\ket{f_1} = \ket{b}\ket{n-1}
+\end{align}
+where $n-1$ means that one photon has been absorbed by the atom to transition from $\ket{a}$ to $\ket{b}$, or to the state
+\begin{align}
+\ket{f_2} = \ket{b}\ket{n+1}
+\end{align}
+where $n+1$ means that one photon has been emitted by the atom to transition from $\ket{a}$ to $\ket{b}$. The energy of these states are
+\begin{align}
+&\text{for } \ket{i} = \ket{a}\ket{n}, \quad\quad\quad\, E_i = E_a + n\hbar\omega \\
+&\text{for } \ket{f_1} = \ket{b}\ket{n-1}, \quad E_i = E_b + (n-1)\hbar\omega \\
+&\text{for } \ket{f_2} = \ket{b}\ket{n+1}, \quad E_i = E_b + (n+1)\hbar\omega
+\end{align}
+where $E_a$ and $E_b$ are the energies of the atomic states $\ket{a}$ and $\ket{b}$. \\
+
+We observe that the interaction Hamiltonian (or the Hamiltonian associated with the perturbation) is time-independent. The matrix elements of this interaction can be calculated by finding
+\begin{align}
+\text{Absorption: } &\bra{f_1}\hat{\ham}^{(I)}\ket{i}\\
+\text{Emission: } &\bra{f_2}\hat{\ham}^{(I)}\ket{i}.
+\end{align}
+For absorption, we need a term in the interaction Hamiltonian that contains only the annihilation operator:
+\begin{align}
+\textbf{Absorption: } \bra{f_1}\hat{\ham}^{(I)}\ket{i}
+&= \bra{b, n-1}-\hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0(\hat{a})\ket{a,n}\\
+&= \bra{b,n-1}-\hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0 \sqrt{n}\ket{a,n-1}\\
+&= \bra{b}-\hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0\ket{a}\sqrt{n}\braket{n-1}\\
+&= \boxed{-\lp \hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0 \rp_{ba}\sqrt{n}}
+\end{align}
+Similarly, for emission
+\begin{align}
+\textbf{Emission: } \bra{f_2}\hat{\ham}^{(I)}\ket{i}
+&= \bra{b, n+1}-\hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0(-\hat{a}^\dagger)\ket{a,n}\\
+&= \bra{b,n+1}\hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0 \sqrt{n+1}\ket{a,n+1}\\
+&= \bra{b}\hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0\ket{a}\sqrt{n+1}\braket{n+1}\\
+&= \boxed{\lp \hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0 \rp_{ba}\sqrt{n+1}}
+\end{align}
+where
+\begin{align}
+\lp \hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0 \rp_{ba} = \bra{b}\hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0\ket{a} = \bra{b}\hat{\mathbf{d}}\ket{a}\cdot\bm{\mathcal{E}}_0 \equiv \mathbf{d}_{ba}\cdot\bm{\mathcal{E}}_0
+\end{align}
+is the dipole matrix element between states $\ket{b}$ and $\ket{a}$. \\
+
+It is worthy to compare this result to the semiclassical picture we saw in the last subsection. For the absorption case, there is nothing new: if no field then no absorption: 
+\begin{align}
+n=0 \implies \bra{f_1}\hat{\ham}^{(I)}\ket{i} = 0
+\end{align}
+since $\sqrt{n} = 0$. However, the emission case has no semiclassical counterpart: transitions may occur even when no photons are present:
+\begin{align}
+n=0 \centernot\implies \bra{f_2}\hat{\ham}^{(I)}\ket{i} = 0
+\end{align}
+since $\sqrt{n+1}\neq 0$. This is called \textbf{spontaneous emission}, which cannot be obtained from the semiclassical approach. If $n > 0$, the emission of an additional photon is called \textbf{stimulated emission}, which is essential for the operation of the ``light amplification by stimulated emission of radiation'' or LASER. \\
+
+We might also be interested in the ratio of the absorption/emission rates:
+\begin{align}\label{rates}
+\boxed{\f{\abs{\bra{f_2}\hat{\ham}^{(I)}\ket{i}}^2}{\abs{\bra{f_1}\hat{\ham}^{(I)}\ket{i}}^2}= \f{n+1}{n}}
+\end{align}
+
+It turns out that we can still use the perturbation method developed in the previous section to calculate the transition amplitudes, provided that me make appropriate modifications to account for the fact that the field is now quantized. The first difference is in the Hamiltonians:
+\begin{align}
+\hat{\ham}_0 = \hat{\ham}_\text{atom}  &\to \hat{\ham}_0 =  \hat{\ham}_\text{atom} + \hat{\ham}_\text{field}\\
+\hat{\ham}^{(I)}(t) = -\hat{\mathbf{d}}\cdot\mathbf{E}(t) &\to \hat{\ham}^{(I)}(t) = - \hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0\lp \hat{a} - \hat{a}^\dagger\rp
+\end{align}
+where of course
+\begin{align}
+\hat{\ham}_\text{field} = \hbar\omega\lp \hat{a}^\dagger\hat{a} + \f{1}{2} \rp
+\end{align}
+where we again leave out the zero-point energy term. \\
+
+Now, let us assume that the atom has only two levels $\ket{a}$ and $\ket{b}$. The state vector of the system can be written as
+\begin{align}
+\ket{\psi(t)} = &C_i(t)\ket{a}\ket{n}e^{-i\omega_a t}e^{-i n \omega t } \nonumber\\
+&+ C_{f_1}(t)\ket{b}\ket{n-1}e^{-i\omega_b t}e^{-i (n-1) \omega t } \nonumber\\
+&+ C_{f_2}(t)\ket{b}\ket{n+1}e^{-i\omega_b t}e^{-i (n+1) \omega t } 
+\end{align}
+where the first term is the initial state of the system, the second term is corresponds to absorption, and the third term corresponds to emission. We assume that $\ket{\psi(t)} = \ket{a}\ket{n}$, $C_i(0) = 1$, and $C_{f_1}(0) = C_{f_2}(0) = 0$. Following the perturbative method used before, we can get the first-order correction
+for the amplitudes $C_{f_1}$ and $C_{f_2}$ associated with the atom being in state $\ket{b}$:
+\begin{align}
+\text{Absorption: }&C_{f_1}^{(1)}(t) = -\f{i}{\hbar}\int_0^t \,dt' \bra{f_1}\hat{\ham}^{(I)}\ket{i}e^{i(\omega_{f_1} - \omega_i)t'}\\
+\text{Emission: }&C_{f_2}^{(1)}(t) = -\f{i}{\hbar}\int_0^t \,dt' \bra{f_2}\hat{\ham}^{(I)}\ket{i}e^{i(\omega_{f_2} - \omega_i)t'}.
+\end{align}
+And so the amplitude of the atom being in state $\ket{b}$ (to first-order of course) regardless of how it got there is the \textit{sum} of these amplitudes:
+\begin{align}\label{quantum_amp}
+C_f^{(1)}(t) &= C_{f_1}^{(1)}(t) + C_{f_2}^{(1)}(t)\\
+&= \f{i}{\hbar}\lp \hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0 \rp_{ba}\int^t_0 \,dt'  \sqrt{n}  e^{i(\omega_{f_1} - \omega_i)t'} 
+- \sqrt{n+1}  e^{i(\omega_{f_2} - \omega_i)t'}\\
+&= \boxed{\f{i}{\hbar}\lp \hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0 \rp_{ba}
+\lb \underbrace{\sqrt{n+1}\cdot\f{e^{i(\omega + \omega_{ba})t} - 1}{ \omega + \omega_{ba} }}_\text{Emission}  - \underbrace{\sqrt{n}\cdot\f{e^{i(\omega - \omega_{ba})t} - 1}{\omega - \omega_{ba}}}_{\text{Absorption}}\rb}
+\end{align}
+If $n\ll 1$ then $\sqrt{n+1} \approx \sqrt{n}$, in which case this result and \eqref{amplitude} are essentially the same and we get a correspondence between classical and quantum field amplitudes:
+\begin{align}
+\lp \mathbf{E}_0 \rp_\text{classical} \leftrightarrow \lp 2i\mathcal{E}_0\sqrt{n} \rp_\text{quantum}.
+\end{align}
+
+If $E_b > E_a$ ($\ket{b}$ is the excited state) and $\omega \approx \omega_{ba}$ then by RWA the first term in \eqref{quantum_amp} can be dropped as the second term dominates. There is nothing abnormal about this. However, if $E_a > E_b$ ($\ket{a}$ is the excited state) and $\omega \approx -\omega_{ba}$, then the second term of \eqref{quantum_amp} can be dropped (again under RWA). This leaves us with
+\begin{align}
+C_f^{(1)}(t) \approx \f{i}{\hbar}\lp \hat{\mathbf{d}}\cdot\bm{\mathcal{E}}_0 \rp_{ba}
+\lb \underbrace{\sqrt{n+1}\cdot\f{e^{i(\omega + \omega_{ba})t} - 1}{ \omega + \omega_{ba} }}_\text{Emission}\rb.
+\end{align}
+We notice that even when $n=0$, this does not vanish. In this case, the transition between $\ket{a}$ and $\ket{b}$ occurs through spontaneous emission. 
+
+
+
+
+\subsubsection{Field-theoretic derivation of the Planck's distribution}
+
+Suppose we have a collection of atoms interacting resonantly with a quantized field of frequency
+\begin{align}
+\omega = \f{E_a - E_b}{\hbar}
+\end{align}
+where $\ket{a}$ and $\ket{b}$ are atomic eigenstates with $E_a > E_b$. Let $N_a, N_b$ be the populations of atoms in $\ket{a}$ and $\ket{b}$ respectively. Let $W_\text{emis}$ and $W_\text{abs}$ be the transition rate due to photon emission and absorption respectively. We have the following set of differential equations:
+\begin{align}
+&\f{dN_a}{dt} = -N_a W_\text{emis} + N_b W_\text{abs}\\
+&\f{dN_b}{dt} = -N_b W_\text{abs} + N_a W_\text{emis}.
+\end{align}
+At thermal equilibrium:
+\begin{align}
+\f{dN_a}{dt} = 0 = \f{dN_b}{dt} \implies N_a W_\text{emis} = N_b W_\text{abs}.
+\end{align}
+From the relative rates in \eqref{rates}, we have
+\begin{align}\label{1}
+\f{N_b}{N_a} = \f{W_\text{emis}}{W_\text{abs}} = \f{n+1}{n}.
+\end{align}
+Now, according to Boltzmann statistics:
+\begin{align}\label{2}
+\f{N_b}{N_a} = e^{(E_a - E_b)/kT} = e^{\hbar\omega /kT}. 
+\end{align}
+From \eqref{1} and \eqref{2} we have
+\begin{align}
+\boxed{n = \f{1}{e^{\hbar\omega/kT} - 1}}
+\end{align}
+
+There's a slightly different derivation by Einstein (which was done even before quantum electrodynamics was invented), which takes into account as well the distinction between spontaneous and stimulated emission. We won't go into the details of this. 
+
+
 
 \subsection{The Rabi model}
+
+
+
+\subsubsection{The semiclassical case}
+
+\subsubsection{The quantum case}
+
 
 \subsection{Fully quantum-mechanical model; the Jaynes–Cummings model}
 
