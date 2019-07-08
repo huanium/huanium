@@ -2772,11 +2772,109 @@ There's a slightly different derivation by Einstein (which was done even before 
 
 \subsection{The Rabi model}
 
+In the previous subsections we have used the perturbation theory approach to calculate transition probabilities. This approach assumes that the population in the initial state is essentially unchanged and the population in the final states are very small. This approach fails in cases of large population transfer, for example when there is a strong, near resonance (with one state and no other) laser field. In this case, the perturbation approach must be abandoned, only two dominant states remain, and the problem can solved ``exactly.'' This is the \textbf{Rabi model}. We note that the Rabi model is a \textit{semiclassical model}. The full quantum mechanical model is covered in the next subsection. \\
+
+Suppose our two levels are the ground $\ket{g}$ and excited state $\ket{e}$. The transition frequency is given by
+\begin{align}
+\omega_0 = \f{E_e - E_g}{\hbar} \approx \omega
+\end{align}
+where $\omega$ is the frequency of the driving field. Once again, the interaction Hamiltonian is given by
+\begin{align}
+\hat{\ham}^{(I)} = -\hat{\mathbf{d}}\cdot\mathbf{E}_0 \cos\omega t \equiv \hat{V}_0 \cos\omega t
+\end{align}
+where again the dipole approximation is already made. The state vector is a linear combination of the eigenstates:
+\begin{align}
+\ket{\psi(t)} = C_g(t)e^{-iE_gt/\hbar}\ket{g} + C_e(t)e^{-iE_et/\hbar}\ket{e}.
+\end{align}
+The Schr\"{o}dinger equation
+\begin{align}
+i\hbar \f{\p \ket{\psi(t)}}{\p t} &= \lp \hat{\ham}_0 + \hat{\ham}^{(I)} \rp \ket{\psi(t)}\\
+&=\lp \hat{\ham}_0 + \hat{V}_0 \cos\omega t \rp \ket{\psi(t)}
+\end{align}
+gives a system of differential equations:
+\begin{align}
+\begin{bmatrix}
+\dot{C}_g \\ \dot{C}_e
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 &-\f{i}{\hbar}\bra{g}\hat{V}_0 \ket{e}e^{-i\omega_0 t} \\ 
+-\f{i}{\hbar}\bra{g}\hat{V}_0 \ket{e}e^{i\omega_0 t} & 0
+\end{bmatrix}
+\begin{bmatrix}
+C_g \\ C_e
+\end{bmatrix}
+\end{align}
+where the first equation is obtained by multiplying the SE from the left by $e^{i\omega_g t}\bra{g}$ and the fact that $\bra{i}\hat{V}_0\ket{j} = 0$ when $i = j$. Next, we assume that $\bra{g}\hat{V}_0 \ket{e}$ is real and $C_g(0) = 1, C_e(0) = 0$. Let us call
+\begin{align}
+\mathcal{V} = \bra{g}\hat{V}_0 \ket{e}
+\end{align}
+and approximate $\cos\omega t$ in exponentials and keep only the terms that oscillate at frequency $\omega - \omega_0$ to get
+\begin{align}
+&\dot{C}_g = -\f{i}{2\hbar}\mathcal{V}e^{i(\omega - \omega_0 )t}C_e\\
+&\dot{C}_e = -\f{i}{2\hbar}\mathcal{V}e^{-i(\omega - \omega_0 )t}C_g.
+\end{align}
+Taking the derivative of the second equation, plugging it into the first while applying RWA (eliminating terms with $\omega + \omega_0$) we get
+\begin{align}
+\ddot{C}_e + i(\omega - \omega_0 )\dot{C}_e + \f{1}{4}\f{\mathcal{V}^2}{\hbar^2}C_e = 0.
+\end{align}
+This differential equation is quite a classic. The general solution is
+\begin{align}
+C_e(t) = A_+ e^{i\lambda_+ t} + A_- e^{i\lambda_- t} 
+\end{align}
+where with $\Delta = \omega - \omega_0$,
+\begin{align}
+\lambda_{\pm} = \f{1}{2}\lb \Delta \pm \sqrt{ \Delta^2 + \f{\mathcal{V}^2}{\hbar^2}} \rb.
+\end{align}
+From the initial conditions, we also have that
+\begin{align}
+A_{\pm} = \mp \f{1}{2\hbar}\f{\mathcal{V}}{\sqrt{\Delta^2 + \f{\mathcal{V}^2}{\hbar^2}}}.
+\end{align}
+With this, the solution to the problem is
+\begin{align}
+&C_e(t) = i\f{\mathcal{V}}{\Omega_R \hbar}e^{i\Delta t/2}\sin\f{\Omega_R t}{2}\\
+&C_g(t) = e^{i\Delta t/2} \lc \cos\f{\Omega_R t}{2} - i\f{\Delta}{\Omega_R}\sin\f{\Omega_R t}{2} \rc
+\end{align}
+where
+\begin{align}
+\Omega_R = \sqrt{\Delta^2 + \f{\mathcal{V}^2}{\hbar^2}}
+\end{align}
+is called the \textbf{Rabi frequency}, or \textbf{Rabi rate}. \\
+
+The probability that the atom is in the excited state $\ket{e}$ is then
+\begin{align}
+\boxed{P_e(t) = \abs{C_e(t)}^2 = \f{\mathcal{V}^2}{\Omega_R^2\hbar^2}\sin^2\f{\Omega_R t}{2}}
+\end{align}
+On resonance, this probability is a perfect sine-squared:
+\begin{align}
+\boxed{P_e(t) = \sin^2\f{\mathcal{V}t}{2\hbar}}
+\end{align}
+where at $t= \pi \hbar / \mathcal{V}$ all the atomic population is transferred to the excited state. The following plot illustrates the population transfer and ``oscillation''
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{rabi}
+\end{figure}
+
+The \textbf{atomic inversion} $W(t)$ is defined as the difference in population between the excited and ground states:
+\begin{align}
+W(t) = P_e(t) - P_g(t).
+\end{align}
+For the case of resonance ($\Delta = 0$) and that initially the atom is in the ground state, 
+\begin{align}
+W(t) = \sin^2 \f{\mathcal{V}t}{2\hbar} - \cos^2 \f{\mathcal{V}t}{2\hbar} = -\cos\f{\mathcal{V}t}{\hbar} = -\cos\Omega_R(\Delta = 0)t.
+\end{align}
+For $t = \pi\hbar/\mathcal{V}$, $W(\pi\hbar/\mathcal{V}) = 1$. This kind of population transfer is called the $\pi-$pulse. For $t = \pi\hbar/2\mathcal{V}$, $W(\pi\hbar/2\mathcal{V}) = 0$, which means the population is shared coherently between the ground and excited states, i.e., the system is in a perfect superposition:
+\begin{align}
+\ket{\psi(t)} = \f{1}{\sqrt{2}}\lp\ket{g} + i\ket{e} \rp.
+\end{align}
 
 
-\subsubsection{The semiclassical case}
 
-\subsubsection{The quantum case}
+
+
+
+
+
 
 
 \subsection{Fully quantum-mechanical model; the Jaynes–Cummings model}
