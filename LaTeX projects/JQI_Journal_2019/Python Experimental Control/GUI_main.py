@@ -68,8 +68,7 @@ def update_sequence():
 
 
 
-
-def sequence_to_instructions():
+def sequence_to_instructions_spin():
 
     # this function takes the sequence, which is a dictionary,
     # and turns it into instructions for the next start-up
@@ -130,10 +129,120 @@ def sequence_to_instructions():
             settings.instructions.append(row_specs)
 
         for new_row in range(spin - num_rows):
-            new_row_specs = settings.instructions[-1]
+            new_row_specs = settings.instructions[-1] # just copying the last row
             settings.instructions.append(new_row_specs)
         # print(settings.instructions)
         return settings.instructions
+
+
+
+
+
+
+
+
+
+
+
+
+def insert(location):
+    # this function inserts a time point into the program
+    # - updates the values (dictionary)
+    # - updates the .csv file by changing the number of spinners
+    # - copying the row right before it and add this row
+    # - then shifting everything after by one time point.
+    # - then restarting the window.
+    # input: the location of insertion
+
+    read_sequence()
+    settings.values['_spin_'] = str(int(settings.values['_spin_']) + 1) # spinners increase by 1.
+    spin = int(settings.values['_spin_'])
+    iter = str(settings.values['_iter_'])
+    num_rows = int((len(settings.values) - 4)/20)
+
+    # adding the last row
+    settings.values['_mode_' + str(spin) + '_'] = '-Select-'
+    settings.values['_delay_' + str(spin) + '_'] = '0.0005'
+    settings.values['_switch_' + str(spin) + '_0_'] = False
+    settings.values['_switch_' + str(spin) + '_1_'] = False
+    settings.values['_switch_' + str(spin) + '_2_'] = False
+    settings.values['_switch_' + str(spin) + '_3_'] = False
+    settings.values['_switch_' + str(spin) + '_4_'] = False
+    settings.values['_switch_' + str(spin) + '_5_'] = False
+    settings.values['_switch_' + str(spin) + '_6_'] = False
+    settings.values['_switch_' + str(spin) + '_7_'] = False
+    settings.values['_switch_' + str(spin) + '_8_'] = False
+    settings.values['_switch_' + str(spin) + '_9_'] = False
+    settings.values['_switch_' + str(spin) + '_10_'] = False
+    settings.values['_switch_' + str(spin) + '_11_'] = False
+    settings.values['_step_' + str(spin) + '_'] = '0'
+    settings.values['_AH_' + str(spin) + '_'] = '0'
+    settings.values['_Trap_' + str(spin) + '_'] = '0'
+    settings.values['_Repump_' + str(spin) + '_'] = '0'
+    settings.values['_aom_760_' + str(spin) + '_'] = '0'
+    settings.values['_vco_760_' + str(spin) + '_'] = '0'
+
+    # now shift everything after location to +1 time point
+    print('Location: ', location)
+    print('Num points:', int((len(settings.values)-4)/20))
+    for l in range(int((len(settings.values)-4)/20) - 2, location -1, -1 ): # travels backwards
+        settings.values['_mode_'   + str(l+1) + '_']    = settings.values['_mode_'   + str(l) + '_']
+        settings.values['_delay_'  + str(l+1) + '_']    = settings.values['_delay_'  + str(l) + '_']
+        settings.values['_switch_' + str(l+1) + '_0_']  = settings.values['_switch_' + str(l) + '_0_']
+        settings.values['_switch_' + str(l+1) + '_1_']  = settings.values['_switch_' + str(l) + '_1_']
+        settings.values['_switch_' + str(l+1) + '_2_']  = settings.values['_switch_' + str(l) + '_2_']
+        settings.values['_switch_' + str(l+1) + '_3_']  = settings.values['_switch_' + str(l) + '_3_']
+        settings.values['_switch_' + str(l+1) + '_4_']  = settings.values['_switch_' + str(l) + '_4_']
+        settings.values['_switch_' + str(l+1) + '_5_']  = settings.values['_switch_' + str(l) + '_5_']
+        settings.values['_switch_' + str(l+1) + '_6_']  = settings.values['_switch_' + str(l) + '_6_']
+        settings.values['_switch_' + str(l+1) + '_7_']  = settings.values['_switch_' + str(l) + '_7_']
+        settings.values['_switch_' + str(l+1) + '_8_']  = settings.values['_switch_' + str(l) + '_8_']
+        settings.values['_switch_' + str(l+1) + '_9_']  = settings.values['_switch_' + str(l) + '_9_']
+        settings.values['_switch_' + str(l+1) + '_10_'] = settings.values['_switch_' + str(l) + '_10_']
+        settings.values['_switch_' + str(l+1) + '_11_'] = settings.values['_switch_' + str(l) + '_11_']
+        settings.values['_step_'   + str(l+1) + '_']    = settings.values['_step_'   + str(l) + '_']
+        settings.values['_AH_'     + str(l+1) + '_']    = settings.values['_AH_'     + str(l) + '_']
+        settings.values['_Trap_'   + str(l+1) + '_']    = settings.values['_Trap_'   + str(l) + '_']
+        settings.values['_Repump_' + str(l+1) + '_']    = settings.values['_Repump_' + str(l) + '_']
+        settings.values['_aom_760_'+ str(l+1) + '_']    = settings.values['_aom_760_'+ str(l) + '_']
+        settings.values['_vco_760_'+ str(l+1) + '_']    = settings.values['_vco_760_'+ str(l) + '_']
+
+    return settings.values
+
+
+def sequence_to_instructions_insert():
+    # this turns the new sequence from insertion to instructions
+    read_sequence()
+    settings.instructions  = []
+    spin = int(settings.sequence['_spin_'])
+    iter = str(settings.sequence['_iter_'])
+    num_rows = int((len(settings.sequence) - 4)/20)
+
+    for row in range(spin):
+        row_switch = ['']*12
+
+        mode = settings.sequence[str('_mode_'+str(row)+'_')]
+        delay = settings.sequence[str('_delay_'+str(row)+'_')]
+
+        for col in range(12):
+            row_switch[col] = settings.sequence[str('_switch_' + str(row) + '_' + str(col) + '_' )]
+
+        step = settings.sequence[str('_step_'+str(row)+'_')]
+        ah = settings.sequence[str('_AH_'+str(row)+'_')]
+        trap = settings.sequence[str('_Trap_'+str(row)+'_')]
+        repump = settings.sequence[str('_Repump_'+str(row)+'_')]
+        aom = settings.sequence[str('_aom_760_'+str(row)+'_')]
+        vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
+
+        row_specs = [mode, delay, row_switch, step, ah, trap, repump, aom, vco]
+        settings.instructions.append(row_specs)
+
+    return settings.instructions
+
+
+
+
+
 
 
 
@@ -153,51 +262,87 @@ def interpret(command):
     for e in range(num_events):
         mode_e = str(settings.sequence['_mode_' + str(e) + '_'])
 
-        if str(settings.sequence['_delay_' + str(e) + '_']) == '':
-            duration_e = float(0.0)
-        else:
-            duration_e = float(settings.sequence['_delay_' + str(e) + '_'])
+        if mode_e == '-Select-': # no ramping mode --> settings voltages only
 
-        if str(settings.sequence['_step_' + str(e) + '_']) == '':
-            step_e = float(0.0)
-        else:
-            step_e = float(settings.sequence['_step_' + str(e) + '_'])
+            if str(settings.sequence['_delay_' + str(e) + '_']) == '':
+                duration_e = float(0.0)
+            else:
+                duration_e = float(settings.sequence['_delay_' + str(e) + '_'])
 
-        if str(settings.sequence['_AH_' + str(e) + '_']) == '':
-            AH_e = float(0.0)
-        else:
-            AH_e = float(settings.sequence['_AH_' + str(e) + '_'])
+            if str(settings.sequence['_step_' + str(e) + '_']) == '':
+                step_e = float(0.0)
+            else:
+                step_e = float(settings.sequence['_step_' + str(e) + '_'])
 
-        if str(settings.sequence['_Trap_' + str(e) + '_']) == '':
-            Trap_e = float(0.0)
-        else:
-            Trap_e = float(settings.sequence['_Trap_' + str(e) + '_'])
+            if str(settings.sequence['_AH_' + str(e) + '_']) == '':
+                AH_e = float(0.0)
+            else:
+                AH_e = float(settings.sequence['_AH_' + str(e) + '_'])
 
-        if str(settings.sequence['_Repump_' + str(e) + '_']) == '':
-            Repump_e = float(0.0)
-        else:
-            Repump_e = float(settings.sequence['_Repump_' + str(e) + '_'])
+            if str(settings.sequence['_Trap_' + str(e) + '_']) == '':
+                Trap_e = float(0.0)
+            else:
+                Trap_e = float(settings.sequence['_Trap_' + str(e) + '_'])
 
-        if str(settings.sequence['_aom_760_' + str(e) + '_']) == '':
-            aom_760_e = float(0.0)
-        else:
-            aom_760_e = float(settings.sequence['_aom_760_' + str(e) + '_'])
+            if str(settings.sequence['_Repump_' + str(e) + '_']) == '':
+                Repump_e = float(0.0)
+            else:
+                Repump_e = float(settings.sequence['_Repump_' + str(e) + '_'])
 
-        if str(settings.sequence['_vco_760_' + str(e) + '_']) == '':
-            vco_760_e = float(0.0)
-        else:
-            vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
+            if str(settings.sequence['_aom_760_' + str(e) + '_']) == '':
+                aom_760_e = float(0.0)
+            else:
+                aom_760_e = float(settings.sequence['_aom_760_' + str(e) + '_'])
 
-        # channel 1
-        settings.AH.append([mode_e, duration_e, step_e, AH_e])
-        # channel 2
-        settings.Trap.append([mode_e, duration_e, step_e, Trap_e])
-        # channel 3
-        settings.Repump.append([mode_e, duration_e, step_e, Repump_e])
-        # channel 4
-        settings.aom.append([mode_e, duration_e, step_e, aom_760_e])
-        # channel 5
-        settings.vco.append([mode_e, duration_e, step_e, vco_760_e])
+            if str(settings.sequence['_vco_760_' + str(e) + '_']) == '':
+                vco_760_e = float(0.0)
+            else:
+                vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
+
+            # channel 1
+            settings.AH.append([mode_e, duration_e, step_e, AH_e])
+            # channel 2
+            settings.Trap.append([mode_e, duration_e, step_e, Trap_e])
+            # channel 3
+            settings.Repump.append([mode_e, duration_e, step_e, Repump_e])
+            # channel 4
+            settings.aom.append([mode_e, duration_e, step_e, aom_760_e])
+            # channel 5
+            settings.vco.append([mode_e, duration_e, step_e, vco_760_e])
+
+
+        # if we're in ramp mode --> need different strategy
+
+        elif mode_e == 'Lin. Ramp': # if linear ramp
+            # do something with the rise slope
+            # slope = ...
+            print('Functionality not implemented yet')
+
+        elif mode_e == 'Sin. Ramp':
+            # max_slope = ...
+            print('Functionality not implemented yet')
+
+        elif mode_e == 'Exp. Ramp':
+            # time constant = ...
+            print('Functionality not implemented yet')
+
+
+        # now modify this
+        # if mode_e == '-Select-':
+        #     do as Normal
+        # elif mode_e == 'Lin. Ramp':
+        #     lin_ramp()
+        # elif mode_e == 'Sin. Ramp':
+        #     sin_ramp()
+        # elif mode_e == 'Exp. Ramp':
+        #     exp_ramp()
+
+
+
+
+
+
+
 
 
     if command == 'simulate':
@@ -207,7 +352,7 @@ def interpret(command):
                               PCI.to_wave(settings.aom, rate))
 
     elif command == 'run':
-        PCI.run(rate, PCI.to_wave(settings.AH, rate),
+        PCI.run(iter, rate, PCI.to_wave(settings.AH, rate),
                       PCI.to_wave(settings.Trap, rate),
                       PCI.to_wave(settings.Repump, rate),
                       PCI.to_wave(settings.aom, rate))
@@ -247,6 +392,9 @@ def make_window(initial_num_points):
 
     # GUI.generate_graph(window)
 
+    settings.inserted = False
+    settings.ramped = False
+
     while True:
         # constantly updating for events/values
         settings.event, settings.values = settings.window.Read()
@@ -263,15 +411,40 @@ def make_window(initial_num_points):
         if settings.event == 'About':
             sg.Popup('Experimental Control', 'Created by Huan Q Bui\n Summer 2019')
 
+        # check for change in number of rows
         if settings.event == '_spin_':
             update_sequence()
-            sequence_to_instructions()
+            sequence_to_instructions_spin()
             break
 
+        # check for insertion
+        for location in range(settings.new_time_points):
+            if settings.event == '_insert_' + str(location) + '_':
+                # print('Inserted after line', location+1)
+                update_sequence()
+                insert(location)
+                sequence_to_instructions_insert()
+
+                settings.inserted = True
+                print(settings.inserted)
+                update_sequence()
+                settings.window.Close()
+                return
+
+        # check for clicking the ramping option
+        for location in range(settings.new_time_points):
+            if settings.event == '_mode_' + str(location) + '_':
+                settings.ramped = True
+                update_sequence()
+                settings.window.Close()
+                return
+
+        # save settings
         if settings.event == 'Apply':
             update_sequence()
             break
 
+        # save settings + plot
         if settings.event == 'Send data':
             # turns instructions into waveform to be sent
             # when data is sent, program simulates the waveform

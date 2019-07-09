@@ -4,7 +4,7 @@ import numpy as np
 from nidaqmx import *
 import matplotlib.pyplot as plt
 import settings
-
+from multiprocessing import Process
 
 
 # this script defines various waveforms and controls for PCI-6733
@@ -97,6 +97,8 @@ def sawtooth(amp, duration, rate):
     for i in range(-int(steps/2),int(steps/2)):
         val = amp*i/steps
         t = np.append(t, np.float16(val))
+
+    print('Number of time points: ', len(t))
     return t
 
 
@@ -225,7 +227,7 @@ def simulate(cycles, rate, wave1=np.array([np.float16(0.0)]*100),
 
 
 
-def run(rate, wave1, wave2, wave3, wave4):
+def run(iter, rate, wave1, wave2, wave3, wave4):
 
     global Sample_Per_Chan
     Sample_Per_Chan = 1
@@ -236,16 +238,34 @@ def run(rate, wave1, wave2, wave3, wave4):
     time_step = 1/rate
 
     task = nidaqmx.Task()
+    # analog channels
     task.ao_channels.add_ao_voltage_chan('Dev1/ao0')
     task.ao_channels.add_ao_voltage_chan('Dev1/ao1')
     task.ao_channels.add_ao_voltage_chan('Dev1/ao2')
     task.ao_channels.add_ao_voltage_chan('Dev1/ao3')
-    task.timing.cfg_samp_clk_timing(rate= default_rate,
+
+    # digital channels
+
+
+    # continuous/finite mode for analog channels
+    if iter == 'cont': # continuous mode
+        task.timing.cfg_samp_clk_timing(rate= default_rate,
                                     sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
                                     samps_per_chan=Sample_Per_Chan)
 
+    elif int(iter) == 1:
+        print('The minimum value is 2.')
+        task.stop()
+        task.close()
+        exit()
+    else:
+        iterations = int(iter)
+        task.timing.cfg_samp_clk_timing(rate= default_rate,
+                                    sample_mode= nidaqmx.constants.AcquisitionType.FINITE,
+                                    samps_per_chan=iterations)
+
+
     test_Writer = nidaqmx.stream_writers.AnalogMultiChannelWriter(task.out_stream, auto_start=True)
-    #test_Writer = nidaqmx.stream_writers.AnalogSingleChannelWriter(task.out_stream, auto_start=True)
     input_wave = np.array([wave1, wave2, wave3, wave4])
     test_Writer.write_many_sample(input_wave)
     print('Running...')
@@ -254,10 +274,10 @@ def run(rate, wave1, wave2, wave3, wave4):
         settings.event, settings.values = settings.window.Read()
         if settings.event is None:
             break
-        if settings.event == 'STOP':
+        if settings.event == 'STOP' or iter != 'cont':
             # task.stop()
             # stop, then re-set everything to zero
-            # test_Writer.write_many_sample([wave1*0, wave2*0, wave3*0, wave4*0])
+            # test_Writer.write_many_sample([wave1*0, wave2*0, wave3*0, wave4*0]
             print(settings.event)
             task.stop()
             task.close()
@@ -266,9 +286,48 @@ def run(rate, wave1, wave2, wave3, wave4):
 
 
 
+def test_digital():
+    task_ao = nidaqmx.Task()
+    task_do = nidaqmx.Task()
+
+    # pulser channel
+
+    # analog channel
+    task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao0')
+    # digital channels
+    task_do.do_channels.add_do_chan('Dev1/port0/line0', line_grouping=nidaqmx.constants.LineGrouping.CHAN_FOR_ALL_LINES)
+
+    # timing for AO
+    task_ao.timing.cfg_samp_clk_timing(rate= 1e5,
+                                    #source='/Dev1/ao/SampleClock',
+                                    sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
+                                    samps_per_chan=1)
+    # timing for DO
+    task_do.timing.cfg_samp_clk_timing(rate= 1e5,
+                                    source = '/Dev1/ao/SampleClock',
+                                    sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
+                                    samps_per_chan=1)
+    test_Writer_ao = nidaqmx.stream_writers.AnalogSingleChannelWriter(task_ao.out_stream, auto_start=True)
+    test_Writer_do = nidaqmx.stream_writers.DigitalSingleChannelWriter(task_do.out_stream, auto_start=True)
+    wave_ao = sawtooth(1.0, 0.0001, 1e5)
+    wave_do = np.array([1,1,1,1,1,8,8,8,8,8], dtype = np.uint8)
+    test_Writer_ao.write_many_sample(wave_ao)
+    test_Writer_do.write_many_sample_port_byte(wave_do)
+    a = input('Press Enter to end: ')
+    task_ao.close()
+    task_do.close()
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
+
+
+    test_digital()
     #num_pts = int(input('Number of nonzero points: '))
     #num_pts_0 = int(input('Number of zero points: '))
     #voltage = float(input('Enter voltage: '))
@@ -276,24 +335,24 @@ if __name__ == "__main__":
     #run(set_voltage(voltage, num_pts, num_pts_0), delay_steps)
 
     # declare global variables, which are the settingss
-    global default_steps
-    global default_rate
-    global time_resolution
-    global time_step
-    default_rate = 1e6 # set default sampling rate to 1 MHz
-
-    time_step = float(1/default_rate)
-
-
-    rate = 1e4
-    duration = 1e-1
-    time_res = 1/rate
-    time_step = time_res
-    unit_width = 10*time_res
-    print('Time resolution:', time_step)
-
-    global square_pulse
-    square_pulse = set_voltage(0.10, unit_width, duration, rate)
+    # global default_steps
+    # global default_rate
+    # global time_resolution
+    # global time_step
+    # default_rate = 1e6 # set default sampling rate to 1 MHz
+    #
+    # time_step = float(1/default_rate)
+    #
+    #
+    # rate = 1e4
+    # duration = 1e-1
+    # time_res = 1/rate
+    # time_step = time_res
+    # unit_width = 10*time_res
+    # print('Time resolution:', time_step)
+    #
+    # global square_pulse
+    # square_pulse = set_voltage(0.10, unit_width, duration, rate)
 
     # simulate(1, rate, gaussian(0.2, 5, 0.001, rate), gaussian(0.2, 5, 0.001, rate), gaussian(0.2, 5, 0.001, rate), gaussian(0.2, 5, 0.001, rate))
 

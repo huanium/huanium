@@ -26,19 +26,34 @@ def generate_time_point(int_time, row_specs):
 
     time = str(int_time)
     time_point = []
-    time_point.append(sg.InputCombo(('-Select-', 'Ramp','Continue', 'Loop','EndLoop','Halt'), size=(8, 1), change_submits=True, key='_mode_'+ time + '_'))
+    time_point.append(sg.Spin(values=('Exp. Ramp', 'Sin. Ramp', 'Lin. Ramp', '-Select-'), initial_value=row_specs[0], size=(10, 1), change_submits=True, key='_mode_'+ time + '_') )
+    # time_point.append(sg.InputCombo(('-Select-', 'Ramp','Continue', 'Loop','EndLoop','Halt'), size=(8, 1), change_submits=True, key='_mode_'+ time + '_'))
     time_point.append(sg.InputText(default_text=row_specs[1], size=(9, 1), change_submits=True, key='_delay_' + time + '_'))
 
     # number of tick boxes per row
     for i in range(12):
         time_point.append(sg.Checkbox('', size=(1,1), default=bool(row_specs[2][i]), change_submits=True, key='_switch_' + time + '_' +  str(i) +'_'))
 
-    time_point.append(sg.InputText(default_text=row_specs[3], size=(6, 1), change_submits=True, key='_step_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[4], size=(6, 1), change_submits=True, key='_AH_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[5], size=(6, 1), change_submits=True, key='_Trap_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[6], size=(6, 1), change_submits=True, key='_Repump_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[7], size=(6, 1), change_submits=True, key='_aom_760_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[8], size=(6, 1), change_submits=True, key='_vco_760_' + time + '_'))
+    if row_specs[0] == '-Select-':
+        # then voltage mode
+        time_point.append(sg.InputText(default_text=row_specs[3], size=(6, 1), change_submits=True, key='_step_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[4], size=(6, 1), change_submits=True, key='_AH_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[5], size=(6, 1), change_submits=True, key='_Trap_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[6], size=(6, 1), change_submits=True, key='_Repump_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[7], size=(6, 1), change_submits=True, key='_aom_760_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[8], size=(6, 1), change_submits=True, key='_vco_760_' + time + '_'))
+
+    else: # if we're in ramped mode --> these blanks become time
+        time_point.append(sg.InputText(default_text=row_specs[3], size=(6, 1), text_color='Blue', change_submits=True, key='_step_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[4], size=(6, 1), text_color='Blue', change_submits=True, key='_AH_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[5], size=(6, 1), text_color='Blue', change_submits=True, key='_Trap_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[6], size=(6, 1), text_color='Blue', change_submits=True, key='_Repump_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[7], size=(6, 1), text_color='Blue', change_submits=True, key='_aom_760_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[8], size=(6, 1), text_color='Blue', change_submits=True, key='_vco_760_' + time + '_'))
+
+
+
+
     time_point.append(sg.Button('Insert', key='_insert_' + time + '_'))
 
     return time_point
@@ -102,7 +117,7 @@ def layout_main(time_points):
 
     # shows the image of the output
     # for now it is temporarily set to be the JQI image
-    graph = sg.Image(filename = 'jqi.png', key='_image_', visible=True)
+    graph = sg.Image(filename = 'jqi_1.png', key='_image_', visible=True)
 
     # generate_time_line has to read the exp_sequence to know
     # what elements to specify on the new window

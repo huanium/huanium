@@ -14,6 +14,9 @@ def init():
     global aom
     global vco
     global window
+    global inserted_values
+    global inserted
+    global ramped
 
 
     window = None
@@ -22,6 +25,7 @@ def init():
     default_num_pts = 5
     event = ''
     values = {}
+    inserted_values = {}
     sequence = {}
     instructions = []
     AH = []
@@ -29,3 +33,5 @@ def init():
     Repump = []
     aom = []
     vco = []
+    inserted = False
+    ramped = False
