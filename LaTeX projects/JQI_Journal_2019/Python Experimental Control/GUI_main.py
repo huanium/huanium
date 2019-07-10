@@ -80,19 +80,19 @@ def sequence_to_instructions_spin():
     settings.instructions  = []
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
-    num_rows = int((len(settings.sequence) - 4)/20)
+    num_rows = int((len(settings.sequence) - 4)/16)
     # print('Spin is:', spin)
     # print('Num_rows is:', num_rows )
 
     if spin <= num_rows: # new number of rows is less than before
 
         for row in range(spin):
-            row_switch = ['']*12
+            row_switch = ['']*8
 
             mode = settings.sequence[str('_mode_'+str(row)+'_')]
             delay = settings.sequence[str('_delay_'+str(row)+'_')]
 
-            for col in range(12):
+            for col in range(8):
                 row_switch[col] = settings.sequence[str('_switch_' + str(row) + '_' + str(col) + '_' )]
 
             step = settings.sequence[str('_step_'+str(row)+'_')]
@@ -110,12 +110,12 @@ def sequence_to_instructions_spin():
 
     else: # do the same thing up to the old points, then set new rows to last row
         for row in range(num_rows):
-            row_switch = ['']*12
+            row_switch = ['']*8
 
             mode = settings.sequence[str('_mode_'+str(row)+'_')]
             delay = settings.sequence[str('_delay_'+str(row)+'_')]
 
-            for col in range(12):
+            for col in range(8):
                 row_switch[col] = settings.sequence[str('_switch_' + str(row) + '_' + str(col) + '_' )]
 
             step = settings.sequence[str('_step_'+str(row)+'_')]
@@ -158,7 +158,7 @@ def insert(location):
     settings.values['_spin_'] = str(int(settings.values['_spin_']) + 1) # spinners increase by 1.
     spin = int(settings.values['_spin_'])
     iter = str(settings.values['_iter_'])
-    num_rows = int((len(settings.values) - 4)/20)
+    num_rows = int((len(settings.values) - 4)/16)
 
     # adding the last row
     settings.values['_mode_' + str(spin) + '_'] = '-Select-'
@@ -171,10 +171,6 @@ def insert(location):
     settings.values['_switch_' + str(spin) + '_5_'] = False
     settings.values['_switch_' + str(spin) + '_6_'] = False
     settings.values['_switch_' + str(spin) + '_7_'] = False
-    settings.values['_switch_' + str(spin) + '_8_'] = False
-    settings.values['_switch_' + str(spin) + '_9_'] = False
-    settings.values['_switch_' + str(spin) + '_10_'] = False
-    settings.values['_switch_' + str(spin) + '_11_'] = False
     settings.values['_step_' + str(spin) + '_'] = '0'
     settings.values['_AH_' + str(spin) + '_'] = '0'
     settings.values['_Trap_' + str(spin) + '_'] = '0'
@@ -184,8 +180,8 @@ def insert(location):
 
     # now shift everything after location to +1 time point
     print('Location: ', location)
-    print('Num points:', int((len(settings.values)-4)/20))
-    for l in range(int((len(settings.values)-4)/20) - 2, location -1, -1 ): # travels backwards
+    print('Num points:', int((len(settings.values)-4)/16))
+    for l in range(int((len(settings.values)-4)/16) - 2, location -1, -1 ): # travels backwards
         settings.values['_mode_'   + str(l+1) + '_']    = settings.values['_mode_'   + str(l) + '_']
         settings.values['_delay_'  + str(l+1) + '_']    = settings.values['_delay_'  + str(l) + '_']
         settings.values['_switch_' + str(l+1) + '_0_']  = settings.values['_switch_' + str(l) + '_0_']
@@ -196,10 +192,6 @@ def insert(location):
         settings.values['_switch_' + str(l+1) + '_5_']  = settings.values['_switch_' + str(l) + '_5_']
         settings.values['_switch_' + str(l+1) + '_6_']  = settings.values['_switch_' + str(l) + '_6_']
         settings.values['_switch_' + str(l+1) + '_7_']  = settings.values['_switch_' + str(l) + '_7_']
-        settings.values['_switch_' + str(l+1) + '_8_']  = settings.values['_switch_' + str(l) + '_8_']
-        settings.values['_switch_' + str(l+1) + '_9_']  = settings.values['_switch_' + str(l) + '_9_']
-        settings.values['_switch_' + str(l+1) + '_10_'] = settings.values['_switch_' + str(l) + '_10_']
-        settings.values['_switch_' + str(l+1) + '_11_'] = settings.values['_switch_' + str(l) + '_11_']
         settings.values['_step_'   + str(l+1) + '_']    = settings.values['_step_'   + str(l) + '_']
         settings.values['_AH_'     + str(l+1) + '_']    = settings.values['_AH_'     + str(l) + '_']
         settings.values['_Trap_'   + str(l+1) + '_']    = settings.values['_Trap_'   + str(l) + '_']
@@ -216,15 +208,15 @@ def sequence_to_instructions_insert():
     settings.instructions  = []
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
-    num_rows = int((len(settings.sequence) - 4)/20)
+    num_rows = int((len(settings.sequence) - 4)/16)
 
     for row in range(spin):
-        row_switch = ['']*12
+        row_switch = ['']*8
 
         mode = settings.sequence[str('_mode_'+str(row)+'_')]
         delay = settings.sequence[str('_delay_'+str(row)+'_')]
 
-        for col in range(12):
+        for col in range(8):
             row_switch[col] = settings.sequence[str('_switch_' + str(row) + '_' + str(col) + '_' )]
 
         step = settings.sequence[str('_step_'+str(row)+'_')]
@@ -254,108 +246,94 @@ def interpret(command):
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
 
-    num_events = int((len(settings.sequence)-4)/20)
+    num_events = int((len(settings.sequence)-4)/16)
     print('Number of events: ', num_events)
-
 
     # loop through the sequence
     for e in range(num_events):
         mode_e = str(settings.sequence['_mode_' + str(e) + '_'])
 
-        if mode_e == '-Select-': # no ramping mode --> settings voltages only
+        if str(settings.sequence['_delay_' + str(e) + '_']) == '':
+            duration_e = float(0.0)
+        else:
+            duration_e = float(settings.sequence['_delay_' + str(e) + '_'])
 
-            if str(settings.sequence['_delay_' + str(e) + '_']) == '':
-                duration_e = float(0.0)
+        if str(settings.sequence['_step_' + str(e) + '_']) == '':
+            step_e = float(0.0)
+        else:
+            step_e = float(settings.sequence['_step_' + str(e) + '_'])
+
+        if str(settings.sequence['_AH_' + str(e) + '_']) == '':
+            AH_e = float(0.0)
+        else:
+            AH_e = float(settings.sequence['_AH_' + str(e) + '_'])
+
+        if str(settings.sequence['_Trap_' + str(e) + '_']) == '':
+            Trap_e = float(0.0)
+        else:
+            Trap_e = float(settings.sequence['_Trap_' + str(e) + '_'])
+
+        if str(settings.sequence['_Repump_' + str(e) + '_']) == '':
+            Repump_e = float(0.0)
+        else:
+            Repump_e = float(settings.sequence['_Repump_' + str(e) + '_'])
+
+        if str(settings.sequence['_aom_760_' + str(e) + '_']) == '':
+            aom_760_e = float(0.0)
+        else:
+            aom_760_e = float(settings.sequence['_aom_760_' + str(e) + '_'])
+
+        if str(settings.sequence['_vco_760_' + str(e) + '_']) == '':
+            vco_760_e = float(0.0)
+        else:
+            vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
+
+        # channel 1
+        settings.AH.append([mode_e, duration_e, step_e, AH_e])
+        # channel 2
+        settings.Trap.append([mode_e, duration_e, step_e, Trap_e])
+        # channel 3
+        settings.Repump.append([mode_e, duration_e, step_e, Repump_e])
+        # channel 4
+        settings.aom.append([mode_e, duration_e, step_e, aom_760_e])
+        # channel 5
+        settings.vco.append([mode_e, duration_e, step_e, vco_760_e])
+
+
+    # DIGITAL
+    # the states of the 8 lines at each event is associated with an int8 number
+    # with this number and duration --> we can get the correct digital output
+    # much simpler than analog
+
+    for event in range(num_events):
+        state_number = 0
+        for line in range(8): # loop through each line
+            switch_line = settings.sequence[str('_switch_' + str(event) + '_' + str(line) + '_' )]
+            #print('Switch_line: ', switch_line)
+            if switch_line == 'True':
+                state_number = state_number + 2**line
             else:
-                duration_e = float(settings.sequence['_delay_' + str(e) + '_'])
+                state_number = state_number
+        # switch has the form [[state_number, delay]]
+        settings.switch.append([state_number, float(settings.sequence['_delay_' + str(event) + '_'])])
 
-            if str(settings.sequence['_step_' + str(e) + '_']) == '':
-                step_e = float(0.0)
-            else:
-                step_e = float(settings.sequence['_step_' + str(e) + '_'])
-
-            if str(settings.sequence['_AH_' + str(e) + '_']) == '':
-                AH_e = float(0.0)
-            else:
-                AH_e = float(settings.sequence['_AH_' + str(e) + '_'])
-
-            if str(settings.sequence['_Trap_' + str(e) + '_']) == '':
-                Trap_e = float(0.0)
-            else:
-                Trap_e = float(settings.sequence['_Trap_' + str(e) + '_'])
-
-            if str(settings.sequence['_Repump_' + str(e) + '_']) == '':
-                Repump_e = float(0.0)
-            else:
-                Repump_e = float(settings.sequence['_Repump_' + str(e) + '_'])
-
-            if str(settings.sequence['_aom_760_' + str(e) + '_']) == '':
-                aom_760_e = float(0.0)
-            else:
-                aom_760_e = float(settings.sequence['_aom_760_' + str(e) + '_'])
-
-            if str(settings.sequence['_vco_760_' + str(e) + '_']) == '':
-                vco_760_e = float(0.0)
-            else:
-                vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
-
-            # channel 1
-            settings.AH.append([mode_e, duration_e, step_e, AH_e])
-            # channel 2
-            settings.Trap.append([mode_e, duration_e, step_e, Trap_e])
-            # channel 3
-            settings.Repump.append([mode_e, duration_e, step_e, Repump_e])
-            # channel 4
-            settings.aom.append([mode_e, duration_e, step_e, aom_760_e])
-            # channel 5
-            settings.vco.append([mode_e, duration_e, step_e, vco_760_e])
-
-
-        # if we're in ramp mode --> need different strategy
-
-        elif mode_e == 'Lin. Ramp': # if linear ramp
-            # do something with the rise slope
-            # slope = ...
-            print('Functionality not implemented yet')
-
-        elif mode_e == 'Sin. Ramp':
-            # max_slope = ...
-            print('Functionality not implemented yet')
-
-        elif mode_e == 'Exp. Ramp':
-            # time constant = ...
-            print('Functionality not implemented yet')
-
-
-        # now modify this
-        # if mode_e == '-Select-':
-        #     do as Normal
-        # elif mode_e == 'Lin. Ramp':
-        #     lin_ramp()
-        # elif mode_e == 'Sin. Ramp':
-        #     sin_ramp()
-        # elif mode_e == 'Exp. Ramp':
-        #     exp_ramp()
-
-
-
-
-
-
-
-
+    # print(settings.switch)
 
     if command == 'simulate':
         PCI.simulate(1, rate, PCI.to_wave(settings.AH, rate),
                               PCI.to_wave(settings.Trap, rate),
                               PCI.to_wave(settings.Repump, rate),
-                              PCI.to_wave(settings.aom, rate))
+                              PCI.to_wave(settings.aom, rate)#,
+                              #PCI.to_digit(settings.switch, rate)
+                              )
 
     elif command == 'run':
         PCI.run(iter, rate, PCI.to_wave(settings.AH, rate),
                       PCI.to_wave(settings.Trap, rate),
                       PCI.to_wave(settings.Repump, rate),
-                      PCI.to_wave(settings.aom, rate))
+                      PCI.to_wave(settings.aom, rate),
+                      PCI.to_digit(settings.switch, rate)
+                      )
 
     else:
         print('Invalid command')
@@ -366,6 +344,7 @@ def interpret(command):
     settings.Repump = settings.Repump*0
     settings.aom = settings.aom*0
     settings.vco = settings.vco*0
+    settings.switch = []
 
     return
 
@@ -383,7 +362,7 @@ def make_window(initial_num_points):
     # the sequence is a global var defined in settings.py
     sg.ChangeLookAndFeel('GreenTan')
     settings.new_time_points = int(settings.sequence['_spin_'])
-    settings.old_time_points = int((len(settings.sequence) - 4)/20)
+    settings.old_time_points = int((len(settings.sequence) - 4)/16)
     settings.sequence = read_sequence()
 
     settings.window = sg.Window('Experimental Control - PCI-6733',

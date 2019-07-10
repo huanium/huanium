@@ -17,6 +17,7 @@ def init():
     global inserted_values
     global inserted
     global ramped
+    global switch
 
 
     window = None
@@ -35,3 +36,4 @@ def init():
     vco = []
     inserted = False
     ramped = False
+    switch = []

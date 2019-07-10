@@ -120,6 +120,67 @@ def set_voltage(volt, duration_on, duration, rate):
         voltage = np.append(voltage, np.float16(0.0))
     return voltage
 
+def test_set_digital(digit, duration_on, duration, rate):
+    # set a voltage for a number of points
+    # makes a square pulse for some num_points
+    # then turns to zero for num_points zero
+    # returns an array of uint8 integers
+
+    global time_step
+    global default_rate
+    default_rate = rate
+    time_step = 1/rate
+
+    out = np.array([])
+    out_int_8 = np.array([])
+    for i in range(int(duration_on/time_step)+1):
+        out = np.append(out, digit)
+    for i in range(int((duration - duration_on)/time_step)):
+        out = np.append(out, 1)
+    out_int_8 = np.array(out, dtype = np.uint8)
+    print('Num points: ', len(out))
+    return out_int_8
+
+def set_digital(digit, duration_on, duration, rate):
+    # set a voltage for a number of points
+    # makes a square pulse for some num_points
+    # then turns to zero for num_points zero
+    # returns an array of integers, regular integers
+
+    global time_step
+    global default_rate
+    default_rate = rate
+    time_step = 1/rate
+
+    out = np.array([])
+    out_int_8 = np.array([])
+    for i in range(int(duration_on/time_step)):
+        out = np.append(out, digit)
+    for i in range(int((duration - duration_on)/time_step)):
+        out = np.append(out, 1)
+    out_int_8 = np.array(out, dtype = np.uint8)
+    print('Num points: ', len(out))
+    return out_int_8
+
+
+
+def to_digit(switch, rate):
+    # switch has the form [[state_number, delay]]
+    # which characterizes the status of each digital output
+    # for that time frame
+    # the rate specifies how many numbers should be generated in the end
+    events = len(switch) # the number of events is the len() of switch
+    digits = np.array([])
+    for e in range(events):
+        digits = np.concatenate((digits, set_digital(switch[e][0], switch[e][1], switch[e][1], rate)))
+
+    # now convert to uint8
+    digits = np.array(digits, dtype=np.uint8)
+    # print(digits)
+    return digits
+
+
+
 
 def set_to_zero(duration, rate):
     # creates an array of zeros to 0 volts
@@ -158,6 +219,61 @@ def set_delay(duration, wave, rate):
 
 
 
+def lin_ramp(volt_start, volt_end, duration, rate):
+    # generates a linear ramp
+    # return a np.array()
+    global time_step
+    global default_rate
+    default_rate = rate
+    time_step = 1/rate
+
+    steps = int(duration/time_step)
+    volt = np.array([])
+    for i in range(-int(steps/2),int(steps/2)):
+        val = (volt_end + volt_start)/2 + (volt_end - volt_start)*i/steps
+        volt = np.append(volt, np.float16(val))
+
+    # print('Number of time points: ', len(t))
+    return volt
+
+def sin_ramp(volt_start, volt_end, duration, rate):
+    # generates a linear ramp
+    # return a np.array()
+    global time_step
+    global default_rate
+    default_rate = rate
+    time_step = 1/rate
+
+    steps = int(duration/time_step)
+    volt = np.array([])
+    for i in range(-int(steps/2),int(steps/2)):
+        val = (volt_start + volt_end)/2 +  (volt_end - volt_start)*math.sin(math.pi*i/steps)/2
+        volt = np.append(volt, np.float16(val))
+
+    # print('Number of time points: ', len(t))
+    return volt
+
+
+
+
+def exp_ramp(volt_start, volt_end, duration, rate, time_constant):
+    # generates a linear ramp
+    # return a np.array()
+    global time_step
+    global default_rate
+    default_rate = rate
+    time_step = 1/rate
+
+    steps = int(duration/time_step)
+    volt = np.array([])
+    for i in range(-int(steps/2),int(steps/2)):
+        val = volt_start +  (volt_end - volt_start)*(1 - math.exp(-(1/time_constant)*(i + steps/2)/steps))
+        volt = np.append(volt, np.float16(val))
+
+    # print('Number of time points: ', len(t))
+    return volt
+
+
 def to_wave(instruction, rate):
     # this function takes in instructions
     # and returns a waveform
@@ -168,7 +284,40 @@ def to_wave(instruction, rate):
         duration = instruction[e][1]
         step = instruction[e][2]
         volts = instruction[e][3]
-        wave = np.concatenate((wave, set_voltage(volts, duration, duration, rate)))
+
+        if mode == '-Select-': # if no ramping, do the same as before
+            wave = np.concatenate((wave, set_voltage(volts, duration, duration, rate)))
+        elif mode == 'Lin. Ramp':
+            if e == 0 or e == events-1:
+                print('Cannot have ramp at either ends of cycle')
+            else:
+                # if things are okay then collect the end points:
+                volt_start = instruction[e-1][3]
+                volt_end = instruction[e+1][3]
+                wave = np.concatenate((wave, lin_ramp(volt_start, volt_end, duration, rate)))
+
+        elif mode == 'Sin. Ramp':
+            if e == 0 or e == events-1:
+                print('Cannot have ramp at either ends of cycle')
+            else:
+                # if things are okay then collect the end points:
+                volt_start = instruction[e-1][3]
+                volt_end = instruction[e+1][3]
+                wave = np.concatenate((wave, sin_ramp(volt_start, volt_end, duration, rate)))
+
+        elif mode == 'Exp. Ramp':
+            if e == 0 or e == events-1:
+                print('Cannot have ramp at either ends of cycle')
+            else:
+                # if things are okay then collect the end points:
+                volt_start = instruction[e-1][3]
+                volt_end = instruction[e+1][3]
+                # here the `volt` slot is now for the time constant
+                time_constant = instruction[e][3]
+                print('Time constant: ', time_constant)
+                wave = np.concatenate((wave, exp_ramp(volt_start, volt_end, duration, rate, time_constant)))
+
+
     return wave
 
 
@@ -227,7 +376,84 @@ def simulate(cycles, rate, wave1=np.array([np.float16(0.0)]*100),
 
 
 
-def run(iter, rate, wave1, wave2, wave3, wave4):
+def run(iter, rate, wave1, wave2, wave3, wave4, digits):
+
+    global Sample_Per_Chan
+    Sample_Per_Chan = 1
+
+    global time_step
+    global default_rate
+    default_rate = rate
+    time_step = 1/rate
+
+    task_ao = nidaqmx.Task()
+    task_do = nidaqmx.Task()
+    # analog channels
+    task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao0')
+    task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao1')
+    task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao2')
+    task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao3')
+
+    # digital channels
+    task_do.do_channels.add_do_chan('Dev1/port0/line0:7', line_grouping=nidaqmx.constants.LineGrouping.CHAN_FOR_ALL_LINES)
+    # timing for DO
+    # note that we want to get this started BEFORE the AO
+    task_do.timing.cfg_samp_clk_timing(rate= default_rate,
+                                    source = '/Dev1/ao/SampleClock',
+                                    sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
+                                    samps_per_chan=Sample_Per_Chan)
+
+    # continuous/finite mode for analog channels
+    if iter == 'cont': # continuous mode
+        task_ao.timing.cfg_samp_clk_timing(rate= default_rate,
+                                    sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
+                                    samps_per_chan=Sample_Per_Chan)
+
+    elif int(iter) == 1:
+        print('The minimum value is 2.')
+        task_do.stop()
+        task_ao.stop()
+        task_do.close()
+        task_ao.close()
+        exit()
+    else:
+        iterations = int(iter)
+        task_ao.timing.cfg_samp_clk_timing(rate= default_rate,
+                                    sample_mode= nidaqmx.constants.AcquisitionType.FINITE,
+                                    samps_per_chan=iterations)
+
+
+    test_Writer_ao = nidaqmx.stream_writers.AnalogMultiChannelWriter(task_ao.out_stream, auto_start=True)
+    test_Writer_do = nidaqmx.stream_writers.DigitalSingleChannelWriter(task_do.out_stream, auto_start=True)
+    input_wave = np.array([wave1, wave2, wave3, wave4])
+    # IMPORTANT: do starts before ao
+    test_Writer_do.write_many_sample_port_byte(digits)
+    test_Writer_ao.write_many_sample(input_wave)
+    print('Running...')
+
+    while True:
+        settings.event, settings.values = settings.window.Read()
+        if settings.event is None:
+            break
+        if settings.event == 'STOP' or iter != 'cont':
+            # task.stop()
+            # stop, then re-set everything to zero
+            # test_Writer.write_many_sample([wave1*0, wave2*0, wave3*0, wave4*0]
+            print(settings.event)
+            task_do.stop()
+            task_ao.stop()
+            task_do.close()
+            task_ao.close()
+            return
+
+
+
+
+
+
+
+
+def test_run(iter, rate, wave1, wave2, wave3, wave4):
 
     global Sample_Per_Chan
     Sample_Per_Chan = 1
@@ -269,20 +495,10 @@ def run(iter, rate, wave1, wave2, wave3, wave4):
     input_wave = np.array([wave1, wave2, wave3, wave4])
     test_Writer.write_many_sample(input_wave)
     print('Running...')
+    task.stop()
+    task.close()
 
-    while True:
-        settings.event, settings.values = settings.window.Read()
-        if settings.event is None:
-            break
-        if settings.event == 'STOP' or iter != 'cont':
-            # task.stop()
-            # stop, then re-set everything to zero
-            # test_Writer.write_many_sample([wave1*0, wave2*0, wave3*0, wave4*0]
-            print(settings.event)
-            task.stop()
-            task.close()
-            return
-
+    return
 
 
 
@@ -295,24 +511,26 @@ def test_digital():
     # analog channel
     task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao0')
     # digital channels
-    task_do.do_channels.add_do_chan('Dev1/port0/line0', line_grouping=nidaqmx.constants.LineGrouping.CHAN_FOR_ALL_LINES)
+    task_do.do_channels.add_do_chan('Dev1/port0/line0:7', line_grouping=nidaqmx.constants.LineGrouping.CHAN_FOR_ALL_LINES)
 
+    # timing for DO
+    # note that we want to get this started BEFORE the AO
+    task_do.timing.cfg_samp_clk_timing(rate= 1e5,
+                                    source = '/Dev1/ao/SampleClock',
+                                    sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
+                                    samps_per_chan=1)
     # timing for AO
     task_ao.timing.cfg_samp_clk_timing(rate= 1e5,
                                     #source='/Dev1/ao/SampleClock',
                                     sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
                                     samps_per_chan=1)
-    # timing for DO
-    task_do.timing.cfg_samp_clk_timing(rate= 1e5,
-                                    source = '/Dev1/ao/SampleClock',
-                                    sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
-                                    samps_per_chan=1)
+
     test_Writer_ao = nidaqmx.stream_writers.AnalogSingleChannelWriter(task_ao.out_stream, auto_start=True)
     test_Writer_do = nidaqmx.stream_writers.DigitalSingleChannelWriter(task_do.out_stream, auto_start=True)
-    wave_ao = sawtooth(1.0, 0.0001, 1e5)
-    wave_do = np.array([1,1,1,1,1,8,8,8,8,8], dtype = np.uint8)
-    test_Writer_ao.write_many_sample(wave_ao)
+    wave_ao = sawtooth(1.0, 0.001, 1e5)
+    wave_do = test_set_digital(4, 0.0008, 0.001, 1e5)
     test_Writer_do.write_many_sample_port_byte(wave_do)
+    test_Writer_ao.write_many_sample(wave_ao)
     a = input('Press Enter to end: ')
     task_ao.close()
     task_do.close()
@@ -325,58 +543,4 @@ def test_digital():
 
 
 if __name__ == "__main__":
-
-
     test_digital()
-    #num_pts = int(input('Number of nonzero points: '))
-    #num_pts_0 = int(input('Number of zero points: '))
-    #voltage = float(input('Enter voltage: '))
-    #delay_steps = int(input('Enter delay points: '))
-    #run(set_voltage(voltage, num_pts, num_pts_0), delay_steps)
-
-    # declare global variables, which are the settingss
-    # global default_steps
-    # global default_rate
-    # global time_resolution
-    # global time_step
-    # default_rate = 1e6 # set default sampling rate to 1 MHz
-    #
-    # time_step = float(1/default_rate)
-    #
-    #
-    # rate = 1e4
-    # duration = 1e-1
-    # time_res = 1/rate
-    # time_step = time_res
-    # unit_width = 10*time_res
-    # print('Time resolution:', time_step)
-    #
-    # global square_pulse
-    # square_pulse = set_voltage(0.10, unit_width, duration, rate)
-
-    # simulate(1, rate, gaussian(0.2, 5, 0.001, rate), gaussian(0.2, 5, 0.001, rate), gaussian(0.2, 5, 0.001, rate), gaussian(0.2, 5, 0.001, rate))
-
-    # simulate here
-    # simulate(1, rate, set_delay(0*unit_width, set_voltage(0.10, unit_width, duration, rate), rate),
-    #                   set_delay(1*unit_width, set_voltage(0.10, unit_width, duration, rate), rate),
-    #                   set_delay(2*unit_width, set_voltage(0.10, unit_width, duration, rate), rate),
-    #                   set_delay(3*unit_width, set_voltage(0.10, unit_width, duration, rate), rate))
-
-    # square pulses
-    # run(rate, set_delay(0*unit_width, set_voltage(0.10, unit_width, duration, rate), rate),
-    #           set_delay(1*unit_width, set_voltage(0.10, unit_width, duration, rate), rate),
-    #           set_delay(2*unit_width, set_voltage(0.10, unit_width, duration, rate), rate),
-    #           set_delay(3*unit_width, set_voltage(0.10, unit_width, duration, rate), rate))
-
-    # run(rate, set_delay(0*unit_width, square_pulse, rate),
-    #           set_delay(1*unit_width, square_pulse, rate),
-    #           set_delay(2*unit_width, square_pulse, rate),
-    #           set_delay(3*unit_width, square_pulse, rate))
-
-    # gaussian pulses
-    # simulate(1, rate, gaussian(0.10, 10, duration, rate),
-    #           gaussian(0.10, 10, duration, rate),
-    #           gaussian(0.10, 10, duration, rate),
-    #           gaussian(0.10, 10, duration, rate))
-
-    print('Test')

@@ -22,7 +22,7 @@ def generate_time_point(int_time, row_specs):
     # A row contains the Mode, Delay, TTL switches, Step, AH,
     # Trap, Repump, aom, vco specifications
     # input is the specs for a row
-    # input includes: Mode, Delay, Switch_state x 12, Step, AH, Trap, Repump, aom, vco
+    # input includes: Mode, Delay, Switch_state x 8, Step, AH, Trap, Repump, aom, vco
 
     time = str(int_time)
     time_point = []
@@ -31,7 +31,7 @@ def generate_time_point(int_time, row_specs):
     time_point.append(sg.InputText(default_text=row_specs[1], size=(9, 1), change_submits=True, key='_delay_' + time + '_'))
 
     # number of tick boxes per row
-    for i in range(12):
+    for i in range(8):
         time_point.append(sg.Checkbox('', size=(1,1), default=bool(row_specs[2][i]), change_submits=True, key='_switch_' + time + '_' +  str(i) +'_'))
 
     if row_specs[0] == '-Select-':
@@ -71,7 +71,7 @@ def generate_time_line(time_points):
     Trap_head  = sg.Text('Trap', size=(5, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     aom_760_head  = sg.Text('760 aom', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     vco_760_head  = sg.Text('760 vco', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
-    blank_head  = sg.Text(' ', size=(64, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
+    blank_head  = sg.Text(' ', size=(42, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     header_list = [header_mode, delay_head, blank_head , step_head, AH_head, Trap_head, Repump_head, aom_760_head, vco_760_head]
     points = []
     points.append(header_list)
@@ -100,9 +100,9 @@ def layout_main(time_points):
     iter = str(settings.sequence['_iter_'])
 
     # header definitions
-    header_0 = sg.Text('PCI-6733', size=(15, 1), justification='center', font=("Helvetica", 15), relief=sg.RELIEF_RIDGE)
+    header_0 = sg.Text('PCI-6733', size=(10, 1), justification='center', font=("Helvetica", 15), relief=sg.RELIEF_RIDGE)
     spinner_name = sg.Text('Number of time points')
-    spinner = sg.Spin([sz for sz in range(1, 100)], size=(6,1), initial_value= spin , change_submits=True, key='_spin_')
+    spinner = sg.Spin([sz for sz in range(1, 100)], size=(5,1), initial_value= spin , change_submits=True, key='_spin_')
     apply = sg.Button('Apply')
     run_sequence = sg.Button('Run Sequence')
     sampling_rate_name = sg.Text('Sampling rate/Clock (Hz)')
