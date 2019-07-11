@@ -80,7 +80,7 @@ def sequence_to_instructions_spin():
     settings.instructions  = []
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
-    num_rows = int((len(settings.sequence) - 4)/17)
+    num_rows = int((len(settings.sequence) - 15)/17)
     # print('Spin is:', spin)
     # print('Num_rows is:', num_rows )
 
@@ -160,7 +160,7 @@ def insert(location):
     settings.values['_spin_'] = str(int(settings.values['_spin_']) + 1) # spinners increase by 1.
     spin = int(settings.values['_spin_'])
     iter = str(settings.values['_iter_'])
-    num_rows = int((len(settings.values) - 4)/17)
+    num_rows = int((len(settings.values) - 15)/17)
 
     # adding the last row
     settings.values['_mode_' + str(spin) + '_'] = '-Select-'
@@ -182,9 +182,9 @@ def insert(location):
     settings.values['_vca_' + str(spin) + '_'] = '0'
 
     # now shift everything after location to +1 time point
-    print('Location: ', location)
-    print('Num points:', int((len(settings.values)-4)/17))
-    for l in range(int((len(settings.values)-4)/17) - 2, location -1, -1 ): # travels backwards
+    #print('Location: ', location)
+    #print('Num points:', int((len(settings.values)-15)/17))
+    for l in range(int((len(settings.values)-15)/17) - 2, location -1, -1 ): # travels backwards
         settings.values['_mode_'   + str(l+1) + '_']    = settings.values['_mode_'   + str(l) + '_']
         settings.values['_delay_'  + str(l+1) + '_']    = settings.values['_delay_'  + str(l) + '_']
         settings.values['_switch_' + str(l+1) + '_0_']  = settings.values['_switch_' + str(l) + '_0_']
@@ -206,13 +206,107 @@ def insert(location):
     return settings.values
 
 
-def sequence_to_instructions_insert():
+def sequence_to_instructions_insert_or_delete():
     # this turns the new sequence from insertion to instructions
     read_sequence()
     settings.instructions  = []
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
-    num_rows = int((len(settings.sequence) - 4)/17)
+    num_rows = int((len(settings.sequence) - 15)/17)
+
+    for row in range(spin):
+        row_switch = ['']*8
+
+        mode = settings.sequence[str('_mode_'+str(row)+'_')]
+        delay = settings.sequence[str('_delay_'+str(row)+'_')]
+
+        for col in range(8):
+            row_switch[col] = settings.sequence[str('_switch_' + str(row) + '_' + str(col) + '_' )]
+
+        step = settings.sequence[str('_step_'+str(row)+'_')]
+        ah = settings.sequence[str('_AH_'+str(row)+'_')]
+        trap = settings.sequence[str('_Trap_'+str(row)+'_')]
+        repump = settings.sequence[str('_Repump_'+str(row)+'_')]
+        aom = settings.sequence[str('_aom_760_'+str(row)+'_')]
+        vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
+        vca = settings.sequence[str('_vca_'+str(row)+'_')]
+
+        row_specs = [mode, delay, row_switch, step, ah, trap, repump, aom, vco, vca]
+        settings.instructions.append(row_specs)
+
+    return settings.instructions
+
+
+
+def delete(location):
+    # this function deletes a time point from the program
+    # - updates the values (dictionary)
+    # - updates the .csv file by changing the number of spinners
+    # - copying the row right before it and add this row
+    # - then shifting everything after by one time point.
+    # - then restarting the window.
+    # input: the location of insertion
+
+    read_sequence()
+    settings.values['_spin_'] = str(int(settings.values['_spin_']) - 1) # spinners increase by 1.
+    spin = int(settings.values['_spin_'])
+    iter = str(settings.values['_iter_'])
+    num_rows = int((len(settings.values) - 15)/17)
+
+    # first shift everything after location to -1 time point
+    # print('Location: ', location)
+    # print('Num points:', int((len(settings.values)-15)/17))
+    for l in range(location, int((len(settings.values)-15)/17)-1): # travels forward
+        settings.values['_mode_'   + str(l) + '_']    = settings.values['_mode_'   + str(l+1) + '_']
+        settings.values['_delay_'  + str(l) + '_']    = settings.values['_delay_'  + str(l+1) + '_']
+        settings.values['_switch_' + str(l) + '_0_']  = settings.values['_switch_' + str(l+1) + '_0_']
+        settings.values['_switch_' + str(l) + '_1_']  = settings.values['_switch_' + str(l+1) + '_1_']
+        settings.values['_switch_' + str(l) + '_2_']  = settings.values['_switch_' + str(l+1) + '_2_']
+        settings.values['_switch_' + str(l) + '_3_']  = settings.values['_switch_' + str(l+1) + '_3_']
+        settings.values['_switch_' + str(l) + '_4_']  = settings.values['_switch_' + str(l+1) + '_4_']
+        settings.values['_switch_' + str(l) + '_5_']  = settings.values['_switch_' + str(l+1) + '_5_']
+        settings.values['_switch_' + str(l) + '_6_']  = settings.values['_switch_' + str(l+1) + '_6_']
+        settings.values['_switch_' + str(l) + '_7_']  = settings.values['_switch_' + str(l+1) + '_7_']
+        settings.values['_step_'   + str(l) + '_']    = settings.values['_step_'   + str(l+1) + '_']
+        settings.values['_AH_'     + str(l) + '_']    = settings.values['_AH_'     + str(l+1) + '_']
+        settings.values['_Trap_'   + str(l) + '_']    = settings.values['_Trap_'   + str(l+1) + '_']
+        settings.values['_Repump_' + str(l) + '_']    = settings.values['_Repump_' + str(l+1) + '_']
+        settings.values['_aom_760_'+ str(l) + '_']    = settings.values['_aom_760_'+ str(l+1) + '_']
+        settings.values['_vco_760_'+ str(l) + '_']    = settings.values['_vco_760_'+ str(l+1) + '_']
+        settings.values['_vca_'+ str(l+1) + '_']    = settings.values['_vca_'+ str(l+1) + '_']
+
+    # next removes the last row
+    del settings.values['_mode_' + str(spin) + '_']
+    del settings.values['_delay_' + str(spin) + '_']
+    del settings.values['_switch_' + str(spin) + '_0_']
+    del settings.values['_switch_' + str(spin) + '_1_']
+    del settings.values['_switch_' + str(spin) + '_2_']
+    del settings.values['_switch_' + str(spin) + '_3_']
+    del settings.values['_switch_' + str(spin) + '_4_']
+    del settings.values['_switch_' + str(spin) + '_5_']
+    del settings.values['_switch_' + str(spin) + '_6_']
+    del settings.values['_switch_' + str(spin) + '_7_']
+    del settings.values['_step_' + str(spin) + '_']
+    del settings.values['_AH_' + str(spin) + '_']
+    del settings.values['_Trap_' + str(spin) + '_']
+    del settings.values['_Repump_' + str(spin) + '_']
+    del settings.values['_aom_760_' + str(spin) + '_']
+    del settings.values['_vco_760_' + str(spin) + '_']
+    del settings.values['_vca_' + str(spin) + '_']
+
+    return settings.values
+
+
+
+
+
+def sequence_to_instructions_delete():
+    # this turns the new sequence from deletion to instructions
+    read_sequence()
+    settings.instructions  = []
+    spin = int(settings.sequence['_spin_'])
+    iter = str(settings.sequence['_iter_'])
+    num_rows = int((len(settings.sequence) - 15)/17)
 
     for row in range(spin):
         row_switch = ['']*8
@@ -241,9 +335,6 @@ def sequence_to_instructions_insert():
 
 
 
-
-
-
 def interpret(command):
     # this function translates the instructions on Board
     # into data to be sent to PCI
@@ -251,7 +342,7 @@ def interpret(command):
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
 
-    num_events = int((len(settings.sequence)-4)/17)
+    num_events = int((len(settings.sequence)-15)/17)
     print('Number of events: ', num_events)
 
     # loop through the sequence
@@ -379,7 +470,7 @@ def make_window(initial_num_points):
     # the sequence is a global var defined in settings.py
     sg.ChangeLookAndFeel('GreenTan')
     settings.new_time_points = int(settings.sequence['_spin_'])
-    settings.old_time_points = int((len(settings.sequence) - 4)/17)
+    settings.old_time_points = int((len(settings.sequence) - 15)/17)
     settings.sequence = read_sequence()
 
     settings.window = sg.Window('Experimental Control - PCI-6733',
@@ -389,6 +480,7 @@ def make_window(initial_num_points):
     # GUI.generate_graph(window)
 
     settings.inserted = False
+    settings.deleted = False
     settings.ramped = False
 
     while True:
@@ -413,13 +505,12 @@ def make_window(initial_num_points):
             sequence_to_instructions_spin()
             break
 
-        # check for insertion
         for location in range(settings.new_time_points):
+            # check for insertion
             if settings.event == '_insert_' + str(location) + '_':
-                # print('Inserted after line', location+1)
                 update_sequence()
                 insert(location)
-                sequence_to_instructions_insert()
+                sequence_to_instructions_insert_or_delete()
 
                 settings.inserted = True
                 print(settings.inserted)
@@ -427,8 +518,18 @@ def make_window(initial_num_points):
                 settings.window.Close()
                 return
 
-        # check for clicking the ramping option
-        for location in range(settings.new_time_points):
+                # check for deletion
+            if settings.event == '_delete_' + str(location) + '_':
+                update_sequence()
+                delete(location)
+                sequence_to_instructions_insert_or_delete()
+                settings.deleted = True
+                update_sequence()
+                settings.window.Close()
+                return
+
+
+                # check for clicking the ramping option
             if settings.event == '_mode_' + str(location) + '_':
                 settings.ramped = True
                 update_sequence()
@@ -453,6 +554,13 @@ def make_window(initial_num_points):
             update_sequence()
             interpret('run')
             settings.event = None
+
+        if settings.event == 'STOP':
+            sg.Popup('?', 'No sequence is running!')
+
+        if settings.event == 'EXIT':
+            settings.window.Close()
+            quit()
 
         del settings.values[0]
 

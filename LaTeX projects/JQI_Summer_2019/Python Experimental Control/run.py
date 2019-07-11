@@ -35,10 +35,11 @@ if __name__ == "__main__":
             GUI_main.sequence_to_instructions_spin()
             GUI_main.make_window(settings.new_time_points)
 
-        if settings.inserted == True:
+        # if inserted or deleted
+        if settings.inserted == True or settings.deleted == True:
             # print('New time points: ', settings.new_time_points)
             # print('Old time points: ', settings.old_time_points)
-            GUI_main.sequence_to_instructions_insert()
+            GUI_main.sequence_to_instructions_insert_or_delete()
             GUI_main.make_window(settings.new_time_points)
 
 # settings.new_time_points != settings.old_time_points or s

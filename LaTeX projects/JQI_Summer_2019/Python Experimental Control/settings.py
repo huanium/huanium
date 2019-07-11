@@ -39,3 +39,4 @@ def init():
     inserted = False
     ramped = False
     switch = []
+    deleted = False

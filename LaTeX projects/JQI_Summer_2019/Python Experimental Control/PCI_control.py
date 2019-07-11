@@ -271,7 +271,7 @@ def exp_ramp(volt_start, volt_end, duration, rate, time_constant):
     steps = int(duration/time_step)
     volt = np.array([])
     for i in range(-int(steps/2),int(steps/2)):
-        val = volt_start +  (volt_end - volt_start)*(1 - math.exp(-(1/time_constant)*(i + steps/2)/steps))
+        val = volt_start +  (volt_end - volt_start)*(1 - math.exp(-(1/time_constant)*(i + int(steps/2))/int(steps)))
         volt = np.append(volt, np.float16(val))
 
     # print('Number of time points: ', len(t))
@@ -293,33 +293,37 @@ def to_wave(instruction, rate):
             wave = np.concatenate((wave, set_voltage(volts, duration, duration, rate)))
         elif mode == 'Lin. Ramp':
             if e == 0 or e == events-1:
-                print('Cannot have ramp at either ends of cycle')
+                volt_start = 0
+                volt_end = instruction[e][3]
+                wave = np.concatenate((wave, lin_ramp(volt_start, volt_end, duration, rate)))
             else:
                 # if things are okay then collect the end points:
                 volt_start = instruction[e-1][3]
-                volt_end = instruction[e+1][3]
+                volt_end = instruction[e][3]
                 wave = np.concatenate((wave, lin_ramp(volt_start, volt_end, duration, rate)))
 
         elif mode == 'Sin. Ramp':
             if e == 0 or e == events-1:
-                print('Cannot have ramp at either ends of cycle')
+                volt_start = 0
+                volt_end = instruction[e][3]
+                wave = np.concatenate((wave, sin_ramp(volt_start, volt_end, duration, rate)))
             else:
                 # if things are okay then collect the end points:
                 volt_start = instruction[e-1][3]
-                volt_end = instruction[e+1][3]
+                volt_end = instruction[e][3]
                 wave = np.concatenate((wave, sin_ramp(volt_start, volt_end, duration, rate)))
 
         elif mode == 'Exp. Ramp':
             if e == 0 or e == events-1:
-                print('Cannot have ramp at either ends of cycle')
+                volt_start= 0
+                volt_end = instruction[e][3]
+                time_constant = instruction[e][3]
+                wave = np.concatenate((wave, exp_ramp(volt_start, volt_end, duration, rate, math.sqrt(duration) ) ) )
             else:
                 # if things are okay then collect the end points:
                 volt_start = instruction[e-1][3]
-                volt_end = instruction[e+1][3]
-                # here the `volt` slot is now for the time constant
-                time_constant = instruction[e][3]
-                print('Time constant: ', time_constant)
-                wave = np.concatenate((wave, exp_ramp(volt_start, volt_end, duration, rate, time_constant)))
+                volt_end = instruction[e][3]
+                wave = np.concatenate((wave, exp_ramp(volt_start, volt_end, duration, rate, math.sqrt(duration) ) ) )
 
 
     return wave
