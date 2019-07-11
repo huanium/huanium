@@ -80,7 +80,7 @@ def sequence_to_instructions_spin():
     settings.instructions  = []
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
-    num_rows = int((len(settings.sequence) - 15)/17)
+    num_rows = int((len(settings.sequence) - 16)/17)
     # print('Spin is:', spin)
     # print('Num_rows is:', num_rows )
 
@@ -160,7 +160,7 @@ def insert(location):
     settings.values['_spin_'] = str(int(settings.values['_spin_']) + 1) # spinners increase by 1.
     spin = int(settings.values['_spin_'])
     iter = str(settings.values['_iter_'])
-    num_rows = int((len(settings.values) - 15)/17)
+    num_rows = int((len(settings.values) - 16)/17)
 
     # adding the last row
     settings.values['_mode_' + str(spin) + '_'] = '-Select-'
@@ -183,8 +183,8 @@ def insert(location):
 
     # now shift everything after location to +1 time point
     #print('Location: ', location)
-    #print('Num points:', int((len(settings.values)-15)/17))
-    for l in range(int((len(settings.values)-15)/17) - 2, location -1, -1 ): # travels backwards
+    #print('Num points:', int((len(settings.values)-16)/17))
+    for l in range(int((len(settings.values)-16)/17) - 2, location -1, -1 ): # travels backwards
         settings.values['_mode_'   + str(l+1) + '_']    = settings.values['_mode_'   + str(l) + '_']
         settings.values['_delay_'  + str(l+1) + '_']    = settings.values['_delay_'  + str(l) + '_']
         settings.values['_switch_' + str(l+1) + '_0_']  = settings.values['_switch_' + str(l) + '_0_']
@@ -212,7 +212,7 @@ def sequence_to_instructions_insert_or_delete():
     settings.instructions  = []
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
-    num_rows = int((len(settings.sequence) - 15)/17)
+    num_rows = int((len(settings.sequence) - 16)/17)
 
     for row in range(spin):
         row_switch = ['']*8
@@ -251,12 +251,12 @@ def delete(location):
     settings.values['_spin_'] = str(int(settings.values['_spin_']) - 1) # spinners increase by 1.
     spin = int(settings.values['_spin_'])
     iter = str(settings.values['_iter_'])
-    num_rows = int((len(settings.values) - 15)/17)
+    num_rows = int((len(settings.values) - 16)/17)
 
     # first shift everything after location to -1 time point
     # print('Location: ', location)
-    # print('Num points:', int((len(settings.values)-15)/17))
-    for l in range(location, int((len(settings.values)-15)/17)-1): # travels forward
+    # print('Num points:', int((len(settings.values)-16)/17))
+    for l in range(location, int((len(settings.values)-16)/17)-1): # travels forward
         settings.values['_mode_'   + str(l) + '_']    = settings.values['_mode_'   + str(l+1) + '_']
         settings.values['_delay_'  + str(l) + '_']    = settings.values['_delay_'  + str(l+1) + '_']
         settings.values['_switch_' + str(l) + '_0_']  = settings.values['_switch_' + str(l+1) + '_0_']
@@ -306,7 +306,7 @@ def sequence_to_instructions_delete():
     settings.instructions  = []
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
-    num_rows = int((len(settings.sequence) - 15)/17)
+    num_rows = int((len(settings.sequence) - 16)/17)
 
     for row in range(spin):
         row_switch = ['']*8
@@ -342,7 +342,7 @@ def interpret(command):
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
 
-    num_events = int((len(settings.sequence)-15)/17)
+    num_events = int((len(settings.sequence)-16)/17)
     print('Number of events: ', num_events)
 
     # loop through the sequence
@@ -470,7 +470,7 @@ def make_window(initial_num_points):
     # the sequence is a global var defined in settings.py
     sg.ChangeLookAndFeel('GreenTan')
     settings.new_time_points = int(settings.sequence['_spin_'])
-    settings.old_time_points = int((len(settings.sequence) - 15)/17)
+    settings.old_time_points = int((len(settings.sequence) - 16)/17)
     settings.sequence = read_sequence()
 
     settings.window = sg.Window('Experimental Control - PCI-6733',

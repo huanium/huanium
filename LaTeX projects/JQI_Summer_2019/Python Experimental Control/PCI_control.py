@@ -118,10 +118,12 @@ def set_voltage(volt, duration_on, duration, rate):
     # print('First number:', int(duration_on/time_step))
     # print('Second number:', int((duration - duration_on)/time_step))
 
-    for i in range(int(duration_on/time_step)):
+    for i in range(int(duration_on*rate)):
         voltage = np.append(voltage, np.float16(volt))
-    for i in range(int((duration - duration_on)/time_step)):
-        voltage = np.append(voltage, np.float16(0.0))
+    if duration != duration_on:
+        for i in range(int((duration - duration_on)*rate)):
+            voltage = np.append(voltage, np.float16(0.0))
+
     return voltage
 
 def test_set_digital(digit, duration_on, duration, rate):
@@ -158,10 +160,11 @@ def set_digital(digit, duration_on, duration, rate):
 
     out = np.array([])
     out_int_8 = np.array([])
-    for i in range(int(duration_on/time_step)):
+    for i in range(int(duration_on*rate)):
         out = np.append(out, digit)
-    for i in range(int((duration - duration_on)/time_step)):
-        out = np.append(out, 1)
+    if duration != duration_on:
+        for i in range(int((duration - duration_on)*rate)):
+            out = np.append(out, 1)
     out_int_8 = np.array(out, dtype = np.uint8)
     print('Num points: ', len(out))
     return out_int_8
@@ -231,7 +234,7 @@ def lin_ramp(volt_start, volt_end, duration, rate):
     default_rate = rate
     time_step = 1/rate
 
-    steps = int(duration/time_step)
+    steps = int(duration*rate)
     volt = np.array([])
     for i in range(-int(steps/2),int(steps/2)):
         val = (volt_end + volt_start)/2 + (volt_end - volt_start)*i/steps
@@ -248,7 +251,7 @@ def sin_ramp(volt_start, volt_end, duration, rate):
     default_rate = rate
     time_step = 1/rate
 
-    steps = int(duration/time_step)
+    steps = int(duration*rate)
     volt = np.array([])
     for i in range(-int(steps/2),int(steps/2)):
         val = (volt_start + volt_end)/2 +  (volt_end - volt_start)*math.sin(math.pi*i/steps)/2
@@ -268,7 +271,7 @@ def exp_ramp(volt_start, volt_end, duration, rate, time_constant):
     default_rate = rate
     time_step = 1/rate
 
-    steps = int(duration/time_step)
+    steps = int(duration*rate)
     volt = np.array([])
     for i in range(-int(steps/2),int(steps/2)):
         val = volt_start +  (volt_end - volt_start)*(1 - math.exp(-(1/time_constant)*(i + int(steps/2))/int(steps)))

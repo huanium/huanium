@@ -151,7 +151,7 @@ def layout_main(time_points):
     scan_line_digital = str(settings.sequence['_scan_li_d_'])
     scan_delay_start_digital = str(settings.sequence['_scan_delay_start_d_'])
     scan_delay_end_digital = str(settings.sequence['_scan_delay_end_d_'])
-
+    scan_mech = str(settings.sequence['_scan_mech_'])
 
     # header definitions
     header_0 = sg.Text('PCI-6733', size=(10, 1), justification='center', font=("Helvetica", 15), relief=sg.RELIEF_RIDGE)
@@ -172,7 +172,7 @@ def layout_main(time_points):
 
     # shows the image of the output
     # for now it is temporarily set to be the JQI image
-    # graph = sg.Image(filename = 'jqi_2.png', key='_image_', visible=True)
+    graph = sg.Image(filename = 'jqi_1.png', key='_image_', visible=True)
 
 
     # analog scan mode selections
@@ -213,8 +213,10 @@ def layout_main(time_points):
     # scan mode activator
     scan_mode_name = sg.Text('Scan mode:')
     scan_mode_state = sg.Spin(values=('False', 'True'), initial_value=scan_state, size=(6, 1), change_submits=True, key='_scan_mode_')
+    scan_mech_name = sg.Text('Scan mechanism:')
+    scan_mode_mech = sg.Spin(values=('Single-array Multi-sweep', 'Multi-array Single-sweep'), initial_value=scan_mech, size=(30, 1), change_submits=True, key='_scan_mech_')
 
-    scan_mode = [scan_mode_name, scan_mode_state]
+    scan_mode = [scan_mode_name, scan_mode_state, scan_mech_name, scan_mode_mech]
 
 
     # generate_time_line has to read the exp_sequence to know
@@ -224,7 +226,8 @@ def layout_main(time_points):
               [sg.Frame(layout = generate_time_line(time_points), title='Control Board',title_color='Black', relief=sg.RELIEF_SUNKEN)],
               scan_mode,
               [sg.Frame(layout = [analog_scan], title='Analog scan settings', title_color='Black' , relief=sg.RELIEF_SUNKEN)],
-              [sg.Frame(layout = [digital_scan], title='Digital scan settings', title_color='Black' , relief=sg.RELIEF_SUNKEN)]
+              [sg.Frame(layout = [digital_scan], title='Digital scan settings', title_color='Black' , relief=sg.RELIEF_SUNKEN)],
+              [graph]
               ]
 
 
