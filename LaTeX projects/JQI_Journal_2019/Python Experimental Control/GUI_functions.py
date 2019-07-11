@@ -22,7 +22,7 @@ def generate_time_point(int_time, row_specs):
     # A row contains the Mode, Delay, TTL switches, Step, AH,
     # Trap, Repump, aom, vco specifications
     # input is the specs for a row
-    # input includes: Mode, Delay, Switch_state x 8, Step, AH, Trap, Repump, aom, vco
+    # input includes: Mode, Delay, Switch_state x 8, Step, AH, Trap, Repump, aom, vco, vca
 
     time = str(int_time)
     time_point = []
@@ -42,6 +42,7 @@ def generate_time_point(int_time, row_specs):
         time_point.append(sg.InputText(default_text=row_specs[6], size=(6, 1), change_submits=True, key='_Repump_' + time + '_'))
         time_point.append(sg.InputText(default_text=row_specs[7], size=(6, 1), change_submits=True, key='_aom_760_' + time + '_'))
         time_point.append(sg.InputText(default_text=row_specs[8], size=(6, 1), change_submits=True, key='_vco_760_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[9], size=(6, 1), change_submits=True, key='_vca_' + time + '_'))
 
     else: # if we're in ramped mode --> these blanks become time
         time_point.append(sg.InputText(default_text=row_specs[3], size=(6, 1), text_color='Blue', change_submits=True, key='_step_' + time + '_'))
@@ -50,6 +51,7 @@ def generate_time_point(int_time, row_specs):
         time_point.append(sg.InputText(default_text=row_specs[6], size=(6, 1), text_color='Blue', change_submits=True, key='_Repump_' + time + '_'))
         time_point.append(sg.InputText(default_text=row_specs[7], size=(6, 1), text_color='Blue', change_submits=True, key='_aom_760_' + time + '_'))
         time_point.append(sg.InputText(default_text=row_specs[8], size=(6, 1), text_color='Blue', change_submits=True, key='_vco_760_' + time + '_'))
+        time_point.append(sg.InputText(default_text=row_specs[9], size=(6, 1), text_color='Blue', change_submits=True, key='_vca_' + time + '_'))
 
 
 
@@ -71,8 +73,9 @@ def generate_time_line(time_points):
     Trap_head  = sg.Text('Trap', size=(5, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     aom_760_head  = sg.Text('760 aom', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     vco_760_head  = sg.Text('760 vco', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
-    blank_head  = sg.Text(' ', size=(42, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
-    header_list = [header_mode, delay_head, blank_head , step_head, AH_head, Trap_head, Repump_head, aom_760_head, vco_760_head]
+    vca_head  = sg.Text('vca', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
+    blank_head  = sg.Text(' ', size=(40, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
+    header_list = [header_mode, delay_head, blank_head , step_head, AH_head, Trap_head, Repump_head, aom_760_head, vco_760_head, vca_head]
     points = []
     points.append(header_list)
 

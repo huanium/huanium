@@ -18,6 +18,7 @@ def init():
     global inserted
     global ramped
     global switch
+    global vca
 
 
     window = None
@@ -34,6 +35,7 @@ def init():
     Repump = []
     aom = []
     vco = []
+    vca = []
     inserted = False
     ramped = False
     switch = []

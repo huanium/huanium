@@ -80,7 +80,7 @@ def sequence_to_instructions_spin():
     settings.instructions  = []
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
-    num_rows = int((len(settings.sequence) - 4)/16)
+    num_rows = int((len(settings.sequence) - 4)/17)
     # print('Spin is:', spin)
     # print('Num_rows is:', num_rows )
 
@@ -101,8 +101,9 @@ def sequence_to_instructions_spin():
             repump = settings.sequence[str('_Repump_'+str(row)+'_')]
             aom = settings.sequence[str('_aom_760_'+str(row)+'_')]
             vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
+            vca = settings.sequence[str('_vca_'+str(row)+'_')]
 
-            row_specs = [mode, delay, row_switch, step, ah, trap, repump, aom, vco]
+            row_specs = [mode, delay, row_switch, step, ah, trap, repump, aom, vco, vca]
             settings.instructions.append(row_specs)
 
         # print(settings.instructions)
@@ -124,8 +125,9 @@ def sequence_to_instructions_spin():
             repump = settings.sequence[str('_Repump_'+str(row)+'_')]
             aom = settings.sequence[str('_aom_760_'+str(row)+'_')]
             vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
+            vca = settings.sequence[str('_vca_'+str(row)+'_')]
 
-            row_specs = [mode, delay, row_switch, step, ah, trap, repump, aom, vco]
+            row_specs = [mode, delay, row_switch, step, ah, trap, repump, aom, vco, vca]
             settings.instructions.append(row_specs)
 
         for new_row in range(spin - num_rows):
@@ -158,7 +160,7 @@ def insert(location):
     settings.values['_spin_'] = str(int(settings.values['_spin_']) + 1) # spinners increase by 1.
     spin = int(settings.values['_spin_'])
     iter = str(settings.values['_iter_'])
-    num_rows = int((len(settings.values) - 4)/16)
+    num_rows = int((len(settings.values) - 4)/17)
 
     # adding the last row
     settings.values['_mode_' + str(spin) + '_'] = '-Select-'
@@ -177,11 +179,12 @@ def insert(location):
     settings.values['_Repump_' + str(spin) + '_'] = '0'
     settings.values['_aom_760_' + str(spin) + '_'] = '0'
     settings.values['_vco_760_' + str(spin) + '_'] = '0'
+    settings.values['_vca_' + str(spin) + '_'] = '0'
 
     # now shift everything after location to +1 time point
     print('Location: ', location)
-    print('Num points:', int((len(settings.values)-4)/16))
-    for l in range(int((len(settings.values)-4)/16) - 2, location -1, -1 ): # travels backwards
+    print('Num points:', int((len(settings.values)-4)/17))
+    for l in range(int((len(settings.values)-4)/17) - 2, location -1, -1 ): # travels backwards
         settings.values['_mode_'   + str(l+1) + '_']    = settings.values['_mode_'   + str(l) + '_']
         settings.values['_delay_'  + str(l+1) + '_']    = settings.values['_delay_'  + str(l) + '_']
         settings.values['_switch_' + str(l+1) + '_0_']  = settings.values['_switch_' + str(l) + '_0_']
@@ -198,6 +201,7 @@ def insert(location):
         settings.values['_Repump_' + str(l+1) + '_']    = settings.values['_Repump_' + str(l) + '_']
         settings.values['_aom_760_'+ str(l+1) + '_']    = settings.values['_aom_760_'+ str(l) + '_']
         settings.values['_vco_760_'+ str(l+1) + '_']    = settings.values['_vco_760_'+ str(l) + '_']
+        settings.values['_vca_'+ str(l+1) + '_']    = settings.values['_vca_'+ str(l) + '_']
 
     return settings.values
 
@@ -208,7 +212,7 @@ def sequence_to_instructions_insert():
     settings.instructions  = []
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
-    num_rows = int((len(settings.sequence) - 4)/16)
+    num_rows = int((len(settings.sequence) - 4)/17)
 
     for row in range(spin):
         row_switch = ['']*8
@@ -225,8 +229,9 @@ def sequence_to_instructions_insert():
         repump = settings.sequence[str('_Repump_'+str(row)+'_')]
         aom = settings.sequence[str('_aom_760_'+str(row)+'_')]
         vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
+        vca = settings.sequence[str('_vca_'+str(row)+'_')]
 
-        row_specs = [mode, delay, row_switch, step, ah, trap, repump, aom, vco]
+        row_specs = [mode, delay, row_switch, step, ah, trap, repump, aom, vco, vca]
         settings.instructions.append(row_specs)
 
     return settings.instructions
@@ -246,7 +251,7 @@ def interpret(command):
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
 
-    num_events = int((len(settings.sequence)-4)/16)
+    num_events = int((len(settings.sequence)-4)/17)
     print('Number of events: ', num_events)
 
     # loop through the sequence
@@ -288,6 +293,11 @@ def interpret(command):
         else:
             vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
 
+        if str(settings.sequence['_vca_' + str(e) + '_']) == '':
+            vca_e = float(0.0)
+        else:
+            vca_e = float(settings.sequence['_vca_' + str(e) + '_'])
+
         # channel 1
         settings.AH.append([mode_e, duration_e, step_e, AH_e])
         # channel 2
@@ -298,6 +308,8 @@ def interpret(command):
         settings.aom.append([mode_e, duration_e, step_e, aom_760_e])
         # channel 5
         settings.vco.append([mode_e, duration_e, step_e, vco_760_e])
+        # channel 6
+        settings.vca.append([mode_e, duration_e, step_e, vca_e])
 
 
     # DIGITAL
@@ -323,7 +335,9 @@ def interpret(command):
         PCI.simulate(1, rate, PCI.to_wave(settings.AH, rate),
                               PCI.to_wave(settings.Trap, rate),
                               PCI.to_wave(settings.Repump, rate),
-                              PCI.to_wave(settings.aom, rate)#,
+                              PCI.to_wave(settings.aom, rate),
+                              PCI.to_wave(settings.vco, rate),
+                              PCI.to_wave(settings.vca, rate)#,
                               #PCI.to_digit(settings.switch, rate)
                               )
 
@@ -332,6 +346,8 @@ def interpret(command):
                       PCI.to_wave(settings.Trap, rate),
                       PCI.to_wave(settings.Repump, rate),
                       PCI.to_wave(settings.aom, rate),
+                      PCI.to_wave(settings.vco, rate),
+                      PCI.to_wave(settings.vca, rate),
                       PCI.to_digit(settings.switch, rate)
                       )
 
@@ -344,6 +360,7 @@ def interpret(command):
     settings.Repump = settings.Repump*0
     settings.aom = settings.aom*0
     settings.vco = settings.vco*0
+    settings.vca = settings.vca*0
     settings.switch = []
 
     return
@@ -362,7 +379,7 @@ def make_window(initial_num_points):
     # the sequence is a global var defined in settings.py
     sg.ChangeLookAndFeel('GreenTan')
     settings.new_time_points = int(settings.sequence['_spin_'])
-    settings.old_time_points = int((len(settings.sequence) - 4)/16)
+    settings.old_time_points = int((len(settings.sequence) - 4)/17)
     settings.sequence = read_sequence()
 
     settings.window = sg.Window('Experimental Control - PCI-6733',

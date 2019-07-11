@@ -114,6 +114,10 @@ def set_voltage(volt, duration_on, duration, rate):
     time_step = 1/rate
 
     voltage = np.array([])
+
+    # print('First number:', int(duration_on/time_step))
+    # print('Second number:', int((duration - duration_on)/time_step))
+
     for i in range(int(duration_on/time_step)):
         voltage = np.append(voltage, np.float16(volt))
     for i in range(int((duration - duration_on)/time_step)):
@@ -324,7 +328,9 @@ def to_wave(instruction, rate):
 def simulate(cycles, rate, wave1=np.array([np.float16(0.0)]*100),
                                wave2=np.array([np.float16(0.0)]*100),
                                wave3=np.array([np.float16(0.0)]*100),
-                               wave4=np.array([np.float16(0.0)]*100)):
+                               wave4=np.array([np.float16(0.0)]*100),
+                               wave5=np.array([np.float16(0.0)]*100),
+                               wave6=np.array([np.float16(0.0)]*100)):
     global time_step
     global default_rate
     default_rate = rate
@@ -334,14 +340,20 @@ def simulate(cycles, rate, wave1=np.array([np.float16(0.0)]*100),
     time2 = []
     time3 = []
     time4 = []
+    time5 = []
+    time6 = []
     time1_step = time_step
     time2_step = time_step
     time3_step = time_step
     time4_step = time_step
+    time5_step = time_step
+    time6_step = time_step
     t1 = 0
     t2 = 0
     t3 = 0
     t4 = 0
+    t5 = 0
+    t6 = 0
     for cycle in range(cycles):
         for w in range(len(wave1)):
             time1.append(t1)
@@ -359,14 +371,24 @@ def simulate(cycles, rate, wave1=np.array([np.float16(0.0)]*100),
             time4.append(t4)
             t4 = t4 + time4_step
 
+        for w in range(len(wave5)):
+            time5.append(t5)
+            t5 = t5 + time5_step
+
+        for w in range(len(wave6)):
+            time6.append(t6)
+            t6 = t6 + time6_step
+
     wave1 = np.tile(wave1, cycles)
     wave2 = np.tile(wave2, cycles)
     wave3 = np.tile(wave3, cycles)
     wave4 = np.tile(wave4, cycles)
+    wave5 = np.tile(wave5, cycles)
+    wave6 = np.tile(wave6, cycles)
 
     print('Data dimension: ', len(time1))
 
-    plt.plot(time1, wave1, time2, wave2, time3, wave3, time4, wave4)
+    plt.plot(time1, wave1, time2, wave2, time3, wave3, time4, wave4, time5, wave5, time6, wave6)
     plt.xlabel('Time')
     plt.ylabel('Volts (V)')
     plt.show(block=False)
@@ -376,30 +398,41 @@ def simulate(cycles, rate, wave1=np.array([np.float16(0.0)]*100),
 
 
 
-def run(iter, rate, wave1, wave2, wave3, wave4, digits):
+def run(iter, rate, wave1, wave2, wave3, wave4, wave5, wave6, digits):
 
     global Sample_Per_Chan
-    Sample_Per_Chan = 1
+    Sample_Per_Chan = 10
 
     global time_step
     global default_rate
     default_rate = rate
     time_step = 1/rate
+    global data_dimension
+    data_dimension = len(wave1)
 
     task_ao = nidaqmx.Task()
     task_do = nidaqmx.Task()
     # analog channels
-    task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao0')
-    task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao1')
-    task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao2')
-    task_ao.ao_channels.add_ao_voltage_chan('Dev1/ao3')
+    ao_0 = task_ao.ao_channels.add_ao_voltage_chan('Dev2/ao0')
+    ao_1 = task_ao.ao_channels.add_ao_voltage_chan('Dev2/ao1')
+    ao_2 = task_ao.ao_channels.add_ao_voltage_chan('Dev2/ao2')
+    ao_3 = task_ao.ao_channels.add_ao_voltage_chan('Dev2/ao3')
+    ao_4 = task_ao.ao_channels.add_ao_voltage_chan('Dev2/ao4')
+    ao_5 = task_ao.ao_channels.add_ao_voltage_chan('Dev2/ao5')
+
+    ao_0.ao_data_xfer_mech = nidaqmx.constants.DataTransferActiveTransferMode.DMA
+    ao_1.ao_data_xfer_mech = nidaqmx.constants.DataTransferActiveTransferMode.DMA
+    ao_2.ao_data_xfer_mech = nidaqmx.constants.DataTransferActiveTransferMode.DMA
+    ao_3.ao_data_xfer_mech = nidaqmx.constants.DataTransferActiveTransferMode.DMA
+    ao_4.ao_data_xfer_mech = nidaqmx.constants.DataTransferActiveTransferMode.DMA
+    ao_5.ao_data_xfer_mech = nidaqmx.constants.DataTransferActiveTransferMode.DMA
 
     # digital channels
-    task_do.do_channels.add_do_chan('Dev1/port0/line0:7', line_grouping=nidaqmx.constants.LineGrouping.CHAN_FOR_ALL_LINES)
+    task_do.do_channels.add_do_chan('Dev2/port0/line0:7', line_grouping=nidaqmx.constants.LineGrouping.CHAN_FOR_ALL_LINES)
     # timing for DO
     # note that we want to get this started BEFORE the AO
     task_do.timing.cfg_samp_clk_timing(rate= default_rate,
-                                    source = '/Dev1/ao/SampleClock',
+                                    source = '/Dev2/ao/SampleClock',
                                     sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
                                     samps_per_chan=Sample_Per_Chan)
 
@@ -420,12 +453,12 @@ def run(iter, rate, wave1, wave2, wave3, wave4, digits):
         iterations = int(iter)
         task_ao.timing.cfg_samp_clk_timing(rate= default_rate,
                                     sample_mode= nidaqmx.constants.AcquisitionType.FINITE,
-                                    samps_per_chan=iterations)
+                                    samps_per_chan=data_dimension*iterations)
 
 
     test_Writer_ao = nidaqmx.stream_writers.AnalogMultiChannelWriter(task_ao.out_stream, auto_start=True)
     test_Writer_do = nidaqmx.stream_writers.DigitalSingleChannelWriter(task_do.out_stream, auto_start=True)
-    input_wave = np.array([wave1, wave2, wave3, wave4])
+    input_wave = np.array([wave1, wave2, wave3, wave4, wave5, wave6])
     # IMPORTANT: do starts before ao
     test_Writer_do.write_many_sample_port_byte(digits)
     test_Writer_ao.write_many_sample(input_wave)
@@ -453,52 +486,53 @@ def run(iter, rate, wave1, wave2, wave3, wave4, digits):
 
 
 
-def test_run(iter, rate, wave1, wave2, wave3, wave4):
 
-    global Sample_Per_Chan
-    Sample_Per_Chan = 1
-
-    global time_step
-    global default_rate
-    default_rate = rate
-    time_step = 1/rate
-
-    task = nidaqmx.Task()
-    # analog channels
-    task.ao_channels.add_ao_voltage_chan('Dev1/ao0')
-    task.ao_channels.add_ao_voltage_chan('Dev1/ao1')
-    task.ao_channels.add_ao_voltage_chan('Dev1/ao2')
-    task.ao_channels.add_ao_voltage_chan('Dev1/ao3')
-
-    # digital channels
-
-
-    # continuous/finite mode for analog channels
-    if iter == 'cont': # continuous mode
-        task.timing.cfg_samp_clk_timing(rate= default_rate,
-                                    sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
-                                    samps_per_chan=Sample_Per_Chan)
-
-    elif int(iter) == 1:
-        print('The minimum value is 2.')
-        task.stop()
-        task.close()
-        exit()
-    else:
-        iterations = int(iter)
-        task.timing.cfg_samp_clk_timing(rate= default_rate,
-                                    sample_mode= nidaqmx.constants.AcquisitionType.FINITE,
-                                    samps_per_chan=iterations)
-
-
-    test_Writer = nidaqmx.stream_writers.AnalogMultiChannelWriter(task.out_stream, auto_start=True)
-    input_wave = np.array([wave1, wave2, wave3, wave4])
-    test_Writer.write_many_sample(input_wave)
-    print('Running...')
-    task.stop()
-    task.close()
-
-    return
+# def test_run(iter, rate, wave1, wave2, wave3, wave4):
+#
+#     global Sample_Per_Chan
+#     Sample_Per_Chan = 1
+#
+#     global time_step
+#     global default_rate
+#     default_rate = rate
+#     time_step = 1/rate
+#
+#     task = nidaqmx.Task()
+#     # analog channels
+#     task.ao_channels.add_ao_voltage_chan('Dev1/ao0')
+#     task.ao_channels.add_ao_voltage_chan('Dev1/ao1')
+#     task.ao_channels.add_ao_voltage_chan('Dev1/ao2')
+#     task.ao_channels.add_ao_voltage_chan('Dev1/ao3')
+#
+#     # digital channels
+#
+#
+#     # continuous/finite mode for analog channels
+#     if iter == 'cont': # continuous mode
+#         task.timing.cfg_samp_clk_timing(rate= default_rate,
+#                                     sample_mode= nidaqmx.constants.AcquisitionType.CONTINUOUS,
+#                                     samps_per_chan=Sample_Per_Chan)
+#
+#     elif int(iter) == 1:
+#         print('The minimum value is 2.')
+#         task.stop()
+#         task.close()
+#         exit()
+#     else:
+#         iterations = int(iter)
+#         task.timing.cfg_samp_clk_timing(rate= default_rate,
+#                                     sample_mode= nidaqmx.constants.AcquisitionType.FINITE,
+#                                     samps_per_chan=iterations)
+#
+#
+#     test_Writer = nidaqmx.stream_writers.AnalogMultiChannelWriter(task.out_stream, auto_start=True)
+#     input_wave = np.array([wave1, wave2, wave3, wave4])
+#     test_Writer.write_many_sample(input_wave)
+#     print('Running...')
+#     task.stop()
+#     task.close()
+#
+#     return
 
 
 
