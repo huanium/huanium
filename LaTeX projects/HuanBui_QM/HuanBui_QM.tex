@@ -2879,12 +2879,192 @@ For $t = \pi\hbar/\mathcal{V}$, $W(\pi\hbar/\mathcal{V}) = 1$. This kind of popu
 
 \subsection{Fully quantum-mechanical model; the Jaynes–Cummings model}
 
+We move on to the quantum electrodynamics version of the Rabi model. In our previous discussion of the interaction between atoms and the quantized field, we assumed the field is single-mode. We again assume this, such that the single-mode cavity field can be written as
+\begin{align}
+\mathbf{\hat{E}} = \mathbf{e}\lp \f{\hbar\omega}{\epsilon_0 V} \rp^{1/2}\lp \hat{a} + \hat{a}^\dagger\rp\sin(kz)
+\end{align}
+where $\mathbf{e}$ is some arbitrary polarization vector. We also assume that the atom has two levels $\ket{g}$ and $\ket{e}$. The interaction Hamiltonian is given by
+\begin{align}
+\hat{\ham}^{(I)} = -\mathbf{\hat{d}} \cdot \mathbf{\hat{E}} = \hat{d} g (\hat{a} + \hat{a}^\dagger)
+\end{align}
+where
+\begin{align}
+\hat{d} &= \mathbf{d} \cdot \mathbf{e}\\
+g &=  \lp \f{\hbar\omega}{\epsilon_0 V} \rp^{1/2}\sin(kz).
+\end{align}
+
+For simplicity, let us introduce the atomic transition operators 
+\begin{align}
+\text{Excitation:} &\hat{\sigma}_+ = \ket{e}\bra{g}\\
+\text{De-excitation:} &\hat{\sigma}_- = \ket{g}\bra{e} = \hat{\sigma}_+^\dagger.
+\end{align}
+The inversion operator is given by
+\begin{align}
+\hat{\sigma}_3 = \ket{e}\bra{e} - \ket{g}\bra{g}.
+\end{align}
+We can verify that these operators obey the Pauli spin algebra:
+\begin{align}
+[\hat{\sigma}_+, \hat{\sigma}_-] &= \hat{\sigma}_3\\
+[\hat{\sigma}_3, \hat{\sigma}_\pm] &= 2\hat{\sigma}_\pm.
+\end{align}
+
+We know that the diagonal matrix elements of $\hat{d}$ is zero because $\bra{e}\hat{d}\ket{e} = \bra{g}\hat{d}\ket{g} = 0$. This means with $d = \bra{e}\hat{d}\ket{g}$, we can write in the basis
+\begin{align}
+\hat{d} &= d\ket{g}\bra{e} + d^*\ket{e}\bra{g}\\
+&= d\hat{\sigma}_- + d^*\hat{\sigma}_+\\
+&= d\lp \hat{\sigma}_- + \hat{\sigma}_+ \rp.
+\end{align}
+This gives the interaction Hamiltonian:
+\begin{align}
+\hat{\ham}^{(I)} = \hbar \lp \f{dg}{\hbar} \rp \lp \hat{\sigma}_- + \hat{\sigma}_+ \rp \lp \hat{a} + \hat{a}^\dagger \rp. 
+\end{align}
+Define the energy to be zero halfway between the states, then we have $E_e = -E_g$, and the free atomic Hamiltonian can be written as
+\begin{align}
+\hat{\ham}_0 = \f{\hbar}{2}\begin{bmatrix}
+E_e & \\ & E_g
+\end{bmatrix} 
+\end{align}
+or in the basis
+\begin{align}
+\hat{\ham}_0 = \f{1}{2}\hbar\omega_0 \lp \ket{e}\bra{e} - \ket{g}\bra{g} \rp = \f{1}{2}\hbar\omega_0 \hat{\sigma}_3 
+\end{align}
+where 
+\begin{align}
+E_e = -E_g = \f{1}{2}\hbar\omega_0
+\end{align}
+and of course $\omega_0$ is the transition frequency. The free-field Hamiltonian after dropping the zero-point energy term, again, is
+\begin{align}
+\hat{\ham}_F = \hbar\omega\hat{a}^\dagger\hat{a}.
+\end{align}
+So the total Hamiltonian is
+\begin{align}
+\hat{\ham} &= \hat{\ham}_0 + \hat{\ham}_F + \hat{\ham}^{(I)}\\
+&= \f{1}{2}\hbar\omega_0 \hat{\sigma}_3  + \hbar\omega\hat{a}^\dagger\hat{a} + \hbar \lp \f{dg}{\hbar} \rp \lp \hat{\sigma}_- + \hat{\sigma}_+ \rp \lp \hat{a} + \hat{a}^\dagger \rp.
+\end{align}
+Let us call
+\begin{align}
+\lambda = \f{dg}{h}.
+\end{align}
+It follows that
+\begin{align}
+\hat{\ham} = \f{1}{2}\hbar\omega_0 \hat{\sigma}_3  + \hbar\omega\hat{a}^\dagger\hat{a} + \hbar \lambda\lp  \hat{\sigma}_- + \hat{\sigma}_+ \rp \lp \hat{a} + \hat{a}^\dagger \rp.
+\end{align}
+Let us simplify this Hamiltonian with some approximations. We know that in the field-free case, the creation and annihilation operators evolve in time as
+\begin{align}
+\hat{a}(t) = \hat{a}(0)e^{-i\omega t} \hspace{0.5cm} \hat{a}^\dagger(t) = \hat{a}^\dagger(0)e^{i\omega t},
+\end{align}
+while in the free atomic case the excitation operators (which we can show) to evolve in time as
+\begin{align}
+\hat{\sigma}_{\pm}(t) = \hat{\sigma}_\pm(0)e^{\pm i \omega_0 t}.
+\end{align}
+This gives us some idea of the time dependency of the product of some of these operators:
+\begin{align}
+&\hat{\sigma}_+ \hat{a} \sim e^{i(\omega_0 - \omega)t}\\
+&\hat{\sigma}_- \hat{a}^\dagger \sim e^{-i(\omega_0 - \omega)t}\\
+&\hat{\sigma}_+ \hat{a}^\dagger \sim e^{i(\omega_0 + \omega)t}\\
+&\hat{\sigma}_- \hat{a} \sim e^{-i(\omega_0 + \omega)t}.
+\end{align}
+For $\omega_0 \approx \omega$ we can use RWA to ignore the last two terms. The term $\hat{\sigma}_+ \hat{a}^\dagger$ corresponds to the emission of a photon (the creation operator) as the atom goes from the ground to the excited state, while the term $\hat{\sigma}_- \hat{a}$ corresponds to the absorption of a photon (the annihilation operator) as the atom goes from the excited to ground state. It makes good sense to ignore these terms, so that we're left with the approximate Hamiltonian:
+\begin{align}
+\boxed{\hat{\ham} = \f{1}{2}\hbar\omega_0 \hat{\sigma}_3  + \hbar\omega\hat{a}^\dagger\hat{a} + \hbar \lambda\lp  \hat{\sigma}_+ \hat{a}  + \hat{\sigma}_-\hat{a}^\dagger \rp}
+\end{align}
+This is called the \textbf{Jaynes-Cummings model}. To solve the dynamics of the system, we first note a few constants. The first constants is the number of electrons, or the total probability of the atom being in either state $\ket{e}$ or $\ket{g}$:
+\begin{align}
+\hat{P}_E = \ket{e}\bra{e} + \ket{g}\bra{g} = 1.
+\end{align}
+and of course this quantity is conserved: 
+\begin{align}
+[\hat{\ham}, \hat{P}_E] \propto \f{d\hat{P}_E}{d t} = 0.
+\end{align}
+The excitation number is also unchanged: 
+\begin{align}
+\hat{N}_e = \hat{a}\dagger\hat{a} + \ket{e}\bra{e} \implies [\hat{\ham}, \hat{N}_e] \propto \f{d\hat{N}_e}{dt} = 0.
+\end{align}
+This equation essentially says the number of electrons created corresponds to the transitions.\\
+
+With these constants we may break the Hamiltonian into two commuting parts:
+\begin{align}
+\hat{\ham} = \hat{\ham}_I + \hat{\ham}_{II}
+\end{align}
+where
+\begin{align}
+\hat{\ham}_I &= \hbar\omega \hat{N}_e + \hbar\lp \f{\omega_0}{2} - \omega \rp\hat{P}_E\\
+\hat{\ham}_{II} &= -\hbar\Delta + \hbar \lambda \lp \hat{\sigma}_+ \hat{a}  + \hat{\sigma}_-\hat{a}^\dagger \rp
+\end{align}
+All dynamics is contained in $\hat{H}_{II}$, while $\hat{\ham}_I$ contributes to (irrelevant) phase factors. Next, let us examine a few notable cases. 
+
+\subsubsection{Resonance: $\Delta = 0$}
+
+Let us assume that initially the atom is in the excited state $\ket{e}$ and the field is initially in the state $\ket{n}$. The initial atom-field state is
+\begin{align}
+\ket{i} = \ket{e}\ket{n}.
+\end{align}
+The energy of this state is of course
+\begin{align}
+E_i  = E_e + E_n = \f{1}{2}\hbar\omega + n\hbar\omega
+\end{align}
+where recall that we have set zero energy to be in the middle of the two states. This initial state $\ket{i}$ to coupled to and only to the final state $\ket{f} = \ket{g}\ket{n+1}$. The state vector is given by
+\begin{align}
+\ket{\psi(t)} = C_i(t) \ket{i} + C_f(t)\ket{f}
+\end{align}
+with $C_i(0) = 1$ and $C_f(0) = 0$. In the interaction picture, 
+\begin{align}
+i\hbar \f{d\ket{\psi(t)}}{dt} = \hat{\ham}_{II}\ket{\psi(t)}.
+\end{align}
+Plugging $\hat{\ham}_{II}$ in and solve we obtain
+\begin{align}
+\dot{C}_i &= -i\lambda \sqrt{n+1}C_f\\
+\dot{C}_f &= -i\lambda \sqrt{n+1}C_i. 
+\end{align}
+By eliminating $C_f$ and solving, we get 
+\begin{align}
+C_i(t) = \cos\lp  \lambda t \sqrt{n+1} \rp
+\end{align}
+and 
+\begin{align}
+C_f(t) =-i\sin\lp \lambda t \sqrt{n+1} \rp.
+\end{align}
+With this, the probability that the system is in the initial state is
+\begin{align}
+P_i(t) = C_i^*(t)C_i(t) = \cos^2 \lp  \lambda t \sqrt{n+1} \rp.
+\end{align}
+And the probability that the system is in the other state is of course
+\begin{align}
+P_f(t) = \sin^2\lp  \lambda t \sqrt{n+1} \rp.
+\end{align}
+The atom inversion is then
+\begin{align}
+W(t) = P_i(t) - P_f(t) = \cos\lp 2\lambda t \sqrt{n+1} \rp.
+\end{align}
+We may define a quantum electrodynamic Rabi frequency
+\begin{align}
+\boxed{\Omega(n) = 2\lambda\sqrt{n+1}}
+\end{align}
+This gives
+\begin{align}
+W(t) = \cos\lp \Omega(n)t \rp.
+\end{align}
+We notice that there's Rabi oscillation, which we also see in the classical case. However, there is still Rabi oscillation in the case of $n=0$. These is vacuum Rabi oscillation. They are the result of the atom spontaneously emitting a photon then re-absorbing it, re-emitting it, etc.: an example of reversible spontaneous emission.
+
+
+\subsubsection{Pure state}
+In this scenario we assume that the atom is initially in a superposition of $\ket{e}$ and $\ket{g}$. 
+\begin{align}
+\ket{\psi(t)}_\text{atom} =C_e\ket{e} + C_g\ket{g}.
+\end{align}
+The field is initially in the state
+\begin{align}
+\ket{\psi(t)}_\text{field} = \sum_{n=0}^\infty C_n\ket{n}.
+\end{align}
+Thus the initial state of the system is given by a tensor product
+\begin{align}
+\ket{\psi(t)} = \ket{\psi(0)}_\text{atom} \otimes \ket{\psi(0)}_\text{field}.
+\end{align}
+The solution to the Schr\"{o}dinger equation is now
 
 
 
-
-
-
+\subsection{The Density Operator approach (or the master equation's approach) }
 
 
 
