@@ -93,6 +93,8 @@ def record_sequence_and_check_errors(values):
                     settings.ignore = False
                     break
             win1.Close()
+            break
+            return
 
         if float(values['_delay_' + str(i) + '_']) > 1e4*time_res:
             # sg.Popup('Warning!', 'Consider reducing the sampling rate. \n This might take a while to load! \n OK to ignore, but be patient,. it will load eventually.')
@@ -111,6 +113,8 @@ def record_sequence_and_check_errors(values):
                     settings.ignore = False
                     break
             win2.Close()
+            break
+            return
     return
 
 
@@ -707,6 +711,8 @@ def make_window(initial_num_points):
     settings.ramped = False
 
     while True:
+
+        settings.ignore = True # this is the default status of ignore. 
         # constantly updating for events/values
         settings.event, settings.values = settings.window.Read()
         if settings.event is None:
@@ -766,7 +772,9 @@ def make_window(initial_num_points):
                 break # if ignore then just do it
             elif settings.ignore is False: # I know this is redundant but it's easy to read
                 settings.event = None # then nothing happens
-
+                update_sequence()
+                settings.window.Close()
+                return
         # save settings + plot
         if settings.event == 'Plot data':
             # turns instructions into waveform to be sent
@@ -777,11 +785,13 @@ def make_window(initial_num_points):
                 settings.event = None
             elif settings.ignore is False: # I know this is redundant but it's easy to read
                 settings.event = None # then nothing happens
-
+                update_sequence()
+                settings.window.Close()
+                return
 
         if settings.event == 'Run Sequence':
             # when sequence is run, data is sent to PCI
-            update_sequence_and_check_errors()
+            update_sequence()
             interpret('run')
             settings.event = None
 
@@ -794,7 +804,7 @@ def make_window(initial_num_points):
 
         if settings.event == 'SCAN':
             # if press scan then do something
-            update_sequence_and_check_errors()
+            update_sequence()
             scan_parameters()
             # scan(scan_parameters())
             settings.event = None
