@@ -30,9 +30,9 @@ def init():
     # number of digital channels
     digital_channels = 8
     # number of items per time point
-    items_per_row = 17
+    items_per_row = 16
     # number of other items on the menu
-    other_items = 23
+    other_items = 21
     window = None
     new_time_points = 10
     old_time_points = 10

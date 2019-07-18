@@ -136,7 +136,7 @@ def layout_main(time_points):
     scan_event_name_a = sg.Text('Time point:')
     scan_event_a = sg.InputText(default_text= scan_event_analog , size=(2, 1), change_submits=True, key='_scan_ev_a_')
     scan_channel_name = sg.Text('Channel:')
-    scan_channel = sg.InputText(default_text=scan_channel_analog , size=(2, 1), change_submits=True, key='_scan_ch_a_')
+    scan_channel = sg.Spin(values=('_AH_', '_Trap_', '_Repump_', '_aom_760_', '_vco_760_', '_vca_'), initial_value=scan_channel_analog, size=(10, 1), change_submits=True, key='_scan_ch_a_')
     scan_start_name_a = sg.Text('Start (V):')
     scan_start_a = sg.InputText(default_text=scan_volt_start_analog , size=(6, 1), change_submits=True, key='_scan_volt_start_a_')
     scan_end_name_a = sg.Text('End (V):')
@@ -164,7 +164,7 @@ def layout_main(time_points):
     scan_event_name_d = sg.Text('Time point:')
     scan_event_d = sg.InputText(default_text= scan_event_digital , size=(2, 1), change_submits=True, key='_scan_ev_d_')
     scan_line_name = sg.Text('Channel:')
-    scan_line = sg.InputText(default_text= scan_line_digital , size=(2, 1), change_submits=True, key='_scan_li_d_')
+    scan_line = sg.Spin(values=('0','1','2','3','4','5','6','7'), initial_value=scan_line_digital, size=(8, 1), change_submits=True, key='_scan_li_d_')
     scan_delay_start_name_d = sg.Text('Start (s):')
     scan_delay_start_d = sg.InputText(default_text= scan_delay_start_digital , size=(6, 1), change_submits=True, key='_scan_delay_start_d_')
     scan_delay_end_name_d =sg.Text('End (s):')
@@ -192,11 +192,11 @@ def layout_main(time_points):
     # generate_time_line has to read the exp_sequence to know
     # what elements to specify on the new window
     layout = [[menu],
-              [header_0, spinner_name, spinner, sampling_rate_name , sampling_rate, iteration_name, iteration, apply, send_data, run_sequence, stop, exit],
+            [header_0, spinner_name, spinner, sampling_rate_name , sampling_rate, iteration_name, iteration, apply, send_data, run_sequence, stop, exit],
+            [sg.Frame(layout = analog_scan, title='Analog scan settings', title_color='Black' , relief=sg.RELIEF_SUNKEN),
+            sg.Frame(layout = digital_scan, title='Digital scan settings', title_color='Black' , relief=sg.RELIEF_SUNKEN)],
+            scan_mode,
               [sg.Frame(layout = generate_time_line(time_points), title='Control Board',title_color='Black', relief=sg.RELIEF_SUNKEN)],
-              scan_mode,
-              [sg.Frame(layout = analog_scan, title='Analog scan settings', title_color='Black' , relief=sg.RELIEF_SUNKEN),
-              sg.Frame(layout = digital_scan, title='Digital scan settings', title_color='Black' , relief=sg.RELIEF_SUNKEN)],
               [graph]
               ]
 

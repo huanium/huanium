@@ -193,7 +193,7 @@ def test_set_digital(digit, duration_on, duration, rate):
     for i in range(int((duration - duration_on)/time_step)):
         out = np.append(out, 1)
     out_int_8 = np.array(out, dtype = np.uint8)
-    print('Num points: ', len(out))
+    # print('Num points: ', len(out))
     return out_int_8
 
 
@@ -225,7 +225,7 @@ def set_digital(digit, duration_on, duration, rate):
         for i in range(int((duration - duration_on)*rate)):
             out = np.append(out, 1)
     out_int_8 = np.array(out, dtype = np.uint8)
-    print('Num points: ', len(out))
+    # print('Num points: ', len(out))
     return out_int_8
 
 

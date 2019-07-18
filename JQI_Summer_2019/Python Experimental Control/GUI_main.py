@@ -205,6 +205,10 @@ def sequence_to_instructions_spin():
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
     num_rows = int((len(settings.sequence) - settings.other_items)/settings.items_per_row)
+
+    print('Sequence length: ', len(settings.sequence))
+    print('Other items: ', settings.other_items)
+    print('Items per row: ', settings.items_per_row)
     # print('Spin is:', spin)
     # print('Num_rows is:', num_rows )
 
@@ -256,6 +260,9 @@ def sequence_to_instructions_spin():
                             ah, trap, repump, aom, vco, vca]
             settings.instructions.append(row_specs)
 
+        print('Spin:', spin)
+        print('Num rows:', num_rows)
+
         for new_row in range(spin - num_rows):
             new_row_specs = settings.instructions[-1] # just copying the last row
             settings.instructions.append(new_row_specs)
@@ -287,7 +294,7 @@ def insert(location):
 
     read_sequence()
     settings.values['_spin_'] = str(int(settings.values['_spin_']) + 1) # spinners increase by 1.
-    spin = int(settings.values['_spin_'])
+    spin = int(settings.values['_spin_']) # this is the location of the last row
     iter = str(settings.values['_iter_'])
     num_rows = int((len(settings.values) - settings.other_items)/settings.items_per_row)
 
@@ -377,7 +384,7 @@ def sequence_to_instructions_insert_or_delete():
         vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
         vca = settings.sequence[str('_vca_'+str(row)+'_')]
 
-        row_specs = [mode, delay, row_switch, step, ah, trap, repump, aom, vco, vca]
+        row_specs = [mode, delay, row_switch, ah, trap, repump, aom, vco, vca]
         settings.instructions.append(row_specs)
 
     return settings.instructions
@@ -516,12 +523,34 @@ def scan_parameters():
         if settings.sequence['_scan_delay_a_'] == 'True' and settings.sequence['_scan_volt_a_'] == 'False': # don't recommend doing both...
             print('Delay start (s): ', settings.sequence['_scan_delay_start_a_'])
             print('Delay end (s): ', settings.sequence['_scan_delay_end_a_'])
-            print('Step(s):', settings.sequence['_step_delay_a_'])
+            print('Step (s):', settings.sequence['_step_delay_a_'])
+
+            # scan params for this option: analog delay scan
+            settings.scan_parameters = {
+                                        'Scan mode: ': settings.sequence['_scan_mode_'],
+                                        'Scan mechanism: ': settings.sequence['_scan_mech_'],
+                                        'Time point: ': settings.sequence['_scan_ev_a_'],
+                                        'Analog channel: ': settings.sequence['_scan_ch_a_'],
+                                        'Delay start (s): ': settings.sequence['_scan_delay_start_a_'],
+                                        'Delay end (s): ': settings.sequence['_scan_delay_end_a_'],
+                                        'Step (s):': settings.sequence['_step_delay_a_']
+                                        }
 
         elif settings.sequence['_scan_volt_a_'] == 'True' and settings.sequence['_scan_delay_a_'] == 'False': # again, don't recommend doing both...
             print('Volts start (V): ', settings.sequence['_scan_volt_start_a_'])
             print('Volts end (V): ', settings.sequence['_scan_volt_end_a_'])
-            print('Step(s):', settings.sequence['_step_volt_a_'])
+            print('Step (V):', settings.sequence['_step_volt_a_'])
+
+            # scan params for this option: analog voltage scan
+            settings.scan_parameters = {
+                                        'Scan mode: ': settings.sequence['_scan_mode_'],
+                                        'Scan mechanism: ': settings.sequence['_scan_mech_'],
+                                        'Time point: ': settings.sequence['_scan_ev_a_'],
+                                        'Analog channel: ': settings.sequence['_scan_ch_a_'],
+                                        'Volts start (V): ': settings.sequence['_scan_volt_start_a_'],
+                                        'Volts end (V): ': settings.sequence['_scan_volt_end_a_'],
+                                        'Step (V):': settings.sequence['_step_volt_a_']
+                                        }
 
         elif settings.sequence['_scan_volt_a_'] == 'True' and settings.sequence['_scan_delay_a_'] == 'True': # don't recommend doing both
             sg.Popup('Popup', 'Scanning both delay and voltage not supported')
@@ -531,18 +560,418 @@ def scan_parameters():
 
     elif settings.sequence['_scan_mode_'] == 'Digital': # if digital scan then do the same for digital
         print('Time point: ', settings.sequence['_scan_ev_d_'])
-        print('Analog channel: ', settings.sequence['_scan_ch_d_'])
+        print('Digital line: ', settings.sequence['_scan_li_d_'])
         print('Delay start (s): ', settings.sequence['_scan_delay_start_d_'])
         print('Delay end (s): ', settings.sequence['_scan_delay_end_d_'])
-        print('Step(s):', settings.sequence['_step_delay_d_'])
+        print('Step (s):', settings.sequence['_step_delay_d_'])
 
+        # scan params for this option: digital delay scan
+        settings.scan_parameters = {
+                                    'Scan mode: ': settings.sequence['_scan_mode_'],
+                                    'Scan mechanism: ': settings.sequence['_scan_mech_'],
+                                    'Time point: ': settings.sequence['_scan_ev_d_'],
+                                    'Digital line: ': settings.sequence['_scan_li_d_'],
+                                    'Delay start (s): ': settings.sequence['_scan_delay_start_d_'],
+                                    'Delay end (s): ': settings.sequence['_scan_delay_end_d_'],
+                                    'Step (s):': settings.sequence['_step_delay_d_']
+                                    }
 
     else:
         print('hello kitty')
 
-    settings.scan_parameters = []
+    return settings.scan_parameters
+
+
+
+
+
+def make_instructions():
+    num_events = int((len(settings.sequence)-settings.other_items)/settings.items_per_row)
+    # creates analog wave
+    for e in range(num_events):
+        mode_e = str(settings.sequence['_mode_' + str(e) + '_'])
+        if str(settings.sequence['_delay_' + str(e) + '_']) == '':
+            duration_e = float(0.0)
+        else:
+            duration_e = float(settings.sequence['_delay_' + str(e) + '_'])
+        if str(settings.sequence['_AH_' + str(e) + '_']) == '':
+            AH_e = float(0.0)
+        else:
+            AH_e = float(settings.sequence['_AH_' + str(e) + '_'])
+        if str(settings.sequence['_Trap_' + str(e) + '_']) == '':
+            Trap_e = float(0.0)
+        else:
+            Trap_e = float(settings.sequence['_Trap_' + str(e) + '_'])
+        if str(settings.sequence['_Repump_' + str(e) + '_']) == '':
+            Repump_e = float(0.0)
+        else:
+            Repump_e = float(settings.sequence['_Repump_' + str(e) + '_'])
+        if str(settings.sequence['_aom_760_' + str(e) + '_']) == '':
+            aom_760_e = float(0.0)
+        else:
+            aom_760_e = float(settings.sequence['_aom_760_' + str(e) + '_'])
+        if str(settings.sequence['_vco_760_' + str(e) + '_']) == '':
+            vco_760_e = float(0.0)
+        else:
+            vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
+        if str(settings.sequence['_vca_' + str(e) + '_']) == '':
+            vca_e = float(0.0)
+        else:
+            vca_e = float(settings.sequence['_vca_' + str(e) + '_'])
+        # channel 1
+        settings.AH.append([mode_e, duration_e, AH_e])
+        # channel 2
+        settings.Trap.append([mode_e, duration_e, Trap_e])
+        # channel 3
+        settings.Repump.append([mode_e, duration_e, Repump_e])
+        # channel 4
+        settings.aom.append([mode_e, duration_e, aom_760_e])
+        # channel 5
+        settings.vco.append([mode_e, duration_e, vco_760_e])
+        # channel 6
+        settings.vca.append([mode_e, duration_e, vca_e])
+
+    # creates digital wave
+    for event in range(num_events):
+        state_number = 0
+        for line in range(settings.digital_channels): # loop through each line
+            switch_line = settings.sequence[str('_switch_' + str(event) + '_' + str(line) + '_' )]
+            if switch_line == 'True':
+                state_number = state_number + 2**line
+            else:
+                state_number = state_number
+        # switch has the form [[state_number, delay]]
+        settings.switch.append([state_number, float(settings.sequence['_delay_' + str(event) + '_'])])
+
+
+
+
+
+def scan_voltage(scanning_channel = '', time_point = -1, volt_increment = 0):
+
+    num_events = int((len(settings.sequence)-settings.other_items)/settings.items_per_row)
+    for e in range(num_events):
+        # setting up everything as normal
+        mode_e = str(settings.sequence['_mode_' + str(e) + '_'])
+        if str(settings.sequence['_delay_' + str(e) + '_']) == '':
+            duration_e = float(0.0)
+        else:
+            duration_e = float(settings.sequence['_delay_' + str(e) + '_'])
+        if str(settings.sequence['_AH_' + str(e) + '_']) == '':
+            AH_e = float(0.0)
+        else:
+            AH_e = float(settings.sequence['_AH_' + str(e) + '_'])
+        if str(settings.sequence['_Trap_' + str(e) + '_']) == '':
+            Trap_e = float(0.0)
+        else:
+            Trap_e = float(settings.sequence['_Trap_' + str(e) + '_'])
+        if str(settings.sequence['_Repump_' + str(e) + '_']) == '':
+            Repump_e = float(0.0)
+        else:
+            Repump_e = float(settings.sequence['_Repump_' + str(e) + '_'])
+        if str(settings.sequence['_aom_760_' + str(e) + '_']) == '':
+            aom_760_e = float(0.0)
+        else:
+            aom_760_e = float(settings.sequence['_aom_760_' + str(e) + '_'])
+        if str(settings.sequence['_vco_760_' + str(e) + '_']) == '':
+            vco_760_e = float(0.0)
+        else:
+            vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
+        if str(settings.sequence['_vca_' + str(e) + '_']) == '':
+            vca_e = float(0.0)
+        else:
+            vca_e = float(settings.sequence['_vca_' + str(e) + '_'])
+
+        # if at the correct time_point and channel, increment voltage
+        if e+1 == time_point:
+            if scanning_channel == '_AH_':
+                AH_e += volt_increment
+            if scanning_channel == '_Trap_':
+                Trap_e += volt_increment
+            if scanning_channel == '_Repump_':
+                Repump_e += volt_increment
+            if scanning_channel == '_aom_760_':
+                aom_760_e += volt_increment
+            if scanning_channel == '_vco_760_':
+                vco_760_e += volt_increment
+            if scanning_channel == '_vca_':
+                vca_e += volt_increment
+
+        settings.AH.append([mode_e, duration_e, AH_e])
+        settings.Trap.append([mode_e, duration_e, Trap_e])
+        settings.Repump.append([mode_e, duration_e, Repump_e])
+        settings.aom.append([mode_e, duration_e, aom_760_e])
+        settings.vco.append([mode_e, duration_e, vco_760_e])
+        settings.vca.append([mode_e, duration_e, vca_e])
+
+    # DIGITAL
+    for event in range(num_events):
+        state_number = 0
+        for line in range(settings.digital_channels): # loop through each line
+            switch_line = settings.sequence[str('_switch_' + str(event) + '_' + str(line) + '_' )]
+            if switch_line == 'True':
+                state_number = state_number + 2**line
+            else:
+                state_number = state_number
+        # switch has the form [[state_number, delay]]
+        settings.switch.append([state_number, float(settings.sequence['_delay_' + str(event) + '_'])])
+
+
+
+
+
+
+
+
+
+
+
+def analog_delay_scan(scan_step = 0.0, scanning_channel = '', time_point = -1):
+    # this function generates from the sequence the instructions for
+    # the interpret(command) function to make the appropriate wave
+    # this function is also used iteratively in single_array_scan_to_wave()
+    # to generate a larger wave
+    # by default (when executed with no arguments)
+    # the function does not execute scanning
+    # scanning_channel is the name of the channel being scanned.
+    # this is one of the keys in the sequence dictionary
+
+    make_instructions() # initialize the original wave
+    num_events = int((len(settings.sequence)-settings.other_items)/settings.items_per_row)
+    #########################   DELAY SCANNING ##################################
+    if scan_step != 0: # essentially if there is no DELAY scanning, then don't execute this part
+        if scanning_channel in settings.sequence == False:
+            print('Scanning channel key error')
+            return
+
+        if settings.scan_parameters['Scan mode: '] == 'Analog':
+            # ANALOG_SCAN
+            for e in range(num_events): # looping over all events
+                if e == time_point: # but only add the scanning piece at the correct time point
+                    mode_e = str(settings.sequence['_mode_' + str(e) + '_'])
+                    # by default, all these are the last values
+                    AH_e = float(settings.sequence['_AH_' + str(num_events-1) + '_'])
+                    Trap_e = float(settings.sequence['_AH_' + str(num_events-1) + '_'])
+                    Repump_e = float(settings.sequence['_AH_' + str(num_events-1) + '_'])
+                    aom_760_e = float(settings.sequence['_AH_' + str(num_events-1) + '_'])
+                    vco_760_e = float(settings.sequence['_AH_' + str(num_events-1) + '_'])
+                    vca_e = float(settings.sequence['_AH_' + str(e) + '_'])
+                    # but one channel has some other value
+                    if scanning_channel == '_AH_':
+                        AH_e = float(settings.sequence['_AH_' + str(e-1) + '_'])
+                        settings.AH.insert(time_point - num_events, [mode_e, scan_step, AH_e])  # inserts value for scanning channel
+                        settings.Trap.append([mode_e, scan_step, Trap_e])
+                        settings.Repump.append([mode_e, scan_step, Repump_e])
+                        settings.aom.append([mode_e, scan_step, aom_760_e])
+                        settings.vco.append([mode_e, scan_step, vco_760_e])
+                        settings.vca.append([mode_e, scan_step, vca_e])
+
+                    if scanning_channel == '_Trap_':
+                        Trap_e = float(settings.sequence['_Trap_' + str(e-1) + '_'])
+                        settings.Trap.insert(time_point - num_events, [mode_e, scan_step, Trap_e])  # inserts value for scanning channel
+                        settings.AH.append([mode_e, scan_step, AH_e])
+                        settings.Repump.append([mode_e, scan_step, Repump_e])
+                        settings.aom.append([mode_e, scan_step, aom_760_e])
+                        settings.vco.append([mode_e, scan_step, vco_760_e])
+                        settings.vca.append([mode_e, scan_step, vca_e])
+
+                    if scanning_channel == '_Repump_':
+                        Repump_e = float(settings.sequence['_Repump_' + str(e-1) + '_'])
+                        settings.Repump.insert(time_point - num_events, [mode_e, scan_step, Repump_e])  # inserts value for scanning channel
+                        settings.Trap.append([mode_e, scan_step, Trap_e])
+                        settings.AH.append([mode_e, scan_step, AH_e])
+                        settings.aom.append([mode_e, scan_step, aom_760_e])
+                        settings.vco.append([mode_e, scan_step, vco_760_e])
+                        settings.vca.append([mode_e, scan_step, vca_e])
+
+                    if scanning_channel == '_aom_760_':
+                        aom_760_e = float(settings.sequence['_aom_760_' + str(e-1) + '_'])
+                        settings.aom.insert(time_point - num_events, [mode_e, scan_step, aom_760_e])  # inserts value for scanning channel
+                        settings.Trap.append([mode_e, scan_step, Trap_e])
+                        settings.Repump.append([mode_e, scan_step, Repump_e])
+                        settings.AH.append([mode_e, scan_step, AH_e])
+                        settings.vco.append([mode_e, scan_step, vco_760_e])
+                        settings.vca.append([mode_e, scan_step, vca_e])
+
+                    if scanning_channel == '_vco_760_':
+                        vco_760_e = float(settings.sequence['_vco_760_' + str(e-1) + '_'])
+                        settings.vco.insert(time_point - num_events, [mode_e, scan_step, vco_760_e])  # inserts value for scanning channel
+                        settings.Trap.append([mode_e, scan_step, Trap_e])
+                        settings.Repump.append([mode_e, scan_step, Repump_e])
+                        settings.aom.append([mode_e, scan_step, aom_760_e])
+                        settings.AH.append([mode_e, scan_step, AH_e])
+                        settings.vca.append([mode_e, scan_step, vca_e])
+
+                    if scanning_channel == '_vca_':
+                        vca_e = float(settings.sequence['_vca_' + str(e-1) + '_'])
+                        settings.vca.insert(time_point - num_events, [mode_e, scan_step, vca_e])  # inserts value for scanning channel
+                        settings.Trap.append([mode_e, scan_step, Trap_e])
+                        settings.Repump.append([mode_e, scan_step, Repump_e])
+                        settings.aom.append([mode_e, scan_step, aom_760_e])
+                        settings.vco.append([mode_e, scan_step, vco_760_e])
+                        settings.AH.append([mode_e, scan_step, AH_e])
+
+            # now adjust the digital channel by adding zeros to match the number of time points
+            state_number = 0
+            settings.switch.append([state_number, scan_step])
+
+
+
+
+
+
+
+def digital_delay_scan(scan_step = 0.0, scanning_line = '', time_point = -1):
+
+    make_instructions() # creates the old profile
+    num_events = int((len(settings.sequence)-settings.other_items)/settings.items_per_row)
+
+    # DIGITAL SCAN
+    if settings.scan_parameters['Scan mode: '] == 'Digital':
+        # DIGITAL_SCAN
+        for e in range(num_events): # looping over all events
+            mode_e = str(settings.sequence['_mode_' + str(e) + '_'])
+            state_number = 0
+            if e == time_point-2: # but only add the scanning piece at the correct time point
+                for line in range(settings.digital_channels): # loop through each line
+                    if line == int(scanning_line): # if this is the line being scanned:
+                        state_number = 2**line
+                    else:
+                        state_number = state_number
+            print('State number: ', state_number)
+            print('Scan step: ', scan_step)
+            print(settings.switch)
+            settings.switch.insert(time_point - num_events, [state_number, scan_step])
+            print(settings.switch)
+            # now add a bunch of zeros to the end of analog wave to compensate for data dimension change:
+            settings.AH.append([mode_e, scan_step, 0])
+            settings.Trap.append([mode_e, scan_step, 0])
+            settings.Repump.append([mode_e, scan_step, 0])
+            settings.aom.append([mode_e, scan_step, 0])
+            settings.vco.append([mode_e, scan_step, 0])
+            settings.vca.append([mode_e, scan_step, 0])
+
+
+
+
+
+
+
+def single_array_scan_to_wave():
+    # this function takes in the scan parameters and outputs a wave
+    # this is called in the 'single-array' scan mode
+    # basically this function just concatenates a bunch of waves from to_wave,
+    # with some parameters changed
+    # settings.scan_parameters is a dictionary
+    # create an empty array that is the output wave
+    # print(settings.scan_parameters)
+
+    rate = float(settings.sequence['_rate_'])
+    single_array = np.array([])
+    if settings.scan_parameters['Scan mode: '] == 'Analog':
+        # call to_wave() and concatenate or something...
+        # DELAY SCAN
+        if 'Delay start (s): ' in settings.scan_parameters: # if the analog scan mode is delay
+            print('Scan mode is analog delay')
+            number_of_steps = int( round((float(settings.scan_parameters['Delay end (s): ']) - float(settings.scan_parameters['Delay start (s): ']))/float(settings.scan_parameters['Step (s):'])))
+            increment = float(settings.scan_parameters['Step (s):'])
+            chan_name = settings.scan_parameters['Analog channel: ']
+            time_pt = int(settings.scan_parameters['Time point: '])
+
+            for i in range(number_of_steps+1):
+                analog_delay_scan(scan_step = i*increment, scanning_channel = chan_name, time_point = time_pt) # call make instructions
+
+            # this is to simulate
+            PCI.simulate(1, rate, PCI.to_wave(settings.AH, rate),
+                                  PCI.to_wave(settings.Trap, rate),
+                                  PCI.to_wave(settings.Repump, rate),
+                                  PCI.to_wave(settings.aom, rate),
+                                  PCI.to_wave(settings.vco, rate),
+                                  PCI.to_wave(settings.vca, rate),
+                                  PCI.to_digit(settings.switch, rate)
+                                  )
+
+            # reset waves to zeros
+            settings.AH = settings.AH*0
+            settings.Trap = settings.Trap*0
+            settings.Repump = settings.Repump*0
+            settings.aom = settings.aom*0
+            settings.vco = settings.vco*0
+            settings.vca = settings.vca*0
+            settings.switch = []
+
+
+        # VOLTAGE SCAN
+        elif 'Volts start (V): ' in settings.scan_parameters: # if the analog scan mode is delay
+            print('Scan mode is analog volt')
+            number_of_steps = int( round((float(settings.scan_parameters['Volts end (V): ']) - float(settings.scan_parameters['Volts start (V): ']))/float(settings.scan_parameters['Step (V):'])))
+            volt = float(settings.scan_parameters['Step (V):'])
+            chan_name = settings.scan_parameters['Analog channel: ']
+            time_pt = int(settings.scan_parameters['Time point: '])
+
+            for i in range(number_of_steps+1):
+                scan_voltage(scanning_channel = chan_name, time_point = time_pt, volt_increment = i*volt) # call make instructions
+
+            # this is to simulate
+            PCI.simulate(1, rate, PCI.to_wave(settings.AH, rate),
+                                  PCI.to_wave(settings.Trap, rate),
+                                  PCI.to_wave(settings.Repump, rate),
+                                  PCI.to_wave(settings.aom, rate),
+                                  PCI.to_wave(settings.vco, rate),
+                                  PCI.to_wave(settings.vca, rate),
+                                  PCI.to_digit(settings.switch, rate)
+                                  )
+
+            # reset waves to zeros
+            settings.AH = settings.AH*0
+            settings.Trap = settings.Trap*0
+            settings.Repump = settings.Repump*0
+            settings.aom = settings.aom*0
+            settings.vco = settings.vco*0
+            settings.vca = settings.vca*0
+            settings.switch = []
+
+
+
+
+    elif settings.scan_parameters['Scan mode: '] == 'Digital':
+        if 'Delay start (s): ' in settings.scan_parameters: # if the digital scan mode is delay
+            print('Scan mode is digital delay')
+            number_of_steps = int( round((float(settings.scan_parameters['Delay end (s): ']) - float(settings.scan_parameters['Delay start (s): ']))/float(settings.scan_parameters['Step (s):'])))
+            increment = float(settings.scan_parameters['Step (s):'])
+            line_name = settings.scan_parameters['Digital line: ']
+            time_pt = int(settings.scan_parameters['Time point: '])
+
+
+            for i in range(number_of_steps+1):
+                digital_delay_scan(scan_step = i*increment, scanning_line = line_name, time_point = time_pt) # call make instructions
+            # this is to simulate
+            PCI.simulate(1, rate, PCI.to_wave(settings.AH, rate),
+                                  PCI.to_wave(settings.Trap, rate),
+                                  PCI.to_wave(settings.Repump, rate),
+                                  PCI.to_wave(settings.aom, rate),
+                                  PCI.to_wave(settings.vco, rate),
+                                  PCI.to_wave(settings.vca, rate),
+                                  PCI.to_digit(settings.switch, rate)
+                                  )
+
+            # reset waves to zeros
+            settings.AH = settings.AH*0
+            settings.Trap = settings.Trap*0
+            settings.Repump = settings.Repump*0
+            settings.aom = settings.aom*0
+            settings.vco = settings.vco*0
+            settings.vca = settings.vca*0
+            settings.switch = []
+
 
     return
+
+
+
+
+
+
 
 
 
@@ -559,85 +988,7 @@ def interpret(command):
     spin = int(settings.sequence['_spin_'])
     iter = str(settings.sequence['_iter_'])
 
-    num_events = int((len(settings.sequence)-settings.other_items)/settings.items_per_row)
-    print('Number of events: ', num_events)
-
-    # loop through the sequence
-    for e in range(num_events):
-        mode_e = str(settings.sequence['_mode_' + str(e) + '_'])
-
-        if str(settings.sequence['_delay_' + str(e) + '_']) == '':
-            duration_e = float(0.0)
-        else:
-            duration_e = float(settings.sequence['_delay_' + str(e) + '_'])
-
-        # if str(settings.sequence['_step_' + str(e) + '_']) == '':
-        #     step_e = float(0.0)
-        # else:
-        #     step_e = float(settings.sequence['_step_' + str(e) + '_'])
-
-        if str(settings.sequence['_AH_' + str(e) + '_']) == '':
-            AH_e = float(0.0)
-        else:
-            AH_e = float(settings.sequence['_AH_' + str(e) + '_'])
-
-        if str(settings.sequence['_Trap_' + str(e) + '_']) == '':
-            Trap_e = float(0.0)
-        else:
-            Trap_e = float(settings.sequence['_Trap_' + str(e) + '_'])
-
-        if str(settings.sequence['_Repump_' + str(e) + '_']) == '':
-            Repump_e = float(0.0)
-        else:
-            Repump_e = float(settings.sequence['_Repump_' + str(e) + '_'])
-
-        if str(settings.sequence['_aom_760_' + str(e) + '_']) == '':
-            aom_760_e = float(0.0)
-        else:
-            aom_760_e = float(settings.sequence['_aom_760_' + str(e) + '_'])
-
-        if str(settings.sequence['_vco_760_' + str(e) + '_']) == '':
-            vco_760_e = float(0.0)
-        else:
-            vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
-
-        if str(settings.sequence['_vca_' + str(e) + '_']) == '':
-            vca_e = float(0.0)
-        else:
-            vca_e = float(settings.sequence['_vca_' + str(e) + '_'])
-
-        # channel 1
-        settings.AH.append([mode_e, duration_e, AH_e])
-        # channel 2
-        settings.Trap.append([mode_e, duration_e, Trap_e])
-        # channel 3
-        settings.Repump.append([mode_e, duration_e, Repump_e])
-        # channel 4
-        settings.aom.append([mode_e, duration_e, aom_760_e])
-        # channel 5
-        settings.vco.append([mode_e, duration_e, vco_760_e])
-        # channel 6
-        settings.vca.append([mode_e, duration_e, vca_e])
-
-
-    # DIGITAL
-    # the states of the settings.digital_channels lines at each event is associated with an intsettings.digital_channels number
-    # with this number and duration --> we can get the correct digital output
-    # much simpler than analog
-
-    for event in range(num_events):
-        state_number = 0
-        for line in range(settings.digital_channels): # loop through each line
-            switch_line = settings.sequence[str('_switch_' + str(event) + '_' + str(line) + '_' )]
-            #print('Switch_line: ', switch_line)
-            if switch_line == 'True':
-                state_number = state_number + 2**line
-            else:
-                state_number = state_number
-        # switch has the form [[state_number, delay]]
-        settings.switch.append([state_number, float(settings.sequence['_delay_' + str(event) + '_'])])
-
-    # print(settings.switch)
+    make_instructions()
 
     if command == 'simulate':
         PCI.simulate(1, rate, PCI.to_wave(settings.AH, rate),
@@ -680,16 +1031,6 @@ def interpret(command):
 
 
 
-
-
-
-
-
-
-
-
-
-
 def make_window(initial_num_points):
     # this function make the main window with a certain layout
     # layout is defined in GUI_functions
@@ -712,7 +1053,7 @@ def make_window(initial_num_points):
 
     while True:
 
-        settings.ignore = True # this is the default status of ignore. 
+        settings.ignore = True # this is the default status of ignore.
         # constantly updating for events/values
         settings.event, settings.values = settings.window.Read()
         if settings.event is None:
@@ -742,7 +1083,6 @@ def make_window(initial_num_points):
                 sequence_to_instructions_insert_or_delete()
 
                 settings.inserted = True
-                print(settings.inserted)
                 update_sequence()
                 settings.window.Close()
                 return
@@ -766,7 +1106,7 @@ def make_window(initial_num_points):
                 return
 
         # save settings
-        if settings.event == 'Apply' or settings.event == 'Apply scan settings':
+        if settings.event == 'Apply' or settings.event == 'Apply settings':
             update_sequence_and_check_errors()
             if settings.ignore is True:
                 break # if ignore then just do it
@@ -806,7 +1146,11 @@ def make_window(initial_num_points):
             # if press scan then do something
             update_sequence()
             scan_parameters()
-            # scan(scan_parameters())
+            if settings.scan_parameters['Scan mechanism: '] == 'Single-array Multi-sweep':
+                single_array_scan_to_wave()
+
+
+
             settings.event = None
 
 

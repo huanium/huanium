@@ -24,7 +24,7 @@ if __name__ == "__main__":
     # GUI_main.sequence_to_instructions_insert()
 
     while True:
-        if settings.event == 'Apply' or settings.event == '_spin_' or settings.new_time_points != settings.old_time_points or settings.ramped == True:
+        if settings.event == 'Apply' or settings.event == 'Apply settings' or settings.event == '_spin_' or settings.new_time_points != settings.old_time_points or settings.ramped == True:
             # print('New time points: ', settings.new_time_points)
             # print('Old time points: ', settings.old_time_points)
             GUI_main.sequence_to_instructions_spin()
