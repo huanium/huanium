@@ -206,9 +206,9 @@ def sequence_to_instructions_spin():
     iter = str(settings.sequence['_iter_'])
     num_rows = int((len(settings.sequence) - settings.other_items)/settings.items_per_row)
 
-    print('Sequence length: ', len(settings.sequence))
-    print('Other items: ', settings.other_items)
-    print('Items per row: ', settings.items_per_row)
+    # print('Sequence length: ', len(settings.sequence))
+    # print('Other items: ', settings.other_items)
+    # print('Items per row: ', settings.items_per_row)
     # print('Spin is:', spin)
     # print('Num_rows is:', num_rows )
 
@@ -838,11 +838,11 @@ def digital_delay_scan(scan_step = 0.0, scanning_line = '', time_point = -1):
                         state_number = 2**line
                     else:
                         state_number = state_number
-            print('State number: ', state_number)
-            print('Scan step: ', scan_step)
-            print(settings.switch)
+            # print('State number: ', state_number)
+            # print('Scan step: ', scan_step)
+            # print(settings.switch)
             settings.switch.insert(time_point - num_events, [state_number, scan_step])
-            print(settings.switch)
+            # print(settings.switch)
             # now add a bunch of zeros to the end of analog wave to compensate for data dimension change:
             settings.AH.append([mode_e, scan_step, 0])
             settings.Trap.append([mode_e, scan_step, 0])
@@ -971,6 +971,11 @@ def single_array_scan_to_wave():
 
 
 
+
+
+
+def multi_array_scan_to_wave():
+        print('Functionality not yet implemented')
 
 
 
@@ -1142,12 +1147,23 @@ def make_window(initial_num_points):
             settings.window.Close()
             quit()
 
-        if settings.event == 'SCAN':
+        if settings.event == 'Simulate Scan':
             # if press scan then do something
             update_sequence()
             scan_parameters()
             if settings.scan_parameters['Scan mechanism: '] == 'Single-array Multi-sweep':
                 single_array_scan_to_wave()
+            elif settings.scan_parameters['Scan mechanism: '] == 'Multi-array Single-sweep':
+                multi_array_scan_to_wave()
+
+        if settings.event == 'SCAN':
+            # if press scan then do something
+            update_sequence()
+            scan_parameters()
+            if settings.scan_parameters['Scan mechanism: '] == 'Single-array Multi-sweep':
+                print('Single-array Multi-sweep')
+            elif settings.scan_parameters['Scan mechanism: '] == 'Multi-array Single-sweep':
+                print('Multi-array Single-sweep')
 
 
 

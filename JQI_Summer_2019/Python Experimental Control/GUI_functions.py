@@ -183,10 +183,11 @@ def layout_main(time_points):
     scan_mode_state = sg.Spin(values=('No scan', 'Analog', 'Digital'), initial_value=scan_state, size=(8, 1), change_submits=True, key='_scan_mode_')
     scan_mech_name = sg.Text('Scan mechanism:')
     scan_mode_mech = sg.Spin(values=('Single-array Multi-sweep', 'Multi-array Single-sweep'), initial_value=scan_mech, size=(30, 1), change_submits=True, key='_scan_mech_')
-    scan_button = sg.Button('SCAN')
+    simulate_scan = sg.Button('Simulate Scan')
     apply_scan = sg.Button('Apply settings')
+    scan = sg.Button('SCAN')
 
-    scan_mode = [scan_mode_name, scan_mode_state, scan_mech_name, scan_mode_mech, apply_scan, scan_button]
+    scan_mode = [scan_mode_name, scan_mode_state, scan_mech_name, scan_mode_mech, apply_scan, simulate_scan, scan]
 
 
     # generate_time_line has to read the exp_sequence to know
