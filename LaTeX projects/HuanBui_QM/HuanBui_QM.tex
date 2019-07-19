@@ -2895,8 +2895,8 @@ g &=  \lp \f{\hbar\omega}{\epsilon_0 V} \rp^{1/2}\sin(kz).
 
 For simplicity, let us introduce the atomic transition operators 
 \begin{align}
-\text{Excitation:} &\hat{\sigma}_+ = \ket{e}\bra{g}\\
-\text{De-excitation:} &\hat{\sigma}_- = \ket{g}\bra{e} = \hat{\sigma}_+^\dagger.
+\text{Excitation: } &\hat{\sigma}_+ = \ket{e}\bra{g}\\
+\text{De-excitation: } &\hat{\sigma}_- = \ket{g}\bra{e} = \hat{\sigma}_+^\dagger.
 \end{align}
 The inversion operator is given by
 \begin{align}
@@ -2978,7 +2978,7 @@ and of course this quantity is conserved:
 \end{align}
 The excitation number is also unchanged: 
 \begin{align}
-\hat{N}_e = \hat{a}\dagger\hat{a} + \ket{e}\bra{e} \implies [\hat{\ham}, \hat{N}_e] \propto \f{d\hat{N}_e}{dt} = 0.
+\hat{N}_e = \hat{a}^\dagger\hat{a} + \ket{e}\bra{e} \implies [\hat{\ham}, \hat{N}_e] \propto \f{d\hat{N}_e}{dt} = 0.
 \end{align}
 This equation essentially says the number of electrons created corresponds to the transitions.\\
 
@@ -3061,10 +3061,180 @@ Thus the initial state of the system is given by a tensor product
 \ket{\psi(t)} = \ket{\psi(0)}_\text{atom} \otimes \ket{\psi(0)}_\text{field}.
 \end{align}
 The solution to the Schr\"{o}dinger equation is now
-
+\begin{align}
+\ket{\psi(t)} = \sum^\infty_{n=0}\lc \lb C_e C_n \cos (\lambda t \sqrt{n+1}) - iC_gC_{n+1}\sin(\lambda t \sqrt{n+1}) \rb \ket{e} \right. \nonumber \\  \left.
++ \lb -iC_eC_{n-1}\sin(\lambda t \sqrt{n}) + C_gC_n \cos(\lambda t \sqrt{n}) \rb 
+ \rc \otimes \ket{n}.
+\end{align}
+This is an entangled state. Now, if $C_e = 1$ and $C_g = 0$ initially, then
+\begin{align}
+\ket{\psi(t)} = \ket{\psi_g(t)}\otimes \ket{g} + \ket{\psi_e(t)}\otimes \ket{e},
+\end{align}
+where
+\begin{align}
+&\ket{\psi_g(t)} = -i\sum^\infty_{n=0}C_n\sin(\lambda t \sqrt{n+1})\ket{n+1}\\
+&\ket{\psi_e(t)} = \sum^\infty_{n=0}C_n\cos(\lambda t \sqrt{n+1})\ket{n}.
+\end{align}
+The atomic inversion is then
+\begin{align}
+W(t) &= \bra{\psi(t)}\hat{\sigma}_3\ket{\psi(t)}\\
+&= \braket{\psi_e(t)} - \braket{\psi_g(t)}\\
+&= \sum^\infty_{n=0}\abs{C_n}^2 \cos(2\lambda t\sqrt{n+1}).
+\end{align}
 
 
 \subsection{The Density Operator approach (or the master equation's approach) }
+So far, we have considered only cases where the field and the atom are initially in pure states. The density operator approach allows us to solve for a more general case. Let us work in the interaction picture again where the interaction Hamiltonian is given by
+\begin{align}
+\hat{\ham}_I = \hbar\lambda \lp \hat{a}\hat{\sigma}_+ + \hat{a}^\dagger\hat{\sigma}_- \rp
+\end{align}
+Let us consider the density operator of the atom-field system at time $t$. As we know the density operator is defined to be
+\begin{align}
+\hat{\rho} = \ket{\psi}\bra{\psi}.
+\end{align}
+Applying the Schr\"{o}dinger equation to $\ket{\psi}$, we have
+\begin{align}
+i\hbar \f{d\ket{\psi}}{dt} = \hat{\ham}_I \ket{\psi}.
+\end{align}
+Now let us see what we get when we look at the time evolution of the density operator
+\begin{align}
+\f{d \hat{\rho}}{dt} &= \f{d\ket{\psi}}{dt} \bra{\psi} + \ket{\psi}\f{d\bra{\psi}}{dt}\\
+&= \lb \f{-i}{\hbar}\hat{\ham}_I\ket{\psi} \rb\bra{\psi} + \ket{\psi}\lb \f{i}{\hbar}\bra{\psi} \hat{\ham}_I \rb\\
+&= \f{-i}{\hbar}\lb \hat{\ham}_I\ket{\psi}\bra{\psi} - \ket{\psi}\bra{\psi}\hat{\ham}_I \rb\\
+&= \f{-i}{\hbar}\lb \hat{\ham}_I, \hat{\rho} \rb.
+\end{align}
+The solution to this (which we can quite easily verify) is 
+\begin{align}\label{rho}
+\hat{\rho}(t) = e^{-i\hat{\ham}_I t/\hbar}\hat{\rho}(0)e^{i\hat{\ham}_I t/\hbar} = \hat{U}_I(t)\hat{\rho}(0)\hat{U}_I^\dagger(t).
+\end{align} 
+Recall that the Hamiltonian can be expressed further in terms of the excitation/de-excitation, and inversion operators, whose matrix representations are
+\begin{align}
+\sigma_+ = \begin{bmatrix}
+0 & 1\\0 & 0
+\end{bmatrix}, \hspace{0.5cm}
+\sigma_- = \begin{bmatrix}
+0 & 0 \\ 1 & 0
+\end{bmatrix}, \hspace{0.5cm}
+\sigma_3 = \begin{bmatrix}
+1 & 0 \\ 0 & -1
+\end{bmatrix}
+\end{align}
+where we have used the convention
+\begin{align}
+\sigma_j = \begin{bmatrix}
+\bra{e}\hat{\sigma}_j\ket{e} & \bra{e}\hat{\sigma}_j\ket{g}\\
+\bra{g}\hat{\sigma}_j\ket{e} &
+\bra{g}\hat{\sigma}_j\ket{g} 
+\end{bmatrix}, \hspace{0.5cm} j = \pm, 3.
+\end{align}
+Let us re-write $\hat{U}_I(t)$ in terms of these operators:
+\begin{align}
+\hat{U}_I(t) = e^{-i\hat{H}_I t/\hbar} = e^{-i\lambda t (\hat{a}\hat{\sigma}_+ + \hat{a}^\dagger\hat{\sigma_-})}.
+\end{align}
+With this, we can write the evolution operator $\hat{U}_I$ in terms of cosines and sines as
+\begin{align}
+\hat{U}_I(t) = \begin{bmatrix}
+\hat{C}(t) & \hat{S}'(t) \\ \hat{S}(t) & \hat{C}'(t)
+\end{bmatrix}
+\end{align}
+where
+\begin{align}
+&\hat{C}(t) = \cos(\lambda t \sqrt{\hat{a}\hat{a}^\dagger})\\
+&\hat{S}(t) = -i\hat{a}^\dagger\f{\sin(\lambda t \sqrt{\hat{a}\hat{a}^\dagger})}{\sqrt{\hat{a}\hat{a}^\dagger}}\\
+&\hat{C}'(t) = \cos(\lambda t \sqrt{\hat{a}^\dagger\hat{a}})\\
+&\hat{S}'(t) =  -i\hat{a}\f{\sin(\lambda t \sqrt{\hat{a}^\dagger\hat{a}})}{\sqrt{\hat{a}^\dagger\hat{a}}}.
+\end{align}
+It is then easy to show that
+\begin{align}
+\hat{U}^\dagger_I(t) = \hat{U}_I(-t) = \begin{bmatrix}
+\hat{C}(t) & -\hat{S}'(t) \\ -\hat{S}(t) & \hat{C}'(t)
+\end{bmatrix}.
+\end{align}
+Now, suppose at $t=0$ the density operator for the atom-field system can be written as a tensor product of the field and atom parts (not entangled):
+\begin{align}
+\hat{\rho}(0) = \hat{\rho}^F(0)\otimes \hat{\rho}^A(0).
+\end{align}
+Next, suppose that our atom is initially in $\ket{e}$, such that by convention the atom's density matrix is
+\begin{align}
+\rho^A(0) = \begin{bmatrix}
+1 & 0 \\ 0 & 0
+\end{bmatrix}.
+\end{align}
+Thus for the system,
+\begin{align}
+\hat{\rho}(0) = \hat{\rho}^F(0) \otimes \begin{bmatrix}
+1 & 0 \\ 0 & 0
+\end{bmatrix} = \begin{bmatrix}
+\hat{\rho}^F(0) & 0 \\ 0 & 0 
+\end{bmatrix}.
+\end{align}
+Now by \eqref{rho},
+\begin{align}
+\hat{\rho}(t) = \begin{bmatrix}
+\hat{C}(t)\hat{\rho}^F(0)\hat{C}(t) & -\hat{C}(t)\hat{\rho}^F(0)\hat{S}'(t)\\
+\hat{S}(t)\hat{\rho}^F(0)\hat{C}(t) & -\hat{S}(t)\hat{\rho}^F(0)\hat{S}'(t)
+\end{bmatrix}.
+\end{align}
+
+To find the density operator of the field, we trace over the atomic states:
+\begin{align}
+\hat{\rho}^F(t) = \Tr_A \hat{\rho}(t) = \hat{C}(t)\hat{\rho}^F(0)\hat{C}(t) -\hat{S}(t)\hat{\rho}^F(0)\hat{S}'(t).
+\end{align}
+The matrix elements for the field are then
+\begin{align}
+\hat{\rho}^F_{nm} &\equiv \bra{n}\hat{\rho}^F(t)\ket{m} \\ 
+&= \bra{n} \hat{C}(t)\hat{\rho}^F(0)\hat{C}(t) \ket{m} - \bra{n} \hat{S}(t)\hat{\rho}^F(0)\hat{S}'(t) \ket{m}.
+\end{align}
+On the other hand, tracing over the field states (there are infinitely many) we obtain the density operator of the atom:
+\begin{align}
+\hat{\rho}^A(t) = \Tr_F \hat{\rho}(t) = \sum^\infty_{n=0} \bra{n}\hat{\rho}(t)\ket{n}.
+\end{align}
+The matrix elements are then
+\begin{align}
+\bra{i}\hat{\rho}^A(t)\ket{j} = \sum^\infty_{n=0}\bra{i,n} \hat{\rho}_F(t)\ket{j,n}
+\end{align}
+where $i,j = e,g$. The diagonal elements $\rho^A_{ee}$ and $\rho^A_{gg}$ are the populations of the excited and ground states and satisfy
+\begin{align}
+\rho^A_{gg}(t) + \rho^A_{ee}(t) = 1
+\end{align}
+for any time $t$. The atomic inversion is
+\begin{align}
+W(t) = \rho^A_{ee}(t) - \rho^A_{gg}(t) = 2\rho^A_{ee}(t) - 1.
+\end{align}
+We can find that
+\begin{align}
+\rho^A_{ee}(t) &= \sum^\infty_{n=0}\bra{n}\hat{C}(t)\hat{\rho}^F(0)\hat{C}(t)\ket{n}\\
+&= \sum^\infty_{n=0}\bra{n}\hat{\rho}^F(0)\ket{n}\cos^2(\lambda t \sqrt{n+1}).
+\end{align}
+\subsubsection{Pure state}
+If the field is initially in a pure state
+\begin{align}
+\ket{\psi_F(0)} = \sum^\infty_{n=0}C_n\ket{n},
+\end{align}
+then
+\begin{align}
+\hat{\rho}^F(0) = \ket{\psi_F}\bra{\psi_F},
+\end{align}
+which gives
+\begin{align}
+\rho^A_{ee}(t) = \sum^\infty_{n=0}\abs{C_n}^2\cos^2(\lambda t \sqrt{n+1}).
+\end{align}
+This gives the atomic inversion we have found before. 
+\subsubsection{Mixed state}
+However, if the field is initially in a thermal state (mixed state) where
+\begin{align}
+\hat{\rho}^F(0) = \hat{\rho}_{Th} = \sum P_n\ket{n}\bra{n}
+\end{align}
+where $P_n$ is probability. The atomic inversion in this case is
+\begin{align}
+W(t) = \sum^\infty_{n=0}P_n \cos(2\lambda t\sqrt{n+1}),
+\end{align}
+which is slightly different. 
+
+
+
+
+
 
 
 
@@ -3120,7 +3290,64 @@ The solution to the Schr\"{o}dinger equation is now
 
 
 
+\newpage
 
+% move this somewhere else later
+
+One photon, two photons, red photon, blue photon.\\
+JQI Summer School\\
+Elizabeth Goldschmidt\\
+July 19, 2019\\
+
+Topic: single photon, single photon statistics. \\
+
+\textbf{Why?}
+\begin{itemize}
+	\item Why single photons?
+	\item Why is it hard?
+\end{itemize}
+
+
+\textbf{Sending QI}
+\begin{itemize}
+	\item Sending quantum information as light (not as easy any other way)
+	\item requires encoding qubits in light
+	\item qubits must be identical in all other degrees of freedom: polarizations, transverse/longitudinal modes....
+	\item How else can you do it LOL?
+\end{itemize}
+
+
+\textbf{Single photon: } single excitation of a single mode of the quantized EM field. This treats photon number differently from other dfs. There's a fundametal difference between 0 and multiple excitations. 
+
+\textbf{Photon number:}
+\begin{itemize}
+	\item Classical light: spectral and photon number distribution depend on system (source). 
+	\item Why can't I turn down intensity to get single photon? Because probability of getting 2 saturates.
+	\item Photon number is not a good quantum number.
+	\item So what do we do? $\implies$ reduce variance.
+	\item How to quantify? Use $g^{(2)}$ - autocorrelation function. For weak fields
+	\begin{align}
+	g^{(2)} = \f{conincidence}{individual\times individual} \approx = \f{2 p(2)}{p(1)^2}
+	\end{align}
+	independent of attenuation.
+	\item \textbf{Cauchy-Schwarz}. Classically, operators commute... 
+	such that $g^{(2)} \geq 1$ (no anti-bunching light). But because of QM, $g^{(2)}$ can be less than 1. 
+\end{itemize}
+
+
+\textbf{Other dfs: } the well-defined single mode covers all the other degrees of freedom (spatial, spectral, temporal, polarization, etc.) How to quantify single-photon? $\implies$ Two-photon (Hong-Ou-Mandel) Interference. 
+\begin{itemize}
+	\item Measure indistinguishability to characterize single photons. 
+\end{itemize}
+
+
+\textbf{Some single-photon technologies:} How do we make single-photons? 
+\begin{itemize}
+	\item \textit{Weak laser}: but there's no multi-photon suppression ($g^{(2)} = 1$) and low efficiency.
+	\item \textit{Single emitters}: Excite a two level system and collect spontaneous emission. However, emits to $4\pi$ (solid angle, everywhere), so difficult to collect. Also, if the excitation light is the same as the emission, then need strong filter. 
+	\item Trapped ions...
+	\item Two-mode squeezing/pair source (spontaneous down conversion is an example), or ``perfect beam splitter''
+\end{itemize}
 
 
 
