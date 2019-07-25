@@ -3356,10 +3356,119 @@ Topic: single photon, single photon statistics. \\
 \begin{itemize}
 	\item Interfering photons from different single photon sources (detect with high time resolution)
 	\item Frequency resolved detection (detect with high frequency resolution)
-	\item 
 \end{itemize}
 
 
+
+
+
+
+
+
+\newpage
+
+
+\textbf{Kanu's talk, July 22, 2019.}\\
+
+\textbf{Superradiance:} Example: two dipoles radiating in phaes. Collective enahnced emission is superradiance. The amplitude adds, so intensity grows as n-squared. This is a classical effect.\\
+
+Now, what if there is time-delayed feedback? There is retardation and back action. SUPER-DUPER-RADIANCE. How far should the separation be? Distance should be comparable to coherence time. 
+\begin{align}
+\f{c}{2\gamma_0} < d < \f{c}{\gamma_0}
+\end{align}
+where $c/2\gamma_0$ is super-radiant photon coherent length versus independent (without factor of 2). This gives a paradox. Assume superradiant emission than don't get superradiance and vice versa. This means Markov approximation fails. 
+
+\begin{itemize}
+	\item Superradiance
+	\item Time-delayed feedback
+\end{itemize}
+
+Combining these gives super-duper-radiance. Here's the derivation. Assume two two-level system Hamiltonians, coupled to a waveguide $\ham_F$. Separation between the atoms is $d$. 
+\begin{align}
+\ham = \ham_{atom} + \ham_F + \ham_{int}
+\end{align}
+where
+\begin{align}
+\ham_{atom} =  \hbar\omega_0 \sum_{n=1,2}\hat{\sigma}_n^+ \hat{\sigma}_n^-
+\end{align}
+and
+\begin{align}
+\ham_F = \int \, d\omega \hbar\omega \hat{a}^\dagger_\omega \hat{a}_\omega.
+\end{align}
+The interaction is electric-dipole:
+\begin{align}
+\ham_{int} = \sum_{n=1,2} -\hat{d}_n \cdot \hat{E} \approx_{RWA} \int\,d\omega \hbar g(\omega) \sum_{n=1,2} \lb \hat{\sigma}_n^+ \hat{a}_\omega e^{i\vec{k}\cdot\vec{r}}  + h.c. \rb
+\end{align}
+where $k = \omega / v_g \hat{x}$ and $v_g$ is the velocity in the waveguide. Moving to the rotating frame, calling $\ham_0 = \ham_{atom} + \ham_{F}$. Call
+\begin{align}
+\tilde{\ham}_{int} = \U \ham_{int} \U^\dagger
+\end{align}
+where 
+\begin{align}
+\U = e^{-i\ham_0 t}.
+\end{align}
+With these,
+\begin{align}
+\tilde{\ham}_{int} = \int \, d\omega \hbar g(\omega)\sum_{n=1,2} \hat{\sigma}^+_n \hat{a}_\omega e^{- i (\omega - \omega_0) t}  e^{i \vec{k}\cdot\vec{r}} + h.c.
+\end{align}
+Suppose at $t=0$:
+\begin{align}
+\ket{\psi(0)} = \lp \ket{eg} + \ket{ge} \rp \otimes \ket{\{0\}}_F.
+\end{align}
+In general, under the Hamiltonian, restricting to single-excitation subspace
+\begin{align}
+\ket{\psi(t)} = C_1(t)\ket{eg} + C_2(t)\ket{ge} + \int \, d\omega C_\omega(t)\ket{gg}\otimes\ket{\{1_\omega\} }_F.
+\end{align}
+We want to study the dynamics of the coefficients. We define the positions of the atoms as $r_1 = d/2$, $r_2 = -d/2$.
+\begin{align}
+&\dot{C}_1(t) = -i\int\,d\omega g(\omega) C_\omega e^{-i(\omega - \omega_0)t} e^{-ikd/2}\\
+&\dot{C}_2(t) = -i\int\,d\omega g(\omega) C_\omega e^{-i(\omega - \omega_0)t} e^{ikd/2}.
+\end{align}
+The field dynamics:
+\begin{align}
+\dot{C}_\omega = -i g(\omega)\lb C_1 e^{-ikd/2} + C_2 e^{ikd/2} \rb e^{-i(\omega - \omega_0) t}.
+\end{align}
+So
+\begin{align}
+C_\omega(t) = -i \int^t_0 \,d \tau  g(\omega)\lb C_1 (\tau) e^{-ikd/2} + C_2 (\tau) e^{ikd/2} \rb e^{-i(\omega - \omega_0) \tau}.
+\end{align}
+Approximate: $g(\omega) \approx g(\omega_0) = g_0$ (flat spectral density). So
+\begin{align}
+\dot{C}_1(t) &= -g_0^2 \int_\infty \,d\omega e^{-i(\omega - \omega_0) t} e^{ikd/2}\int^t_0 \, d \tau \lb C_1 e^{-ikd/2} + C_2 e^{ikd/2} \rb e^{-i(\omega - \omega_0) \tau}\\
+&= -g_0^2 \int^t_0 \,d\tau \int_\infty \,d\omega \lc C_1(\tau) + C_2(\tau)e^{i\omega d/v_g} \rc e^{-i(\omega - \omega_0)(t-\tau)}\\
+&= -2\pi g_0^2 \int^t_0 \,d\tau C_1(\tau)\delta(t-t\tau) + C_2(\tau)\delta\lp t - \f{d}{v_g} - \tau \rp e^{i \omega_0 d/v_g}.
+\end{align}
+Now, approximate: $d\omega_0 /v_g = 1$. Call $-2\pi g_0^2 = -\gamma/2$ to get
+\begin{align}
+\dot{C}_1(t) &= -\f{\gamma}{2}\lb C_1(t) + C_2\lp t - \f{d}{v_g} \rp \rb
+\end{align}
+Problem: From the beginning, $\dot{C}_1 = 0$ when $C_\omega = 0$. But now $\dot{C}_1(0)$ is not zero. Resolution: unphysical field and spectral density...\\
+
+By symmetry, we also have
+\begin{align}
+\dot{C}_2(t) &= -\f{\gamma}{2}\lb C_2(t) + C_1\lp t - \f{d}{v_g} \rp \rb.
+\end{align}
+Take Laplace transform and solve
+\begin{align}
+\tilde{C_1} = \f{1}{\sqrt{2}}\f{1}{s + \gamma/2 + \gamma/2 e^{-ds/v_g}} = \tilde{C_2}(t).
+\end{align}
+When $d\to 0$, then 
+\begin{align}
+\tilde{C}_1 = \f{1}{\sqrt{2}}\f{1}{s + \gamma} \implies C_1(t) \sim e^{-\gamma t},
+\end{align}
+which is ordinary superradiance. If $d\to \infty$, we get
+\begin{align}
+C_1(t) \sim e^{-\gamma t / 2}
+\end{align}
+which is independent decay. But there's a third case. Let us call $\eta = \gamma d/v_g$ which quantifies the length scale of the separation in units of photon coherence length. Expand to linear terms in $e^{-\eta s}$ to get
+\begin{align}
+C_1(t) \approx \f{1}{\sqrt{2}\lp 1-\eta/2 \rp} \f{1}{s + \lb \gamma/1 - \eta/2 \rb}.
+\end{align}
+We notice that 
+\begin{align}
+\abs{C_1}^2 \sim e^{2\gamma_{eff} t}
+\end{align}
+where $\gamma_{eff}$ can exceed superradiance. 
 
 
 
