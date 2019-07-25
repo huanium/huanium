@@ -40,11 +40,16 @@ def init():
     # number of other items on the menu
     other_items = 33
     window = None
+    window_view = None
     new_time_points = 10
     old_time_points = 10
+    new_time_points_view = 10
+    old_time_points_view = 10
     default_num_pts = 5
     event = ''
     values = {}
+    event_view = ''
+    values_view = {}
     inserted_values = {}
     sequence = {}
     instructions = []

@@ -181,7 +181,7 @@ def layout_main(time_points):
                     [scan_delay_name_a, scan_delay_a, scan_delay_start_name_a, scan_delay_start_a, scan_delay_end_name_a, scan_delay_end_a, step_delay_name_a, step_delay_a], # delay scan
                     [scan_volt_name_a, scan_volt_a, scan_start_name_a, scan_start_a, scan_end_name_a, scan_end_a, step_volt_name_a, step_volt_a, volt_channel_name, volt_channel]] # voltage scan
 
-    open_and_save = [[sg.Input(size = (26,1)) , sg.FileBrowse( change_submits = True), sg.Button('LOAD') ] , [sg.Input(size = (26,1)), sg.FileSaveAs(), sg.Button('SAVE')]]
+    open_and_save = [[sg.Input(size = (26,1)) , sg.FileBrowse( change_submits = True), sg.Button('Preview'), sg.Button('LOAD') ] , [sg.Input(size = (26,1)), sg.FileSaveAs(), sg.Button('SAVE')]]
 
     # generate_time_line has to read the exp_sequence to know
     # what elements to specify on the new window

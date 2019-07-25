@@ -905,6 +905,48 @@ def interpret(command):
 
 
 
+
+
+def make_view_window(initial_num_points = 10):
+    # this function generates a window just to view procedure files
+    # not intended to be edited.
+    # this function is very much like make_window() except it has much fewer features
+    # this function make the main window with a certain layout
+    # layout is defined in GUI_functions
+    # obtain experimental specs from exp_sequence.txt
+    # the sequence is a global var defined in settings.py
+    sg.ChangeLookAndFeel('Purple')
+    settings.new_time_points_view = int(settings.sequence['_spin_'])
+    settings.old_time_points_view = int((len(settings.sequence) - settings.other_items)/settings.items_per_row)
+
+    settings.window_view = sg.Window('PREVIEW-PREVIEW-PREVIEW-PREVIEW-PREVIEW-PREVIEW',
+                   default_element_size=(90, 1),
+                   grab_anywhere=True).Layout(GUI.layout_main(initial_num_points))
+
+    while True:
+        settings.event_view, settings.values_view = settings.window_view.Read()
+        if settings.event_view is None:
+            break
+        if settings.event_view == 'Exit' or settings.event_view == 'EXIT':
+            settings.window_view.Close()
+            return
+        if settings.event_view == 'About':
+            sg.Popup('Experimental Control', 'Created by Huan Q Bui\n Summer 2019')
+        del settings.values_view[0]
+    settings.window_view.Close()
+    return
+
+
+
+
+
+
+
+
+
+
+
+
 def make_window(initial_num_points):
     # this function make the main window with a certain layout
     # layout is defined in GUI_functions
@@ -918,7 +960,7 @@ def make_window(initial_num_points):
 
     settings.window = sg.Window('Experimental Control - PCI-6733',
                    default_element_size=(90, 1),
-                   grab_anywhere=False).Layout(GUI.layout_main(initial_num_points))
+                   grab_anywhere=True).Layout(GUI.layout_main(initial_num_points))
 
 
     # GUI.generate_graph(window)
@@ -1039,8 +1081,20 @@ def make_window(initial_num_points):
 
             settings.event = None
 
+        if settings.event == 'Preview':
+            settings.file_name = settings.values['Browse']
+            if settings.file_name == '':
+                settings.file_name = 'exp_sequence.csv' # if nothing then set as default file
+            settings.sequence = read_sequence(settings.file_name)
+            sequence_to_instructions_spin(settings.file_name)
+            make_view_window() # make window just to view
+            sequence_to_instructions_spin('exp_sequence.csv') # once preview is done, then reset
+
+
         if settings.event == 'LOAD':
             settings.file_name = settings.values['Browse']
+            if settings.file_name == '':
+                settings.file_name = 'exp_sequence.csv' # if nothing then set as default file
             settings.sequence = read_sequence(settings.file_name)
             settings.window.Close()
             return
