@@ -8,17 +8,17 @@ def init():
     global values
     global sequence
     global instructions
-    global ana_00
-    global ana_01
-    global ana_02
-    global ana_03
-    global ana_04
+    global AH
+    global Trap
+    global Repump
+    global aom
+    global vco
     global window
     global inserted_values
     global inserted
     global ramped
     global switch
-    global ana_05
+    global vca
     global items_per_row
     global other_items
     global digital_channels
@@ -26,9 +26,7 @@ def init():
     global scan_parameters
     global file_name
     global save_as
-    global logo_scaled_by
 
-    logo_scaled_by = 2
     save_as = 'exp_sequence.csv'
     file_name = 'exp_sequence.csv' # this is the default value. Might get changed
     # whether to ignore a warning. (True/False)
@@ -38,7 +36,7 @@ def init():
     # number of items per time point
     items_per_row = 16
     # number of other items on the menu
-    other_items = 33
+    other_items = 19
     window = None
     new_time_points = 10
     old_time_points = 10
@@ -48,12 +46,12 @@ def init():
     inserted_values = {}
     sequence = {}
     instructions = []
-    ana_00 = []
-    ana_01 = []
-    ana_02 = []
-    ana_03 = []
-    ana_04 = []
-    ana_05 = []
+    AH = []
+    Trap = []
+    Repump = []
+    aom = []
+    vco = []
+    vca = []
     inserted = False
     ramped = False
     switch = []

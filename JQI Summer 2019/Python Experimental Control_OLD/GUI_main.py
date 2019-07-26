@@ -220,14 +220,14 @@ def sequence_to_instructions_spin(file_name = 'exp_sequence.csv'):
             for col in range(settings.digital_channels):
                 row_switch[col] = settings.sequence[str('_switch_' + str(row) + '_' + str(col) + '_' )]
             # step = settings.sequence[str('_step_'+str(row)+'_')]
-            ana_00 = settings.sequence[str('_ana_00_'+str(row)+'_')]
-            ana_01 = settings.sequence[str('_ana_01_'+str(row)+'_')]
-            ana_02 = settings.sequence[str('_ana_02_'+str(row)+'_')]
-            ana_03 = settings.sequence[str('_ana_03_'+str(row)+'_')]
-            ana_04 = settings.sequence[str('_ana_04_'+str(row)+'_')]
-            ana_05 = settings.sequence[str('_ana_05_'+str(row)+'_')]
+            ah = settings.sequence[str('_AH_'+str(row)+'_')]
+            trap = settings.sequence[str('_Trap_'+str(row)+'_')]
+            repump = settings.sequence[str('_Repump_'+str(row)+'_')]
+            aom = settings.sequence[str('_aom_760_'+str(row)+'_')]
+            vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
+            vca = settings.sequence[str('_vca_'+str(row)+'_')]
 
-            row_specs = [mode, delay, row_switch, ana_00, ana_01, ana_02, ana_03, ana_04, ana_05]
+            row_specs = [mode, delay, row_switch, ah, trap, repump, aom, vco, vca]
             settings.instructions.append(row_specs)
 
         return settings.instructions
@@ -240,14 +240,14 @@ def sequence_to_instructions_spin(file_name = 'exp_sequence.csv'):
             for col in range(settings.digital_channels):
                 row_switch[col] = settings.sequence[str('_switch_' + str(row) + '_' + str(col) + '_' )]
             # step = settings.sequence[str('_step_'+str(row)+'_')]
-            ana_00 = settings.sequence[str('_ana_00_'+str(row)+'_')]
-            ana_01 = settings.sequence[str('_ana_01_'+str(row)+'_')]
-            ana_02 = settings.sequence[str('_ana_02_'+str(row)+'_')]
-            ana_03= settings.sequence[str('_ana_03_'+str(row)+'_')]
-            ana_04 = settings.sequence[str('_ana_04_'+str(row)+'_')]
-            ana_05 = settings.sequence[str('_ana_05_'+str(row)+'_')]
+            ah = settings.sequence[str('_AH_'+str(row)+'_')]
+            trap = settings.sequence[str('_Trap_'+str(row)+'_')]
+            repump = settings.sequence[str('_Repump_'+str(row)+'_')]
+            aom = settings.sequence[str('_aom_760_'+str(row)+'_')]
+            vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
+            vca = settings.sequence[str('_vca_'+str(row)+'_')]
 
-            row_specs = [mode, delay, row_switch, ana_00, ana_01, ana_02, ana_03, ana_04, ana_05]
+            row_specs = [mode, delay, row_switch, ah, trap, repump, aom, vco, vca]
             settings.instructions.append(row_specs)
 
         for new_row in range(spin - num_rows):
@@ -297,12 +297,12 @@ def insert(location):
     settings.values['_switch_' + str(spin-1) + '_6_'] = False
     settings.values['_switch_' + str(spin-1) + '_7_'] = False
     # settings.values['_step_' + str(spin) + '_'] = '0'
-    settings.values['_ana_00_' + str(spin-1) + '_'] = '0'
-    settings.values['_ana_01_' + str(spin-1) + '_'] = '0'
-    settings.values['_ana_02_' + str(spin-1) + '_'] = '0'
-    settings.values['_ana_03_' + str(spin-1) + '_'] = '0'
-    settings.values['_ana_04_' + str(spin-1) + '_'] = '0'
-    settings.values['_ana_05_' + str(spin-1) + '_'] = '0'
+    settings.values['_AH_' + str(spin-1) + '_'] = '0'
+    settings.values['_Trap_' + str(spin-1) + '_'] = '0'
+    settings.values['_Repump_' + str(spin-1) + '_'] = '0'
+    settings.values['_aom_760_' + str(spin-1) + '_'] = '0'
+    settings.values['_vco_760_' + str(spin-1) + '_'] = '0'
+    settings.values['_vca_' + str(spin-1) + '_'] = '0'
 
     # now shift everything after location to +1 time point
     #print('Location: ', location)
@@ -322,12 +322,12 @@ def insert(location):
         settings.values['_switch_' + str(l+1) + '_5_']  = settings.values['_switch_' + str(l) + '_5_']
         settings.values['_switch_' + str(l+1) + '_6_']  = settings.values['_switch_' + str(l) + '_6_']
         settings.values['_switch_' + str(l+1) + '_7_']  = settings.values['_switch_' + str(l) + '_7_']
-        settings.values['_ana_00_'     + str(l+1) + '_']    = settings.values['_ana_00_'     + str(l) + '_']
-        settings.values['_ana_01_'   + str(l+1) + '_']    = settings.values['_ana_01_'   + str(l) + '_']
-        settings.values['_ana_02_' + str(l+1) + '_']    = settings.values['_ana_02_' + str(l) + '_']
-        settings.values['_ana_03_'+ str(l+1) + '_']    = settings.values['_ana_03_'+ str(l) + '_']
-        settings.values['_ana_04_'+ str(l+1) + '_']    = settings.values['_ana_04_'+ str(l) + '_']
-        settings.values['_ana_05_'+ str(l+1) + '_']    = settings.values['_ana_05_'+ str(l) + '_']
+        settings.values['_AH_'     + str(l+1) + '_']    = settings.values['_AH_'     + str(l) + '_']
+        settings.values['_Trap_'   + str(l+1) + '_']    = settings.values['_Trap_'   + str(l) + '_']
+        settings.values['_Repump_' + str(l+1) + '_']    = settings.values['_Repump_' + str(l) + '_']
+        settings.values['_aom_760_'+ str(l+1) + '_']    = settings.values['_aom_760_'+ str(l) + '_']
+        settings.values['_vco_760_'+ str(l+1) + '_']    = settings.values['_vco_760_'+ str(l) + '_']
+        settings.values['_vca_'+ str(l+1) + '_']    = settings.values['_vca_'+ str(l) + '_']
 
 
     return settings.values
@@ -367,14 +367,15 @@ def sequence_to_instructions_insert_or_delete(file_name = 'exp_sequence.csv'):
         for col in range(settings.digital_channels):
             row_switch[col] = settings.sequence[str('_switch_' + str(row) + '_' + str(col) + '_' )]
 
-        ana_00 = settings.sequence[str('_ana_00_'+str(row)+'_')]
-        ana_01 = settings.sequence[str('_ana_01_'+str(row)+'_')]
-        ana_02 = settings.sequence[str('_ana_02_'+str(row)+'_')]
-        ana_03 = settings.sequence[str('_ana_03_'+str(row)+'_')]
-        ana_04 = settings.sequence[str('_ana_04_'+str(row)+'_')]
-        ana_05 = settings.sequence[str('_ana_05_'+str(row)+'_')]
+        # step = settings.sequence[str('_step_'+str(row)+'_')]
+        ah = settings.sequence[str('_AH_'+str(row)+'_')]
+        trap = settings.sequence[str('_Trap_'+str(row)+'_')]
+        repump = settings.sequence[str('_Repump_'+str(row)+'_')]
+        aom = settings.sequence[str('_aom_760_'+str(row)+'_')]
+        vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
+        vca = settings.sequence[str('_vca_'+str(row)+'_')]
 
-        row_specs = [mode, delay, row_switch, ana_00, ana_01, ana_02, ana_03, ana_04, ana_05]
+        row_specs = [mode, delay, row_switch, ah, trap, repump, aom, vco, vca]
         settings.instructions.append(row_specs)
 
     return settings.instructions
@@ -421,12 +422,12 @@ def delete(location):
         settings.values['_switch_' + str(l) + '_6_']  = settings.values['_switch_' + str(l+1) + '_6_']
         settings.values['_switch_' + str(l) + '_7_']  = settings.values['_switch_' + str(l+1) + '_7_']
         # settings.values['_step_'   + str(l) + '_']    = settings.values['_step_'   + str(l+1) + '_']
-        settings.values['_ana_00_'     + str(l) + '_']    = settings.values['_ana_00_'     + str(l+1) + '_']
-        settings.values['_ana_01_'   + str(l) + '_']    = settings.values['_ana_01_'   + str(l+1) + '_']
-        settings.values['_ana_02_' + str(l) + '_']    = settings.values['_ana_02_' + str(l+1) + '_']
-        settings.values['_ana_03_'+ str(l) + '_']    = settings.values['_ana_03_'+ str(l+1) + '_']
-        settings.values['_ana_04_'+ str(l) + '_']    = settings.values['_ana_04_'+ str(l+1) + '_']
-        settings.values['_ana_05_'+ str(l+1) + '_']    = settings.values['_ana_05_'+ str(l+1) + '_']
+        settings.values['_AH_'     + str(l) + '_']    = settings.values['_AH_'     + str(l+1) + '_']
+        settings.values['_Trap_'   + str(l) + '_']    = settings.values['_Trap_'   + str(l+1) + '_']
+        settings.values['_Repump_' + str(l) + '_']    = settings.values['_Repump_' + str(l+1) + '_']
+        settings.values['_aom_760_'+ str(l) + '_']    = settings.values['_aom_760_'+ str(l+1) + '_']
+        settings.values['_vco_760_'+ str(l) + '_']    = settings.values['_vco_760_'+ str(l+1) + '_']
+        settings.values['_vca_'+ str(l+1) + '_']    = settings.values['_vca_'+ str(l+1) + '_']
 
     # next removes the last row
 
@@ -443,12 +444,12 @@ def delete(location):
     del settings.values['_switch_' + str(spin) + '_6_']
     del settings.values['_switch_' + str(spin) + '_7_']
     # del settings.values['_step_' + str(spin) + '_']
-    del settings.values['_ana_00_' + str(spin) + '_']
-    del settings.values['_ana_01_' + str(spin) + '_']
-    del settings.values['_ana_02_' + str(spin) + '_']
-    del settings.values['_ana_03_' + str(spin) + '_']
-    del settings.values['_ana_04_' + str(spin) + '_']
-    del settings.values['_ana_05_' + str(spin) + '_']
+    del settings.values['_AH_' + str(spin) + '_']
+    del settings.values['_Trap_' + str(spin) + '_']
+    del settings.values['_Repump_' + str(spin) + '_']
+    del settings.values['_aom_760_' + str(spin) + '_']
+    del settings.values['_vco_760_' + str(spin) + '_']
+    del settings.values['_vca_' + str(spin) + '_']
 
     return settings.values
 
@@ -483,14 +484,14 @@ def sequence_to_instructions_delete(file_name = 'exp_sequence.csv'):
             row_switch[col] = settings.sequence[str('_switch_' + str(row) + '_' + str(col) + '_' )]
 
         # step = settings.sequence[str('_step_'+str(row)+'_')]
-        ana_00 = settings.sequence[str('_ana_00_'+str(row)+'_')]
-        ana_01 = settings.sequence[str('_ana_01_'+str(row)+'_')]
-        ana_02 = settings.sequence[str('_ana_02_'+str(row)+'_')]
-        ana_03 = settings.sequence[str('_ana_03_'+str(row)+'_')]
-        ana_04 = settings.sequence[str('_ana_04_'+str(row)+'_')]
-        ana_05 = settings.sequence[str('_ana_05_'+str(row)+'_')]
+        ah = settings.sequence[str('_AH_'+str(row)+'_')]
+        trap = settings.sequence[str('_Trap_'+str(row)+'_')]
+        repump = settings.sequence[str('_Repump_'+str(row)+'_')]
+        aom = settings.sequence[str('_aom_760_'+str(row)+'_')]
+        vco = settings.sequence[str('_vco_760_'+str(row)+'_')]
+        vca = settings.sequence[str('_vca_'+str(row)+'_')]
 
-        row_specs = [mode, delay, row_switch, ana_00, ana_01, ana_02, ana_03, ana_04, ana_05]
+        row_specs = [mode, delay, row_switch, ah, trap, repump, aom, vco, vca]
         settings.instructions.append(row_specs)
 
     return settings.instructions
@@ -563,42 +564,42 @@ def make_instructions():
             duration_e = float(0.0)
         else:
             duration_e = float(settings.sequence['_delay_' + str(e) + '_'])
-        if str(settings.sequence['_ana_00_' + str(e) + '_']) == '':
-            ana_00_e = float(0.0)
+        if str(settings.sequence['_AH_' + str(e) + '_']) == '':
+            AH_e = float(0.0)
         else:
-            ana_00_e = float(settings.sequence['_ana_00_' + str(e) + '_'])
-        if str(settings.sequence['_ana_01_' + str(e) + '_']) == '':
-            ana_01_e = float(0.0)
+            AH_e = float(settings.sequence['_AH_' + str(e) + '_'])
+        if str(settings.sequence['_Trap_' + str(e) + '_']) == '':
+            Trap_e = float(0.0)
         else:
-            ana_01_e = float(settings.sequence['_ana_01_' + str(e) + '_'])
-        if str(settings.sequence['_ana_02_' + str(e) + '_']) == '':
-            ana_02_e = float(0.0)
+            Trap_e = float(settings.sequence['_Trap_' + str(e) + '_'])
+        if str(settings.sequence['_Repump_' + str(e) + '_']) == '':
+            Repump_e = float(0.0)
         else:
-            ana_02_e = float(settings.sequence['_ana_02_' + str(e) + '_'])
-        if str(settings.sequence['_ana_03_' + str(e) + '_']) == '':
-            ana_03_e = float(0.0)
+            Repump_e = float(settings.sequence['_Repump_' + str(e) + '_'])
+        if str(settings.sequence['_aom_760_' + str(e) + '_']) == '':
+            aom_760_e = float(0.0)
         else:
-            ana_03_e = float(settings.sequence['_ana_03_' + str(e) + '_'])
-        if str(settings.sequence['_ana_04_' + str(e) + '_']) == '':
-            ana_04_e = float(0.0)
+            aom_760_e = float(settings.sequence['_aom_760_' + str(e) + '_'])
+        if str(settings.sequence['_vco_760_' + str(e) + '_']) == '':
+            vco_760_e = float(0.0)
         else:
-            ana_04_e = float(settings.sequence['_ana_04_' + str(e) + '_'])
-        if str(settings.sequence['_ana_05_' + str(e) + '_']) == '':
-            ana_05_e = float(0.0)
+            vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
+        if str(settings.sequence['_vca_' + str(e) + '_']) == '':
+            vca_e = float(0.0)
         else:
-            ana_05_e = float(settings.sequence['_ana_05_' + str(e) + '_'])
+            vca_e = float(settings.sequence['_vca_' + str(e) + '_'])
         # channel 1
-        settings.ana_00.append([mode_e, duration_e, ana_00_e])
+        settings.AH.append([mode_e, duration_e, AH_e])
         # channel 2
-        settings.ana_01.append([mode_e, duration_e, ana_01_e])
+        settings.Trap.append([mode_e, duration_e, Trap_e])
         # channel 3
-        settings.ana_02.append([mode_e, duration_e, ana_02_e])
+        settings.Repump.append([mode_e, duration_e, Repump_e])
         # channel 4
-        settings.ana_03.append([mode_e, duration_e, ana_03_e])
+        settings.aom.append([mode_e, duration_e, aom_760_e])
         # channel 5
-        settings.ana_04.append([mode_e, duration_e, ana_04_e])
+        settings.vco.append([mode_e, duration_e, vco_760_e])
         # channel 6
-        settings.ana_05.append([mode_e, duration_e, ana_05_e])
+        settings.vca.append([mode_e, duration_e, vca_e])
 
     # creates digital wave
     for event in range(num_events):
@@ -630,52 +631,52 @@ def scan_voltage(scanning_channel = '', time_point = -1, volt_increment = 0):
             duration_e = float(0.0)
         else:
             duration_e = float(settings.sequence['_delay_' + str(e) + '_'])
-        if str(settings.sequence['_ana_00_' + str(e) + '_']) == '':
-            ana_00_e = float(0.0)
+        if str(settings.sequence['_AH_' + str(e) + '_']) == '':
+            AH_e = float(0.0)
         else:
-            ana_00_e = float(settings.sequence['_ana_00_' + str(e) + '_'])
-        if str(settings.sequence['_ana_01_' + str(e) + '_']) == '':
-            ana_01_e = float(0.0)
+            AH_e = float(settings.sequence['_AH_' + str(e) + '_'])
+        if str(settings.sequence['_Trap_' + str(e) + '_']) == '':
+            Trap_e = float(0.0)
         else:
-            ana_01_e = float(settings.sequence['_ana_01_' + str(e) + '_'])
-        if str(settings.sequence['_ana_02_' + str(e) + '_']) == '':
-            ana_02_e = float(0.0)
+            Trap_e = float(settings.sequence['_Trap_' + str(e) + '_'])
+        if str(settings.sequence['_Repump_' + str(e) + '_']) == '':
+            Repump_e = float(0.0)
         else:
-            ana_02_e = float(settings.sequence['_ana_02_' + str(e) + '_'])
-        if str(settings.sequence['_ana_03_' + str(e) + '_']) == '':
-            ana_03_e = float(0.0)
+            Repump_e = float(settings.sequence['_Repump_' + str(e) + '_'])
+        if str(settings.sequence['_aom_760_' + str(e) + '_']) == '':
+            aom_760_e = float(0.0)
         else:
-            ana_03_e = float(settings.sequence['_ana_03_' + str(e) + '_'])
-        if str(settings.sequence['_ana_04_' + str(e) + '_']) == '':
-            ana_04_e = float(0.0)
+            aom_760_e = float(settings.sequence['_aom_760_' + str(e) + '_'])
+        if str(settings.sequence['_vco_760_' + str(e) + '_']) == '':
+            vco_760_e = float(0.0)
         else:
-            ana_04_e = float(settings.sequence['_ana_04_' + str(e) + '_'])
-        if str(settings.sequence['_ana_05_' + str(e) + '_']) == '':
-            ana_05_e = float(0.0)
+            vco_760_e = float(settings.sequence['_vco_760_' + str(e) + '_'])
+        if str(settings.sequence['_vca_' + str(e) + '_']) == '':
+            vca_e = float(0.0)
         else:
-            ana_05_e = float(settings.sequence['_ana_05_' + str(e) + '_'])
+            vca_e = float(settings.sequence['_vca_' + str(e) + '_'])
 
         # if at the correct time_point and channel, increment voltage
         if e+1 == time_point:
-            if scanning_channel == '_ana_00_':
-                ana_00_e += volt_increment
-            if scanning_channel == '_ana_01_':
-                ana_01_e += volt_increment
-            if scanning_channel == '_ana_02_':
-                ana_02_e += volt_increment
-            if scanning_channel == '_ana_03_':
-                ana_03_e += volt_increment
-            if scanning_channel == '_ana_04_':
-                ana_04_e += volt_increment
-            if scanning_channel == '_ana_05_':
-                ana_05_e += volt_increment
+            if scanning_channel == '_AH_':
+                AH_e += volt_increment
+            if scanning_channel == '_Trap_':
+                Trap_e += volt_increment
+            if scanning_channel == '_Repump_':
+                Repump_e += volt_increment
+            if scanning_channel == '_aom_760_':
+                aom_760_e += volt_increment
+            if scanning_channel == '_vco_760_':
+                vco_760_e += volt_increment
+            if scanning_channel == '_vca_':
+                vca_e += volt_increment
 
-        settings.ana_00.append([mode_e, duration_e, ana_00_e])
-        settings.ana_01.append([mode_e, duration_e, ana_01_e])
-        settings.ana_02.append([mode_e, duration_e, ana_02_e])
-        settings.ana_03.append([mode_e, duration_e, ana_03_e])
-        settings.ana_04.append([mode_e, duration_e, ana_04_e])
-        settings.ana_05.append([mode_e, duration_e, ana_05_e])
+        settings.AH.append([mode_e, duration_e, AH_e])
+        settings.Trap.append([mode_e, duration_e, Trap_e])
+        settings.Repump.append([mode_e, duration_e, Repump_e])
+        settings.aom.append([mode_e, duration_e, aom_760_e])
+        settings.vco.append([mode_e, duration_e, vco_760_e])
+        settings.vca.append([mode_e, duration_e, vca_e])
 
     # DIGITAL
     for event in range(num_events):
@@ -713,18 +714,18 @@ def scan_delay(scan_step = 0.0, time_point = -1):
             if e == time_point: # but only add the scanning piece at the correct time point
                 mode_e = str(settings.sequence['_mode_' + str(e) + '_'])
                 # but one channel has some other value
-                ana_00_e = float(settings.sequence['_ana_00_' + str(e-1) + '_'])
-                settings.ana_00.insert(time_point - num_events, [mode_e, scan_step, ana_00_e])  # inserts value for scanning channel
-                ana_01_e = float(settings.sequence['_ana_01_' + str(e-1) + '_'])
-                settings.ana_01.insert(time_point - num_events, [mode_e, scan_step, ana_01_e])
-                ana_02_e = float(settings.sequence['_ana_02_' + str(e-1) + '_'])
-                settings.ana_02.insert(time_point - num_events, [mode_e, scan_step, ana_02_e])
-                ana_03_e = float(settings.sequence['_ana_03_' + str(e-1) + '_'])
-                settings.ana_03.insert(time_point - num_events, [mode_e, scan_step, ana_03_e])
-                ana_04_e = float(settings.sequence['_ana_04_' + str(e-1) + '_'])
-                settings.ana_04.insert(time_point - num_events, [mode_e, scan_step, ana_04_e])
-                ana_05_e = float(settings.sequence['_ana_05_' + str(e-1) + '_'])
-                settings.ana_05.insert(time_point - num_events, [mode_e, scan_step, ana_05_e])
+                AH_e = float(settings.sequence['_AH_' + str(e-1) + '_'])
+                settings.AH.insert(time_point - num_events, [mode_e, scan_step, AH_e])  # inserts value for scanning channel
+                Trap_e = float(settings.sequence['_Trap_' + str(e-1) + '_'])
+                settings.Trap.insert(time_point - num_events, [mode_e, scan_step, Trap_e])
+                Repump_e = float(settings.sequence['_Repump_' + str(e-1) + '_'])
+                settings.Repump.insert(time_point - num_events, [mode_e, scan_step, Repump_e])
+                aom_760_e = float(settings.sequence['_aom_760_' + str(e-1) + '_'])
+                settings.aom.insert(time_point - num_events, [mode_e, scan_step, aom_760_e])
+                vco_760_e = float(settings.sequence['_vco_760_' + str(e-1) + '_'])
+                settings.vco.insert(time_point - num_events, [mode_e, scan_step, vco_760_e])
+                vca_e = float(settings.sequence['_vca_' + str(e-1) + '_'])
+                settings.vca.insert(time_point - num_events, [mode_e, scan_step, vca_e])
 
                 state_number = 0
                 for line in range(settings.digital_channels): # loop through each line
@@ -743,11 +744,10 @@ def scan_delay(scan_step = 0.0, time_point = -1):
 
 
 
-def single_array_scan_to_wave(command = 'simulate'):
+def single_array_scan_to_wave():
     # this function takes in the scan parameters and outputs a wave
     # this is called in the 'single-array' scan mode
     # basically this function just concatenates a bunch of waves from to_wave,
-    # by default, this function simulates
 
     rate = float(settings.sequence['_rate_'])
     single_array = np.array([])
@@ -763,33 +763,22 @@ def single_array_scan_to_wave(command = 'simulate'):
             scan_delay(scan_step = i*increment, time_point = time_pt) # call make instructions
 
         # this is to simulate
-        if command == 'simulate':
-            PCI.simulate(1, rate, PCI.to_wave(settings.ana_00, rate),
-                                  PCI.to_wave(settings.ana_01, rate),
-                                  PCI.to_wave(settings.ana_02, rate),
-                                  PCI.to_wave(settings.ana_03, rate),
-                                  PCI.to_wave(settings.ana_04, rate),
-                                  PCI.to_wave(settings.ana_05, rate),
-                                  PCI.to_digit(settings.switch, rate)
-                                  )
-
-        elif command == 'run':
-            PCI.run(rate, PCI.to_wave(settings.ana_00, rate),
-                                  PCI.to_wave(settings.ana_01, rate),
-                                  PCI.to_wave(settings.ana_02, rate),
-                                  PCI.to_wave(settings.ana_03, rate),
-                                  PCI.to_wave(settings.ana_04, rate),
-                                  PCI.to_wave(settings.ana_05, rate),
-                                  PCI.to_digit(settings.switch, rate)
-                                  )
+        PCI.simulate(1, rate, PCI.to_wave(settings.AH, rate),
+                              PCI.to_wave(settings.Trap, rate),
+                              PCI.to_wave(settings.Repump, rate),
+                              PCI.to_wave(settings.aom, rate),
+                              PCI.to_wave(settings.vco, rate),
+                              PCI.to_wave(settings.vca, rate),
+                              PCI.to_digit(settings.switch, rate)
+                              )
 
         # reset waves to zeros
-        settings.ana_00 = settings.ana_00*0
-        settings.ana_01 = settings.ana_01*0
-        settings.ana_02 = settings.ana_02*0
-        settings.ana_03 = settings.ana_03*0
-        settings.ana_04 = settings.ana_04*0
-        settings.ana_05 = settings.ana_05*0
+        settings.AH = settings.AH*0
+        settings.Trap = settings.Trap*0
+        settings.Repump = settings.Repump*0
+        settings.aom = settings.aom*0
+        settings.vco = settings.vco*0
+        settings.vca = settings.vca*0
         settings.switch = []
 
 
@@ -805,33 +794,22 @@ def single_array_scan_to_wave(command = 'simulate'):
             scan_voltage(scanning_channel = chan_name, time_point = time_pt, volt_increment = i*volt) # call make instructions
 
         # this is to simulate
-        if command == 'simulate':
-            PCI.simulate(1, rate, PCI.to_wave(settings.ana_00, rate),
-                                  PCI.to_wave(settings.ana_01, rate),
-                                  PCI.to_wave(settings.ana_02, rate),
-                                  PCI.to_wave(settings.ana_03, rate),
-                                  PCI.to_wave(settings.ana_04, rate),
-                                  PCI.to_wave(settings.ana_05, rate),
-                                  PCI.to_digit(settings.switch, rate)
-                                  )
-
-        elif command == 'run':
-            PCI.run(rate, PCI.to_wave(settings.ana_00, rate),
-                                  PCI.to_wave(settings.ana_01, rate),
-                                  PCI.to_wave(settings.ana_02, rate),
-                                  PCI.to_wave(settings.ana_03, rate),
-                                  PCI.to_wave(settings.ana_04, rate),
-                                  PCI.to_wave(settings.ana_05, rate),
-                                  PCI.to_digit(settings.switch, rate)
-                                  )
+        PCI.simulate(1, rate, PCI.to_wave(settings.AH, rate),
+                            PCI.to_wave(settings.Trap, rate),
+                            PCI.to_wave(settings.Repump, rate),
+                            PCI.to_wave(settings.aom, rate),
+                            PCI.to_wave(settings.vco, rate),
+                            PCI.to_wave(settings.vca, rate),
+                            PCI.to_digit(settings.switch, rate)
+                            )
 
         # reset waves to zeros
-        settings.ana_00 = settings.ana_00*0
-        settings.ana_01 = settings.ana_01*0
-        settings.ana_02 = settings.ana_02*0
-        settings.ana_03 = settings.ana_03*0
-        settings.ana_04 = settings.ana_04*0
-        settings.ana_05 = settings.ana_05*0
+        settings.AH = settings.AH*0
+        settings.Trap = settings.Trap*0
+        settings.Repump = settings.Repump*0
+        settings.aom = settings.aom*0
+        settings.vco = settings.vco*0
+        settings.vca = settings.vca*0
         settings.switch = []
 
 
@@ -867,22 +845,22 @@ def interpret(command):
     make_instructions()
 
     if command == 'simulate':
-        PCI.simulate(1, rate, PCI.to_wave(settings.ana_00, rate),
-                              PCI.to_wave(settings.ana_01, rate),
-                              PCI.to_wave(settings.ana_02, rate),
-                              PCI.to_wave(settings.ana_03, rate),
-                              PCI.to_wave(settings.ana_04, rate),
-                              PCI.to_wave(settings.ana_05, rate),
+        PCI.simulate(1, rate, PCI.to_wave(settings.AH, rate),
+                              PCI.to_wave(settings.Trap, rate),
+                              PCI.to_wave(settings.Repump, rate),
+                              PCI.to_wave(settings.aom, rate),
+                              PCI.to_wave(settings.vco, rate),
+                              PCI.to_wave(settings.vca, rate),
                               PCI.to_digit(settings.switch, rate)
                               )
 
     elif command == 'run':
-        PCI.run(iter, rate, PCI.to_wave(settings.ana_00, rate),
-                      PCI.to_wave(settings.ana_01, rate),
-                      PCI.to_wave(settings.ana_02, rate),
-                      PCI.to_wave(settings.ana_03, rate),
-                      PCI.to_wave(settings.ana_04, rate),
-                      PCI.to_wave(settings.ana_05, rate),
+        PCI.run(iter, rate, PCI.to_wave(settings.AH, rate),
+                      PCI.to_wave(settings.Trap, rate),
+                      PCI.to_wave(settings.Repump, rate),
+                      PCI.to_wave(settings.aom, rate),
+                      PCI.to_wave(settings.vco, rate),
+                      PCI.to_wave(settings.vca, rate),
                       PCI.to_digit(settings.switch, rate)
                       )
 
@@ -890,12 +868,12 @@ def interpret(command):
         print('Invalid command')
 
     # reset waves to zeros
-    settings.ana_00 = settings.ana_00*0
-    settings.ana_01 = settings.ana_01*0
-    settings.ana_02 = settings.ana_02*0
-    settings.ana_03 = settings.ana_03*0
-    settings.ana_04 = settings.ana_04*0
-    settings.ana_05 = settings.ana_05*0
+    settings.AH = settings.AH*0
+    settings.Trap = settings.Trap*0
+    settings.Repump = settings.Repump*0
+    settings.aom = settings.aom*0
+    settings.vco = settings.vco*0
+    settings.vca = settings.vca*0
     settings.switch = []
 
     return
@@ -1023,7 +1001,7 @@ def make_window(initial_num_points):
             update_sequence()
             scan_parameters()
             if settings.scan_parameters['Scan mechanism: '] == 'Single-array Multi-sweep':
-                single_array_scan_to_wave('simulate')
+                single_array_scan_to_wave()
             elif settings.scan_parameters['Scan mechanism: '] == 'Multi-array Single-sweep':
                 multi_array_scan_to_wave()
 
@@ -1032,14 +1010,13 @@ def make_window(initial_num_points):
             update_sequence()
             scan_parameters()
             if settings.scan_parameters['Scan mechanism: '] == 'Single-array Multi-sweep':
-                single_array_scan_to_wave('run')
                 print('Single-array Multi-sweep')
             elif settings.scan_parameters['Scan mechanism: '] == 'Multi-array Single-sweep':
                 print('Multi-array Single-sweep')
 
             settings.event = None
 
-        if settings.event == 'LOAD':
+        if settings.event == 'Load sequence':
             settings.file_name = settings.values['Browse']
             settings.sequence = read_sequence(settings.file_name)
             settings.window.Close()

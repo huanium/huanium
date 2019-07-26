@@ -37,7 +37,7 @@ if __name__ == "__main__":
             GUI_main.sequence_to_instructions_insert_or_delete()
             GUI_main.make_window(settings.new_time_points)
 
-        if settings.event == 'LOAD': # if specific instructions are being loaded
+        if settings.event == 'Load sequence': # if specific instructions are being loaded
             print('File being loaded is: ', settings.file_name)
             # settings.sequence = GUI_main.read_sequence(settings.file_name)
             # print(settings.sequence)

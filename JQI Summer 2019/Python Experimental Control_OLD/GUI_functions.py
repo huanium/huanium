@@ -32,15 +32,15 @@ def generate_time_point(int_time, row_specs):
 
     # number of digital lines
     for i in range(settings.digital_channels):
-        time_point.append(sg.Checkbox(' ', size=(0,1), default=bool(row_specs[2][i]), change_submits=True, key='_switch_' + time + '_' +  str(i) +'_'))
+        time_point.append(sg.Checkbox('', size=(1,1), default=bool(row_specs[2][i]), change_submits=True, key='_switch_' + time + '_' +  str(i) +'_'))
 
     # time_point.append(sg.InputText(default_text=row_specs[3], size=(6, 1), change_submits=True, key='_step_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[3], size=(7, 1), change_submits=True, key='_ana_00_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[4], size=(7, 1), change_submits=True, key='_ana_01_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[5], size=(7, 1), change_submits=True, key='_ana_02_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[6], size=(7, 1), change_submits=True, key='_ana_03_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[7], size=(7, 1), change_submits=True, key='_ana_04_' + time + '_'))
-    time_point.append(sg.InputText(default_text=row_specs[8], size=(7, 1), change_submits=True, key='_ana_05_' + time + '_'))
+    time_point.append(sg.InputText(default_text=row_specs[3], size=(7, 1), change_submits=True, key='_AH_' + time + '_'))
+    time_point.append(sg.InputText(default_text=row_specs[4], size=(7, 1), change_submits=True, key='_Trap_' + time + '_'))
+    time_point.append(sg.InputText(default_text=row_specs[5], size=(7, 1), change_submits=True, key='_Repump_' + time + '_'))
+    time_point.append(sg.InputText(default_text=row_specs[6], size=(7, 1), change_submits=True, key='_aom_760_' + time + '_'))
+    time_point.append(sg.InputText(default_text=row_specs[7], size=(7, 1), change_submits=True, key='_vco_760_' + time + '_'))
+    time_point.append(sg.InputText(default_text=row_specs[8], size=(7, 1), change_submits=True, key='_vca_' + time + '_'))
 
     time_point.append(sg.Button('Insert', key='_insert_' + time + '_'))
     time_point.append(sg.Button('Delete', key='_delete_' + time + '_'))
@@ -53,39 +53,24 @@ def generate_time_line(time_points):
     # returns a list of time_points.
     # creates the header
 
-    header_mode = sg.Text('Mode',  size=(10, 1), justification='center', font=("Helvetica", 10), relief=sg.RELIEF_SUNKEN)
-    delay_head  = sg.Text('Delay', size=(7, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_SUNKEN)
+    header_mode = sg.Text('Mode',  size=(10, 1), justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
+    delay_head  = sg.Text('Delay', size=(8, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     # AH_head  = sg.Text('AH', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     # Repump_head  = sg.Text('Repump', size=(7, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     # Trap_head  = sg.Text('Trap', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     # aom_760_head  = sg.Text('760 aom', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     # vco_760_head  = sg.Text('760 vco', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     # vca_head  = sg.Text('vca', size=(6, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
-
-    analog_0 = sg.InputText(default_text= settings.sequence['_ana_00_'] , size=(7, 1), change_submits=True, key='_ana_00_', background_color='yellow')
-    analog_1 = sg.InputText(default_text= settings.sequence['_ana_01_'] , size=(7, 1), change_submits=True, key='_ana_01_', background_color='yellow')
-    analog_2 = sg.InputText(default_text= settings.sequence['_ana_02_'] , size=(7, 1), change_submits=True, key='_ana_02_', background_color='yellow')
-    analog_3 = sg.InputText(default_text= settings.sequence['_ana_03_'] , size=(7, 1), change_submits=True, key='_ana_03_', background_color='yellow')
-    analog_4 = sg.InputText(default_text= settings.sequence['_ana_04_'] , size=(7, 1), change_submits=True, key='_ana_04_', background_color='yellow')
-    analog_5 = sg.InputText(default_text= settings.sequence['_ana_05_'] , size=(7, 1), change_submits=True, key='_ana_05_', background_color='yellow')
-
-    # blank_head  = sg.Text('line0   line1    line2    line3     line4    line5    line6    line7',
-    #                 size=(43, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
-
-    digital_0 = sg.InputText(default_text= settings.sequence['_digit_00_'] , size=(4, 1), change_submits=False, key='_digit_00_', background_color='orange')
-    digital_1 = sg.InputText(default_text= settings.sequence['_digit_01_'] , size=(4, 1), change_submits=False, key='_digit_01_', background_color='orange')
-    digital_2 = sg.InputText(default_text= settings.sequence['_digit_02_'] , size=(4, 1), change_submits=False, key='_digit_02_', background_color='orange')
-    digital_3 = sg.InputText(default_text= settings.sequence['_digit_03_'] , size=(4, 1), change_submits=False, key='_digit_03_', background_color='orange')
-    digital_4 = sg.InputText(default_text= settings.sequence['_digit_04_'] , size=(4, 1), change_submits=False, key='_digit_04_', background_color='orange')
-    digital_5 = sg.InputText(default_text= settings.sequence['_digit_05_'] , size=(4, 1), change_submits=False, key='_digit_05_', background_color='orange')
-    digital_6 = sg.InputText(default_text= settings.sequence['_digit_06_'] , size=(4, 1), change_submits=False, key='_digit_06_', background_color='orange')
-    digital_7 = sg.InputText(default_text= settings.sequence['_digit_07_'] , size=(4, 1), change_submits=False, key='_digit_07_', background_color='orange')
-
-
+    analog_0 = sg.InputText(default_text= 'AH' , size=(7, 1), change_submits=False, key='_ana_00_')
+    analog_1 = sg.InputText(default_text= 'Repump' , size=(7, 1), change_submits=False, key='_ana_01_')
+    analog_2 = sg.InputText(default_text= 'Trap' , size=(7, 1), change_submits=False, key='_ana_02_')
+    analog_3 = sg.InputText(default_text= 'aom_760' , size=(7, 1), change_submits=False, key='_ana_03_')
+    analog_4 = sg.InputText(default_text= 'vco_760' , size=(7, 1), change_submits=False, key='_ana_04_')
+    analog_5 = sg.InputText(default_text= 'vca' , size=(7, 1), change_submits=False, key='_ana_05_')
+    blank_head  = sg.Text('line0   line1    line2    line3     line4    line5    line6    line7',
+                    size=(43, 1),  justification='center', font=("Helvetica", 10), relief=sg.RELIEF_RIDGE)
     # header_list = [header_mode, delay_head, blank_head, AH_head, Trap_head, Repump_head, aom_760_head, vco_760_head, vca_head]
-    # header_list = [header_mode, delay_head, blank_head, analog_0, analog_1, analog_2, analog_3, analog_4, analog_5]
-    header_list = [header_mode, delay_head, digital_0, digital_1, digital_2, digital_3, digital_4, digital_5, digital_6, digital_7,
-                        analog_0, analog_1, analog_2, analog_3, analog_4, analog_5]
+    header_list = [header_mode, delay_head, blank_head, analog_0, analog_1, analog_2, analog_3, analog_4, analog_5]
     points = []
     points.append(header_list)
 
@@ -143,35 +128,35 @@ def layout_main(time_points):
 
     # shows the image of the output
     # for now it is temporarily set to be the JQI image
-    graph = sg.Image(filename = 'jqi_three_line.png', key='_image_', visible=True)
+    graph = sg.Image(filename = 'jqi-logo.png', key='_image_', visible=True)
 
     # or altenatively just some blank space
     # graph = sg.Canvas(size=(200, 200), key='_canvas_')
 
     # analog scan mode selections
-    scan_event_name_a = sg.Text('Time point')
+    scan_event_name_a = sg.Text('Time point:')
     scan_event_a = sg.InputText(default_text= scan_event_analog , size=(2, 1), change_submits=True, key='_scan_ev_')
-    scan_start_name_a = sg.Text('Start (V)')
+    scan_start_name_a = sg.Text('Start (V):')
     scan_start_a = sg.InputText(default_text=scan_volt_start_analog , size=(6, 1), change_submits=True, key='_scan_volt_start_')
-    scan_end_name_a = sg.Text('End (V)')
+    scan_end_name_a = sg.Text('End (V):')
     scan_end_a = sg.InputText(default_text=scan_volt_end_analog , size=(6, 1), change_submits=True, key='_scan_volt_end_')
     scan_volt_name_a = sg.Text('Voltage')
     scan_volt_a = sg.Checkbox('', size=(1,1), default=scan_volt_a_val, change_submits=True, key='_scan_volt_')
     step_volt_name_a = sg.Text('Step (V)')
     step_volt_a = sg.InputText(default_text=step_volt_a_val , size=(8, 1), change_submits=True, key='_step_volt_')
-    volt_channel_name = sg.Text('Channel')
-    volt_channel = sg.Spin(values=('_ana_00_', '_ana_01_', '_ana_02_', '_ana_03_', '_ana_04_', '_ana_05_'), initial_value=volt_chan, size=(10, 1), change_submits=True, key='_volt_chan_')
+    volt_channel_name = sg.Text('Channel: ')
+    volt_channel = sg.Spin(values=('_AH_', '_Trap_', '_Repump_', '_aom_760_', '_vco_760_', '_vca_'), initial_value=volt_chan, size=(10, 1), change_submits=True, key='_volt_chan_')
 
-    scan_delay_start_name_a = sg.Text('Start (s)')
+    scan_delay_start_name_a = sg.Text('Start (s):')
     scan_delay_start_a = sg.InputText(default_text= scan_delay_start_analog , size=(6, 1), change_submits=True, key='_scan_delay_start_')
-    scan_delay_end_name_a =sg.Text('End (s)')
+    scan_delay_end_name_a =sg.Text('End (s): ')
     scan_delay_end_a = sg.InputText(default_text= scan_delay_end_analog , size=(6, 1), change_submits=True, key='_scan_delay_end_')
     scan_delay_name_a = sg.Text('Delay   ')
     scan_delay_a = sg.Checkbox('', size=(1,1), default=scan_delay_a_val, change_submits=True, key='_scan_delay_')
     step_delay_name_a = sg.Text('Step (s)')
     step_delay_a = sg.InputText(default_text=step_delay_a_val , size=(8, 1), change_submits=True, key='_step_delay_')
-    scan_mech_name = sg.Text('Scan mechanism')
-    scan_mode_mech = sg.Spin(values=('Single-array Multi-sweep', 'Multi-array Single-sweep'), initial_value=scan_mech, size=(21, 1), change_submits=True, key='_scan_mech_')
+    scan_mech_name = sg.Text('Scan mechanism:')
+    scan_mode_mech = sg.Spin(values=('Single-array Multi-sweep', 'Multi-array Single-sweep'), initial_value=scan_mech, size=(22, 1), change_submits=True, key='_scan_mech_')
     # scan mode activator
     simulate_scan = sg.Button('Simulate')
     apply_scan = sg.Button('Apply settings')
@@ -181,7 +166,7 @@ def layout_main(time_points):
                     [scan_delay_name_a, scan_delay_a, scan_delay_start_name_a, scan_delay_start_a, scan_delay_end_name_a, scan_delay_end_a, step_delay_name_a, step_delay_a], # delay scan
                     [scan_volt_name_a, scan_volt_a, scan_start_name_a, scan_start_a, scan_end_name_a, scan_end_a, step_volt_name_a, step_volt_a, volt_channel_name, volt_channel]] # voltage scan
 
-    open_and_save = [[sg.Input(size = (26,1)) , sg.FileBrowse( change_submits = True), sg.Button('LOAD') ] , [sg.Input(size = (26,1)), sg.FileSaveAs(), sg.Button('SAVE')]]
+    open_and_save = [[sg.Input(size = (27,1)) , sg.FileBrowse( change_submits = True), sg.Button('Load sequence') ] , [sg.Input(size = (27,1)), sg.FileSaveAs(), sg.Button('SAVE')]]
 
     # generate_time_line has to read the exp_sequence to know
     # what elements to specify on the new window
