@@ -80,9 +80,9 @@
 
 Greetings,\\
 
-\textit{Classical Field Theory, A Quick Guide to} is compiled based on my independent study PH492: Topics in Classical Field Theory notes with professor Robert Bluhm. Sean Carroll's \textit{Spacetime and Geometry: An Introduction to General Relativity}, along with other resources, serves as the main guiding text. This text also references a number of other texts such as \textit{Quantum Field Theory} by Ryder, \textit{Quantum Field Theory} by Mandl and Shaw, \textit{Gauge Theories Of The Strong, Weak, And Electromagnetic Interactions} by Quigg, \textit{A First Book of Quantum Field Theory} by A. Lahiri and P. B. Pal.   \\
+\textit{Classical Field Theory, A Quick Guide to} is compiled based on my independent study PH491/2: Topics in Classical Field Theory notes with professor Robert Bluhm. Sean Carroll's \textit{Spacetime and Geometry: An Introduction to General Relativity}, along with other resources, serves as the main guiding text. This text also references a number of other texts such as \textit{Quantum Field Theory} by Ryder, \textit{Quantum Field Theory} by Mandl and Shaw, \textit{Gauge Theories Of The Strong, Weak, and Electromagnetic Interactions} by Quigg, \textit{A First Book of Quantum Field Theory} by A. Lahiri and P. B. Pal, \textit{Quantum Field Theory in a Nutshell} by Zee.   \\
 
-This text is a continuation of \textit{General Relativity and Cosmology, A Quick Guide to}. Familiarity with classical mechanics, linear algebra, vector calculus, and especially general relativity is expected. There will be a quick review of general relativity where important concepts are revisited and important derivations highlighted, but familiarity with basic notions such as geodesics, Christoffel symbols, the Riemann curvature tensors, etc. is assumed. \\ 
+This text is a continuation of \textit{General Relativity and Cosmology, A Quick Guide to}. Familiarity with classical mechanics, linear algebra, vector calculus, and especially general relativity is expected. There will be a quick review of general relativity where important concepts are revisited and derivations highlighted, but familiarity with basic notions such as geodesics, Christoffel symbols, the Riemann curvature tensors, etc. is assumed. \\ 
 
 Note: As a consequence of being developed from a variety of sources, there will be some overlapping among the sections. However, the objective of each section is unique.\\
 
@@ -3811,12 +3811,167 @@ meaning that it is still a conserved quantity.
 
 
 
+\chapter{Linearized Gravity}
+
+\section{The metric}
+
+
+We suppose that the gravitational field is weak enough to be decomposable into a Minkowski metric ($\eta_{\mu\nu} = \text{diag}(-1,+1,+1,+1)$)plus a small perturbation:
+\begin{align}
+g_{\mu\nu} = \eta_{\mu\nu} + h_{\mu\nu} \text{ where } \abs{h_{\mu\nu}} \ll 1.
+\end{align}
+Because $h_{\mu\nu}$ is small, we can ignore anything of order two or higher in $h_{\mu\nu}$. Recall that we were able to show 
+\begin{align}
+g^{\mu\nu} = \eta^{\mu\nu} - h^{\mu\nu},
+\end{align}
+where $h^{\mu\nu} \approx \eta^{\mu \alpha}\eta^{\nu\beta}h_{\alpha\beta}$, when we looked at the Newtonian limit of GR. Just a refresher, we did this by first showing that $g^{\mu\nu}g_{\nu\lambda} = \delta^{\mu}_{\lambda}$ to first order, assuming that products with $h$ terms can be taken to be 0. \\
+
+We can think of linearized GR as a theory of a symmetric tensor field $h_{\mu\nu}$ propagating on a flat background spacetime. This theory is Lorentz invariant, i.e, under a Lorentz transformation, $x^{\mu'} = \Lambda^{\mu'}_{\mu} x^{\mu}$, the flat metric $\eta_{\mu'\nu'} = \eta_{\mu\nu}$ is invariant, while the perturbation transforms as
+\begin{align}
+h_{\mu'\nu'} = \Lambda^{\mu'}_\nu \Lambda^{\nu'}_\nu h_{\mu\nu},
+\end{align}
+which follows the Lorentz transformation. \\
+
+In the next sections, we will re-derive the necessary mathematical objects to construct an equation of motion. 
+
+
+\section{The Christoffel symbols and Einstein tensor}
+
+
+Under the perturbation $g_{\mu\nu} \approx \eta_{\mu\nu} + h_{\mu\nu}$, the Christoffel symbols can be re-evaluated:
+\begin{align}
+\Gamma^{\rho}_{\mu\nu} &= \f{1}{2}g^{\rho\lambda} \lp \p_\mu g_{\nu\lambda} + \p_\nu g_{\lambda\mu} - \p_\lambda g_{\mu\nu} \rp \\ 
+&= \f{1}{2}\eta^{\rho\lambda}\lp \p_\mu h_{\nu\lambda} + \p_\nu h_{\lambda\mu} - \p_\lambda h_{\mu\nu} \rp.
+\end{align}
+This result comes from the fact that higher order terms are zero, and that the Minkowski metric is a constant. With this, we can find the Riemann tensor:
+\begin{align}
+\tensor{R}{^\mu_{\nu\lambda\sigma}}= \p_\lambda \Gamma^\mu_{\nu\sigma} - \p_\sigma \Gamma^\mu_{\nu\lambda} + \Gamma^{\rho}_{\nu\sigma} \Gamma^{\mu}_{\rho\lambda}- \Gamma^{\rho}_{\nu\lambda} \Gamma^{\mu}_{\rho\sigma}.
+\end{align}
+Next, we lower an index for convenience by 
+\begin{align}
+R_{\rho\nu\lambda\sigma} = g_{\mu\rho} \tensor{R}{^\mu_{\nu\lambda\sigma}} \approx \eta_{\mu\rho} \tensor{R}{^\mu_{\nu\lambda\sigma}}
+\end{align}
+then observe that all the $\Gamma^2$ terms contain higher orders of $h_{\mu\nu}$ and its derivatives. So we simply ignore these $\Gamma^2$ terms and keep only the $\Gamma$'s. After a bit of index-renaming, we get
+\begin{align}
+R_{\mu\nu\rho\sigma} =&\,\,\eta_{\mu\lambda}\lp \p_\rho \Gamma^\lambda_{\nu\sigma} - \p_\sigma \Gamma^\lambda_{\nu\rho} \rp\\
+=&\,\, \eta_{\mu\lambda}\lc \p_\rho 
+\lb 
+\f{1}{2}\eta^{\lambda\alpha}\lp \p_\nu h_{\sigma\alpha} + \p_\sigma h_{\alpha\nu} - \p_\alpha h_{\nu\sigma} \rp
+\rb \right. \nn \\
+&\left.- \p_\sigma 
+\lb 
+\f{1}{2}\eta^{\lambda\beta}\lp \p_\nu h_{\rho\beta} + \p_\rho h_{\beta\nu} - \p_\beta h_{\nu\rho} \rp
+\rb  
+\rc\\
+=&\,\, \f{1}{2}\lc 
+\p_\rho \lp \p_\nu h_{\sigma\mu} + \p_\sigma h_{\mu\nu} - \p_\mu h_{\nu\sigma} \rp
+-
+\p_\sigma\lp \p_\nu h_{\rho\mu} + \p_\rho h_{\mu\nu} - \p_\mu h_{\nu\rho} \rp
+\rc\\
+=& \,\, \boxed{\f{1}{2}\lp \p_\rho\p_\nu h_{\mu\sigma} + \p_\sigma\p_\mu h_{\nu\rho} - \p_\sigma\p_\nu h_{\mu\rho} - \p_\rho \p_\mu h_{\nu\sigma} \rp}
+\end{align}
+where we got from 6 terms to 4 terms because the $h_{\mu\nu}$ terms canceled. With this, we can compute the Ricci tensor, by contracting the Riemann tensor over $\mu$ and $\rho$ with the following rule
+\begin{align}
+R_{ab} = g^{cd}R_{cadb}.
+\end{align}
+Applying this rule to $R_{\mu\nu\rho\sigma}$, we obtain
+\begin{align}
+R_{\nu\sigma} &= \eta^{\mu\rho}R_{\mu\nu\rho\sigma} \\ 
+&= \f{1}{2}\eta^{\mu\rho}\lp  \p_\rho\p_\nu h_{\mu\sigma} + \p_\sigma\p_\mu h_{\nu\rho} - \p_\sigma\p_\nu h_{\mu\rho} - \p_\rho \p_\mu h_{\nu\sigma}  \rp \\
+&= \f{1}{2}\lp \p_\rho \p_\nu \tensor{h}{^\rho_\sigma} + \p_\sigma\p_\mu \tensor{h}{^\mu_\nu} - \p_\sigma\p_\nu \eta^{\mu\rho}h_{\mu\rho} - \p_\rho\p^\rho h_{\nu\rho}\rp.
+\end{align}
+Now, we notice a contraction $h = \eta^{\mu\rho}h_{\mu\rho}$. Plus, we also see that the first two terms are actually summations, so let us replace the repeated indices with $\sigma$. We also notice that we have $\p_\rho \p^\rho = \square$. Finally, let us make $\nu\to \mu$ and $\sigma \to \nu$, in order to get
+\begin{align}
+\boxed{R_{\mu\nu} = \f{1}{2}
+\lp 
+\p_\sigma\p_\mu \tensor{h}{^\sigma_\nu} + \p_\nu \p_\sigma \tensor{h}{^\sigma_\mu}
+- \p_\mu\p_\nu h - \square h_{\mu\nu}
+\rp}
+\end{align}
+
+
+Let us contract the Ricci tensor again to get the Ricci scalar:
+\begin{align}
+R &= \tensor{R}{^\mu_\mu}\\
+&= \eta^{\mu\nu}R_{\mu\nu}\\
+&= \eta^{\mu\nu}\lb \f{1}{2}
+\lp 
+\p_\sigma\p_\mu \tensor{h}{^\sigma_\nu} + \p_\nu \p_\sigma \tensor{h}{^\sigma_\mu}
+- \p_\mu\p_\nu h - \square h_{\mu\nu}
+\rp \rb\\
+&=  \f{1}{2}\lp \p_\sigma \p_\mu h^{\sigma\mu} + \p_\nu\p_\sigma h^{\sigma\nu} - \p_\mu \p^\mu h - \square h \rp\\
+&= \p_\sigma \p_\mu h^{\sigma\mu} - \square h.
+\end{align}
+Re-assigning the indices by letting $\sigma \to \mu$ and $\mu\to\nu $ gives
+\begin{align}
+\boxed{R = \p_\mu \p_\nu h^{\mu\nu} - \square h}
+\end{align}
+
+
+Finally, we put everything together to obtain the Einstein tensor:
+\begin{align}
+G_{\mu\nu} &= R_{\mu\nu} - \f{1}{2}\eta_{\mu\nu}R
+\end{align}
+We get
+\begin{align}
+\boxed{G_{\mu\nu} = \f{1}{2}\lp  \p_\sigma\p_\mu \tensor{h}{^\sigma_\nu} + \p_\nu \p_\sigma \tensor{h}{^\sigma_\mu}- \p_\mu\p_\nu h - \square h_{\mu\nu} - \eta_{\mu\nu}\p_\rho\p_\lambda h^{\rho\lambda} + \eta_{\mu\nu}\square h  \rp}
+\end{align}
 
 
 
-\chapter{Quantization}
+
+
+
+
+
+
+
 
 \newpage
+
+
+
+
+
+\chapter{Fierz-Pauli Massive Gravity}
+
+
+
+
+\newpage
+
+
+\chapter{Some Quantum Field Theory}
+
+
+
+\newpage
+
+
+
+
+\chapter{Nonlinear GR \& Massive Gravity}
+
+
+
+\newpage
+
+
+
+\chapter{Vainshtein mechanism}
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+
 
 
 
