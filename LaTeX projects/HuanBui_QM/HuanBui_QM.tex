@@ -131,7 +131,7 @@ Greetings,\\
 
 This text is my reading notes from Shankar's \textit{Principles of Quantum Mechanics, Second Edition}, \textit{Introductory Quantum Optics} by , \textit{Optical Coherence \& Quantum Optics}. Additional comes from my class notes, my comments/interpretations/solutions, and other books/articles/notes. There are three parts to this text, as the title suggests. The Quantum Mechanics part covers the principles of quantum mechanics. A majority of this part will be my reading notes from Shankar's book. The other two topics parts cover selected phenomena in quantum optics and quantum information theory.  \\
 
-Background in linear algebra will be very helpful. I will try to cover some of the mathematical background, but a lot of familiarity will be assumed. \\
+Background in linear algebra and modern physics (two semesters recommended) will be very helpful. I will try to cover some of the mathematical background, but a lot of familiarity will be assumed. \\
 
 Enjoy!
 
@@ -1545,7 +1545,7 @@ where $\ket{\omega}$ are of course the eigenstates. We recall that this expressi
 
 Now, postulate III says that the measurement of the variable $\Omega$ changes the state vector. This phenomenon is called the \textit{collapse/reduction of the state vector}. There are two types of measurements in quantum mechanics. Loosely speaking, an \textit{ideal measurement} of $\Omega$ leaves only the eigenstates of $\Omega$ invariant. For example, \textit{ideal measurement} of the momentum of a particle in a momentum eigenstate leaves the state vector of the particle unchanged. Physically, this is due to the fact that the photons required for this measurement can be infinitesimally low in energy. On the contrary, suppose we want to \textit{ideally} measure the position of some particle in a momentum eigenstate $\ket{p}$, which we can write in terms of the position eigenstates as
 \begin{align}
-\ket{p} =\int \ket{x} \bra{x}\ket{p}\,dx.
+\ket{p} =\int \ket{x} {p}\,dx.
 \end{align}
 We see that the measurement forces the particle into some eigenstate $\ket{x}$, thus changing the state vector. 
 
@@ -1611,7 +1611,23 @@ Or equivalently, we can write the uncertainty in $\Omega$ as a square root of an
 \subsubsection{Compatible and Incompatible Variables}
 
 
+Suppose we want to measure some quantity $\Omega$ from the state $\ket{\psi}$. Such a measurement can yield an eigenvalue, say $\omega$, with probability $P(\omega)= \abs{\braket{\omega}{\psi}}^2$ where $\ket{\omega}$ is the eigenfunction corresponding to the eigenvalue $\omega$. Now, what if we want to measure a different variable, say $\Lambda$, on the already measured state $\ket{\psi}$? We see that this is sort of like a filtering process where we start with $\ket{\psi}$ and want to produce a state with $\omega$ and $\lambda$. But notice that once we measure $\ket{\psi}$, we have made the transformation $\ket{\psi} \to \ket{\omega}$. Can measuring $\ket{\omega}$ give $\ket{\lambda}$? The answer is no, not generally, since $\ket{\omega}$ must has a component that is the eigenfunction corresponding to the eigenvalue $\ket{\lambda}$. \\
 
+An exception occurs when the state produced after the first measurement is unaffected by the second measurement, i.e., $\ket{\omega}$ is also an eigenstate of $\Lambda$. So, a natural question is when do two operators $\Omega$ and $\Lambda$ have \textit{exactly} the same eigenkets? Mathematically, we want to know when the following equation 
+\begin{align}
+[\Omega, \Lambda] = 0 \forall \text{ eigenket}
+\end{align}
+holds. Well, given any two operators $\Omega$ and $\Lambda$, we call $\Omega$ and $\Lambda$ \textit{compatible} if they commute, i.e., $[\Omega, \Lambda] = 0$. They are \textit{incompatible} when they don't commute. There's also a third situation where $\Omega$ and $\Lambda$ don't share all of their eigenkets. \\
+
+If $\Omega$ and $\Lambda$, we can show with linear algebra that $\Omega$ and $\Lambda$ are simultaneously diagonalizable, i.e., we know a complete basis of simultaneous eigenkets can be found. \\
+
+If $\Omega$ and $\Lambda$ never commute, then any attempt to filter $\Omega$ is ruined by a subsequent filtering for $\Lambda$ and vice versa. A classic example of this is the canonical commutation rule
+\begin{align}
+[\hat{x}, \hat{p}] = i\hbar,
+\end{align}
+which is the origin of the \textit{Heisenberg uncertainty principle}. \\
+
+There's nothing interesting about the third situation so we will skip it. 
 
 
 
@@ -1619,19 +1635,139 @@ Or equivalently, we can write the uncertainty in $\Omega$ as a square root of an
 
 
 \subsubsection{The Density Matrix}
-\subsubsection{Generalization to More Degrees of Freedom}
+
+For an ensemble of $N$ systems, the \textit{density matrix} is given by
+\begin{align}
+\rho = \sum_i p_i \ket{i}\bra{i}
+\end{align}
+where
+\begin{align}
+p_i = \f{n_i}{N}
+\end{align}
+is the probability that a system picked randomly out of the ensemble is in the state $\ket{i}$.\\
+
+Any ensemble average of $\Omega$ is given by
+\begin{align}
+\langle \bar{\Omega} \rangle = \sum_i p_i \bra{i}\Omega\ket{i}.
+\end{align}
+We note that there are two \textit{kinds} of average going on here. First we have $\bra{i}\Omega\ket{i}$, which is the expectation value of $\Omega$ for a given state $i$, and then we have the \textit{bar} average, which is the statistical expectation value over the entire ensemble. Next, we observe that
+\begin{align}
+\Tr(\Omega \rho) &= \sum_j \bra{j}\Omega \rho \ket{j}\\
+&= \sum_j \sum_i    \bra{j}\Omega\ket{i}\bra{i}\ket{j}p_i\\
+&= \sum_i \sum_j \braket{i}{j}\bra{j}\Omega\ket{i}p_i\\
+&= \sum_i \sum_j \delta_{ij}  \bra{j}\Omega\ket{i}p_i\\
+&= \sum_i p_i \bra{i}\Omega\ket{j}\\
+&= \langle \bar{\Omega} \rangle.
+\end{align}
+Thus we say the density matrix contains all statistical information about the ensemble. Now, suppose we don't want $\langle $ but instead $\bar{P(\omega)}$, the probability of obtaining a particular value $\omega$, then we simply replace $\bar{\Omega}$ by an \textit{probability operator} for $\omega$, which is simply $\ket{\omega}\bra{\omega}$. So,
+\begin{align}
+\bar{P(\omega)} = \Tr(\ket{\omega}\bra{\omega} \rho).
+\end{align}
+
+Now, a very important property of the density matrix is that its trace is 1:
+\begin{align}
+\Tr(\rho) &= \sum_j \bra{j} \rho \ket{j} \\ 
+&= \sum_j \bra{j}  \lp\sum_i \ket{i}\bra{i} \rp \ket{j}\\
+&= \sum_j \sum_i \delta_{ij}\delta_{ij}\\
+&= 1.
+\end{align}
+
+Since the density matrix is defined as a sum of outer products, it acts like a projection, and thus is Hermitian, i.e., $\rho^\dagger = \rho$. Any because it is a projection, letting it act twice (assuming ensemble is pure) is the same as letting it act once $\rho^2 = \rho$. If the ensemble is uniformly distributed over $k$ states then $\rho = (1/k)I$ where $I$ is the identity. And finally, $\tr(\rho^2) \leq 1$ in general, where equality holds when the ensemble is pure.
 
 
 
 
 
 
-\subsection{The Schr\"{o}dinger Equation}
+\subsection{The Schr\"{o}dinger Equation \& The Propagator}
+
+At this point we should know what the Schr\"{o}dinger equation is and its solution for the SHO problem. But now let us look a bit closer in terms of Dirac brakets. Let the initial ket $\ket{\psi(0)}$ be given. How is it going to evolve in time? We find this by constructing a propagator $U(t)$ such that
+\begin{align}
+\ket{\psi(t)} = U(t)\ket{\psi(0)}.
+\end{align}
+We note that $U(t)$ must retain the normalization of $\ket{\psi}$, i.e., preserve the length of the vector $\ket{\psi}$. We have reasons to think that $U(t)$ is unitary. Now, the time-independent SE says
+\begin{align}
+\ham\ket{\psi} = E\ket{\psi}.
+\end{align}
+Suppose the eigenfunction corresponding to the eigenvalue $E$ is found to be $\ket{E}$. Then we can write $\ket{t}$ is the $\ket{E}$ basis:
+\begin{align}
+\ket{\psi(t)} = \sum c_i \ket{E_i} = \sum\ket{E} \bra{E}\psi(t)\ket \equiv \sum a_E(t)\ket{E}.
+\end{align}
+Now, let $\hat{H}$ act on both sides of the equation and using the fact that both $\ket\psi(t)$ and $\ket{E}$ are solutions to the SE to get
+\begin{align}
+i\hbar \dot{a}_E = Ea_E.
+\end{align}
+This is a rather easy ODE to solve. The general solution has the form
+\begin{align}
+a_E(t) = a_E(0)e^{-iEt/\hbar}.
+\end{align}
+Now, note that $a_E(t)$ are inner products between $\ket{E}$ and $\ket{\psi(t)}$. In other words, 
+\begin{align}
+\braket{E}{\psi(t)} = \braket{E}{\psi(0)}e^{-iEt/\hbar}.
+\end{align}
+
+Plugging everything back into the expression for $\ket{\psi(x)}$ we get
+\begin{align}
+\ket{\psi(t)} = \sum \ket{E}  \braket{E}{\psi(0)} e^{-iEt/\hbar}.
+\end{align}
 
 
-\subsubsection{Setting up}
-\subsubsection{General Approach to the Solution}
-\subsubsection{Choosing a Basis for Solving SE}
+And thus we can now extract $U(t)$, where $\ket{\psi(t)} = U(t)\ket{\psi(0)}$:
+\begin{align}\label{propagator}
+\boxed{U(t) = \sum_E \ketbra{E}{E}e^{-iEt/\hbar}}
+\end{align}
+
+
+Now, by Taylor series expansion, we can verify that an expression for the propagator $U(t)$ is
+\begin{align}
+U(t) = e^{-i\ham t/\hbar},
+\end{align}
+where $\ham$ here is the Hamiltonian itself. Now, because $\ham$ is Hermitian (self-adjoint), $U(t)$ must be unitary, as expected. Thus we can think of the propagator $U(t)$ as some sort of a rotation of the vector $\ket{\psi}$ in Hilbert space. From linear algebra, we know that unitary operators preserves length. This is the reason why $\ket{\psi(t)}$ stays normalized once it is normalized at $t=0$. \\
+
+Now, what if we chose to be in a different frame where the vectors $\ket{\psi}$ seem frozen (i.e. not rotating)? First, we can do this by a change of basis. But note that no physical quantity might change from this change of basis because inner products are preserved. This picture where the vectors are not rotating is called the \textit{Heisenberg picture}, whereas the picture we are familiar with is called the \textit{Schr\"{o}dinger picture}. 
+
+
+
+\subsubsection{The Propagator \& Time-dependent Hamiltonian}
+
+
+Suppose now that our Hamiltonian is a combination of a time-independent part and a small time-dependent piece:
+\begin{align}
+\ham(t) = \ham^0 + \ham^1(t).
+\end{align}
+
+The question is, how is the propagator $U(t)$ defined in terms of this new Hamiltonian? To find out, let us first divide the interval $0 \to t$ into $N$ pieces of width $\Delta = t/N$, where $N$ is very large and $\Delta$ is very small. To \textit{first order in $\Delta$}, the integrated SE is given by
+\begin{align}
+\ket{\psi(\Delta)} &= \ket{\psi(0)} + \Delta \f{d\ket{\psi(t)}}{dt}\bigg\vert_0 \\ 
+&=\ket{\psi(0)} + \Delta \lp \f{-i}{\hbar}\rp \ham(0)\ket{\psi(0)}\\
+&= \lb 1 - \f{i\Delta}{\hbar} \ham(0) \rb \ket{\psi(0)}\\
+&\approx \exp\lb \f{-i\Delta}{\hbar} \ham(0) \rb \ket{\psi(0)}.
+\end{align}
+
+
+Inching forth in steps of $\Delta$, we should get
+\begin{align}
+\ket{\psi(t)} = \prod_{n=0}^{N-1} e^{-i\Delta \ham(n\Delta) / \hbar} \ket{\psi(0)}.
+\end{align}
+Now note that we can't simply add the exponents because the Hamiltonian (as an operator) changes in time, i.e., it at time $t_1$ does not necessarily commute with itself at $t_2$. \\
+
+Thus the propagator $U(t)$ has the form of a \textit{time-ordered integral}:
+\begin{align}
+U(t) = T\lc \exp\lb -(i/\hbar) \int_0^t \ham(t')\,dt' \rb \rc = \lim_{N\to \infty} \prod_{n=0}^{N_1} \exp\lb -(i/\hbar)\ham(n\Delta)\Delta \rb.
+\end{align}
+One thing to note here is that $U(t)$ is still a product of unitary operators, so it is still unitary even though $\ham$ is time-dependent. \\
+
+While we haven't gained much insights in this short discussion of propagators, propagators do appear again in quantum field theory. The treatment where time is divided into smaller chunks is also used. In fact, we have
+\begin{align}
+U(t_3, t_2)U(t_2,t_1) = U(t_3,t_1),
+\end{align}
+and that $U(t)$ is unitary, i.e., $U(t_1,t_2) = U^\dagger(t_2,t_1)$. This will appear again in a very similar fashion in quantum field theory. 
+
+
+
+
+
+
 
 
 
@@ -1650,20 +1786,172 @@ Or equivalently, we can write the uncertainty in $\Omega$ as a square root of an
 
 \subsection{The Free Particle}
 
-\subsubsection{Time Evolution for the Gaussian Packet}
-\subsubsection{Some General Features of Energy Eigenfunctions}
+The Hamiltonian for the free particle case has the form $\ham = \hat{p}^2/2m$. Let the eigenfunctions of $\ham$ be $\ket{E}$, then a general eigenfunction has the form
+\begin{align}
+\ket{\psi(t)} = \ket{E}e^{-iEt/\hbar},
+\end{align}
+where $E$ is the eigenvalue corresponding to the eigenvector $\ket{E}$. Next, consider an eigenfunction $\ket{E}$. $\ket{E}$ solves the time-independent SE, so
+\begin{align}
+\ham\ket{E} = \f{\hat{p}^2}{2m}\ket{E} = E\ket{E}.
+\end{align}
+Because $\ket{E} \neq 0$, we find that the eigenvalues of $\hat{p}$ must be $\pm \sqrt{2mE}$. Thus, there are two orthogonal eigenstates for each eigenvalue $E$:
+\begin{align}
+\ket{E, +} &= \ket{p = \sqrt{2mE}}\\
+\ket{E, -} &= \ket{p = -\sqrt{2mE}}.
+\end{align}
+This makes physical sense since it describes the same particle with the same energy but is allowed to travel to the left or to the right. This is like classical mechanics. However the twist here is that any linear combination of these two states $\ket{E, +}$ and $\ket{E, -}$ are also eigenstates corresponding to the eigenvalue $E$. The fact that this state describes a single particle is a classically prohibited thing.\\
+
+Now, recall our extraction of the propagator in the previous section (\eqref{propagator}):
+\begin{align}
+U(t) = \int^\infty_{-\infty} \ketbra{p} e^{-iE(p)t/\hbar}\,dp  = \int^\infty_{-\infty} \ketbra{p} e^{-ip^2t/2m\hbar}\,dp,
+\end{align}
+where it suffices to just specify the momentum of the particle (see, $E$ is degenerate, but $p$ is not, so specifying $p$ specifies both momentum and energy). \\
+
+The propagator $U(t)$ can be evaluated explicitly in the $X$ basis starting with the matrix element
+\begin{align}
+\bra{x}U(t)\ket{x'} &= \int_{-\infty}^\infty \braket{x}{p}\braket{p}{x'}e^{-ip^2t/2m\hbar}\,dp\\
+&= \f{1}{2\pi \hbar}\int_{-\infty}^\infty e^{ip(x-x')/\hbar} \dot e^{-ip^2 t/2m\hbar}\,dp  \hspace{0.5cm}\text{Fourier transform twice?}\\
+&= \sqrt{\f{m}{2\pi \hbar it}} e^{im(x-x')^2/2\hbar t}.
+\end{align}
+
+With this, we can now find explicitly $\psi(x,t)$ given $\psi(x,0)$:
+\begin{align}
+\psi(x,t) =\int \bra{x}U(t)\ket{x'}  \psi(x',0)\,dx' \equiv \int U(x,t;x',0)  \psi(x',0)\,dx'.
+\end{align}
+If we started out at some time $t'\neq 0$ then we would have
+\begin{align}
+\boxed{\psi(x,t) =\int U(x,t;x',t')  \psi(x',t')\,dx'}
+\end{align}
+
+Now, suppose we started off with a particle localized at $x' = x_0'$, i.e., $\psi(x',t') = \delta(x'-x_0')$, then
+\begin{align}
+\psi(x,t) = U(x,t;x_0',t').
+\end{align}
+This turns out to have some nice interpretations. What this equation is saying is that the propagator (in the $X$ basis) is the \textit{amplitude} that a particle starting out at the space-time point $(x_0',t')$ ends with at the space-time point $(x,t)$. The equation 
+\begin{align}
+\psi(x,t) =\int U(x,t;x',t')  \psi(x',t')\,dx'
+\end{align}
+tells us that the total amplitude for the particle's arrival at $(x,t)$ is the sum of the contributions from all points $x'$ with a weight proportional to the initial amplitude $\psi(x',t')$ tat the particle was at $x'$ at time $t'$. \\
+
+This is a very nice interpretation which will appear again in quantum field theory. In fact, this interpretation is very well highlighted in the first two chapters of Feynman's famous book \textit{Quantum Electrodynamics}. 
+
+
+
 
 
 
 \subsection{The Particle in a Box}
 
+This classical problem is also referred to as the infinite square well problem that is often introduced in sophomore year modern physics and revisited in third year introduction to quantum mechanics. We will assume familiarity with this problem and its solution. And we will simply recall that the eigenfunctions for the time-independent SE is 
+\begin{align}
+\psi_n(x) &= \sqrt{\f{2}{L}}\sin\lp \f{n\pi x}{L} \rp, \hspace{0.5cm}n\text{ even} > 0\\
+&=\sqrt{\f{2}{L}}\cos\lp \f{n\pi x}{L} \rp, \hspace{0.5cm}n\text{ odd}.
+\end{align}
+The allowed energies are
+\begin{align}
+E_n = \f{\hbar^2 \pi^2 n^2}{2mL^2}.
+\end{align}
+
+Of course because $E_n$'s are the eigenvalues of an operator, the energy which it represents is quantized, at least in the bound states. The fact that the lowest energy state is not zero directly comes from the Heisenberg uncertain principle. If the lowest energy state is zero, then the momentum in the ground state is zero, which violates the fact that $\Delta p > 0$. \\
+
+Now, let us focus a little bit on the propagators in the problem. If we let $\ket{n}$ denote an abstract braket corresponding to $\psi_n(x)$, then we can write the propagator as
+\begin{align}
+U(t) = \sum^\infty_{n=1}\ketbra{n} \exp \lb -\f{i}{\hbar} \f{\hbar^2\pi^2n^2}{2mL^2} t \rb,
+\end{align} 
+which follows direction from the definition of propagators (\eqref{propagator}). In the $X$ basis the propagator is simply just 
+\begin{align}
+\bra{x}U(t)\ket{x'} = \sum^\infty_{n=1}\psi_n(x)\psi_n^*(x')\exp \lb -\f{i}{\hbar}\f{\hbar^2\pi^2n^2}{2mL^2} t \rb.
+\end{align}
+
+
+
+
+
+
+
+
+
 \subsection{The Continuity Equation for Probability}
+
+
+
+In this section, we focus on two important concepts: \textit{probability current density} and the \textit{continuity equation} is satisfies. \\
+
+We know that charge is a conserved quantity, i.e., $Q(t) = \text{Constant}$. However, charge is also conserved locally. This is expressed in the form of the continuity equation
+\begin{align}
+\f{\p \rho(\mathbf{r},t)}{\p t} = -\div \mathbf{j},
+\end{align}
+where $\rho$ is the charge density and $\mathbf{j}$ is the current density. Take the volume integral of both sides, we get
+\begin{align}
+\f{d}{dt}\int_V \rho(\mathbf{r},t)\,d^3\mathbf{r} = -\int_V \div \mathbf{j}\,d^3\mathbf{r} = \oint_{S_V} \mathbf{j}\cdot d\mathbf{S}.
+\end{align}
+This basically says that the rate of change in charge is account for by a flux through some closed surface. \\
+
+In QM, the quantity that is conserved is the probability that we observe the particle somewhere. 
+\begin{align}
+\braket{\psi(t)} = \bra{\psi(0)}U^\dagger(t)U(t)\ket{\psi(0)} = \braket{\psi(0)},
+\end{align}
+so
+\begin{align}
+\braket{\psi(t)} &= \iiint \braket{\psi(t)}{x,y,z}\braket{x,y,z}{\psi(t)}\,dxdydz\\
+&= \iiint \braket{\psi(t)}{\mathbf{r}}\braket{\mathbf{r}}{\psi(t)}\,d^3\mathbf{r}\\
+&= \iiint \psi(\mathbf{r},t)^* \psi(\mathbf{r},t)\,d^3\mathbf{r}\\
+&= \iiint P(\mathbf{r},t)\,d^3\mathbf{r}\\
+&= 1.
+\end{align}
+
+This is like the conservation of charge, but for probability. Now, let us turn to the SE to get the continuity equation for probability. Consider the SE and its conjugate, we can obtain the follow equation
+\begin{align}
+i\hbar \f{\p}{\p t} \lp \psi^*\psi \rp &= -\f{\hbar^2}{2m}\lp \psi^*\laplacian\psi - \psi \laplacian\psi^* \rp\\
+\f{\p P}{\p t} &= -\f{\hbar}{2mi} \div \lp \psi^*\grad{\psi} - \psi \grad \psi^* \rp\\
+\f{\p P}{\p t} &= -\div \mathbf{j}
+\end{align}
+where of course
+\begin{align}
+\mathbf{j} = \f{\hbar}{2mi} \lp \psi^*\grad{\psi} - \psi \grad \psi^* \rp
+\end{align}
+is called the \textit{probability current density}. To regain global conservation law, we integrate the above equation over all space to get
+\begin{align}
+\f{d}{dt}\int P(\mathbf{r},t)\,d^3\mathbf{r} = -\oint_{S_\infty} \mathbf{j}\cdot d\mathbf{S}.
+\end{align}
+This equation holds because the LHS is obviously 0, and the RHS is zero because wavefunctions have to be normalized, i.e., they have to be zero on the boundary. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsection{The Single-Step Potential: A Problem in Scattering}
 
-\subsection{The Double-Slit Experiment}
+Please refer to PH242 archive for a complete tutorial on this. The strategy includes getting rid of unphysical anzats, matching the wavefunctions and their derivatives at the barriers. The hard part is calculating the correct coefficients. But other than that there's no new quantum mechanics here except the concepts of transmission and reflection probabilities. \\
+
+One thing to take away here is that there is some tunneling/penetration effect going on. Basically, we find that there is a non-zero probability that the particle is the classical forbidden region inside the barrier.
+
+
 
 \subsection{Some Theorems}
+
+\textbf{Theorem 1:} \textit{There is no degeneracy in one-dimensional bound states.}\\
+
+The proof starts with assuming $\psi_1$ and $\psi_2$ have the same eigenvalue $E$. Then by the SE, we can show that $\psi_1 \propto \psi_2$, which means they both represent the same state. \\
+
+\textbf{Theorem 2:} \textit{The eigenfunctions of $\ham$ can always be chosen pure real in the coordinate basis.}\\
+
+The proof starts with the SE and its conjugate. Since $\psi$ and $\psi^*$ are solutions to the SE, their linear combinations are solutions. In particular, $\psi_r = (1/2)\lp \psi + \psi^* \rp$ is a solution, and it is pure real. And of course, $\psi_{im} = (1/2i)\lp \psi - \psi^*\rp$ is also pure real. 
 
 
 
