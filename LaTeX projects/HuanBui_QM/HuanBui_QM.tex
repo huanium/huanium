@@ -116,7 +116,7 @@
 \begin{document}
 \begin{titlepage}\centering
  \clearpage
- \title{{\textsc{\textbf{QUANTUM\\ Mechanics, Optics, and Information}}}\\ \smallskip - A Quick Guide - \\}
+ \title{{\textsc{\textbf{Topics in Quantum Mechanics}}}\\ \smallskip - A Quick Guide - \\}
  \author{\bigskip Huan Q. Bui}
   \affil{Colby College\\$\,$\\ PHYSICS \& MATHEMATICS\\ Statistics \\$\,$\\Class of 2021\\}
  \date{\today}
@@ -899,7 +899,7 @@ In this way, we can describe higher derivatives of $\delta$:
 
 
 
-Next, we will develop an alternative representation of the delta function. Suppose we're given a function $f(x)$. The Fourier transform is given by
+Next, we will develop an alternative representation of the delta function. Suppose we're given a function $f(x)$. The Fourier transform is given by 
 \begin{align}
 \F[f](k) = \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty}e^{-ikx}f(x)\,dx.
 \end{align}
@@ -1032,7 +1032,7 @@ To get back to the $x$ basis, we simply apply the inverse transform:
 \begin{align}
 f(x) = \braket{x}{f} = \int^\infty_{-\infty}   \braket{x}{k}\braket{k}{f}\,dk = \f{1}{\sqrt{2\pi}}\int^\infty_{-\infty} e^{ikx}f(k)\,dk.
 \end{align}
-Thus the familiar Fourier transform gives us the passage from one complete basis to another. What about the matrix elements of $K$ in the $k$ basis? It turns out that these elements are trivial:
+Thus the familiar Fourier transform gives us the passage from one complete basis to another. What about the matrix elements of $K$ in the $k$ basis? It turns out that these elements are trivial:  
 \begin{align}
 \bra{k}K\ket{k'} = k'\braket{k}{k'} = k'\delta(k-k').
 \end{align}
@@ -1808,7 +1808,7 @@ U(t) = \int^\infty_{-\infty} \ketbra{p} e^{-iE(p)t/\hbar}\,dp  = \int^\infty_{-\
 where it suffices to just specify the momentum of the particle (see, $E$ is degenerate, but $p$ is not, so specifying $p$ specifies both momentum and energy). \\
 
 The propagator $U(t)$ can be evaluated explicitly in the $X$ basis starting with the matrix element
-\begin{align}\eqref{free-propagator}
+\begin{align}\label{free-propagator}
 \bra{x}U(t)\ket{x'} &= \int_{-\infty}^\infty \braket{x}{p}\braket{p}{x'}e^{-ip^2t/2m\hbar}\,dp\\
 &= \f{1}{2\pi \hbar}\int_{-\infty}^\infty e^{ip(x-x')/\hbar} \dot e^{-ip^2 t/2m\hbar}\,dp  \hspace{0.5cm}\text{Fourier transform twice?}\\
 &= \sqrt{\f{m}{2\pi \hbar it}} e^{im(x-x')^2/2\hbar t}.
@@ -2215,7 +2215,7 @@ With this, the integrand with $\hat{x}$ can now be replaced by an expression in 
 
 
 
-\section{The Path Integral Formulation of Quantum Theory}
+\section{Path Integral Formulation of QM, Shankar}
 
 
 
@@ -2391,10 +2391,284 @@ B = \sqrt{\f{2\pi\hbar \epsilon i}{m}}.
 We can easily see how the propagator we just found is exactly the same as that derived earlier and the approximated version, given appropriate normalization has been made. 
 
 
+  
 
 
 
-\subsection{Equivalence to the Schr\"{o}dinger equation}
+
+
+\newpage
+
+
+
+
+
+
+
+\section{Path Integral Formulation of QM, Zee}
+
+
+
+
+In this section, we will look at the path integral formulation a bit more formally with the Dirac bra-ket notation. To do this, we will first revisit some QM concepts and standardize some of the notations/conventions. We will also look at how the propagator comes to contain the term involving the action and the Lagrangian, naturally from working with a Hamiltonian.
+
+
+\subsection{Revisiting QM}
+
+
+For the completeness relation in Hilbert space, we will use the following convention
+\begin{align}
+\boxed{1 = \int \,dx \ketbra{x}}
+\end{align}
+for the position and 
+\begin{align}
+\boxed{1 = \f{1}{2\pi}\int \,dp \ketbra{p}}
+\end{align}
+for momentum. \\
+
+Next, given a state $\ket{\psi}$, the probability amplitude that $\ket{\psi}$ is in some eigenstate $\ket{a}$ is given by
+\begin{align}
+\psi(a,t) = \braket{a}{\psi},
+\end{align}
+which are the coefficients when $\ket{\psi}$ is expanded in the $\ket{a}$ basis:
+\begin{align}
+\ket{\psi} = \sum \ket{a}\bra{a}\ket{\psi}.
+\end{align}
+And of course the probability that $\ket{\psi}$ is in the eigenstate $\ket{a}$ is the modulus square of this coefficient.\\
+
+
+
+The Dirac delta function is given by
+\begin{align}
+\delta(x - x') = \f{1}{2\pi}\int e^{-ip(x-x')}\,dp,
+\end{align}
+and has the property
+\begin{align}
+f(x) = \int \delta(x'-x) f(x')\,dx'.
+\end{align}
+
+Be careful that the derivation of this representation of the delta function depends on our convention when writing the Fourier transform and its inverse. By convention, we will use the asymmetric Fourier transform 
+\begin{align}
+\boxed{\mathcal{F}[\psi_x] = \f{1}{2\pi}\int \Phi_p e^{ixp}\,dp}
+\end{align} 
+and
+\begin{align}
+\boxed{\mathcal{F}^{-1}[\Phi_p] = \int \psi_x e^{-ixp}\,dx}
+\end{align}
+We recall that the Fourier transform gives us a passage between the position and momentum space. \\
+
+From these conventions, we will have
+\begin{align}
+\boxed{\braket{x}{p} = e^{ixp} \hspace{0.5cm} \braket{p}{x} = e^{-ixp}}
+\end{align}
+and here's why. Suppose we're given a physical wavefunction in the $x$-basis: $\psi(x,t)$. Then we can write it as an inner product of $\ket{x}$ and $\ket{\psi}$, then inserting the completeness relation to express it in the momentum space:
+\begin{align}
+\psi(x,t) &= \braket{x}{\psi}\\
+&= \f{1}{2\pi}\int \bra{x}\ket{p}\underbrace{\bra{p}\ket{\psi}}_{\Phi(p,t)}\,dp\\
+&= \f{1}{2\pi}\int \bra{x}\ket{p} \Phi(p,t)\,dp.
+\end{align}
+But we also have that the Fourier transform is another passage between position and momentum space. Here, $\psi$ is the inverse transform of $\Phi$, so
+\begin{align}
+\psi(x,t) = \mathcal{F}^{-1}[\Phi(p,t)] = \int \Phi(p,t)e^{ixp}\,dp.
+\end{align}
+
+
+Okay, now here's where Zee's convention becomes a little confusing, since we obviously see there's a factor of $2\pi$ missing. So, in this case it is probably safer to use the completeness relation without the $2\pi$, just so we can get through this derivation. But other than this time, Zee follows the completeness relation stated above. \\
+
+With these we get
+\begin{align}
+\mathcal{F}^{-1}[\Phi(p,t)] = \int \Phi(p,t)e^{ixp}\,dx = \f{1}{2\pi}\int \bra{x}\ket{p} \Phi(p,t)\,dp,
+\end{align} 
+which means
+\begin{align}
+\boxed{\braket{x}{p} = e^{ixp}}
+\end{align}
+Taking the conjugate, we get
+\begin{align}
+\boxed{\braket{p}{x} = e^{-ixp}}
+\end{align}
+
+
+\subsection{Green's Function}
+
+
+
+Green's function will become particularly useful later on this section.\\
+
+Suppose we want to solve the following ODE:
+\begin{align}
+\lp m \p_t^2 + k \rp x(t) = f(t)
+\end{align}
+where we can think of $f(t)$ is a source, and we want to find $x(t)$. \\
+
+Green says we can solve this ODE using a Green's function defined by
+\begin{align}
+\lp m \p_t^2 + k \rp G(t,u) = \delta(t - u)
+\end{align}
+where we will use
+\begin{align}
+f(t) = \int \delta(t-u) f(u)\,du.
+\end{align}
+
+Given a solution of $G(t,u)$, then the solution to the problem is
+\begin{align}
+\boxed{x(t) = \int \,du G(t,u)f(u)}
+\end{align}
+because
+\begin{align}
+\lp m \p_t^2 + k \rp x(t) &= \lp m \p_t^2 + k \rp \int \,du G(t,u)f(u)\\
+&= \int \,du  \lp m \p_t^2 + k \rp G(t,u)f(u)\\
+&= \int \,du \delta(t-u)f(u)\\
+&= f(t).
+\end{align}
+
+
+So to solve this ODE it comes down to getting $G(t,u)$, which depends on the nature of the problem. But one thing to notice here is that we can think of $G(t,u)$ as something that carries the effects of the source $f(t)$ and gives $x(t)$ which describes these effects. 
+
+
+
+
+\subsection{Propagators}
+
+
+
+As before, a propagator for time $t$ to $t'$ of a state is given by
+\begin{align}
+\boxed{\ket{\psi(t')} = U(t',t)\ket{\psi(t)}}
+\end{align}
+Let a Hamiltonian be given, then
+\begin{align}
+\ham \ket{\psi(t)} = i\hbar \p_t \ket{\psi(t)}.
+\end{align}
+The state $\ket{\psi(t')}$ also satisfies the SE, so we have
+\begin{align}
+\ham U(t',t)\ket{\psi(t')} = i\hbar \p_t U(t',t)\ket{\psi(t')}.
+\end{align}
+Now, because the SE is true for any given state $\ket{\psi(t)}$, we must have that
+\begin{align}
+\ham U(t',t) = i\hbar \p_t U(t',t).
+\end{align}
+Suppose the Hamiltonian is time-independent, then we can solve this differential equation (as to how this works requires a proof, but we won't go into that)
+\begin{align}
+\boxed{U(t',t) = \exp\lb \f{-i}{\hbar}\ham (t'-t) \rb}
+\end{align}
+We note that because $U(t',t)$ has to be unitary, we don't get any leading coefficients in front. \\
+
+So we have
+\begin{align}
+\ket{\psi(t')} = \exp \lb \f{-i \ham t}{\hbar} \rb \ket{\psi(t)}.
+\end{align}
+In the physical $x$-basis, 
+\begin{align}
+\psi(x',t') &= \bra{x'}\ket{\psi(t')}\\
+&= \bra{x'}\exp \lb \f{-i \ham (t'-t)}{\hbar} \rb \ket{\psi(0)}.
+\end{align}
+Inserting the completeness relation in $x$, we get
+\begin{align}
+\psi(x',t') &= \int \,dp \underbrace{ \bra{x'}\exp \lb \f{-i \ham (t'-t)}{\hbar} \rb \ket{x}}_{\text{amplitude}}\underbrace{\braket{x}{\psi(t)}}_{\psi(x,t)}\\ 
+&=  \int \,dp \lp \bra{x'}\exp \lb \f{-i \ham (t'-t)}{\hbar} \rb \ket{x} \rp \psi(x,t).
+\end{align}
+
+
+Here, we say the amplitude of the propagation from $\ket{\psi(x,t)} \to \ket{\psi(x',t')}$ is 
+\begin{align}
+\boxed{\bra{x'}\exp \lb \f{-i \ham (t'-t)}{\hbar} \rb \ket{x} = \bra{x'}U(t',t)\ket{x}}
+\end{align}
+
+
+But how do we evaluate this? This is where the path integral comes in. We first break time into $N$ segments or width $\delta t = (t' - t)/N$ and write $x(t') = x_F$ and $x(t) = x_I$. With this,
+\begin{align}
+\bra{x_F}e^{-i\ham T / \hbar}\ket{x_I} &= \bra{x_F}e^{-i\ham \delta t / \hbar}\ket{x_I} \dots e^{-i\ham \delta t / \hbar}\ket{x_I} \ket{x_I}.
+\end{align}
+Next, we insert between each exponential a completeness relation from $N-1$ to $0$ to get
+\begin{align}\label{path}
+\bra{x_F}e^{-i\ham T / \hbar}\ket{x_I} &= \lp\prod_{j=1}^{N-1}\int \,dx_j \rp\bra{x_F}e^{-i\ham \delta t / \hbar}\ket{x_{N-1}}\bra{x_{N-1}}e^{-i\ham \delta t / \hbar}\dots \bra{x_1}\ket{x_I}.
+\end{align}
+If the Hamiltonian is given by
+\begin{align}
+\ham = \f{\hat{p}^2}{2m},
+\end{align}
+which describes the free particle, then we can perform the integration step-by-step by looking at each piece involving a certain $j$. So for example to integrate the part $i$ and $i+1$ we insert the completeness relation (with or without the $2\pi$ will do - the idea is more important here) in momentum to get
+\begin{align}
+\bra{x_{j+1}}e^{-i\ham \delta t / \hbar} \ket{x_j}
+&= \int \bra{x_{j+1}} e^{-i(\hat{p}^2/2m) \delta t / \hbar}  \ket{p}\braket{p}{x_j} \,dp.
+\end{align}
+We can check that the following holds
+\begin{align}
+e^{-i(\hat{p}^2/2m) \delta t / \hbar}  \ket{p} =  e^{-i(p^2/2m) \delta t / \hbar} \ket{p},
+\end{align}
+by writing the operator as a power series and summing up the eigenvalues in the end. So with this we can remove the hat from the momentum operator, turning it into a number, then bring it out front:
+\begin{align}
+\bra{x_{j+1}}e^{-i\ham \delta t / \hbar} \ket{x_j} &=
+\int  e^{-i({p}^2/2m) \delta t / \hbar}\braket{x_{j+1}}{p}\braket{p}{x_j} \,dp\\
+&= e^{-i({p}^2/2m) \delta t / \hbar}\braket{x_{j+1}}{x_j}\\
+&= e^{-i({p}^2/2m) \delta t / \hbar}\delta(x_{j+1}, x_j)\\
+&= \f{1}{2\pi}\int\,dp \, e^{-i({p}^2/2m) \delta t / \hbar} e^{-ip(x_{j+1} - x_j)}.
+\end{align}
+
+This integral over $p$ is a Gaussian integral. To evaluate this we will have to consult Appendix 2 in Zee's \textit{Quantum Field Theory in a Nutshell}. The key to doing this integral is to complete the squares. The integral above has the form
+\begin{align}
+\int_{-\infty}^\infty \,dx\, \exp\lb \f{1}{2}iax^2 + iJx \rb = \lp \f{2\pi i}{a} \rp^{1/2}\exp\lb \f{-iJ^2}{2a} \rb.
+\end{align}
+If we're careful, we'll get
+\begin{align}
+\bra{x_{j+1}}e^{-i\delta t \hat{p}^2/2m\hbar}\ket{x_j} &= \lp \f{-im}{2\pi\delta t} \rp^{1/2} \exp\lb \f{im(x_{j+1} - x_j)^2}{2\delta t} \rb \\ 
+&= \lp \f{-im}{2\pi\delta t} \rp^{1/2} \exp\lb i\delta t \f{m}{2} \lp \f{im(x_{j+1} - x_j)}{\delta t} \rp^2  \rb.
+\end{align}
+Now we can put this back into \eqref{path} to get
+\begin{align}
+\bra{x_F}e^{-i\ham T/\hbar}\ket{x_j} &= \lp \f{-im}{2\pi\delta t} \rp^{N/2} \lp\prod_{k=1}^{N-1}\int \,dx_k \rp \exp\lb \f{i m}{2} \sum_{j=0}^{N-1} \delta t \lp \f{x_{j+1} - x_j}{\delta t} \rp^2\rb.
+\end{align}
+
+When $\delta t \to 0$, we can replace:
+\begin{align}
+\lp \f{x_{j+1} - x_j}{\delta t} \rp^2 &\to \dot{x}^2\\
+\sum_{j=0}^{N-1} \delta t \lp \f{x_{j+1} - x_j}{\delta t} \rp^2 &\to \int_{0}^T \,dt\, \dot{x}^2,
+\end{align}
+and define the integral over all paths as
+\begin{align}
+\int \mathfrak{D}[x(t)]\equiv \lim_{N\to \infty}\lp \f{-im}{2\pi\delta t} \rp^{N/2} \lp\prod_{k=1}^{N-1}\int \,dx_k\rp.
+\end{align}
+And we end up with the path integral representation
+\begin{align}
+\boxed{\bra{x_F}e^{-i\ham \delta t / \hbar} \ket{x_I} = \int \mathfrak{D}[x(t)] \exp \lb i \int_0^T \f{m\dot{x}^2}{2} \rb}
+\end{align}
+
+
+This says that to get $\bra{x_F}e^{-i\ham T/\hbar}\ket{x_I}$ we simply integrate over all possible paths $x(t)$ such that $x(0) = x_I$ and $x(T) = x_F$. \\
+
+
+We notice that the exponent inside the integral is a kinetic energy term. What if the Hamiltonian also contains a potential term like this
+\begin{align}
+\ham = \f{\hat{p}^2}{2m} + V(\hat{x})?
+\end{align}
+
+Without going through all the algebra, we can actually work this out. Let us think of these two oeprators $\hat{p}^2/2m$ and $V(\hat{x})$ as going hand-in-hand. We see that in the propagator amplitude, there is a minus sign attached to the Hamiltonian, and as a result this minus sign attaches to both $\hat{p}^2/2m$ and $V(\hat{x})$, all the way up to the point where we perform the Gaussian integral. At that stage, the minus sign on $V(\hat{x})$ will remain, and $e^V(\hat{x})$ is not integrated because we are integrating over $p$. However, for the $\hat{p}^2/2m$, the minus sign is switched to a plus kinetic energy term, which is a result of performing the Gaussian integral and taking appropriate limits. So we will end up with (after setting $\hbar = 1$)
+\begin{align}
+\boxed{\bra{x_F}  e^{-i(\hat{p}^2/2m + V(\hat{x}))T }  \ket{x_I} = \int \mathfrak{D}[x(t)]\exp\lb i\int_0^T \,dt \, \lp\underbrace{ \f{m\dot{x}^2}{2} - V(\hat{x})}_{\lag(x,\dot{x}) } \rp \rb}
+\end{align} 
+
+
+
+
+Thus we see that the Lagrangian emerges naturally from the Hamiltonian. So in general, (for a time-independent Hamiltonian of course), we have
+\begin{align}
+\boxed{\bra{q_F} e^{-\ham T }\ket{q_I} = \int, \mathfrak{D}[q(t)] e^{i \int^T_0  \,dt\ \lag(q,\dot{q}) }}
+\end{align}
+where
+\begin{align}
+S[q(t)] = \int_0^T \lag(q,\dot{q}, t)\,dt.
+\end{align}
+is the action. 
+
+
+
+
+\subsection{Classical mechanics emerges}
+
+
+
+
 
 
 
