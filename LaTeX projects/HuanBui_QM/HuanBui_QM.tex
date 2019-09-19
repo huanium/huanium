@@ -1801,14 +1801,14 @@ Because $\ket{E} \neq 0$, we find that the eigenvalues of $\hat{p}$ must be $\pm
 \end{align}
 This makes physical sense since it describes the same particle with the same energy but is allowed to travel to the left or to the right. This is like classical mechanics. However the twist here is that any linear combination of these two states $\ket{E, +}$ and $\ket{E, -}$ are also eigenstates corresponding to the eigenvalue $E$. The fact that this state describes a single particle is a classically prohibited thing.\\
 
-Now, recall our extraction of the propagator in the previous section (\eqref{propagator}):
+Now, recall our extraction of the propagator in the previous section \eqref{propagator}:
 \begin{align}
 U(t) = \int^\infty_{-\infty} \ketbra{p} e^{-iE(p)t/\hbar}\,dp  = \int^\infty_{-\infty} \ketbra{p} e^{-ip^2t/2m\hbar}\,dp,
 \end{align}
 where it suffices to just specify the momentum of the particle (see, $E$ is degenerate, but $p$ is not, so specifying $p$ specifies both momentum and energy). \\
 
 The propagator $U(t)$ can be evaluated explicitly in the $X$ basis starting with the matrix element
-\begin{align}
+\begin{align}\eqref{free-propagator}
 \bra{x}U(t)\ket{x'} &= \int_{-\infty}^\infty \braket{x}{p}\braket{p}{x'}e^{-ip^2t/2m\hbar}\,dp\\
 &= \f{1}{2\pi \hbar}\int_{-\infty}^\infty e^{ip(x-x')/\hbar} \dot e^{-ip^2 t/2m\hbar}\,dp  \hspace{0.5cm}\text{Fourier transform twice?}\\
 &= \sqrt{\f{m}{2\pi \hbar it}} e^{im(x-x')^2/2\hbar t}.
@@ -1818,7 +1818,7 @@ With this, we can now find explicitly $\psi(x,t)$ given $\psi(x,0)$:
 \begin{align}
 \psi(x,t) =\int \bra{x}U(t)\ket{x'}  \psi(x',0)\,dx' \equiv \int U(x,t;x',0)  \psi(x',0)\,dx'.
 \end{align}
-If we started out at some time $t'\neq 0$ then we would have
+If we started out at some time $t'\neq 0$ then we would have 
 \begin{align}
 \boxed{\psi(x,t) =\int U(x,t;x',t')  \psi(x',t')\,dx'}
 \end{align}
@@ -1858,7 +1858,7 @@ Now, let us focus a little bit on the propagators in the problem. If we let $\ke
 \begin{align}
 U(t) = \sum^\infty_{n=1}\ketbra{n} \exp \lb -\f{i}{\hbar} \f{\hbar^2\pi^2n^2}{2mL^2} t \rb,
 \end{align} 
-which follows direction from the definition of propagators (\eqref{propagator}). In the $X$ basis the propagator is simply just 
+which follows direction from the definition of propagators \eqref{propagator}. In the $X$ basis the propagator is simply just 
 \begin{align}
 \bra{x}U(t)\ket{x'} = \sum^\infty_{n=1}\psi_n(x)\psi_n^*(x')\exp \lb -\f{i}{\hbar}\f{\hbar^2\pi^2n^2}{2mL^2} t \rb.
 \end{align}
@@ -2013,6 +2013,199 @@ when we let $\p V(x)/\p \hat{x} = \p \ham / \p \hat{x}$. This equation basically
 
 \section{The Harmonic Oscillator}
 
+\subsection{In the $X$ basis}
+
+
+This is another classic problem in introductory QM is the quantum single harmonic oscillator. Let us do a quick review here. (The rest of the details on this can be found on the QM archived lecture notes.)\\
+
+Let us begin with classical mechanics. The equation of motion is 
+\begin{align}
+\ddot{x} + \omega^2 x = 0.
+\end{align}
+
+The general solution to this problem is
+\begin{align}
+x(t) = A\cos\omega t + B\sin\omega t.
+\end{align}
+
+The total energy is given by
+\begin{align}
+E = T+V = \f{1}{2}m\dot{x}^2 + \f{1}{2}m\omega^2 x^2 = \f{1}{2}m\omega^2x_0^2,
+\end{align}
+which is guaranteed by the conservation of energy. \\
+
+In quantum mechanics, we observe quantization in the coordinate basis. The SE is
+\begin{align}
+i\hbar \f{d}{dt}\ket{\psi} = \ham\ket{\psi}
+\end{align}
+where the Hamiltonian is
+\begin{align}
+\ham = \f{\hat{p}^2}{2m} + \f{1}{2}m\omega^2 \hat{x}^2.
+\end{align}
+
+We wish to find the propagator $U(t)$ in order to completely solve this problem. To do this, we first start with the Hamiltonian $\ham$. We must note that because energy cannot be negative (at least in this particular problem), the eigenvalues of $\ham$ cannot be negative. This is in fact true and can be verified as follows:
+\begin{align}
+\langle \ham \rangle &= \f{1}{2m}\bra{\psi}\hat{p}^2\ket{p} + \f{1}{2}m\omega^2\bra{\psi}\hat{x}^2\ket{\psi}\\
+&= \f{1}{2m}\bra{\psi}\hat{p}^\dagger \hat{p}\ket{p} + \f{1}{2}m\omega^2\bra{\psi}\hat{x}^\dagger\hat{x}\ket{\psi} \geq 0.
+\end{align}
+
+Now, let us solve this problem by bringing it back to the $X$ basis, which we are familiar with. The SE becomes the time-independent SE in the variable $x$:
+\begin{align}
+\lp -\f{\hbar^2}{2m}\p_x^2 + \f{1}{2}m\omega^2x^2\rp \psi = E\psi.
+\end{align}
+
+At this point, please refer to the QM notes for details involving finding the solution to this problem. But just to summarize, what we will do here considering $\psi(x)$ at infinity and recognizing that because at infinity the wavefunction must be zero, $\psi$ must contain a factor of a exponential (which comes from solving the SE without the potential). This gives
+\begin{align}
+\psi \propto e^{\pm y^2/2}.
+\end{align}
+
+Now, because the wavefunction cannot blow up, the $e^{y^2/2}$ solution must be discarded as unphysical. Next, by rearranging the SE to get the Hermite equation, we find that $\psi(x)$ must also be proportional to a polynomial in a dimensionless variable called the Hermite polynomials. Finally, once we write down $\psi$ as a product of the exponential and some polynomial in $x$ (whose cutoff gives rise to the Hermite polynomials), we simply normalize $\psi$. Again, please refer to the QM notes for the details on this. \\
+
+The strategy outlined (by Shankar) is the following
+\begin{enumerate}
+	\item Introduce dimensionless variables natural to the problem.
+	\item Extract the asymptotic ($y \to \infty, y\to 0$) behavior of $\psi$.
+	\item Write $\psi$ as a product of the asymptotic form and an unknown function $u$. The function $u$ will usually be easier to find that $\psi$.
+	\item Try a power series to see if it will yield a recursion relation...  
+\end{enumerate}
+
+In the end, what we should find is that the energy is quantized and the allowed energies are
+\begin{align}
+E_n = \hbar \omega \lp n + \f{1}{2} \rp.
+\end{align}
+
+
+So, in the end, a \textit{stationary state} (an eigenfunction) for the SHO has the form
+\begin{align}
+\boxed{\psi_n(x) = \lp \f{m\omega}{\pi \hbar} \rp^{1/4} H_n\lb \lp \sqrt{\f{m\omega}{\hbar}} x \rp \rb \exp \lb -\f{m\omega x^2}{2\hbar} \rb}
+\end{align}
+
+With this, we are now able to write down the expression for the propagator. Recall its definition from \eqref{propagator}:
+\begin{align}
+U(t) = \sum_E \ketbra{E}{E}e^{-iEt/\hbar}.
+\end{align}
+Well now in this case because we are working in the coordinate basis, the bras and kets will be the eigenfunctions (which are given above) and their conjugates. The energies $E_n$ will be dependent on $n$ and is given by $E_n = \hbar \omega(n + 1/2)$. \\
+
+The propagator for a particle in the energy state $n$ from point $(x',t')$ to $(x,t)$ is
+\begin{align}
+\boxed{U(x,t;x',t') = \sum_{n=0}^\infty A_n e^{-\f{m\omega x^2}{2\hbar}} H_n(x) A_n e^{ -\f{m\omega x'^2}{2\hbar}} H_n(x')e^{-i\lp n + \f{1}{2} \rp\omega (t - t')} }
+\end{align}
+
+Evaluating this sum can be tricky, but it can be done. It fact, the sum turns out to be 
+\begin{align}
+\boxed{U(x,t;x',t') = \sqrt{\f{m\omega}{2\pi i\hbar \sin\omega T}} \exp \lb \f{im\omega}{\hbar} \f{(x^2 + x'^2)\cos\omega T - 2xx'}{2\sin\omega T} \rb }
+\end{align}
+where $T = t - t'$. 
+
+
+It also turns out that there is an extremely easy way to calculate the propagator $U(t)$ in the next section, where we will talk about the path integral formalism of QM. 
+
+
+
+
+
+
+
+\subsection{In the $E$ basis}
+
+
+In this section, we basically tackle the same problem, but with a slightly more elegant approach, by considering things the energy basis. Consider the Hamiltonian again:
+\begin{align}
+\ham = \f{\hat{p}^2}{2m} + \f{1}{2}m\omega^2 \hat{x}^2.
+\end{align}
+Now, what we will do here to decompose $\ham$ into what we call \textit{ladder operators}. There are two types of these operators, called \textit{lowering} and \textit{raising}. What they do is exactly what their names suggest. Lowering/raising an energy state $n$ to a neighboring $n \pm 1$ state. Here's how they are defined:
+\begin{align}
+\text{Lowering: } \hspace{0.5cm} & \boxed{\hat{a} = \f{1}{\sqrt{2\hbar m\omega}} \lb  i\hat{p} + m\omega \hat{x}\rb} \\ 
+\text{Raising: } \hspace{0.5cm} & \boxed{\hat{a}^\dagger = \f{1}{\sqrt{2\hbar m\omega}} \lb  - i\hat{p} + m\omega \hat{x}\rb}
+\end{align}
+
+It is easy to verify that the following commutation relation:
+\begin{align}
+\boxed{[\hat{a}, \hat{a}^\dagger] = 1}
+\end{align}
+holds, and the eigenvalues of $\hat{a}^\dagger\hat{a}$, which we call the \textit{number operator}, are:
+\begin{align}
+\boxed{\hat{a}^\dagger\hat{a}\ket{\psi_n} = n\ket{\psi_n}}
+\end{align}
+which is something we can check quite quickly by inspection. \\
+
+We can also verify the relationship between the Hamiltonian and these ladder operators:
+\begin{align}
+\boxed{\ham = \hbar\omega \lp \hat{a}^\dagger \hat{a}+ \f{1}{2} \rp = \hbar \omega \lp \hat{a}\hat{a}^\dagger - \f{1}{2} \rp}
+\end{align}
+
+
+Next, we can also very that if $\ket{E}$ is an eigenfunction of $\ham$ then so is $\hat{a}\ket{E}$ and the corresponding eigenvalue is $E - \hbar\omega$:
+\begin{align}
+\ham \hat{a}\ket{E} &= \hbar \omega \lp \hat{a}\hat{a}^\dagger - \f{1}{2} \rp \hat{a}\ket{E}\\
+&= \hbar\omega \hat{a}^\dagger \lp \hat{a}^\dagger \hat{a} + \f{1}{2} - 1 \rp\ket{E}\\
+&= \hat{a}^\dagger \lp \ham - \hbar \rp\ket{E}\\
+&= \lp E - \hbar \omega \rp\hat{a}\ket{E},
+\end{align} 
+as desired. Similarly, we can show that $\ham\hat{a}^\dagger\ket{E} = (E + \hbar)\ket{E}$. \\
+
+The next question to ask is what happens to $\psi_n$ when a ladder operator acts on it? We can already infer that 
+\begin{align}
+\hat{a}\ket{n} = C_n (E - \hbar)\ket{n - 1} \\ 
+\hat{a}^\dagger\ket{n}= C_{}(E + \hbar)\ket{n+1}
+\end{align}n+1
+Thus it makes sense why we would want to name the operators this way. The lowering operator \textit{lowers} the energy of the state, while the raising operator \textit{raises} the energy of the state. But more than that, the ladder operators also moves a state up and down the energy ladder. In a more general context, these operators are also called \textit{creation} and \textit{annihilation} operators, because as we can see, they create/destroy a quantum of energy $\hbar$ every time they are applied. \\
+
+But there's something we need to sort out before moving on. What if we're at $\psi_0$? What happens when the lowering operator acts on it? First of all, because energy cannot be zero (we have proven this), the lowering operator acting on $\psi_0$ should not give something with a negative eigenvalue. This means 
+\begin{align}
+\hat{a}\ket{0} = 0.
+\end{align}
+This implies that 
+\begin{align}
+\hat{a}^\dagger\hat{a} \ket{0} = \lp \ham - \f{1}{2}\hbar\omega \rp\ket{0} = 0.
+\end{align} 
+This just means that the eigenvalue of the $n=0$ state is $(1/2)\hbar\omega$, which is exactly the \textit{zero-point energy}. But of course, because there's nothing stopping us from applying $\hat{a}^\dagger$ indefinitely, we get back the allowed energies (or eigenvalues)
+\begin{align}
+E_n = \hbar\omega\lp n + \f{1}{2} \rp.
+\end{align} 
+
+
+Finally, what are these coefficients $C_n$, i.e., what are the eigenvalues of these ladder operators? Let us consider the case with the lowering operator first:
+\begin{align}
+\hat{a}\ket{n} = C_n \ket{n-1} \iff \bra{n}\hat{a}^\dagger = \bra{n-1}C_n^*.
+\end{align} 
+Combining these equations we have
+\begin{align}
+\bra{n}\hat{a}^\dagger\hat{a}\ket{n} &= \braket{n-1}C^*_nC_n \\ 
+\bra{n} \lp \ham - \f{1}{2}\hbar \rp\ket{n} &= \abs{C_n}^2\\
+\bra{n-1} n \ket{n-1} &= \abs{C_1}^2\\
+n = \abs{C_n}^2.
+\end{align}
+It is conventional to choose $C_n = \sqrt{n}$. We can do something similar to this with the raising operator. In the end, we have
+\begin{align}
+\boxed{\hat{a}\ket{n} = \sqrt{n}\ket{n-1} \hspace{0.5cm} \hat{a}^\dagger \ket{n} = \sqrt{n+1}\ket{n+1}}
+\end{align}
+
+
+
+Now, the reason why these operators are so useful (if you haven't seen that already at this point), is that it aids a lot with calculations. Suppose we wanted to find the overlap integral $\ket{3}x^3\ket{2}$ for instance. With our previous analytic approach things things inside the integral can get very nasty very quick. With the ladder operators, however, things are a bit better for us since we can write $\hat{x}$ and $\hat{p}$ in terms of these operators. After all, these operators are \textit{defined} in terms of $\hat{x}$ and $\hat{p}$. It is very to easy to see that
+\begin{align}
+\boxed{\hat{x} = \sqrt{\f{\hbar}{2m\omega}} (\hat{a} + \hat{a}^\dagger)}
+\end{align}
+and
+\begin{align}
+\boxed{\hat{p} = i\sqrt{\f{m\omega\hbar}{2}}(\hat{a}^\dagger - \hat{a})}
+\end{align}
+
+With this, the integrand with $\hat{x}$ can now be replaced by an expression in terms of $\hat{a}$ and $\hat{a}^\dagger$. And since we know exactly what these do to any $\psi_n$, the integral should be much simpler. Many examples can be found in the archived introductory QM notes. Check that out if you want to convince yourself things \textit{do} get a easier. 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2023,6 +2216,222 @@ when we let $\p V(x)/\p \hat{x} = \p \ham / \p \hat{x}$. This equation basically
 
 
 \section{The Path Integral Formulation of Quantum Theory}
+
+
+
+
+So far, we have only been looking at quantum mechanics in the Schr\"{o}dinger formulation, which stems from Hamiltonian mechanics. In this section we will consider the Lagrangian formulation (Hamiltonian's counterpart) of quantum mechanics, which was invented by Richard Feynman in the 1940s. The path integral formulation of quantum mechanics is not only beautiful but it also can for a certain class of problems give us the full propagator with ease. This formulation also gives us better insights into the relationship between classical and quantum mechanics. \\
+
+
+\subsection{The recipe}
+
+
+In the Schr\"{o}dinger approach, which I hope we have seen enough at this point, we find the propagator $U$ by first evaluating the eigenvalues of the Hamiltonian, and then write the propagator in terms of these eigenvalues and eigenfunctions of the Hamiltonian. In the path integral formulation, however, we will evaluate the propagator $U$ directly, by the following strategy:
+\begin{enumerate}
+	\item Draw all paths in space-time connecting $(x',t')$ and $x,t$.
+	\item Evaluate the action $S[x(t)]$ for each path $x(t)$.
+	\item The propagator is given by
+	\begin{align}
+	U(x,t;x',t') = A \sum_{\text{all paths}} \exp\lb iS[x(t)]/\hbar \rb,
+	\end{align}
+	where $A$ is a normalization factor. 
+\end{enumerate}
+
+
+
+\subsection{Primary analysis of the recipe}
+
+
+Before we look at how this path integral formulation gives us conventional quantum mechanics, we will analyze qualitative how this approach works. A very surprising fact about this formulation is that all path (including the classical path) carries the same weight in the calculation. So, how come classical mechanics emerge?\\
+
+To find out how exactly classical mechanics comes about, we have to integrate over all paths. Let us first pretend that the continuum of paths linking the end points is actually a discrete set. \\
+
+For each path $x_a(t)$, we add the contribution $Z_a = \exp[iS[x_a(t)]/\hbar]$. Because each path has a different action, it adds a different phase, and some paths' contributions cancel each other. As we move away from the classical path $x_{cl}(t)$, the destructive interference becomes more significant, while the closer we get to the classical path, the more we add to $Z$. \\
+
+So how far must we deviate from $x_{cl}(t)$ before destructive interference sets in? Well, this depends on the particle. For a particle of mass 1g, very little deviation is required. However, for an electron, for instance, deviations can be go up to roughly $\pi/6$. 
+
+
+\subsection{Approximating $U(t)$ for a Free Particle}
+
+Recall that the propagator for the free particle is given by \eqref{free-propagator}
+\begin{align}
+U(x,t; x',0) = \sqrt{\f{m}{2\pi \hbar it}} e^{im(x-x')^2/2\hbar t}.
+\end{align}
+
+To calculate the propagator in this new formulation, let us assume that each of the possible paths contributes the same amount $\exp[iS_{cl}/\hbar]$. With this, we get
+\begin{align}
+U(t) = A' \exp[iS_{cl}/\hbar]
+\end{align}
+where $A'$ is some normalizing constant. \\
+
+The classical path for a fere particle is a straight line in space-time. Let us write is as
+\begin{align}
+x_{cl}(t'') = x' + \f{x-x'}{t-t'}(t'' - t)
+\end{align}
+where it travels at a constant velocity $v = (x - x') / (t - t')$. Now, the Lagrangian is given by
+\begin{align}
+\lag = T - V = T - 0 = \f{1}{2}mv^2,
+\end{align}
+which is also a constant due to conservation of energy. It follows that the action is 
+\begin{align}
+S_{cl} = \int_{t'}^t \lag \,dt'' = \f{1}{2}m\f{(x-x')^2}{t-t'}.
+\end{align}
+With this, the propagator is 
+\begin{align}
+U(x,t;x',t') = A' \exp[iS_{cl}/\hbar] = A' \exp \lb \f{im(x-x')^2}{2\hbar (t - t')} \rb.
+\end{align}
+
+Now, in order to normalize (because $U(t)$ is unitary), we need to note that $U(t)$ must tend to the Dirac-delta function $\delta(x - x')$ when $t - t' \to 0$. This makes sense, because at an arbitrarily small time interval, the particle shouldn't be propagating and its wavefunction is localized. \\
+
+With that in mind, we also know that the Dirac-delta function can also be written in terms of a limit of a Gaussian:
+\begin{align}
+\delta(x - x') \equiv \lim_{\Delta \to 0} \f{1}{\sqrt{\pi \Delta^2}} \exp\lb -\f{(x-x')^2}{\Delta^2} \rb.
+\end{align}
+So we must have that in the limit
+\begin{align}
+\lim_{\Delta \to 0} \f{1}{\sqrt{\pi \Delta^2}} \exp\lb -\f{(x-x')^2}{\Delta^2} \rb = \delta(x-x') = U(x,t;x',t') = A' \exp\lb \f{im(x-x')^2}{2\hbar(t-t')} \rb.
+\end{align}
+This says
+\begin{align}
+A' = \sqrt{\f{m}{2\pi \hbar(t-t')}}.
+\end{align}
+So,
+\begin{align}
+\boxed{U(x,t; x',0) \equiv U(x,t;x') = \sqrt{\f{m}{2\pi\hbar it}}\exp\lb \f{im(x-x')}{2\hbar t} \rb}
+\end{align}
+
+When we compare this to what we had before, we find that the answers match exactly, which is quite incredible. Earlier, we had to solve the SE, find the eigenvalues and eigenfunctions in order to construct $U(t)$. Here, we simply directly calculate $U(t)$ from a simple approximation. This is very incredible.\\
+
+However, this is not something we can generally do. It turns out that only for potentials of the form $V = a + bx + cx^2 + d\dot{x} + ex\dot{x}$ is it true that $U(t) = A(t)\exp[iS_{cl}/\hbar]$. Furthermore, we can't generally find $A'$ by using $U(x,t;x',t') = \delta(x-x')$, since $A'$ can have time and/or spatial dependence. 
+
+
+
+
+\subsection{Path Integral Evaluation of the Free-Particle Propagator}
+
+
+In this section, we will evaluate $U(t)$ directly with the path integral without approximations. \\
+
+Consider the propagator $U(x_N, t_N; x_0', t_0')$. We want to perform this integral
+\begin{align}
+\int_{x_0}^{x_N} \exp[iS[x(t)]/\hbar]\mathfrak{D}[x(t)]
+\end{align} 
+where
+\begin{align}
+\int_{x_0}^{X_N}\mathfrak{D}[x(t)]
+\end{align}
+denotes ``integrating over all paths connecting $x_0$ and $x_N$.'' \\
+
+Next, we want to integrate over a continuum of possible paths. This is not very easy to do. So instead, we will discretize time again into $N$ pieces so that $t_n = t_0 + n\epsilon$ where $n = 0,\dots,N$, and $\epsilon = (t_N - t_0)/N$. We hope that if we take the limit $N \to \infty$ at the end we will get a result that is insensitive to these approximations.\\
+
+With that said, we will have to replace our continuous path definition
+\begin{align}
+S = \int_{t_0}^{t_N} \lag(t)\,dt = \int_{t_0}^{t_N} \f{1}{2}m\dot{x}^2\,dt
+\end{align}
+by a discretized definition:
+\begin{align}
+S = \sum^{N-1}_{i=0} \f{m}{2}\lp  \f{(x_{i+1}(t) - x_i(t))^2}{\epsilon}\rp^2 \epsilon.
+\end{align}
+We would like to calculate is the following (ready?)
+\begin{align}
+U(x_N,t_N;x_0',t_0') &= \int_{x_0}^{x_N} \exp\lc \f{iS[x(t)]}{\hbar} \rc\mathfrak{D}[x(t)] \\ 
+&= \lim_{\substack{N\to\infty \\ \epsilon\to 0}} A \int_{-\infty}^{\infty} \dots \int_{-\infty}^{\infty} \exp\lb \f{i}{\hbar}\f{m}{2}\sum_{i=0}^{N-1} \f{(x_{i+1} - x_i)^2}{\epsilon} \rb\, dx_1\dots d_{x_{N-1}}.
+\end{align}
+
+
+This integral looks intimidating, but let us tackle it step-by-step. Let us first worry about the $N\to \infty$ limit first, so we will just let
+\begin{align}
+y_i = \lp \f{m}{2\hbar\epsilon}\rp^2 x_i
+\end{align}
+for convenience, then we would like to calculate
+\begin{align}
+\lim_{N \to \infty} A' \int_{-\infty}^{\infty} \dots \int_{-\infty}^{\infty} \exp \lb -\sum_{i=0}^{N-1} \f{(y_{i+1} - y_i)^2}{i} \rb dy_1\dots dy_{N-1},
+\end{align}
+where now
+\begin{align}
+A' = A\lp \f{2\hbar\epsilon}{m}\rp^{(N-1)/2}
+\end{align}
+by change of variables. The next thing to do is actually evaluating this integral. While this might seem a bit formidable, it is totally doable. Let us just consider the integral involving only $y_1$, which is independent of any other variable $y_j$ where $j\neq 1$:
+\begin{align}
+\int_{-\infty}^\infty    \exp \lc -\f{1}{i}\lb (y_2 - y_1)^2 + (y_1 - y_0)^2 \rb  \rc\,dy_1  = \lp \f{i\pi}{2} \rp^2 \exp \lb \f{-(y_2 - y_0)^2}{2i} \rb.
+\end{align}
+So we see $y_1$ is out of consideration. Next we consider $y_2$, by aggregating all integrands that include $y_2$:
+\begin{align}
+&\lp \f{i\pi}{2} \rp^{1/2} \int^\infty_{-\infty} e^{-(y_3 - y_2)^2/i}e^{-(y_2 - y_0)^2/i} \,dy_2\\
+=& \lp \f{i\pi}{2} \rp^{1/2} \lp \f{2i\pi}{3} \rp^{1/2} e^{-(y_3 - y_0)^2 / 3i}\\
+=& \lb \f{(i\pi)^2}{3} \rb^{1/2} e^{-(y_3 - y_0)^2 / 3i}.
+\end{align}
+
+We deduce a pattern if we carry out this process $N-1$ times. The integral will eventually become
+\begin{align}
+\boxed{\f{(i\pi)^{(N-1)/2}}{N^{1/2}} e^{-(y_N - y_0)^2 / Ni} = \f{(i\pi)^{(N-1)/2}}{N^{1/2}} e^{-m(x_N - x_0)^2 / 2\hbar\epsilon Ni}}
+\end{align}
+
+So, combining this with the factor $A$, we get closer to the form of the propagator
+\begin{align}
+\boxed{U = A\lp \f{2\pi\hbar \epsilon i}{m} \rp^{N/2} \lp \f{m}{2\pi\hbar i N \epsilon} \rp^{1/2}  \exp \lb \f{im(x_N - x_0)^2}{2\hbar N \epsilon} \rb} 
+\end{align}
+
+Finally, let $N\to \infty$ and $\epsilon \to 0$ and $N\epsilon \to t_N - t_0$, we get the correct answer provided 
+\begin{align}
+A = \lp \f{2\pi\hbar \epsilon i}{m} \rp^{-N/2} \equiv B^{-N}.
+\end{align}
+It is conventional to associate a factor $1/B$ with each of the $N-1$ integrations and the remaining factor $1/B$ with the overall process. With this the precise meaning of the statement ``integral over all paths'' is 
+\begin{align}
+\boxed{\int \mathfrak{D}[x(t)] = \lim_{\substack{N\to\infty \\ \epsilon\to 0}} \f{1}{B} \int_{-\infty}^{\infty} \dots \int_{-\infty}^{\infty}  \f{dx_1}{B}\dots \f{dx_N}{B}}
+\end{align}
+
+
+where
+\begin{align}
+B = \sqrt{\f{2\pi\hbar \epsilon i}{m}}.
+\end{align}
+
+
+We can easily see how the propagator we just found is exactly the same as that derived earlier and the approximated version, given appropriate normalization has been made. 
+
+
+
+
+
+\subsection{Equivalence to the Schr\"{o}dinger equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2183,8 +2592,11 @@ It turns out that (for $p(t) = \dot{q}(t)$), we have
 \end{align} 
 Now, we notice that we have the canonical variables $q$ and $p$. When we promote these variables to operators (so we can quantize the fields), these operators must satisfy the canonical commutation relation
 \begin{align}
-[\hat{q}, \hat{p}] = i\hbar \hat{\Id}
+[\hat{q}, \hat{p}] = i\hbar \hat{\Id}.
 \end{align}
+
+
+
 We rewrite the fields and the Hamiltonian as operators:
 \begin{align}
 \hat{E}_x(z,t) &= \lp \f{2\omega^2}{V\epsilon_0} \rp^{1/2} \hat{q}(t)\sin(kz)\\
@@ -3703,181 +4115,181 @@ which is slightly different.
 
 % move this somewhere else later
 
-One photon, two photons, red photon, blue photon.\\
-JQI Summer School\\
-Elizabeth Goldschmidt\\
-July 19, 2019\\
-
-Topic: single photon, single photon statistics. \\
-
-\textbf{Why?}
-\begin{itemize}
-	\item Why single photons?
-	\item Why is it hard?
-\end{itemize}
-
-
-\textbf{Sending QI}
-\begin{itemize}
-	\item Sending quantum information as light (not as easy any other way)
-	\item requires encoding qubits in light
-	\item qubits must be identical in all other degrees of freedom: polarizations, transverse/longitudinal modes....
-	\item How else can you do it LOL?
-\end{itemize}
-
-
-\textbf{Single photon: } single excitation of a single mode of the quantized EM field. This treats photon number differently from other dfs. There's a fundametal difference between 0 and multiple excitations. 
-
-\textbf{Photon number:}
-\begin{itemize}
-	\item Classical light: spectral and photon number distribution depend on system (source). 
-	\item Why can't I turn down intensity to get single photon? Because probability of getting 2 saturates.
-	\item Photon number is not a good quantum number.
-	\item So what do we do? $\implies$ reduce variance.
-	\item How to quantify? Use $g^{(2)}$ - autocorrelation function. For weak fields
-	\begin{align}
-	g^{(2)} = \f{conincidence}{individual\times individual} \approx = \f{2 p(2)}{p(1)^2}
-	\end{align}
-	independent of attenuation.
-	\item \textbf{Cauchy-Schwarz}. Classically, operators commute... 
-	such that $g^{(2)} \geq 1$ (no anti-bunching light). But because of QM, $g^{(2)}$ can be less than 1. 
-\end{itemize}
-
-
-\textbf{Other dfs: } the well-defined single mode covers all the other degrees of freedom (spatial, spectral, temporal, polarization, etc.) How to quantify single-photon? $\implies$ Two-photon (Hong-Ou-Mandel) Interference. 
-\begin{itemize}
-	\item Measure indistinguishability to characterize single photons. 
-\end{itemize}
-
-
-\textbf{Some single-photon technologies:} How do we make single-photons? 
-\begin{itemize}
-	\item \textit{Weak laser}: but there's no multi-photon suppression ($g^{(2)} = 1$) and low efficiency.
-	\item \textit{Single emitters}: Excite a two level system and collect spontaneous emission. However, emits to $4\pi$ (solid angle, everywhere), so difficult to collect. Also, if the excitation light is the same as the emission, then need strong filter. 
-	\item Trapped ions...
-	\item Two-mode squeezing/pair source (spontaneous parametric down conversion is an example), or ``perfect beam splitter''
-	\item Pair sources: single-arm statistics is classical. Often high spectrally multi-mode (different colors, and with different colors comes different indices of reflection, hence photons come out at different angles to conserve momentum)
-	\item Now if this is done in atomic ensemble instead of a non-linear crystal. This needs single-photon source on-demand. 
-\end{itemize}
-
-
-\textbf{Experiments at JQI:} 
-\begin{itemize}
-	\item Interfering photons from different single photon sources (detect with high time resolution)
-	\item Frequency resolved detection (detect with high frequency resolution)
-\end{itemize}
-
-
-
-
-
-
-
-
-\newpage
-
-
-\textbf{Kanu's talk, July 22, 2019.}\\
-
-\textbf{Superradiance:} Example: two dipoles radiating in phaes. Collective enahnced emission is superradiance. The amplitude adds, so intensity grows as n-squared. This is a classical effect.\\
-
-Now, what if there is time-delayed feedback? There is retardation and back action. SUPER-DUPER-RADIANCE. How far should the separation be? Distance should be comparable to coherence time. 
-\begin{align}
-\f{c}{2\gamma_0} < d < \f{c}{\gamma_0}
-\end{align}
-where $c/2\gamma_0$ is super-radiant photon coherent length versus independent (without factor of 2). This gives a paradox. Assume superradiant emission than don't get superradiance and vice versa. This means Markov approximation fails. 
-
-\begin{itemize}
-	\item Superradiance
-	\item Time-delayed feedback
-\end{itemize}
-
-Combining these gives super-duper-radiance. Here's the derivation. Assume two two-level system Hamiltonians, coupled to a waveguide $\ham_F$. Separation between the atoms is $d$. 
-\begin{align}
-\ham = \ham_{atom} + \ham_F + \ham_{int}
-\end{align}
-where
-\begin{align}
-\ham_{atom} =  \hbar\omega_0 \sum_{n=1,2}\hat{\sigma}_n^+ \hat{\sigma}_n^-
-\end{align}
-and
-\begin{align}
-\ham_F = \int \, d\omega \hbar\omega \hat{a}^\dagger_\omega \hat{a}_\omega.
-\end{align}
-The interaction is electric-dipole:
-\begin{align}
-\ham_{int} = \sum_{n=1,2} -\hat{d}_n \cdot \hat{E} \approx_{RWA} \int\,d\omega \hbar g(\omega) \sum_{n=1,2} \lb \hat{\sigma}_n^+ \hat{a}_\omega e^{i\vec{k}\cdot\vec{r}}  + h.c. \rb
-\end{align}
-where $k = \omega / v_g \hat{x}$ and $v_g$ is the velocity in the waveguide. Moving to the rotating frame, calling $\ham_0 = \ham_{atom} + \ham_{F}$. Call
-\begin{align}
-\tilde{\ham}_{int} = \U \ham_{int} \U^\dagger
-\end{align}
-where 
-\begin{align}
-\U = e^{-i\ham_0 t}.
-\end{align}
-With these,
-\begin{align}
-\tilde{\ham}_{int} = \int \, d\omega \hbar g(\omega)\sum_{n=1,2} \hat{\sigma}^+_n \hat{a}_\omega e^{- i (\omega - \omega_0) t}  e^{i \vec{k}\cdot\vec{r}} + h.c.
-\end{align}
-Suppose at $t=0$:
-\begin{align}
-\ket{\psi(0)} = \lp \ket{eg} + \ket{ge} \rp \otimes \ket{\{0\}}_F.
-\end{align}
-In general, under the Hamiltonian, restricting to single-excitation subspace
-\begin{align}
-\ket{\psi(t)} = C_1(t)\ket{eg} + C_2(t)\ket{ge} + \int \, d\omega C_\omega(t)\ket{gg}\otimes\ket{\{1_\omega\} }_F.
-\end{align}
-We want to study the dynamics of the coefficients. We define the positions of the atoms as $r_1 = d/2$, $r_2 = -d/2$.
-\begin{align}
-&\dot{C}_1(t) = -i\int\,d\omega g(\omega) C_\omega e^{-i(\omega - \omega_0)t} e^{-ikd/2}\\
-&\dot{C}_2(t) = -i\int\,d\omega g(\omega) C_\omega e^{-i(\omega - \omega_0)t} e^{ikd/2}.
-\end{align}
-The field dynamics:
-\begin{align}
-\dot{C}_\omega = -i g(\omega)\lb C_1 e^{-ikd/2} + C_2 e^{ikd/2} \rb e^{-i(\omega - \omega_0) t}.
-\end{align}
-So
-\begin{align}
-C_\omega(t) = -i \int^t_0 \,d \tau  g(\omega)\lb C_1 (\tau) e^{-ikd/2} + C_2 (\tau) e^{ikd/2} \rb e^{-i(\omega - \omega_0) \tau}.
-\end{align}
-Approximate: $g(\omega) \approx g(\omega_0) = g_0$ (flat spectral density). So
-\begin{align}
-\dot{C}_1(t) &= -g_0^2 \int_\infty \,d\omega e^{-i(\omega - \omega_0) t} e^{ikd/2}\int^t_0 \, d \tau \lb C_1 e^{-ikd/2} + C_2 e^{ikd/2} \rb e^{-i(\omega - \omega_0) \tau}\\
-&= -g_0^2 \int^t_0 \,d\tau \int_\infty \,d\omega \lc C_1(\tau) + C_2(\tau)e^{i\omega d/v_g} \rc e^{-i(\omega - \omega_0)(t-\tau)}\\
-&= -2\pi g_0^2 \int^t_0 \,d\tau C_1(\tau)\delta(t-t\tau) + C_2(\tau)\delta\lp t - \f{d}{v_g} - \tau \rp e^{i \omega_0 d/v_g}.
-\end{align}
-Now, approximate: $d\omega_0 /v_g = 1$. Call $-2\pi g_0^2 = -\gamma/2$ to get
-\begin{align}
-\dot{C}_1(t) &= -\f{\gamma}{2}\lb C_1(t) + C_2\lp t - \f{d}{v_g} \rp \rb
-\end{align}
-Problem: From the beginning, $\dot{C}_1 = 0$ when $C_\omega = 0$. But now $\dot{C}_1(0)$ is not zero. Resolution: unphysical field and spectral density...\\
-
-By symmetry, we also have
-\begin{align}
-\dot{C}_2(t) &= -\f{\gamma}{2}\lb C_2(t) + C_1\lp t - \f{d}{v_g} \rp \rb.
-\end{align}
-Take Laplace transform and solve
-\begin{align}
-\tilde{C_1} = \f{1}{\sqrt{2}}\f{1}{s + \gamma/2 + \gamma/2 e^{-ds/v_g}} = \tilde{C_2}(t).
-\end{align}
-When $d\to 0$, then 
-\begin{align}
-\tilde{C}_1 = \f{1}{\sqrt{2}}\f{1}{s + \gamma} \implies C_1(t) \sim e^{-\gamma t},
-\end{align}
-which is ordinary superradiance. If $d\to \infty$, we get
-\begin{align}
-C_1(t) \sim e^{-\gamma t / 2}
-\end{align}
-which is independent decay. But there's a third case. Let us call $\eta = \gamma d/v_g$ which quantifies the length scale of the separation in units of photon coherence length. Expand to linear terms in $e^{-\eta s}$ to get
-\begin{align}
-C_1(t) \approx \f{1}{\sqrt{2}\lp 1-\eta/2 \rp} \f{1}{s + \lb \gamma/1 - \eta/2 \rb}.
-\end{align}
-We notice that 
-\begin{align}
-\abs{C_1}^2 \sim e^{2\gamma_{eff} t}
-\end{align}
-where $\gamma_{eff}$ can exceed superradiance. 
+%One photon, two photons, red photon, blue photon.\\
+%JQI Summer School\\
+%Elizabeth Goldschmidt\\
+%July 19, 2019\\
+%
+%Topic: single photon, single photon statistics. \\
+%
+%\textbf{Why?}
+%\begin{itemize}
+%	\item Why single photons?
+%	\item Why is it hard?
+%\end{itemize}
+%
+%
+%\textbf{Sending QI}
+%\begin{itemize}
+%	\item Sending quantum information as light (not as easy any other way)
+%	\item requires encoding qubits in light
+%	\item qubits must be identical in all other degrees of freedom: polarizations, transverse/longitudinal modes....
+%	\item How else can you do it LOL?
+%\end{itemize}
+%
+%
+%\textbf{Single photon: } single excitation of a single mode of the quantized EM field. This treats photon number differently from other dfs. There's a fundametal difference between 0 and multiple excitations. 
+%
+%\textbf{Photon number:}
+%\begin{itemize}
+%	\item Classical light: spectral and photon number distribution depend on system (source). 
+%	\item Why can't I turn down intensity to get single photon? Because probability of getting 2 saturates.
+%	\item Photon number is not a good quantum number.
+%	\item So what do we do? $\implies$ reduce variance.
+%	\item How to quantify? Use $g^{(2)}$ - autocorrelation function. For weak fields
+%	\begin{align}
+%	g^{(2)} = \f{conincidence}{individual\times individual} \approx = \f{2 p(2)}{p(1)^2}
+%	\end{align}
+%	independent of attenuation.
+%	\item \textbf{Cauchy-Schwarz}. Classically, operators commute... 
+%	such that $g^{(2)} \geq 1$ (no anti-bunching light). But because of QM, $g^{(2)}$ can be less than 1. 
+%\end{itemize}
+%
+%
+%\textbf{Other dfs: } the well-defined single mode covers all the other degrees of freedom (spatial, spectral, temporal, polarization, etc.) How to quantify single-photon? $\implies$ Two-photon (Hong-Ou-Mandel) Interference. 
+%\begin{itemize}
+%	\item Measure indistinguishability to characterize single photons. 
+%\end{itemize}
+%
+%
+%\textbf{Some single-photon technologies:} How do we make single-photons? 
+%\begin{itemize}
+%	\item \textit{Weak laser}: but there's no multi-photon suppression ($g^{(2)} = 1$) and low efficiency.
+%	\item \textit{Single emitters}: Excite a two level system and collect spontaneous emission. However, emits to $4\pi$ (solid angle, everywhere), so difficult to collect. Also, if the excitation light is the same as the emission, then need strong filter. 
+%	\item Trapped ions...
+%	\item Two-mode squeezing/pair source (spontaneous parametric down conversion is an example), or ``perfect beam splitter''
+%	\item Pair sources: single-arm statistics is classical. Often high spectrally multi-mode (different colors, and with different colors comes different indices of reflection, hence photons come out at different angles to conserve momentum)
+%	\item Now if this is done in atomic ensemble instead of a non-linear crystal. This needs single-photon source on-demand. 
+%\end{itemize}
+%
+%
+%\textbf{Experiments at JQI:} 
+%\begin{itemize}
+%	\item Interfering photons from different single photon sources (detect with high time resolution)
+%	\item Frequency resolved detection (detect with high frequency resolution)
+%\end{itemize}
+%
+%
+%
+%
+%
+%
+%
+%
+%\newpage
+%
+%
+%\textbf{Kanu's talk, July 22, 2019.}\\
+%
+%\textbf{Superradiance:} Example: two dipoles radiating in phaes. Collective enahnced emission is superradiance. The amplitude adds, so intensity grows as n-squared. This is a classical effect.\\
+%
+%Now, what if there is time-delayed feedback? There is retardation and back action. SUPER-DUPER-RADIANCE. How far should the separation be? Distance should be comparable to coherence time. 
+%\begin{align}
+%\f{c}{2\gamma_0} < d < \f{c}{\gamma_0}
+%\end{align}
+%where $c/2\gamma_0$ is super-radiant photon coherent length versus independent (without factor of 2). This gives a paradox. Assume superradiant emission than don't get superradiance and vice versa. This means Markov approximation fails. 
+%
+%\begin{itemize}
+%	\item Superradiance
+%	\item Time-delayed feedback
+%\end{itemize}
+%
+%Combining these gives super-duper-radiance. Here's the derivation. Assume two two-level system Hamiltonians, coupled to a waveguide $\ham_F$. Separation between the atoms is $d$. 
+%\begin{align}
+%\ham = \ham_{atom} + \ham_F + \ham_{int}
+%\end{align}
+%where
+%\begin{align}
+%\ham_{atom} =  \hbar\omega_0 \sum_{n=1,2}\hat{\sigma}_n^+ \hat{\sigma}_n^-
+%\end{align}
+%and
+%\begin{align}
+%\ham_F = \int \, d\omega \hbar\omega \hat{a}^\dagger_\omega \hat{a}_\omega.
+%\end{align}
+%The interaction is electric-dipole:
+%\begin{align}
+%\ham_{int} = \sum_{n=1,2} -\hat{d}_n \cdot \hat{E} \approx_{RWA} \int\,d\omega \hbar g(\omega) \sum_{n=1,2} \lb \hat{\sigma}_n^+ \hat{a}_\omega e^{i\vec{k}\cdot\vec{r}}  + h.c. \rb
+%\end{align}
+%where $k = \omega / v_g \hat{x}$ and $v_g$ is the velocity in the waveguide. Moving to the rotating frame, calling $\ham_0 = \ham_{atom} + \ham_{F}$. Call
+%\begin{align}
+%\tilde{\ham}_{int} = \U \ham_{int} \U^\dagger
+%\end{align}
+%where 
+%\begin{align}
+%\U = e^{-i\ham_0 t}.
+%\end{align}
+%With these,
+%\begin{align}
+%\tilde{\ham}_{int} = \int \, d\omega \hbar g(\omega)\sum_{n=1,2} \hat{\sigma}^+_n \hat{a}_\omega e^{- i (\omega - \omega_0) t}  e^{i \vec{k}\cdot\vec{r}} + h.c.
+%\end{align}
+%Suppose at $t=0$:
+%\begin{align}
+%\ket{\psi(0)} = \lp \ket{eg} + \ket{ge} \rp \otimes \ket{\{0\}}_F.
+%\end{align}
+%In general, under the Hamiltonian, restricting to single-excitation subspace
+%\begin{align}
+%\ket{\psi(t)} = C_1(t)\ket{eg} + C_2(t)\ket{ge} + \int \, d\omega C_\omega(t)\ket{gg}\otimes\ket{\{1_\omega\} }_F.
+%\end{align}
+%We want to study the dynamics of the coefficients. We define the positions of the atoms as $r_1 = d/2$, $r_2 = -d/2$.
+%\begin{align}
+%&\dot{C}_1(t) = -i\int\,d\omega g(\omega) C_\omega e^{-i(\omega - \omega_0)t} e^{-ikd/2}\\
+%&\dot{C}_2(t) = -i\int\,d\omega g(\omega) C_\omega e^{-i(\omega - \omega_0)t} e^{ikd/2}.
+%\end{align}
+%The field dynamics:
+%\begin{align}
+%\dot{C}_\omega = -i g(\omega)\lb C_1 e^{-ikd/2} + C_2 e^{ikd/2} \rb e^{-i(\omega - \omega_0) t}.
+%\end{align}
+%So
+%\begin{align}
+%C_\omega(t) = -i \int^t_0 \,d \tau  g(\omega)\lb C_1 (\tau) e^{-ikd/2} + C_2 (\tau) e^{ikd/2} \rb e^{-i(\omega - \omega_0) \tau}.
+%\end{align}
+%Approximate: $g(\omega) \approx g(\omega_0) = g_0$ (flat spectral density). So
+%\begin{align}
+%\dot{C}_1(t) &= -g_0^2 \int_\infty \,d\omega e^{-i(\omega - \omega_0) t} e^{ikd/2}\int^t_0 \, d \tau \lb C_1 e^{-ikd/2} + C_2 e^{ikd/2} \rb e^{-i(\omega - \omega_0) \tau}\\
+%&= -g_0^2 \int^t_0 \,d\tau \int_\infty \,d\omega \lc C_1(\tau) + C_2(\tau)e^{i\omega d/v_g} \rc e^{-i(\omega - \omega_0)(t-\tau)}\\
+%&= -2\pi g_0^2 \int^t_0 \,d\tau C_1(\tau)\delta(t-t\tau) + C_2(\tau)\delta\lp t - \f{d}{v_g} - \tau \rp e^{i \omega_0 d/v_g}.
+%\end{align}
+%Now, approximate: $d\omega_0 /v_g = 1$. Call $-2\pi g_0^2 = -\gamma/2$ to get
+%\begin{align}
+%\dot{C}_1(t) &= -\f{\gamma}{2}\lb C_1(t) + C_2\lp t - \f{d}{v_g} \rp \rb
+%\end{align}
+%Problem: From the beginning, $\dot{C}_1 = 0$ when $C_\omega = 0$. But now $\dot{C}_1(0)$ is not zero. Resolution: unphysical field and spectral density...\\
+%
+%By symmetry, we also have
+%\begin{align}
+%\dot{C}_2(t) &= -\f{\gamma}{2}\lb C_2(t) + C_1\lp t - \f{d}{v_g} \rp \rb.
+%\end{align}
+%Take Laplace transform and solve
+%\begin{align}
+%\tilde{C_1} = \f{1}{\sqrt{2}}\f{1}{s + \gamma/2 + \gamma/2 e^{-ds/v_g}} = \tilde{C_2}(t).
+%\end{align}
+%When $d\to 0$, then 
+%\begin{align}
+%\tilde{C}_1 = \f{1}{\sqrt{2}}\f{1}{s + \gamma} \implies C_1(t) \sim e^{-\gamma t},
+%\end{align}
+%which is ordinary superradiance. If $d\to \infty$, we get
+%\begin{align}
+%C_1(t) \sim e^{-\gamma t / 2}
+%\end{align}
+%which is independent decay. But there's a third case. Let us call $\eta = \gamma d/v_g$ which quantifies the length scale of the separation in units of photon coherence length. Expand to linear terms in $e^{-\eta s}$ to get
+%\begin{align}
+%C_1(t) \approx \f{1}{\sqrt{2}\lp 1-\eta/2 \rp} \f{1}{s + \lb \gamma/1 - \eta/2 \rb}.
+%\end{align}
+%We notice that 
+%\begin{align}
+%\abs{C_1}^2 \sim e^{2\gamma_{eff} t}
+%\end{align}
+%where $\gamma_{eff}$ can exceed superradiance. 
 
 
 
