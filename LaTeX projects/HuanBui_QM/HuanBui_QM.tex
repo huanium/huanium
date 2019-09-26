@@ -48,6 +48,8 @@
 \newcommand{\be}{\beta}
 \newcommand{\x}{\xi}
 
+\newcommand{\G}{\mathcal{G}}
+
 \newcommand{\f}[2]{\frac{#1}{#2}}
 
 \newcommand{\ift}{\infty}
@@ -65,7 +67,8 @@
 \newcommand{\V}{\mathbf{V}}
 \newcommand{\U}{\mathcal{U}}
 \newcommand{\Id}{\mathcal{I}}
-
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
 
 %\setcounter{chapter}{-1}
 
@@ -2503,27 +2506,27 @@ where we can think of $f(t)$ is a source, and we want to find $x(t)$. \\
 
 Green says we can solve this ODE using a Green's function defined by
 \begin{align}
-\lp m \p_t^2 + k \rp G(t,u) = \delta(t - u)
+\lp m \p_t^2 + k \rp \G(t,u) = \delta(t - u)
 \end{align}
 where we will use
 \begin{align}
 f(t) = \int \delta(t-u) f(u)\,du.
 \end{align}
 
-Given a solution of $G(t,u)$, then the solution to the problem is
+Given a solution of $\G(t,u)$, then the solution to the problem is
 \begin{align}
-\boxed{x(t) = \int \,du G(t,u)f(u)}
+\boxed{x(t) = \int \,du \G(t,u)f(u)}
 \end{align}
 because
 \begin{align}
-\lp m \p_t^2 + k \rp x(t) &= \lp m \p_t^2 + k \rp \int \,du G(t,u)f(u)\\
-&= \int \,du  \lp m \p_t^2 + k \rp G(t,u)f(u)\\
+\lp m \p_t^2 + k \rp x(t) &= \lp m \p_t^2 + k \rp \int \,du \G(t,u)f(u)\\
+&= \int \,du  \lp m \p_t^2 + k \rp \G(t,u)f(u)\\
 &= \int \,du \delta(t-u)f(u)\\
 &= f(t).
 \end{align}
 
 
-So to solve this ODE it comes down to getting $G(t,u)$, which depends on the nature of the problem. But one thing to notice here is that we can think of $G(t,u)$ as something that carries the effects of the source $f(t)$ and gives $x(t)$ which describes these effects. 
+So to solve this ODE it comes down to getting $\G(t,u)$, which depends on the nature of the problem. But one thing to notice here is that we can think of $\G(t,u)$ as something that carries the effects of the source $f(t)$ and gives $x(t)$ which describes these effects. 
 
 
 
@@ -2653,7 +2656,7 @@ Without going through all the algebra, we can actually work this out. Let us thi
 
 Thus we see that the Lagrangian emerges naturally from the Hamiltonian. So in general, (for a time-independent Hamiltonian of course), we have
 \begin{align}
-\boxed{\bra{q_F} e^{-\ham T }\ket{q_I} = \int, \mathfrak{D}[q(t)] e^{i \int^T_0  \,dt\ \lag(q,\dot{q}) }}
+\boxed{\bra{q_F} e^{-i\ham T }\ket{q_I} = \int \mathfrak{D}[q(t)] e^{i \int^T_0  \,dt\ \lag(q,\dot{q}) }}
 \end{align}
 where
 \begin{align}
@@ -2666,8 +2669,192 @@ is the action.
 
 \subsection{Classical mechanics emerges}
 
+With the Lagrangian appearing we can't help but think if classical mechanics can emerge. It turns out that one of the nice features of the path integral formulation of QM is that classical mechanics can be recovered. \\
+
+Let us put $\hbar$ back into the equation for the amplitude of the propagator and take the limit as $\hbar \to 0$:
+\begin{align}
+\bra{q_F} e^{-(i\hbar)\ham T }\ket{q_I} = \int \mathfrak{D}[q(t)] e^{(i\hbar) \int^T_0  \,dt\ \lag(q,\dot{q}) }.
+\end{align}
+In this limit, the Lagrangian takes the form $\lag(\dot{q}_c , q_c)$, which is a minimal, where $q_c(t)$ is the classical path determined by solving the Euler-Lagrange equation
+\begin{align}
+\f{d}{dt}\lp \f{\delta \lag}{\delta \dot{q}} \rp = \f{\delta \lag}{\delta q} = 0.
+\end{align} 
 
 
+
+
+\section{Path Integral in Quantum Field Theory - Primer}
+
+
+
+Whereas path integrals in quantum mechanics compute amplitudes by integrating $e^{iS}$ over all paths, path integrals in quantum field theory compute amplitudes by integrating $e^{iS}$ over all field configurations. For example, consider a free scalar field theory
+\begin{align}
+\lag = \f{1}{2}\p_\mu \phi \p^\mu \phi - \f{1}{2}m^2\phi^2.
+\end{align}
+
+The classical equations of motion for $\phi(x)$ is found by varying the Lagrangian and requiring that $\delta S = 0$. We have shown (please refer to the classical field theory text) that the equations of motion are
+\begin{align}
+-(\square + m^2)\phi(x) = 0.
+\end{align}
+
+This is for a free field. Now, suppose we want a field that is created by a source $J(x)$ such that the equation of motion is now
+\begin{align}
+-(\square + m^2)\phi(x) = J(x),
+\end{align}
+which can be obtained from varying 
+\begin{align}
+\lag = \f{1}{2}\p_\mu \phi \phi^\mu \phi - \f{1}{2}m^2\phi^2 + J(x)\phi(x),
+\end{align}
+where we have simply included the source in the Lagrangian. To solve the new equation of motion, we can solve for the Green function $\G$ satisfying
+\begin{align}
+-(\square + m^2)\G(x,y) = \delta^4(x - y).
+\end{align}
+Recall that solution to the initial equation of motion in terms of the Green's function is
+\begin{align}
+\phi(x) = \int d^4y\, \G(x,y)J(y),
+\end{align}
+where we see that the Green's function \textit{propagates} the source $J(x)$ to affect $\phi(x)$. Thus we call the Green's function the propagator in QFT:
+\begin{align}
+\G(x,y) \to \D(x,y)
+\end{align}
+where $\D(x,y)$ obeys
+\begin{align}
+\boxed{-(\square + m^2)\D(x,y) = \delta^4(x-y)}
+\end{align}
+and the solution to the initial equation of motion is
+\begin{align}
+\boxed{\phi(x) = \int d^4y\, \D(x,y)J(y)}
+\end{align}
+
+
+To solve for the propagator $\D(x,y)$, we have to go to momentum space via the Fourier transform. 
+\begin{align}
+\D(x,y) &= \F[\D(x,y)](k) =  \f{1}{(2\pi)^4} \int d^4 k \, \D(k)e^{i k (x-y)}\\ 
+\phi(x) &= \F[\phi(x)](k) =  \f{1}{(2\pi)^4} \int d^4 k \, \phi(k) e^{ikx}\\
+J(x) &= \F[J(x)](k) =  \f{1}{(2\pi)^4} \int d^4 k \, J(k) e^{ikx}\\
+\delta^4(x-y) &= \F[\delta^4(x-y)](k) =  \f{1}{(2\pi)^4} \int d^4 k \, e^{ik(x-y)}.
+\end{align}
+
+So, putting this back into our equations, we have
+\begin{align}
+-(\square + m^2)\D(x,y) &= \f{1}{(2\pi)^4} \int d^4 k\, \D(k)(- \square - m^2)e^{ik(x-y)}\\
+&= \f{1}{(2\pi)^4}\int d^4 k\, \D(k)(k^2 - m^2)e^{ik(x-y)}.
+\end{align}
+So, by our setup:
+\begin{align}
+\delta^4(x-y) =\f{1}{(2\pi)^4}\int d^4 k\, e^{ik(x-y)}  = \f{1}{(2\pi)^4}\int d^4 k\, \D(k)(k^2 - m^2)e^{ik(x-y)} .
+\end{align}
+This means that
+\begin{align}
+\boxed{\D(k)(k^2 - m^2) = 1 \implies \D(k) = \f{1}{k^2 - m^2}}
+\end{align}
+
+Putting everything together, the solution to the equation of motion is
+\begin{align}
+\phi(x) &= \int d^4 x\, \D(x,y) J(y) \\ 
+&=  \int d^4 x\, \lb \F[\D(x,y)](k)   \rb J(y)\\
+&= \int d^4 x\, \lb  \f{1}{(2\pi)^4} \int d^4 k \, \D(k)e^{i k (x-y)}  \rb J(y)\\
+&= \boxed{\int d^4 x\, \lb  \f{1}{(2\pi)^4} \int d^4 k \, \f{1}{k^2 - m^2} e^{i k (x-y)}  \rb J(y)}
+\end{align}
+But we run into a bit of a problem here, because we might have $k^2 - m^2 = 0$ since $k \equiv m$ in QFT, making a pole appear in the integral. To fix that, we will have to do a contour integral to tame this infinity. Let's not worry about that for me. In terms of path integrals, we have the Lagrangian with $J(x)$ included
+\begin{align}
+\lag = \f{1}{2}\p_\mu \phi \p^\mu \phi - \f{1}{2}m^2\phi^2 + J(x)\phi(x).
+\end{align}
+The path integral describing $\phi(x)$ with source $J(x)$ is then called 
+\begin{align}
+\boxed{\Z = \int \mathfrak{D}[\phi]\, e^{iS} = \int \mathfrak{D}[\phi]\, e^{i\int d^4x\, \lb \f{1}{2}\p_\mu \phi \p^\mu \phi - \f{1}{2}m^2\phi^2 + J(x)\phi(x) \rb}}
+\end{align}
+
+
+
+$\Z$ is called the \textbf{generating function}. With this, we can generalize to include a potential $V(\phi)$:
+\begin{align}
+\lag = \f{1}{2}\p_\mu \phi \p^\mu \phi - V(\phi) + J(x)\phi(x).
+\end{align}
+In this case,
+\begin{align}
+\boxed{\Z = \int \mathfrak{D}[\phi]\, \exp\lc i\int d^4x\, \lb \f{1}{2}\p_\mu \phi \p^\mu \phi - V(\phi) + J(x)\phi(x) \rb\rc}.
+\end{align}
+
+Now, this can't be solved exactly in general. But we can solve for the free case with $V(\phi) = (1/2)m^2\phi^2$, which is what we'll do now.
+
+\subsection{Free scalar with source $J(x)$}
+
+The Lagrangian is 
+\begin{align}
+\lag = \f{1}{2}\p_\mu \phi \p^\mu \phi - \f{1}{2}m^2\phi^2 + J(x)\phi.
+\end{align}
+And the corresponding generating function is
+\begin{align}
+\Z &= \int \mathfrak{D}[\phi]\, e^{i\int d^4x\, \lb \f{1}{2}\p_\mu \phi \p^\mu \phi - \f{1}{2}m^2\phi^2 + J(x)\phi(x) \rb}\\
+&= \int \mathfrak{D}[\phi]\, \exp\lc i\int d^4x\, \lb \f{1}{2}\p_\mu \phi \p^\mu \phi - \f{1}{2}m^2\phi^2 + J(x)\phi(x) \rb \rc.
+\end{align}
+
+
+Integrating by parts in the integrand in the exponent:
+\begin{align}
+\int d^4x\,\p_\mu \lb \phi \p^\mu \phi \rb &= \int d^4x\, \p_\mu \phi \p^\mu \phi   + \int d^4x\, \phi \square \phi \\ 
+\phi\p^\mu\phi\bigg\vert^\infty_{-\infty} &= \int d^4x\, \p_\mu \phi \p^\mu \phi   + \int d^4x\, \phi \square \phi  \\ 
+0 &= \int d^4x\, \p_\mu \phi \p^\mu \phi   + \int d^4x\, \phi \square \phi
+\end{align}
+which gives
+\begin{align}
+\Z = \int \mathfrak{D}[\phi]\, \exp\lc i\int d^4x\, \lb -\f{1}{2}\phi(\square + m^2) \phi  + J(x)\phi(x) \rb\rc.
+\end{align}
+Now this integral is hard to evaluate, so we replace $\phi(x)$ by a lattice of $\phi_i = \phi(ia)$ where $i$ is an integer and $a$ is the latter spacing. With this,
+\begin{align}
+\p \phi(ia) \to \f{1}{a}(\phi_{i+1} - \phi_i) = M_{ij}\phi_i
+\end{align}
+where $[M_{ij}]$ is now a matrix. Next, we call $-(\square + m^2) = [A]$, which is also a matrix, where
+\begin{align}
+-(\square + m^2)\phi_i = [A]\phi_i = J.
+\end{align}
+
+
+It follows that
+\begin{align}
+\Z &= \int \dots \int d\phi_1\,d\phi_2\,\dots d\phi_N \exp\lb \f{i}{2}\phi A \phi + i J\cdot \phi\rb\\
+&= \zeta \exp\lb -\f{i}{2}J A^{-1}J \rb
+\end{align}
+where $\zeta$ is an overall actor that does not depend on $J$ and $A^{-1}$ is the inverse of $A$. \\
+
+With this, we can go back to the continuum case where the latter spacings become infinitesimally small. Recall that we have defined
+\begin{align}
+-(\square + m^2) = A.
+\end{align}
+Because $-(\square + m^2)\D(x-y) = \delta^4(x-y)$, we must also have
+\begin{align}
+A^{-1} = \D(x-y).
+\end{align}
+This means 
+\begin{align}
+\boxed{\Z = \zeta \exp \lb -\f{i}{2}\iint d^4xd^4y\, J(x)\D(x-y)J(y) \rb = \zeta e^{iW(J)}}
+\end{align}
+where the functional $W$ is given by
+\begin{align}
+\boxed{W(J) = -\f{1}{2}\iint d^4xd^4y\, J(x)\D(x-y)J(y)}
+\end{align}
+This is called the \textbf{generating function for connected diagrams}.\\
+
+Also, with 
+\begin{align}
+\Z(J) &= \zeta e^{iW(J)} \\ 
+\Z(0) &= \zeta,
+\end{align}
+we have
+\begin{align}
+\boxed{\Z(J) = \Z(0) e^{iW(J)}}
+\end{align}
+
+Since for the free particle $\D(x-y)$ is the inverse of $-(\square + m^2)$, i.e.,
+\begin{align}
+-(\square + m^2)\D(x-y) = \delta^4 (x-y),
+\end{align}
+we have for the free particle
+\begin{align}
+\boxed{\D(x-y) = \f{1}{(2\pi)^4}\int d^4k\, \f{1}{k^2 - m^2} e^{ik(x-y)}}
+\end{align}
+Again, we should worry about the pole at $k^2 = m^2$. 
 
 
 
