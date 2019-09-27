@@ -132,7 +132,7 @@
 
 Greetings,\\
 
-This text is my reading notes from Shankar's \textit{Principles of Quantum Mechanics, Second Edition}, \textit{Introductory Quantum Optics} by , \textit{Optical Coherence \& Quantum Optics}. Additional comes from my class notes, my comments/interpretations/solutions, and other books/articles/notes. There are three parts to this text, as the title suggests. The Quantum Mechanics part covers the principles of quantum mechanics. A majority of this part will be my reading notes from Shankar's book. The other two topics parts cover selected phenomena in quantum optics and quantum information theory.  \\
+This text is my reading notes from \textit{Principles of Quantum Mechanics, Second Edition} by Shankar, \textit{Introductory Quantum Optics}, \textit{Optical Coherence \& Quantum Optics}, and \textit{Quantum Field Theory in a Nutshell} by Zee. Additional material comes from my class notes, my comments/interpretations/solutions, and other books/articles/notes. There are three parts to this text, as the title suggests. The Quantum Mechanics part covers the principles of quantum mechanics and some quantum field theory. A majority of this part will be my reading notes from Shankar's and Zee's book. The other two topics parts cover selected phenomena in quantum optics and quantum information theory.  \\
 
 Background in linear algebra and modern physics (two semesters recommended) will be very helpful. I will try to cover some of the mathematical background, but a lot of familiarity will be assumed. \\
 
@@ -2761,7 +2761,7 @@ In this limit, the Lagrangian takes the form $\lag(\dot{q}_c , q_c)$, which is a
 
 
 
-\section{Path Integral in Quantum Field Theory - Primer}
+\section{Quantum Field Theory \& The Path Integral}
 
 
 
@@ -2932,11 +2932,371 @@ we have for the free particle
 \begin{align}
 \boxed{\D(x-y) = \f{1}{(2\pi)^4}\int d^4k\, \f{1}{k^2 - m^2} e^{ik(x-y)}}
 \end{align}
-Again, we should worry about the pole at $k^2 = m^2$. 
+Again, we now should really worry about the pole at $k^2 = m^2$. So let us do a bit of primer on contour integrals, which we will use extensively to tame infinities.
+
+
+\subsection{Contour Integrals \& The Residue Theorem}
+
+Let's say we're in the complex plane and let's say that we're given some function $f$ defined on some neighborhood of the complex plane. It is possible that we want to perform an integration for $f(z)$ along some closed contour curve $C$ in the complex plane:
+\begin{align}
+\int_C f(z)\,dz.
+\end{align}
+Pictorially, we want to perform the integral like this
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{contour}
+	\caption{Wikipedia}
+\end{figure}
+in order to avoid integrating over some pole $z = i$.
+
+\subsubsection{Cauchy Integral Formula}
+In order to the perform the integral above in general, we can make use of something called the \textit{Cauchy integral formula}, which goes as follows. For any analytic function $f(z)$, if $z_0$ is interior to the contour $C$ then we have
+\begin{align}
+\boxed{f(z_0) = \f{1}{2\pi i}\int_C \f{f(z)}{z - z_0}\,dz}
+\end{align}
+
+which says that the values of $f$ inside the contour $C$ such that $\abs{z} = 2$ is determined by the value of $f$ on $C$. Let's use this to actually perform the integral. For example, say we would like to compute 
+\begin{align}
+\int_C \f{z\,dz}{(9-z^2)(z+i)} 
+\end{align}
+along a contour $C$ that contains only the \textit{pole} $z_0 = -i$. Then we first re-write the integral to match the Cauchy integral formula:
+\begin{align}
+\int_C \f{z\,dz}{(9-z^2)(z+i)} &= \int_C \f{1}{z+i}\lp \f{z}{9 - z^2} \rp\,dz
+\end{align}
+where $f(z)$ here is
+\begin{align}
+f(z) = \f{z}{9 - z^2}
+\end{align}
+which is analytic for $\abs{z} \leq 2$. By the integral formula, we have that
+\begin{align}
+\int_C \f{1}{z+i}\lp \f{z}{9 - z^2} \rp\,dz = f(z_0 = -i) = 2\pi i f(-i) = 2\pi i \f{-i}{9 + 1} = \f{\pi}{5}.
+\end{align}
+
+So believe it or not, we've just evaluated the integral without doing any integration!\\
+
+\subsubsection{Taylor \& Laurent series}
+
+Complex functions can have Taylor series or Laurent series, which is like Taylor series in a way except the powers are negative. 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.1]{laurent}
+	\caption{Wikipedia}
+\end{figure}
+
+Let the contours $C_1$ and $C_2$ be concentric circles centered on $z_0$ with radii $r_1$ and $r_2$ where $r_2 < r_1$. Then we have a theorem which says if $f$ is analytic on $C_1$ and $C_2$ and everywhere in between then at each point $z$ in-between or on $C_1$ or $C_2$, we have
+\begin{align}
+\boxed{f(z) = \sum^\infty_{n=0}a_n (z - z_0)^n + \sum^\infty_{n=0}\f{b_n}{(z- z_0)^n}}
+\end{align}
+where
+\begin{align}
+a_n &= \f{1}{2\pi i }\int_{C_1} \f{f(s)\,ds}{(s - z_0)^{n+1}}\hspace{0.5cm} n = 0,1,2,3,\dots \\ 
+b_n &= \f{1}{2\pi i }\int_{C_2} \f{f(s)\,ds}{(s - z_0)^{-n+1}}\hspace{0.5cm} n = 1,2,3,\dots
+\end{align}
+The series defined above is called the \textit{Laurent series} for $f$. \\
+
+One thing we can do to recover a ``single'' contour $C$ is shrinking the inner radius $r_2 \to 0$, so that the domain becomes a punctured neighborhood of radius $r_1$ around $z_0$: $0 < \abs{z - z_0} < r_1$ and the $b_n$'s vanish.\\
+
+If $f$ is analytic at all points inside and on $C_1$ then $f(z) / (z - z_0)^{-n+1}$ is also analytic since $-n+1 \leq 0$ and $b_n = 0$. This means the series reduces to a Taylor series. 
+
+
+\subsubsection{The Residue Theorem}
+
+A singular point of a function $f(z)$ is a point $z_0$ where $f$ is not analytic at $z_0$ but is analytic at every point in some neighborhood of $z_0$. So for example, the function $f(z) = 1/z$ is analytic everywhere except at $z=0$, so $z=0$ is a singular point. \\
+
+Isolated singularities have neighborhoods around them on which $f$ is analytic. \\
+
+When $f$ has an isolated singular point $z_0$, we define the \textit{residue} of $f$ at $z_0$ is the coefficient $b_1$ of its Laurent series:
+\begin{align}
+\boxed{b_1 = \f{1}{2\pi i}\int_{C} f(z)\,dz}
+\end{align}
+
+Note that the residue $b_1$ is the coefficient in the $1 / (z - z_0)$ term in the Laurent series:
+\begin{align}
+f(z) = \f{b_1}{z - z_0} + \dots
+\end{align}
+
+
+\textbf{The Residue Theorem:} Let $f$ be an analytic function in and on a closed contour $C$ except where it has singular points $z_1, z_2, \dots$ with corresponding residues $b_1, b_2, \dots$. Then 
+\begin{align}
+\boxed{\int_C f(z)\,dz = 2\pi i (b_1 + b_2 + \dots)}
+\end{align}
+i.e., the contour integral of $f$ around some contour $C$ which contains some of the singular points of $f$ is $2\pi i$ times the sum of the corresponding residues. \qed
+
+
+For example, let's say we want to evaluate
+\begin{align}
+\int_C \f{5z - z}{z(z- 1)}\,dz
+\end{align}
+where the contour $C$ contains both the $0$ and $1$ poles. Then we first write the integrand so that it matches has the form of a Laurent series:
+\begin{align}
+\f{5z - 2}{z(z- 1)} = \f{1}{z}\lp \f{5z - 2}{z - 1} \rp = \f{1}{z-1}\lp\f{5z - 2}{z}\rp.
+\end{align}
+We find that the for the $z_0 = 0$ pole the residue is 
+\begin{align}
+b_1 = \f{0-2}{0-1} = 2.
+\end{align}
+For the $z_1 = 1$ pole the residue is
+\begin{align}
+b_2 = \f{5 - 2}{1} = 3.
+\end{align}
+So by the residue theorem,
+\begin{align}
+\int_C \f{5z - z}{z(z- 1)}\,dz = 2\pi i(2+3) = 10\pi i.
+\end{align}
+
+
+Let's do another example to get more comfortable. Suppose we want to evaluate
+\begin{align}
+\int_C \f{z^2}{1+z}\,dz
+\end{align}
+for a contour $C$ that contains the pole $z = -1$. For this pole, the corresponding residue is $(-1)^2 = 1$, so 
+\begin{align}
+\int_C \f{z^2}{1+z}\,dz = 2\pi i(1) = 2\pi i.
+\end{align}
+
+There are certainly techniques to evaluate integrals involving much more complicated poles, but we won't worry about that for now. 
+
+
+\subsubsection{Evaluating real improper integrals}
+
+
+
+One of many very nice applications of the residue theorem and the contour integrals is evaluating real improper integrals. Consider a general real improper integral 
+\begin{align}
+\int^{\infty}_{-\infty}f(x)\,dx
+\end{align}
+where $f$ now is a function that takes on real-valued arguments. If we extend $f$ over the complex plane and $f(z)$ has a pole at $z_0$ with positive imaginary part, then consider the contour with $\abs{z_0} < R$ which looks like the following
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{improper}
+\end{figure}
+If 
+\begin{align}
+f(z) = \f{g(z)}{z - z_0}
+\end{align}
+then we have from the theorems
+\begin{align}
+\oint_C f(z)\,dz = 2\pi i g(z_0).
+\end{align}
+But we can also extend and make the contour very large by taking $R\to \infty$ since the contour integral stays the same
+\begin{align}
+\oint_C f(z)\,dz = \lim_{R\to \infty}\lp \int^R_{-R}f(x)\,dx + \int_{C_R}f(z)\,dz\rp
+\end{align}
+where the first term on the RHS is exactly the real improper integral we're looking for. Thus, so long as $f(z)$ on $C_R$ vanishes when we take $R\to \infty$, we must have that
+\begin{align}
+\boxed{\int^{\infty}_{-\infty}f(x)\,dx 2\pi i g(z_0)}
+\end{align}\qed
+
+
+
+For example, let's say we want to evaluate the following integral
+\begin{align}
+\int^\infty_{-\infty} \f{2x^2 - 1}{x^4 + 5x^2 + 4}\,dx.
+\end{align}
+
+Well, while we can certainly try to do this completely on the real line, we can avoid the singularities by doing the contour integral. So let's write the integrand as
+\begin{align}
+f(z) = \f{2x^2 - 1}{(z^2 + 1)(z^2 + 4)}
+\end{align}
+which has poles at $z = \pm i, \pm 2i$. We also observe that for large $z$, $\abs{f(z)}\to 0$. This allows us to do use the contour integral. If we pick a contour that looks like a half-circle in the upper half plane with the base being the real axis, so that its radius is bigger than 2 (so that we can extend the contour to infinity), then we have, by what we've shown earlier
+\begin{align}
+\int_C f(z)\,dz = \int^\infty_{-\infty}f(x)\,dx + 0
+\end{align}
+where $0$ simply denotes the piece that vanishes when $R \to \infty$. With this, we move on to evaluating the contour integral. But notice that the contour includes only the $i$ and $2i$ poles, so we will only have two residues. Because we only have the $i$ and $2i$ poles, we write
+\begin{align}
+f(z) = \f{1}{z-i}\f{2z^2 - 1}{(z+i)(z^2 + 4)} = \f{1}{z - 2i}\f{2z^2 - 1}{(z^2 + 1)(z - 2i)}.
+\end{align}
+The residue that $z = i$ is then $i/2$, while the residue that $z = 2i$ is $-3i/4$. So the improper integral is
+\begin{align}
+\int^\infty_{-\infty} \f{2x^2 - 1}{x^4 + 5x^2 + 4}\,dx = 2\pi i\lp \f{i}{2} - \f{3i}{4} \rp = \f{\pi}{2}.
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 \subsection{From Field to Particle to Force}
+
+Now that we've had the mathematical machinery in hand, we can tackle our worries about the $1/(k^2 - m^2)$ the keeps popping up in the integrals. \\
+
+Let's start slow and try to evaluate the following integral
+\begin{align}
+\int^\infty_{-\infty} \f{dk}{k^2 - m^2}.
+\end{align}
+
+We obviously see that there are two poles $k =-m$ and $k = m$. While we will try to evaluate this using the a contour integral, it's not clear how we'll start because the poles are on the real axis. To resolve this slight issue, we will ``tilt'' the complex plane so that the ``poles'' are no longer on the real axis. \\
+
+What we'll do is letting $m^2 \to m^2 - i\epsilon$ where $\epsilon > 0$ is some arbitrarily small positive number, just so we could push the pole a bit away from the real axis. Our goal is to evaluate the contour integral with $m^2 - i\epsilon$, then take the limit as $\epsilon\to \infty$ and hopefully get something finite. So, with $m^2 \to m^2 - i\epsilon$, we have
+\begin{align}
+k^2 - m^2 &\to k^2 - (m^2 - i\epsilon) \\ 
+&= (k - \sqrt{m^2 - i\epsilon})(k + \sqrt{m^2 - i\epsilon}). 
+\end{align}
+Since $\epsilon$ can be chosen to be arbitrarily small, we will just do an expansion on the square root term without worrying to much
+\begin{align}
+\sqrt{m^2 - i\epsilon} &= m\sqrt{1 - \f{i\epsilon}{m^2}} \\ 
+&\approx m - \f{i\epsilon}{2m} \\ 
+&= m - i\epsilon' 
+&\equiv m - i\epsilon
+\end{align}
+where we have let $\epsilon$ become the $\epsilon'$, which is something we can do because again $\epsilon$ can be chosen to be arbitrarily small. With this, we have
+\begin{align}
+k^2 - (m^2 - i\epsilon) = (k - (m - i\epsilon))(k + (m - i\epsilon)).
+\end{align}
+
+So now we have two poles at $k = m-i\epsilon$ and $k = -m + i\epsilon$, which are off the real axis. The next thing to do now is to evaluate the contour integral. We can make a closed contour using either the upper half-plane half-circle, or the lower half-plane half circle, each enclosing a different pole. 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics*[scale=0.1]{poles}
+\end{figure}
+
+Consider the contour integral on the left hand side. The enclosed pole here is $k = m - i\epsilon$. So to compute the residue we write
+\begin{align}
+\f{1}{k^2 - m^2 + i\epsilon} = \f{1}{k - (m - i\epsilon)}\f{1}{k + (m - i\epsilon)}.
+\end{align}
+The residue is therefore
+\begin{align}
+\f{1}{(m - i\epsilon) + (m - i\epsilon)} \to \f{1}{2m}
+\end{align}
+as we take $\epsilon \to 0$. If we consider the other contour then the residue is going to take on a minus sign, $-1/2m$. However, worry not, because the integrals over the real line in two contours have opposite directions. This means in either case, we get
+\begin{align}
+\int^\infty_{-\infty}\f{dk}{k^2 - m^2 + i\epsilon} = 2\pi i \lp \f{-1}{2m} \rp = \boxed{\f{-i\pi}{m}}.
+\end{align}
+Note that we can use the residue theorem to evaluate the integral here because as $k\to \infty, 1/(k^2 - m^2 + i\epsilon) \to 0$.
+
+Okay, now suppose we want to evaluate something that is closer to what we're dealing with earlier:
+\begin{align}
+\int^\infty_{-\infty} \f{dk\, e^{ik(x-y)}}{k^2 - m^2 + i\epsilon}.
+\end{align}
+
+Consider the same two contours. We will see that both contours don't always work in both cases and whether the contour you choose works depends on whether $(x-y)$ is positive or negative. \\
+
+Suppose $x - y > 0$. Then on $C_R$, we have that
+\begin{align}
+e^{iz(x-y)} \sim e^{i(iR)(x-y)} = e^{-R(x-y)} \to 0 \text{ as } R\to \infty,
+\end{align}
+where $iR$ represents the argument (up to phase shifts) that is fed into the exponent when integrating over the contour. On the other contour, however, because the argument now looks like $-iR$ times a phase factor, the sign of the exponent becomes positive, which means the function blows up. So, we see that the contour on the lower half-plane doesn't work when $x - y > 0$. The opposite happens when we have $x - y < 0$: only the contour on the lower half-plane works. \\
+
+With this and the fact that the integrand still goes to zero as $k\to \infty$, we have for $x - y > 0$,
+\begin{align}
+\int^\infty_{-\infty} \f{dk\, e^{ik(x-y)}}{k^2 -m^2 + i\epsilon} = \int_C \f{dz \, e^{iz(x-y)}}{z^2 - m^2 + i\epsilon}.
+\end{align}
+
+So depending on the sign at $(x-y)$, we get combinations to the residue 
+\begin{align}
+\f{e^{2mi(x-y)}}{2m} \text{ or } \f{e^{-2mi(x-y)}}{-2m}
+\end{align}
+when $x - y>0$ and $x-y < 0$, respectively. \\
+
+With this, we can now tackle the free theory propagator in QFT, which is given by
+\begin{align}
+\D(x-y) = \int \f{d^4 k }{(2\pi)^4} \f{e^{ik(x-y)}}{k^2 - m^2 + i\epsilon}
+\end{align}
+
+Here
+\begin{align}
+k^2 &= k_0^2 - \vec{k}^2 \\ 
+d^4k &= dk_0\,d^3\vec{k}
+\end{align}
+where we're using the conventional Minkowskian metric $\eta_{\mu\nu} = \text{diag}(1,-1,-1,-1)$. With this we rewrite the integral as
+\begin{align}
+\D(x-y) &= \f{1}{(2\pi)^4} \int^\infty_{-\infty}dk_0\,\int^\infty_{-\infty}d^3\vec{k}\f{e^{ik_0(x^0 - y^0)}e^{-i\vec{k}\cdot(\vec{x} - \vec{y})}}{k_0^2 - (\vec{k}^2 + m^2) + i\epsilon},
+\end{align}
+where we don't really have to worry too much about $k^0$ or $k_0$ because of the metric. Now we'll call
+\begin{align}
+w_k^2 = \vec{k}^2 + m^2,
+\end{align}
+which the equivalent to the total energy. For the $k_0$ integration, which is an integration over time:
+\begin{align}
+k_0^2 - w_k^2 + i\epsilon = (k_0 - (w_k - i\epsilon))(k_0 + (w_k -i\epsilon))
+\end{align}
+and so we have poles at $k_0 = w_k - i\epsilon$ and $-w_k + i\epsilon$.\\
+
+Once again, to perform this integral (correctly), we must pick the correct half-plane to close the contour. This choice depends on $x_0 - y_0$, which is the \textbf{time-ordering}. \\
+
+It turns out that for $x^0 - y^0 >0$, we use the upper contour of radius $R$, where we have 
+\begin{align}
+e^{ik_0(x-y)} \sim e^{i(iR)(x^0-y^0)} = e^{-R(x^0-y^0)} \sim 0.
+\end{align}
+In this case, the pole is at $k_0 = -w_k + i\epsilon$. And so we can now evaluate the integral over all \textit{space} in the expression above:
+\begin{align}
+&\f{1}{(2\pi)^4}\int^\infty_{-\infty}d^3\vec{k}\f{e^{ik_0(x^0 - y^0)}e^{-i\vec{k}\cdot(\vec{x} - \vec{y})}}{k_0^2 - (\vec{k}^2 + m^2) + i\epsilon}\\
+= &\int \f{1}{k_0 + (w_k - i\epsilon)} \lp 
+\f{d^3\vec{k}}{(2\pi)^4}\f{e^{ik_0(x^0 - y^0)} e^{-i\vec{k}\cdot(\vec{x} - \vec{y})}}{k_0 - (w_k - i\epsilon)}
+\rp.
+\end{align}
+Now, remember that this is our $f(k_0)$, and what we're actually trying to evaluate here is 
+\begin{align}
+\D(x-y) = \int dk^0 f(k_0).
+\end{align}
+By writing $f(k_0)$ as the triple integral over all \textit{space} like above, the residue is given by
+\begin{align}
+\int\f{d^3\vec{k}}{(2\pi)^4}\f{e^{ik_0(x^0 - y^0)} e^{-i\vec{k}\cdot(\vec{x} - \vec{y})}}{k_0 - (w_k - i\epsilon)}
+\end{align}
+evaluated at the pole $k_0 = -w_k + i\epsilon$, taking $\epsilon \to 0$. The value of this at $k_0 = -w_k +i\epsilon$ as $\epsilon\to 0$ is
+\begin{align}
+&\int \f{d^3\vec{k}}{(2\pi)^4} \f{e^{-iw_k(x^0 - y^0)}e^{-i\vec{k}\cdot (\vec{x} - \vec{y})}}{-w_k - w_k} \\ 
+= &\int \f{d^3\vec{k}}{(2\pi)^4} \f{e^{-iw_k(x^0 - y^0)}e^{-i\vec{k}\cdot (\vec{x} - \vec{y})}}{-2w_k}.
+\end{align}
+This is the residue. And so the value of the propagator is then
+\begin{align}
+\D(x-y) = \int dk^0 \,f(k_0) = 2\pi i \lb \int \f{d^3\vec{k}}{(2\pi)^4} \f{e^{-iw_k(x^0 - y^0)}e^{-i\vec{k}\cdot (\vec{x} - \vec{y})}}{-2w_k} \rb. 
+\end{align}
+So,
+\begin{align}
+\boxed{\D(x-y) = \int \f{-i}{2w_k}d^3\vec{k}e^{-i[w_k(x^0 - y^0) + \vec{k}\cdot(\vec{x} - \vec{y})]}}
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \subsection{From field to particle}
@@ -2957,7 +3317,13 @@ W(J) = -\f{1}{2}\f{1}{(2\pi)^4}\int d^4k\, J(k)^* \f{1}{k^2 - m^2 + i\epsilon}J(
 \end{align}
 where we have taken the complex conjugate of $J(x)$ to get the correct Fourier transform.  \\
 
-Now, consider the case where we have two sources $J_1, J_2$ in spacetime such that $J(x) = J_1(x) + J_2(x)$. Then $W(J)$ contains four terms involving $J_1$ and $J_2$. One of the terms contains $J_2^* J_1$:
+Now, consider the case where we have two sources $J_1, J_2$ in spacetime such that $J(x) = J_1(x) + J_2(x)$:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics*[scale=0.5]{source}
+\end{figure}
+
+Then $W(J)$ contains four terms involving $J_1$ and $J_2$. One of the terms contains $J_2^* J_1$:
 \begin{align}
 W(J) = -\f{1}{2}\int \f{d^4k}{(2\pi)^4} J_2^*(k)\f{1}{k^2 - m^2 + i\epsilon} J_1(k).
 \end{align} 
