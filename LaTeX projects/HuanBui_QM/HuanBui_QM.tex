@@ -3639,31 +3639,290 @@ This is exactly the form of the electric potential in electrostatics.
 
 
 
-
-
-\subsubsection{Bypassing Maxwell}
-
-
-
-
-\subsubsection{Bypassing Einstein}
-
-\subsubsection{Why we fall}
-
-\subsubsection{The universe}
-
-\subsubsection{Time differs from space by a sign}
-
-\subsubsection{Degrees of freedom}
-
-\subsection{Invserse Square Law \& Planck Mass}
-
-\subsubsection{Inverse square law}
-
 \subsubsection{Planck Mass}
+
+The Planck Mass, denoted $M_{Pl}$ is defined in terms of the Newton's law of gravity:
+\begin{align}
+V(r) = \f{G_N m_1 m_2}{r} = \f{m_1 m_1}{M^2_{Pl}} \lp \f{1}{r}\rp.
+\end{align}
+Numerically, 
+\begin{align}
+M_{Pl} \approx 10^{19} \text{ GeV}.
+\end{align}
+It is clear why gravity is so weak compared to, say, the electromagnetic force. 
+
+
+
+
+
+
 
 
 \subsection{Feynman Diagrams}
+
+
+
+
+
+
+
+\subsubsection{Gaussian Integrals and their Moments}
+
+
+Before getting into how trying to evaluate these integrals gives us Feynman diagrams, we should quickly revisit Gaussian integrals, as they are \textit{very} similar to many integrals in QFT.\\
+
+The first basic result is the following:
+\begin{align}
+I = \int_\mathbb{R}dx\, e^{-x^2} = \sqrt{\pi}.
+\end{align}
+A very clever way to do this is to move to the two dimensional case and try to evaluate
+\begin{align}
+I^2 = \int_{\mathbb{R}^2} dxdy\, e^{-x^2 - y^2}.
+\end{align}
+We can move into polar coordinates and do a change of variables to get
+\begin{align}
+I^2 = \int_0^\infty (2\pi) rdr\,e^{-r^2}.
+\end{align}
+We can evaluate this integral with a $u$-substitution. to get
+\begin{align}
+I^2 = 2\pi \f{1}{2} = \pi \implies I = \sqrt{\pi}.
+\end{align}
+In general,
+\begin{align}
+\boxed{\int_\mathbb{R} dx\, \exp\lp -\f{a}{2}x^2 + bx \rp = \sqrt{\f{2\pi}{a}} \exp\lp \f{b^2}{2a} \rp }
+\end{align}
+We do this by completing the square then rescaling and shifting the integration variables. (This is why we have a left over exponent in the end.)\\
+
+The next things we want to evaluate are various moments of the Gaussian, i.e., integrals like
+\begin{align}
+I_n = \int_\mathbb{R} dx\, x^n \exp\lp -\f{a}{2}x^2 \rp.
+\end{align}
+We assume that $n$ is a positive integer. If $n$ is odd then the integrand is an odd function, so when it is integrated over a symmetric domain we get 0. On the other hand, when $n$ is even, we use Feynman's \textbf{differentiating-under-the-integral-sign} trick. Here is how it works:\\
+
+
+\textbf{Feynman's integration technique:} Consider the previous integral:
+\begin{align}
+\int_\mathbb{R} dx\, \exp\lp -\f{a}{2}x^2 + bx \rp.
+\end{align}  
+We notice that when we take the derivative of the integrand with respect to $b$ we bring down a factor of $x$:
+\begin{align}
+\f{d}{db}\, \exp\lp -\f{a}{2}x^2 + bx \rp = x\exp\lp -\f{a}{2}x^2 + bx \rp.
+\end{align}
+So, in order to get $x^n$ in the integrand of the integral
+\begin{align}
+I_n = \int_\mathbb{R} dx\, x^n \exp\lp -\f{a}{2}x^2 \rp,
+\end{align}
+we will take $\p_b$ of the other integrand $n$ times to bring down $x^n$ then set $b = 0$. Let's do this:
+\begin{align}
+\f{d}{db}^n \exp\lp -\f{a}{2}x^2 + bx \rp \bigg\vert_{b=0} = x^n \exp\lp -\f{a}{2}x^2 + bx \rp\bigg\vert_{b=0} = x^n \exp\lp -\f{a}{2}x^2\rp,
+\end{align}
+which is exactly what we wanted. Okay, but we still haven't successfully evaluated the integral yet. To do this, we will look at the original ``guiding'' equation again:
+\begin{align}
+\int_\mathbb{R} dx\, \exp\lp -\f{a}{2}x^2 + bx \rp = \sqrt{\f{2\pi}{a}} \exp\lp \f{b^2}{2a} \rp.
+\end{align}
+Differentiate wrt $b$ $n$ times and setting $b = 0$ in the end gives
+\begin{align}
+\lp\f{d}{db}\rp^n \int_\mathbb{R} dx\, \exp\lp -\f{a}{2}x^2 + bx \rp \bigg\vert_{b=0} 
+&= \sqrt{\f{2\pi}{a}}\lp\f{d}{db}\rp^n \exp\lp \f{b^2}{2a} \rp\bigg\vert_{b=0} \nonumber \\
+\int_\mathbb{R}\lp\f{d}{db}\rp^n  dx\, \exp\lp -\f{a}{2}x^2 + bx \rp\bigg\vert_{b=0} 
+&= \sqrt{\f{2\pi}{a}}\lp\f{d}{db}\rp^n \exp\lp \f{b^2}{2a} \rp\bigg\vert_{b=0}.
+\end{align}
+Therefore,
+\begin{align}
+\boxed{\int_\mathbb{R}dx\, x^n \exp\lp -\f{a}{2}x^2\rp 
+= \sqrt{\f{2\pi}{a}}\f{n!}{(n/2)!(2a)^{n/2}}}
+\end{align}
+Note that $n$ here is even. If $n$ is odd then the integral is zero. Next, to correctly normalize these integrals, we can find the normalization factor simply by
+\begin{align}
+\boxed{\f{\int_\mathbb{R}dx\, x^n \exp\lp -\f{a}{2}x^2\rp }{\int_\mathbb{R}dx\, \exp\lp -\f{a}{2}x^2\rp } = \f{n!}{(n/2)!(2a)^{n/2}}}
+\end{align}
+These higher moments of the Gaussian are called the \textbf{correlation functions}. 	 \\
+
+So how are these higher moments related to Feynman diagrams? The answer is given by the combinatoric interpretation of values of the integrals. Suppose we would like make ($n/2$) pairs from $n$ distinguishable things. The answer is 
+\begin{align}
+{ n \choose n}{n-2 \choose 2}\dots {2 \choose 2} \times \f{1}{(n/2)!} = \f{n!}{2^{n/2}(n/2)!}.
+\end{align}
+This is not so different from what we just found, except the factor of $1/a$. This is where the physics come in. Observe that if we add in a weight factor of $1/a$ each time we make a pair then we get the same thing from the integral. These factors of $1/a$ are the \textbf{propagators}! 
+
+
+
+
+
+
+
+
+
+\subsubsection{Anharmonicity in field theory}
+
+So far, integrals in free field theory have been Gaussian, meaning we can evaluate them one way or the other using the prescription laid out above. However, particles don't interact in this theory because we don't have ``anharmonic'' in the Lagrangian (these make the equation of motion no longer linear). \\
+
+Revisit the combinator interpretation of the values of the integrals above. If we associate to each pair of the $n$ things an \textit{edge} connecting them, then we see when things are alreay in pairs they don't interact with our future choices. This is quite hand-wavy, but the idea is that if the exponent inside the integrand is quadratic (or can be square-completed) then we can evaluate things exactly. But what if there are higher order terms, or alternatively \textit{anharmonic} terms? \\
+
+Suppose we add only one anharmonic term $-(\lambda / 4!)\phi^4$ to our free field theory and try to evaluate
+\begin{align}
+\Z(J) = \int \mathfrak{D}\phi \exp\lp i\int d^4x\, \lb \f{1}{2}(\p \phi)^2 - m^2 \phi^2 \rb - \f{\lambda}{4!}\phi^4 + J(x)\phi \rp.
+\end{align}
+This isn't so doable anymore! It's possible, but imagine adding higher order terms to the Lagrangian! 
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Feynman diagrams: A baby problem}
+
+Let us try to evaluate a simpler version of the integral above:
+\begin{align}
+\Z(J) = \int^\infty_{-\infty} dq\, \exp\lp -\f{1}{2}m^2 q^2 - \f{\lambda}{4!}q^4 + Jq \rp.
+\end{align}
+
+Here we don't have a nice trick to complete the square. However, we can use the exact result obtained earlier with the higher order moments of the Gaussian integral to try to approximate this integral. The idea is to Taylor expand the higher order term and turn it into a polynomial in $q^4$ when appropriate:
+\begin{align}
+\exp\lp -\f{1}{2!}\f{\lambda}{4!}q^4 \rp = 1 - \lp\f{\lambda}{4!}\rp q^4 + \f{1}{2!}\lp\f{\lambda}{4!}\rp^2 q^8 - \dots
+\end{align}
+With this, we get
+\begin{align}
+\Z(J) = \int^\infty_{-\infty} dq\,  \lb 1 - \lp\f{\lambda}{4!}\rp q^4 + \f{1}{2!}\lp\f{\lambda}{4!}\rp^2 q^8 - \dots \rb e^{ -\f{1}{2}m^2 q^2 + Jq }.
+\end{align}
+
+Then, we \textit{simply} integrate term-by term. This we can do because now they are just $q^{4n}$ moments of the original Gaussian, i.e., each term has the form
+\begin{align}
+\int_\mathbb{R} dq\, e^{(-1/2)m^2 q^2 + Jq}q^{4n}.
+\end{align}
+To bring down a factor of $q^{4n}$ for each term we have to differentiate wrt $J$ $4n$ times:
+\begin{align}
+\int_\mathbb{R} dq\, e^{(-1/2)m^2 q^2 + Jq}q^{4n} &= \int_\mathbb{R}\,dq \lp \f{d}{dJ} \rp^{4n} e^{(-1/2)m^2 q^2 + Jq} \\
+&=   \lp \f{d}{dJ} \rp^{4n} \int_\mathbb{R}dq \, e^{(-1/2)m^2 q^2 + Jq}.
+\end{align}
+
+Because $\Z(J)$ is a sum of such terms, we get
+\begin{align}
+\boxed{\Z(J) = \lb 1 - \lp\f{\lambda}{4!}\rp \f{d^4}{dJ^4} + \f{1}{2!}\lp\f{\lambda}{4!}\rp^2 \f{d^8}{dJ^8} - \dots \rb\int_\mathbb{R}dq \, e^{(-1/2)m^2 q^2 + Jq}}
+\end{align}
+
+But that's not all, observe that we have just replaced 
+\begin{align}
+q^{4n} \to \f{d^{4n}}{dJ^{4n}}.
+\end{align}
+
+So it only makes sense that we write 
+\begin{align}
+\exp\lb -\f{\lambda}{4!}\lp \f{d}{dJ} \rp^4 \rb = \lb 1 - \lp\f{\lambda}{4!}\rp \f{d^4}{dJ^4} + \f{1}{2!}\lp\f{\lambda}{4!}\rp^2 \f{d^8}{dJ^8} - \dots \rb.
+\end{align}
+We also know how to evaluate the leftover integral by completing the squares. So, 
+\begin{align}
+\int_\mathbb{R}dq \, e^{(-1/2)m^2 q^2 + Jq} = \sqrt{\f{2\pi}{m^2}}\exp\lp \f{J^2}{2m^2} \rp.
+\end{align}
+
+Thus we have finally evaluated $\Z(J)$:
+\begin{align}
+\boxed{\Z(J) = \exp\lb -\f{\lambda}{4!}\lp \f{d}{dJ} \rp^4 \rb \sqrt{\f{2\pi}{m^2}}\exp\lp \f{J^2}{2m^2} \rp = \sqrt{\f{2\pi}{m^2}} e^{-\f{\lambda}{4!}\lp \f{d}{dJ} \rp^4} e^\f{J^2}{2m^2}}
+\end{align}
+
+From now on, we will let 
+\begin{align}
+\Z(J=0, \lambda =0) = \sqrt{2\pi / m^2} \equiv \Z(0,0)
+\end{align}
+We will also define
+\begin{align}
+\boxed{\tilde{\Z} = \f{\Z(J)}{\Z(J = 0, \lambda = 0) = e^{-\f{\lambda}{4!}\lp \f{d}{dJ} \rp^4} e^\f{J^2}{2m^2}}}
+\end{align}
+
+
+
+\subsubsection{From Integrals to Feynman diagrams}
+
+
+Recall from the previous section that
+\begin{align}
+\tilde{\Z}(J) =  e^{-\f{\lambda}{4!}\lp \f{d}{dJ} \rp^4} \times e^\f{J^2}{2m^2}.
+\end{align}
+By expanding the two exponential we can obtain \textit{any term} in a double series expansion of $\Z(J)$ in $\lambda$ and in $J$:
+\begin{align}
+\tilde{\Z}(J) = \lb 1 - \lp\f{\lambda}{4!}\rp \f{d^4}{dJ^4} + \f{1}{2!}\lp\f{\lambda}{4!}\rp^2 \f{d^8}{dJ^8} - \dots \rb \lb 1 + \f{J^2}{2m^2} + \f{1}{2!}\lp \f{J^2}{2m^2} \rp^2 + \dots \rb
+\end{align}
+Why do we want to this? Because each Feynman diagram can be associated with a term of certain orders in $\lambda$ and in $J^4$. Let's do a few examples.\\
+
+\textbf{Find the term with $\lambda$ and $J^4$:} We first notice that all of the powers of $\lambda$'s come from the first exponential. So if we want $\lambda^1$, we pick
+\begin{align}
+- \lp\f{\lambda}{4!}\rp \f{d^4}{dJ^4} 
+\end{align}
+from the first exponential. Then, because we want to be left over with $J^4$ after $d^4/dJ^4$ acts on the $J^{4n}$ term from the second exponential, we pick the $J^8$ term from the exponential, namely
+\begin{align}
+\f{1}{4!}\lp \f{J^2}{2m^2} \rp^4.
+\end{align}
+So the term with $\lambda^1$ and $J^4$ is 
+\begin{align}
+- \lp\f{\lambda}{4!}\rp \f{d^4}{dJ^4} \f{1}{4!}\lp \f{J^2}{2m^2} \rp^4 &= -\lp\f{\lambda}{4!}\rp \lp\f{1}{4!}\rp \lp \f{1}{2m^2} \rp^4 \f{d^4}{dJ^4}J^8\\
+&=  -\lp\f{\lambda}{4!}\rp \lp\f{1}{4!}\rp \lp \f{1}{2m^2}\rp \lp\f{8!}{4!}\rp J^4\\
+&= \boxed{(-\lambda)\lb\f{8!}{(4!)^3 (2m^2)^4}\rb J^4}
+\end{align}\qed
+
+
+\textbf{Find the term with $\lambda^2$ and $J^4$:} Since we want $\lambda^2$, we must pick from the first exponential the term
+\begin{align}
+\f{1}{2!}\lp \f{\lambda}{4!} \rp^2\lp \f{d^4}{dJ^4} \rp^2.
+\end{align}
+Since we want $J^4$ in the end, we must pick a $J^{12}$ in the second exponential, which is
+\begin{align}
+\f{1}{6!}\lp \f{J^2}{2m^2} \rp^6.
+\end{align}
+So the desired term is 
+\begin{align}
+\f{1}{2!}\lp \f{\lambda}{4!} \rp^2\lp \f{d^4}{dJ^4} \rp^2 \f{1}{6!}\lp \f{J^2}{2m^2} \rp^6 &= \lambda^2 \f{1}{2!(4!)^2 6! (2m^2)^6}\f{12!}{4!}J^4 \\
+&= \boxed{\lambda^2 \f{12!}{2! (4!)^3 6! (2m^2)^6 } J^4 }
+\end{align}\qed
+
+
+\textbf{Find the term with $\lambda^2$ and $J^6$:} Let us do this last example before getting some insights into the patterns here. Since we want $\lambda^2$, we pick from the first exponential
+\begin{align}
+\f{1}{2!}\lp \f{\lambda}{4!} \rp^2\lp \f{d^4}{dJ^4} \rp^2.
+\end{align}
+Since we want to be left with $J^6$, we want to start with $J^{6+8} = J^{14}$ in the second exponential
+\begin{align}
+\f{1}{7!}\lp \f{J^2}{2m^2} \rp^7.
+\end{align}
+So the desired term is 
+\begin{align}
+\f{1}{2!}\lp \f{\lambda}{4!} \rp^2  \lp \f{d^4}{dJ^4} \rp^2  \f{1}{7!}\lp \f{J^2}{2m^2} \rp^7 &= \lambda^2 \f{1}{2!(4!)^2 7! (2m^2)^7}\f{14!}{6!}J^6 \\
+&= \boxed{\lambda^2 \f{14!}{2! (4!)^2 6! 7! (2m^2)^7 } J^6 }
+\end{align}\qed
+
+
+\textbf{What is the general pattern here?} Let the picking and simplifying sink in a bit, we get the following pattern. Suppose we want a term with $\lambda^l$ and $J^{j}$ where $j$ must be even otherwise there is no such $J^j$ term. Then we first want the $\lambda^l$ term in the first exponent, which means we want
+\begin{align}
+\f{1}{l!}\lp\f{\lambda}{4!}\rp^l \lp\f{d^4}{dJ^4}\rp^l.
+\end{align}
+With this, we next want to be left with a $J^j$, so we need the $(4l + j)^\text{th}$ power of $J$ in the second exponential. So we take
+\begin{align}
+\f{1}{[(4l + j)/2]!}\lp \f{J^2}{2m^2} \rp^\f{4l + j}{2}.
+\end{align}
+So the desired term is 
+\begin{align}
+&\,\,\,\f{1}{l!}\lp\f{\lambda}{4!}\rp^l \lp\f{d^4}{dJ^4}\rp^l \f{1}{(4l + j)!}\lp \f{J^2}{2m^2} \rp^\f{4l + j}{2} \\
+=&\,\,\,\f{1}{l!(4!)^l [(4l+j)/2]! (2m^2)^{(4l+j)/2}} \lambda^l  \lp\f{d^4}{dJ^4}\rp^l J^{4l + j} \\ 
+= &\,\,\, \boxed{\f{(4l + j)!}{l!\,(4!)^l\, j!\, [(4l+j)/2]!\,     (2m^2)^{(4l+j)/2}} \,\lambda^l \, J^j}
+\end{align}\qed
+
+
+
+Now, the more practice we have the better we get at doing this. It's not a surprise we slowly see a pattern. We observe that we can associate a diagram with each term and codify some \textbf{rules}, which are follow:
+\begin{enumerate}
+	\item Diagrams are made of lines and vertices at which 4 lines meet (because $J^4$ is the principal factor)
+	\item For each vertex assign a factor of $(-\lambda)$
+	\item For each line assign $1/m^2$. Note: this goes back to the combinatoric interpretation.
+	\item For each external end assign $J$.
+\end{enumerate}
+
+
+Let's go through some examples again:
+
+
 
 
 
