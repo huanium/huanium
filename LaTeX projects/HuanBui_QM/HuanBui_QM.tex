@@ -4107,7 +4107,7 @@ So we see that while $W(J)$ is a sum of only connected diagrams, $\Z$ contains b
 
 
 
-\subsubsection{Feynman diagrams: a child problem}
+\subsubsection{A child problem: Propagation from here to there}
 
 
 Before graduating to full field theory, let us try a slightly more difficult problem where we want to evaluate the following multiple integral
@@ -4177,14 +4177,100 @@ I_J &= \int \prod_i^N dx_i\, \exp\lp -\f{1}{2}y^\top A y + \f{1}{2}J^\top A^{-1}
 
 Let us now look back to the child problem. What we just did here with $n-$dimensional Gaussian integrals suggests expanding in $\lambda$ inside the integral first:
 \begin{align}
-\Z(J) &= \int_{\mathbb{R}^n} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q - \f{\lambda}{4!}q^4 + J^\top q  \rp \nonumber \\ 
-&= \int_{\mathbb{R}^n} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q + J^\top q \rp
+\Z(J) &= \int_{\mathbb{R}^N} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q - \f{\lambda}{4!}q^4 + J^\top q  \rp \nonumber \\ 
+&= \int_{\mathbb{R}^N} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q + J^\top q \rp
 \lc \sum_{j=0}^\infty   \f{\lb -\f{\lambda}{4!}q^4\rb^j}{j!}  \rc \nonumber \\
-&= \int_{\mathbb{R}^n} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q + J^\top q \rp
+&= \int_{\mathbb{R}^N} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q + J^\top q \rp
 \lc 1 -\f{\lambda}{4!}q^4 + \f{1}{2!}\lp-\f{\lambda}{4!}q^4\rp^2 + \dots   \rc  
 \end{align}
 
-To evaluate this integral, we integrate term-by-term, using the Feynman's differentiating under the integral sign. 
+To evaluate this integral, we integrate term-by-term, using the Feynman's differentiating under the integral sign. But we have first be very careful here because we're dealing with vectors. Recall that
+\begin{align}
+q^4 = \sum_i q_i^4.
+\end{align}
+Every factor of $\p / \p J_{i}$ brings down a factor of $q_i$. So, in order to get any $q^4$ term, we need
+\begin{align}
+\sum_i \lp\f{\p}{\p J_i}\rp^4.
+\end{align}
+Thus 
+\begin{align}
+\exp\lp \f{-\lambda q^4}{4!} \rp \sim \exp\lb \f{-\lambda }{4!} \lp\sum_i \f{\p }{\p J_i} \rp^4\rb.
+\end{align}
+Therefore, from integrating term-by-term by differentiating under the integral sign, then adding the terms up together we get that
+\begin{align}
+\Z(J) &= \lc 1 + \lb\f{-\lambda}{4!} \lp\sum_i \f{\p }{\p J_i} \rp^4\rb + \f{1}{2!}\lb\f{-\lambda }{4!} \lp\sum_i \f{\p }{\p J_i} \rp^4\rb^2 + \dots   \rc \nonumber \\
+&\,\,\,\,\,\hspace{1cm}\times\int_{\mathbb{R}^N} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q + J^\top q \rp \nonumber\\
+&= \exp\lb \f{-\lambda q^4}{4!} \lp\sum_i \f{\p }{\p J_i} \rp^4\rb \times \lb  \int_{\mathbb{R}^N} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q + J^\top q \rp\rb \nonumber\\
+&= \sqrt{\f{(2\pi)^N}{\det(A)}}\exp\lb \f{-\lambda q^4}{4!} \lp\sum_i \f{\p }{\p J_i} \rp^4\rb  \exp\lb \f{1}{2}J^\top A^{-1}J \rb,
+\end{align}
+where we of course have just evaluated the last integral by a change of variables. With this result, we can write more compactly
+\begin{align}
+\boxed{\Z(J) =  \sqrt{\f{(2\pi)^N}{\det(A)}}\, e^{-(\lambda/4!) \sum_i (\p/\p J_i)^4} \, e^{\f{1}{2}J^\top A^{-1} J}}
+\end{align}
+
+
+
+
+Alternatively, we can first expand in powers of $J$ first, before in powers of $\lambda$. Let's start with the expansion in $J$:
+\begin{align}
+\Z(J) &= \int_{\mathbb{R}^N} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q - \f{\lambda}{4!}q^4 + J^\top q  \rp \nonumber \\ 
+&= \int_{\mathbb{R}^N} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q - \f{\lambda}{4!}q^4 \rp \lc \sum^\infty_{s=0} \f{(J^\top q)^s}{s!}  \rc \nonumber \\ 
+&= \int_{\mathbb{R}^N} \prod_i^N dq_i  \exp\lp -\f{1}{2}q^\top A q - \f{\lambda}{4!}q^4 \rp \lc \sum^\infty_{s=0} \f{\lb \sum_{l_s}^N (J_{l_s} q_{l_s}) \rb^s}{s!}  \rc \nonumber \\ 
+&= \sum^\infty_{s=0} \sum^N_{l_1 = 1}\dots \sum^N_{l_s = 1} \f{1}{s!}J_{l_1}\dots J_{l_s} \int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp \exp\lp -\f{1}{2}q^\top A q - \f{\lambda}{4!}q^4 \rp q_{l_1}\dots q_{l_s}\nonumber\\
+&\equiv \boxed{\Z(0,0) \sum^\infty_{s=0} \sum^N_{l_1 = 1}\dots \sum^N_{l_s = 1} \f{1}{s!}J_{l_1}\dots J_{l_s} G^{(s)}_{l_1 \dots l_s}}
+\end{align}
+where we defined the Green's function coefficients such that
+\begin{align}
+\boxed{\Z(0,0) G^{(s)}_{l_1 \dots l_s} \equiv \int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp \exp\lp -\f{1}{2}q^\top A q - \f{\lambda}{4!}q^4 \rp q_{l_1}\dots q_{l_s}}
+\end{align}
+
+
+One main difference between the child problem and the baby problem is that the Green's function coefficients in the child problem have indices. What this means is that we have \textit{propagation from here to there}. Also, notice that these coefficients with an \textbf{odd} number of indices are \textbf{zero}, since the integrand in these cases are odd functions. \\
+
+To see what these $G$ coefficients are we should try to evaluate a few illuminating examples. Let us start with the ``2-point Green's function'' to zeroth order in $\lambda$. The strategy to evaluate this integral is to put back a $J$ into the exponent and differentiate in order to get the $q$ terms in the integrand, then set $J=0$. We note that every factor of $\p / \p J_{l_s}$ gives a factor of $q_{l_s}$. Let's proceed:
+\begin{align}
+G^{(2)}_{l_1l_2}(\lambda = 0) &= \f{1}{\Z(0,0)}\int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp \exp\lp -\f{1}{2}q^\top A q  \rp q_{l_1}q_{l_2} \nonumber \\ 
+&= \f{1}{\Z(0,0)}\int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp \exp\lp -\f{1}{2}q^\top A q  + J^\top q  \rp q_{l_1}q_{l_2}\bigg\vert_{J=0}\nonumber\\
+&= \f{1}{\Z(0,0)}\int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp \f{\p}{\p J_{l_1}} \f{\p}{\p J_{l_2}} \exp\lp -\f{1}{2}q^\top A q  + J^\top q  \rp \bigg\vert_{J=0}\nonumber\\
+&= \underbrace{\f{1}{\Z(0,0)}}\f{\p}{\p J_{l_1}} \f{\p}{\p J_{l_2}} \underbrace{ \int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp  \exp\lp -\f{1}{2}q^\top A q  + J^\top q  \rp} \bigg\vert_{J=0}\nonumber\\
+&= \lp \sqrt{\f{(2\pi)^N}{\det(A)}}\rp^{-1}\f{\p}{\p J_{l_1}} \f{\p}{\p J_{l_2}} \lp\sqrt{\f{(2\pi)^N}{\det(A)}}\rp\exp\lp \f{1}{2} J^\top A^{-1}J \rp \bigg\vert_{J=0} \nonumber\\
+&= \f{\p}{\p J_{l_1}} \f{\p}{\p J_{l_2}} \exp\lp \f{1}{2} J^\top A^{-1}J \rp \bigg\vert_{J=0}\nonumber\\
+&= \lc\f{\p}{\p J_{l_1}} \f{\p}{\p J_{l_2}}\lp \f{1}{2}J^\top A^{-1}J \rp \rc \exp\lp \f{1}{2} J^\top A^{-1}J \rp \bigg\vert_{J=0}\nonumber\\
+&= \f{\p}{\p J_{l_1}} \f{\p}{\p J_{l_2}} \lp \f{1}{2}J^\top A^{-1}J\rp \nonumber\\
+&= \f{1}{2}\lp A^{-1}_{l_1l_2} + A^{-1}_{l_1l_2} \rp \nonumber\\
+&= \boxed{A^{-1}_{l_1l_2}}
+\end{align}
+where we have used the fact that $A^{-1}$ is symmetric. The last equality follows from the fact that because we have $J$ and $J^\top$ and the derivatives $\p / \p_{l_1}$ and $\p / \p_{l_2}$, which together annihilates all other matrix elements of $A^{-1}$ except $A^{-1}_{l_1l_2}$ and $A^{-1}_{l_2l_1}$, which are equal because $A^{-1}$ is symmetric just as $A$. We thus have an important result:
+\begin{align}
+\boxed{G^{(2)}_{ij}(\lambda = 0) = A^{-1}_{ij} = A^{-1}_{ji}}
+\end{align}
+
+The matrix element $A^{-1}_{ij}$ describe propagation from $i \to j$. \qed\\
+
+
+What about a ``4-point Green's function'' to order $\lambda$?
+\begin{align}
+G^{(4)}_{l_1l_2l_3l_4} &= \f{1}{\Z(0,0)} \int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp \exp\lp -\f{1}{2}q^\top A q  \rp q_{l_1}q_{l_2}q_{l_3}q_{l_4} \lb 1 - \f{\lambda}{4!}q^4 + o(\lambda^2) \rb \nonumber \\
+&= \f{1}{\Z(0,0)} \int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp e^{ -\f{1}{2}q^\top A q  } q_{l_1}q_{l_2}q_{l_3}q_{l_4} \lb 1 - \f{\lambda}{4!} \sum_n q_n^4 + o(\lambda^2) \rb.
+\end{align}
+
+Here, we note that because $A^{-1}$ is a matrix, it can only carry two indices at a time. So, to evaluate the first part of this integral (the part multiplied by $\lambda^0$), we do it with two $q$ terms at a time. By inspection, we get a product of two matrix elements of $A^{-1}$. There are six ways to pick 2 things out of 4. But because $A^{-1}$ symmetric, we are left with three terms:
+\begin{align}
+\f{1}{\Z(0,0)} \int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp e^{ -\f{1}{2}q^\top A q  } q_{l_1}q_{l_2}q_{l_3}q_{l_4} = A^{-1}_{l_1l_2}A^{-1}_{l_3l_4} + A^{-1}_{l_1l_3}A^{-1}_{l_2l_4} + A^{-1}_{l_1l_4}A^{-1}_{l_3l_2}.
+\end{align}
+What about the $\lambda/4!$ integral? 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
