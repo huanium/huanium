@@ -9,6 +9,7 @@
 \usepackage{esint}
 \usepackage{centernot}
 \usepackage{mathtools}
+\usepackage{bigints}
 \usepackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{defn}{Definition}[section]
@@ -4268,7 +4269,7 @@ What about the $\lambda/4!$ integral? Well first notice that it by itself is a s
 
 
 Now, we observe that $q_{l_1}$ has four choices of $q_k$'s to contract with, $q_{l_2}$ has three choices of $q_k$'s to contract with, and so on, producing a factor of $4!$. This is exactly why we originally define the $\lambda$ term along with the factor of $1/4!$. They conveniently cancel and leave us with
-\begin{align}
+\begin{align}\label{high-moment}
  &\,\, \f{1}{\Z(0,0)} \lp \f{-\lambda}{4!} \rp \int_{\mathbb{R}^N} \lp\prod_i^N dq_i \rp e^{ -\f{1}{2}q^\top A q  } q_{l_1}q_{l_2}q_{l_3}q_{l_4}\sum_{n}q_n^4 \nonumber \\
 =&\,\,  -\lambda  \sum_n A^{-1}_{l_1n}A^{-1}_{l_2n}A^{-1}_{l_3n}A^{-1}_{l_4n} + \dots
 \end{align}
@@ -4364,7 +4365,7 @@ With this, we have
 \boxed{\Z(J) = \Z(0,0)e^{ -i\lambda/4! \int d^4w\, [\delta/i \delta  J(w)]^4 } e^{ (-i/2)\iint d^4x d^4y\, J(x)\D(x-y)J(y) }}
 \end{align}
 
-And thus structure of the answer is exactly the same as before. \\
+And thus the structure of the answer is exactly the same as before. \\
 
 Next, let us look at how the form of the propagator has changed. The the baby problem, the propagator is essentially $1/M^2$. In the child problem, the propagator is given by $A^{-1}$. Here, however, the propagator in momentum space is given by
 \begin{align}
@@ -4407,7 +4408,7 @@ G^{(4)}(x_1,x_2,x_3,x_4) \equiv \f{1}{\Z(0,0)} \int \mathfrak{D}[\phi] e^{ i\int
 \end{align}
 We can generate more at will, of course (hence why $\Z(J)$ is called the generating function). Because the propagators are translation invariant, $G^{(2)}(x_1,x_2)$ only depends on $x_1 - x_2$, but not explicitly $x_1$ and $x_2$. Similarly, the 4-point Green's function only depends on the spacings between the $x_i$'s. For $\lambda = 0$, we see that the 2-point Green's function reduces to $i\D(x_1 - x_2)$. We can show this first generally by recalling that
 \begin{align}
-\Z(J) \equiv \Z(0,0)\Z(0,0)\exp\lc -\f{i}{2}\iint d^4x_1d4x_2\, J(x_1)\D(x_1-x_2) J(x_2) \rc
+\Z(J) \equiv \Z(0,0)\Z(0,0)\exp\lc -\f{i}{2}\iint d^4x_1d^4x_2\, J(x_1)\D(x_1-x_2) J(x_2) \rc
 \end{align}
 which comes from the very beginning when we defined generating function and propagators in terms of the transforms, etc. What we will do now is do a power series expansion:
 \begin{align}
@@ -4418,11 +4419,11 @@ where only even powers of $J$ can appear. Now, compare this to the equation we h
 \begin{align}
 \f{\Z(J)}{\Z(0,0)} = 	\sum^\infty_{s=0}\f{i^s}{s!}\int dx_1\dots dx_s J(x_1)\dots J(x_s)  G^{(s)}(x_1,\dots,x_s).
 \end{align}
-By reading off the correct terms, we have
+By reading off the correct terms, we have roughly that
 \begin{align}
-\boxed{\f{i^{2n}}{(2n)!}G^{(2n)}(x_1,\dots,x_{2n}) = \f{1}{n!}\lp \f{-i}{2} \rp^n \lb \D(x_1-x_2)  \dots \D(x_{2n-1} - x_{2n})\rb}
+\f{i^{2n}}{(2n)!}G^{(2n)}(x_1,\dots,x_{2n}) \sim \f{1}{n!}\lp \f{-i}{2} \rp^n \lb \D(x_1-x_2)  \dots \D(x_{2n-1} - x_{2n})\rb
 \end{align}
-For $s = 2 \iff n = 1$, we have
+where $\sim$ simply denotes that we're close up to symmetrization. However, for $s = 2 \iff n = 1$, we have exactly that
 \begin{align}
 \f{-1}{2!}G^{(2)}(x_1, x_2) = \f{1}{1!}\lp \f{-i}{2} \rp \D(x_1 - x_2).
 \end{align}
@@ -4430,7 +4431,9 @@ This means
 \begin{align}
 \boxed{G^{(2)}(x_1,x_2) = i\D(x_1 , x_2)}
 \end{align}
-as desired. \qed
+as desired.  \qed\\
+
+The relationship between the Green's function and the propagators $\D$ will be explored in the following subsections as we better understand Feynman rules and Feynman diagrams.\\
 
 We observe that while $\D(x_1 - x_2)$ describes the propagation of a particle between $x_1$ and $x_2$ in the \textbf{absence} of interaction (we have pointed out this fact before), $G^{(2)}(x_1,x_2)$, which is called the \textit{correlation function}, describes the propagation of a particle between $x_1$ and $x_2$ with \textbf{interaction}. This nomenclature possibly comes from the resemblance between $G^{(s)}$ and higher moments of the Gaussian, which are called \textit{correlation functions}. This resemblance is reflected in Eq \eqref{g2}. We see that this integral looks like a second moment of the Gaussian.\\
 
@@ -4458,33 +4461,357 @@ But \textbf{Feynman} diagrams capture both approaches by representing terms in t
 
 
 
+
+
+
 \subsubsection{Collision between particles}
 
 
 
+In this section, we will set up two sources and two sinks to watch two particles (mesons) scatter off each other. Here's the setup:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{mesons}
+	\caption{From Zee}
+\end{figure}
 
-\subsubsection{Do it once and for all}
+
+It suffices to find in $\Z$ a term containing $J(x_1)J(x_2)J(x_3)J(x_4)$. But we notice that this is just $G^{(4)}(x_1,x_2,x_3,x_4)$.\\
+
+Let's start from the Wick way first. Recall that $G^{(4)}$ is given by
+\begin{align}
+G^{(4)}(x_1,x_2,x_3,x_4) = \f{1}{\Z(0,0)}\int \mathfrak{D}[\phi]e^{i\int d^4x\, [\f{1}{2}(\p \phi)^2 - m^2\phi^2]- \f{\lambda}{4!}\phi^4}\phi(x_1)\phi(x_2)\phi(x_3)\phi(x_4).
+\end{align}
+Expanding in $\lambda$ gives
+\begin{align}
+G^{(4)}(x_1,x_2,x_3,x_4) = \f{1}{\Z(0,0)}&\int \mathfrak{D}[\phi]e^{i\int d^4x\, [\f{1}{2}(\p \phi)^2 - m^2\phi^2]}\nonumber\\
+&\times  \phi(x_1)\phi(x_2)\phi(x_3)\phi(x_4) \sum^\infty_{s=0}\f{\lp - \f{i\lambda}{4!}\int d^4w\,\phi^4(w)\rp^s}{s!}.
+\end{align}
+To first order, i.e., $s=1$, we have
+\begin{align}
+G^{(4)}(x_1,x_2,x_3,x_4) = \f{1}{\Z(0,0)}&\lp \f{-i\lambda}{4!} \rp\int d^4w\int \mathfrak{D}[\phi]e^{i\int d^4x\,[\f{1}{2}(\p \phi)^2 - m^2\phi^2]}\nonumber\\ &\times\phi(x_1)\phi(x_2)\phi(x_3)\phi(x_4)\phi^4(w).
+\end{align}
+By staring at this integral for a bit we recognize that it is a more complicated case of the high-moment Gaussian integral we have encountered before in Eq \eqref{high-moment}, where the sum in simply replaced by an integral, and the overall integral is multiplied by a factor of $i$. Once again, $\phi(x_1)$ has four choices of $\phi(w)$ to contract with, and so on, so that in the end the factor of $4!$ is canceled. Once the Feynman's trick to differentiate under the integral sign is done correctly, we will get
+\begin{align}\label{four-sources}
+\boxed{G^{(4)}(x_1,x_2,x_3,x_4) = \f{-i\lambda}{\Z(0,0)}\int d^4w\, \D(x_1 - w)\D(x_2 - w)\D(x_3 - w)\D(x_4 - w)}
+\end{align}
+which not surprisingly completely shares the structure of Eq \eqref{high-moment}. Now, compare this to what we found when we tried to show $G^{(2)} = i\D$, we see that we wouldn't be quite right to just set $G = $ products of $\D$. What we see here is that $G$ is a summation over all possible products of $\D_{iw}$ over all $w$. This is the accurate relationship between the Green's functions and the propagators. It follows from this that $G^{(2)}_{ab} = i\D_{ab}$.  \\
+
+What about the Schwinger way where we first expand in $J$? Well, we start out with
+\begin{align}
+\Z(J) = \Z(0,0)e^{ -i\lambda/4! \int d^4w\, [\delta/i \delta  J(w)]^4 } e^{ (-i/2)\iint d^4x d^4y\, J(x)\D(x-y)J(y) }
+\end{align}
+and replace the first exponential with only first order terms in $J$. Once this is done, we get
+\begin{align}
+\Z(J) = \Z(0,0)\lb -\lp\f{i\lambda}{4!}\rp \int d^4w \lp \f{\delta}{\delta J(w)} \rp^4 \rb e^{ (-i/2)\iint d^4x d^4y\, J(x)\D(x-y)J(y) }.
+\end{align}
+Next, we expand the exponential and find the term with the fourth order of $\D$ (since we're looking for a term describing four propagations)
+\begin{align}
+e^{ (-i/2)\iint d^4x d^4y\, J(x)\D(x-y)J(y) } = \sum^\infty_{s=0}\f{[(-i/2)\iint d^4x d^4y\, J(x)\D(x-y)J(y)]^s}{s!}.
+\end{align}
+The fourth order term is 
+\begin{align}
+\f{1}{4!}\lp \f{-i}{2} \rp^4\lb \iint d^4x d^4y\, J(x)\D(x-y)J(y)  \rb^4.
+\end{align}
+Thus the term in first order $\lambda$ and fourth order $\D$ is
+\begin{align}
+\lb -\lp\f{i\lambda}{4!}\rp \int d^4w \lp \f{\delta}{\delta J(w)} \rp^4 \rb\lp\f{1}{4!}\rp\lp \f{-i}{2} \rp^4\lb \iint d^4x d^4y\, J(x)\D(x-y)J(y)  \rb^4.
+\end{align}
+After some cleaning up the algebra and renaming we get
+\begin{align}\label{multi-J}
+\boxed{\sim i\lambda \int_w \lp \f{\delta}{\delta J(w)} \rp^4 \bigintss^{(8)}  \D_{ae}\D_{bf}\D_{cg}\D_{dh}J_aJ_bJ_cJ_dJ_eJ_fJ_gJ_h}
+\end{align}
+where the very big integral denotes 8 integrals; $\D_{ij} \equiv \D(x_i - x_j)$; $J(x_a) = J_a$; $\int_a = \int d^4x_a$. \\
+
+We notice that the four $[\delta/\delta J(w)]$'s will hit the $J$'s of course. The $\delta/\delta J(w)$ acts like a delta function:
+\begin{align}
+\f{\delta}{\delta J(w)}J_a = \delta(a-w).
+\end{align}
+So, for example.
+\begin{align}
+\f{\delta}{\delta J(w)}\int \D_{ae}J_e = \int \D_{ae}\delta (e-w)J_e = \D_{aw}.
+\end{align}
+We can write all this out, but in the end not all terms will be of interest of us. In particular, there will be three terms, two of which are disconnected (so the $\D_{ij}$'s don't share any common $x_i$). The only connected term is:
+\begin{align}
+\sim -i\lambda \int_w  \iiiint \D_{aw}\D_{bw}\D_{cw}\D_{dw}J_aJ_bJ_cJ_d
+\end{align}
+where we have reduced the number of integrals because of the delta function. \\
+
+Okay. Why did we do all of this? The \textbf{goal} here is to see two particles (mesons) created by some localized source, scatter off each other, and disappear into localized sinks. So, if we set the source and sinks to be delta functions:
+\begin{align}
+J_i = \delta(x - x_i), \hspace{1cm} x = 1,2,3,4
+\end{align}
+then we have
+\begin{align}
+&-i\lambda \int_w  \iiiint \D_{aw}\D_{bw}\D_{cw}\D_{dw}J_aJ_bJ_cJ_d \\
+=\,\,&i\lambda \int_w  \iiiint \D_{aw}\D_{bw}\D_{cw}\D_{dw}\delta(1)\delta(2)\delta(3)\delta(4) \\ 
+=\,&\boxed{-i\lambda \int_w \D_{1w}\D_{2w}\D_{3w}\D_{4w}}
+\end{align}
+This is exactly what we found in Eq \eqref{four-sources}, up to some constants we haven't accounted for of course. \\
+
+What does it all mean? The result is this: 2 particles from $x_1$ and $x_2$ propagate to the spacetime point $w$ (\textit{every possible $w$}), with amplitude $\D(x_1 - w)\D(x_2 - w)$, scatter with amplitude $-i\lambda$, then propagate from $w$ to $x_3$ and $x_4$ with amplitude $\D(x_3 - w)\D(x_4 - w)$. The integration over all spacetime $\int_w \equiv \int d^4w$ just means that the propagation to $w$ could have been anywhere. This comes back to the child problem!
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{propagates}
+	\caption{From Zee}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \subsubsection{Feynman diagrams: The rules}
+
+So what are the rules for Feynman diagrams? Do we have to do all this integration and expansion every time to calculate the Green's function/correlation function? I think it's clear at this point a lot we have done so far has been by analogy: we begin to form associations between objects such as $q \to \phi$, sum $\to$ integral, and so on. What are the underlying rules here? What is the relationship between Feynman diagrams in position (spacetime) space and momentum space? \\
+
+Sometimes it is easier for us to go pass to momentum space. Hypothetically, a particle with momentum $k_1$ and a particle with momentum $k_2$ collide and scatter, emerging with momentum $k_3$ and $k_4$. Each spacetime propagator has the form
+\begin{align}
+\D(x_a - w) = \F[\D(k_a)](x_a) = \int \f{d^4k_a}{(2\pi)^4} \f{e^{\pm ik_a(x_a - w)}}{k_a^2 - m^2 + i\epsilon}
+\end{align}
+where $\F$ denotes the Fourier transform of course and the sign assignment to $k_a$ can be made arbitrary because the ``volume'' element always corrects for that. Thus the overall $G^{(4)}$ (or the correlation function) up to leading constants has the form:
+\begin{align}
+-i\lambda \int_w \D_{1w}\D_{2w}\D_{3w}\D_{4w} &\sim \int d^4w \, \exp\lp -i(k_1 + k_2 - k_3 - k_4) \rp \\
+&= (2\pi)^4\delta^{(4)}(k_1 + k_2 - k_3 - k_4).
+\end{align}
+So, the fact that the interaction can occur anywhere in spacetime translate to conservation of momentum:
+\begin{align}
+k_1 + k_2 = k_3 + k_4.
+\end{align}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{momentum-propagator}
+	\caption{From Zee}
+\end{figure}
+So we have Feynman diagrams for both position and momentum space. Spacetime Feynman diagrams are just literal pictures of what happened. For momentum space Feynman diagrams, here are the rules to calculate the Green's function for a given process:
+\begin{enumerate}
+	\item Draw a Feynman diagram of the process.
+	\item Label each line with a momentum $k$ and associate with it the propagator
+	\begin{align}
+	\D(k) = \f{i}{k^2 - m^2 + i\epsilon}.
+	\end{align}
+	Note that we are in momentum space, so the propagator is just this. 
+	\item Associate with each interaction vertex (where four lines meet) the coupling 
+	\begin{align}
+	-i\lambda \hspace{1cm} \text{and} \hspace{1cm}  2\pi^4\delta^{(4)}\lp\sum_i k_i -\sum_j k_j\rp,
+	\end{align}
+	forcing the sum of momenta $\sum_i k_i$ coming into the vertex to be equal to the sum of momenta $\sum_j k_j$ going out of the vertex. (Note that the act of associating $\lambda$ to an interaction vertex is exactly what we did in the baby problem.)
+	\item Momenta associated with internal lines are to be integrated over with the measure $d^4k / (2\pi)^4$, where $k$ denotes the internal/intermediate momentum. Incidentally, this corresponds to the summation over intermediate states in ordinary perturbation theory. 
+	\item We have to be careful about symmetry factors. They are the analogs of those numerical factors in the baby problem. As a result, some diagrams are to be multiplied by a symmetry factor such as $1/2$. These come from various combinatorial factors counting the different ways in which the $\delta/\delta J$'s can hit the $J$'s in the multiple integral like \eqref{multi-J}.
+	\item We also do not associate a propagator with external lines. 
+	\item A delta function for overall momentum conservation is understood. 
+\end{enumerate}\qed\\
+
+
+For example, we can try the diagram we just saw:
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{momentum-propagator}
+	\caption{From Zee}
+\end{figure}
+
+Applying the rules, we obtain
+\begin{align}
+(-i\lambda)(2\pi)^4\delta^{(4)}(k_1 + k_2 - k_3 - k_4)\prod^4_{a=1}\lp \f{i}{k_a^2 - m^2 + i\epsilon} \rp.
+\end{align}
+
+The big multiplicative factor is common to all diagrams in which two mesons scatter into two mesons. So we will just assume it is there and ignore that it is there. This procedure is called ``amputating external legs.'' We also have that in real experiments $k_a^2 = m^2$ since the momentum and mass are equivalent when $c=1$. There are some technical things which we will deal with later. We also see that because momentum must be conserved, we shouldn't worry too much about the delta function either. So same with the other factor, we will just assume it's there and don't write it. \\
+
+With these rules, the amplitude we obtain is denoted by $\mathcal{M}$. For the diagram above, 
+\begin{align}
+\mathcal{M} = -i\lambda.
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 \subsubsection{Birth of particles}
 
 
+
+In this section we will describe how two colliding mesons can produce four mesons. 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{birth}
+	\caption{From Zee}
+\end{figure}
+
+
+The process above can occur in $\lambda^2$ perturbation theory. Let us use Feynman's rules to calculate the Green's function/correlation function $G$ for this process. \\
+
+First, the Feynman diagram is already given to us. Good. We would like to calculate the Green's function associated with this diagram.\\
+
+Second, there are $6$ external vertices, so we \textbf{drop} the factor 
+\begin{align}
+\prod^6_{a=1}\f{i}{k_a^2 - m^2 + i\epsilon},
+\end{align}
+keeping only the propagator associated with the one internal line, which is
+\begin{align}
+\f{i}{q^2 - m^2 + i\epsilon}
+\end{align} \\
+
+Third, we associate with each interaction vertex a $-i\lambda$. Since there are two of these, we will have a factor of $(-i\lambda)^2$. Next, at the lower vertex we have a factor of $(2\pi)^4\delta^{(4)}\lp k_1 + k_2 - p - k_3 \rp$. At the higher vertex we have a factor of $(2\pi)^4\delta^{(4)}\lp q - k_4 - k_5 - k_6 \rp$. This leaves us with the integrand:
+\begin{align}
+(-i\lambda)^2 (2\pi)^4\delta^{(4)}\lp k_1 + k_2 - p - k_3 \rp (2\pi)^4\delta^{(4)}\lp q - k_4 - k_5 - k_6 \rp.
+\end{align}
+
+Fourth, we integrate the whole term over with the measure $d^p/(2\pi)^4$, since $p$ is the internal momentum here
+\begin{align}
+(-i\lambda)^2\int \f{d^4 q}{(2\pi)^4} \f{i}{q^2 - m^2 + i\epsilon} (2\pi)^4\delta^{(4)}\lp k_1 + k_2 - p - k_3 \rp \nonumber\\
+\hspace{2cm}\times(2\pi)^4\delta^{(4)}\lp q - k_4 - k_5 - k_6 \rp.
+\end{align}
+Integrals involving delta functions are \textit{very} easy to do. We simply take $q = k_4 + k_5 + k_6$. We should get
+\begin{align}
+(-i\lambda)^2 \f{i}{(k_4 + k_5 + k_6)^2 - m^2 + i\epsilon} (2\pi)^4\delta^{(4)}(k_1 + k_2 - k_3 - k_4 - k_5 - k_6). 
+\end{align}
+
+Finally, the delta function for overall momentum conservation is understood, so 
+\begin{align}\label{6-momentum}
+\mathcal{M} = (-i\lambda)^2 \f{i}{(k_4 + k_5 + k_6)^2 - m^2 + i\epsilon}
+\end{align}
+is our answer.\qed
+
+
+
+
+
+
+
+
+
+
+
 \subsubsection{Cost of not being real}
+
+So what is this relativistic 4-momentum $q = k_4 + k_5 + k_6$? It is the momentum associated with the virtual particle! We notice that $(k_4 + k_5 + k_6)^2$ is not necessarily $m^2$, as it would have to be if the particle were real. The farther the momentum of the virtual particle is from the mass shell $m^2$ the smaller the amplitude, from Eq \eqref{6-momentum}. This makes good sense as the ``cost of not being real.''\\
+
+We can in fact compute Eq \eqref{6-momentum} up to some delta functions and multiplicative factors, just to make sure we understand how the path integral works. But we won't worry about that for now since we have been quite detailed in the previous section. It would be a very good but rather time-consuming exercise.
+
+
 
 
 \subsubsection{Loops and a first look at divergence}
+
+Now, recall from the baby problem that we have both loop and tree diagrams. Loop diagrams are associated with at least a $\lambda$ but no $J$. It is quite similar here in the actual problem. Consider the following Feynman diagram:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{loop-feynman}
+	\caption{From Zee}
+\end{figure}
+
+We see that there are 2 internal vertices where 4 lines cross. So we get a factor of $(-i\lambda)^2$. We also have 2 factors of internal momentum, after taking into account two delta functions for $k$:
+\begin{align}
+\f{i}{k^2 - m^2 + i\epsilon} \text{ and } \f{i}{(k_1 + k_2 - k)^2 - m^2 + i\epsilon}.
+\end{align}
+There is a symmetry factor of $1/2$, since there are two ways this process can occur. We also have some extra factors of $(2\pi)^4$ but we will eventually drop then in the end with one leftover delta function. So the Green's function up to some factor is
+\begin{align}
+\f{1}{2}(-i\lambda)^2\int \f{d^4k}{(2\pi)^4}\f{i}{k^2 - m^2 + i\epsilon}\f{i}{(k_1 + k_2 - k)^2 - m^2 + i\epsilon}.
+\end{align}
+
+
+This integral blows up only if one of the integrals blow up, i.e., the virtual particle is closest to being real. This is also a cost of not being real. \\
+
+But notice that for large $k$, the integrand goes as $1/k^4$, which means the integral diverges. This is no good! We will come back to this later.\\
+
+Success comes with practice. The more we calculate Feynman diagrams the better we get at doing them by inspection. Here is another example. I won't go into detail what the steps involved are, but we can convince ourselves that the Green's function associated with the following Feynman diagram
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{loop-2}
+	\caption{From Zee}
+\end{figure}
+
+up to symmetry factors and other factors that we don't write down is 
+\begin{align}
+&(-i\lambda)^4 \int \f{d^4p}{(2\pi)^4}\f{d^4q}{(2\pi)^4}\f{d^4r}{(2\pi)^4} \f{i}{p^2-m^2 +i\epsilon}\f{i}{(k_1+k_2-p)^2-m^2 +i\epsilon}\nonumber\\ &\,\times\f{i}{q^2-m^2 +i\epsilon}\f{i}{(p-q-r)^2-m^2 +i\epsilon}\f{i}{r^2-m^2+i\epsilon}\f{i}{(k_1+k_2-r)^2-m^2 +i\epsilon}
+\end{align}
+
+
+
 
 
 \subsubsection{Vacuum fluctuations}
 
 
+Let us revisit the self-interaction term we neglected in the full expression 
+\begin{align}
+i\lambda \int_w \lp \f{\delta}{\delta J(w)} \rp^4 \bigintss^{(8)}  \D_{ae}\D_{bf}\D_{cg}\D_{dh}J_aJ_bJ_cJ_dJ_eJ_fJ_gJ_h
+\end{align}
+for the Green's function in first order of $\lambda$. Recall that we only kept terms without $\D_{ww}\D_{ww}$ when the $\delta/\delta J(w)$ could have hit $J_c, J_d, J_h, J_g$, resulting in
+\begin{align}
+-i\lambda \iiiint \D_{ae}\D_{bf} J_a J_b J_eJ_f \lp \int_w \D_{ww}\D_{ww} \rp.
+\end{align}
+How exactly does this happen? Well,
+\begin{align}
+\f{\delta}{\delta J(w)}J_j = \delta(x_j - w),
+\end{align}
+setting $w \to c,d,g,h$, creating $\D_{ww}\D_{ww}$. In this case, the coefficient of $J(x_1)J(x_2)J(x_3)J(x_4)$ us then
+\begin{align}
+\D_{13}\D_{24} (-i\lambda)\int_w \D_{ww}\D_{ww}
+\end{align}
+plus other terms by permuting. Because the subscripts of $\D_{13}$ and $\D_{24}$ don't overlap (obviously), we get disconnected diagrams. Also, because we have $\D_{ww}\D_{ww}$, we also get a self-interaction. The associated spacetime Feynman diagram is then
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{self-int}
+	\caption{From Zee}
+\end{figure}
+
+
+Let's describe the underlying physical process: The source at $x_1$ produces a particle that propagates freely without any interaction to $x_3$, where it disappears. A similar thing happen to a particle starting at $x_2$ and ending at $x_4$. These two particles don't interact (disconnected). Now, somewhere off at the point $w$, which could really be \textit{anywhere}, there was an interaction with amplitude $-i\lambda$. This is known as a \textbf{vacuum fluctuation}.\\
+
+
+Now, when quantum mechanics and special relativity comes together, particles inevitably pop in and out of the vacuum. They could also even interact before vanishing again into the vacuum. From the figure, we see that in the far past, the universe has no particles. Then there are two, then four, then two, then none. We will deal with these fluctuations in better details later. \\
+
+Note that we have seen vacuum fluctuations in the Feynman diagrams in our baby and child problems. We just didn't talk about them!
 
 
 
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+\subsection{Canonical Quantization}
 
 
 
