@@ -120,7 +120,7 @@
 \begin{document}
 \begin{titlepage}\centering
  \clearpage
- \title{{\textsc{\textbf{Topics in Quantum Mechanics}}}\\ \smallskip - A Quick Guide - \\}
+ \title{{\textsc{\textbf{Topics in Quantum Theory}}}\\ \smallskip - A Quick Guide - \\}
  \author{\bigskip Huan Q. Bui}
   \affil{Colby College\\$\,$\\ PHYSICS \& MATHEMATICS\\ Statistics \\$\,$\\Class of 2021\\}
  \date{\today}
@@ -3124,7 +3124,7 @@ But we can also extend and make the contour very large by taking $R\to \infty$ s
 \end{align}
 where the first term on the RHS is exactly the real improper integral we're looking for. Thus, so long as $f(z)$ on $C_R$ vanishes when we take $R\to \infty$, we must have that
 \begin{align}
-\boxed{\int^{\infty}_{-\infty}f(x)\,dx 2\pi i g(z_0)}
+\boxed{\int^{\infty}_{-\infty}f(x)\,dx = 2\pi i g(z_0)}
 \end{align}\qed
 
 
@@ -3364,7 +3364,7 @@ where we will take $\theta = 1/2$ if $x^0 = y^0$.\\
 
 
 With this and taking $y = 0$ to be the initial spacetime and $x^0 = t$,  we can write the propagator as
-\begin{align}
+\begin{align}\label{propag}
 \boxed{\D(x) = \f{-i}{(2\pi)^3}\int \f{d^3k}{ 2 w_k} \lb e^{-i[w_kt - \vec{k}\cdot\vec{x}]}\theta(t) + e^{i[w_kt - \vec{k}\cdot\vec{x} ]}\theta(-t)\rb}
 \end{align}
 
@@ -4816,11 +4816,208 @@ Note that we have seen vacuum fluctuations in the Feynman diagrams in our baby a
 
 
 
+\subsubsection{Heisenberg \& Dirac}
+
+
+Consider a classical Lagrangian for a single particle
+\begin{align}
+\boxed{\lag = \f{1}{2}\dot{q}^2 - V(q)}
+\end{align}
+setting the mass to 1. The canonical momentum is defined by
+\begin{align}
+p \equiv \f{\delta \lag }{\delta \dot{q}}.
+\end{align}
+The Hamiltonian is then given by
+\begin{align}\label{hamilton}
+\ham = p\dot{q} - \lag = \f{p^2}{2} + V(q).
+\end{align}
+
+In the Heisenberg formulation, position $q(t)$ and momentum $p(t)$ are promoted to operators which follow the commutation relations:
+\begin{align}
+\boxed{[p,q] = -i}
+\end{align}
+where we have set $\hbar = c = 1$. Operators evolve in time according to Heisenberg's equation of motion
+\begin{align}
+\boxed{\f{dp}{dt} = i[\ham , p] = -\p_q V(q)} \text{ and } \boxed{\f{dq}{dt} = i[\ham , q] = p}
+\end{align}
+where we have assumed these operators are not explicitly time-dependent. \\
+
+Any operator $O$ constructed out of $p,q$ evolves according to 
+\begin{align}
+O(t) = e^{i\ham t} O(0) e^{-i\ham t}.
+\end{align} 
+In particular, consider the following operator:
+\begin{align}
+a \equiv \f{1}{\sqrt{2w}}\lp wq + ip \rp
+\end{align}
+defined with some parameter $w$. From the commutation relations between $q$ and $p$, we have that
+\begin{align}
+\boxed{[a,a^\dagger] = 1}
+\end{align}
+
+
+The evolution of this operator is given by
+\begin{align}
+\boxed{\f{da}{dt} = i\lb\ham, \f{1}{\sqrt{2w}}(wq + ip)\rb = -i\f{w}{2}\lp ip + \f{1}{w}V'(q) \rp}
+\end{align}
+
+The $a$ operator is called the \textit{lowering operator}, defined such that
+\begin{align}
+\boxed{a\ket{0} = 0}
+\end{align}
+
+In the special case of the harmonic oscillator, $V(q) = w^2 q^2/2$, we have that 
+\begin{align}
+\f{da}{dt} &= -iw a\\
+\lag &= \f{1}{2}\dot{q}^2 - \f{1}{2}w^2 q^2\\
+\ham &= \f{1}{2}(p^2 + w^2 q^2) = w\lp a^\dagger a + \f{1}{2} \rp\\
+[p, q] &= -i.
+\end{align}
+
+
+
+In general, with multi-particle systems,
+\begin{align}
+\lag &= \sum_a^N \f{1}{2}\dot{q}_a^2 - V(q_1, q_2, \dots, q_N)\\
+p_2 &= \f{\delta \lag}{\delta \dot{q}_a}\\
+[p_a(t), q_b(t)] &= -i\delta_{ab}.
+\end{align}
+where $p_a, q_b$ can be written in terms of the lowering and raising operators. \\
+
+
+We can also generalize this Lagrangian even further in field theory in $D$-dimensional space:
+\begin{align}
+\boxed{L = \int d^Dx\, \underbrace{\lc \f{1}{2}\dot{\phi}^2 - [(\grad{\phi})^2 - m^2 \phi^2] - u(\phi) \rc}_{\lag}}
+\end{align}
+where $u(\phi)$ denotes anharmonic terms. \\
+
+In this case, the canonical momentum density conjugate to the field $\phi(\vec{x},t)$ is given by
+\begin{align}
+\boxed{\pi (\vec{x} ,t) = \f{\delta \lag}{\delta\dot{\phi}(\vec{x},t)} = \p_0 \phi(\vec{x},t) }
+\end{align}
+And it follows that the commutation relation (at equal times) now reads
+\begin{align}
+\boxed{\lb \pi(\vec{x},t), \phi(\vec{x}',t) \rb = \lb \p_0 \phi(\vec{x},t), \phi(\vec{x}',t) \rb = -i\delta^{(D)}(\vec{x} - \vec{x}')}
+\end{align}
+
+
+The Hamiltonian can be found from the Lagrangian (density) similar to Eq. $\eqref{hamilton}$ via 
+\begin{align}
+H = \int d^D x\, \lc \pi(\vec{x},t) \underbrace{\p_0\phi(\vec{x},t)}_{\pi(\vec{x},t)} - \lag \rc = \int d^Dx\, \lc \f{1}{2}\lb\pi^2 + (\grad{\phi})^2 + m^2 \phi^2\rb     + u(\phi) \rc.
+\end{align}
+
+When we don't have any anharmonic terms, i.e. $u(\phi) = 0$, we recover the harmonic oscillator. In this case, we have a free scalar field theory, where $\phi$ solves the Klein-Gordon equation:
+\begin{align}
+(\p^2 + m^2)\phi  = 0
+\end{align}
+where
+\begin{align}
+\p^2 = \f{\p^2}{\p t^2} - \grad.
+\end{align}
+We can verify that the solution to this Klein-Gordon equation has the form
+\begin{align}
+\boxed{\phi(\vec{x},t) = \int \f{d^D k}{\sqrt{(2\pi)^D 2 w_k}} \lb a(\vec{k})e^{-i(w_k t - \vec{k}\cdot\vec{x})} + a^\dagger(\vec{k})e^{i(w_k t - \vec{k}\cdot \vec{x})} \rb}
+\end{align}
+where 
+\begin{align}
+w_k = \sqrt{\vec{k}^2 + m^2}.
+\end{align}
+The factor $\sqrt{2w_k}^{-1}$ is chosen so that we have
+\begin{align}
+[a(\vec{k}), a^\dagger(\vec{k})] = \delta^{(D)}(\vec{k} - \vec{k}'),
+\end{align}
+which implies the correct commutation relation for the field and canonical momentum 
+\begin{align}
+[\p_0 \phi(\vec{x}, t), \phi(\vec{x}', t)]  = -i\delta^{(D)}(\vec{x} - \vec{x}').
+\end{align}
 
 
 
 
 
+In quantum mechanics, the ground state or vacuum is denoted by $\ket{0}$, following the condition
+\begin{align}
+a(\vec{k})\ket{0} = 0.
+\end{align}
+Any single particle state with momentum $\vec{k}$ is given by
+\begin{align}
+a^\dagger(\vec{k})\ket{0} = \ket{k}.
+\end{align}
+Consider the expectation value $\bra{0}\phi(\vec{x},t)\ket{k}$. We can compute this
+\begin{align}
+&\bra{0}\phi(\vec{x},t)\ket{k} \nonumber\\
+= &\bra{0}\int \f{d^D k'}{\sqrt{(2\pi)^D 2 w_k'}} \lb a(\vec{k'})e^{-i(w_{k'} t - \vec{k}'\cdot\vec{x})} + a^\dagger(\vec{k}')e^{i(w_{k'} t - \vec{k}'\cdot \vec{x})} \rb \lp a^\dagger(k)\ket{0} \rp \nonumber \\ 
+= &\bra{0}\int \f{d^D k'}{\sqrt{(2\pi)^D 2 w_k'}} \lb a(\vec{k'}) a^\dagger(\vec{k})e^{-i(w_{k'} t - \vec{k}'\cdot\vec{x})} + \underbrace{a^\dagger(\vec{k}')a^\dagger(\vec{k})e^{i(w_{k'} t - \vec{k}'\cdot \vec{x})} }_{\text{makes an orthogonal vector to $\ket{0} \forall k$}}\rb\ket{0} \nonumber \\ 
+= &\bra{0}\int \f{d^D k'}{\sqrt{(2\pi)^D 2 w_k'}} \lb a(\vec{k'}) a^\dagger(\vec{k})e^{-i(w_{k'} t - \vec{k}'\cdot\vec{x})}\rb\ket{0} \nonumber \\ 
+= &\int \f{d^D k'}{\sqrt{(2\pi)^D 2 w_k'}} \lb \bra{0} a(\vec{k'}) a^\dagger(\vec{k})\ket{0}e^{-i(w_{k'} t - \vec{k}'\cdot\vec{x})}\rb \nonumber \\ 
+= &\int \f{d^D k'}{\sqrt{(2\pi)^D 2 w_k'}} \lb e^{-i(w_{k'} t - \vec{k}'\cdot\vec{x})}\rb \delta^{(D)}(\vec{k} - \vec{k}') \nonumber\\
+= & \boxed{\f{1}{\sqrt{(2\pi)^D 2w_k}}e^{-i(w_k t - \vec{k}\cdot\vec{x})}}
+\end{align}
+
+
+
+To make contact with the path integral formulation let us evaluate $\bra{0}\phi(\vec{x},t)\phi(\vec{0},0)\ket{0}$ for $t > 0$. Before attempting this by writing the entire expression out, we will notice that of the four possible terms $a^\dagger a^\dagger$, $a^\dagger a$, $a a^\dagger$, and $aa$ in the product of the two fields only $a a^\dagger$ survives because of orthogonality relations and the fact that we're staring out with the ground state. With this, we will proceed:
+\begin{align}
+  &\bra{0}\phi(\vec{x},t)\phi(\vec{0},0)\ket{0} \nonumber\\
+= &\iint \f{d^D k}{\sqrt{(2\pi)^D 2w_k}} \f{d^D k'}{\sqrt{(2\pi)^D 2w_{k'}}}
+\bra{0}\lc a(\vec{k})e^{-i(w_k t - \vec{k}\cdot\vec{x})} + a^\dagger(\vec{k})e^{i(w_k - \vec{k}\cdot\vec{x})} \rc \lc a(\vec{k}') + a^\dagger(\vec{k}') \rc\ket{0} \nonumber\\
+= &\iint \f{d^Dk \,d^Dk'}{(2\pi)^D (2w_k)(2w_{k'})}e^{-i(w_k t - \vec{k}\cdot\vec{x})}\bra{0}a(\vec{k})a^\dagger(\vec{k}')\ket{0}\nonumber\\
+= &\iint \f{d^Dk \,d^Dk'}{\sqrt{(2\pi)^D (2w_k)(2w_{k'})}}e^{-i(w_k t - \vec{k}\cdot\vec{x})}\delta^{(D)}(\vec{k} - \vec{k}')\nonumber\\
+= &\iint \f{d^Dk \,d^Dk'}{\sqrt{(2\pi)^D (2w_k)(2w_{k'})}}e^{-i(w_k t - \vec{k}\cdot\vec{x})}\delta^{(D)}(\vec{k} - \vec{k}')\nonumber\\
+= &\boxed{\int \f{d^D k}{(2\pi)^D 2w_k}e^{-i(w_k t - \vec{k}\cdot\vec{x})}}
+\end{align}
+
+
+With this, if we define the time-ordering product 
+\begin{align}
+\boxed{T[\phi(x)\phi(y)] = \theta(x^0 - y^0) \phi(x)\phi(y) + \theta(y^0 - x^0)\phi(y)\phi(x)}
+\end{align}
+then we have
+\begin{align}
+  &\bra{0}T[\phi(\vec{x},t)\phi(\vec{0},0)]\ket{0} \nonumber\\
+= &\bra{0}  \theta(t)\phi(x)\phi(0) + \theta(-t)\phi(0)\phi(x)   \ket{0} \nonumber\\
+= &\bra{0}  \theta(t)\phi(x)\phi(0)\ket{0} + \bra{0}\theta(-t)\phi(0)\phi(x)  \ket{0} \nonumber\\
+= & \boxed{\int \f{d^D k}{(2\pi)^D 2w_k}\lb \theta(t)e^{-i(w_k t - \vec{k}\cdot\vec{x})} + \theta(-t)e^{i(w_k t - \vec{k}\cdot\vec{x})} \rp}
+\end{align}
+
+where
+\begin{align}
+\bra{0} \phi(x)\phi(0) \ket{0} &= \int \f{d^D k}{(2\pi)^D 2w_k}e^{-i(w_k t - \vec{k}\cdot\vec{x})} \\ 
+\bra{0} \phi(0)\phi(x) \ket{0} &= \int \f{d^D k}{(2\pi)^D 2w_k}e^{+i(w_k t - \vec{k}\cdot\vec{x})}
+\end{align}
+which we can check by inspection. Comparing this result to Eq. \eqref{propag}, which we will repeat here:
+\begin{align}
+\D(x) = \f{-i}{(2\pi)^3}\int \f{d^3k}{ 2 w_k} \lb e^{-i[w_kt - \vec{k}\cdot\vec{x}]}\theta(t) + e^{i[w_kt - \vec{k}\cdot\vec{x} ]}\theta(-t)\rb,
+\end{align}
+we immediately see that
+\begin{align}
+\boxed{\bra{0}T[\phi(\vec{x},t)\phi(\vec{0},0)]\ket{0} = i\D(x) = G^{(2)}(x,0)}
+\end{align}
+
+This nicely connects quantum mechanics to the path integral formalism. \\
+
+The moral here is that we always create before we annihilate, not the other around. This is a form of causality as formulated in quantum field theory. 
+
+
+
+
+
+
+\subsubsection{Scattering amplitude}
+
+
+In this section we will show how the invariant scattering amplitude $\mathcal{M}$ arises from this formalism. Suppose we would like to evaluate the quantity:
+\begin{align}
+\bra{\vec{k_3}\vec{k_4}}e^{-iH T}\ket{\vec{k_1} \vec{k_2}} = \bra{\vec{k_3}\vec{k_4}}e^{-i \int d^4x\, \lag(x) }\ket{\vec{k_1} \vec{k_2}} 
+\end{align} 
+for the following meson scattering process
+\begin{align}
+\vec{k_1} + \vec{k_2} \to \vec{k_3}+ \vec{k_4}
+\end{align}
+in order $\lambda$, with the anharmonic term $u(\phi) = \lambda \phi^4 / 4!$. By expanding first in $\lambda$, to first order in $\lambda$, this amplitude is 
+\begin{align}
+\boxed{\bra{\vec{k_3}\vec{k_4}}e^{-iH T}\ket{\vec{k_1} \vec{k_2}} \approx \lp -i\f{\lambda}{4!} \rp\int d^4x \, \bra{\vec{k_3}\vec{k_4}}\phi^4(x)\ket{\vec{k_1} \vec{k_2}}}
+\end{align}
 
 
 
