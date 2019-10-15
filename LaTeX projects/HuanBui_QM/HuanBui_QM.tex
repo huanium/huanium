@@ -4913,6 +4913,8 @@ where
 \begin{align}
 \p^2 = \f{\p^2}{\p t^2} - \grad.
 \end{align}
+The Klein-Gordon equation is obtained from varying the Lagrangian with respect to the field. \\
+
 We can verify that the solution to this Klein-Gordon equation has the form
 \begin{align}
 \boxed{\phi(\vec{x},t) = \int \f{d^D k}{\sqrt{(2\pi)^D 2 w_k}} \lb a(\vec{k})e^{-i(w_k t - \vec{k}\cdot\vec{x})} + a^\dagger(\vec{k})e^{i(w_k t - \vec{k}\cdot \vec{x})} \rb}
@@ -4962,8 +4964,8 @@ To make contact with the path integral formulation let us evaluate $\bra{0}\phi(
 \bra{0}\lc a(\vec{k})e^{-i(w_k t - \vec{k}\cdot\vec{x})} + a^\dagger(\vec{k})e^{i(w_k - \vec{k}\cdot\vec{x})} \rc \lc a(\vec{k}') + a^\dagger(\vec{k}') \rc\ket{0} \nonumber\\
 = &\iint \f{d^Dk \,d^Dk'}{(2\pi)^D (2w_k)(2w_{k'})}e^{-i(w_k t - \vec{k}\cdot\vec{x})}\bra{0}a(\vec{k})a^\dagger(\vec{k}')\ket{0}\nonumber\\
 = &\iint \f{d^Dk \,d^Dk'}{\sqrt{(2\pi)^D (2w_k)(2w_{k'})}}e^{-i(w_k t - \vec{k}\cdot\vec{x})}\delta^{(D)}(\vec{k} - \vec{k}')\nonumber\\
-= &\iint \f{d^Dk \,d^Dk'}{\sqrt{(2\pi)^D (2w_k)(2w_{k'})}}e^{-i(w_k t - \vec{k}\cdot\vec{x})}\delta^{(D)}(\vec{k} - \vec{k}')\nonumber\\
-= &\boxed{\int \f{d^D k}{(2\pi)^D 2w_k}e^{-i(w_k t - \vec{k}\cdot\vec{x})}}
+= &\iint \f{d^Dk \,d^Dk'}{\sqrt{(2\pi)^{2D} (2w_k)(2w_{k'})}}e^{-i(w_k t - \vec{k}\cdot\vec{x})}\delta^{(D)}(\vec{k} - \vec{k}')\nonumber\\
+= &\boxed{\int \f{d^D k}{(2\pi)^{D} 2w_k}e^{-i(w_k t - \vec{k}\cdot\vec{x})}}
 \end{align}
 
 
@@ -5037,16 +5039,219 @@ Thus,
 \end{align}
   
   
-How do we actually calculate this? There is some similarity between what we have done and what we have here. Before, we have a product of two fields sandwiched between the ground states. Now, we have four, sandwiched between two four-particle states. 
-   
-   
-   
-   
+How do we actually calculate this? There is some similarity between what we have done and what we have here. Before, we have a product of two fields sandwiched between the ground states. Now, we have four, sandwiched between two four-particle states. In order to correct describe the picture, we need to annihilate $\ket{\vec{k_1}}$ and $\ket{\vec{k_2}}$ then create $\ket{\vec{k_3}}$ and $\ket{\vec{k_4}}$. Thus we look for the term $a^\dagger(\vec{k_4}) a^\dagger(\vec{k_3})a(\vec{k_2})a(\vec{k_1})$. The $a(\vec{k_1})$ term could come from any of the four fields $\phi$. The $a(\vec{k_2})$ terms cold come from any of the leftover three fields, and so on. In the end, we have $4!$ of $a^\dagger(\vec{k_4}) a^\dagger(\vec{k_3})a(\vec{k_2})a(\vec{k_1})$ terms. This $4!$ cancels with the term in the denominator. The exponential corresponding to this term is 
+\begin{align}
+e^{ i \lp (w_4 t - \vec{k}_4 \cdot \vec{x}) + (w_3 t - \vec{k}_3 \cdot \vec{x}) - (w_2 t - \vec{k}_2 \cdot \vec{x}) - (w_1 t - \vec{k}_1 \cdot \vec{x})\rp } \equiv e^{i (k_3 + k_4 - k_1 - k_2)\cdot x}.
+\end{align}
+So, the matrix element is 
+\begin{align}
+\lp \prod^4_{\alpha = 1} \f{1}{\sqrt{(2\pi)^D 2 w_\alpha}} \rp \int d^4x\, e^{i (k_3 + k_4 - k_1 - k_2)\cdot x} 
+\end{align}
+Finally, recall that
+\begin{align}
+\delta^{(4)}(x - y) = \F[1](x-y) \f{1}{(2\pi)^4}\int d^4p \, e^{i(x-y)p},
+\end{align}
+so we have the full amplitude: 
+\begin{align}
+\boxed{\lp -i\lambda \rp \lp \prod^4_{\alpha = 1} \f{1}{\sqrt{(2\pi)^D 2 w_\alpha}} \rp (2\pi)^4 \delta^{(4)}(k_3 + k_4 - k_2 - k_1)}
+\end{align}
+where we recall that $\mathcal{M}(f \leftarrow i) = -\lambda$.\\
+
+It is conventional to refer to 
+\begin{align}
+S_{fi} = \bra{f}e^{-iHT}\ket{i}
+\end{align}
+as the matrix elements of the $S$-matrix. From here, we can define the transition matrix $T$ by 
+\begin{align}
+S \equiv I + iT \iff S_{fi} = \delta_{fi} + iT_{fi}.
+\end{align}
+With this, and expressing the change in momentum in general as the sum of final minus the sum of initial momenta, we get
+\begin{align}
+\boxed{iT_{fi} = (2\pi)^4 \delta^{(4)}\lp \sum_f k - \sum_i k \rp \lp \prod^4_{\alpha = 1} \f{1}{\sqrt{(2\pi)^D 2 w_\alpha}} \rp \mathcal{M}(f \leftarrow i)}
+\end{align}
+
+
+
+
+\subsubsection{Energy of the vacuum}
+
+
+In this section we will find the expectation value $\bra{0}H\ket{0}$ in the free scalar field theory where we have constructed the Hamiltonian from the Lagrangian:
+\begin{align}
+H = \pi^2 + (\grad{\phi})^2 + m^2 \phi^2.
+\end{align}
+
+Recall that we have computed $\phi$:
+\begin{align}
+\phi(\vec{x},t) = \int \f{d^D k}{\sqrt{(2\pi)^D 2 w_k}} \lb a(\vec{k})e^{-i(w_k t - \vec{k}\cdot\vec{x})} + a^\dagger(\vec{k})e^{i(w_k t - \vec{k}\cdot \vec{x})} \rb.
+\end{align}
+It follows that
+\begin{align}
+\pi^2(\vec{x},t) &= [\p_0 \phi(\vec{x},t)]^2 = w_k^2 \phi^2(\vec{x},t)\nonumber\\
+(\grad{\phi})^2 &= \vec{k}^2 \phi^2(\vec{x},t) \nonumber.
+\end{align}
+So we only have to look at $\bra{0}\phi(\vec{x},t)\phi(\vec{x},t)\ket{0}$:
+\begin{align}
+\bra{0}\phi(\vec{x},t)\phi(\vec{x},t)\ket{0} &=  
+\end{align}
+
+
+We also have that
+\begin{align}
+&\bra{0}\phi^2(\vec{x},t)\ket{0} \nonumber\\
+= &\bra{0}\phi(\vec{x},t)\phi(\vec{x},t)\ket{0} \nonumber\\
+= &\bra{0} \lp \int \f{d^Dk}{\sqrt{(2\pi)^D 2w_k}} \lc a(\vec{k})e^{ik\cdot x} + a^\dagger(\vec{k})e^{-ik\cdot x} \rc \rp^2   \ket{0} \nonumber\\
+= &\iint \f{d^D k\,d^Dk'}{\sqrt{(2\pi)^{2D}(2w_k)(2w_k')}}\bra{0} \lc a(\vec{k})e^{ik\cdot x} + a^\dagger(\vec{k})e^{-ik\cdot x}  \rc \lc a(\vec{k'})e^{ik'\cdot x} + a^\dagger(\vec{k'})e^{-ik'\cdot x}  \rc \ket{0} \nonumber\\
+= &\iint \f{d^D k\,d^Dk'}{\sqrt{(2\pi)^{2D}(2w_k)(2w_k')}}\underbrace{\bra{0} a(\vec{k})a^\dagger(\vec{k}')e^{i(k-k')\cdot x} \ket{0}}_\delta \nonumber\\
+= &\iint \f{d^D k\,d^Dk'}{\sqrt{(2\pi)^{2D}(2w_k)(2w_k')}} \delta^{(D)}(k - k')\nonumber\\
+= & \int \f{d^D k}{(2\pi)^D 2w_k}.
+\end{align}
+Putting this together, we find
+\begin{align}
+\bra{0}H\ket{0} &= \int d^Dx\f{1}{2}\bra{0} \lp \pi^2 + (\grad{\phi})^2 + m^2 \phi^2 \rp\ket{0} \nonumber\\
+&= \underbrace{\int d^Dx}_{V}\,  \int \f{d^D k}{(2\pi)^D 2w_k} \f{1}{2} (w_k^2 + \vec{k}^2 + m^2)   \nonumber\\
+&= V  \int \f{d^D k}{(2\pi)^D 2w_k} \f{1}{2} (w_k^2 + \underbrace{\vec{k}^2 + m^2}_{w_k^2}) \nonumber\\
+&= V  \int \f{d^D k}{(2\pi)^D} \f{1}{2}w_k.
+\end{align}
+Once $\hbar$ is restored, we get
+\begin{align}
+\boxed{\bra{0}H\ket{0} = V  \int \f{d^D k}{(2\pi)^D} \f{1}{2}\hbar w_k}
+\end{align}
+where $V$ the volume of the space. \\
+
+
+We immediately recognize this as the zero-point energy of the harmonic oscillator integrated over all momentum modes $k$ and over all space. However, we should worry here because this integral over $k$ clearly diverges. However, in reality, we always measure relative to the vacuum, i.e., we are often interested in 
+\begin{align}
+H - \bra{0}H\ket{0}.
+\end{align}
+Thus, we won't have to worry about getting infinities here.
 
 
 
 
 
+
+
+
+
+
+
+\subsubsection{Complex scalar field}
+
+In the previous section, our field is hermitian (or ``real''). In this section, we will look at the formalism for a complex scalar field governed by the Lagrangian density:
+\begin{align}
+\boxed{\lag = \p \phi^\dagger \p \phi - m^2 \phi^\dagger \phi}
+\end{align} 
+
+According to Heisenberg, the canonical momentum is given by
+\begin{align}
+{\pi(\vec{x},t) = \f{\delta \lag}{\delta \dot{\phi}(\vec{x},t)} = \p_0 \phi^\dagger(\vec{x},t)}
+\end{align}
+and so 
+\begin{align}
+{[\pi(\vec{x},t), \phi(\vec{x}',t)] = -i\delta^{(D)}(\vec{x} - \vec{x}')}
+\end{align}
+just as before. Similarly, we can show that 
+\begin{align}
+{\pi'(\vec{x},t) = \f{\delta \lag}{\delta \dot{\phi}^\dagger(\vec{x},t)} = \p_0 \phi(\vec{x},t)}
+\end{align}
+
+Varying the Lagrangian with respect to the (conjugate of the) field, we get two Klein-Gordon equations:
+\begin{align}
+{(\square + m^2)\phi = 0; \hspace{0.5cm}(\square + m^2)\phi^\dagger = 0}
+\end{align}
+ 
+The Fourier expansion is similar to what we've seen before. However, because $\phi$ is no longer hermitian, we are required to use two independent sets of creation and annihilation operators $(a,a^\dagger)$ and $(b, b^\dagger)$:
+\begin{align}
+\boxed{\phi(\vec{x},t) = \int \f{d^Dk}{\sqrt{(2\pi)^D 2w_k}}\lb a(\vec{k})e^{-i(w_k t - \vec{k}\cdot\vec{x})} + b^\dagger(\vec{k}) e^{i(w_k t - \vec{k}\cdot\vec{x})}\rb}
+\end{align}
+The interpretation here is that the particle created by $a^\dagger$ and the particle created by $b^\dagger$ are antiparticles. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+\section{Renormalization \& Gauge Invariance}
+
+
+
+
+\subsection{Cutoffs}
+
+\subsubsection{Field theory blowing up}
+\subsubsection{Parameterization: a ``fix''}
+\subsubsection{What is actually measured}
+\subsubsection{The ``miracle''}
+\subsubsection{Answers should be physical}
+\subsubsection{Integrating over only slow modes}
+
+
+
+\newpage
+
+\subsection{Renormalizable vs. Nonrenormalizable}
+
+
+
+\newpage
+
+\subsection{Counterterms and Physical Perturbation Theory}
+
+
+
+\newpage
+
+
+
+\subsection{Gauge Invariance: A Photon Can Find No Rest}
+
+
+
+\newpage
+
+
+\subsection{Field Theory without Relativity}
+
+
+\newpage
+
+
+\subsection{The Magnetic Moment of the Electron}
+
+
+
+\newpage
+
+
+\subsection{Polarizing the Vacuum and Renormalizing the Charge}
+
+\newpage
+
+
+\subsection{Becoming Imaginary and Conserving Probability}
 
 
 
