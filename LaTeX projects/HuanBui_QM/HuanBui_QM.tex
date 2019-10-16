@@ -5227,7 +5227,7 @@ We have mentioned in the \textit{Loops and a first look at divergence} that this
 
 We say that this integral diverges \textit{logarithmically} as $\int d^4k/k^4$ for large $k$. We also call this ``ultraviolet divergence'' since the integral diverges when $k$ is large. \\
 
-To deal with this integral, we have to look at ``regularization'' and ``renormalization.'' Regularization is the process of making divergent integrals converge by integrating up to a cutoff $\Lambda$. Physically, this means that whatever quantum field theory we're working with is an effective low energy theory that is valid up to some energy associated with $\Lambda$.  $\Lambda$ should be thought of as physical, ``parameterizing our threshold of ignorance.'' When we evaluate integrals with a cutoff $\Lambda$, we literally integrate only up to $\Lambda$. If the integral is convergent, we say it is ``regularized.'' So what is
+To deal with this integral, we have to look at ``regularization'' and ``renormalization.'' \textbf{Regularization} is the process of making divergent integrals converge by integrating up to a cutoff $\Lambda$. Physically, this means that whatever quantum field theory we're working with is an effective low energy theory that is valid up to some energy associated with $\Lambda$.  $\Lambda$ should be thought of as physical, ``parameterizing our threshold of ignorance.'' When we evaluate integrals with a cutoff $\Lambda$, we literally integrate only up to $\Lambda$. If the integral is convergent, we say it is ``regularized.'' So what is
 \begin{align}
 \mathcal{M} = \f{1}{2}(-i\lambda)^2\int^\Lambda \f{d^4k}{(2\pi)^4}\f{i}{k^2 - m^2 + i\epsilon}\f{i}{(K - k)^2 - m^2 + i\epsilon}?
 \end{align}
@@ -5238,7 +5238,7 @@ We might be tempted to evaluate this integral directly by the Cauchy integral fo
 
 We would like to evaluate this integral from the previous section:
 \begin{align}
-I = \int \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - c^2+ i\epsilon)^3} = \int \f{d^3k}{(2\pi)^3}\int \f{dk_0}{2\pi} \f{1}{(k_0^2 - (\vec{k}^2 + c^2)+ i\epsilon)^3} 
+\boxed{I = \int \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - c^2+ i\epsilon)^3} = \int \f{d^3k}{(2\pi)^3}\int \f{dk_0}{2\pi} \f{1}{(k_0^2 - (\vec{k}^2 + c^2)+ i\epsilon)^3}} 
 \end{align}
 where we have used the fact that
 \begin{align}
@@ -5275,9 +5275,169 @@ d^4k \to d^4_Ek
 \end{align}
 where $d^E k$ is the integration measure in Euclidean 4-dimensional space. So,
 \begin{align}
-I = i(-1)^3\int \f{d^4_E k}{(2\pi)^4} \f{1}{(k^2_E + c^2)^3}
+\boxed{I = i(-1)^3\int \f{d^4_E k}{(2\pi)^4} \f{1}{(k^2_E + c^2)^3}}
 \end{align}
-Good, but how do we evaluate this integral? 
+Good, but how do we evaluate this integral? It turns out that it is more useful for us to look at a more general case where we evaluate
+\begin{align}
+H = \int d^d_Ek \, F(k^2)
+\end{align}
+where
+\begin{align}
+k^2 = k_1^2 + k_2^2 + \dots + k^2_d.
+\end{align}
+We assume that the integral converges. We will also drop the $E$ subscript for convenience. Suppose we integrate over the $(d-1)$ angular variables to get
+\begin{align}
+H = C(d)\int^\infty_0 dk\,k^{d-1}F(k^2)
+\end{align}
+where our $k$ can be thought of as only the radial component. What is $C(d)$? Well, we know that
+\begin{align}
+J = \int d^dk\, e^{-k^2/2} = \lp\sqrt{2\pi}\rp^d,
+\end{align}
+from our results in \textit{Gaussian integrals and their moments}. But we know that alternatively,
+\begin{align}
+J &= \int d^dk\, e^{-k^2/2}\nonumber\\
+&= C(d) \int^\infty_0 dk\, k^{d-1}e^{-k^2/2} \hspace{0.5cm}\text{angular-integrated} \nonumber\\
+&= C(d) 2^{d/2 - 1} \int^\infty_0 dx\, x^{d/2 - 1}e^{-x} \nonumber\\
+&= C(d) 2^{d/2 - 1} \Gamma\lp \f{d}{2} \rp
+\end{align}
+where we have made the necessary change of variables in order to the get the integral representation of the Gamma function, which shows up quite often in probability theory:
+\begin{align}
+{\Gamma(z) = \int^\infty_0 x^{z-1}e^{-x}\,dx, \hspace{0.5cm} \Re(z) > 0}
+\end{align}
+which satisfies the definition of the Gamma function defined for positive integers:
+\begin{align}
+\Gamma(n) = (n-1)! \iff \Gamma(n+1) = n\Gamma(n),
+\end{align}
+which we can show by integration by parts. It follows that
+\begin{align}
+\lp 2\pi \rp^{d/2} = C(d) 2^{d/2 - 1} \Gamma\lp \f{d}{2} \rp,
+\end{align}
+which means 
+\begin{align}
+\boxed{C(d) = \f{2\pi^{d/2}}{\Gamma\lp d/2 \rp}}
+\end{align}
+As a little ``sanity check,'' when $d=2$, when $C(d) = 2\pi$. When $d=3$, $C(d) = 4\pi$, which are familiar angular elements in 2 and 3 dimensions. With this, we have in general,
+\begin{align}
+\boxed{H = \int d^d_E k \,F(k^2) = C(d)\int^\infty_0 dk\, k^{d-1}F(k^2)= \f{2\pi^{d/2}}{\Gamma\lp d/2 \rp}\int^\infty_0 dk\, k^{d-1}F(k^2)}
+\end{align}
+
+So, when $d=4$ (which is the value of $d$ we are interested in), 
+\begin{align}
+\int d^4_E k \, F(k^2) = (2\pi^2) \int^\infty_0 dk\,k^3 F(k^2).
+\end{align}
+With this, we can now evaluate the original $I$:
+\begin{align}
+I &= \int \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - c^2+ i\epsilon)^3}\nonumber\\
+&= \dots \nonumber\\ 
+&= i(-1)^3\int \f{d^4_E k}{(2\pi)^4} \f{1}{(k^2_E + c^2)^3} \nonumber\\
+&= \f{-i}{(2\pi)^4}\int d^4_E k k^3 \f{1}{(k^2 + c^2)^3}  \nonumber\\
+&= \f{-i}{(2\pi)^4} (2\pi^2) \underbrace{\int^\infty_0 dk\,k^3   \f{1}{(k^2 + c^2)^3}} \nonumber\\
+&= \f{-i}{(2\pi)^4} (2\pi^2) \f{1}{4c^2} \nonumber\\
+&= {\f{-i}{32 \pi^2 c^2}},
+\end{align}
+where the final integral can be evaluated in Mathematica as follows:
+\begin{lstlisting}
+In[9]:= Integrate[k^3/(k^2 + c^2)^3, {k, 0, Infinity}]
+
+Out[9]= ConditionalExpression[1/(4 c^2), Re[c] != 0]
+\end{lstlisting}
+$\,$\\
+
+Thus, we have derived the basic formula for doing Feynman integrals:
+\begin{align}
+\boxed{\int \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - m^2+ i\epsilon)^3} = \f{-i}{32 \pi^2 m^2}}
+\end{align}
+Okay, what if now we only integrate to a cutoff $\Lambda$ and with a power of $2$ (not $3$) in the denominator, i.e.,
+\begin{align}
+\int^{k=\Lambda} \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - m^2+ i\epsilon)^2} = ?
+\end{align}
+Essentially, we can work through the same steps again. Notice that the cutoff is only in $k$ but not in the angular pieces, so we still have that
+\begin{align}
+\int^{k=\Lambda} \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - m^2+ i\epsilon)^2} &= \f{-i}{(2\pi)^4}(2\pi^2)\int^{k=\Lambda} dk\,k^3\f{1}{(k^2 + m^2)^2}\nonumber\\
+&= \f{-i}{8\pi^2}\int^{k=\Lambda} dk\,k^3\f{1}{(k^2 + m^2)^2}
+\end{align}
+This last integral can be evaluated in Mathematica as follows:
+\begin{lstlisting}
+In: Integrate[k^3/(k^2 + a^2)^2, {k, 0, L}]
+
+Out: 1/2(-1-Log[a^2])+(a^2+(a^2+L^2)Log[a^2+L^2])/(2(a^2+L^2)) 
+\end{lstlisting}
+
+Technical side note: In reality Mathematica gives a bunch of conditional statements, but we can just ignore those since we're only working with positive real numbers here. \\
+
+So, we have
+\begin{align}
+\int^{\Lambda} \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - m^2+ i\epsilon)^2} &= \f{-i}{16\pi^2}\lc -1 - \log(m^2) + \log(m^2 + \Lambda^2) + \f{m^2 }{m^2 + \Lambda^2} \rc\nonumber\\
+&= \f{-i}{16\pi^2}\lc -1  + \log\lp\f{ m^2 + \Lambda^2}{m^2} \rp+ \f{m^2 }{m^2 + \Lambda^2} \rc.
+\end{align}
+
+Assuming $\lambda^2 \gg m^2$, we have that
+\begin{align}
+\boxed{\int^{\Lambda} \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - m^2+ i\epsilon)^2} \approx \f{i}{16\pi^2} \lb \log\lp \f{\Lambda^2}{m^2} \rp  - 1 + \dots \rb}
+\end{align}
+
+
+
+
+As an exercise, let's try to evaluate
+\begin{align}
+\int^{\Lambda} \f{d^4k}{(2\pi)^4} \f{k^2}{(k^2 - m^2+ i\epsilon)^2}.
+\end{align}
+Well, we will just a similar thing except for the form of $F(k^2)$. So we have
+\begin{align}
+\int^{k=\Lambda} \f{d^4k}{(2\pi)^4} \f{k^2}{(k^2 - m^2+ i\epsilon)^2} &= \f{-i}{(2\pi)^4}(2\pi^2)\int^{k=\Lambda} dk\,k^3\f{k^2}{(k^2 + m^2)^2}\nonumber\\
+&= \f{-i}{8\pi^2}\int^{k=\Lambda} dk\,\f{k^5}{(k^2 + m^2)^2}.
+\end{align}
+Once again with the help of Mathematica, we find 
+\begin{lstlisting}
+In: Integrate[k^5/(k^2 + a^2)^2, {k, 0, L}]
+
+Out: ((2a^2 L^2+L^4+2a^2(a^2+L^2)(Log[a^2]-Log[a^2+L^2]))/(2(a^2+L^2)))
+\end{lstlisting}
+Thus,
+\begin{align}
+\int^{k=\Lambda} \f{d^4k}{(2\pi)^4} \f{k^2}{(k^2 - m^2+ i\epsilon)^2} &\approx \f{-i}{16\pi^2}\lc m^2 + \Lambda^2 + 2m^2\log\lp \f{m^2}{m^2 + \Lambda^2} \rp  \rc \nonumber\\
+&= \f{-i}{16\pi^2}\lc m^2 + \Lambda^2 - 2m^2\log\lp \f{\Lambda^2}{m^2} \rp + \dots  \rc
+\end{align}
+where once again we assume $\Lambda^2 \gg m^2$. So we have
+\begin{align}
+\boxed{\int^{k=\Lambda} \f{d^4k}{(2\pi)^4} \f{k^2}{(k^2 - m^2+ i\epsilon)^2} = \f{-i}{16\pi^2}\lc m^2 + \Lambda^2 - 2m^2\log\lp \f{\Lambda^2}{m^2} \rp + \dots  \rc}
+\end{align}
+
+
+
+
+\subsubsection{Denominator Combination Identity - Zee's Appendix D}
+
+Now, for general Feynman integrals/diagrams, we don't often have a single term raised to some power in the denominator such as
+\begin{align}
+\f{1}{(k^2 - m^2 + i\epsilon)^n}.
+\end{align}
+For loop diagrams where there are multiple inner loops and possible intermediate momenta, we will have things like
+\begin{align}
+\f{1}{(k_1^2 - m^2 + i\epsilon)^l} \dots \f{1}{(k_n^2 - m^2 + i\epsilon)^p}
+\end{align}
+and so on. It is useful we could somehow split this product into a sum of integrals that we can evaluate. Fortunately, we have a useful identity in combining denominators:
+\begin{align}
+\boxed{\f{1}{x_1\dots x_n} = (n-1)! \int^1_0\dots \int^1_0 d\alpha_1\dots d\alpha_n \, \delta\lp 1 - \sum^n_{j=1} \alpha_j \rp \f{1}{(\alpha_1 x_1 + \dots + \alpha_n x^n)^n}}
+\end{align}
+
+
+For $n=2$, we have
+\begin{align}
+{\f{1}{xy} = \int^1_0 d\alpha \, \f{1}{[\alpha x +(1-\alpha)y]^2}}
+\end{align}
+For $n=3$, we have
+\begin{align}
+\f{1}{xyz} &= 2\int^1_0 \int^1_0 \int^1_0 d\alpha d\beta d\gamma\, \delta(\alpha + \beta + \gamma - 1) \f{1}{[\alpha x + \beta y + \gamma z]^3} \nonumber\\
+&= 2\iint_{\text{triangle}} d\alpha d\beta\, \f{1}{[z + \alpha(x-z) + \beta(y -z)]^3}
+\end{align}
+where the integration region is the triangle in the $\alpha-\beta$ plane bounded by $0 \leq \beta \leq 1 - \alpha$ and $0 \leq \alpha \leq 1$. 
+
+
+
+
+
 
 
 
@@ -5291,10 +5451,12 @@ Good, but how do we evaluate this integral?
 
 \subsubsection{Pauli-Villars regularization}
 
-To evaluate $\mathcal{M}$ up to cutoff $\Lambda$, let's first start with the convergent integral:
+Now we're getting closer to evaluating $\mathcal{M}$ up to cutoff $\Lambda$. Let's begin here at our familiar integral:
 \begin{align}
-\boxed{\int \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - c^2+ i\epsilon)^3} = \f{-i}{32\pi^2 c^2}}
+{\int \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - c^2+ i\epsilon)^3} = \f{-i}{32\pi^2 c^2}}
 \end{align}
+
+
 
 
 
