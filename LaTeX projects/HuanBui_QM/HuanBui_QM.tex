@@ -5378,7 +5378,7 @@ So, we have
 \end{align}
 
 Assuming $\lambda^2 \gg m^2$, we have that
-\begin{align}
+\begin{align}\label{Feynman-int}
 \boxed{\int^{\Lambda} \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - m^2+ i\epsilon)^2} \approx \f{i}{16\pi^2} \lb \log\lp \f{\Lambda^2}{m^2} \rp  - 1 + \dots \rb}
 \end{align}
 
@@ -5457,12 +5457,7 @@ where the integration region is the triangle in the $\alpha-\beta$ plane bounded
 
 \subsubsection{Pauli-Villars regularization}
 
-Now we're getting closer to evaluating $\mathcal{M}$ up to cutoff $\Lambda$. Let's begin here at our familiar integral:
-\begin{align}
-{\int \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - c^2+ i\epsilon)^3} = \f{-i}{32\pi^2 c^2}}
-\end{align}
-
-To turn the integrand of
+Now we're getting closer to evaluating $\mathcal{M}$ up to cutoff $\Lambda$. To turn the integrand of
 \begin{align}
 \mathcal{M} = \f{1}{2}(-i\lambda)^2\int \f{d^4k}{(2\pi)^4}\f{i}{k^2 - m^2 + i\epsilon}\f{i}{(K - k)^2 - m^2 + i\epsilon}.
 \end{align}
@@ -5485,23 +5480,144 @@ D &=  \dots \nonumber \text{some approximations here}\\
 &= [(k - \alpha K)^2 + \alpha(1-\alpha)K^2- m^2   + i\epsilon]^2 \nonumber \hspace{0.5cm}\text{completing the squares}.
 \end{align}
 
-Consider the change of variables:
+Consider the change of variables (called \textit{Feynman variables})
 \begin{align}
-k \to k + \alpha K,
+\kappa =  k - \alpha K \implies d^4k \to d^4\kappa,
 \end{align}
 then we get
 \begin{align}
-D \to [k^2 - c^2 + i\epsilon]^2
+D = [\kappa^2 + \alpha(1-\alpha)K^2 - m^2 + i\epsilon]^2 = [\kappa^2 - M_0^2 + i\epsilon ]^2
 \end{align}
 where
 \begin{align}
-c^2 = m^2  - \alpha(1 - \alpha)k^2.
+M_0^2 = m^2  - \alpha(1 - \alpha)K^2.
 \end{align}
 Thus,
 \begin{align}
-\mathcal{M} &= \f{1}{2}(-i\lambda)^2 i^2 \int \f{d^4k}{(2\pi)^4} \int^1_0 d\alpha\,\f{1}{D} \nonumber\\
-&= \f{1}{2}(-i\lambda)^2 i^2 \int \f{d^4k}{(2\pi)^4} 
+\mathcal{M} &= \f{1}{2}(-i\lambda)^2 i^2 \int \f{d^4\kappa}{(2\pi)^4} \int^1_0 d\alpha\,\f{1}{D} \nonumber\\
+&= \f{1}{2}(-i\lambda)^2 i^2 \int \f{d^4\kappa}{(2\pi)^4}  \int^1_0 d\alpha \, \f{1}{[\kappa^2 - M_0^2 + i\epsilon ]^2}\nonumber\\
+&= {\f{1}{2}(-i\lambda)^2 i^2  \int^1_0 d\alpha \int \f{d^4\kappa}{(2\pi)^4}  \, \f{1}{[\kappa^2 - M_0^2 + i\epsilon ]^2}}
 \end{align}
+Imposing a cutoff, we get
+\begin{align}
+\boxed{\mathcal{M} = \f{1}{2}(-i\lambda)^2 i^2  \int^1_0 d\alpha \int^\Lambda \f{d^4\kappa}{(2\pi)^4}  \, \f{1}{[\kappa^2 - M_0^2 + i\epsilon ]^2}}
+\end{align}
+
+Aha! In integral over $d^4 K$ is something we know how to do. Repeating the steps in the previous sections regarding evaluating Feynman integrals, we first go to Euclidean space, then integrate over all angular components so that we are left with a $d_E k\, k^{3}$ integral. In fact, we have evaluated the $k$ integral. \\
+
+
+Applying the result from \eqref{Feynman-int} to get
+\begin{align}\label{exact}
+\mathcal{M} =& \f{1}{2}(-i\lambda)^2 i^2  \int^1_0 d\alpha\int^{\Lambda} \f{d^4\kappa}{(2\pi)^4} \f{1}{(\kappa^2 - M_0^2+ i\epsilon)^2} \nonumber \\
+&\approx \f{1}{2}(-i\lambda)^2 i^2  \int^1_0 d\alpha \f{i}{16\pi^2} \lb \log\lp \f{\Lambda^2}{M_0^2} \rp  - 1 + \dots \rb \nonumber\\
+&= \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\, \lb \log\lp \f{\Lambda^2}{M_0^2} \rp  - 1 + \dots \rb.
+\end{align}
+We have to keep in mind that $M_0^2(\alpha) = m^2  - \alpha(1 - \alpha)K^2$. For $\Lambda^2 \gg M_0^2$, the log term dominates the square brackets, so we can just ignore the $-1$ term. With this, we have
+\begin{align}\label{amplitudeM}
+\boxed{\mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,  \log\lp \f{\Lambda^2}{m^2  - \alpha(1 - \alpha)K^2 - i\epsilon} \rp }
+\end{align}
+Thus we see that the integrand scales logarithmically. \\
+
+
+
+
+
+
+
+
+Alternatively, \textbf{Pauli-Villars regularization} tells us that we can do the following (justified) substitution:
+\begin{align}\label{Pauli-Villars}
+\boxed{\int^\Lambda \f{d^4\kappa}{(2\pi)^4}  \, \f{1}{[\kappa^2 - M_0^2 + i\epsilon ]^2} \to \int^\Lambda \f{d^4\kappa}{(2\pi)^4}  \, \lb\f{1}{(\kappa^2 - M_0^2 + i\epsilon )^2} - \f{1}{(\kappa^2 - \Lambda^2 + i\epsilon)^2}\rb}
+\end{align}
+where $\Lambda^2 \gg M_0^2$. This is a reasonable proposition because for $\Lambda^2$ that is very large this additive term is negligible compared to the first term. \\
+
+
+
+We know from the previous section with the Feynman integrals that
+\begin{align}\label{feym}
+{\int \f{d^4k}{(2\pi)^4} \f{1}{(k^2 - c^2+ i\epsilon)^3} = \f{-i}{32\pi^2 c^2}}
+\end{align}
+
+
+So, if we differentiate \eqref{Pauli-Villars} with respect to $M_0^2$ (so that we get a power of 3 in the denominator), we get
+\begin{align}
+&\f{\p}{\p M_0^2} \int^\Lambda \f{d^4\kappa}{(2\pi)^4}   \, \lb\f{1}{(\kappa^2 - M_0^2 + i\epsilon )^2} - \f{1}{(\kappa^2 - \Lambda^2 + i\epsilon)^2}\rb \nonumber\\
+= &\int^\Lambda \f{d^4\kappa}{(2\pi)^4}   \, \f{2}{(\kappa^2 - M_0^2 + i\epsilon )^3} \nonumber\\
+= &\f{-i}{16\pi^2 M_0^2} \hspace{0.5cm} \text{according to \eqref{feym}}. 
+\end{align}
+
+Thus, by reintegrating we get
+\begin{align}
+\int^\Lambda \f{d^4\kappa}{(2\pi)^4}   \, \lb\f{1}{(\kappa^2 - M_0^2 + i\epsilon )^2} - \f{1}{(\kappa^2 - \Lambda^2 + i\epsilon)^2}\rb = \f{-i}{16\pi^2}\log\lp M_0^2\rp + C.
+\end{align}
+
+Repeating this process, but starting with differentiating with respect to $\Lambda^2$, we get
+\begin{align}
+\int^\Lambda \f{d^4\kappa}{(2\pi)^4}   \, \lb\f{1}{(\kappa^2 - M_0^2 + i\epsilon )^2} - \f{1}{(\kappa^2 - \Lambda^2 + i\epsilon)^2}\rb = \f{i}{16\pi^2}\log\lp \Lambda^2\rp + \tilde{C}.
+\end{align}
+This is true only if
+\begin{align}
+C = \f{i}{16\pi^2}\log\lp \Lambda^2\rp \hspace{0.5cm}\text{and}\hspace{0.5cm} \tilde{C} = \f{-i}{16\pi^2}\log\lp M_0^2\rp.
+\end{align}
+
+And therefore, we deduce that
+\begin{align}
+\boxed{\int^\Lambda \f{d^4\kappa}{(2\pi)^4}   \, \lb\f{1}{(\kappa^2 - M_0^2 + i\epsilon )^2} - \f{1}{(\kappa^2 - \Lambda^2 + i\epsilon)^2}\rb = \f{i}{16\pi^2}\log\lp \f{\Lambda^2}{M_0^2} \rp}
+\end{align}
+
+
+And so, the scattering amplitude is
+\begin{align}
+\boxed{\mathcal{M} = \f{i\lambda^2}{32\pi^2}\int^1_0 d\alpha\, \log\lp \f{\Lambda^2}{M_0(\alpha)^2} \rp }
+\end{align}
+
+This matches up exactly with what we found in Eq. \eqref{amplitudeM}, where again $M_0(\alpha) = m^2- \alpha(1-\alpha)K^2$.
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Parameterizing $M_0$.}
+
+
+
+From the last section, we have seen that the expression for the scattering amplitude after Pauli-Villars regularization is
+\begin{align}
+\mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,  \log\lp \f{\Lambda^2}{m^2  - \alpha(1 - \alpha)K^2 - i\epsilon} \rp 
+\end{align}
+However, be careful that this just an approximation where we have dropped a factor of $-1$. The more exact approximation comes from Eq. \eqref{exact}
+\begin{align}
+\mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,\lb  \log\lp \f{\Lambda^2}{m^2  - \alpha(1 - \alpha)K^2 - i\epsilon} \rp -1 \rb 
+\end{align}
+For simplicity let's just assume that $m^2 \ll K^2$, so that we can ignore the $m^2$ term in the integrand. With this, we can rewrite $\mathcal{M}$ as
+\begin{align}
+\mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,\lb  \log\lp \f{\Lambda^2}{ - \alpha(1 - \alpha)K^2 } \rp - 1\rb.
+\end{align} 
+We can evaluate this in Mathematica to get
+\begin{lstlisting}
+In[19]:= Integrate[Log[L^2/(-a (1 - a) K^2)], {a, 0, 1}]
+
+Out[19]= 2 + Log[-(L^2/K^2)]
+\end{lstlisting}
+i.e.,
+\begin{align}
+\mathcal{M} = \f{i\lambda^2}{32\pi^2}\lb ? \rb
+\end{align}
+
+
+
+
+
+
+
+
 
 
 
