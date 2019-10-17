@@ -5590,9 +5590,9 @@ With
 \begin{align}
 \mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,  \log\lp \f{\Lambda^2}{m^2  - \alpha(1 - \alpha)K^2 - i\epsilon} \rp ,
 \end{align}
-in the $m^2 \ll K^2 \ll \Lambda^2$ limit, we can actually evaluate this integral in Mathematica to find
+in the $m^2 \ll K^2 \ll \Lambda^2$ limit, we can just set $m^2 = 0$ and actually evaluate this integral in Mathematica to find
 \begin{align}
-\boxed{\mathcal{M} = \f{i\lambda^2}{32\pi^2} \lb 1 + \log\lp \f{\Lambda^2}{K^2}\rp \rb}
+\boxed{\mathcal{M} = \f{i\lambda^2}{32\pi^2} \lb 1 + \log\lp \f{\Lambda^2}{-K^2}\rp \rb}
 \end{align}
 Here's the Mathematica code:
 \begin{lstlisting}
@@ -5837,6 +5837,170 @@ Einstein's GR is nonrenormalizable. Newton's gravitation constant (or should we 
 \newpage
 
 \subsection{Counterterms and Physical Perturbation Theory}
+
+
+
+
+\subsubsection{Renormalizability}
+
+
+From the last section, we see that theories whose coupling constant $\lambda, G,$ etc have negative (mass) dimensions are \textbf{nonrenormalizable}. QED and the $\phi^4$ theory which have the dimensionless coupling constant are renormalizable. However, it is difficult to prove in general that a given theory is renormalizable. It is often easier to prove that a theory is nonrenormalizable. \\
+
+
+Let's revisit the $\phi^4$ theory. We know that the scattering amplitude has some form (correct as far as dimensions are concerned) of
+\begin{align}
+-i\lambda_P = -i\lambda + 3iC \log \lp \f{\Lambda^2}{\mu^2} \rp + \mathcal{O}(\lambda^3).
+\end{align}
+
+
+We saw that to order $\lambda^2$ the meson-meson scattering amplitude when expressed in terms of the physical coupling constant is independent of the cutoff $\Lambda$. But how can we be sure that $\Lambda$ isn't going to appear at higher orders? Dimensional analysis only tells us that to any order in $\lambda$ the dependence of the meson scattering amplitude on the cutoff must be a sum of terms going as $\log^p(\Lambda/\mu)$ where $p$ is some power. \\
+
+Let's look at a few examples. Consider the following two Feynman diagrams.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{mesons-phi-4}
+\end{figure}
+
+The amplitude associated with the first diagram has the form
+\begin{align}
+\mathcal{M}_1 \propto -i\lambda \int^\Lambda \f{d^4q}{(2\pi)^4}  \f{i}{q^2 - m^2 + i\epsilon}.
+\end{align}
+since there is one loop of variable momentum $q$. Because we are integrating over four dimensions of $q$ and taking away two dimensions of $q$, we get that this amplitude depends \textit{quadratically} on the cutoff $\Lambda$, but not on $k^2$. \\
+
+On the other hand, the second diagram has a double integral because there are two variable momenta. There are two vertices and three internal lines, so
+\begin{align}
+\mathcal{M}_2 \propto (-i\lambda)^2 \iint^\Lambda \f{d^4p}{(2\pi)^4}\f{d^4q}{(2\pi)^4} \f{i}{p^2 - m^2 + i\epsilon} \f{i}{q^2 - m^2  + i\epsilon} \f{i}{(p+q+k)^2 - m^2  + i\epsilon}.
+\end{align}
+We see that we are integrating over 8 total dimensions of momentum, but taking away 6, so this integral depends quadratically on the cutoff $\Lambda$ as well. \\
+
+We also notice that this integral is a function of $k^2$. So (by Lorentz invariance) we can expand it has the series
+\begin{align}
+D + Ek^2 + FK^4 + \dots
+\end{align}
+$D$ must have the same dimension as the integral, so it depends quadratically on $\Lambda$. $E$ can be obtained by differentiating with respect to $k$ twice. This decreases the power of $q,p$ in the integrand by 2 (since the power 2 now becomes 4) and so $E$ depends logarithmically on $\Lambda$ (the integral now looks like $\int d^8x\,1/x^8$). Similarly, we can reason that $F$ looks like the integral $\int d^8x\,1/x^10$ since we need to differentiate with respect to $k$ 4 times, increasing the power of $q,p$ in the exponential by $4$. All this means that $F$ converges and is cutoff-independent. Therefore, we know that $F$ and higher order terms of $k^2$ converge and are $\Lambda$-independent as well. We, then, don't have to worry about them.\\
+
+With this, $\mathcal{M}_2$ is both quadratically and logarithmically cutoff-dependent. Now, suppose we do a \textbf{mass renormalization} by shifting the energy-momentum-mass:
+\begin{align}
+\f{1}{k^2 - m^2} \to \f{1}{(1+b)k^2 - (m^2 - a)}.
+\end{align} 
+Obviously the pole in $k^2$ is now shifted to 
+\begin{align}
+\boxed{m^2_P \equiv m^2 + \delta m^2 \equiv (m^2 - a)(1+b)^{-1}}
+\end{align}
+We refer to this as the \textbf{physical mass}. With this, we can write the propagator (in momentum space of course) as
+\begin{align}
+\boxed{\f{1}{k^2 - m^2} \to \f{(1+b)^{-1}}{k^2 - m^2_P}}
+\end{align}
+
+
+Notice here that the residue of the pole in this propagator is no longer 1 but $(1+b)^{-1}$. What is this shift in residue? \\
+
+We note that the coefficient of $k^2$ in $1/\D(k)$ is identically 1 \textit{because} the coefficient of $(1/2)(\p \phi)^2$ is identically 1 in the Lagrangian density. Let's elaborate a little bit. Recall that the spacetime propagator is defined as the \textit{inverse} of the operator $(\square + m^2)$. It follows from here and some properties of Gaussian integrals that the propagator in momentum space has the form $1/(k^2 - m^2)$. This is essentially the derivation we did very early on. So, we see that there is certainly no guarantee that with higher order corrections included the coefficient of $(1/2)(\p \phi)^2$ in an effective $\lag$, say $\lag_{\text{eff}}$ will stay at 1. \\
+
+In fact, by inspection, the coefficient is shifted from 1 to $(1+b)$. This is called \textbf{wavefunction renormalization}, or \textbf{field renormalization}. 
+
+
+
+
+
+
+\subsubsection{Physical Perturbation Theory}
+
+The physical perturbation theory is given by
+\begin{align}
+\boxed{ \lag = \f{1}{2}(\p \phi)^2 + \f{1}{2}m^2 \phi^2 - \f{\lambda_P}{4!}\phi^4 + A(\p \phi)^2 + B\phi^2 + C\phi^4.} 
+\end{align}
+
+
+This theory basically says for each order of $\phi$ in the regular Lagrangian, there is a perturbative term $A$, $B$, or $C$ of the same order the perturbative Lagrangian. This perturbative Lagrangian also carries the physical coupling constant $\lambda_P$ instead of the theoretical $\lambda$. \\
+
+
+
+Here's how the theory works: The Feynman rules are as before, but with the crucial different that  the coupling constant is $\lambda_P$, and the propagator has the form
+\begin{align}
+\f{i}{k^2 - m_P^2 + i\epsilon},
+\end{align}
+where the physical mass is used instead. The last three terms with coefficients $A$, $B$, and $C$ are called \textbf{counterterms}. These coefficients are determined \textit{iteratively} as we go to higher and higher order in perturbation theory. These perturbations are represented as crosses in Feynman diagrams:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.2]{crosses}
+\end{figure}\\
+
+We note that all momenta are integrated up to cutoff. \\
+
+The coefficients $A$, $B$, $C$ are determined iteratively as follows. Suppose they are determined up to order $\lambda_P^N$. Let these values be $A_N$, $B_N$, and $C_N$. We then draw all diagrams that appear in order $\lambda_P^{N+1}$. We determine $A_{N+1}$, $B_{N+1}$, and $C_{N+1}$ by requiring that the propagator calculated to the order $\lambda^{N+1}_{P}$ has a pole at $m_p$ with a residue equal to 1, and that the meson=meson scattering amplitude evaluated at some specified values of the kinematic variables has the value $-i\lambda_P$. We note that there are exactly 3 conditions to determine the these three unknown coefficients.
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Degree of Divergence - Power Counting}
+
+
+
+
+\noindent \textbf{Definition:} A diagram is said to have a superficial degree of divergence $D$ if it diverges as $\Lambda^D$. A logarithmic divergence $\log \Lambda$ counts as $D=0$. \qed \\
+
+\noindent \textbf{Theorem:} For a diagram with $B_E$ external $\phi$ lines, the degree of divergence is given by
+\begin{align}
+\boxed{D = 4 - B_E}
+\end{align}\qed \\
+
+
+\noindent \textit{Proof by Zee:} The proof of this theorem follows from simple power counting. In addition to $B_E$ and $D$, let us define $B_I$ as the number of internal lines, $V$ as the number of vertices (where 4 lines meet), and $L$ as the number of loops. \\
+
+The number of loops is just the number of $\int d^4k/(2\pi)^4$ that we have to do, i.e., it is the number of \textit{independent} internal momenta. Each internal line carries with it a momentum to be integrated over, so we seem to have $B_I$ integrals to do. However, the actual number of integrals to be done to reduced by the momentum conservation delta function associated with the vertices, one to each vertex. By assumption, there are $V$ delta functions, with one of them is associated with the conservation momentum of the entire diagram. It follows that the number of loops is
+\begin{align}
+L = B_I - (V - 1).
+\end{align}
+
+
+Now, for each vertex, there are four lines. Each external line comes out of one vertex. Each internal line connects two vertices. Thus we have
+\begin{align}
+4V = B_E + 2B_I.
+\end{align}
+
+Finally, for each loop there is a $\int d^k$ while for each internal line there is a $i/(k^2 -m^2 + i\epsilon)$, bringing the powers of momentum down by $2$. So,
+\begin{align}
+D = 4L - 2B_I.
+\end{align}
+Putting these relationship together, we obtain
+\begin{align}
+{D = 4- B_E}
+\end{align}
+as desired. \qed\\
+
+
+\noindent \textit{Proof by Me:} I find my proof more intuitive. But I'm of course biased. \\
+
+
+
+Let's consider an example. 
+
+
+
+\subsubsection{Degree of Divergence with Fermions}
+
+
+
+
+
+\subsubsection{Nonrenormalizable field theories}
+
+
+
+
+
+
+
+
+
+
 
 
 
