@@ -5584,34 +5584,131 @@ This matches up exactly with what we found in Eq. \eqref{amplitudeM}, where agai
 
 
 
-\subsubsection{Parameterizing $M_0$.}
+\subsubsection{Evaluating $\mathcal{M}$ - an attempt}
+
+With
+\begin{align}
+\mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,  \log\lp \f{\Lambda^2}{m^2  - \alpha(1 - \alpha)K^2 - i\epsilon} \rp ,
+\end{align}
+in the $m^2 \ll K^2 \ll \Lambda^2$ limit, we can actually evaluate this integral in Mathematica to find
+\begin{align}
+\boxed{\mathcal{M} = \f{i\lambda^2}{32\pi^2} \lb 1 + \log\lp \f{\Lambda^2}{K^2}\rp \rb}
+\end{align}
+Here's the Mathematica code:
+\begin{lstlisting}
+In[37]:= Integrate[Log[L^2/(-a (1 - a) K^2) ] - 1, {a, 0, 1}]
+
+Out[37]= 1 + Log[-(L^2/K^2)]
+\end{lstlisting}
+
+
+Now this is \textbf{not} what Zee got, and I can't seem to see why. But \href{http://sites.krieger.jhu.edu/jared-kaplan/files/2016/05/QFTNotes.pdf}{\underline{this}} source from Johns Hopkins, page 113/260 confirms my answer.  
 
 
 
-From the last section, we have seen that the expression for the scattering amplitude after Pauli-Villars regularization is
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Parameterizing $M_0$ - (Zee way)}
+
+We have seen that the expression for the scattering amplitude after Pauli-Villars regularization is
 \begin{align}
 \mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,  \log\lp \f{\Lambda^2}{m^2  - \alpha(1 - \alpha)K^2 - i\epsilon} \rp 
 \end{align}
-However, be careful that this just an approximation where we have dropped a factor of $-1$. The more exact approximation comes from Eq. \eqref{exact}
-\begin{align}
-\mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,\lb  \log\lp \f{\Lambda^2}{m^2  - \alpha(1 - \alpha)K^2 - i\epsilon} \rp -1 \rb 
-\end{align}
-For simplicity let's just assume that $m^2 \ll K^2$, so that we can ignore the $m^2$ term in the integrand. With this, we can rewrite $\mathcal{M}$ as
-\begin{align}
-\mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,\lb  \log\lp \f{\Lambda^2}{ - \alpha(1 - \alpha)K^2 } \rp - 1\rb.
-\end{align} 
-We can evaluate this in Mathematica to get
-\begin{lstlisting}
-In[19]:= Integrate[Log[L^2/(-a (1 - a) K^2)], {a, 0, 1}]
+For simplicity let's just assume that $m^2 \ll K^2$, so that we can ignore the $m^2$ term in the integrand when necessary. \\
 
-Out[19]= 2 + Log[-(L^2/K^2)]
-\end{lstlisting}
+
+From here, I'll just take Zee's words for this. Essentially, this leftover is not an easy integral to evaluate. Zee says that this 4-loop amplitude comes out to be
+\begin{align}
+\boxed{\mathcal{M} = 2i\lambda^2C \log \lp \f{\Lambda^2}{K^2} \rp}
+\end{align}
+where $C$ is some numerical constant. At this point, we use kinematics variables
+\begin{align}
+s &\equiv K^2 = (k_1 + k_2)^2\\
+t &\equiv (k_1 - k_3)^2\\
+u &\equiv (k_1 - k_4)^2
+\end{align}
+whose relations are given in II.6 in Zee's book. It turns out that we can write the scattering amplitude for meson-meson scattering (which includes both a tree and a loop) as
+\begin{align}
+\boxed{\mathcal{M}_{\text{meson}} = -i\lambda + iC\lambda^2\lb  \log\lp \f{\Lambda^2}{s} \rp + \log\lp \f{\Lambda^2}{t} \rp + \log\lp \f{\Lambda^2}{u} \rp \rb + \dots}
+\end{align}
+This says after regularization, we speak of cutoff-dependent quantities instead of divergent quantities, and $\mathcal{M}$ depends logarithmically on the cutoff (or more precise the square of it).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{What is actually measured}
+
+
+
+Suppose experiments measure a scattering amplitude of $i\lambda_P$. By the our calculation, it has to be true that
+\begin{align}
+-i\lambda_P = -i\lambda + iC\lambda^2\lb  \log\lp \f{\Lambda^2}{s} \rp + \log\lp \f{\Lambda^2}{t} \rp + \log\lp \f{\Lambda^2}{u} \rp \rb + \dots.
+\end{align}
+
+Calling the sum of the logarithms in the square brackets $L$, we can write
+\begin{align}
+\mathcal{M} = -i\lambda_P = -i\lambda + iC\lambda^2 L + \dots.
+\end{align}
+Let
+\begin{align}
+-i\lambda_P = -i\lambda + iC\lambda^2 L_0
+\end{align}
+where
+\begin{align}
+L_0 \equiv \lb    \log\lp \f{\Lambda^2}{s_0} \rp + \log\lp \f{\Lambda^2}{t_0} \rp + \log\lp \f{\Lambda^2}{u_0} \rp \rb
+\end{align}
+This gives the relationship between $\lambda_P$ and $\lambda$. With this, we can solve for $\lambda$ in terms of $\lambda_P$:
+\begin{align}
+-i\lambda = -i\lambda_P - iC\lambda^2 L_0 + \mathcal{O}(\lambda^3) = -i\lambda_P - iC\lambda^2_P L_0 + \mathcal{O}(\lambda_P^3).
+\end{align}
+So we have
+\begin{align}
+\mathcal{M} = -i\lambda_P - iC\lambda_P^2 L_0 +iC\lambda_P^2 L + \mathcal{O}(\lambda_P^3).
+\end{align}
+
+
+Now, we see that in the scattering amplitude of $\mathcal{M}$ there is a combination of
+\begin{align}
+L - L_0 = \log \lp \f{s_0}{s} \rp + \log \lp \f{t_0}{t} \rp + \log \lp \f{u_0}{u} \rp,
+\end{align}
 i.e.,
 \begin{align}
-\mathcal{M} = \f{i\lambda^2}{32\pi^2}\lb ? \rb
+\boxed{\mathcal{M} = -i\lambda_P + iC\lambda_P^2 \lb \log \lp \f{s_0}{s} \rp + \log \lp \f{t_0}{t} \rp + \log \lp \f{u_0}{u} \rp  \rb + \mathcal{O}(\lambda_P^3)}
 \end{align}
 
 
+This tells us that when the scattering amplitude is expressed in terms of the physical coupling constant $\lambda_P$, the cut off $\Lambda$ disappears. \\
+
+
+And so the take-away point here is that we should express physical quantities not in terms of fictitious quantities such as $\lambda$, but in terms of physical, measurable quantities such as $\lambda_P$. \\
+
+The quantity $\lambda_P$ is often referred to as the ``renormalization coupling constant,'' or ``physical coupling constant'' in Zee's words.  
 
 
 
@@ -5624,15 +5721,6 @@ i.e.,
 
 
 
-
-
-
-
-\subsubsection{Parameterization: a ``fix''}
-\subsubsection{What is actually measured}
-\subsubsection{The ``miracle''}
-\subsubsection{Answers should be physical}
-\subsubsection{Integrating over only slow modes}
 
 
 
@@ -5642,9 +5730,118 @@ i.e.,
 
 
 
+It turns out that there are theories that are ``renormalizable,'' which means scattering amplitudes can be written in terms of physical quantities with no dependence on cutoffs (at least to some orders of $\lambda_P^2$). There are, however, theories in which this cannot happen. These are called ``nonrenormalizable theories.''\\
+
+Einstein's theory of gravity is an example of a nonrenormalizable theory. 
+
+
+\subsubsection{Dimensional Analysis as Test}
+
+
+It also turns out that by looking at dimensions of particular terms we can tell if a theory is renormalizable or not. \\
+
+First, we have 
+\begin{align}
+\hbar = c = 1.
+\end{align}
+This says length and time has the same dimension, which is the inverse of the dimension of mass. \\
+
+The action has the form
+\begin{align}
+S \equiv \int d^4x\,\lag
+\end{align}
+which appears in the path integral as
+\begin{align}
+e^{iS}
+\end{align}
+so both the path integral and the action have to be dimensionless. Therefore, the Lagrangian density must have dimension of space raised to to the minus 4 power, i.e., the Lagrangian density has dimension as the 4th power of mass. We denote this as
+\begin{align}
+[\lag] = 4.
+\end{align}
+And so in this notation 
+\begin{align}
+[x] &= 1 \\ 
+[\p] &= -1.
+\end{align}
+
+Based on the scalar field theory
+\begin{align}
+\lag = \f{1}{2}[(\p\phi)^2 - m^2 \phi^2]  - \lambda \phi^4.
+\end{align}
+To make $[\lag] = 4$, we must have
+\begin{align}
+[\phi] = 1
+\end{align}
+which implies
+\begin{align}
+[\lambda] = 0.
+\end{align}
+
+
+So, the coupling $\lambda$ is dimensionless. \\
+
+
+For fermion field $\phi$, the Lagrangian density is
+\begin{align}
+\lag = \bar{\psi} i \gamma^\mu \p_\mu \psi + \dots
+\end{align}
+must have dimension 4. But because $[\p] = 1$ and $[\lag] = 4$ and there are two factors of $\psi$, we must have
+\begin{align}
+[\psi] = \f{3}{2}.
+\end{align} 
+
+
+From the Maxwell Lagrangian density
+\begin{align}
+\lag = -\f{1}{4}F_{\mu\nu}F^{\mu\nu}.
+\end{align}
+This has dimension 4 as always, and so the vector potential must have dimension 1, because each $F_{\mu\nu}$ has dimensions of a $\p_\nu A_\mu$. This tells us that
+\begin{align}
+[A_\mu] = [\phi] = 1,
+\end{align}
+i.e., vectors fields have the same dimension as scalar fields.
+
+
+
+\subsubsection{Scattering amplitudes blowing up}
+
+
+Suppose we have a theory where the scattering amplitude up to second order is
+\begin{align}
+\mathcal{M} \sim G + G^2(?)
+\end{align}
+where
+\begin{align}
+[G] = -2.
+\end{align}
+Then the $(?)$ must take dimension $2$. The only possibility for $(?)$ is $\Lambda^2$, since $[\Lambda] = 1$. Cutoffs have units of mass/energy/momentum. Without a cutoff on the theory, $\Lambda = \infty$. An example of this is Fermi's weak interaction theory.
+
+
+
+\subsubsection{Einstein's gravity blowing up}
+
+
+Einstein's GR is nonrenormalizable. Newton's gravitation constant (or should we say the physical coupling constant) has dimension of $-2$. So just as before, a $\Lambda^2$ is needed in writing out the scattering amplitude, but this blows up as $\Lambda \to \infty$ (without a cutoff). 
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 
 \subsection{Counterterms and Physical Perturbation Theory}
+
+
+
+
+
 
 
 
