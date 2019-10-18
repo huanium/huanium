@@ -7,6 +7,7 @@
 \usepackage{authblk}
 \usepackage{amsfonts}
 \usepackage{esint}
+\usepackage{dsfont}
 \usepackage{centernot}
 \usepackage{mathtools}
 \usepackage{bigints}
@@ -37,9 +38,9 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\lag}{\mathcal{L}}
-
+\newcommand{\nn}{\nonumber}
 \newcommand{\ham}{\mathcal{H}}
-
+\newcommand{\M}{\mathcal{M}}
 \newcommand{\I}{\mathcal{I}}
 \newcommand{\K}{\mathcal{K}}
 \newcommand{\F}{\mathcal{F}}
@@ -5309,30 +5310,220 @@ order.
 \newpage
 \subsection{The Dirac Equation}
 
+\textit{This section is inspired by Freeman Dyson's \href{https://arxiv.org/pdf/quant-ph/0608140.pdf}{\underline{notes}} from 1951 and the \href{http://www.smallperturbation.com/physics-proof}{\underline{proof}} by fellow internet user Small Perturbation. Thanks, Small Perturbation.}\\
+
 
 Dirac (1928) was looking for a covariant wave equation that was first-order in spacetime. But he also wanted an equation whose solution solves the Klein-Gordon equation (at least component-wise). \\
 
 Suppose this new equation has the form
 \begin{align}
-i\p_t \psi = \beta m \psi - i \vec{\alpha} \cdot \grad{\psi} \equiv \ham_{\text{Dirac}}\psi.
+i\p_t \psi = \beta m \psi - i {\alpha} \cdot \grad{\psi} \equiv \ham_{\text{Dirac}}\psi.
 \end{align}
 
 Since any $\psi$ that solves the Dirac equation also solves the KG equation, we must have after separating the time and space pieces:
 \begin{align}
--\p_t^2 \psi &= \beta mi \p_t \psi + \vec{\alpha}\cdot \grad{\p_t \psi} \nonumber\\
-&= \dots (\text{fill in here...})\nonumber\\
-&= \beta^2 m^2 \psi  -im \lp \beta \vec{a} + \vec{a}\beta \rp\cdot \grad{\psi} - (\vec{a}\cdot \grad)^2 \psi \nonumber\\
-&= m^2 \psi - \laplacian{\psi} \hspace{0.5cm}\text{KG equation}
+-\p_t^2 \psi &= \beta mi \p_t\psi  + \p_t (\alpha\cdot \grad)\psi\nonumber\\
+&= \beta mi \p_t \psi + {\alpha}\cdot \grad{\p_t \psi} \nonumber\\
+&= \beta m \lc \beta m \psi - i(\alpha \cdot \grad)\psi  \rc  + {\alpha}\cdot \grad{\p_t \psi}\nonumber\\
+&= \beta^2 m^2 \psi  - (im)\beta (\alpha \cdot \grad)\psi + (\alpha \cdot \grad)(\p_t \psi) \nonumber\\
+&= \beta^2 m^2 \psi  - (im)\beta (\alpha \cdot \grad)\psi + (\alpha \cdot \grad) \lc -i \beta m \psi - i(\alpha \cdot \grad)\psi  \rc \nonumber\\
+&= \beta^2 m^2 \psi - (im)[\alpha \cdot\beta + \beta \cdot \alpha ]\grad{\psi} - (\alpha \cdot\grad)^2\psi \nonumber\\
+&= -\laplacian{\psi} + m^2 \psi
 \end{align}
+
 
 
 This means
 \begin{align}
 \begin{cases}
-\beta^2 = \alpha_x^2 = \alpha_y^2 = \alpha_z^2\\
-\beta \alpha_j + \alpha_j \beta = \alpha_j \alpha_k + \alpha_k \alpha_j = 0 \hspace{0.5cm}\forall j\neq k = x,y,z.
+\beta \cdot \alpha + \alpha \cdot\beta = 0\\
+\beta^2 = 1\\
+(\alpha \cdot \grad)^2 = \laplacian.
 \end{cases}
 \end{align}
+
+
+
+So we must have that 
+\begin{align}
+\begin{cases}
+\beta^2 = \alpha_x^2 = \alpha_y^2 = \alpha_z^2 = \mathbb{I}\\
+ \alpha_j \beta + \beta\alpha_j  = \alpha_j \alpha_k + \alpha_k \alpha_j = \mathbb{O} \hspace{0.5cm}\forall j\neq k = x,y,z.
+\end{cases} 
+\end{align}
+
+
+
+Thus we could not possibly factorize the 2nd order equation into two first-order operators involving ordinary numbers. But we can do it with matrices. \\
+
+\textbf{Lemma:} The $\beta, \alpha_j$ matrices are at least $4\times 4$.\\
+
+\textit{Proof:} We introduce new matrices defined by:
+\begin{align}
+&\gamma^0 \leftarrow \beta\\
+&\gamma^j \leftarrow \beta\alpha_j\hspace{1cm} j =1,2,3.
+\end{align}
+With this, we are able to combine all of the above conditions into a single statement:
+\begin{align}
+\boxed{\{\gamma^\mu, \gamma^\nu\} = \gamma^\mu \gamma^\nu + \gamma^\nu\gamma^\mu = 2\eta^{\mu\nu}\mathbb{I}}
+\end{align} 
+where $\mathbb{I}$ is some $n\times n$ identity matrix. We can verify that this equation exactly captures the relationship between $\beta$ and $\alpha_j$'s. First, between $\beta$ and itself:
+\begin{align}
+\{\gamma^0 , \gamma^0\} = 2\eta^{00}\mathbb{I} = 2\mathbb{I} \nonumber = 2\{\beta,\beta\} 
+\end{align}
+since we have that $\beta^2 = 1$. Next, between $\beta$ and $\alpha_j$ where $j\neq 0$
+\begin{align}
+2\eta^{0j}\mathbb{I} = 0
+&=  \{ \gamma^0,\gamma^j \} \nonumber\\
+&= \{\beta, \beta \alpha_j\} \nonumber\\
+&= \beta^2 \alpha_j + \beta \alpha_j \beta \nonumber\\
+&= \beta( \beta\alpha_j +  \alpha_j \beta) \nonumber \nonumber\\
+&= 0 \hspace{0.5cm}\text{since } [\beta a_j + a_j \beta] = 0 .
+\end{align} 
+Finally, between the $\alpha_j$'s with $j,k = 1,2,3$:
+\begin{align}
+-2\delta_{jk}\mathbb{I} 
+= 2\eta^{jk}\mathbb{I}
+&= \{ \gamma^j, \gamma^k \}  \nn\\
+&= \{ \beta \al_j, \beta \al_k \} \nn\\
+&= \be \al_j \be \al_k + \be \al_k \be \al_j \nn\\
+&= \be (\al_j \be) \al_k + \be (\al_k \be) \al_j \nn\\
+&= -\be (\be \al_j ) \al_k - \be (\be \al_k ) \al_j \nn\\
+&= -\beta^2 \{ \al_j, \al_k \}\nn\\
+&= -2\delta_{jk}.
+\end{align}
+
+
+
+
+
+
+
+With that done, it now suffices to show $\gamma^\mu$ has to be at least $4\times 4$. To do this, we show that it can't be $2\times 2$ or $3\times 3$. It's easy to rule out the $3\times 3$ option. We observe that
+\begin{align}
+\gamma^\mu \gamma^\nu + \gamma^\nu \gamma^\mu = 0 \iff \gamma^\mu\gamma^\nu = -\gamma^\nu\gamma^\mu.
+\end{align}
+This means 
+\begin{align}
+\det(\gamma^\mu)\det(\gamma^\nu) = (-1)^n\det(\gamma^\nu)\det(\gamma^\mu) \iff (-1)^n = 1
+\end{align}
+where $n$ is the dimension of $\gamma^\mu$. This holds if and only if $n$ is even. So now we only need to show why $2\times 2$ matrices don't work. \\
+
+
+
+
+
+
+We observe that the \textbf{anti-commutation} rule holds under similarity transformations, i.e.,
+\begin{align}
+\{ S \gamma^\mu S^{-1}, S\gamma^\nu S^{-1} \} &= S\gamma^\mu \gamma^\nu S^{-1} + S \gamma^\nu \gamma^\mu S^{-1} \nonumber\\
+&= S \{\gamma^\mu, \gamma^\nu\} S^{-1}\nonumber\\
+&= 2 S\eta^{\mu\nu}\mathbb{I}S^{-1} \nonumber\\
+&= 2\eta^{\mu\nu}\mathbb{I}SS^{-1} \hspace{0.5cm}\text{since } \eta^{\mu\nu} \text{ diagonal} \nonumber\\
+&= 2\eta_{\mu\nu}\mathbb{I}\hspace{0.5cm}\text{since } \eta_{\mu\nu} = \eta_{\mu\nu}.
+\end{align}
+
+Without loss of generality, assume that $\gamma^0$ is already in Jordan canonical form. Note: please refer to my \href{https://huanqbui.com/LaTeX projects/Matrix_Analysis/HuanBui_MatrixAnalysis.pdf}{\underline{Matrix Analysis}} quick guide for more information about Jordan forms. \\
+
+\textbf{Case 1:} If $\gamma^0$ is $2\times 2$ and diagonalizable, then its two diagonal entries can only be $\pm 1$ because we need $(\gamma^0)^2 = \mathds{1}$. If both of these have the same sign, then $\gamma^0$ becomes $\pm \mathbb{I}$, which commutes with everything. Therefore, in this case, we can pick
+\begin{align}
+\gamma^0 = \mathbf{\sigma}_z = \begin{pmatrix}
+1 & 0\\ 0 & -1
+\end{pmatrix}.
+\end{align}
+Now, because $\{\gamma^0, \gamma^j \} = 0$, we must have that
+\begin{align}
+\begin{pmatrix}
+1 & 0 \\ 0 & -1
+\end{pmatrix}\begin{pmatrix}
+a & b \\ c & d
+\end{pmatrix} &= -\begin{pmatrix}
+a & b \\ c & d
+\end{pmatrix}\begin{pmatrix}
+1 & 0 \\ 0 & -1
+\end{pmatrix}\nn\\
+\begin{pmatrix}
+a & b \\ -c & -d 
+\end{pmatrix}
+&=
+\begin{pmatrix}
+-a & b \\ -c & d
+\end{pmatrix}
+\end{align}
+which means
+\begin{align}
+\gamma^j = \begin{pmatrix}
+0 & b_j \\ c_j & 0
+\end{pmatrix}.
+\end{align}
+From $\{ \gamma^j, \gamma^k \} = -2\delta_{jk}\mathbb{I}$, we must have the following (the algebra is getting too long for this proof so I won't do it here, but it is very easy to show why this is true)
+\begin{align}
+\begin{cases}
+b_1 c_2 = -c_1 b_2\\
+b_2 c_3 = -c_2 b_3\\
+b_1 c_3 = -c_1 b_3\\
+b_1c_1 = b_2c_2 = b_3c_3 = -1.
+\end{cases}
+\end{align}
+We realize after some more algebra that these there is no solution to this system. This means that assuming a diagonalizable $\gamma^0$ leads to a contradiction. \\
+
+
+\textbf{Case 2:} Suppose $\gamma^0$ is not diagonalizable. Then it is in Jordan form (because we assume $\gamma^\mu$ is already in Jordan form) of the form 
+\begin{align}
+\gamma^0 = \begin{pmatrix}
+\lambda & 1 \\ 0 & \lambda
+\end{pmatrix}.
+\end{align} 
+This gives
+\begin{align}
+\lp\gamma^0\rp^2 =\begin{pmatrix}
+\lambda^2 & 2\lambda \\ 0 & \lambda^2
+\end{pmatrix}.
+\end{align}
+
+But this is diagonal if and only if $\lambda = 0$, which makes ${(\gamma^0)}^2 = [0] \neq 1$. So this is also a contradiction. Therefore this $2\times 2$ Dirac matrix assumption is a contradiction too and we must use matrices that are $4\times 4$  or larger. \\ \qed\\
+
+
+
+
+With this, we can try to find $4\times 4$ matrices $\gamma^\mu$ that work. It turns out that one possible set of $\alpha_k$ and $\beta$ is 
+\begin{align}
+\boxed{\alpha^k = \begin{pmatrix}
+	0 & \mathbf{\sigma}_k \\ \mathbf{\sigma}_k & 0
+	\end{pmatrix} \hspace{1cm} 
+	\beta = \begin{pmatrix}
+	\mathbb{I}_2 & 0 \\ 0 & -\mathbb{I}_2
+	\end{pmatrix}.
+}
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
