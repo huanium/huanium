@@ -7314,7 +7314,11 @@ Varying $S$, i.e., with $\delta S = 0$, we get the Einstein field equation:
 \begin{align}
 R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R = -8\pi GT_{\mu\nu}
 \end{align}
-
+     
+     
+     
+     
+     
 
 
 
@@ -7874,6 +7878,86 @@ Perturbed[gg[-a, -b], 3] /. firstorderonly
 
 
 
+\subsubsection{Review of Variational Derivatives}
+
+Let’s do a quick review of the variational derivative. In mathematics, the variational derivative is referred to as the functional derivative. Here we will consider
+variational derivative in the context of Lagrangian mechanics.\\
+
+Suppose we have an ordinary functional action in flat 3d:
+\begin{align}
+S[\phi] = \int dt\,\lag[\phi(t),\dot{\phi}(t),t].
+\end{align}
+
+
+The variational derivative of the action is given by $\delta S/ \delta t$. Since we require this derivative to vanish at the extrema, we obtain the Euler-Lagrange by setting
+the integrand to zero:
+\begin{align}
+\f{\delta S}{\delta y} = 0 \implies \f{\delta }{\delta \phi} \lp \lag[\phi(t),\dot{\phi}(t),t] \rp  = \boxed{\f{\p \lag}{\p \phi} - \f{d}{dt}\f{\p \lag}{\p \dot{\phi}} = 0}
+\end{align}
+
+
+In general, for
+\begin{align}
+J[y(x)] = \int dx\,f[x,y(x),y''(x),\dots,y^{(n)}(x)],
+\end{align}
+the variational derivative of $J$ with respect to $y$ is given by
+\begin{align}
+\boxed{\f{\delta J}{\delta y} = \f{\p f}{\p y} - \f{d}{dx}\f{\p f}{\p y'} + \f{d^2}{dx^2}\f{\p f}{\p y''} - \dots + (-1)^{n-1}\f{d^n}{dx^n}\f{\p f}{\p y^{(n)}}}
+\end{align}
+
+In general relativity, we no longer get the regular $d/dx$ derivatives. Instead, we work with covariant derivatives. This means the Lagrangian density in a general action
+\begin{align}
+S[\phi] = \int d^4x\, \sqrt{-g}\hat{\lag}
+\end{align}
+depends on the field, the covariant derivative of the field, and the ``independent variable'' $x^\nu$ a vector in spacetime.
+\begin{align}
+\hat{\lag} = \hat{\lag}[\phi(x^\nu), \nabla_\mu \phi(x^\nu), x^\nu].
+\end{align}
+With this, when we take the variational derivative of $S[\phi]$ with respect to the
+field $\phi$ and set it to zero to obtain an equation of motion, we have to change the
+regular $d/dx$ derivatives to covariant derivatives (which depend on Christoffel
+symbols):
+\begin{align}
+\f{\delta S}{\delta y} = 0 \implies \boxed{\f{\p (\hat{\lag}\sqrt{-g})}{\p \phi} - \nabla_\mu \lp \f{\p (\hat{\lag}\sqrt{-g})}{\p(\nabla_\mu \phi)} \rp = 0}
+\end{align}
+Note that we can actually skip a step here and remove the $\sqrt{-g}$ term because it is a constant in this problem (we are varying the field). However, the $\sqrt{-g}$ will become important (i.e., has non-trivial derivative) when we do variations with respect to the metric. This has been done in \href{https://huanqbui.com/LaTeX projects/Classical_Fields_Theory/HuanBui_ClassicalFieldTheory.pdf}{\underline{the CFT notes}}, but we will do it again using xACT later in the section on xTras.\\
+
+Here we will just recall how the covariant derivative is defined in GR. The covariant derivative of a contravariant vector $\lambda^a$ with respect to a contravariant
+vector $x^c$ is given by
+\begin{align}
+\boxed{\lambda_{a;c} \equiv \nabla_c \lambda^a = \f{\p \lambda^a}{\p x^c} + \Gamma^a_{bc}\lambda^b \equiv \p_c \lambda^a + \Gamma^a_{bc}\lambda^b}
+\end{align}
+With reviews out of the way, we will look at how to define and use variational derivatives in xACT. First, we notice that variational derivatives are
+taken with respect to some field/metric, and are defined alongside with some
+covariant derivative (associated with existing Christoffel symbols, metric, etc).
+This means to get a variational derivative (\textbf{varD}) we will need (1) the field/metric
+and (2) the existing covariant derivative (\textbf{CovD}).\\
+
+Here are some examples of the VarD command:
+\begin{lstlisting}
+s /: VarD [metricg [a_,b_], PD][s[], rest_] := - rest/2 metricg[-a,-b]s[]
+
+Length [result = Expand @ VarD [metricg [a,b], PD][ s[]rs]]
+
+result = VarD [MaxwellA[a], PD][s[] %]
+\end{lstlisting}
+
+In the next section(s), we will encounter an example where we vary a Lagrangian
+with respect to a scalar field in a perturbed metric to obtain an equation of
+motion.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsubsection{Scalar Fields, Lagrangian, Varying the Lagrangian}
 
@@ -7886,12 +7970,9 @@ Let's first set up some theory before actually doing the calculations and gettin
 We would like to input this into xACT and look at a the perturbed Lagrangian when we perturb the metric. In order to do this, we first define the scalar field $\phi$, the potential $V(\phi)$, and the constant mass, $m$: 
 \begin{lstlisting}
 DefScalarFunction[V]
-
 ** DefScalarFunction: Defining scalar function V. 
-
 DefConstantSymbol[massP]
 ** DefConstantSymbol: Defining constant symbol massP. 
-
 PrintAs[massP] ^= "m";
 \end{lstlisting}
 With this we can define the Lagrangian:
@@ -7908,7 +7989,6 @@ xACT gives us a nice symbolic output of the Lagrangian, which matches what we wa
 Before actually doing any variations, we also have to define the variation of the scalar field and make it appear as $\delta \phi$
 \begin{lstlisting}
 DefTensorPerturbation[pertsf[LI[order]], sf[], M4]
-
 PrintAs[pertsf] ^= "\[Delta]\[Phi]";
 \end{lstlisting}
 \begin{figure}[!htb]
@@ -7973,7 +8053,7 @@ It follows that the equation of motion is obtained from taking variational deriv
 
 Next, recall from Section 8.2 of \href{https://huanqbui.com/LaTeX projects/Classical_Fields_Theory/HuanBui_ClassicalFieldTheory.pdf}{\underline{the CFT notes}} that the equation of motion for the scalar field theory is 
 \begin{align}
-\nabla^\mu \nabla_\mu \phi - \f{dV}{d\phi} = 0.
+\boxed{\nabla^\mu \nabla_\mu \phi - \f{dV}{d\phi} = 0}
 \end{align}
 We would like to obtain this result, using only xACT. \\
 
@@ -8021,8 +8101,25 @@ So things work as we wanted.
 
 \subsection{xTras Basics: Metric Variations}
 
-xTras handles variations with respect to the (inverse) metric. Two of its commands that we will be using here are: \textbf{VarD} and \textbf{VarL}. VarD stands for variational derivative, whose definition includes the (inverse) metric and the associated covariant derivative. For our purposes, VarD acts on the Lagrangian $\lag = \sqrt{-g}\hat{\lag}$. VarL is also a variational derivative, except that it acts on the Lagrangian \textit{density} $\hat{\lag}$. \\
+xTras handles variations with respect to the (inverse) metric. Two of its commands that we will be using here are: \textbf{VarD} and \textbf{VarL}. VarD stands for variational derivative, whose definition includes the (inverse) metric and the associated covariant derivative. For our purposes, VarD acts on the Lagrangian $\lag = \sqrt{-g}\hat{\lag}$. VarL is also a variational derivative, except that it acts on the Lagrangian \textit{density} $\hat{\lag}$. 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
 The output of VarD[$\lag$] and VarL[$\hat{\lag}$] should only differ by a factor of $\sqrt{-g}$. By default,
 \begin{align}
 &\text{VarD[g[-a,-b]], CD}[\lag] \text{ returns } \f{\delta \lag}{\delta g_{ab}} \\ 
