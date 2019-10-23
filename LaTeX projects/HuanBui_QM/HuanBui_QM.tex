@@ -5191,7 +5191,7 @@ The interpretation here is that the particle created by $a^\dagger$ and the part
 
 
 
-\section{The Dirac Equation, Spinors, \& QED }
+\section{The Dirac Equation, Spinors, \& QED    }
 
 
 \subsection{Review \& Conventions}
@@ -7319,7 +7319,7 @@ R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R = -8\pi GT_{\mu\nu}
 
 
 
-
+   
 
 
 
@@ -7350,11 +7350,13 @@ If you're already here, you know what xACT is and what you might need it for. Th
 
 \subsection{Importing packages}
 
-Please follow the online instructions for installation. This tutorial assumes a correct installation of \textbf{xACT}.\\
+Please follow the online instructions for installation. This tutorial assumes a correct installation of \textbf{xACT}. Quick debugging tip: if somethings goes wrong with xACT while you're working with in mathematica, just download a new copy of xACT and overwrite xACT in the installation folder. That should go the trick almost always.\\
 
-Two xACT packages we will need are \textbf{xTensor} and \textbf{xPert}. xTensor extends Mathematica's capabilities in abstract tensor calculus, most useful for general relativity. But note that xTensor does not do component calculations. It only handles symbol manipulations, including arbitrary symmetries, covariant derivatives, etc. Once a metric is defined, xTensor also defines all the associated tensors: Riemann, Ricci, Einstein, Weyl, etc. With each tensor, we can contract all the way down to scalars. \\
+Three xACT packages we will need for now are \textbf{xTensor}, \textbf{xPert}, and \textbf{xTras}. xTensor extends Mathematica's capabilities in abstract tensor calculus, most useful for general relativity. However, note that xTensor does not do component calculations. It only handles symbol manipulations, including arbitrary symmetries, covariant derivatives, etc. Once a metric is defined, xTensor also defines all the associated tensors: Riemann, Ricci, Einstein, Weyl, etc. With each tensor, we can contract all the way down to scalars. \\
 
-xPert allows for doing perturbations on a metric. With xPert, we can define a Lagrangian and vary it to get equations of motion, etc. xPert handles higher-order perturbations quite well, as we will see later in this tutorial.\\
+xPert allows for doing perturbations on a metric. With xPert, we can define a Lagrangian and vary it \textit{with respect to fields} to get equations of motion, etc. xPert handles higher-order perturbations quite well, as we will see later in this tutorial. xPert is probably useful for linearized gravity, etc.\\
+
+xTras allows for doing variations with respect to fields. This is useful for, say, obtaining Einstein's field equations by varying the Lagrangian with respect to the (inverse) metric. \\
 
 Let's get started. First, we will go ahead and \textbf{import} the necessary packages. Run the following commands:
 \begin{lstlisting}
@@ -7715,79 +7717,6 @@ Not bad at all!
 
 
 
-\subsubsection{Variational Derivatives}
-
-Let's do a quick review of the variational derivative. In mathematics, the variational derivative is referred to as the functional derivative. Here we will consider variational derivative in the context of Lagrangian mechanics.\\
-
-Suppose we have an ordinary functional action in flat 3d:
-\begin{align}
-S[\phi] = \int dt\,\lag[\phi(t), \dot{\phi}(t), t].
-\end{align}
-The variational derivative of the action is given by $\delta S / \delta t$. Since we require this derivative to vanish at the extrema, we obtain the Euler-Lagrange by setting the integrand to zero:
-\begin{align}
-\f{\delta S}{\delta y} = 0 \implies \f{\p}{\p \phi}\lp\lag[\phi(t), \dot{\phi}(t), t]  \rp = \boxed{\f{\p \lag}{\p \phi} - \f{d}{dt}\f{\p \lag }{\p \dot{\phi}} = 0}
-\end{align}
-This is nothing but the Euler-Lagrange equation.\\
-
-In general, for
-\begin{align}
-J[y(x)]= \int dx\, f[x,y(x),y''{x}, \dots, y^{(n)}(x)],
-\end{align}
-the variational derivative of $J$ with respect to $y$ is given by
-\begin{align}
-\boxed{\f{\delta J}{\delta y} = \f{\p f}{\p y} - \f{d}{dx}\f{\p f}{\p y'} + \f{d^2}{dx}\f{\p f}{\p y''} - \dots + (-1)^{n-1}\f{d^n}{dx^n}\f{\p f}{\p y^{(n)}}}
-\end{align}
-
-
-In general relativity, we no longer get the regular $d/dx$ derivatives. Instead, we work with covariant derivatives. This means the Lagrangian density in a general action
-\begin{align}
-S[\phi] = \int d^4x\,\sqrt{-g} \hat{\lag}
-\end{align}
-depends on the field, the covariant derivative of the field, and the ``independent variable'' $x^\nu$ a vector in spacetime. 
-\begin{align}
-\hat{\lag}  = \hat{\lag}[\phi(x^\nu), \nabla_\mu \phi(x^\nu), x^\nu].
-\end{align}
-
-With this, when we take the variational derivative of $S[\phi]$ with respect to the field $\phi$ and set it to zero to obtain an equation of motion, we have to change the regular $d/dx$ derivatives to covariant derivatives (which depend on Christoffel symbols):
-\begin{align}
-\f{\delta S}{\delta \phi} = 0 \implies \boxed{\f{\p \hat{\lag}}{\p \phi} - \nabla_\mu \lp \f{\p \hat{\lag}}{\p (\nabla_\mu \phi)} \rp = 0}
-\end{align}
-This makes sense in that when we require the action is maximize/minimize with respect to changes in the field configuration, we obtain the equation of motion.\\
-
-Here we will just recall how the covariant derivative is defined in GR. The covariant derivative of a contravariant vector $\lambda^a$ with respect to a contravariant vector $x^c$ is given by
-\begin{align}
-\boxed{\lambda_{a;c} \equiv \nabla_{c} \lambda^a = \f{\p \lambda^a}{\p x^c} + \Gamma^a_{bc}\lambda^b \equiv \p_c \lambda^a + \Gamma^a_{bc}\lambda^b}
-\end{align}
-
-
-
-With reviews out of the way, we will look at how to define and use variational derivatives in xACT. First, we notice that variational derivatives are taken with respect to some field/metric, and are defined alongside with some covariant derivative (associated with existing Christoffel symbols, metric, etc). This means to get a variational derivative (\textbf{varD}) we will need (1) the field/etric and (2) the existing covariant derivative (\textbf{CovD}).\\
-
-Here are some examples of the VarD command:
-\begin{lstlisting}
-s/:VarD[metricg[a_, b_], PD][s[], rest_] := -rest/2metricg[-a, -b] s[]
-
-Length[result = Expand @ VarD[metricg[a, b], PD][s[] rs]]
-
-result = VarD[MaxwellA[a], PD][s[] %]
-\end{lstlisting}
-
-
-
-
-\textbf{??? Perhaps do a variation of Ricci scalar + Cosmological constant + nonzero matter wrt metric here to get Einstein field equations. Refer to CFT notes, pg 91 for help ???}\\
-
-
-
-
-
-
-
-
-In the next section, we will encounter an example where we vary a Lagrangian with respect to a scalar field in a perturbed metric to obtain an equation of motion.
-
-
-
 
 
 
@@ -8075,7 +8004,177 @@ This simplifies to the equation of motion we wanted:
 	\includegraphics[scale=0.25]{varDivL3}
 \end{figure}\\
 
-So things work!
+So things work as we wanted.
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\subsection{xTras Basics: Metric Variations}
+
+xTras handles variations with respect to the (inverse) metric. Two of its commands that we will be using here are: \textbf{VarD} and \textbf{VarL}. VarD stands for variational derivative, whose definition includes the (inverse) metric and the associated covariant derivative. For our purposes, VarD acts on the Lagrangian $\lag = \sqrt{-g}\hat{\lag}$. VarL is also a variational derivative, except that it acts on the Lagrangian \textit{density} $\hat{\lag}$. \\
+
+The output of VarD[$\lag$] and VarL[$\hat{\lag}$] should only differ by a factor of $\sqrt{-g}$. By default,
+\begin{align}
+&\text{VarD[g[-a,-b]], CD}[\lag] \text{ returns } \f{\delta \lag}{\delta g_{ab}} \\ 
+&\text{VarL[g[-a,-b]], CD}[\hat{\lag}] \text{ returns } \f{1}{\sqrt{-g}}\f{\delta (\sqrt{-g}\hat{\lag})}{\delta g_{ab}}
+\end{align} 
+where of course $\lag = \sqrt{-g}\hat{\lag}$ as always. \\
+
+Of course, we can also do variations with respect to the inverse metric. 
+\begin{align}
+&\text{VarD[g[a,b]], CD}[\lag] \text{ returns } \f{\delta \lag}{\delta g^{ab}} \\ 
+&\text{VarL[g[a,b]], CD}[\hat{\lag}] \text{ returns } \f{1}{\sqrt{-g}}\f{\delta (\sqrt{-g}\hat{\lag})}{\delta g^{ab}}
+\end{align} 
+
+
+With this, we can head over to Mathematica. \\
+
+The first we'd like to do is import the packages. To avoid possible package-missingness, we will just go ahead and import all three packages we know: xTensor, xPert, and now xTras.
+\begin{lstlisting}
+<< xACT`xTensor`
+<< xACT`xPert`
+<< xACT`xTras`
+\end{lstlisting}
+There is nothing interesting to see in the outputs of these commands so I won't go into them now. \\
+
+
+The next thing to do is of course defining the manifold on which is the metric will be defined:
+\begin{lstlisting}
+DefManifold[M4, 4, {a, b, c, d, e, i, j, k, l, m, n, p}]
+
+** DefManifold: Defining manifold M4. 
+
+** DefVBundle: Defining vbundle TangentM4. 
+\end{lstlisting}
+
+
+Here we have are to give as many indices as we can, so why not.\\
+
+Next, we would like to define the metric. But before doing so, we have to \textbf{allow} for metric perturbation in the metric definition. This is the feature in xTras that the other packages don't have. Once this is done, we can define the metric as usual:
+\begin{lstlisting}
+In[5]:= DefMetricPerturbation /. Options@DefMetric
+
+Out[5]= True
+
+In[6]:= DefMetric[-1, g[-a, -b], CD, {";", "\[Del]"}]
+
+During evaluation of In[6]:= ** DefTensor: Defining symmetric
+ metric tensor g[-a,-b]. 
+
+<<< truncated output here >>>
+
+During evaluation of In[6]:= ** DefTensor: Defining weight +2 density Detg[].
+
+During evaluation of In[6]:= ** DefParameter: Defining parameter
+ PerturbationParameterg. 
+
+During evaluation of In[6]:= ** DefTensor: Defining tensor
+ Perturbationg[LI[order],-a,-b]. 
+\end{lstlisting}
+
+We notice that at the very end of the output the tensor Perturbationg[LI[order],-a,-b] is defined. This allows us to do Lagrangian variations with respect to the metric. \\
+
+Now that we have the metric. We can construct some (simple enough) Lagrangians and try to obtain some equation of motions.
+
+
+\subsubsection{Example: Einstein Field Equations, $\Lambda \neq 0$}
+
+First we construct the Lagrangian from $\hat{\lag}$. We will do variations with VarD and VarL. We expect to get the same equation of motion either way.
+
+In theory, we have
+\begin{align}
+\hat{\lag} = (R - 2\Lambda) \hspace{1cm} \lag = \sqrt{-g}\hat{\lag}.
+\end{align}
+
+And so in Mathematica:
+
+
+\begin{lstlisting}
+DefConstantSymbol[\[CapitalLambda]]
+
+** DefConstantSymbol: Defining constant symbol \[CapitalLambda]. 
+
+LagHatCosmo := LagHatRicci - 2*\[CapitalLambda]
+
+LagCosmo := Sqrt[-Detg[]]*(LagHatRicci - 2*\[CapitalLambda])
+
+eom3 := VarD[g[-a, -b], CD][LagCosmo]
+
+eom3/Sqrt[-Detg[]] == 0 // ContractMetric
+
+eom4 := VarL[g[-a, -b], CD][LagHatCosmo]
+
+eom4 == 0 // ContractMetric
+\end{lstlisting}
+
+To get the equation of motion in the correct form when working with ${\lag}$, we will need to divide out $\sqrt{-g}$ in the end because it's not taken care of by VarD.\\
+
+Not surprisingly, we get
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{EinsteinFieldsInv}
+\end{figure}
+
+For the forgetful reader, the Einstein field equation is given by
+\begin{align}
+R^{\mu\nu} - \f{1}{2}g^{\mu\nu}R + \Lambda g^{\mu\nu} = 0
+\end{align}
+where $R^{\mu\nu}$ is the Ricci (upper?) tensor, $g^{\mu\nu}$ is the inverse metric, $\Lambda$ is the cosmological constant, and $R$ is the Ricci scalar. \\
+
+In the other covariant form with the inverse metric, the Einstein field equations look exactly the same, except for the inverted indices:
+\begin{align}
+R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R + \Lambda g_{\mu\nu} = 0
+\end{align}
+
+This could be obtained in exactly the same fashion with xACT, except that the metric used in VarD and VarL are now the inverse metric:
+\begin{lstlisting}
+eom3 := VarD[g[a, b], CD][LagCosmo]
+
+eom3/Sqrt[-Detg[]] == 0 // ContractMetric
+
+eom4 := VarL[g[a, b], CD][LagHatCosmo]
+
+eom4 == 0 // ContractMetric
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{EinsteinFields}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8142,6 +8241,18 @@ UndefManifold[M4]
 \end{lstlisting}
 
 With that, we can be sure nothing will go wrong the next time we launch a new notebook for GR calculations.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
