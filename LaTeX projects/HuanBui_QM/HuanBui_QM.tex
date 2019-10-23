@@ -7717,7 +7717,85 @@ Not bad at all!
 
 \subsubsection{Variational Derivatives}
 
-hello
+Let's do a quick review of the variational derivative. In mathematics, the variational derivative is referred to as the functional derivative. Here we will consider variational derivative in the context of Lagrangian mechanics.\\
+
+Suppose we have an ordinary functional action in flat 3d:
+\begin{align}
+S[\phi] = \int dt\,\lag[\phi(t), \dot{\phi}(t), t].
+\end{align}
+The variational derivative of the action is given by $\delta S / \delta t$. Since we require this derivative to vanish at the extrema, we obtain the Euler-Lagrange by setting the integrand to zero:
+\begin{align}
+\f{\delta S}{\delta y} = 0 \implies \f{\p}{\p \phi}\lp\lag[\phi(t), \dot{\phi}(t), t]  \rp = \boxed{\f{\p \lag}{\p \phi} - \f{d}{dt}\f{\p \lag }{\p \dot{\phi}} = 0}
+\end{align}
+This is nothing but the Euler-Lagrange equation.\\
+
+In general, for
+\begin{align}
+J[y(x)]= \int dx\, f[x,y(x),y''{x}, \dots, y^{(n)}(x)],
+\end{align}
+the variational derivative of $J$ with respect to $y$ is given by
+\begin{align}
+\boxed{\f{\delta J}{\delta y} = \f{\p f}{\p y} - \f{d}{dx}\f{\p f}{\p y'} + \f{d^2}{dx}\f{\p f}{\p y''} - \dots + (-1)^{n-1}\f{d^n}{dx^n}\f{\p f}{\p y^{(n)}}}
+\end{align}
+
+
+In general relativity, we no longer get the regular $d/dx$ derivatives. Instead, we work with covariant derivatives. This means the Lagrangian density in a general action
+\begin{align}
+S[\phi] = \int d^4x\,\sqrt{-g} \hat{\lag}
+\end{align}
+depends on the field, the covariant derivative of the field, and the ``independent variable'' $x^\nu$ a vector in spacetime. 
+\begin{align}
+\hat{\lag}  = \hat{\lag}[\phi(x^\nu), \nabla_\mu \phi(x^\nu), x^\nu].
+\end{align}
+
+With this, when we take the variational derivative of $S[\phi]$ with respect to the field $\phi$ and set it to zero to obtain an equation of motion, we have to change the regular $d/dx$ derivatives to covariant derivatives (which depend on Christoffel symbols):
+\begin{align}
+\f{\delta S}{\delta \phi} = 0 \implies \boxed{\f{\p \hat{\lag}}{\p \phi} - \nabla_\mu \lp \f{\p \hat{\lag}}{\p (\nabla_\mu \phi)} \rp = 0}
+\end{align}
+This makes sense in that when we require the action is maximize/minimize with respect to changes in the field configuration, we obtain the equation of motion.\\
+
+Here we will just recall how the covariant derivative is defined in GR. The covariant derivative of a contravariant vector $\lambda^a$ with respect to a contravariant vector $x^c$ is given by
+\begin{align}
+\boxed{\lambda_{a;c} \equiv \nabla_{c} \lambda^a = \f{\p \lambda^a}{\p x^c} + \Gamma^a_{bc}\lambda^b \equiv \p_c \lambda^a + \Gamma^a_{bc}\lambda^b}
+\end{align}
+
+
+
+With reviews out of the way, we will look at how to define and use variational derivatives in xACT. First, we notice that variational derivatives are taken with respect to some field/metric, and are defined alongside with some covariant derivative (associated with existing Christoffel symbols, metric, etc). This means to get a variational derivative (\textbf{varD}) we will need (1) the field/etric and (2) the existing covariant derivative (\textbf{CovD}).\\
+
+Here are some examples of the VarD command:
+\begin{lstlisting}
+s/:VarD[metricg[a_, b_], PD][s[], rest_] := -rest/2metricg[-a, -b] s[]
+
+Length[result = Expand @ VarD[metricg[a, b], PD][s[] rs]]
+
+result = VarD[MaxwellA[a], PD][s[] %]
+\end{lstlisting}
+
+
+
+
+\textbf{??? Perhaps do a variation of Ricci scalar + Cosmological constant + nonzero matter wrt metric here to get Einstein field equations. Refer to CFT notes, pg 91 for help ???}\\
+
+
+
+
+
+
+
+
+In the next section, we will encounter an example where we vary a Lagrangian with respect to a scalar field in a perturbed metric to obtain an equation of motion.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
