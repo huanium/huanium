@@ -7283,7 +7283,793 @@ We note that the spatial derivatives carry a minus sign because of the Minkowski
 \section{Gravity \& Beyond}
 
 
+
+
 \subsection{Gravity as a Field Theory \& Kaluza-Klein picture}
+
+
+Recall the Einstein-Hilbert action for gravity:
+\begin{align}
+S = \f{1}{16\pi G}\int d^4x\,\sqrt{-g}R \equiv \int d^4x\,\sqrt{-g}M_P^2 R
+\end{align}
+where $g = \det(g_{\mu\nu})$, $R$ is the scalar curvature, and $G$ is Newton's constant. \\
+
+The Riemann curvature tensor is given by
+\begin{align}
+\tensor{R}{^\lambda_{\mu\nu\kappa}} = \p_\nu \Gamma^\lambda_{\mu\kappa} - \p_\kappa\Gamma^\lambda_{\mu\nu} + \Gamma^\sigma_{\mu\kappa}\Gamma^\lambda_{\nu\sigma} - \Gamma^\sigma_{\mu\nu}\Gamma^\lambda_{\kappa\sigma}.
+\end{align}
+The Christoffel symbols are constructed out of the metric tensor:
+\begin{align}
+\Gamma^\lambda_{\mu\nu} = \f{1}{2}g^{\lambda\rho}(\p_\nu g_{\rho\mu} + \p_\mu g_{\rho\nu} - \p_\rho g_{\mu\nu}).
+\end{align}
+The Ricci tensor is a contraction of the Riemann tensor:
+\begin{align}
+R_{\mu\kappa} = \tensor{R}{^\nu_{\mu\nu\kappa}}
+\end{align}
+and the scalar curvature is a contraction of the Ricci tensor
+\begin{align}
+R = g^{\mu\nu}R_{\mu\nu}.
+\end{align}
+Varying $S$, i.e., with $\delta S = 0$, we get the Einstein field equation:
+\begin{align}
+R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R = -8\pi GT_{\mu\nu}
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+\section{xACT Tutorial}
+
+If you're already here, you know what xACT is and what you might need it for. This tutorial is for getting started with some basic xACT computations/manipulations.
+
+
+
+\subsection{Importing packages}
+
+Please follow the online instructions for installation. This tutorial assumes a correct installation of \textbf{xACT}.\\
+
+Two xACT packages we will need are \textbf{xTensor} and \textbf{xPert}. xTensor extends Mathematica's capabilities in abstract tensor calculus, most useful for general relativity. But note that xTensor does not do component calculations. It only handles symbol manipulations, including arbitrary symmetries, covariant derivatives, etc. Once a metric is defined, xTensor also defines all the associated tensors: Riemann, Ricci, Einstein, Weyl, etc. With each tensor, we can contract all the way down to scalars. \\
+
+xPert allows for doing perturbations on a metric. With xPert, we can define a Lagrangian and vary it to get equations of motion, etc. xPert handles higher-order perturbations quite well, as we will see later in this tutorial.\\
+
+Let's get started. First, we will go ahead and \textbf{import} the necessary packages. Run the following commands:
+\begin{lstlisting}
+<< xACT`xTensor`
+\end{lstlisting}
+and
+\begin{lstlisting}
+<< xACT`xPert`
+\end{lstlisting}
+The correct corresponding outputs are
+\begin{lstlisting}[language=mathematica]
+<< xACT`xTensor`
+------------------------------------------------------------
+Package xAct`xTensor`  version 1.1.3, {2018,2,28}
+
+CopyRight (C) 2002-2018, Jose M. Martin-Garcia, 
+under the General Public License.
+------------------------------------------------------------
+
+These packages come with ABSOLUTELY NO WARRANTY; for details type Disclaimer. 
+This is free software, and you are welcome to redistribute it under certain 
+conditions. See the General Public License for details.
+------------------------------------------------------------
+\end{lstlisting}
+and
+\begin{lstlisting}
+<< xACT`xPert`
+------------------------------------------------------------
+
+Package xAct`xPert`  version 1.0.6, {2018,2,28}
+
+CopyRight (C)2005-2018, David Brizuela, Jose M. Martin-Garcia and Guillermo A.
+Mena Marugan, under the General Public License.
+
+------------------------------------------------------------
+
+These packages come with ABSOLUTELY NO WARRANTY; for details type Disclaimer. 
+This is free software, and you are welcome to redistribute it under certain 
+conditions. See the General Public License for details.
+
+------------------------------------------------------------
+
+** Variable $CovDFormat changed from Prefix to Postfix
+
+** Option AllowUpperDerivatives of ContractMetric changed from False to True
+
+** Option MetricOn of MakeRule changed from None to All
+
+** Option ContractMetrics of MakeRule changed from False to True
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\newpage
+
+
+\subsection{xTensor Basics}
+
+For more information about this package, please check this \href{http://www.xact.es/Documentation/HTML/HTMLLinks/}{\underline{link}} for the correct documentation.
+
+
+\subsubsection{Defining the Basics}
+
+There are a number things we need to define before doing anything. The \textbf{manifold} must be defined first:
+\begin{lstlisting}
+DefManifold[M4, 4, {a, b, c, d, e, f, g, h, i, j, k, l}]
+\end{lstlisting}
+The output is
+\begin{lstlisting}
+DefManifold[M4, 4, {a, b, c, d, e, f, g, h, i, j, k, l}]
+
+** DefManifold: Defining manifold M4. 
+
+** DefVBundle: Defining vbundle TangentM4. 
+\end{lstlisting}
+
+Just to translate the command into English: the command defines a new 4-dimensional manifold called M4, with a list of indices. The number of indices are arbitrary, but the more the merrier so we don't run out of indices. However, be careful not to use these indices to call something else, like `g' for metric, for instance.\\
+
+
+
+Once that is done can we define the \textbf{metric}:
+\begin{lstlisting}
+DefMetric[-1, gg[-i, -j], cd, {";", "\[Del]"}]
+\end{lstlisting}
+Translation: The -1 stands for the signature of the metric. ``gg'' is the name of the metric. We can use ``g'' but remember that it has been taken in the manifold definition. ``cd'' is what we call the covariant derivative. ``/[Del]'' is the symbol denoting the covariant derivative. We will see this later.\\
+
+
+The correct output should be
+\begin{lstlisting}
+DefMetric[-1, gg[-i, -j], cd, {";", "\[Del]"}]
+
+** DefTensor: Defining symmetric metric tensor gg[-i,-j]. 
+
+** DefTensor: Defining antisymmetric tensor epsilongg[-a,-b,-c,-d]. 
+
+** DefTensor: Defining tetrametric Tetragg[-a,-b,-c,-d]. 
+
+** DefTensor: Defining tetrametric Tetragg\[Dagger][-a,-b,-c,-d]. 
+
+** DefCovD: Defining covariant derivative cd[-i]. 
+
+** DefTensor: Defining vanishing torsion tensor Torsioncd[a,-b,-c]. 
+
+** DefTensor: Defining symmetric Christoffel tensor Christoffelcd[a,-b,-c]. 
+
+** DefTensor: Defining Riemann tensor Riemanncd[-a,-b,-c,-d]. 
+
+** DefTensor: Defining symmetric Ricci tensor Riccicd[-a,-b]. 
+
+** DefCovD:  Contractions of Riemann automatically replaced by Ricci.
+
+** DefTensor: Defining Ricci scalar RicciScalarcd[]. 
+
+** DefCovD:  Contractions of Ricci automatically replaced by RicciScalar.
+
+** DefTensor: Defining symmetric Einstein tensor Einsteincd[-a,-b]. 
+
+** DefTensor: Defining Weyl tensor Weylcd[-a,-b,-c,-d]. 
+
+** DefTensor: Defining symmetric TFRicci tensor TFRiccicd[-a,-b]. 
+
+** DefTensor: Defining Kretschmann scalar Kretschmanncd[]. 
+
+** DefCovD:  Computing RiemannToWeylRules for dim 4
+
+** DefCovD:  Computing RicciToTFRicci for dim 4
+
+** DefCovD:  Computing RicciToEinsteinRules for dim 4
+
+** DefTensor: Defining weight +2 density Detgg[]. Determinant.
+\end{lstlisting}
+
+
+
+There are a few interesting things we can pay attention to in the output. It is clear that xACT has also defined associated tensors like the Riemann, Ricci tensor, Ricci scalars, Christoffel symbols, etc. It also defined the determinant, called ``Detgg[]''. This will be useful when we write down the Lagrangian.\\
+
+
+With this, we can nwo define some simple objects: scalars, contravariant vectors, and covariant vectors:
+\begin{lstlisting}
+DefTensor[s[], M4]
+
+** DefTensor: Defining tensor s[]. 
+
+DefTensor[contra[i], M4]
+
+** DefTensor: Defining tensor contra[i]. 
+
+DefTensor[covar[-i], M4]
+
+** DefTensor: Defining tensor covar[-i]. 
+\end{lstlisting}
+Here the ``-index'' denotes a subscript, and ``index'' denotes a superscript. Defining something without giving indices makes a scalar. Note that we have to include the manifold in each of the definitions above. \\
+
+Next, we can define a two-index tensor:
+\begin{lstlisting}
+DefTensor[T[-i, -j], M4, Antisymmetric[{-i, -j}]];
+
+** DefTensor: Defining tensor T[-i,-j]. 
+\end{lstlisting}
+
+Here, we are allowed to impose symmetry/antisymmetry on the defined tensor. With our example here, the tensor is anti-symmetric, so we would expect that
+\begin{align}
+T_{ij} = -T_{ji}.
+\end{align}
+we can verify this:
+\begin{lstlisting}
+In[308]:= T[-i, -j] + T[-j, -i] // ToCanonical
+
+Out[308]= 0
+\end{lstlisting}
+
+The \textbf{ToCanonical} command allows you to impose symmetry/anti-symmetry on the outputs. This is basically a ``smart simplification'' command. 
+
+
+
+
+\subsubsection{Covariant Derivatives}
+
+There is not much we can do with the covariant derivatives. Except showing that it's there in the definition of the metric. For example, we can do
+\begin{align}
+\nabla_i T_{jl}
+\end{align}
+in xACT with the following command:
+\begin{lstlisting}
+In[312]:= cd[-i][T[-j, -l]]
+\end{lstlisting}
+
+We can also do a multiple covariant derivative using ``@'' to denote a composition of two derivatives:
+\begin{lstlisting}
+In[313]:= cd[-a]@cd[-b]@cd[-c]@T[-d, -e] // ToCanonical
+
+Out[313]= cd[-a][cd[-b][cd[-c][T[-d, -e]]]]
+\end{lstlisting}
+In more readable symbols, this is just
+\begin{align}
+\nabla_a \nabla_b \nabla_c T_{de}.
+\end{align}
+
+But of course, we haven't evaluated this. To actually evaluate this expression, we use the \textbf{SortCovsD} command, which writes everything out in terms of the Riemann tensor:
+\begin{lstlisting}
+In[314]:= cd[-a]@cd[-b]@cd[-c]@T[-d, -e] // ToCanonical // SortCovDs
+
+Out[314]= - Riemanncd[-c, -b, -e, f] cd[-a][
+T[-d, -f]] - Riemanncd[-c, -b, -d, f]  cd[-a][
+T[-f, -e]] - T[-f, -e]  cd[-b][
+Riemanncd[-c, -a, -d, f]] - T[-d, -f]  cd[-b][
+Riemanncd[-c, -a, -e, f]] - Riemanncd[-c, -a, -e, f]  cd[-b][
+T[-d, -f]] - Riemanncd[-c, -a, -d, f]  cd[-b][
+T[-f, -e]] - Riemanncd[-b, -a, -e, f]  cd[-c][
+T[-d, -f]] - Riemanncd[-b, -a, -d, f]  cd[-c][
+T[-f, -e]] + cd[-c][
+cd[-b][
+cd[-a][
+T[-d, -e]]]] - Riemanncd[-b, -a, -c, f]  cd[-f][
+T[-d, -e]] - Riemanncd[-c, -b, -a, f]  cd[-f][
+T[-d, -e]]
+\end{lstlisting}
+
+Not to worry, to actual Mathematica output looks much better:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{sortcovsd}
+\end{figure}
+
+It is possible for new users that the following output is obtained:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{dollars0}
+\end{figure}
+
+This is because the dollar signs are not screened off. To fix this, simply write
+\begin{lstlisting}
+$PrePrint = ScreenDollarIndices;
+\end{lstlisting}
+then run the code again. 
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{dollars}
+\end{figure}
+Ta-da!\\
+
+
+One small test we can run is to check whether the covariant derivative of the metric is zero:
+\begin{align}
+\nabla_c g_{ab} = g_{ab;c} = 0.
+\end{align}
+We run the following command:
+\begin{lstlisting}
+In[419]:= cd[-a][gg[c, d]]
+
+Out[419]= 0.
+\end{lstlisting}
+Makes sense.
+
+
+
+
+
+
+
+\subsubsection{Contract Everything}
+
+
+We know that the Ricci tensor is a contraction of the Riemann tensor:
+\begin{align}
+R_{bd} = g^{ac}R_{abcd}.
+\end{align}
+Let's verify this in xACT with the \textbf{ContractMetric} command. We also use the \textbf{InputForm} command to see what xACT actually \textit{thinks} the output is.
+\begin{lstlisting}
+In[309]:= gg[i, k] Riemanncd[-i, -j, -k, -l] // ContractMetric // InputForm
+
+Out[309]= Riccicd[-j, -l]
+\end{lstlisting}
+We can see that xACT is smart enough to recognize the output is a Ricci tensor.\\
+
+Good, what about getting the Ricci scalar? We know that
+\begin{align}
+R = g^{\mu\nu}R_{\mu\nu}.
+\end{align}
+Once again we can check this with/against xACT
+\begin{lstlisting}
+In[311]:= gg[j, l] Riccicd[-j, -l] // ContractMetric // InputForm
+
+Out[311]//InputForm=RicciScalarcd[]
+\end{lstlisting}
+or without the InputForm command:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{ricci}
+\end{figure}
+
+
+\subsubsection{Verifying Bianchi's Second Identity}
+
+Bianchi's Second Identity is given by
+\begin{align}
+R_{abcd;e} + R_{abde;c} + R_{abec;d} = 0 \iff
+\nabla_e R_{abcd} + \nabla_c R_{abde} + \nabla_d R_{abec} = 0.
+\end{align}
+To do this in xACT, we first redefine out covariant derivative
+\begin{lstlisting}
+DefCovD[CD[-a], {";", "\[Del]"}]
+
+** DefCovD: Defining covariant derivative CD[-a]. 
+** DefTensor: Defining vanishing torsion tensor TorsionCD[a,-b,-c]. 
+** DefTensor: Defining symmetric Christoffel tensor ChristoffelCD[a,-b,-c]. 
+** DefTensor: Defining Riemann tensor RiemannCD[-a,-b,-c,d].
+ Antisymmetric only in the first pair.
+** DefTensor: Defining non-symmetric Ricci tensor RicciCD[-a,-b]. 
+** DefCovD:  Contractions of Riemann automatically replaced by Ricci.
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{covar}
+\end{figure}
+
+
+Next, we establish a term:
+\begin{lstlisting}
+term1 = Antisymmetrize[CD[-e][RiemannCD[-c, -d, -b, a]], {-c, -d, -e}]
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{term1}
+\end{figure}
+The \textbf{AntiSymmetrize[expr, $\{i1,\dots, in\}$]} command antisymmetrizes \textit{expr} with respect to the $n$ free indices $i1,\dots,in$. By convention the result has a factor ($1/n!$) multiplying.\\
+It follows that the right hand side is 3 times this term:
+\begin{lstlisting}
+bianchi2 = 3 term1 // ToCanonical
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{bianchi2}
+\end{figure}
+To actually evaluate this, we first expand bianchi2 in terms of the Christoffel symbols:
+\begin{lstlisting}
+exp1 = bianchi2 // CovDToChristoffel
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{bianchi-chris}
+\end{figure}
+To \textit{actually} evaluate this, we will have to write the leftover Riemann tensors in terms of the Christoffel symbols:
+\begin{lstlisting}
+exp2 = exp1 // RiemannToChristoffel
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{rietochris}
+\end{figure}
+
+And finally, we \textit{canonicalize} everything (i.e., imposing symmetries of Christoffel symbols) to get zero:
+\begin{lstlisting}
+In[322]:= exp3 = exp2 // ToCanonical
+
+Out[322]= 0
+\end{lstlisting}
+
+Not bad at all!
+
+
+
+
+
+\subsubsection{Variational Derivatives}
+
+hello
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\subsection{xPert Basics}
+
+
+
+
+
+
+Assuming that the reader has successfully imported the xPert package, let's get started. For more information about this package, please check this \href{http://www.xact.es/Documentation/HTML/HTMLLinks/}{\underline{link}} for the correct documentation.
+
+
+\subsubsection{Pert, Perturbation, Perturbed, \& Order Selection}
+
+
+In order to do anything, we must have had a metric already defined. In this tutorial, I will be using the ``gg'' metric from the previous section. \\
+
+To start, we will define a perturbation $h_{\mu\nu}$ to the metric and the amplitude of this perturbation, called $\epsilon$. To do this in xPert, we write
+\begin{lstlisting}
+DefMetricPerturbation[gg, pert, \[Epsilon]]
+
+** DefParameter: Defining parameter \[Epsilon]. 
+
+** DefTensor: Defining tensor pert[LI[order],-a,-b]. 
+\end{lstlisting}
+What the second line in the output is telling us is that it has also defined perturbations of all orders $h_{\mu\nu}^n$, where $n$ is the order. With this, we can recall any perturbation order using the command suggested in the output. \\
+
+In order to make this ``pert'' variable printed as $h_{\mu\nu}$ in the subsequent outputs, we will enforce:
+\begin{lstlisting}
+PrintAs[pert] ^= "h";
+\end{lstlisting}
+
+In general, this can be done such that the output is more readable. But if the reader is very efficient with reading terribly-named variables, no such enforcement is necessary.\\
+
+From here, there are many many things we can do. First, let's look what the second-order perturbation looks like, based on the second output of the perturbation definition. We expect this to be $h_{\mu\nu}^2$. To do this, we use the command \textbf{pert[LI[order], -a,-b]} where -a, -b are the subscripts.
+\begin{lstlisting}
+In[327]:= pert[LI[2], -a, -b]
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{h2}
+\end{figure}
+Not surprising. Equivalently, we can also run the following command and get the same output
+\begin{lstlisting}
+Perturbation[gg[-a, -b], 2]
+\end{lstlisting}
+Here, we're basically wanting to looking at perturbation of the metric of a certain order. \\
+
+
+Okay, so given a perturbation $h_{\mu\nu}$ of the metric, $g_{\mu\nu}$, what can we say about the perturbation of the inverse metric, $g^{\mu\nu}$? Recall the result from GR:
+\begin{align}
+g_{\mu\nu} \approx \eta_{\mu\nu} + h_{\mu\nu} \implies g^{\mu\nu} \approx \eta^{\mu\nu} - h^{\mu\nu}.
+\end{align}
+Let's see if we get the same thing from xACT by running the command
+\begin{lstlisting}
+Perturbation[gg[a, b], 1]
+\end{lstlisting}
+However, the output is not very illuminating:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{inv-pert}
+\end{figure}
+
+We have to \textbf{ExpandPerturbation} to get a readable output:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{inv-pert-exp}
+\end{figure}
+
+
+This is exactly what we expected. We note that the \textbf{Perturbation[...]} command only gives us the perturbation part but not the entire perturbed metric. This is fine, but it is something to keep in mind. \\
+
+
+But what if we wanted second, third, fourth, etc. order perturbations? while this gets much more cumbersome to do by hand, xACT handles perturbations extremely efficiently. We basically run the code again, only changing the perturbation order:
+\begin{lstlisting}
+Perturbation[gg[a, b], 2] // ExpandPerturbation
+
+Perturbation[gg[a, b], 4] // ExpandPerturbation
+\end{lstlisting}
+
+Second-order perturbation:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{second-pert}
+\end{figure}
+
+Fourth-order perturbation:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{fourth-pert}
+\end{figure}
+
+
+
+Like I have mentioned, the \textbf{Perturbation[...]} command only gives the perturbation piece of the new metric. To get the full, newly perturbed, metric, we use the \textbf{Perturbed[gg[-a,-b], order]} command. For example, the perturbed metric, up to third order is
+\begin{lstlisting}
+Perturbed[gg[-a, -b], 3]
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{third-perted}
+\end{figure}
+$\,$\\
+The perturbed inverse metric up to third order is
+\begin{lstlisting}
+Perturbed[gg[a, b], 3] // ExpandPerturbation
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{third-ptbr}
+\end{figure}
+
+
+
+
+Just for sanity check, we can get the first-order perturbed metric and inverse metric with
+\begin{lstlisting}
+Perturbed[gg[-a, -b], 1]
+
+Perturbed[gg[a, b], 1] // ExpandPerturbation
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{first-pert}
+\end{figure}
+
+Very nice!\\
+
+
+There is also a way for us to pick out only the low-order perturbations in a higher-order perturbed metric. With the following command, we are able to pick out only the first-order perturbations from a third-order perturbed metric: 
+\begin{lstlisting}
+firstorderonly = pert[LI[n_], __] :> 0 /; n > 1; 
+Perturbed[gg[-a, -b], 3] /. firstorderonly
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{pickout}
+\end{figure}
+
+
+
+
+
+
+
+
+
+\subsubsection{Scalar Fields, Lagrangian, Varying the Lagrangian}
+
+Here's the layout of this subsection. We would like to, in the end, get some kind of physical result we are familiar with such as conservation of energy or the Einstein field equation or some sort of equation of motion that we know exists. \\
+
+Let's first set up some theory before actually doing the calculations and getting lost in the symbols. Consider the Lagrangian for the scalar field $\phi$:
+\begin{align}
+\lag = \sqrt{-g} \lp \f{m^2 R}{2} - V(\phi) - \f{1}{2}\nabla_b \phi \nabla^b \phi \rp.
+\end{align}
+We would like to input this into xACT and look at a the perturbed Lagrangian when we perturb the metric. In order to do this, we first define the scalar field $\phi$, the potential $V(\phi)$, and the constant mass, $m$: 
+\begin{lstlisting}
+DefScalarFunction[V]
+
+** DefScalarFunction: Defining scalar function V. 
+
+DefConstantSymbol[massP]
+** DefConstantSymbol: Defining constant symbol massP. 
+
+PrintAs[massP] ^= "m";
+\end{lstlisting}
+With this we can define the Lagrangian:
+\begin{lstlisting}
+L = Sqrt[-1*Detgg[]]*(massP^2*RicciScalarcd[]/2 - 
+V[sf[]] - (1/2)*cd[-b][sf[]]*cd[b][sf[]])
+\end{lstlisting}
+xACT gives us a nice symbolic output of the Lagrangian, which matches what we want:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{lag-xact}
+\end{figure}
+
+
+Before actually doing any variations, we also have to define the variation of the scalar field and make it appear as $\delta \phi$
+\begin{lstlisting}
+DefTensorPerturbation[pertsf[LI[order]], sf[], M4]
+
+PrintAs[pertsf] ^= "\[Delta]\[Phi]";
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{var-scalar}
+\end{figure}
+
+Time to do some variations. This requires the \textbf{Perturbation} command:
+\begin{lstlisting}
+varL = L // Perturbation
+\end{lstlisting}
+
+
+\begin{figure}[!htb]
+	\includegraphics[scale=0.19]{varL1}
+\end{figure}
+
+
+To get the full expression, we have to expand on the result:
+\begin{lstlisting}
+varL = L // Perturbation // ExpandPerturbation
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.19]{varL2}
+\end{figure}
+
+There are a bunch of terms with the metric flying around, so we will contract with the metric:
+\begin{lstlisting}
+varL = L // Perturbation // ExpandPerturbation // ContractMetric
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.19]{varL3}
+\end{figure}
+
+
+Finally, we enforce canonical relations to remove the leftover abundant terms:
+\begin{lstlisting}
+varL = L // Perturbation // ExpandPerturbation // ContractMetric // 
+ToCanonical
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.19]{varL4}
+\end{figure}
+
+
+Now that we have the perturbed Lagrangian. What we want next the equation of motion. Recall that the action is given by
+\begin{align}
+S = \int d^4x\,\lag = \int d^4x \,\sqrt{-g} \hat{\lag}.
+\end{align}
+The associated Euler-Lagrange equation is
+\begin{align}
+\boxed{\f{\p \hat{\lag}}{\p \phi} - D_\mu \lp \f{\p \hat{\lag}}{\p(D_\mu \phi)} \rp = \f{\delta \hat{\lag}}{\delta \phi} = 0}
+\end{align}
+We translate this equation as ``the variational derivative of $\hat{\lag}$ with respect to the field is zero.'' With our current Lagrangian density:
+\begin{align}
+\lag = \sqrt{-g} \lp \f{m^2 R}{2} - V(\phi) - \f{1}{2}\nabla_b \phi \nabla^b \phi \rp,
+\end{align} 
+the Lagrangian of which we want to take derivatives is 
+\begin{align}
+\hat{\lag} = \f{1}{\sqrt{-g}}\lag = \f{m^2 R}{2} - V(\phi) - \f{1}{2}\nabla_b \phi \nabla^b \phi .
+\end{align}
+It follows that the equation of motion is obtained from taking variational derivative of $\hat{\lag}$ with respect to $\phi$ and set it to zero.\\
+
+Next, recall from Section 8.2 of \href{https://huanqbui.com/LaTeX projects/Classical_Fields_Theory/HuanBui_ClassicalFieldTheory.pdf}{\underline{the CFT notes}} that the equation of motion for the scalar field theory is 
+\begin{align}
+\nabla^\mu \nabla_\mu \phi - \f{dV}{d\phi} = 0.
+\end{align}
+We would like to obtain this result, using only xACT. \\
+
+Let's start by taking the variational derivative of $\hat{\lag}$ with respect to $\phi$ and set it to zero. We do this with a simple command:
+\begin{lstlisting}
+0 == VarD[pertsf[LI[1]], cd][varL]/Sqrt[-Detgg[]]
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{varDivL1}
+\end{figure}
+where we explicitly divide the original $\lag$ by $\sqrt{-g}$ to get $\hat{\lag}$, then take the variational derivative of $\hat{\lag}$. The variation derivative is define by two objects: the field with respect to which the derivative is taken, and the covariant derivative associated with the metric. This is because as we saw before
+\begin{align}
+\boxed{\f{\p \hat{\lag}}{\p \phi} - D_\mu \lp \f{\p \hat{\lag}}{\p(D_\mu \phi)} \rp = \f{\delta \hat{\lag}}{\delta \phi}}
+\end{align}
+To simply the output above, we impose canonical relations:
+\begin{lstlisting}
+0 == VarD[pertsf[LI[1]], cd][varL]/Sqrt[-Detgg[]] // ToCanonical
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{varDivL2}
+\end{figure}
+By enforcing the Kronecker delta relation:
+\begin{lstlisting}
+delta[-LI[1], LI[1]] -> 1;
+\end{lstlisting}
+This simplifies to the equation of motion we wanted:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{varDivL3}
+\end{figure}\\
+
+So things work!
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\subsection{Undefining Basics: Play Time's Over!}
+
+This is not a recommendation. This is something we \textit{have} to do before once we are done with a calculation session, unless we are absolutely sure you will not need a separate sheet for other calculations. \\
+
+It looks like xACT remembers all definitions, even after we have deleted/put away an old Mathematica notebook and opened a new one. \\
+
+To ask Mathematica for the currently defined objects, use the following command:
+\begin{lstlisting}
+?Global`*
+\end{lstlisting}
+
+This is will give a bunch of defined symbols and objects, some of which have been manually defined by the user. Our job now is to undefine these. To do this correctly, we have to do this in the correct order, as some of these objects' existence depends on others' existence. \\
+
+First, we undefine all tensors (excluding the metric, including all scalars), all scalars, all scalar functions, and all constant symbols. These don't necessarily have be in any order.
+\begin{lstlisting}
+UndefTensor /@ {contra, covar}
+
+UndefTensor[pert]
+
+UndefTensor[pertsf]
+
+UndefTensor[sf]
+
+UndefTensor[T]
+
+UndefTensor[s]
+\end{lstlisting}
+
+We then undefine all user-defined covariant derivatives
+\begin{lstlisting}
+UndefCovD[CD]
+\end{lstlisting}
+
+Then we undefine the scalar functions:
+\begin{lstlisting}
+UndefScalarFunction[V]
+\end{lstlisting}
+and constant symbols
+\begin{lstlisting}
+UndefConstantSymbol[massP]
+\end{lstlisting}
+
+Now can we undefine the metric:
+\begin{lstlisting}
+UndefMetric[gg]
+\end{lstlisting}
+
+Finally can we undefine the manifold:
+\begin{lstlisting}
+UndefManifold[M4]
+\end{lstlisting}
+
+With that, we can be sure nothing will go wrong the next time we launch a new notebook for GR calculations.
+
+
+
+
+
+
 
 
 
