@@ -7477,6 +7477,56 @@ Because the Planck mass $M_P \equiv 1/\sqrt{16\pi G} $ is enormous, we see once 
 \subsubsection{The weak field action}
      
      
+From Sean Carroll's \textit{Spacetime \& Geometry}, or from the \href{https://huanqbui.com/LaTeX projects/Classical_Fields_Theory/HuanBui_ClassicalFieldTheory.pdf}{CFT notes}, we have seen the weak field action:
+\begin{align}
+S = \int d^4x\, \sqrt{-g}\lag = \int d^4x\, \lag
+\end{align}
+where
+\begin{align}
+\lag = \f{1}{2}\lb(\p_\mu h^{\mu\nu})(\p_\nu h) - (\p_\mu h^{\rho\sigma})(\p_\rho \tensor{h}{^\mu_\sigma}) + \f{1}{2} \eta^{\mu\nu}(\p_\mu h^{\rho\sigma})(\p_\nu h_{\rho\sigma})   - \f{1}{2} \eta^{\mu\nu}(\p_\mu h)(\p_\nu h) \rb.
+\end{align}
+
+We know that when requiring $\delta S = 0 \iff \delta S / \delta h_{\mu\nu} = 0$, i.e., the variational derivative of $S$ with respect to $h_{\mu\nu}$ is zero, we get the Einstein tensor $G_{\mu\nu}$ given by
+\begin{align}
+G_{\mu\nu} &= R_{\mu\nu} - \f{1}{2}\eta_{\mu\nu}R \nonumber\\
+&= \f{1}{2}\lp  \p_\sigma\p_\mu \tensor{h}{^\sigma_\nu} + \p_\nu \p_\sigma \tensor{h}{^\sigma_\mu}- \p_\mu\p_\nu h - \square h_{\mu\nu} - \eta_{\mu\nu}\p_\rho\p_\lambda h^{\rho\lambda} + \eta_{\mu\nu}\square h  \rp
+\end{align}
+
+Let's check this in xACT, as an exercise in indexing and of course in using xACT. Here are the things we will need to do, in order: (1) importing the packages, (2) defining the manifold, (3) turning on the metric variations option, (4) defining the metric $\eta_{\mu\nu}$ (don't worry about making it Minkowskian), (5) defining the perturbation $h_{\mu\nu}$, (6) defining the Lagrangian, (7) taking the variational derivative of the Lagrangian with VarD (assuming $\sqrt{-\eta} = 1$, of course).
+\begin{lstlisting}
+...
+DefManifold[M4, 4, {a, b, c, d, e, f, i, k, l, m, n}]
+
+DefMetricPerturbation /. Options@DefMetric
+
+DefMetric[-1, \[Eta][-a, -b], CD, {"%", "\[Del]"}]
+
+DefMetricPerturbation[\[Eta], h, \[Epsilon]]
+
+Lag := (1/
+2)*((CD[-m][h[LI[1], m, n]])*(CD[-n][h[LI[1], -c, c]]) - (CD[-m][
+h[LI[1], c, d]])*(CD[-c][h[LI[1], m, -d]]) + (1/2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, d]])*(CD[-n][h[LI[1], -c, -d]]) - (1/
+2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, -c]])*(CD[-n][h[LI[1], d, -d]]))
+
+(VarD[h[LI[1], c, d], CD][Lag*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]]) /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // ToCanonical
+\end{lstlisting}
+Here's what we get:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.4]{lag-weak}
+\end{figure}
+
+Putting this back into \LaTeX{} after doing some manual contractions/simplifications, plus noting that the covariant derivative here is just the regular partial derivatives, we find
+\begin{align}
+???
+\end{align}
+
+Note that ...\\
+
+
 
 
 
@@ -8048,7 +8098,8 @@ S[\phi] = \int dt\,\lag[\phi(t),\dot{\phi}(t),t].
 
 
 The variational derivative of the action is given by $\delta S/ \delta t$. Since we require this derivative to vanish at the extrema, we obtain the Euler-Lagrange by setting
-the integrand to zero:
+the integrand to zero:
+
 \begin{align}
 \f{\delta S}{\delta y} = 0 \implies \f{\delta }{\delta \phi} \lp \lag[\phi(t),\dot{\phi}(t),t] \rp  = \boxed{\f{\p \lag}{\p \phi} - \f{d}{dt}\f{\p \lag}{\p \dot{\phi}} = 0}
 \end{align}
@@ -8074,7 +8125,8 @@ depends on the field, the covariant derivative of the field, and the ``independe
 With this, when we take the variational derivative of $S[\phi]$ with respect to the
 field $\phi$ and set it to zero to obtain an equation of motion, we have to change the
 regular $d/dx$ derivatives to covariant derivatives (which depend on Christoffel
-symbols):
+symbols):
+
 \begin{align}
 \f{\delta S}{\delta y} = 0 \implies \boxed{\f{\p (\hat{\lag}\sqrt{-g})}{\p \phi} - \nabla_\mu \lp \f{\p (\hat{\lag}\sqrt{-g})}{\p(\nabla_\mu \phi)} \rp = 0}
 \end{align}
@@ -8089,7 +8141,8 @@ With reviews out of the way, we will look at how to define and use variational d
 taken with respect to some field/metric, and are defined alongside with some
 covariant derivative (associated with existing Christoffel symbols, metric, etc).
 This means to get a variational derivative (\textbf{varD}) we will need (1) the field/metric
-and (2) the existing covariant derivative (\textbf{CovD}).\\
+and (2) the existing covariant derivative (\textbf{CovD}).
+\\
 
 Here are some examples of the VarD command:
 \begin{lstlisting}
