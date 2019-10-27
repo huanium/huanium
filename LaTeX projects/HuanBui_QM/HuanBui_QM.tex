@@ -7,6 +7,7 @@
 \usepackage{authblk}
 \usepackage{amsfonts}
 \usepackage{esint}
+\usepackage[makeroom]{cancel}
 \usepackage{dsfont}
 \usepackage{centernot}
 \usepackage{mathtools}
@@ -6563,9 +6564,9 @@ This matches up exactly with what we found in Eq. \eqref{amplitudeM}, where agai
 
 \subsubsection{Evaluating $\mathcal{M}$ - my attempt}
 
-With
+From \eqref{exact}, we have roughly
 \begin{align}
-\mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,  \log\lp \f{\Lambda^2}{m^2  - \alpha(1 - \alpha)K^2 - i\epsilon} \rp ,
+\mathcal{M}  = \f{i\lambda^2}{32\pi^2} \int^1_0 d\alpha\,\lb -1 + \log\lp \f{\Lambda^2}{m^2  - \alpha(1 - \alpha)K^2 - i\epsilon} \rp \rb,
 \end{align}
 in the $m^2 \ll K^2 \ll \Lambda^2$ limit, we can just set $m^2 = 0$ and actually evaluate this integral in Mathematica to find
 \begin{align}
@@ -7186,7 +7187,7 @@ Question: what is $K$ is not invertible? \\
 
 This happens in the Maxwell action:
 \begin{align}
-S(A) = \int d^4x\,\lag = \int d^4x\, \lb \f{1}{2}A_\mu (\p^2 g^{\mu\nu} - \p^\mu \p^\nu)A_\nu + A_\mu J^\mu \rb
+\boxed{S(A) = \int d^4x\,\lag = \int d^4x\, \lb \f{1}{2}A_\mu (\p^2 g^{\mu\nu} - \p^\mu \p^\nu)A_\nu + A_\mu J^\mu \rb}
 \end{align}
 where the matrix $K$ is proportional the differential operator:
 \begin{align}
@@ -7240,7 +7241,7 @@ where
 J = \int dr\,re^{ir^2}
 \end{align}
 which is completely independent of $\theta$. \\
-
+ 
 \textbf{Faddeev \& Popov} showed how to do this ``going over to polar coordinates'' in a unified and elegant way. First, we write
 \begin{align}
 \boxed{1 = \Delta(A) \int \mathfrak{D}[g] \, \delta[f(A_g)]}
@@ -7271,6 +7272,74 @@ So, the group integration $\int \mathfrak{D}[g]$ has been factored out. \\
 The Faddeev-Popov argument is an alternative to Feynman argument regarding evaluating $\Z$. The Faddeev-Popov method is useful in Einstein theory. 
 
 
+
+
+\subsubsection{Fixing the electromagnetic gauge}
+
+
+We will now apply Faddeev-Popov to electromagnetism. We notice that the transformation that leaves the EM action invariant is
+\begin{align}
+A_\mu \to A_\mu - \p_\mu \Lambda.
+\end{align}
+This means we can't find the photon propagator (i.e., the inverse of the differential operator) unless we fix this gauge (i.e., making this differential operator at least one-to-one).\\
+
+To do this, we notice that the original integral
+\begin{align}
+ I &= \int \mathfrak{D}[A]\, e^{iS(A)} = \lp \int \mathfrak{D}[g]\rp \int \mathfrak{D}[A]\,e^{iS(A)}\Delta(A)\delta[f(A)]
+\end{align}
+is not explicitly dependent on $f$ despite its appearance in the second equality. So, we are free to choose $f$. In particular, let us choose
+\begin{align}
+f(A) = \p A - \sigma
+\end{align}
+where $\sigma = \sigma(x)$. Because $I$ is ultimately independent of $\sigma$, we can integrate $I$ with an arbitrary functional of $\sigma$. Let this functional be
+\begin{align}
+e^{-(i/2\xi)\int d^4x\,\sigma^2(x)}.
+\end{align}
+With this, we turn the Faddeev-Popov crank:
+\begin{align}
+[\Delta(A)]^{-1} \equiv \int \mathfrak{D}[g]\,\delta[f(A_g)] = \int\mathfrak{D}[\Lambda]\,\delta[\p A - \p^2 \Lambda - \sigma].
+\end{align}
+If we set $f(A) = \p A - \sigma = 0$, then 
+\begin{align}
+\Delta A \sim \lb\int \mathfrak{D}[\Lambda] \delta(\p^2\Lambda)\rb^{-1}
+\end{align}
+which doesn't depend on $A$ and cancels with the $\int\mathfrak{D}[\Lambda]$ in the $I$ integral. And so
+\begin{align}
+I \sim \int\mathfrak{D}[A]e^{iS(A)}\delta(\p A - \sigma).
+\end{align}
+Integrating over $\sigma(x)$ to obtain
+\begin{align}
+\Z &= \int\mathfrak{D}[\sigma] e^{-(i/2\xi)\int d^4x\, \sigma^2(x)}\int \mathfrak{D}[A]e^{iS(A)}\delta(\p A - \sigma)\nn\\
+&= \int \mathfrak{D}[A]e^{iS(A) - (i/2\xi)\int d^4x\,(\p A)^2}.
+\end{align}
+Thus, the action is effectively
+\begin{align}
+S_\text{eff} = S(A) - \f{1}{2\xi}\int d^4x\, (\p A)^2
+\end{align}
+where 
+\begin{align}
+S(A) = \int d^4x\,\lag = \int d^4x\, \lb \f{1}{2}A_\mu (\p^2 g^{\mu\nu} - \p^\mu \p^\nu)A_\nu + A_\mu J^\mu \rb.
+\end{align}
+So we find after some simple simplifications that
+\begin{align}
+\boxed{S_\text{eff} = \int d^4x\, \lc \f{1}{2}A_\mu \lb \p^2 g^{\mu\nu} - \lp 1-\f{1}{\xi} \rp\p^\mu \p^\nu \rb A_\nu + A_\mu J^\mu \rc}
+\end{align}
+And so we replace $Q^{\mu\nu}$ by
+\begin{align}
+Q^{\mu\nu}_\text{eff} = \p^2 g^{\mu\nu} - \lp1 - \f{1}{\xi} \rp\p^\mu \p^\nu.
+\end{align}
+In momentum space, 
+\begin{align}
+Q^{\mu\nu}_\text{eff,k} = -k^2 g^{\mu\nu} + \lp 1 - \f{1}{\xi} \rp k^\mu k^\nu.
+\end{align}
+This operator has an inverse. It is straightforward to verify that
+\begin{align}
+Q^{\mu\nu}_\text{eff,k}\lb -g_{\nu\lambda} + (1-\xi)\f{k_\nu k_\lambda}{k^2} \rb\f{1}{k^2} = \delta^\mu_\lambda.
+\end{align}
+And so we can choose the photon propagator to be
+\begin{align}
+\boxed{\f{-i}{k^2}\lb g_{\nu\lambda} - (1-\xi)\f{k_\nu k_\lambda}{k^2} \rb}
+\end{align}
 
 
 
@@ -7530,6 +7599,364 @@ which matches exactly with the Einstein tensor $G_{\mu\nu}$ provided earlier.\\
 
 
 Note that when calling the perturbation metric $h_{\mu\nu}$ in xACT, make sure that you are calling it by \textbf{h[LI[order],-m,-n]}, so that xACT knows you \textit{mean} to call the perturbation metric.\\
+
+
+
+Thus we confirm that the Lagrangian above gives the correct Einstein tensor. But how is it found? Consider a general coordinate transformation:
+\begin{align}
+x'^\mu \to x^\mu - \epsilon^\mu(x).
+\end{align}
+Then the metric changes according to 
+\begin{align}
+g'^{\mu\nu} = \f{\p x'^\mu}{\p x^a} \f{\p x'^\nu}{\p x^b} g^{ab},
+\end{align}
+where, as before,
+\begin{align}
+g^{\mu\nu} = \eta^{\mu\nu} - h^{\mu\nu} +\dots
+\end{align}
+How does $h_{\mu\nu}$ transform under this transformation? Well, we first have that
+\begin{align}
+\f{\p x'^\mu}{\p x^a}= \f{\p}{\p x^a} (x^\mu - \epsilon^\mu(x)) = \delta^\mu_a - \p_a \epsilon^\mu.
+\end{align}
+And so treating $\p_\mu \epsilon_\nu$ as the same order as $h^{\mu\nu}$ we find
+\begin{align}
+g'^{\mu\nu} &= \f{\p x'^\mu}{\p x^a} \f{\p x'^\nu}{\p x^b}\lp \eta^{ab} - h^{ab} \rp\nn\\
+&= (\delta^\mu_a - \p_a\epsilon^\mu)(\delta^\nu_b - \p_b\epsilon^\nu)\lp \eta^{ab} - h^{ab} \rp\nn\\
+&\approx (\delta^\mu_a - \p_a\epsilon^\mu)(\eta^{a\nu} - h^{a\nu} - (\p_b e^\nu)\eta^{ab}+\dots\nn)\\
+&\approx \eta^{\mu\nu} - h^{\mu\nu} - (\p_a \epsilon^\nu)\eta^{\mu a} - (\p_b \epsilon^\mu)\eta^{b\nu}.
+\end{align}
+Next, we lower the index to get $h'_{\mu\nu}$:
+\begin{align}
+\eta_{c\mu}\eta_{d\nu}g'^{\mu\nu} &= \eta_{c\mu}\eta_{d\nu}\lp \eta^{\mu\nu} - h^{\mu\nu} - (\p_a \epsilon^\nu)\eta^{\mu a} - (\p_b \epsilon^\mu)\eta^{b\nu} \rp\nn\\
+\eta_{cd} - h'_{cd} &= \eta_{cd} - h_{cd} - (\p_a \epsilon_d)\delta^a_c - (\p_b\epsilon_c)\delta^b_c\nn\\
+h'_{cd} &= h_{cd} + \p_c \epsilon_d +  \p_d \epsilon_c. 
+\end{align}
+And so we have
+\begin{align}
+\boxed{h'_{\mu\nu}= h_{\mu\nu} + \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu}
+\end{align}
+and of course as a side product:
+\begin{align}
+\boxed{h'^{\mu\nu} = h^{\mu\nu} + \p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu}
+\end{align}
+and so the infinitesimal change in $h_{ab}$ or $h^{ab}$ is
+\begin{align}
+&\boxed{\delta h_{\mu\nu} = \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu}\\
+&\boxed{\delta h^{\mu\nu} = \p^\mu \epsilon^\nu + \p^\mu \epsilon^\mu}
+\end{align}
+which, by the way, are actually the Lie derivatives of the perturbative metric $h_{\mu\nu}$ and its inverse $h^{\mu\nu}$.\\ 
+
+Since we want to get $G_{\mu\nu}$ that is linear in $h_{\mu\nu}$, we look for quadratic terms in $h$ and in $\p$. Lorentz invariance tells us that there are four possible terms. So the action has the form
+\begin{align}
+\boxed{S = \int d^4x\,(a\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} + b \p_\lambda \tensor{h}{^\mu_\mu} \p^\lambda \tensor{h}{^\nu_\nu} + c\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + d\p^\mu\tensor{h}{^\lambda_\lambda}\p^\nu h_{\mu\nu} )}
+\end{align}
+where $a,b,c,d$ are unknown constants. Next, we require that $\delta S / \delta h_{\mu\nu} =0 $ with $\delta h_{\mu\nu} = \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu$. This should give 3 equations with 4 unknowns. Upon writing three unknowns in terms of the remaining unknown we can find the form of the Lagrangian. In the end, we should be able to fix the action up to an overall constant factor.\\
+
+With $\delta S = 0$, we bring the $\delta$ into the integrand and let $\delta \lag = 0$. The next step is to do variational derivatives with respect to $h_{\mu\nu}$ on each term in the integrand. We shall proceed, first with the first term:
+\begin{align}
+\delta(\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu}) &= \p_\lambda (\delta h^{\mu\nu})(\p^\lambda h_{\mu\nu}) + (\p_\lambda h^{\mu\nu})\p^\lambda( \delta h_{\mu\nu} )\nn\\
+&= \p_\lambda (\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)(\p^\lambda h_{\mu\nu}) + (\p_\lambda h^{\mu\nu})\p^\lambda (\p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu)\nn\\
+&= \p_\lambda (\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)(\p^\lambda h_{\mu\nu}) + (\p^\lambda h_{\mu\nu})\p_\lambda (\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)\nn\\
+&= 2\p_\lambda (\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)(\p^\lambda h_{\mu\nu})\nn\\
+&= 4[\p_\lambda (\p^\mu \epsilon^\nu)](\p^\lambda h_{\mu\nu}),
+\end{align}
+where the fourth equality follows from the symmetry $\mu\leftrightarrow \nu$ in a summation. Zee says 
+\begin{align}
+[\p_\lambda (\p^\mu \epsilon^\nu)](\p^\lambda h_{\mu\nu}) \sim \epsilon^\nu \p^2 \p^\mu h_{\mu\nu}
+\end{align}
+from ``integrating by parts'' freely. It turns out we have to integrate by parts twice to get this equality. We shall proceed with the first integration by parts with respect to some measure $d\omega$ which we are not going to worry about. We shall also assume that everything vanishes when evaluated at infinity and that differential operators such as $\delta, \p_\alpha, \p^\beta, \square$ commute.
+\begin{align}
+\int d\omega \, \p_\lambda[(\p^\mu \epsilon^\nu)(\p^\lambda h_{\mu\nu})] &= \int d\omega\, [\p_\lambda(\p^\mu\epsilon^\nu)](\p^\lambda h_{\mu\nu}) + \int d\omega\, (\p^\mu\epsilon^\nu)(\p_\lambda \p^\lambda h_{\mu\nu}) \nn\\
+(\p^\mu \epsilon^\nu)(\p^\lambda h_{\mu\nu})\bigg\vert_{-\infty}^\infty&= \int d\omega\, [\p_\lambda(\p^\mu\epsilon^\nu)](\p^\lambda h_{\mu\nu}) + \int d\omega\, (\p^\mu\epsilon^\nu)(\p_\lambda \p^\lambda h_{\mu\nu})\nn\\
+0  &=  \int d\omega\, [\p_\lambda(\p^\mu\epsilon^\nu)](\p^\lambda h_{\mu\nu}) + \int d\omega\, (\p^\mu\epsilon^\nu)(\p_\lambda \p^\lambda h_{\mu\nu})\nn\\
+\implies [\p_\lambda(\p^\mu \epsilon^\nu)] (\p^\lambda h_{\mu\nu})  &= -\p^\mu \epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu}.
+\end{align}
+We evaluate this term (again) by integration by parts, again over some arbitrary measure $d\omega$ we won't worry about:
+\begin{align}
+\p^\mu (\epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu})\bigg\vert_{-\infty}^\infty &= \int d\omega\, \p^\mu \epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu} + \int d\omega\,  \epsilon^\nu \p_\lambda \p^\lambda \p^\mu h_{\mu\nu}\nn\\
+0 &= \int d\omega\, \p^\mu \epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu} + \int d\omega\,  \epsilon^\nu \p_\lambda \p^\lambda \p^\mu h_{\mu\nu}\nn\\
+\implies -\p^\mu \epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu} &= \epsilon^\nu \underbrace{\p_\lambda \p^\lambda}_{\square} \p^\mu h_{\mu\nu}.
+\end{align}
+And so, we have for the first term:
+\begin{align}
+\boxed{\delta (\p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu}) = 4e^\nu \square \p^\mu h_{\mu\nu}} 
+\end{align}
+
+
+Moving on the second term:
+\begin{align}
+\delta[(\p_\lambda h)( \p^\lambda h)] &= \delta[(\p_\lambda \tensor{h}{^\mu_\mu})( \p^\lambda \tensor{h}{^\nu_\nu})]\nn\\
+&= (\p_\lambda \delta\tensor{h}{^\mu_\mu})( \p^\lambda \tensor{h}{^\nu_\nu}) + (\p_\lambda \tensor{h}{^\mu_\mu})( \p^\lambda \delta\tensor{h}{^\nu_\nu}).
+\end{align}
+We notice that this term is very similar to the first term, except for the ``position of the index of $h$.'' That is to say, we are finding $\delta$ of the contraction. However, we can always write
+\begin{align}
+&\tensor{h}{^\mu_\mu} = \eta_{\mu x}h^{\mu x}\\
+&\tensor{h}{^\nu_\nu} = \eta^{\nu y}h_{\nu y}.
+\end{align}
+From here we can do some mental prepping for what to come: the metric is constant in the eyes of $\delta$, so we can just pull the $\eta$'s out to the left and treat them as constants. By doing this, we're left with $\eta^{\mu x}\eta_{\nu y}$ times a term of the form similar to the first term except for the appearance of the indices $x,y$. However, by symmetry arguments, we should be able to get
+\begin{align}
+\delta[(\p_\lambda h)( \p^\lambda h)] = 4\epsilon^\nu \square \p_\nu h
+\end{align}
+where the factor of $4$ is explicitly shown here for reasons we will see later. We shall see why this is true. First we write the contractions in terms of the original tensor $h$ times the metric 
+\begin{align}
+\delta[(\p_\lambda h)( \p^\lambda h)] &= \lp\eta_{\mu x}\eta^{\nu y}\rp\delta[(\p_\lambda h^{\mu x})(\p^\lambda h_{\nu y})].
+\end{align}
+Invoking the fact that
+\begin{align}
+&\delta h^{ab} = \p^a \epsilon^b + \p^b \epsilon^a \nn\\
+&\delta h_{ab} = \p_a \epsilon_b + \p_b \epsilon_a 
+\end{align}
+and the $b\leftrightarrow a$ symmetry argument in a summation, we find
+\begin{align}
+\delta[(\p_\lambda h)( \p^\lambda h)] &= 2\lp\eta_{\mu x}\eta^{\nu y}\rp [(\p_\lambda \p^\mu \epsilon^x)(\p^\lambda h_{\nu y}) + (\p^\lambda h_{\mu x})(\p_\lambda \p^\nu \epsilon^y)]\nn\\
+&= 2\lp\eta_{\mu x}\eta^{\nu y}\rp [(\p_\lambda \p^\mu \epsilon^x)(\p^\lambda h_{\nu y}) + (\p_\lambda h^{\mu x})(\p^\lambda \p_\nu \epsilon_y)]\nn\\
+&= 4\lp\eta_{\mu x}\eta^{\nu y}\rp[(\p_\lambda \p^\mu \epsilon^x)(\p^\lambda h_{\nu y})]\nn\\
+&= 4(\p_\lambda \p^\mu \epsilon_\mu)(\p^\lambda h)\nn\\
+&= 4(\p_\lambda \p_\mu \epsilon^\mu)(\p^\lambda h).
+\end{align}
+Time to integrate by parts (again over some measure $d\omega$ we won't worry about)
+\begin{align}
+\p_\lambda[(\p_\mu \epsilon^\mu)(\p^\lambda h)]\bigg\vert_{-\infty}^\infty  &= \int d\omega\,(\p_\lambda \p_\mu \epsilon^\mu)(\p^\lambda h) + \int d\omega\,(\p_\mu \epsilon^\mu)\square h\nn\\
+0 &= \int d\omega\,(\p_\lambda \p_\mu \epsilon^\mu)(\p^\lambda h) + \int d\omega\,(\p_\mu \epsilon^\mu)\square h\nn\\
+\implies (\p_\lambda \p_\mu \epsilon^\mu)(\p^\mu h) &= -(\p_\mu \epsilon^\mu)\square h.
+\end{align}
+We integrate by parts again:
+\begin{align}
+\p_\mu[\epsilon^\mu \square h]\bigg\vert_{-\infty}^\infty &= \int d\omega\,(\p_\mu \epsilon^\mu)\square h + \int d\omega\, e^\mu \square \p_\mu h\nn\\
+0 &= \int d\omega\,(\p_\mu \epsilon^\mu)\square h + \int d\omega\, \epsilon^\mu \square \p_\mu h\nn\\
+\implies (\p_\mu \epsilon^\mu)\square h &=-\epsilon^\mu \square \p_\mu h.
+\end{align}
+So we have for the second term
+\begin{align}
+\boxed{\delta[(\p_\lambda h)( \p^\lambda h)] = 4\epsilon^\nu \square \p_\nu h}
+\end{align}
+Very nice! What about the third term? We claim:
+\begin{align}
+\delta[(\p_\lambda h^{\lambda \nu})( \p^\mu h_{\mu\nu})] = 2\epsilon^\nu\square\p^\mu h_{\mu\nu} + 2\epsilon^\nu \p_\nu \p^\lambda  \p^\mu h_{\mu\lambda}.
+\end{align}
+The only way to verify this is integration by parts (surprise!). But first we have to let $\delta$ act on the $h$'s and write things out in terms of $\epsilon$'s:
+\begin{align}
+\delta[(\p_\lambda h^{\lambda \nu})( \p^\mu h_{\mu\nu})] = (\p_\lambda(\p^\lambda \epsilon^\nu + \p^\nu \epsilon^\lambda))(\p^\mu h_{\mu\nu}) + (\p_\lambda h^{\lambda\nu})(\p^\mu(\p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu)).
+\end{align}
+We will treat these two terms differently, despite the symmetry. For the first term, we simply integrate by parts twice to get
+\begin{align}
+(\p_\lambda(\p^\lambda \epsilon^\nu + \p^\nu \epsilon^\lambda))(\p^\mu h_{\mu\nu}) &= 2(\p_\lambda\p^\lambda \epsilon^\nu)(\p^\mu h_{\mu\nu}) \nn\\
+&= -2(\p^\lambda \epsilon^\nu)(\p_\lambda\p^\mu h_{\mu\nu}) \nn\\
+&= 2(\epsilon^\nu)(\p^\lambda \p_\lambda\p^\mu h_{\mu\nu})\nn\\
+&= 2(\epsilon^\nu)\square\p^\mu h_{\mu\nu}.
+\end{align}
+We recognize that, for the second term, by exchanging the indices  $\mu \to \nu \to \lambda \to \mu$, then appropriately lowering and raising the indices on the second term, then use the $\lambda \leftrightarrow \nu$ symmetry argument in the Lie derivative summation, we get
+\begin{align}
+(\p_\mu h^{\mu\lambda})(\p^\nu(\p_\lambda \epsilon_\nu + \p_\nu \epsilon_\lambda)) &= (\p^\mu h_{\mu\lambda})(\p_\nu(\p^\lambda \epsilon^\nu + \p^\nu \epsilon^\lambda))\nn\\
+&= 2(\p^\mu h_{\mu\lambda})(\p_\nu\p^\lambda \epsilon^\nu).
+\end{align}
+From here, we will integrate by parts twice to get what we want. I won't be showing all the steps here because we can now do this integration by parts ``internally:''
+\begin{align}
+2(\p^\mu h_{\mu\lambda})\p_\nu (\p^\lambda \epsilon^\nu) = -2(\p_\nu\p^\mu h_{\mu\lambda})(\p^\lambda \epsilon^\nu) = 2\epsilon^\nu \p^\lambda \p_\nu \p^\mu h_{\mu\lambda} = 2\epsilon^\nu \p_\nu \p^\lambda  \p^\mu h_{\mu\lambda},
+\end{align} 
+where the last equality follows from the fact that these differential operators commute. Recognize the pattern in the first two equalities? Every time we integrate by parts, we essentially let one derivative act on another factor (say let $\p_\nu$ act on the $\p h$ instead of on $\epsilon$). Since the total derivative is zero when evaluated at infinity, this new quantity is equal to minus the original quantity. We keep doing this until all derivatives are sandwiched between $\epsilon^\nu$ and $h_{\mu\lambda}$. \\
+
+So we have for the third term
+\begin{align}
+\boxed{\delta[(\p_\lambda h^{\lambda \nu})( \p^\mu h_{\mu\nu})] = 2\epsilon^\nu\square\p^\mu h_{\mu\nu} + 2\epsilon^\nu \p_\nu \p^\lambda  \p^\mu h_{\mu\lambda}}
+\end{align}
+
+What about the fourth term? Once again we have a contraction, which means we need to write it out in terms of the metric $\eta$, then pull it outside of the derivative since it is just a constant in the eyes of $\delta$. We also invoke the symmetry argument once again with derivatives of the $\epsilon$'s. So,
+\begin{align}
+\delta[\p^\mu\tensor{h}{^\lambda_\lambda}\p^\nu h_{\mu\nu} ] &= \delta[\eta_{\lambda x}\p^\mu h^{\lambda x}  \p^\nu h_{\mu\nu}]\nn\\
+&= (\eta_{\lambda x})\delta[ \p^\mu h^{\lambda x} \p^\nu h_{\mu\nu}]\nn\\
+&= (\eta_{\lambda x})\lc \p^\mu(\p^\lambda \epsilon^x + \p^x \epsilon^\lambda)\p^\nu h_{\mu\nu} + \p^\mu h^{\lambda x}  \p^\nu (\p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu) \rc\nn\\
+&= 2(\p^\mu\p^\lambda \epsilon_\lambda) \p^\nu h_{\mu\nu} + (2\p^\mu h) \p^\nu(\p_\mu\epsilon_\nu).
+\end{align}
+Integrate by parts the first term (twice) to get
+\begin{align}
+2 (\p^\mu \p^\lambda \epsilon_\lambda)\p^\nu h_{\mu\nu} = 2\epsilon_\lambda \p^\lambda \p^\mu \p^\nu h_{\mu\nu}.
+\end{align}
+Integrate by parts the second term (twice) to get
+\begin{align}
+(2\p^\mu h) \p^\nu(\p_\mu\epsilon_\nu) &= 2\epsilon^\nu \square \p_\nu h.
+\end{align}
+So we have
+\begin{align}
+\boxed{\delta[\p^\mu\tensor{h}{^\lambda_\lambda} \p^\nu h_{\mu\nu}] = 2\epsilon_\lambda \p^\lambda \p^\mu \p^\nu h_{\mu\nu} + 2\epsilon_\nu\square \p^\nu h =  2\epsilon^\lambda \p_\lambda \p^\mu \p^\nu h_{\mu\nu}  + 2\epsilon^\nu\square \p_\nu h}
+\end{align}
+Very nice! Putting everything we've done so far together, we find
+\begin{align}
+&\,\delta(a\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} + b \p_\lambda h \p^\lambda h + c\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + d\p^\mu h \p^\nu h )\nn\\
+= &\,4a(\epsilon^\nu \square \p^\mu h_{\mu\nu}) + 4b(\epsilon^\nu \square \p_\nu h) + c (2\epsilon^\nu\square\p^\mu h_{\mu\nu} + 2\epsilon^\nu \p_\nu \p^\lambda  \p^\mu h_{\mu\lambda}) \nn \\ &\,\,\,\,\,+ 2d(\epsilon^\lambda \p_\lambda \p^\mu\p^\nu h_{\mu\nu}) + 2d(\epsilon^\nu \square \p_\nu h)\nn\\
+= &\,(4a+2c)(\epsilon^\nu \square \p^\mu h_{\mu\nu}) + (4b + 2d)(\epsilon^\nu \square \p_\nu h) + (2c+ 2d)(\epsilon^\nu \p_\nu \p^\lambda\p^\mu h_{\lambda\mu})\nn\\
+= & \,0.
+\end{align} 
+When holds when we let $a = 1/2$, then $c = -1$, so $d = 1$, which implies $b = -1/2$.
+Thus the correct action up to an overall factor is
+\begin{align}
+\boxed{S = \int d^4x\, \f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{2} \p_\lambda h \p^\lambda h -\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + \p^\mu h\p^\nu h}
+\end{align}
+So we have successfully constructed the linearized action.\\
+
+Thus even if we had never heard of the Einstein-Hilbert action we could still determine the action gravity in the weak field limit by requiring that the action be invariant under the transformation
+\begin{align}
+x^\mu \to x'^\mu - \epsilon^\mu(x)
+\end{align}
+or equivalently 
+\begin{align}
+\delta h_{\mu\nu} = h'_{\mu\nu} - h_{\mu\nu} = \p_\mu \epsilon_\nu +\p_\nu \epsilon_\mu. 
+\end{align}
+So based on our argument in the previous section, we can now write the weak field expansion of the action $S$ as
+\begin{align}
+\boxed{S_{\text{wfg}} = \int d^4x\, \lp \f{1}{32\pi G}\mathcal{I} - \f{1}{2}h_{\mu\nu}T^{\mu\nu} \rp}
+\end{align}
+where
+\begin{align}
+\mathcal{I} = \f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{2} \p_\lambda h \p^\lambda h -\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + \p^\mu h\p^\nu h
+\end{align}
+and $T_{\mu\nu}$ is the stress-energy tensor associated with matter. 
+
+
+
+
+
+
+\subsubsection{Graviton propagator}
+
+
+From the previous section we see that the weak field action $S_{\text{wfg}}$ has the same quadratic structure of all the field theories we have studied, and so the graviton propagator is once again the inverse of a differential operator. But just as in Maxwell's theory the relevant differential operator in the Einstein-Hilbert theory does not have an inverse because of the ``gauge invariance,'' i.e., under a transformation the action remains invariant. In other terms, we see that the kernel of the differential operator is not trivial, i.e., it is not one-to-one and therefore cannot have a well-defined inverse. \\
+
+To deal with this, we need to rely on the Faddeev-Popov method. Recall that the Faddeev-Popov method allows us to split our integration over physically distinct configurations and those over gauge orbits.\\
+
+We observe that by adding 
+\begin{align}
+\lp \p^\mu h_{\mu\nu} - \f{1}{2}\p_\nu \tensor{h}{^\lambda_\lambda} \rp^2
+\end{align}
+to the invariant Lagrangian
+\begin{align}
+\f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{2} \p_\lambda \tensor{h}{^\mu_\mu} \p^\lambda \tensor{h}{^\nu_\nu} -\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + \p^\mu \tensor{h}{^\lambda_\lambda}\p^\nu h_{\mu\nu}
+\end{align}
+we get
+\begin{align}
+&\,\f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{2} \p_\lambda \tensor{h}{^\mu_\mu} \p^\lambda \tensor{h}{^\nu_\nu} -\cancel{\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu}} + \cancel{\p^\mu \tensor{h}{^\lambda_\lambda}\p^\nu h_{\mu\nu}}\nn\\
+&\,\,\,\,\,+ \cancel{(\p^\mu h_{\mu\nu})(\p^\lambda h_{\lambda \nu})} - \cancel{\p^\mu h_{\mu\nu}\p_\nu \tensor{h}{^\lambda_\lambda}} + \f{1}{4}(\p_\nu h)(\p^\nu h)\nn\\
+=&\, \f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{4} \p_\lambda \tensor{h}{^\mu_\mu} \p^\lambda \tensor{h}{^\nu_\nu}. 
+\end{align}
+the weak field action effectively becomes
+\begin{align}
+\boxed{S_\text{wfg} = \int d^4x\, \f{1}{2}\lb \f{1}{32\pi G}\lp \p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu} - \f{1}{2}\p_\lambda h\p^\lambda h \rp - h_{\mu\nu}T^{\mu\nu} \rb}
+\end{align}
+Why is this addition justified? Recall in the subsection \textit{Gauge Invariance: A Photon Can Find No Rest} where we introduced the Faddeev-Popov trick, we find that by adding $(\p A)^2$ to the Lagrangian we were able to replace the original action by a new action whose Lagrangian contains has a differential operator with an inverse. We are doing a similar thing here. \\
+
+But of course we can't just add whatever we want to the Lagrangian and expect it to describe the same physics. One way to keep the Lagrangian the same is to require whatever we are adding to be zero. In our case, the freedom in choosing $h_{\mu\nu}$ makes this a necessary condition, which means
+\begin{align}
+\p^\mu h_{\mu\nu} - \f{1}{2}\p_\nu \tensor{h}{^\lambda_\lambda}  = 0 \iff \boxed{\p^\mu h_{\mu\nu} = \f{1}{2}\p_\nu \tensor{h}{^\lambda_\lambda}}
+\end{align} 
+This is called the \textbf{harmonic gauge condition}. It turns out that this is the linearized version of
+\begin{align}
+\p_\mu \lp \sqrt{-g}g^{\mu\nu} \rp = 0.
+\end{align}
+
+
+With these results, we can write the action as
+\begin{align}
+S_\text{wfg} &= \int d^4x\, \f{1}{2}\lb \f{1}{32\pi G}\lp \p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu} - \f{1}{2}\p_\lambda h\p^\lambda h \rp - h_{\mu\nu}T^{\mu\nu} \rb\nn\\
+%&= \int d^4x\, \f{1}{2}\lb \f{1}{32\pi G}\lp \p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu} - \p^\mu h_{\mu\nu} \p^\lambda h \rp - h_{\mu\nu}T^{\mu\nu} \rb\nn\\
+&= \boxed{\f{1}{32\pi G}\int d^4x\, \lb h^{\mu\nu}K_{\mu\nu;\lambda\sigma}(-\p^2)h^{\lambda\sigma} + \mathcal{O}(h^3) \rb}
+\end{align}
+where
+\begin{align}
+\boxed{K_{\mu\nu;\lambda\sigma} \equiv \f{1}{2}(\eta_{\mu\lambda}\eta_{\nu\sigma} +\eta_{\mu\sigma}\eta_{\nu\lambda} - \eta_{\mu\nu}\eta_{\lambda\sigma}  )}
+\end{align}
+where we regard $\lambda\nu$ and $\lambda\sigma$ as two indices. We can work backwards to check writing the action in this form makes sense, but let's not worry too much about that for now.\\
+
+Note that we are dealing with matrices acting in a linear space spanned by symmetric two-index tensors. Thus, the identity matrix is actually
+\begin{align}
+I_{\mu\nu;\lambda\sigma} \equiv \f{1}{2}(\eta_{\mu\lambda}\eta_{\nu\sigma} + \eta_{\mu\sigma}\eta_{\nu\sigma}).
+\end{align}
+We can check that
+\begin{align}
+K_{\mu\nu;\lambda\sigma} \tensor{K}{^{\lambda\sigma}_{;\rho\omega}} = I_{\mu\nu;\rho\omega},
+\end{align}
+so that
+\begin{align}
+K^{-1} = K,
+\end{align}
+similar to how $\eta^{\mu\nu} = \eta_{\mu\nu}$. Thus in the harmonic gauge the graviton propagator in flat spacetime, in momentum space, is given by (up to Newton's constant)
+\begin{align}
+\boxed{\D_{\mu\nu;\lambda\sigma}(k) = \f{1}{2}\f{K_{\mu\nu;\lambda\sigma}}{k^2 + i\epsilon} = \f{1}{2}\f{\eta_{\mu\lambda}\eta_{\nu\sigma} +\eta_{\mu\sigma}\eta_{\nu\lambda} - \eta_{\mu\nu}\eta_{\lambda\sigma}}{k^2 + i\epsilon}}
+\end{align}
+where the final $k^2$ comes from the $\p^2$ in the Lagrangian when moving to momentum space, as always.  \\
+
+So there is our graviton propagator, in the weak field limit.
+
+
+
+
+\subsubsection{Newton from Einstein}
+
+Suppose we want to find the equation of motion corresponding to the action given above
+\begin{align}
+S_\text{wfg} &= \int d^4x\, \f{1}{2}\lb \f{1}{32\pi G}\lp \p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu} - \f{1}{2}\p_\lambda h\p^\lambda h \rp - h_{\mu\nu}T^{\mu\nu} \rb.
+\end{align}
+To find the equation of motion for this theory we take the variational derivative of $S_\text{wfg}$ with respect to $h^{\mu\nu}$. \\
+
+We will rely on xACT to do this. Assuming that the rest has been setup correctly, we will just define the effective Lagrangian, vary it with respect to $h_{\mu\nu}$, and set everything to zero.
+\begin{lstlisting}
+In[15]:= DefTensor[T[m, n], M4]
+
+During evaluation of In[15]:= ** DefTensor: Defining tensor T[m,n]. 
+
+In[16]:= DefConstantSymbol[G]
+
+During evaluation of In[16]:= ** DefConstantSymbol: Defining constant symbol G. 
+
+In[19]:= LagEff := (1/
+2)*( (1/(32*Pi*G))*(CD[-l][h[LI[1], m, n]]*
+CD[l][h[LI[1], -m, -n]] - (1/2)*CD[-l][h[LI[1], a, -a]]*
+CD[l][h[LI[1], b, -b]]) - h[LI[1], -m, -n]*T[m, n] )
+
+In[20]:= LagEff
+
+Out[20]= 1/2 (- h[
+xAct`xTensor`LI[1], -m, -n]  T[m, n] + (-(1/2) CD[-l][
+h[
+xAct`xTensor`LI[1], a, -a]] CD[l][
+h[
+xAct`xTensor`LI[1], b, -b]] + CD[-l][
+h[
+xAct`xTensor`LI[1], m, n]] CD[l][
+h[
+xAct`xTensor`LI[1], -m, -n]])/(32 G \[Pi]))
+
+In[23]:= (VarD[h[LI[1], c, d], CD][LagEff*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]]) == 0 /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // ToCanonical
+\end{lstlisting}
+We quickly find
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{newton-einstein}
+\end{figure}
+Since the stress-energy tensor is symmetric, we can combine $T_{cd}$ and $T_{dc}$ in the output to get the Euler-Lagrange equation of motion:
+\begin{align}
+\boxed{\f{1}{32\pi G}(- 2 \square h_{\mu\nu} + \eta_{\mu\nu} \square h) - T_{\mu\nu} = 0}
+\end{align}
+Easy! Contracting this (i.e., taking the trace):
+\begin{align}
+\eta_{\mu\nu}\lb\f{1}{32\pi G}(- 2 \square h_{\mu\nu} + \eta_{\mu\nu} \square h) - T_{\mu\nu}\rb &= \f{1}{32\pi G}\lp -2\square h + 4 \square h \rp - T \nn\\
+&= \f{1}{16\pi G} \square h - T \nn\\
+&= 0.
+\end{align}
+Therefore
+\begin{align}
+\square h = 16\pi GT = 16\pi G \eta^{\mu\nu}T_{\mu\nu}.
+\end{align}
+And so plugging things back into the Euler-Lagrange equation we can find 
+\begin{align}
+\boxed{\square h_{\mu\nu} = -16\pi G \lp T_{\mu\nu} - \f{1}{2}\eta_{\mu\nu}T \rp}
+\end{align}
+In the static limit, $T_{00}$ is the dominant component of the stress-energy tensor, and so this equality reduces to
+\begin{align}
+\boxed{\laplacian{\phi}= 4\pi GT_{00}}
+\end{align}
+where the Newtonian gravitational potential is $\phi \equiv h_{00}/2$. We have just derived Poisson's equation for $\phi$. 
+
 
 
 
