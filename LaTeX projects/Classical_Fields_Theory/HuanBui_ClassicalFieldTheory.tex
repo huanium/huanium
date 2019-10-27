@@ -2,12 +2,16 @@
 \documentclass{book}
 \usepackage{physics}
 \usepackage{amsmath}
+\usepackage[makeroom]{cancel}
 \numberwithin{equation}{section}
 \usepackage{siunitx}
 \usepackage{braket}
 \usepackage{authblk}
 %\usepackage[a4paper, margin=1.5in]{geometry}
 \usepackage{parskip}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
 \setlength{\parindent}{15pt}
 \usepackage{tikz}
 \usetikzlibrary{arrows, calc, patterns, angles, quotes}
@@ -61,6 +65,45 @@
 \newcommand{\rc}{\right\}}
 %\usepgfplotslibrary{external}
 %\tikzexternalize
+
+
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
 
 \begin{document}
 \begin{titlepage}\centering
@@ -3927,6 +3970,409 @@ where
 \end{align}
 
 
+We know that when requiring $\delta S = 0 \iff \delta S / \delta h^{\mu\nu} = 0$, i.e., the variational derivative of $S$ with respect to $h^{\mu\nu}$ is zero, we get the Einstein tensor $G_{\mu\nu}$ given by
+\begin{align}
+G_{\mu\nu} &= R_{\mu\nu} - \f{1}{2}\eta_{\mu\nu}R \nonumber\\
+&= \f{1}{2}\lp  \p_\sigma\p_\mu \tensor{h}{^\sigma_\nu} + \p_\nu \p_\sigma \tensor{h}{^\sigma_\mu}- \p_\mu\p_\nu h - \square h_{\mu\nu} - \eta_{\mu\nu}\p_\rho\p_\lambda h^{\rho\lambda} + \eta_{\mu\nu}\square h  \rp
+\end{align}
+
+Let's check this in xACT, as an exercise in indexing and of course in using xACT. Here are the things we will need to do, in order: (1) importing the packages, (2) defining the manifold, (3) turning on the metric variations option, (4) defining the metric $\eta_{\mu\nu}$ (don't worry about making it Minkowskian), (5) defining the perturbation $h_{\mu\nu}$, (6) defining the Lagrangian, (7) taking the variational derivative of the Lagrangian with VarD (assuming $\sqrt{-\eta} = 1$, of course).
+\begin{lstlisting}
+... (import packages here)
+...
+DefManifold[M4, 4, {a, b, c, d, e, f, i, k, l, m, n}]
+
+DefMetricPerturbation /. Options@DefMetric
+
+DefMetric[-1, \[Eta][-a, -b], CD, {"%", "\[Del]"}]
+
+DefMetricPerturbation[\[Eta], h, \[Epsilon]]
+
+Lag := (1/
+2)*((CD[-m][h[LI[1], m, n]])*(CD[-n][h[LI[1], -c, c]]) - (CD[-m][
+h[LI[1], c, d]])*(CD[-c][h[LI[1], m, -d]]) + (1/2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, d]])*(CD[-n][h[LI[1], -c, -d]]) - (1/
+2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, -c]])*(CD[-n][h[LI[1], d, -d]]))
+
+(VarD[h[LI[1], c, d], CD][Lag*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]]) /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // ToCanonical
+\end{lstlisting}
+Here's what we get:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.4]{lag-weak}
+\end{figure}
+
+Putting this back into \LaTeX{} after doing some manual contractions/simplifications, plus noting that the covariant derivative here is just the regular partial derivatives, we find that
+\begin{align}
+G_{\mu\nu} = \f{1}{2}\lp -\square h_{\mu\nu} + \p_\sigma \p_\nu \tensor{h}{^\sigma_\mu}  
++ \p_\sigma \p_\mu \tensor{h}{^\sigma_\nu} 
+- \eta_{\mu\nu}\p_\lambda \p_\sigma h^{\lambda\sigma} + \eta_{\mu\nu}\square h - \p_\mu\p_\nu h\rp
+\end{align}
+which matches exactly with the Einstein tensor $G_{\mu\nu}$ provided earlier.\\
+
+
+Note that when calling the perturbation metric $h_{\mu\nu}$ in xACT, make sure that you are calling it by \textbf{h[LI[order],-m,-n]}, so that xACT knows you \textit{mean} to call the perturbation metric.\\
+
+
+
+Thus we confirm that the Lagrangian above gives the correct Einstein tensor. But how is it found? Consider a general coordinate transformation:
+\begin{align}
+x'^\mu \to x^\mu - \epsilon^\mu(x).
+\end{align}
+Then the metric changes according to 
+\begin{align}
+g'^{\mu\nu} = \f{\p x'^\mu}{\p x^a} \f{\p x'^\nu}{\p x^b} g^{ab},
+\end{align}
+where, as before,
+\begin{align}
+g^{\mu\nu} = \eta^{\mu\nu} - h^{\mu\nu} +\dots
+\end{align}
+How does $h_{\mu\nu}$ transform under this transformation? Well, we first have that
+\begin{align}
+\f{\p x'^\mu}{\p x^a}= \f{\p}{\p x^a} (x^\mu - \epsilon^\mu(x)) = \delta^\mu_a - \p_a \epsilon^\mu.
+\end{align}
+And so treating $\p_\mu \epsilon_\nu$ as the same order as $h^{\mu\nu}$ we find
+\begin{align}
+g'^{\mu\nu} &= \f{\p x'^\mu}{\p x^a} \f{\p x'^\nu}{\p x^b}\lp \eta^{ab} - h^{ab} \rp\nn\\
+&= (\delta^\mu_a - \p_a\epsilon^\mu)(\delta^\nu_b - \p_b\epsilon^\nu)\lp \eta^{ab} - h^{ab} \rp\nn\\
+&\approx (\delta^\mu_a - \p_a\epsilon^\mu)(\eta^{a\nu} - h^{a\nu} - (\p_b e^\nu)\eta^{ab}+\dots\nn)\\
+&\approx \eta^{\mu\nu} - h^{\mu\nu} - (\p_a \epsilon^\nu)\eta^{\mu a} - (\p_b \epsilon^\mu)\eta^{b\nu}.
+\end{align}
+Next, we lower the index to get $h'_{\mu\nu}$:
+\begin{align}
+\eta_{c\mu}\eta_{d\nu}g'^{\mu\nu} &= \eta_{c\mu}\eta_{d\nu}\lp \eta^{\mu\nu} - h^{\mu\nu} - (\p_a \epsilon^\nu)\eta^{\mu a} - (\p_b \epsilon^\mu)\eta^{b\nu} \rp\nn\\
+\eta_{cd} - h'_{cd} &= \eta_{cd} - h_{cd} - (\p_a \epsilon_d)\delta^a_c - (\p_b\epsilon_c)\delta^b_c\nn\\
+h'_{cd} &= h_{cd} + \p_c \epsilon_d +  \p_d \epsilon_c. 
+\end{align}
+And so we have
+\begin{align}
+\boxed{h'_{\mu\nu}= h_{\mu\nu} + \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu}
+\end{align}
+and of course as a side product:
+\begin{align}
+\boxed{h'^{\mu\nu} = h^{\mu\nu} + \p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu}
+\end{align}
+and so the infinitesimal change in $h_{ab}$ or $h^{ab}$ is
+\begin{align}
+&\boxed{\delta h_{\mu\nu} = \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu}\\
+&\boxed{\delta h^{\mu\nu} = \p^\mu \epsilon^\nu + \p^\mu \epsilon^\mu}
+\end{align}
+which, by the way, are actually the Lie derivatives of the perturbative metric $h_{\mu\nu}$ and its inverse $h^{\mu\nu}$. These formulas represent the change of the metric perturbation under an infinitesimal diffeomorphism along the vector field $\epsilon^\mu$. \\ 
+
+Since we want to get $G_{\mu\nu}$ that is linear in $h_{\mu\nu}$, we look for quadratic terms in $h$ and in $\p$. Lorentz invariance tells us that there are four possible terms. So the action has the form
+\begin{align}
+\boxed{S = \int d^4x\,(a\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} + b \p_\lambda \tensor{h}{^\mu_\mu} \p^\lambda \tensor{h}{^\nu_\nu} + c\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + d\p^\mu\tensor{h}{^\lambda_\lambda}\p^\nu h_{\mu\nu} )}
+\end{align}
+where $a,b,c,d$ are unknown constants. Next, we require that $\delta S / \delta h_{\mu\nu} =0 $ with $\delta h_{\mu\nu} = \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu$. This should give 3 equations with 4 unknowns. Upon writing three unknowns in terms of the remaining unknown we can find the form of the Lagrangian. In the end, we should be able to fix the action up to an overall constant factor.\\
+
+With $\delta S = 0$, we bring the $\delta$ into the integrand and let $\delta \lag = 0$. The next step is to do variational derivatives with respect to $h_{\mu\nu}$ on each term in the integrand. We shall proceed, first with the first term:
+\begin{align}
+\delta(\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu}) &= \p_\lambda (\delta h^{\mu\nu})(\p^\lambda h_{\mu\nu}) + (\p_\lambda h^{\mu\nu})\p^\lambda( \delta h_{\mu\nu} )\nn\\
+&= \p_\lambda (\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)(\p^\lambda h_{\mu\nu}) + (\p_\lambda h^{\mu\nu})\p^\lambda (\p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu)\nn\\
+&= \p_\lambda (\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)(\p^\lambda h_{\mu\nu}) + (\p^\lambda h_{\mu\nu})\p_\lambda (\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)\nn\\
+&= 2\p_\lambda (\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)(\p^\lambda h_{\mu\nu})\nn\\
+&= 4[\p_\lambda (\p^\mu \epsilon^\nu)](\p^\lambda h_{\mu\nu}),
+\end{align}
+where the fourth equality follows from the symmetry $\mu\leftrightarrow \nu$ in a summation. Zee says 
+\begin{align}
+[\p_\lambda (\p^\mu \epsilon^\nu)](\p^\lambda h_{\mu\nu}) \sim \epsilon^\nu \p^2 \p^\mu h_{\mu\nu}
+\end{align}
+from ``integrating by parts'' freely. It turns out we have to integrate by parts twice to get this equality. We shall proceed with the first integration by parts with respect to some measure $d\omega$ which we are not going to worry about. We shall also assume that everything vanishes when evaluated at infinity and that differential operators such as $\delta, \p_\alpha, \p^\beta, \square$ commute.
+\begin{align}
+\int d\omega \, \p_\lambda[(\p^\mu \epsilon^\nu)(\p^\lambda h_{\mu\nu})] &= \int d\omega\, [\p_\lambda(\p^\mu\epsilon^\nu)](\p^\lambda h_{\mu\nu}) + \int d\omega\, (\p^\mu\epsilon^\nu)(\p_\lambda \p^\lambda h_{\mu\nu}) \nn\\
+(\p^\mu \epsilon^\nu)(\p^\lambda h_{\mu\nu})\bigg\vert_{-\infty}^\infty&= \int d\omega\, [\p_\lambda(\p^\mu\epsilon^\nu)](\p^\lambda h_{\mu\nu}) + \int d\omega\, (\p^\mu\epsilon^\nu)(\p_\lambda \p^\lambda h_{\mu\nu})\nn\\
+0  &=  \int d\omega\, [\p_\lambda(\p^\mu\epsilon^\nu)](\p^\lambda h_{\mu\nu}) + \int d\omega\, (\p^\mu\epsilon^\nu)(\p_\lambda \p^\lambda h_{\mu\nu})\nn\\
+\implies [\p_\lambda(\p^\mu \epsilon^\nu)] (\p^\lambda h_{\mu\nu})  &= -\p^\mu \epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu}.
+\end{align}
+We evaluate this term (again) by integration by parts, again over some arbitrary measure $d\omega$ we won't worry about:
+\begin{align}
+\p^\mu (\epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu})\bigg\vert_{-\infty}^\infty &= \int d\omega\, \p^\mu \epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu} + \int d\omega\,  \epsilon^\nu \p_\lambda \p^\lambda \p^\mu h_{\mu\nu}\nn\\
+0 &= \int d\omega\, \p^\mu \epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu} + \int d\omega\,  \epsilon^\nu \p_\lambda \p^\lambda \p^\mu h_{\mu\nu}\nn\\
+\implies -\p^\mu \epsilon^\nu \p_\lambda \p^\lambda h_{\mu\nu} &= \epsilon^\nu \underbrace{\p_\lambda \p^\lambda}_{\square} \p^\mu h_{\mu\nu}.
+\end{align}
+And so, we have for the first term:
+\begin{align}
+\boxed{\delta (\p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu}) = 4e^\nu \square \p^\mu h_{\mu\nu}} 
+\end{align}
+
+
+Moving on the second term:
+\begin{align}
+\delta[(\p_\lambda h)( \p^\lambda h)] &= \delta[(\p_\lambda \tensor{h}{^\mu_\mu})( \p^\lambda \tensor{h}{^\nu_\nu})]\nn\\
+&= (\p_\lambda \delta\tensor{h}{^\mu_\mu})( \p^\lambda \tensor{h}{^\nu_\nu}) + (\p_\lambda \tensor{h}{^\mu_\mu})( \p^\lambda \delta\tensor{h}{^\nu_\nu}).
+\end{align}
+We notice that this term is very similar to the first term, except for the ``position of the index of $h$.'' That is to say, we are finding $\delta$ of the contraction. However, we can always write
+\begin{align}
+&\tensor{h}{^\mu_\mu} = \eta_{\mu x}h^{\mu x}\\
+&\tensor{h}{^\nu_\nu} = \eta^{\nu y}h_{\nu y}.
+\end{align}
+From here we can do some mental prepping for what to come: the metric is constant in the eyes of $\delta$, so we can just pull the $\eta$'s out to the left and treat them as constants. By doing this, we're left with $\eta^{\mu x}\eta_{\nu y}$ times a term of the form similar to the first term except for the appearance of the indices $x,y$. However, by symmetry arguments, we should be able to get
+\begin{align}
+\delta[(\p_\lambda h)( \p^\lambda h)] = 4\epsilon^\nu \square \p_\nu h
+\end{align}
+where the factor of $4$ is explicitly shown here for reasons we will see later. We shall see why this is true. First we write the contractions in terms of the original tensor $h$ times the metric 
+\begin{align}
+\delta[(\p_\lambda h)( \p^\lambda h)] &= \lp\eta_{\mu x}\eta^{\nu y}\rp\delta[(\p_\lambda h^{\mu x})(\p^\lambda h_{\nu y})].
+\end{align}
+Invoking the fact that
+\begin{align}
+&\delta h^{ab} = \p^a \epsilon^b + \p^b \epsilon^a \nn\\
+&\delta h_{ab} = \p_a \epsilon_b + \p_b \epsilon_a 
+\end{align}
+and the $b\leftrightarrow a$ symmetry argument in a summation, we find
+\begin{align}
+\delta[(\p_\lambda h)( \p^\lambda h)] &= 2\lp\eta_{\mu x}\eta^{\nu y}\rp [(\p_\lambda \p^\mu \epsilon^x)(\p^\lambda h_{\nu y}) + (\p^\lambda h_{\mu x})(\p_\lambda \p^\nu \epsilon^y)]\nn\\
+&= 2\lp\eta_{\mu x}\eta^{\nu y}\rp [(\p_\lambda \p^\mu \epsilon^x)(\p^\lambda h_{\nu y}) + (\p_\lambda h^{\mu x})(\p^\lambda \p_\nu \epsilon_y)]\nn\\
+&= 4\lp\eta_{\mu x}\eta^{\nu y}\rp[(\p_\lambda \p^\mu \epsilon^x)(\p^\lambda h_{\nu y})]\nn\\
+&= 4(\p_\lambda \p^\mu \epsilon_\mu)(\p^\lambda h)\nn\\
+&= 4(\p_\lambda \p_\mu \epsilon^\mu)(\p^\lambda h).
+\end{align}
+Time to integrate by parts (again over some measure $d\omega$ we won't worry about)
+\begin{align}
+\p_\lambda[(\p_\mu \epsilon^\mu)(\p^\lambda h)]\bigg\vert_{-\infty}^\infty  &= \int d\omega\,(\p_\lambda \p_\mu \epsilon^\mu)(\p^\lambda h) + \int d\omega\,(\p_\mu \epsilon^\mu)\square h\nn\\
+0 &= \int d\omega\,(\p_\lambda \p_\mu \epsilon^\mu)(\p^\lambda h) + \int d\omega\,(\p_\mu \epsilon^\mu)\square h\nn\\
+\implies (\p_\lambda \p_\mu \epsilon^\mu)(\p^\mu h) &= -(\p_\mu \epsilon^\mu)\square h.
+\end{align}
+We integrate by parts again:
+\begin{align}
+\p_\mu[\epsilon^\mu \square h]\bigg\vert_{-\infty}^\infty &= \int d\omega\,(\p_\mu \epsilon^\mu)\square h + \int d\omega\, e^\mu \square \p_\mu h\nn\\
+0 &= \int d\omega\,(\p_\mu \epsilon^\mu)\square h + \int d\omega\, \epsilon^\mu \square \p_\mu h\nn\\
+\implies (\p_\mu \epsilon^\mu)\square h &=-\epsilon^\mu \square \p_\mu h.
+\end{align}
+So we have for the second term
+\begin{align}
+\boxed{\delta[(\p_\lambda h)( \p^\lambda h)] = 4\epsilon^\nu \square \p_\nu h}
+\end{align}
+Very nice! What about the third term? We claim:
+\begin{align}
+\delta[(\p_\lambda h^{\lambda \nu})( \p^\mu h_{\mu\nu})] = 2\epsilon^\nu\square\p^\mu h_{\mu\nu} + 2\epsilon^\nu \p_\nu \p^\lambda  \p^\mu h_{\mu\lambda}.
+\end{align}
+The only way to verify this is integration by parts (surprise!). But first we have to let $\delta$ act on the $h$'s and write things out in terms of $\epsilon$'s:
+\begin{align}
+\delta[(\p_\lambda h^{\lambda \nu})( \p^\mu h_{\mu\nu})] = (\p_\lambda(\p^\lambda \epsilon^\nu + \p^\nu \epsilon^\lambda))(\p^\mu h_{\mu\nu}) + (\p_\lambda h^{\lambda\nu})(\p^\mu(\p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu)).
+\end{align}
+We will treat these two terms differently, despite the symmetry. For the first term, we simply integrate by parts twice to get
+\begin{align}
+(\p_\lambda(\p^\lambda \epsilon^\nu + \p^\nu \epsilon^\lambda))(\p^\mu h_{\mu\nu}) &= 2(\p_\lambda\p^\lambda \epsilon^\nu)(\p^\mu h_{\mu\nu}) \nn\\
+&= -2(\p^\lambda \epsilon^\nu)(\p_\lambda\p^\mu h_{\mu\nu}) \nn\\
+&= 2(\epsilon^\nu)(\p^\lambda \p_\lambda\p^\mu h_{\mu\nu})\nn\\
+&= 2(\epsilon^\nu)\square\p^\mu h_{\mu\nu}.
+\end{align}
+We recognize that, for the second term, by exchanging the indices  $\mu \to \nu \to \lambda \to \mu$, then appropriately lowering and raising the indices on the second term, then use the $\lambda \leftrightarrow \nu$ symmetry argument in the Lie derivative summation, we get
+\begin{align}
+(\p_\mu h^{\mu\lambda})(\p^\nu(\p_\lambda \epsilon_\nu + \p_\nu \epsilon_\lambda)) &= (\p^\mu h_{\mu\lambda})(\p_\nu(\p^\lambda \epsilon^\nu + \p^\nu \epsilon^\lambda))\nn\\
+&= 2(\p^\mu h_{\mu\lambda})(\p_\nu\p^\lambda \epsilon^\nu).
+\end{align}
+From here, we will integrate by parts twice to get what we want. I won't be showing all the steps here because we can now do this integration by parts ``internally:''
+\begin{align}
+2(\p^\mu h_{\mu\lambda})\p_\nu (\p^\lambda \epsilon^\nu) = -2(\p_\nu\p^\mu h_{\mu\lambda})(\p^\lambda \epsilon^\nu) = 2\epsilon^\nu \p^\lambda \p_\nu \p^\mu h_{\mu\lambda} = 2\epsilon^\nu \p_\nu \p^\lambda  \p^\mu h_{\mu\lambda},
+\end{align} 
+where the last equality follows from the fact that these differential operators commute. Recognize the pattern in the first two equalities? Every time we integrate by parts, we essentially let one derivative act on another factor (say let $\p_\nu$ act on the $\p h$ instead of on $\epsilon$). Since the total derivative is zero when evaluated at infinity, this new quantity is equal to minus the original quantity. We keep doing this until all derivatives are sandwiched between $\epsilon^\nu$ and $h_{\mu\lambda}$. \\
+
+So we have for the third term
+\begin{align}
+\boxed{\delta[(\p_\lambda h^{\lambda \nu})( \p^\mu h_{\mu\nu})] = 2\epsilon^\nu\square\p^\mu h_{\mu\nu} + 2\epsilon^\nu \p_\nu \p^\lambda  \p^\mu h_{\mu\lambda}}
+\end{align}
+
+What about the fourth term? Once again we have a contraction, which means we need to write it out in terms of the metric $\eta$, then pull it outside of the derivative since it is just a constant in the eyes of $\delta$. We also invoke the symmetry argument once again with derivatives of the $\epsilon$'s. So,
+\begin{align}
+\delta[\p^\mu\tensor{h}{^\lambda_\lambda}\p^\nu h_{\mu\nu} ] &= \delta[\eta_{\lambda x}\p^\mu h^{\lambda x}  \p^\nu h_{\mu\nu}]\nn\\
+&= (\eta_{\lambda x})\delta[ \p^\mu h^{\lambda x} \p^\nu h_{\mu\nu}]\nn\\
+&= (\eta_{\lambda x})\lc \p^\mu(\p^\lambda \epsilon^x + \p^x \epsilon^\lambda)\p^\nu h_{\mu\nu} + \p^\mu h^{\lambda x}  \p^\nu (\p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu) \rc\nn\\
+&= 2(\p^\mu\p^\lambda \epsilon_\lambda) \p^\nu h_{\mu\nu} + (2\p^\mu h) \p^\nu(\p_\mu\epsilon_\nu).
+\end{align}
+Integrate by parts the first term (twice) to get
+\begin{align}
+2 (\p^\mu \p^\lambda \epsilon_\lambda)\p^\nu h_{\mu\nu} = 2\epsilon_\lambda \p^\lambda \p^\mu \p^\nu h_{\mu\nu}.
+\end{align}
+Integrate by parts the second term (twice) to get
+\begin{align}
+(2\p^\mu h) \p^\nu(\p_\mu\epsilon_\nu) &= 2\epsilon^\nu \square \p_\nu h.
+\end{align}
+So we have
+\begin{align}
+\boxed{\delta[\p^\mu\tensor{h}{^\lambda_\lambda} \p^\nu h_{\mu\nu}] = 2\epsilon_\lambda \p^\lambda \p^\mu \p^\nu h_{\mu\nu} + 2\epsilon_\nu\square \p^\nu h =  2\epsilon^\lambda \p_\lambda \p^\mu \p^\nu h_{\mu\nu}  + 2\epsilon^\nu\square \p_\nu h}
+\end{align}
+Very nice! Putting everything we've done so far together, we find
+\begin{align}
+&\,\delta(a\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} + b \p_\lambda h \p^\lambda h + c\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + d\p^\mu h \p^\nu h )\nn\\
+= &\,4a(\epsilon^\nu \square \p^\mu h_{\mu\nu}) + 4b(\epsilon^\nu \square \p_\nu h) + c (2\epsilon^\nu\square\p^\mu h_{\mu\nu} + 2\epsilon^\nu \p_\nu \p^\lambda  \p^\mu h_{\mu\lambda}) \nn \\ &\,\,\,\,\,+ 2d(\epsilon^\lambda \p_\lambda \p^\mu\p^\nu h_{\mu\nu}) + 2d(\epsilon^\nu \square \p_\nu h)\nn\\
+= &\,(4a+2c)(\epsilon^\nu \square \p^\mu h_{\mu\nu}) + (4b + 2d)(\epsilon^\nu \square \p_\nu h) + (2c+ 2d)(\epsilon^\nu \p_\nu \p^\lambda\p^\mu h_{\lambda\mu})\nn\\
+= & \,0.
+\end{align} 
+When holds when we let $a = 1/2$, then $c = -1$, so $d = 1$, which implies $b = -1/2$.
+Thus the correct action up to an overall factor is
+\begin{align}
+\boxed{S = \int d^4x\, \f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{2} \p_\lambda h \p^\lambda h -\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + \p^\mu h\p^\nu h}
+\end{align}
+So we have successfully constructed the linearized action.\\
+
+Thus even if we had never heard of the Einstein-Hilbert action we could still determine the action gravity in the weak field limit by requiring that the action be invariant under the transformation
+\begin{align}
+x^\mu \to x'^\mu - \epsilon^\mu(x)
+\end{align}
+or equivalently 
+\begin{align}
+\delta h_{\mu\nu} = h'_{\mu\nu} - h_{\mu\nu} = \p_\mu \epsilon_\nu +\p_\nu \epsilon_\mu. 
+\end{align}
+So based on our argument in the previous section, we can now write the weak field expansion of the action $S$ as
+\begin{align}
+\boxed{S_{\text{wfg}} = \int d^4x\, \lp \f{1}{32\pi G}\mathcal{I} - \f{1}{2}h_{\mu\nu}T^{\mu\nu} \rp}
+\end{align}
+where
+\begin{align}
+\mathcal{I} = \f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{2} \p_\lambda h \p^\lambda h -\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + \p^\mu h\p^\nu h
+\end{align}
+and $T_{\mu\nu}$ is the stress-energy tensor associated with matter. 
+
+
+
+
+
+
+\subsubsection{Graviton propagator}
+
+
+From the previous section we see that the weak field action $S_{\text{wfg}}$ has the same quadratic structure of all the field theories we have studied, and so the graviton propagator is once again the inverse of a differential operator. But just as in Maxwell's theory the relevant differential operator in the Einstein-Hilbert theory does not have an inverse because of the ``gauge invariance,'' i.e., under a transformation the action remains invariant. In other terms, we see that the kernel of the differential operator is not trivial, i.e., it is not one-to-one and therefore cannot have a well-defined inverse. \\
+
+To deal with this, we need to rely on the Faddeev-Popov method. Recall that the Faddeev-Popov method allows us to split our integration over physically distinct configurations and those over gauge orbits.\\
+
+We observe that by adding 
+\begin{align}
+\lp \p^\mu h_{\mu\nu} - \f{1}{2}\p_\nu \tensor{h}{^\lambda_\lambda} \rp^2
+\end{align}
+to the invariant Lagrangian
+\begin{align}
+\f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{2} \p_\lambda \tensor{h}{^\mu_\mu} \p^\lambda \tensor{h}{^\nu_\nu} -\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu} + \p^\mu \tensor{h}{^\lambda_\lambda}\p^\nu h_{\mu\nu}
+\end{align}
+we get
+\begin{align}
+&\,\f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{2} \p_\lambda \tensor{h}{^\mu_\mu} \p^\lambda \tensor{h}{^\nu_\nu} -\cancel{\p_\lambda h^{\lambda \nu}\p^\mu h_{\mu\nu}} + \cancel{\p^\mu \tensor{h}{^\lambda_\lambda}\p^\nu h_{\mu\nu}}\nn\\
+&\,\,\,\,\,+ \cancel{(\p^\mu h_{\mu\nu})(\p^\lambda h_{\lambda \nu})} - \cancel{\p^\mu h_{\mu\nu}\p_\nu \tensor{h}{^\lambda_\lambda}} + \f{1}{4}(\p_\nu h)(\p^\nu h)\nn\\
+=&\, \f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} -\f{1}{4} \p_\lambda \tensor{h}{^\mu_\mu} \p^\lambda \tensor{h}{^\nu_\nu}. 
+\end{align}
+the weak field action effectively becomes
+\begin{align}
+\boxed{S_\text{wfg} = \int d^4x\, \f{1}{2}\lb \f{1}{32\pi G}\lp \p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu} - \f{1}{2}\p_\lambda h\p^\lambda h \rp - h_{\mu\nu}T^{\mu\nu} \rb}
+\end{align}
+Why is this addition justified? Recall in the subsection \textit{Gauge Invariance: A Photon Can Find No Rest} where we introduced the Faddeev-Popov trick, we find that by adding $(\p A)^2$ to the Lagrangian we were able to replace the original action by a new action whose Lagrangian contains has a differential operator with an inverse. We are doing a similar thing here. \\
+
+But of course we can't just add whatever we want to the Lagrangian and expect it to describe the same physics. One way to keep the Lagrangian the same is to require whatever we are adding to be zero. In our case, the freedom in choosing $h_{\mu\nu}$ makes this a necessary condition, which means
+\begin{align}
+\p^\mu h_{\mu\nu} - \f{1}{2}\p_\nu \tensor{h}{^\lambda_\lambda}  = 0 \iff \boxed{\p^\mu h_{\mu\nu} = \f{1}{2}\p_\nu \tensor{h}{^\lambda_\lambda}}
+\end{align} 
+This is called the \textbf{harmonic gauge condition}. It turns out that this is the linearized version of
+\begin{align}
+\p_\mu \lp \sqrt{-g}g^{\mu\nu} \rp = 0.
+\end{align}
+
+
+With these results, we can write the action as
+\begin{align}
+S_\text{wfg} &= \int d^4x\, \f{1}{2}\lb \f{1}{32\pi G}\lp \p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu} - \f{1}{2}\p_\lambda h\p^\lambda h \rp - h_{\mu\nu}T^{\mu\nu} \rb\nn\\
+%&= \int d^4x\, \f{1}{2}\lb \f{1}{32\pi G}\lp \p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu} - \p^\mu h_{\mu\nu} \p^\lambda h \rp - h_{\mu\nu}T^{\mu\nu} \rb\nn\\
+&= \boxed{\f{1}{32\pi G}\int d^4x\, \lb h^{\mu\nu}K_{\mu\nu;\lambda\sigma}(-\p^2)h^{\lambda\sigma} + \mathcal{O}(h^3) \rb}
+\end{align}
+where
+\begin{align}
+\boxed{K_{\mu\nu;\lambda\sigma} \equiv \f{1}{2}(\eta_{\mu\lambda}\eta_{\nu\sigma} +\eta_{\mu\sigma}\eta_{\nu\lambda} - \eta_{\mu\nu}\eta_{\lambda\sigma}  )}
+\end{align}
+where we regard $\lambda\nu$ and $\lambda\sigma$ as two indices. We can work backwards to check writing the action in this form makes sense, but let's not worry too much about that for now.\\
+
+Note that we are dealing with matrices acting in a linear space spanned by symmetric two-index tensors. Thus, the identity matrix is actually
+\begin{align}
+I_{\mu\nu;\lambda\sigma} \equiv \f{1}{2}(\eta_{\mu\lambda}\eta_{\nu\sigma} + \eta_{\mu\sigma}\eta_{\nu\sigma}).
+\end{align}
+We can check that
+\begin{align}
+K_{\mu\nu;\lambda\sigma} \tensor{K}{^{\lambda\sigma}_{;\rho\omega}} = I_{\mu\nu;\rho\omega},
+\end{align}
+so that
+\begin{align}
+K^{-1} = K,
+\end{align}
+similar to how $\eta^{\mu\nu} = \eta_{\mu\nu}$. Thus in the harmonic gauge the graviton propagator in flat spacetime, in momentum space, is given by (up to Newton's constant)
+\begin{align}
+\boxed{\D_{\mu\nu;\lambda\sigma}(k) = \f{1}{2}\f{K_{\mu\nu;\lambda\sigma}}{k^2 + i\epsilon} = \f{1}{2}\f{\eta_{\mu\lambda}\eta_{\nu\sigma} +\eta_{\mu\sigma}\eta_{\nu\lambda} - \eta_{\mu\nu}\eta_{\lambda\sigma}}{k^2 + i\epsilon}}
+\end{align}
+where the final $k^2$ comes from the $\p^2$ in the Lagrangian when moving to momentum space, as always.  \\
+
+So there is our graviton propagator, in the weak field limit.
+
+
+
+
+\subsubsection{Newton from Einstein}
+
+Suppose we want to find the equation of motion corresponding to the action given above
+\begin{align}
+S_\text{wfg} &= \int d^4x\, \f{1}{2}\lb \f{1}{32\pi G}\lp \p_\lambda h^{\mu\nu} \p^\lambda h_{\mu\nu} - \f{1}{2}\p_\lambda h\p^\lambda h \rp - h_{\mu\nu}T^{\mu\nu} \rb.
+\end{align}
+To find the equation of motion for this theory we take the variational derivative of $S_\text{wfg}$ with respect to $h^{\mu\nu}$. \\
+
+We will rely on xACT to do this. Assuming that the rest has been setup correctly, we will just define the effective Lagrangian, vary it with respect to $h_{\mu\nu}$, and set everything to zero.
+\begin{lstlisting}
+In[15]:= DefTensor[T[m, n], M4]
+
+During evaluation of In[15]:= ** DefTensor: Defining tensor T[m,n]. 
+
+In[16]:= DefConstantSymbol[G]
+
+During evaluation of In[16]:= ** DefConstantSymbol: Defining constant symbol G. 
+
+In[19]:= LagEff := (1/
+2)*( (1/(32*Pi*G))*(CD[-l][h[LI[1], m, n]]*
+CD[l][h[LI[1], -m, -n]] - (1/2)*CD[-l][h[LI[1], a, -a]]*
+CD[l][h[LI[1], b, -b]]) - h[LI[1], -m, -n]*T[m, n] )
+
+In[20]:= LagEff
+
+Out[20]= 1/2 (- h[
+xAct`xTensor`LI[1], -m, -n]  T[m, n] + (-(1/2) CD[-l][
+h[
+xAct`xTensor`LI[1], a, -a]] CD[l][
+h[
+xAct`xTensor`LI[1], b, -b]] + CD[-l][
+h[
+xAct`xTensor`LI[1], m, n]] CD[l][
+h[
+xAct`xTensor`LI[1], -m, -n]])/(32 G \[Pi]))
+
+In[23]:= (VarD[h[LI[1], c, d], CD][LagEff*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]]) == 0 /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // ToCanonical
+\end{lstlisting}
+We quickly find
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{newton-einstein}
+\end{figure}
+Since the stress-energy tensor is symmetric, we can combine $T_{cd}$ and $T_{dc}$ in the output to get the Euler-Lagrange equation of motion:
+\begin{align}
+\boxed{\f{1}{32\pi G}(- 2 \square h_{\mu\nu} + \eta_{\mu\nu} \square h) - T_{\mu\nu} = 0}
+\end{align}
+Easy! Contracting this (i.e., taking the trace):
+\begin{align}
+\eta_{\mu\nu}\lb\f{1}{32\pi G}(- 2 \square h_{\mu\nu} + \eta_{\mu\nu} \square h) - T_{\mu\nu}\rb &= \f{1}{32\pi G}\lp -2\square h + 4 \square h \rp - T \nn\\
+&= \f{1}{16\pi G} \square h - T \nn\\
+&= 0.
+\end{align}
+Therefore
+\begin{align}
+\square h = 16\pi GT = 16\pi G \eta^{\mu\nu}T_{\mu\nu}.
+\end{align}
+And so plugging things back into the Euler-Lagrange equation we can find 
+\begin{align}
+\boxed{\square h_{\mu\nu} = -16\pi G \lp T_{\mu\nu} - \f{1}{2}\eta_{\mu\nu}T \rp}
+\end{align}
+In the static limit, $T_{00}$ is the dominant component of the stress-energy tensor, and so this equality reduces to
+\begin{align}
+\boxed{\laplacian{\phi}= 4\pi GT_{00}}
+\end{align}
+where the Newtonian gravitational potential is $\phi \equiv h_{00}/2$. We have just derived Poisson's equation for $\phi$.
+
+
 
 
 
@@ -3971,7 +4417,1071 @@ where
 
 
 
+
+
+
+
+
 \newpage
+
+
+\section{xACT Tutorial}
+
+If you're already here, you know what xACT is and what you might need it for. This tutorial is for getting started with some basic xACT computations/manipulations.
+
+
+
+\subsection{Importing packages}
+
+Please follow the online instructions for installation. This tutorial assumes a correct installation of \textbf{xACT}. Quick debugging tip: if somethings goes wrong with xACT while you're working with in mathematica, just download a new copy of xACT and overwrite xACT in the installation folder. That should go the trick almost always.\\
+
+Three xACT packages we will need for now are \textbf{xTensor}, \textbf{xPert}, and \textbf{xTras}. xTensor extends Mathematica's capabilities in abstract tensor calculus, most useful for general relativity. However, note that xTensor does not do component calculations. It only handles symbol manipulations, including arbitrary symmetries, covariant derivatives, etc. Once a metric is defined, xTensor also defines all the associated tensors: Riemann, Ricci, Einstein, Weyl, etc. With each tensor, we can contract all the way down to scalars. \\
+
+xPert allows for doing perturbations on a metric. With xPert, we can define a Lagrangian and vary it \textit{with respect to fields} to get equations of motion, etc. xPert handles higher-order perturbations quite well, as we will see later in this tutorial. xPert is probably useful for linearized gravity, etc.\\
+
+xTras allows for doing variations with respect to fields. This is useful for, say, obtaining Einstein's field equations by varying the Lagrangian with respect to the (inverse) metric. \\
+
+Let's get started. First, we will go ahead and \textbf{import} the necessary packages. Run the following commands:
+\begin{lstlisting}
+<< xACT`xTensor`
+\end{lstlisting}
+and
+\begin{lstlisting}
+<< xACT`xPert`
+\end{lstlisting}
+The correct corresponding outputs are
+\begin{lstlisting}[language=mathematica]
+<< xACT`xTensor`
+------------------------------------------------------------
+Package xAct`xTensor`  version 1.1.3, {2018,2,28}
+
+CopyRight (C) 2002-2018, Jose M. Martin-Garcia, 
+under the General Public License.
+------------------------------------------------------------
+
+These packages come with ABSOLUTELY NO WARRANTY; for details type Disclaimer. 
+This is free software, and you are welcome to redistribute it under certain 
+conditions. See the General Public License for details.
+------------------------------------------------------------
+\end{lstlisting}
+and
+\begin{lstlisting}
+<< xACT`xPert`
+------------------------------------------------------------
+
+Package xAct`xPert`  version 1.0.6, {2018,2,28}
+
+CopyRight (C)2005-2018, David Brizuela, Jose M. Martin-Garcia and Guillermo A.
+Mena Marugan, under the General Public License.
+
+------------------------------------------------------------
+
+These packages come with ABSOLUTELY NO WARRANTY; for details type Disclaimer. 
+This is free software, and you are welcome to redistribute it under certain 
+conditions. See the General Public License for details.
+
+------------------------------------------------------------
+
+** Variable $CovDFormat changed from Prefix to Postfix
+
+** Option AllowUpperDerivatives of ContractMetric changed from False to True
+
+** Option MetricOn of MakeRule changed from None to All
+
+** Option ContractMetrics of MakeRule changed from False to True
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\newpage
+
+
+\subsection{xTensor Basics}
+
+For more information about this package, please check this \href{http://www.xact.es/Documentation/HTML/HTMLLinks/}{\underline{link}} for the correct documentation.
+
+
+\subsubsection{Defining the Basics}
+
+There are a number things we need to define before doing anything. The \textbf{manifold} must be defined first:
+\begin{lstlisting}
+DefManifold[M4, 4, {a, b, c, d, e, f, g, h, i, j, k, l}]
+\end{lstlisting}
+The output is
+\begin{lstlisting}
+DefManifold[M4, 4, {a, b, c, d, e, f, g, h, i, j, k, l}]
+
+** DefManifold: Defining manifold M4. 
+
+** DefVBundle: Defining vbundle TangentM4. 
+\end{lstlisting}
+
+Just to translate the command into English: the command defines a new 4-dimensional manifold called M4, with a list of indices. The number of indices are arbitrary, but the more the merrier so we don't run out of indices. However, be careful not to use these indices to call something else, like `g' for metric, for instance.\\
+
+
+
+Once that is done can we define the \textbf{metric}:
+\begin{lstlisting}
+DefMetric[-1, gg[-i, -j], cd, {";", "\[Del]"}]
+\end{lstlisting}
+Translation: The -1 stands for the signature of the metric. ``gg'' is the name of the metric. We can use ``g'' but remember that it has been taken in the manifold definition. ``cd'' is what we call the covariant derivative. ``/[Del]'' is the symbol denoting the covariant derivative. We will see this later.\\
+
+
+The correct output should be
+\begin{lstlisting}
+DefMetric[-1, gg[-i, -j], cd, {";", "\[Del]"}]
+
+** DefTensor: Defining symmetric metric tensor gg[-i,-j]. 
+
+** DefTensor: Defining antisymmetric tensor epsilongg[-a,-b,-c,-d]. 
+
+** DefTensor: Defining tetrametric Tetragg[-a,-b,-c,-d]. 
+
+** DefTensor: Defining tetrametric Tetragg\[Dagger][-a,-b,-c,-d]. 
+
+** DefCovD: Defining covariant derivative cd[-i]. 
+
+** DefTensor: Defining vanishing torsion tensor Torsioncd[a,-b,-c]. 
+
+** DefTensor: Defining symmetric Christoffel tensor Christoffelcd[a,-b,-c]. 
+
+** DefTensor: Defining Riemann tensor Riemanncd[-a,-b,-c,-d]. 
+
+** DefTensor: Defining symmetric Ricci tensor Riccicd[-a,-b]. 
+
+** DefCovD:  Contractions of Riemann automatically replaced by Ricci.
+
+** DefTensor: Defining Ricci scalar RicciScalarcd[]. 
+
+** DefCovD:  Contractions of Ricci automatically replaced by RicciScalar.
+
+** DefTensor: Defining symmetric Einstein tensor Einsteincd[-a,-b]. 
+
+** DefTensor: Defining Weyl tensor Weylcd[-a,-b,-c,-d]. 
+
+** DefTensor: Defining symmetric TFRicci tensor TFRiccicd[-a,-b]. 
+
+** DefTensor: Defining Kretschmann scalar Kretschmanncd[]. 
+
+** DefCovD:  Computing RiemannToWeylRules for dim 4
+
+** DefCovD:  Computing RicciToTFRicci for dim 4
+
+** DefCovD:  Computing RicciToEinsteinRules for dim 4
+
+** DefTensor: Defining weight +2 density Detgg[]. Determinant.
+\end{lstlisting}
+
+
+
+There are a few interesting things we can pay attention to in the output. It is clear that xACT has also defined associated tensors like the Riemann, Ricci tensor, Ricci scalars, Christoffel symbols, etc. It also defined the determinant, called ``Detgg[]''. This will be useful when we write down the Lagrangian.\\
+
+
+With this, we can nwo define some simple objects: scalars, contravariant vectors, and covariant vectors:
+\begin{lstlisting}
+DefTensor[s[], M4]
+
+** DefTensor: Defining tensor s[]. 
+
+DefTensor[contra[i], M4]
+
+** DefTensor: Defining tensor contra[i]. 
+
+DefTensor[covar[-i], M4]
+
+** DefTensor: Defining tensor covar[-i]. 
+\end{lstlisting}
+Here the ``-index'' denotes a subscript, and ``index'' denotes a superscript. Defining something without giving indices makes a scalar. Note that we have to include the manifold in each of the definitions above. \\
+
+Next, we can define a two-index tensor:
+\begin{lstlisting}
+DefTensor[T[-i, -j], M4, Antisymmetric[{-i, -j}]];
+
+** DefTensor: Defining tensor T[-i,-j]. 
+\end{lstlisting}
+
+Here, we are allowed to impose symmetry/antisymmetry on the defined tensor. With our example here, the tensor is anti-symmetric, so we would expect that
+\begin{align}
+T_{ij} = -T_{ji}.
+\end{align}
+we can verify this:
+\begin{lstlisting}
+In[308]:= T[-i, -j] + T[-j, -i] // ToCanonical
+
+Out[308]= 0
+\end{lstlisting}
+
+The \textbf{ToCanonical} command allows you to impose symmetry/anti-symmetry on the outputs. This is basically a ``smart simplification'' command. 
+
+
+
+
+\subsubsection{Covariant Derivatives}
+
+There is not much we can do with the covariant derivatives. Except showing that it's there in the definition of the metric. For example, we can do
+\begin{align}
+\nabla_i T_{jl}
+\end{align}
+in xACT with the following command:
+\begin{lstlisting}
+In[312]:= cd[-i][T[-j, -l]]
+\end{lstlisting}
+
+We can also do a multiple covariant derivative using ``@'' to denote a composition of two derivatives:
+\begin{lstlisting}
+In[313]:= cd[-a]@cd[-b]@cd[-c]@T[-d, -e] // ToCanonical
+
+Out[313]= cd[-a][cd[-b][cd[-c][T[-d, -e]]]]
+\end{lstlisting}
+In more readable symbols, this is just
+\begin{align}
+\nabla_a \nabla_b \nabla_c T_{de}.
+\end{align}
+
+But of course, we haven't evaluated this. To actually evaluate this expression, we use the \textbf{SortCovsD} command, which writes everything out in terms of the Riemann tensor:
+\begin{lstlisting}
+In[314]:= cd[-a]@cd[-b]@cd[-c]@T[-d, -e] // ToCanonical // SortCovDs
+
+Out[314]= - Riemanncd[-c, -b, -e, f] cd[-a][
+T[-d, -f]] - Riemanncd[-c, -b, -d, f]  cd[-a][
+T[-f, -e]] - T[-f, -e]  cd[-b][
+Riemanncd[-c, -a, -d, f]] - T[-d, -f]  cd[-b][
+Riemanncd[-c, -a, -e, f]] - Riemanncd[-c, -a, -e, f]  cd[-b][
+T[-d, -f]] - Riemanncd[-c, -a, -d, f]  cd[-b][
+T[-f, -e]] - Riemanncd[-b, -a, -e, f]  cd[-c][
+T[-d, -f]] - Riemanncd[-b, -a, -d, f]  cd[-c][
+T[-f, -e]] + cd[-c][
+cd[-b][
+cd[-a][
+T[-d, -e]]]] - Riemanncd[-b, -a, -c, f]  cd[-f][
+T[-d, -e]] - Riemanncd[-c, -b, -a, f]  cd[-f][
+T[-d, -e]]
+\end{lstlisting}
+
+Not to worry, to actual Mathematica output looks much better:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{sortcovsd}
+\end{figure}
+
+It is possible for new users that the following output is obtained:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{dollars0}
+\end{figure}
+
+This is because the dollar signs are not screened off. To fix this, simply write
+\begin{lstlisting}
+$PrePrint = ScreenDollarIndices;
+\end{lstlisting}
+then run the code again. 
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{dollars}
+\end{figure}
+Ta-da!\\
+
+
+One small test we can run is to check whether the covariant derivative of the metric is zero:
+\begin{align}
+\nabla_c g_{ab} = g_{ab;c} = 0.
+\end{align}
+We run the following command:
+\begin{lstlisting}
+In[419]:= cd[-a][gg[c, d]]
+
+Out[419]= 0.
+\end{lstlisting}
+Makes sense.
+
+
+
+
+
+
+
+\subsubsection{Contract Everything}
+
+
+We know that the Ricci tensor is a contraction of the Riemann tensor:
+\begin{align}
+R_{bd} = g^{ac}R_{abcd}.
+\end{align}
+Let's verify this in xACT with the \textbf{ContractMetric} command. We also use the \textbf{InputForm} command to see what xACT actually \textit{thinks} the output is.
+\begin{lstlisting}
+In[309]:= gg[i, k] Riemanncd[-i, -j, -k, -l] // ContractMetric // InputForm
+
+Out[309]= Riccicd[-j, -l]
+\end{lstlisting}
+We can see that xACT is smart enough to recognize the output is a Ricci tensor.\\
+
+Good, what about getting the Ricci scalar? We know that
+\begin{align}
+R = g^{\mu\nu}R_{\mu\nu}.
+\end{align}
+Once again we can check this with/against xACT
+\begin{lstlisting}
+In[311]:= gg[j, l] Riccicd[-j, -l] // ContractMetric // InputForm
+
+Out[311]//InputForm=RicciScalarcd[]
+\end{lstlisting}
+or without the InputForm command:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{ricci}
+\end{figure}
+
+
+\subsubsection{Verifying Bianchi's Second Identity}
+
+Bianchi's Second Identity is given by
+\begin{align}
+R_{abcd;e} + R_{abde;c} + R_{abec;d} = 0 \iff
+\nabla_e R_{abcd} + \nabla_c R_{abde} + \nabla_d R_{abec} = 0.
+\end{align}
+To do this in xACT, we first redefine out covariant derivative
+\begin{lstlisting}
+DefCovD[CD[-a], {";", "\[Del]"}]
+
+** DefCovD: Defining covariant derivative CD[-a]. 
+** DefTensor: Defining vanishing torsion tensor TorsionCD[a,-b,-c]. 
+** DefTensor: Defining symmetric Christoffel tensor ChristoffelCD[a,-b,-c]. 
+** DefTensor: Defining Riemann tensor RiemannCD[-a,-b,-c,d].
+Antisymmetric only in the first pair.
+** DefTensor: Defining non-symmetric Ricci tensor RicciCD[-a,-b]. 
+** DefCovD:  Contractions of Riemann automatically replaced by Ricci.
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{covar}
+\end{figure}
+
+
+Next, we establish a term:
+\begin{lstlisting}
+term1 = Antisymmetrize[CD[-e][RiemannCD[-c, -d, -b, a]], {-c, -d, -e}]
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{term1}
+\end{figure}
+The \textbf{AntiSymmetrize[expr, $\{i1,\dots, in\}$]} command antisymmetrizes \textit{expr} with respect to the $n$ free indices $i1,\dots,in$. By convention the result has a factor ($1/n!$) multiplying.\\
+It follows that the right hand side is 3 times this term:
+\begin{lstlisting}
+bianchi2 = 3 term1 // ToCanonical
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{bianchi2}
+\end{figure}
+To actually evaluate this, we first expand bianchi2 in terms of the Christoffel symbols:
+\begin{lstlisting}
+exp1 = bianchi2 // CovDToChristoffel
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{bianchi-chris}
+\end{figure}
+To \textit{actually} evaluate this, we will have to write the leftover Riemann tensors in terms of the Christoffel symbols:
+\begin{lstlisting}
+exp2 = exp1 // RiemannToChristoffel
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{rietochris}
+\end{figure}
+
+And finally, we \textit{canonicalize} everything (i.e., imposing symmetries of Christoffel symbols) to get zero:
+\begin{lstlisting}
+In[322]:= exp3 = exp2 // ToCanonical
+
+Out[322]= 0
+\end{lstlisting}
+
+Not bad at all!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\subsection{xPert Basics}
+
+
+
+
+
+
+Assuming that the reader has successfully imported the xPert package, let's get started. For more information about this package, please check this \href{http://www.xact.es/Documentation/HTML/HTMLLinks/}{\underline{link}} for the correct documentation.
+
+
+\subsubsection{Pert, Perturbation, Perturbed, \& Order Selection}
+
+
+In order to do anything, we must have had a metric already defined. In this tutorial, I will be using the ``gg'' metric from the previous section. \\
+
+To start, we will define a perturbation $h_{\mu\nu}$ to the metric and the amplitude of this perturbation, called $\epsilon$. To do this in xPert, we write
+\begin{lstlisting}
+DefMetricPerturbation[gg, pert, \[Epsilon]]
+
+** DefParameter: Defining parameter \[Epsilon]. 
+
+** DefTensor: Defining tensor pert[LI[order],-a,-b]. 
+\end{lstlisting}
+What the second line in the output is telling us is that it has also defined perturbations of all orders $h_{\mu\nu}^n$, where $n$ is the order. With this, we can recall any perturbation order using the command suggested in the output. \\
+
+In order to make this ``pert'' variable printed as $h_{\mu\nu}$ in the subsequent outputs, we will enforce:
+\begin{lstlisting}
+PrintAs[pert] ^= "h";
+\end{lstlisting}
+
+In general, this can be done such that the output is more readable. But if the reader is very efficient with reading terribly-named variables, no such enforcement is necessary.\\
+
+From here, there are many many things we can do. First, let's look what the second-order perturbation looks like, based on the second output of the perturbation definition. We expect this to be $h_{\mu\nu}^2$. To do this, we use the command \textbf{pert[LI[order], -a,-b]} where -a, -b are the subscripts.
+\begin{lstlisting}
+In[327]:= pert[LI[2], -a, -b]
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{h2}
+\end{figure}
+Not surprising. Equivalently, we can also run the following command and get the same output
+\begin{lstlisting}
+Perturbation[gg[-a, -b], 2]
+\end{lstlisting}
+Here, we're basically wanting to looking at perturbation of the metric of a certain order. \\
+
+
+Okay, so given a perturbation $h_{\mu\nu}$ of the metric, $g_{\mu\nu}$, what can we say about the perturbation of the inverse metric, $g^{\mu\nu}$? Recall the result from GR:
+\begin{align}
+g_{\mu\nu} \approx \eta_{\mu\nu} + h_{\mu\nu} \implies g^{\mu\nu} \approx \eta^{\mu\nu} - h^{\mu\nu}.
+\end{align}
+Let's see if we get the same thing from xACT by running the command
+\begin{lstlisting}
+Perturbation[gg[a, b], 1]
+\end{lstlisting}
+However, the output is not very illuminating:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{inv-pert}
+\end{figure}
+
+We have to \textbf{ExpandPerturbation} to get a readable output:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{inv-pert-exp}
+\end{figure}
+
+
+This is exactly what we expected. We note that the \textbf{Perturbation[...]} command only gives us the perturbation part but not the entire perturbed metric. This is fine, but it is something to keep in mind. \\
+
+
+But what if we wanted second, third, fourth, etc. order perturbations? while this gets much more cumbersome to do by hand, xACT handles perturbations extremely efficiently. We basically run the code again, only changing the perturbation order:
+\begin{lstlisting}
+Perturbation[gg[a, b], 2] // ExpandPerturbation
+
+Perturbation[gg[a, b], 4] // ExpandPerturbation
+\end{lstlisting}
+
+Second-order perturbation:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{second-pert}
+\end{figure}
+
+Fourth-order perturbation:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{fourth-pert}
+\end{figure}
+
+
+
+Like I have mentioned, the \textbf{Perturbation[...]} command only gives the perturbation piece of the new metric. To get the full, newly perturbed, metric, we use the \textbf{Perturbed[gg[-a,-b], order]} command. For example, the perturbed metric, up to third order is
+\begin{lstlisting}
+Perturbed[gg[-a, -b], 3]
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{third-perted}
+\end{figure}
+$\,$\\
+The perturbed inverse metric up to third order is
+\begin{lstlisting}
+Perturbed[gg[a, b], 3] // ExpandPerturbation
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{third-ptbr}
+\end{figure}
+
+
+
+
+Just for sanity check, we can get the first-order perturbed metric and inverse metric with
+\begin{lstlisting}
+Perturbed[gg[-a, -b], 1]
+
+Perturbed[gg[a, b], 1] // ExpandPerturbation
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{first-pert}
+\end{figure}
+
+Very nice!\\
+
+
+There is also a way for us to pick out only the low-order perturbations in a higher-order perturbed metric. With the following command, we are able to pick out only the first-order perturbations from a third-order perturbed metric: 
+\begin{lstlisting}
+firstorderonly = pert[LI[n_], __] :> 0 /; n > 1; 
+Perturbed[gg[-a, -b], 3] /. firstorderonly
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.3]{pickout}
+\end{figure}
+
+
+
+
+
+
+
+
+\subsubsection{Review of Variational Derivatives}
+
+Let’s do a quick review of the variational derivative. In mathematics, the variational derivative is referred to as the functional derivative. Here we will consider
+variational derivative in the context of Lagrangian mechanics.\\
+
+Suppose we have an ordinary functional action in flat 3d:
+\begin{align}
+S[\phi] = \int dt\,\lag[\phi(t),\dot{\phi}(t),t].
+\end{align}
+
+
+The variational derivative of the action is given by $\delta S/ \delta t$. Since we require this derivative to vanish at the extrema, we obtain the Euler-Lagrange by setting
+the integrand to zero:
+
+\begin{align}
+\f{\delta S}{\delta y} = 0 \implies \f{\delta }{\delta \phi} \lp \lag[\phi(t),\dot{\phi}(t),t] \rp  = \boxed{\f{\p \lag}{\p \phi} - \f{d}{dt}\f{\p \lag}{\p \dot{\phi}} = 0}
+\end{align}
+
+
+In general, for
+\begin{align}
+J[y(x)] = \int dx\,f[x,y(x),y''(x),\dots,y^{(n)}(x)],
+\end{align}
+the variational derivative of $J$ with respect to $y$ is given by
+\begin{align}
+\boxed{\f{\delta J}{\delta y} = \f{\p f}{\p y} - \f{d}{dx}\f{\p f}{\p y'} + \f{d^2}{dx^2}\f{\p f}{\p y''} - \dots + (-1)^{n-1}\f{d^n}{dx^n}\f{\p f}{\p y^{(n)}}}
+\end{align}
+
+In general relativity, we no longer get the regular $d/dx$ derivatives. Instead, we work with covariant derivatives. This means the Lagrangian density in a general action
+\begin{align}
+S[\phi] = \int d^4x\, \sqrt{-g}\hat{\lag}
+\end{align}
+depends on the field, the covariant derivative of the field, and the ``independent variable'' $x^\nu$ a vector in spacetime.
+\begin{align}
+\hat{\lag} = \hat{\lag}[\phi(x^\nu), \nabla_\mu \phi(x^\nu), x^\nu].
+\end{align}
+With this, when we take the variational derivative of $S[\phi]$ with respect to the
+field $\phi$ and set it to zero to obtain an equation of motion, we have to change the
+regular $d/dx$ derivatives to covariant derivatives (which depend on Christoffel
+symbols):
+
+\begin{align}
+\f{\delta S}{\delta y} = 0 \implies \boxed{\f{\p (\hat{\lag}\sqrt{-g})}{\p \phi} - \nabla_\mu \lp \f{\p (\hat{\lag}\sqrt{-g})}{\p(\nabla_\mu \phi)} \rp = 0}
+\end{align}
+Note that we can actually skip a step here and remove the $\sqrt{-g}$ term because it is a constant in this problem (we are varying the field). However, the $\sqrt{-g}$ will become important (i.e., has non-trivial derivative) when we do variations with respect to the metric. This has been done in \href{https://huanqbui.com/LaTeX projects/Classical_Fields_Theory/HuanBui_ClassicalFieldTheory.pdf}{\underline{the CFT notes}}, but we will do it again using xACT later in the section on xTras.\\
+
+Here we will just recall how the covariant derivative is defined in GR. The covariant derivative of a contravariant vector $\lambda^a$ with respect to a contravariant
+vector $x^c$ is given by
+\begin{align}
+\boxed{\lambda_{a;c} \equiv \nabla_c \lambda^a = \f{\p \lambda^a}{\p x^c} + \Gamma^a_{bc}\lambda^b \equiv \p_c \lambda^a + \Gamma^a_{bc}\lambda^b}
+\end{align}
+With reviews out of the way, we will look at how to define and use variational derivatives in xACT. First, we notice that variational derivatives are
+taken with respect to some field/metric, and are defined alongside with some
+covariant derivative (associated with existing Christoffel symbols, metric, etc).
+This means to get a variational derivative (\textbf{varD}) we will need (1) the field/metric
+and (2) the existing covariant derivative (\textbf{CovD}).
+\\
+
+Here are some examples of the VarD command:
+\begin{lstlisting}
+s /: VarD [metricg [a_,b_], PD][s[], rest_] := - rest/2 metricg[-a,-b]s[]
+
+Length [result = Expand @ VarD [metricg [a,b], PD][ s[]rs]]
+
+result = VarD [MaxwellA[a], PD][s[] %]
+\end{lstlisting}
+
+In the next section(s), we will encounter an example where we vary a Lagrangian
+with respect to a scalar field in a perturbed metric to obtain an equation of
+motion.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Scalar Fields, Lagrangian, Varying the Lagrangian}
+
+Here's the layout of this subsection. We would like to, in the end, get some kind of physical result we are familiar with such as conservation of energy or the Einstein field equation or some sort of equation of motion that we know exists. \\
+
+Let's first set up some theory before actually doing the calculations and getting lost in the symbols. Consider the Lagrangian for the scalar field $\phi$:
+\begin{align}
+\lag = \sqrt{-g} \lp \f{m^2 R}{2} - V(\phi) - \f{1}{2}\nabla_b \phi \nabla^b \phi \rp.
+\end{align}
+We would like to input this into xACT and look at a the perturbed Lagrangian when we perturb the metric. In order to do this, we first define the scalar field $\phi$, the potential $V(\phi)$, and the constant mass, $m$: 
+\begin{lstlisting}
+DefScalarFunction[V]
+** DefScalarFunction: Defining scalar function V. 
+DefConstantSymbol[massP]
+** DefConstantSymbol: Defining constant symbol massP. 
+PrintAs[massP] ^= "m";
+\end{lstlisting}
+With this we can define the Lagrangian:
+\begin{lstlisting}
+L = Sqrt[-1*Detgg[]]*(massP^2*RicciScalarcd[]/2 - 
+V[sf[]] - (1/2)*cd[-b][sf[]]*cd[b][sf[]])
+\end{lstlisting}
+xACT gives us a nice symbolic output of the Lagrangian, which matches what we want:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{lag-xact}
+\end{figure}
+
+
+Before actually doing any variations, we also have to define the variation of the scalar field and make it appear as $\delta \phi$
+\begin{lstlisting}
+DefTensorPerturbation[pertsf[LI[order]], sf[], M4]
+PrintAs[pertsf] ^= "\[Delta]\[Phi]";
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{var-scalar}
+\end{figure}
+
+Time to do some variations. This requires the \textbf{Perturbation} command:
+\begin{lstlisting}
+varL = L // Perturbation
+\end{lstlisting}
+
+
+\begin{figure}[!htb]
+	\includegraphics[scale=0.19]{varL1}
+\end{figure}
+
+
+To get the full expression, we have to expand on the result:
+\begin{lstlisting}
+varL = L // Perturbation // ExpandPerturbation
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.19]{varL2}
+\end{figure}
+
+There are a bunch of terms with the metric flying around, so we will contract with the metric:
+\begin{lstlisting}
+varL = L // Perturbation // ExpandPerturbation // ContractMetric
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.19]{varL3}
+\end{figure}
+
+
+Finally, we enforce canonical relations to remove the leftover abundant terms:
+\begin{lstlisting}
+varL = L // Perturbation // ExpandPerturbation // ContractMetric // 
+ToCanonical
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.19]{varL4}
+\end{figure}
+
+
+Now that we have the perturbed Lagrangian. What we want next the equation of motion. Recall that the action is given by
+\begin{align}
+S = \int d^4x\,\lag = \int d^4x \,\sqrt{-g} \hat{\lag}.
+\end{align}
+The associated Euler-Lagrange equation is
+\begin{align}
+\boxed{\f{\p \hat{\lag}}{\p \phi} - D_\mu \lp \f{\p \hat{\lag}}{\p(D_\mu \phi)} \rp = \f{\delta \hat{\lag}}{\delta \phi} = 0}
+\end{align}
+We translate this equation as ``the variational derivative of $\hat{\lag}$ with respect to the field is zero.'' With our current Lagrangian density:
+\begin{align}
+\lag = \sqrt{-g} \lp \f{m^2 R}{2} - V(\phi) - \f{1}{2}\nabla_b \phi \nabla^b \phi \rp,
+\end{align} 
+the Lagrangian of which we want to take derivatives is 
+\begin{align}
+\hat{\lag} = \f{1}{\sqrt{-g}}\lag = \f{m^2 R}{2} - V(\phi) - \f{1}{2}\nabla_b \phi \nabla^b \phi .
+\end{align}
+It follows that the equation of motion is obtained from taking variational derivative of $\hat{\lag}$ with respect to $\phi$ and set it to zero.\\
+
+Next, recall from Section 8.2 of \href{https://huanqbui.com/LaTeX projects/Classical_Fields_Theory/HuanBui_ClassicalFieldTheory.pdf}{\underline{the CFT notes}} that the equation of motion for the scalar field theory is 
+\begin{align}
+\boxed{\nabla^\mu \nabla_\mu \phi - \f{dV}{d\phi} = 0}
+\end{align}
+We would like to obtain this result, using only xACT. \\
+
+Let's start by taking the variational derivative of $\hat{\lag}$ with respect to $\phi$ and set it to zero. We do this with a simple command:
+\begin{lstlisting}
+0 == VarD[pertsf[LI[1]], cd][varL]/Sqrt[-Detgg[]]
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{varDivL1}
+\end{figure}
+where we explicitly divide the original $\lag$ by $\sqrt{-g}$ to get $\hat{\lag}$, then take the variational derivative of $\hat{\lag}$. The variation derivative is define by two objects: the field with respect to which the derivative is taken, and the covariant derivative associated with the metric. This is because as we saw before
+\begin{align}
+\boxed{\f{\p \hat{\lag}}{\p \phi} - D_\mu \lp \f{\p \hat{\lag}}{\p(D_\mu \phi)} \rp = \f{\delta \hat{\lag}}{\delta \phi}}
+\end{align}
+To simply the output above, we impose canonical relations:
+\begin{lstlisting}
+0 == VarD[pertsf[LI[1]], cd][varL]/Sqrt[-Detgg[]] // ToCanonical
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{varDivL2}
+\end{figure}
+By enforcing the Kronecker delta relation:
+\begin{lstlisting}
+delta[-LI[1], LI[1]] -> 1;
+\end{lstlisting}
+This simplifies to the equation of motion we wanted:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{varDivL3}
+\end{figure}\\
+
+So things work as we wanted.
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\subsection{xTras Basics: Metric Variations}
+
+xTras handles variations with respect to the (inverse) metric. Two of its commands that we will be using here are: \textbf{VarD} and \textbf{VarL}. VarD stands for variational derivative, whose definition includes the (inverse) metric and the associated covariant derivative. For our purposes, VarD acts on the Lagrangian $\lag = \sqrt{-g}\hat{\lag}$. VarL is also a variational derivative, except that it acts on the Lagrangian \textit{density} $\hat{\lag}$. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The output of VarD[$\lag$] and VarL[$\hat{\lag}$] should only differ by a factor of $\sqrt{-g}$. By default,
+\begin{align}
+&\text{VarD[g[-a,-b]], CD}[\lag] \text{ returns } \f{\delta \lag}{\delta g_{ab}} \\ 
+&\text{VarL[g[-a,-b]], CD}[\hat{\lag}] \text{ returns } \f{1}{\sqrt{-g}}\f{\delta (\sqrt{-g}\hat{\lag})}{\delta g_{ab}}
+\end{align} 
+where of course $\lag = \sqrt{-g}\hat{\lag}$ as always. \\
+
+Of course, we can also do variations with respect to the inverse metric. 
+\begin{align}
+&\text{VarD[g[a,b]], CD}[\lag] \text{ returns } \f{\delta \lag}{\delta g^{ab}} \\ 
+&\text{VarL[g[a,b]], CD}[\hat{\lag}] \text{ returns } \f{1}{\sqrt{-g}}\f{\delta (\sqrt{-g}\hat{\lag})}{\delta g^{ab}}
+\end{align} 
+
+
+With this, we can head over to Mathematica. \\
+
+The first we'd like to do is import the packages. To avoid possible package-missingness, we will just go ahead and import all three packages we know: xTensor, xPert, and now xTras.
+\begin{lstlisting}
+<< xACT`xTensor`
+<< xACT`xPert`
+<< xACT`xTras`
+\end{lstlisting}
+There is nothing interesting to see in the outputs of these commands so I won't go into them now. \\
+
+
+The next thing to do is of course defining the manifold on which is the metric will be defined:
+\begin{lstlisting}
+DefManifold[M4, 4, {a, b, c, d, e, i, j, k, l, m, n, p}]
+
+** DefManifold: Defining manifold M4. 
+
+** DefVBundle: Defining vbundle TangentM4. 
+\end{lstlisting}
+
+
+Here we have are to give as many indices as we can, so why not.\\
+
+Next, we would like to define the metric. But before doing so, we have to \textbf{allow} for metric perturbation in the metric definition. This is the feature in xTras that the other packages don't have. Once this is done, we can define the metric as usual:
+\begin{lstlisting}
+In[5]:= DefMetricPerturbation /. Options@DefMetric
+
+Out[5]= True
+
+In[6]:= DefMetric[-1, g[-a, -b], CD, {";", "\[Del]"}]
+
+During evaluation of In[6]:= ** DefTensor: Defining symmetric
+metric tensor g[-a,-b]. 
+
+<<< truncated output here >>>
+
+During evaluation of In[6]:= ** DefTensor: Defining weight +2 density Detg[].
+
+During evaluation of In[6]:= ** DefParameter: Defining parameter
+PerturbationParameterg. 
+
+During evaluation of In[6]:= ** DefTensor: Defining tensor
+Perturbationg[LI[order],-a,-b]. 
+\end{lstlisting}
+
+We notice that at the very end of the output the tensor Perturbationg[LI[order],-a,-b] is defined. This allows us to do Lagrangian variations with respect to the metric. \\
+
+Now that we have the metric. We can construct some (simple enough) Lagrangians and try to obtain some equation of motions.
+
+
+\subsubsection{Example: Einstein Field Equations, $\Lambda \neq 0$}
+
+First we construct the Lagrangian from $\hat{\lag}$. We will do variations with VarD and VarL. We expect to get the same equation of motion either way.
+
+In theory, we have
+\begin{align}
+\hat{\lag} = (R - 2\Lambda) \hspace{1cm} \lag = \sqrt{-g}\hat{\lag}.
+\end{align}
+
+And so in Mathematica:
+
+
+\begin{lstlisting}
+DefConstantSymbol[\[CapitalLambda]]
+
+** DefConstantSymbol: Defining constant symbol \[CapitalLambda]. 
+
+LagHatCosmo := LagHatRicci - 2*\[CapitalLambda]
+
+LagCosmo := Sqrt[-Detg[]]*(LagHatRicci - 2*\[CapitalLambda])
+
+eom3 := VarD[g[-a, -b], CD][LagCosmo]
+
+eom3/Sqrt[-Detg[]] == 0 // ContractMetric
+
+eom4 := VarL[g[-a, -b], CD][LagHatCosmo]
+
+eom4 == 0 // ContractMetric
+\end{lstlisting}
+
+To get the equation of motion in the correct form when working with ${\lag}$, we will need to divide out $\sqrt{-g}$ in the end because it's not taken care of by VarD.\\
+
+Not surprisingly, we get
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{EinsteinFieldsInv}
+\end{figure}
+
+For the forgetful reader, the Einstein field equation is given by
+\begin{align}
+R^{\mu\nu} - \f{1}{2}g^{\mu\nu}R + \Lambda g^{\mu\nu} = 0
+\end{align}
+where $R^{\mu\nu}$ is the Ricci (upper?) tensor, $g^{\mu\nu}$ is the inverse metric, $\Lambda$ is the cosmological constant, and $R$ is the Ricci scalar. \\
+
+In the other covariant form with the inverse metric, the Einstein field equations look exactly the same, except for the inverted indices:
+\begin{align}
+R_{\mu\nu} - \f{1}{2}g_{\mu\nu}R + \Lambda g_{\mu\nu} = 0
+\end{align}
+
+This could be obtained in exactly the same fashion with xACT, except that the metric used in VarD and VarL are now the inverse metric:
+\begin{lstlisting}
+eom3 := VarD[g[a, b], CD][LagCosmo]
+
+eom3/Sqrt[-Detg[]] == 0 // ContractMetric
+
+eom4 := VarL[g[a, b], CD][LagHatCosmo]
+
+eom4 == 0 // ContractMetric
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.2]{EinsteinFields.PNG}
+\end{figure}
+
+
+
+
+\subsubsection{Example: The weak field action}
+
+
+From Sean Carroll's \textit{Spacetime \& Geometry}, or from the \href{https://huanqbui.com/LaTeX projects/Classical_Fields_Theory/HuanBui_ClassicalFieldTheory.pdf}{CFT notes}, we have seen the weak field action:
+\begin{align}
+S = \int d^4x\, \sqrt{-g}\lag = \int d^4x\, \lag
+\end{align}
+where
+\begin{align}
+\lag = \f{1}{2}\lb(\p_\mu h^{\mu\nu})(\p_\nu h) - (\p_\mu h^{\rho\sigma})(\p_\rho \tensor{h}{^\mu_\sigma}) + \f{1}{2} \eta^{\mu\nu}(\p_\mu h^{\rho\sigma})(\p_\nu h_{\rho\sigma})   - \f{1}{2} \eta^{\mu\nu}(\p_\mu h)(\p_\nu h) \rb.
+\end{align}
+
+We know that when requiring $\delta S = 0 \iff \delta S / \delta h^{\mu\nu} = 0$, i.e., the variational derivative of $S$ with respect to $h^{\mu\nu}$ is zero, we get the Einstein tensor $G_{\mu\nu}$ given by
+\begin{align}
+G_{\mu\nu} &= R_{\mu\nu} - \f{1}{2}\eta_{\mu\nu}R \nonumber\\
+&= \f{1}{2}\lp  \p_\sigma\p_\mu \tensor{h}{^\sigma_\nu} + \p_\nu \p_\sigma \tensor{h}{^\sigma_\mu}- \p_\mu\p_\nu h - \square h_{\mu\nu} - \eta_{\mu\nu}\p_\rho\p_\lambda h^{\rho\lambda} + \eta_{\mu\nu}\square h  \rp
+\end{align}
+
+Let's check this in xACT, as an exercise in indexing and of course in using xACT. Here are the things we will need to do, in order: (1) importing the packages, (2) defining the manifold, (3) turning on the metric variations option, (4) defining the metric $\eta_{\mu\nu}$ (don't worry about making it Minkowskian), (5) defining the perturbation $h_{\mu\nu}$, (6) defining the Lagrangian, (7) taking the variational derivative of the Lagrangian with VarD (assuming $\sqrt{-\eta} = 1$, of course).
+\begin{lstlisting}
+... (import packages here)
+...
+DefManifold[M4, 4, {a, b, c, d, e, f, i, k, l, m, n}]
+
+DefMetricPerturbation /. Options@DefMetric
+
+DefMetric[-1, \[Eta][-a, -b], CD, {"%", "\[Del]"}]
+
+DefMetricPerturbation[\[Eta], h, \[Epsilon]]
+
+Lag := (1/
+2)*((CD[-m][h[LI[1], m, n]])*(CD[-n][h[LI[1], -c, c]]) - (CD[-m][
+h[LI[1], c, d]])*(CD[-c][h[LI[1], m, -d]]) + (1/2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, d]])*(CD[-n][h[LI[1], -c, -d]]) - (1/
+2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, -c]])*(CD[-n][h[LI[1], d, -d]]))
+
+(VarD[h[LI[1], c, d], CD][Lag*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]]) /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // ToCanonical
+\end{lstlisting}
+Here's what we get:
+\begin{figure}[!htb]
+	\includegraphics[scale=0.4]{lag-weak}
+\end{figure}
+
+Putting this back into \LaTeX{} after doing some manual contractions/simplifications, plus noting that the covariant derivative here is just the regular partial derivatives, we find that
+\begin{align}
+G_{\mu\nu} = \f{1}{2}\lp -\square h_{\mu\nu} + \p_\sigma \p_\nu \tensor{h}{^\sigma_\mu}  
++ \p_\sigma \p_\mu \tensor{h}{^\sigma_\nu} 
+- \eta_{\mu\nu}\p_\lambda \p_\sigma h^{\lambda\sigma} + \eta_{\mu\nu}\square h - \p_\mu\p_\nu h\rp
+\end{align}
+which matches exactly with the Einstein tensor $G_{\mu\nu}$ provided earlier.\\
+
+
+Note that when calling the perturbation metric $h_{\mu\nu}$ in xACT, make sure that you are calling it by \textbf{h[LI[order],-m,-n]}, so that xACT knows you \textit{mean} to call the perturbation metric.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\subsection{Undefining Basics: Play Time's Over!}
+
+This is not a recommendation. This is something we \textit{have} to do before once we are done with a calculation session, unless we are absolutely sure you will not need a separate sheet for other calculations. \\
+
+It looks like xACT remembers all definitions, even after we have deleted/put away an old Mathematica notebook and opened a new one. \\
+
+To ask Mathematica for the currently defined objects, use the following command:
+\begin{lstlisting}
+?Global`*
+\end{lstlisting}
+
+This is will give a bunch of defined symbols and objects, some of which have been manually defined by the user. Our job now is to undefine these. To do this correctly, we have to do this in the correct order, as some of these objects' existence depends on others' existence. \\
+
+First, we undefine all tensors (excluding the metric, including all scalars), all scalars, all scalar functions, and all constant symbols. These don't necessarily have be in any order.
+\begin{lstlisting}
+UndefTensor /@ {contra, covar}
+
+UndefTensor[pert]
+
+UndefTensor[pertsf]
+
+UndefTensor[sf]
+
+UndefTensor[T]
+
+UndefTensor[s]
+\end{lstlisting}
+
+We then undefine all user-defined covariant derivatives
+\begin{lstlisting}
+UndefCovD[CD]
+\end{lstlisting}
+
+Then we undefine the scalar functions:
+\begin{lstlisting}
+UndefScalarFunction[V]
+\end{lstlisting}
+and constant symbols
+\begin{lstlisting}
+UndefConstantSymbol[massP]
+\end{lstlisting}
+
+Now can we undefine the metric:
+\begin{lstlisting}
+UndefMetric[gg]
+\end{lstlisting}
+
+Finally can we undefine the manifold:
+\begin{lstlisting}
+UndefManifold[M4]
+\end{lstlisting}
+
+With that, we can be sure nothing will go wrong the next time we launch a new notebook for GR calculations.
+
+
+
+
 
 
 
