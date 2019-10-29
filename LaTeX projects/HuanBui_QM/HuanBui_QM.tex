@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{bm}
 \usepackage{authblk}
+\usepackage{empheq}
 \usepackage{amsfonts}
 \usepackage{esint}
 \usepackage[makeroom]{cancel}
@@ -35,6 +36,10 @@
 	citecolor={blue!50!black},
 	urlcolor={blue!80!black}
 }
+
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
 \newcommand{\p}{\partial}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
@@ -1816,7 +1821,7 @@ where it suffices to just specify the momentum of the particle (see, $E$ is dege
 The propagator $U(t)$ can be evaluated explicitly in the $X$ basis starting with the matrix element
 \begin{align}\label{free-propagator}
 \bra{x}U(t)\ket{x'} &= \int_{-\infty}^\infty \braket{x}{p}\braket{p}{x'}e^{-ip^2t/2m\hbar}\,dp\\
-&= \f{1}{2\pi \hbar}\int_{-\infty}^\infty e^{ip(x-x')/\hbar} \dot e^{-ip^2 t/2m\hbar}\,dp  \hspace{0.5cm}\text{Fourier transform twice?}\\
+&= \f{1}{2\pi \hbar}\int_{-\infty}^\infty e^{ip(x-x')/\hbar} \cdot e^{-ip^2 t/2m\hbar}\,dp  \hspace{0.5cm}\text{Fourier transform twice?}\\
 &= \sqrt{\f{m}{2\pi \hbar it}} e^{im(x-x')^2/2\hbar t}.
 \end{align}
 
@@ -8083,7 +8088,7 @@ The action looks something like
 \begin{align}
 S = \int d^4x\, dt \lag.
 \end{align}
-$S$ has units of $\hbar = J\dot s$, so $S$ has no units. So
+$S$ has units of $\hbar = J\cdot s$, so $S$ has no units. So
 \begin{align}
 [S] = [K]^{0} = m^0.
 \end{align}
@@ -8180,7 +8185,12 @@ Lastly, we notice that gravity has a dimensional constraint in its kinetic term,
 \newpage
 \subsection{Fierz-Pauli Massive Gravity}
 
-This section focuses on various aspects of Fierz-Pauli massive gravity. The content is based on this \href{https://arxiv.org/abs/1105.3735}{\underline{paper}} by Kurt Hinterbichler. This is section II. of the paper, which gives an overview of the original Fierz-Pauli massive gravity. I will follow the paper's layout through this section, but most of the exposition will be mine.\\
+This section focuses on various aspects of Fierz-Pauli massive gravity. The content is based on this \href{https://arxiv.org/abs/1105.3735}{\underline{paper}} by Kurt Hinterbichler. This is my exposition of part II. of the paper, which gives an overview of the original Fierz-Pauli massive gravity. I will follow the paper's layout through and fill in the details wherever I feel necessary.
+
+
+\subsubsection{The Action \& Fierz-Pauli Tuning}
+
+
 
 Recall from earlier we have worked both ways to show the action in linearized gravity (without $T_{\mu\nu}$) up to some overall constant factor is:
 \begin{align}
@@ -8197,12 +8207,200 @@ We are familiar with this action, as it describes the (well-known by now) weak f
 \int d^Dx\, -\f{1}{2}m^2\lp h_{\mu\nu}h^{\mu\nu} - h^2 \rp
 \end{align}
 hence the name ``massive gravity.'' The full action, then, is
+\begin{empheq}[box=\widefbox]{align}
+S_{FP} = \int d^Dx\, &-\f{1}{2}\p_\lambda h_{\mu\nu} \p^\lambda h^{\mu\nu} + \p_\mu h_{\nu\lambda}\p^\nu h^{\mu\lambda}\nn\\& - \p_\mu h^{\mu\nu}\p_\nu h + \f{1}{2}\p_\lambda h \p^\lambda h -\f{1}{2}m^2\lp h_{\mu\nu}h^{\mu\nu} - h^2 \rp
+\end{empheq}
+We wish to show that this action describes a massive spin 2 field (5 d.o.f $= 2s+1$). In the $m=0$ case, we recover the linearized Einstein-Hilbert action with the gauge symmetry:
 \begin{align}
-S_{FP} = \int d^Dx\, &-\f{1}{2}\p_\lambda h_{\mu\nu} \p^\lambda h^{\mu\nu} + \p_\mu h_{\nu\lambda}\p^\nu h^{\mu\lambda}\nn\\& - \p_\mu h^{\mu\nu}\p_\nu h + \f{1}{2}\p_\lambda h \p^\lambda h -\f{1}{2}m^2\lp h_{\mu\nu}h^{\mu\nu} - h^2 \rp.
+\delta h_{\mu\nu} = \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu
+\end{align}
+where once again 
+\begin{align}
+\delta h_{\mu\nu} = h'_{\mu\nu} - h_{\mu\nu}. 
+\end{align}
+We have actually seen how the action can be constructed from this gauge symmetry.\\
+
+With $m\neq 0$, however, the gauge symmetry is violated. It is clear that
+\begin{align}
+\delta\lb \f{1}{2}m^2\lp h^{\mu\nu}h_{\mu\nu} + h^2 \rp  \rb &= \f{1}{2}m^2 \lb (\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)h_{\mu\nu} + h^{\mu\nu}(\p_\mu\epsilon_\nu + \p_\nu\epsilon_\mu ) - \delta h^2 \rb\nn\\
+&= \f{1}{2}m^2\lb 2(\p^\mu \epsilon^\nu + \p^\nu \epsilon^\mu)h_{\mu\nu} - \delta(\tensor{h}{^\mu_\mu}\tensor{h}{^\nu_\nu}) \rb\nn\\
+&= \f{1}{2}m^2\lb 4(\p^\mu \epsilon^\nu) h_{\mu\nu} - \eta_{\mu a}\eta^{\nu b}\delta(h^{\mu a}h_{\nu b}) \rb\nn\\
+&= \f{1}{2}m^2\lb 4(\p^\mu \epsilon^\nu) h_{\mu\nu} - \eta_{\mu a}\eta^{\nu b}\lc 2(\p^\mu\epsilon^a)h_{\nu b} + 2(\p_\nu \epsilon_b)h^{\mu a}\rc \rb\nn\\
+&= \f{1}{2}m^2\lb 4(\p^\mu \epsilon^\nu) h_{\mu\nu} - 4(\p^\mu \epsilon_\mu)h \rb\nn\\
+&= 2m^2[(\p^\mu \epsilon^\nu) h_{\mu\nu} - (\p^\mu \epsilon_\mu)h],
+\end{align}
+which is linearly independent with other terms in the variational Lagrangian $\delta \lag$. This says that
+\begin{align}
+\delta \lag = 0 \iff m^2 = 0.
+\end{align}
+But obviously since we explicitly set $m\neq 0$, we must have that $\delta \lag \neq 0$ under $\delta h_{\mu\nu} = \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu$. So we say the mass term violates this gauge symmetry.\\
+
+The relative coefficient $-1$ between $h^2$ and $h_{\mu\nu}h^{\mu\nu}$ contractions is called the \textit{Fierz-Pauli tuning}. This number is not enforced by any known symmetry. However, any deviation from it, i.e., for any combination
+\begin{align}
+h_{\mu\nu}h^{\mu\nu} - (1-a)h^2, \quad a \neq 0
+\end{align}
+results in the action describing a scalar ghost with mass
+\begin{align}
+\boxed{m_g^2 = \f{3-4a}{2a}m^2}
+\end{align}
+and negative kinetic energy in addition to the massive spin 2. We shall show why this is the case with a 2-step argument partially inspired by \href{http://indico.ictp.it/event/a11178/session/6/contribution/3/material/0/0.pdf}{\underline{A. Nicolis}} from ICPT. In Step 1, we show that the Fierz-Pauli tuning has to be $-1$ to avoid ghosts. Step 2 follows naturally from step 1. In Step 2, we argue how the ghost of $m_{g}^2$ is obtained when $a\neq 0$.\\
+
+
+\textit{Step 1:} To this end, we consider the action (without matter, i.e., $T^{\mu\nu} = 0$) of the form
+\begin{align}
+S = \int d^Dx\, \lb\lag_{m=0,\text{linear}} - \f{1}{2}m^2(h_{\mu\nu}h^{\mu\nu} - (1-a)h^2)\rb
 \end{align}
 
+The linearized equations of motion follow from varying the action with respect to $h_{\mu\nu}$. The linearized Lagrangian gives the Einstein tensor (without matter) $G_{\mu\nu}$, while the massive terms gives 
+\begin{align}
+\f{\delta}{\delta h_{\mu\nu}} \lc \f{1}{2}m^2\lp h_{\mu\nu}h^{\mu\nu} - (1-a)h^2 \rp \rc &=
+\f{1}{2}m^2 \lp h^{\mu\nu} - (1-a) h \eta^{\mu\nu} h_{\mu\nu} \rp\nn\\
+&= \f{1}{2}m^2 \lp h^{\mu\nu} - (1-a)\eta^{\mu\nu} h \rp.
+\end{align}
+Covariantly, (to match the lower indices of $G_{\mu\nu}$), this is 
+\begin{align}
+-\f{1}{2}m^2 \lp h_{\mu\nu} - (1-a)\eta_{\mu\nu} h \rp.
+\end{align}
+So the equation of motion reads
+\begin{align}
+\boxed{G_{\mu\nu, \text{linear}} + \f{1}{2}m^2 \lp h_{\mu\nu} - (1-a)\eta_{\mu\nu}h \rp = 0}
+\end{align}
+(Notice that we have made no assumptions about $\delta h_{\mu\nu}$, i.e., we are not assuming the gauge symmetry $\delta h_{\mu\nu} = \p_\mu \epsilon_\nu + \p_\nu \epsilon_nu$ is satisfied. In fact, we just showed that this theory violates this gauge symmetry.)\\
+
+It is instructive then to compare this equation of motion to what we would have for a massive spin-1 field $A_\mu$:
+\begin{align}
+\p_\mu F^{\mu\nu} + m^2 A^\nu = J^\nu.
+\end{align}
+where
+\begin{align}
+F^{\mu\nu} \equiv \p^\mu A^\nu - \p^\nu A^\mu
+\end{align}
+and $J^\mu$ is the current. A massive spin-1 particle has $2s+1= 2+1 = 3$ degrees of freedom, which should show up in the $J^\mu = 0$ equation of motion as three wave solutions with independent polarizations. But we note that $A^\mu$ has 4 components - one too many. However, because $\p_\nu \p_\mu F^{\mu\nu} = 0$ due to the anti-symmetry of $F^{\mu\nu}$ (we can verify this just by inspection), if $J^\mu = 0 \implies \p_\mu J^\mu = 0$ then we must have
+\begin{align}
+m^2 \p_\mu A^\mu = 0 \iff \p_\mu A^\mu = 0 \text{ if } m^2\neq 0.
+\end{align} 
+The divergence of $A^\mu$ being zero is a gauge fix which adds an extra constraint on $A^\mu$, hence eliminating the fourth degree of freedom. \\
+
+Back to the massive gravity case. A massive spin-2 particle has $2s+1 = 2\times 2 + 1 = 5$ degrees of freedom. Now, because $h_{\mu\nu}$ is a $4\times 4$ symmetric tensor, there are 10 independent components. However, when there is no matter, i.e., $T^{\mu\nu}$, we actually have a gauge fix which obeys:
+\begin{align}\label{gauge-fix}
+&G_{\mu\nu} + \f{1}{2}m^2 \lp h_{\mu\nu} - (1-a)\eta_{\mu\nu}h \rp = 0\nn\\
+\implies\,\,\, &\p^\mu \lc G_{\mu\nu} + \f{1}{2}m^2 \lp h_{\mu\nu} - (1-a)\eta_{\mu\nu}h \rp \rc = 0.
+\end{align}
+But because the Einstein tensor $G_{\mu\nu}$ if divergenceless in the absence of a source, i.e.,
+\begin{align}
+\p^\mu G_{\mu\nu} = 0,
+\end{align}
+which follows from Bianchi identities involving the Ricci tensor and scalar. So we must have that
+\begin{align}\label{gauge-1}
+\p^\mu \lc \f{1}{2}m^2 \lp h_{\mu\nu} - (1-a)\eta_{\mu\nu}h \rp \rc= 0 &\iff \boxed{\p^\mu h_{\mu\nu} - (1-a)\eta_{\mu\nu}\p^\mu h = 0}
+\end{align}
+Next, just like how we can write 
+\begin{align}
+A_\mu \sim \xi_\mu e^{ik\cdot x}
+\end{align}
+for the wave solution to the spin-1 field where $\xi_\mu$ is the polarization \textit{vector}, let us write
+\begin{align}
+h_{\mu\nu} \sim \xi_{\mu\nu}e^{ik\cdot x}
+\end{align}
+where $\xi_{\mu\nu}$ is the graviton's polarization tensor. With this we have
+\begin{align}
+\boxed{\xi_{\mu\nu}k^\mu - (1-a)\tensor{\xi}{^\mu_\mu}k_\nu = 0}
+\end{align}
+This is four equations for $\nu = 0,1,2,3$ which brings the number of degrees of freedom down from 10 to $10 - 4 = 6$ degrees of freedom. There is now one too many. How do we get rid of this? The answer lies in the factor $(1-a)$ and the contraction of $G^{\mu\nu}$.\\
+
+Recall from \eqref{Gmunu} that
+\begin{align}
+G_{\mu\nu} = \f{1}{2}\lp -\square h_{\mu\nu} + \p_\sigma \p_\nu \tensor{h}{^\sigma_\mu}  
++ \p_\sigma \p_\mu \tensor{h}{^\sigma_\nu} 
+- \eta_{\mu\nu}\p_\lambda \p_\sigma h^{\lambda\sigma} + \eta_{\mu\nu}\square h - \p_\mu\p_\nu h\rp,
+\end{align}
+which we have found by varying $\lag_{\text{linear}}$ in xACT with respect to $h_{\mu\nu}$. We wish to contract $G_{\mu\nu}$, with xACT as well:
+\begin{lstlisting}
+Lag := (1/
+2)*((CD[-m][h[LI[1], m, n]])*(CD[-n][h[LI[1], -c, c]]) - (CD[-m][
+h[LI[1], c, d]])*(CD[-c][h[LI[1], m, -d]]) + (1/2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, d]])*(CD[-n][h[LI[1], -c, -d]]) - (1/
+2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, -c]])*(CD[-n][h[LI[1], d, -d]]))
+
+(VarD[h[LI[1], c, d], CD][Lag*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]]) /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // ToCanonical
+
+\[Eta][c, 
+d] (VarD[h[LI[1], c, d], CD][Lag*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]]) /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // ToCanonical
+\end{lstlisting}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.28]{Gcontract}
+\end{figure}
+
+This reads nicely as
+\begin{align}
+\boxed{G=  \eta^{\mu\nu}G_{\mu\nu} = \p_\mu \p_\nu h^{\mu\nu} - \square h}
+\end{align}
+From the gauge fix in \eqref{gauge-fix}, we must have that
+\begin{align}
+G = \eta^{\mu\nu}G_{\mu\nu} &= -\f{1}{2}m^2\eta^{\mu\nu}[ h_{\mu\nu} -(1-a)\eta_{\mu\nu}h ]\nn\\
+&= -\f{1}{2}m^2 [h - 4(1-a)h]\nn\\
+&= \boxed{\f{1}{2}m^2 (3 - 4a)h}
+\end{align}
+If we choose $a = 0$, then it follows from this equality that
+\begin{align}
+G =\f{1}{2}m^2h 
+\end{align}
+and from \eqref{gauge-1} that
+\begin{align}
+\p^\mu h_{\mu\nu} - \p_\nu h = 0 \implies \p_\mu \p_\nu h^{\mu\nu} - \square h = 0.
+\end{align}
+But these combined give us $h = 0 \iff \tensor{h}{^\mu_\mu} \iff \tensor{\xi}{^\mu_\mu} = 0$. Aha! With the trace of $\xi_{\mu\nu}$ being zero, the number of polarizations is now $6-1 = 5$, as desired. This is choice of the Fierz-Pauli tuning is now completely justified.\\
 
 
+
+
+
+
+
+
+
+
+
+\textit{Step 2.} But what about the appearance of a massive $m_g^2$ scalar field of negative kinetic energy (ghost)? If we look at equation \eqref{gauge-1} again, we see that for $a\neq 0$, 
+\begin{align}
+G = \f{1}{2}m^2(3 - 4a)h.
+\end{align}
+Keeping that in mind, recall that
+\begin{align}
+\lag = (\text{stuff in $\p h,h$}) - \f{1}{2}m^2\lp h_{\mu\nu}h^{\mu\nu} - (1-a)h^2 \rp.
+\end{align}
+Without much creativity we can write this as
+\begin{align}
+\lag = \lc(\text{stuff in $\p h,h$}) - \f{1}{2}m^2 \lp h_{\mu\nu}h^{\mu\nu} - h^2\rp\rc - \f{1}{2}am^2 h^2.
+\end{align}
+Since $\delta L = G = (m^2/2)(3-4a)h$ where $\lag$ is given by the above equation,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Free solutions and Graviton mode functions}
+
+
+\subsubsection{The Propagator}
 
 
 
@@ -9223,7 +9421,7 @@ Here's what we get:
 \end{figure}
 
 Putting this back into \LaTeX{} after doing some manual contractions/simplifications, plus noting that the covariant derivative here is just the regular partial derivatives, we find that
-\begin{align}
+\begin{align}\label{Gmunu}
 G_{\mu\nu} = \f{1}{2}\lp -\square h_{\mu\nu} + \p_\sigma \p_\nu \tensor{h}{^\sigma_\mu}  
 + \p_\sigma \p_\mu \tensor{h}{^\sigma_\nu} 
 - \eta_{\mu\nu}\p_\lambda \p_\sigma h^{\lambda\sigma} + \eta_{\mu\nu}\square h - \p_\mu\p_\nu h\rp
