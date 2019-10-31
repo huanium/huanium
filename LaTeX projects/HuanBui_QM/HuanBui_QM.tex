@@ -8536,11 +8536,132 @@ With that we have showed how the tuning $a = 0$ is justified, and how a massive 
 
 \newpage
 
-\subsection{The St\"{u}ckelberg Formalism}
+\subsection{The St\"{u}ckelberg Trick}
 
-There are a number of ways the St\"{u}ckelberg formalism has appeared in literature. Some refer to as an approach or trick. Some don't even refer to it at all. In this section, we look at two approaches to introducing and using the St\"{u}kelberg trick in the context of massive gravity.\\
+There are a number of ways the St\"{u}ckelberg trick has appeared in literature. Some refer to as an approach or trick. Some don't even refer to it at all. In this section, we look at two approaches to introducing and using the St\"{u}kelberg trick in the context of massive gravity.
 
-\subsubsection{}
+\subsubsection{Motivation}
+
+The goal of the St\"{u}kelberg trick is to make a massive theory gauge invariant. As we have seen, the massive term in the Fierz-Pauli action breaks diffeomorphism. The St\"{u}kelberg mechanism is the introduction of new field(s) to a reveal a symmetry of a gauge-fixed theory. \\
+
+In general, dynamical tensors $K_{\mu\nu}$ transform under diffeomorphisms as
+\begin{align}
+K_{\mu\nu} \to &\,\,K_{\mu\nu} + \lag_3 K_{\mu\nu} \nn\\
+&= K_{\mu\nu} + (\p_\mu \epsilon^\alpha)K_{\alpha\nu} + (\p_\nu \epsilon^\alpha)K_{\mu\alpha} + \epsilon^\alpha \p_\alpha K_{\mu\nu}.
+\end{align}
+However, nondynamical background $\bar{K}_{\mu\nu}$ obeys
+\begin{align}
+\bar{K}_{\mu\nu} \to \bar{K}_{\mu\nu}.
+\end{align}
+
+In the context of massive gravity, in the nonlinear regime, we want to couple a mass to $g_{\mu\nu}$. But we also want to avoid $g^{\mu\nu}g_{\mu\nu} = 4$, so we must introduce a nondynamical background $\bar{K}_{\mu\nu}$ such that the mass terms become $\sim (\bar{K}^{\mu\nu}g_{\mu\nu})^2$, which break diffeomorphism.  \\
+
+St\"{u}kelberg's trick puts back diffeomorphism invariance while introducing 4 scalars $\phi^a, a = 0,1,2,3$ such that we gain/lose no degree of freedom. To do this, we can replace
+\begin{align}
+\bar{K}_{\mu\nu}(x) \to \p_\mu \phi^a \p_\nu \phi^b \bar{K}_{ab}(\phi(x)).
+\end{align}
+Here $\phi^a$ is a dynamical scalar with which we can restore diffeomorphism invariance in the theory. (We will see later why we would like to make this replacement/definition.)\\
+
+How is diffeomorphism restored? Well first we can fix
+\begin{align}
+\phi^a = \delta^a_\alpha x^\alpha,
+\end{align} 
+where $x^\alpha$ is literally just the coordinate, such that
+\begin{align}
+\p_\mu \phi^a = \delta^a_\alpha \delta^\alpha_\mu = \delta^a_\mu.
+\end{align}
+So we have
+\begin{align}
+\p_\mu \phi^a\p_\nu \phi^b \bar{K}_{ab}(\phi) &= \delta^a_\mu \delta^b_\nu \bar{K}_{ab} \nn\\
+&= \bar{K}_{\mu\nu}(x).
+\end{align}
+So we see this choice of gauge fixing gives the desired transformation. Next, suppose we look at excitations of the form
+\begin{align}
+\phi^a = \delta^a_\alpha(x^\alpha +\pi^\alpha)
+\end{align}
+where $\pi^\alpha$ are fields that are like th Nambu-Goldstone modes, then
+\begin{align}
+\p_\mu \phi^a &= \delta^a_\mu + \p_\mu \pi^\alpha \delta^a_\alpha\nn\\
+&= \delta^a_\mu + \p_\mu \pi^a.
+\end{align}
+With this,
+\begin{align}
+\p_\mu \phi^a \p_\nu \phi^b \bar{K}_{ab} &= (\delta^a_\mu + \p_\mu \pi^a)(\delta^b_\nu + \p_\nu \pi^b)\bar{K}_{ab}(x+\pi)\nn\\
+&\approx  (\delta^a_\mu + \p_\mu \pi^a)(\delta^b_\nu + \p_\nu \pi^b)(\bar{K}_{ab} + \pi^\alpha \p_\alpha K_{ab}(x) + \dots)\nn\\
+&\approx \bar{K}_{\mu\nu} + (\p_\mu \pi^a)\bar{K}_{a\nu} + (\p_\nu \pi^b)\bar{K}_{\mu b} + \pi^\alpha \p_\alpha \bar{K}_{\mu\nu} + \dots
+\end{align}
+up to first order in $\pi$. The first approximation is just an affine approximation of $\bar{K}_{ab}$. This puts the Nambu-Goldstone modes back into the theory with explicit breaking, when $\pi^\mu$ are like Nambu-Goldstone modes. This turns out to have local symmetry. We can always gauge fix so that $\p^\mu \to 0$ and get back the original theory. \\
+
+A lot of this seems very arbitrary and sort of ``out-of-nowhere.'' But rest assured, as we will see what we are actually doing by introducing $\phi^a$ and how this trick works in the next section.
+
+
+\subsubsection{St\"{u}ckelberg formalism by Arkani-Hamed et al.}
+
+
+In this section, we look at how \href{https://arxiv.org/pdf/hep-th/0210184.pdf}{\underline{Arkani-Hamed et al.}} formulates the St\"{u}kelberg's trick as ``building blocks for gravity in theory space.''\\
+
+Their construction of the scalar fields $\phi^a$ we just saw is based on ``sites'' and ``links.'' Sites are endowed with different four-dimensional general covariances (GC). Links are actually link fields with suitable non-linear transformation properties. \\
+
+For every site $j$ there is a general coordinate invariance $GC_j$. Each of these invariances is denoted $x^\mu_j \to f^\mu_j(x_j)$ where $x_j$ are the coordinates. We assume (reasonably) that the transformations $f_j$ are smooth and invertible.\\
+
+Link fields allow us to compare objects on different sites, which obey their local $GC_j$. Recall that a field $\psi(x)$ is a scalar field if it transforms under $GC$ given by a transformation $f$ as
+\begin{align}
+\phi'(x) = \phi(f(x)) = \phi \circ f.
+\end{align}
+Similarly, a vector $a_\mu(x)$ transforms under $GC$ given by $f$ as
+\begin{align}
+a'_\mu = \f{\p f^\alpha}{\p x^\mu}(x)a_\alpha(f(x)).
+\end{align}
+We see how this rule generalizes for tensors. \\
+
+Now, suppose we want to compare two distinct sites $i,j$ with two different coordinate invariances $GC_i$ and $GC_j$. To do this, we need a mapping from site $i$ to site $j$. Define this mapping as the link field $Y_{j\leftarrow i}$, or $Y_{ji}$ for short. Schematically, this is 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{link}
+\end{figure}
+These are not just any $Y_{ji}$, of course. They have to obey the transformation
+\begin{align}
+Y_{ji} \to f_j^{-1} \circ Y_{ji} \circ f_i
+\end{align}
+where the $f_k$'s are the local $GC$ transformations at $i,j$.\\
+
+Suppose we want to compare two fields $\psi_i$ on site $i$ and $\psi_j$ on site $j$. A logical thing to do is transform $\psi_j$ into some field $\Psi$ in $i$ using $Y_{ji}$:
+\begin{align}
+\Psi = \psi_j \circ Y_{ji}.
+\end{align}
+Note that $\Psi$ is in $i$ because its input is in $i$. And so this new field $\Psi$ transforms under $GC_i$ as
+\begin{align}
+\Psi \to \Psi \circ f_i = \Psi(f_i(x^\mu)).
+\end{align}
+By the same arguments as before, we can generalize this rule to higher-rank tensors using $Y_{ji}$. For a vector field $a_{j\mu}$ in $j$, we can form a new vector field $A_\mu$ in $i$ of the form
+\begin{align}
+A_\mu(x_i) = \f{\p Y^\alpha}{\p x_i^\mu}(x_i) a_{j\alpha}(Y_{ji}(x_i)).
+\end{align}
+For a tensor, say $g_{j\mu\nu}(x_i)$ in $j$, we can form a new tensor $G_{\mu\nu}$ in $i$ of the form
+\begin{align}
+G_{\mu\nu}(x_i) = \f{\p Y^\alpha}{\p x_i^\mu}\f{\p Y^\beta}{x_i^\nu}g_{j\alpha\beta}(Y_{ji}(x_i)).
+\end{align}
+These transform under $GC_i$ of course, since they live in $i$.\\
+
+So far the construction has been quite abstract, but this screams diffeomorphism invariance, for we require the fields/tensors on one site formed from fields/tensors on another site to transform correctly under the respective general coordinate invariances. \\
+
+Let us consider a special example where we expand $Y$ and $G$ in terms of pions and see how the two general coordinate invariances are realized explicitly. Suppose that $Y_{ji}$ is just the identity map, i.e.,
+\begin{align}
+Y_{ji}^\mu(x_i) = x^\mu_i.
+\end{align}
+Then of course $f_i = f_j$ since now $Y_{ji}$ is just a map from a space to itself. Now, let us expand $Y$ around $x$ as
+\begin{align}
+Y^\alpha(x) = x^\alpha + \pi^\alpha 
+\end{align}
+where we have dropped indices to avoid drowning in indices later. This is called \textbf{Glodstone boson expansion}, and it is exactly what we ust introduced in the previous section. Here $Y$ plays the role of the scalar fields $\phi$. \\
+
+With this expansion, any tensor $\bar{K}_{\mu\nu}$ can be expanded as
+\begin{align}
+\bar{K}_{\mu\nu} = (\text{to be continued}). 
+\end{align}
+
+
+
 
 
 
