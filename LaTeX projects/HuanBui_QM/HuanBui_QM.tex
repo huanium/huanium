@@ -7624,7 +7624,7 @@ Here's what we get:
 \end{figure}
 
 Putting this back into \LaTeX{} after doing some manual contractions/simplifications, plus noting that the covariant derivative here is just the regular partial derivatives, we find that
-\begin{align}
+\begin{align}\label{GGG}
 G_{\mu\nu} = \f{1}{2}\lp -\square h_{\mu\nu} + \p_\sigma \p_\nu \tensor{h}{^\sigma_\mu}  
 + \p_\sigma \p_\mu \tensor{h}{^\sigma_\nu} 
 - \eta_{\mu\nu}\p_\lambda \p_\sigma h^{\lambda\sigma} + \eta_{\mu\nu}\square h - \p_\mu\p_\nu h\rp
@@ -8079,7 +8079,7 @@ Then, in 2010, de Rham-Gabadadze-Tolley (dRGT) found that for a special non-line
 \newpage
 
 
-\subsubsection{Quick review of Field Dimensions}
+\subsection{Quick review of Field Dimensions}
 Here we will quickly go over basic field dimensions. We first establish the natural units: $\hbar = c = 1$. With this $E \sim m \sim p \sim \omega$ GeV. $x\sim t \sim 1/E$. We will use mass dimension $m$ as units. With this.
 \begin{align}
 [x] = [t] =  [K]^{-1} = m^{-1}.
@@ -8241,9 +8241,9 @@ h_{\mu\nu}h^{\mu\nu} - (1-a)h^2, \quad a \neq 0
 \end{align}
 results in the action describing a scalar ghost with mass
 \begin{align}
-\boxed{m_g^2 = \f{3-4a}{2a}m^2}
+\boxed{m_g^2 = -\f{3-4a}{2a}m^2}
 \end{align}
-and negative kinetic energy in addition to the massive spin 2. We shall show why this is the case with a 2-step argument partially inspired by \href{http://indico.ictp.it/event/a11178/session/6/contribution/3/material/0/0.pdf}{\underline{A. Nicolis}} from ICPT. In Step 1, we show that the Fierz-Pauli tuning has to be $-1$ to avoid ghosts. Step 2 follows naturally from step 1. In Step 2, we argue how the ghost of $m_{g}^2$ is obtained when $a\neq 0$.\\
+and negative kinetic energy in addition to the massive spin 2. We shall show why this is the case with a 2-step argument partially inspired by \href{http://indico.ictp.it/event/a11178/session/6/contribution/3/material/0/0.pdf}{\underline{A. Nicolis}} from ICTP. In Step 1, we show that the Fierz-Pauli tuning has to be $-1$ to avoid ghosts. In Step 2, we argue how the ghost of $m_{g}^2$ is obtained when $a\neq 0$ by a Hamiltonian analysis, inspired by \href{https://arxiv.org/pdf/1105.3735.pdf}{\underline{Kurt Hinterbichler}} and \href{https://digitalcommons.colby.edu/cgi/viewcontent.cgi?article=1721&context=honorstheses}{Greg Seyfarth}. \\
 
 
 \textit{Step 1:} To this end, we consider the action (without matter, i.e., $T^{\mu\nu} = 0$) of the form
@@ -8281,16 +8281,33 @@ m^2 \p_\mu A^\mu = 0 \iff \p_\mu A^\mu = 0 \text{ if } m^2\neq 0.
 \end{align} 
 The divergence of $A^\mu$ being zero is a gauge fix which adds an extra constraint on $A^\mu$, hence eliminating the fourth degree of freedom. \\
 
-Back to the massive gravity case. A massive spin-2 particle has $2s+1 = 2\times 2 + 1 = 5$ degrees of freedom. Now, because $h_{\mu\nu}$ is a $4\times 4$ symmetric tensor, there are 10 independent components. However, when there is no matter, i.e., $T^{\mu\nu}$, we actually have a gauge fix which obeys:
+Back to the massive gravity case. A massive spin-2 particle has $2s+1 = 2\times 2 + 1 = 5$ degrees of freedom. Now, because $h_{\mu\nu}$ is a $4\times 4$ symmetric tensor, there are 10 independent components. However, when there is no matter, i.e., $T^{\mu\nu} = 0$, we actually have a gauge fix which obeys:
 \begin{align}\label{gauge-fix}
 &G_{\mu\nu} + \f{1}{2}m^2 \lp h_{\mu\nu} - (1-a)\eta_{\mu\nu}h \rp = 0\nn\\
 \implies\,\,\, &\p^\mu \lc G_{\mu\nu} + \f{1}{2}m^2 \lp h_{\mu\nu} - (1-a)\eta_{\mu\nu}h \rp \rc = 0.
 \end{align}
-But because the Einstein tensor $G_{\mu\nu}$ if divergenceless in the absence of a source, i.e.,
+But because the Einstein tensor $G_{\mu\nu}$ is divergenceless in the absence of a source, i.e.,
 \begin{align}
 \p^\mu G_{\mu\nu} = 0,
 \end{align}
-which follows from Bianchi identities involving the Ricci tensor and scalar. So we must have that
+which follows from Bianchi identities involving the Ricci tensor and scalar. Of course for the worrisome reader a quick check doesn't hurt:
+\begin{lstlisting}
+Lag := (1/
+2)*((CD[-m][h[LI[1], m, n]])*(CD[-n][h[LI[1], -c, c]]) - (CD[-m][
+h[LI[1], c, d]])*(CD[-c][h[LI[1], m, -d]]) + (1/2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, d]])*(CD[-n][h[LI[1], -c, -d]]) - (1/
+2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, -c]])*(CD[-n][h[LI[1], d, -d]]))
+
+CD[c][(VarD[h[LI[1], c, d], CD][Lag*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]])] /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // 
+ToCanonical // Simplification
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.25]{CDG}
+\end{figure}
+So yes $\p^\mu G_{\mu\nu}$ is in fact identically zero. Thus, we must have that
 \begin{align}\label{gauge-1}
 \p^\mu \lc \f{1}{2}m^2 \lp h_{\mu\nu} - (1-a)\eta_{\mu\nu}h \rp \rc= 0 &\iff \boxed{\p^\mu h_{\mu\nu} - (1-a)\eta_{\mu\nu}\p^\mu h = 0}
 \end{align}
@@ -8308,7 +8325,7 @@ where $\xi_{\mu\nu}$ is the graviton's polarization tensor. With this we have
 \end{align}
 This is four equations for $\nu = 0,1,2,3$ which brings the number of degrees of freedom down from 10 to $10 - 4 = 6$ degrees of freedom. There is now one too many. How do we get rid of this? The answer lies in the factor $(1-a)$ and the contraction of $G^{\mu\nu}$.\\
 
-Recall from \eqref{Gmunu} that
+Recall from \eqref{GGG} that
 \begin{align}
 G_{\mu\nu} = \f{1}{2}\lp -\square h_{\mu\nu} + \p_\sigma \p_\nu \tensor{h}{^\sigma_\mu}  
 + \p_\sigma \p_\mu \tensor{h}{^\sigma_\nu} 
@@ -8338,11 +8355,11 @@ ExpandPerturbation // ContractMetric // ToCanonical
 \end{figure}
 
 This reads nicely as
-\begin{align}
+\begin{align}\label{munuG}
 \boxed{G=  \eta^{\mu\nu}G_{\mu\nu} = \p_\mu \p_\nu h^{\mu\nu} - \square h}
 \end{align}
 From the gauge fix in \eqref{gauge-fix}, we must have that
-\begin{align}
+\begin{align}\label{munuH}
 G = \eta^{\mu\nu}G_{\mu\nu} &= -\f{1}{2}m^2\eta^{\mu\nu}[ h_{\mu\nu} -(1-a)\eta_{\mu\nu}h ]\nn\\
 &= -\f{1}{2}m^2 [h - 4(1-a)h]\nn\\
 &= \boxed{\f{1}{2}m^2 (3 - 4a)h}
@@ -8351,11 +8368,11 @@ If we choose $a = 0$, then it follows from this equality that
 \begin{align}
 G =\f{1}{2}m^2h 
 \end{align}
-and from \eqref{gauge-1} that
+and from \eqref{gauge-1} that   
 \begin{align}
 \p^\mu h_{\mu\nu} - \p_\nu h = 0 \implies \p_\mu \p_\nu h^{\mu\nu} - \square h = 0.
 \end{align}
-But these combined give us $h = 0 \iff \tensor{h}{^\mu_\mu} \iff \tensor{\xi}{^\mu_\mu} = 0$. Aha! With the trace of $\xi_{\mu\nu}$ being zero, the number of polarizations is now $6-1 = 5$, as desired. This is choice of the Fierz-Pauli tuning is now completely justified.\\
+But these combined give us $h = 0 \iff \tensor{h}{^\mu_\mu} \iff \tensor{\xi}{^\mu_\mu} = 0$. Aha! With the trace of $\xi_{\mu\nu}$ being zero, the number of polarizations is now $6-1 = 5$, as desired. This choice of the Fierz-Pauli tuning is now justified.\\
 
 
 
@@ -8367,19 +8384,124 @@ But these combined give us $h = 0 \iff \tensor{h}{^\mu_\mu} \iff \tensor{\xi}{^\
 
 
 
-\textit{Step 2.} But what about the appearance of a massive $m_g^2$ scalar field of negative kinetic energy (ghost)? If we look at equation \eqref{gauge-1} again, we see that for $a\neq 0$, 
+
+
+
+
+
+
+
+
+\textit{Step 2.} Here we will show that when $a\neq 0$, the theory describes a massive spin 2 \textit{and} and a ghost scalar field with
 \begin{align}
-G = \f{1}{2}m^2(3 - 4a)h.
+m_g^2  = -\f{3-4a}{2a}m^2.
 \end{align}
-Keeping that in mind, recall that
+Let us first show the motivation for defining the ghost scalar mass in this fashion. We have that \eqref{gauge-1} reads
 \begin{align}
-\lag = (\text{stuff in $\p h,h$}) - \f{1}{2}m^2\lp h_{\mu\nu}h^{\mu\nu} - (1-a)h^2 \rp.
+\p^\mu h_{\mu\nu} - (1-a)\eta_{\mu\nu}\p^\mu h = 0.
 \end{align}
-Without much creativity we can write this as
+We wish to establish a relationship between $\square h$ and $\p^\mu \p^\nu h_{\mu\nu}$ for reasons we will see later. This means we should take $\p^\nu$ of the equation above. This gives
 \begin{align}
-\lag = \lc(\text{stuff in $\p h,h$}) - \f{1}{2}m^2 \lp h_{\mu\nu}h^{\mu\nu} - h^2\rp\rc - \f{1}{2}am^2 h^2.
+\p^\nu \p^\mu h_{\mu\nu} - (1-a)\eta_{\mu\nu}\p^\nu \p^\mu h = 0.
 \end{align}
-Since $\delta L = G = (m^2/2)(3-4a)h$ where $\lag$ is given by the above equation,
+But this equation simply screams
+\begin{align}\label{just-then}
+\p_\mu \p_\nu h^{\mu\nu} - (1-a)\square h = 0.
+\end{align}
+
+Nice! Now, from \eqref{munuG} and \eqref{munuH} we also know that
+\begin{align}\label{just-now}
+\p_\mu \p_\nu h^{\mu\nu} - \square h = -\f{1}{2}m^2(3-4a)h.
+\end{align}
+Therefore, we have from \eqref{just-now} and \eqref{just-then}
+\begin{align}
+-\f{1}{2}m^2 (3-4a) h + \square h = (1-a)\square h.
+\end{align}
+This simplifies to
+\begin{align}
+-\f{1}{2}m^2 (3-4a) h = -a\square h.
+\end{align}
+This equation is now begging to be put into Klein-Gordon form:
+\begin{align}
+\boxed{-\lp \f{1}{2a}m^2(3-4a) + \square \rp h = 0}
+\end{align}
+It only makes sense that we cast the mass term as $m_g^2$. And whatever this theory is, it is describing a massive scalar field with
+\begin{align}
+\boxed{m_g^2 = -\f{3-4a}{2a}m^2 }
+\end{align}
+Our next task is to show this is actually a ghost field. To this end, we invoke Hamiltonian analysis of Fierz-Pauli massive gravity with the $(1-a)$ coefficient. We first cast the Lagrangian 
+\begin{align}
+\lag = &-\f{1}{2}\p_\lambda h_{\mu\nu} \p^\lambda h^{\mu\nu} + \p_\mu h_{\nu\lambda}\p^\nu h^{\mu\lambda}\nn\\& - \p_\mu h^{\mu\nu}\p_\nu h + \f{1}{2}\p_\lambda h \p^\lambda h -\f{1}{2}m^2\lp h_{\mu\nu}h^{\mu\nu} - h^2 \rp
+\end{align}
+into Hamiltonian form. We start by Legendre transforming this Lagrangian only with respect to the spatial components of the perturbation metric, $h_{ij}$. The canonical momenta are defined as
+\begin{align}
+\pi_{ij} = \f{\p \lag}{\p \dot{h}_{ij}} \equiv \f{\p \lag}{\p (\p_0 h_{ij})}
+\end{align}
+where $\p$ is just the regular partial derivative. To evaluate this the hard way, we can expand out $\lag$ in terms of $\mu =0$ objects and $\mu = i = 1,2,3$ objects. If \href{https://digitalcommons.colby.edu/cgi/viewcontent.cgi?article=1721&context=honorstheses}{\underline{Greg Seyfarth}} is correct, then (deep breath now):
+\begin{empheq}[box=\widefbox]{align*}
+\lag = &\f{1}{2}(h_{jk,0})^2 + (h_{0k,j})^2 - \f{1}{2}(h_{jk,l})^2 - (h_{0k,j})(h_{0j,k}) - 2(h_{0j,k})(h_{jk,0})\nn\\
+&+ (h_{kj,l})(h_{lj,k}) + (h_{0k,k})(h_{jj,0}) - \f{1}{2}(h_{jj,0})(h_{kk,0}) - (h_{00,l})(h_{jj,l})  \nn\\
+&+\f{1}{2}(h_{jj,l})(h_{kk,l}) + (h_{0j,j})(h_{kk,0}) + (h_{jk,j})(h_{00,k}) - (h_{jk,j})(h_{ll,k}) \nn\\
+& - \f{1}{2}m^2 \lb a h^2_{00} - 2h_{0j}^2 + h^2_{jk} + 2(1-a)h_{00}h_{ll} - (1-a)h^2_{ll} \rb.
+\end{empheq}
+To get these square terms in the Lagrangian it is necessary to integrate by parts and cancel like terms. I will not try to reproduce this since it is purely index manipulation.\\
+
+Varying this Lagrangian gives equations of motions. Varying with respect to $h_{00}$ gives
+\begin{align}
+h_{jj,kk} - h_{jk,jk} - am^2h_{00} - m^2(1-a)h_{ll} - 0.
+\end{align}
+Varying with respect to $h_{0j}$ gives
+\begin{align}
+-h_{0j,kk} + h_{0k,jk} + h_{jk,0k} - h_{kk,0j} + m^2 h_{0j} = 0.
+\end{align}
+Varying with respect to $h_{jk}$ gives
+\begin{align}
+0= &\,\,\,h_{jk,00} - h_{jk,ll} - (h_{0j,0k} + h_{0k,0j}) + (h_{lk,lj} + h_{lj,lk})\nn\\
+&\,\,\, + \delta_{jk}(2h_{0l,0l} - h_{ll,00} - h_{00,ll} + h_{mm,ll}- h_{lm,lm})\nn\\
+&\,\,\,+ h_{00,jk} - h_{ll,jk} + m^2 h_{jk} + m^2(1-a)\delta_{jk}h_{00} - m^2(1-a)\delta_{jk}h_{ll}. 
+\end{align}
+With this, the Hamiltonian is
+\begin{empheq}[box=\widefbox]{align*}
+\ham &= \pi^{\mu\nu} h_{\mu\nu,0} - \lag \nn\\
+&= \f{1}{2}(\pi_{jk})^2 - \f{1}{4}(\pi_{ll})^2 + 2 h_{0k,j}\pi_{jk} + \f{1}{2}(h_{jk,l})^2\nn\\
+&\,\,\,\, -h_{jk,l}h_{lj,k} + h_{00,l}h_{kk,l} - \f{1}{2}h_{jj,l}h_{kk,l} - h_{jk,j}h_{00,k}+ h_{jk,j}h_{ll,k}\nn\\
+&\,\,\,\, + \f{1}{2}m^2[ah^2_{00} - 2h^2_{0j} + h^2_{jk} + 2(1-a)h_{00}h_{ll}h - (1-a)h^2_{ll}].  
+\end{empheq}
+After a number of substitutions that I won't worry about too much here, the final form of the Hamiltonian is given by
+\begin{empheq}[box=\widefbox]{align*}
+\ham = &\f{1}{2}(\pi_{jk})^2 - \f{1}{4}(\pi_{ll})^2 + \f{1}{2}(\epsilon_{ijk} h_{kl,j})^2 -\f{1}{2}h_{jk,k}^2 + \f{1}{2}h^2_{jj,l} \nn\\
+&\,\,\, + \f{1}{2}m^2[-ah^2 + h^2_{ll} + 2h_{0j}^2 + h^2_{jk}]
+\end{empheq}
+where $\epsilon_{ijk}$ is the Levi-Civita symbol.\\
+
+
+The terms in the square brackets correspond to the Fierz-Pauli mass term in the original Lagrangian, while the rest of the terms come from the Lagrangian that gives the original Einstein tensor. We are interested in the square bracket terms when looking for ghosts in the theory. \\
+
+When $a=0$, the square bracket becomes
+\begin{align}
+\f{1}{2}m^2[-ah^2 + h^2_{ll} + 2h_{0j}^2 + h^2_{jk}] \to \f{1}{2}m^2[h^2_{ll} + 2h_{0j}^2 + h^2_{jk}].
+\end{align}
+This term is positive-definite, which is good. But what about the other terms in the Hamiltonian? Well, we know that the rest of the Hamiltonian comes directly from the Lagrangian without the massive term. We also know that this piece of the theory is very well-behaved since we have a number of equations of motions and constraints to keep the degree of freedom correct. Thus, to see if the current theory contains ghost it suffices to look only at the massive term's contribution to the Hamiltonian. \\
+
+Since we have already seen how $a= 0$ gives a well-behaved theory. Let's now consider $a\neq 0$. When $a\neq 0$, the modified Klein-Gordon equation looks like
+\begin{align}
+\lp -\f{3-4a}{2a}m^2 + \square\rp h = (\square + m_g^2)h = 0. 
+\end{align}
+Clearly the energy relation is 
+\begin{align}
+E^2 - p^2 = -m_g^2,
+\end{align}
+which has the wrong sign, i.e., the (ghostly) mass is imaginary. We might try to remedy this problem by requiring that
+\begin{align}
+\f{3-4a}{2a} > 0 \iff 0 < a < \f{3}{4}.
+\end{align}
+But this ensures that the coefficient of $h^2$ in the term
+\begin{align}
+\f{1}{2}m^2[-ah^2 + h^2_{ll} + 2h_{0j}^2 + h^2_{jk}] \to \f{1}{2}m^2[h^2_{ll} + 2h_{0j}^2 + h^2_{jk}]
+\end{align}
+always negative, rendering the Hamiltonian non-positive-definite. We also can't constrain $h$ in to degree of freedom from 6 to 5. This means that when $a\neq 0$ we have (1) an imaginary mass, (2) non-positive definite Hamiltonian, and (3) and extra degree of freedom in the theory. This creates a ghost mode in the theory.\\ \qed
+
+With that we have showed how the tuning $a = 0$ is justified, and how a massive scalar ghost mode appears (with negative kinetic energy) in the theory when $a \neq 0$. As a little aside, when $a\neq0$ and $a$ is small, the mass $m_g^2$ goes like $\sim 1/a$. This goes to infinity as the Fierz-Pauli tuning is approached, rendering it non-dynamical.
 
 
 
@@ -8397,17 +8519,28 @@ Since $\delta L = G = (m^2/2)(3-4a)h$ where $\lag$ is given by the above equatio
 
 
 
+
+
+
+
+
+
+
+
+\subsubsection{Hamiltonian \& Degree of Freedom count}
 \subsubsection{Free solutions and Graviton mode functions}
-
-
 \subsubsection{The Propagator}
 
 
 
 
+\newpage
 
+\subsection{The St\"{u}ckelberg Formalism}
 
+There are a number of ways the St\"{u}ckelberg formalism has appeared in literature. Some refer to as an approach or trick. Some don't even refer to it at all. In this section, we look at two approaches to introducing and using the St\"{u}kelberg trick in the context of massive gravity.\\
 
+\subsubsection{}
 
 
 
@@ -8421,7 +8554,23 @@ Since $\delta L = G = (m^2/2)(3-4a)h$ where $\lag$ is given by the above equatio
 
 \newpage
 
-\subsection{St\"{u}kelberg Approach}
+
+\subsection{The vDVZ discontinuity}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage
@@ -9420,7 +9569,7 @@ Here's what we get:
 	\includegraphics[scale=0.4]{lag-weak}
 \end{figure}
 
-Putting this back into \LaTeX{} after doing some manual contractions/simplifications, plus noting that the covariant derivative here is just the regular partial derivatives, we find that
+Putting this back into \LaTeX{} after doing some manual contractions/simplifications, plus noting that the covariant derivative here is just the regular partial derivative, we find that
 \begin{align}\label{Gmunu}
 G_{\mu\nu} = \f{1}{2}\lp -\square h_{\mu\nu} + \p_\sigma \p_\nu \tensor{h}{^\sigma_\mu}  
 + \p_\sigma \p_\mu \tensor{h}{^\sigma_\nu} 
