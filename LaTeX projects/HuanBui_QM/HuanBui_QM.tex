@@ -8527,8 +8527,117 @@ With that we have showed how the tuning $a = 0$ is justified, and how a massive 
 
 
 
-\subsubsection{Hamiltonian \& Degree of Freedom count}
+
 \subsubsection{Free solutions and Graviton mode functions}
+
+In this section we find the space of equations of motion, i.e. solutions to $\delta S = 0$. We will then show that it transforms as a massive spin 2 representation of the Lorentz group, i.e. showing that the action propagates precisely one massive graviton (we will understand what this means later). To this end, we consider the Fierz-Pauli action with the correct Fierz-Pauli tuning:
+\begin{align}
+S_{FP} = \int d^Dx\, &-\f{1}{2}\p_\lambda h_{\mu\nu} \p^\lambda h^{\mu\nu} + \p_\mu h_{\nu\lambda}\p^\nu h^{\mu\lambda}\nn\\& - \p_\mu h^{\mu\nu}\p_\nu h + \f{1}{2}\p_\lambda h \p^\lambda h -\f{1}{2}m^2\lp h_{\mu\nu}h^{\mu\nu} - h^2 \rp.
+\end{align}  
+Setting $\delta S = 0 \iff \delta \lag / \delta h^{\mu\nu} = 0$, i.e., the variational derivative of the integrand with respect to the inverse metric perturbation $h^{\mu\nu}$ is zero. We can readily to this in xACT:
+\begin{lstlisting}
+LagFP := -((CD[-m][h[LI[1], m, n]])*(CD[-n][
+h[LI[1], -c, c]]) - (CD[-m][h[LI[1], c, d]])*(CD[-c][
+h[LI[1], m, -d]]) + (1/2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, d]])*(CD[-n][h[LI[1], -c, -d]]) - (1/
+2)*\[Eta][m, 
+n]*(CD[-m][h[LI[1], c, -c]])*(CD[-n][h[LI[1], d, -d]])) - (1/
+2)*M^2*(h[LI[1], m, n]*
+h[LI[1], -m, -n] - (1 - 0) h[LI[1], c, -c]*h[LI[1], d, -d])
+
+(VarD[h[LI[1], c, d], CD][LagFP*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]]) == 0 /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // ToCanonical
+\end{lstlisting}
+to get
+\begin{figure}[!htb]
+	\includegraphics[scale=0.26]{free-soln}
+\end{figure}\\
+which says
+\begin{align}
+\f{\delta \lag}{\delta h^{\mu\nu}} &= \square h_{\mu\nu} - \p_\lambda \p_\mu \tensor{h}{^\lambda_\nu} - \p_\lambda \p_\nu \tensor{h}{^\lambda_\mu} + \eta_{\mu\nu}\p_\lambda \p_\sigma h^{\lambda\sigma} + \p_\mu \p_\nu h - \eta_{\mu\nu}\square h  \nn\\
+&\,\,\,\,\,- m^2(h_{\mu\nu} - \eta_{\mu\nu}h)\nn\\
+&= 0.
+\end{align}
+
+Okay, to get what constraints this equation gives us we first let $\p^\mu$ act on this equation:
+\begin{lstlisting}
+CD[c][(VarD[h[LI[1], c, d], CD][LagFP*Sqrt[-Det\[Eta][]]]/
+Sqrt[-Det\[Eta][]])] /. delta[-LI[1], LI[1]] -> 1 // 
+ExpandPerturbation // ContractMetric // 
+ToCanonical // Simplification
+\end{lstlisting}
+\begin{figure}[!htb]
+	\includegraphics[scale=0.26]{covD}
+\end{figure}
+Looking at this expression (which equals 0) for a while we can see that all terms without the $m^2$ factor cancel, which makes sense because $\p^\mu G_{\mu\nu} = 0$ where $G^{\mu\nu}$ is the Einstein tensor in the massless case. This expression then just simplify to
+\begin{align}
+\boxed{\p^\mu h_{\mu\nu} - \p_\nu h = 0 \iff \p_\mu h^{\mu\nu} - \p^\nu h = 0}
+\end{align}
+Plugging this back into the equation of motion, we find
+\begin{align}
+0 &= \square h_{\mu\nu} - \p_\lambda \p_\mu \tensor{h}{^\lambda_\nu} - \p_\lambda \p_\nu \tensor{h}{^\lambda_\mu} + \eta_{\mu\nu}\p_\lambda \p_\sigma h^{\lambda\sigma} + \p_\mu \p_\nu h - \eta_{\mu\nu}\square h - m^2(h_{\mu\nu} - \eta_{\mu\nu}h)\nn\\
+&= \square h_{\mu\nu} - \p_\mu \p^\lambda h_{\lambda\nu} - \p_\nu \p^\lambda h_{\lambda\mu} + \eta_{\mu\nu}\p_\lambda \p^\lambda h + \p_\mu \p_\nu h - \eta_{\mu\nu}\square h - m^2(h_{\mu\nu} - \eta_{\mu\nu}h)\nn\\
+&= \square h_{\mu\nu} - \p_\mu \p_\nu h - \p_\nu \p_\mu h + \cancel{\eta_{\mu\nu}\square h} + \p_\mu \p_\nu h - \cancel{\eta_{\mu\nu}\square h} - m^2(h_{\mu\nu} - \eta_{\mu\nu}h)\nn\\
+&= \square h_{\mu\nu} - \p_\mu \p_\nu h - m^2(h_{\mu\nu} - \eta_{\mu\nu}h).
+\end{align}
+So we have
+\begin{align}
+\boxed{\square h_{\mu\nu} - \p_\mu \p_\nu h - m^2(h_{\mu\nu} - \eta_{\mu\nu}h) = 0}
+\end{align}
+Contracting we find that $\boxed{h=0}$
+\begin{align}
+0 &= \eta^{\mu\nu}\lp \square h_{\mu\nu} - \p_\mu \p_\nu h - m^2(h_{\mu\nu} - \eta_{\mu\nu}h) \rp\nn\\
+&= \square h - \square h - m^2(h - 4h) \iff h = 0.
+\end{align}
+But this just says
+\begin{align}
+\p^\mu h_{\mu\nu} = \p_\nu h = 0 \implies (\square - m^2)h_{\mu\nu} = 0.
+\end{align}
+And so just to summarize, we have
+\begin{align}
+\boxed{(\square - m^2)h_{\mu\nu} = 0; \quad \p^\mu h_{\mu\nu} = 0; \quad h = 0}
+\end{align}
+It turns out that these three equations and the original equation of motion $\delta \lag = 0$ are equivalent statements. However, when put into this form (involving three simple equations), degree-of-freedom-counting is much easier. For $D = 4$, the first equation describe the evolution for a ten-component symmetric tensor $h$. The second equation reduces 4 more d.o.f. The last equation sets the trace, hence killing the last d.o.f, making $h_{\mu\nu}$ have only 5 d.o.f. In total, we are left with the 5 real space d.o.f of a 4-dimensional spin 2 particle ($5 = 2s+1 = 2\times 2 + 1$). \\
+
+Next, we wish to solve for $h_{\mu\nu}$ firstly from the Klein-Gordon equation. This turns out to be a reasonably easy differential equation whose general solution has the form
+\begin{align}
+\boxed{h^{\mu\nu}(x) = \int \f{d^d\mathbf{p}}{\sqrt{(2\pi)^d 2\omega_\mathbf{p}}} \lb h^{\mu\nu}(\mathbf{p})e^{ip\cdot x} + {h^{\mu\nu}}^*(\mathbf{p})e^{-ip\cdot x}\rb}
+\end{align}  
+Here $\mathbf{p}$ are the spatial momenta:
+\begin{align}
+\omega_\mathbf{p} = \sqrt{\mathbf{p}^2 +m^2},
+\end{align}
+and the $D$ momenta $p^\mu$ are on shell so that $p^\mu =(\omega_\mathbf{p}, \mathbf{p})$.\\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsubsection{The Propagator}
 
 
@@ -8663,6 +8772,8 @@ With this expansion, any tensor $\bar{K}_{\mu\nu}$ in $i$ can be expanded in ter
 &= K^j_{\mu\nu} + \pi^\lambda (\p_\lambda g^j_{\alpha\nu}) + (\p_\mu\pi^\alpha)K^j_{\alpha\nu} + (\p_\nu \pi^\alpha)K^j_{\alpha\mu} + \f{1}{2}\pi^\alpha\pi^\beta \p_\alpha\p_\beta K^j_{\mu\nu} \nn\\
 &\hspace{0.5cm} + (\p_\mu \pi^\alpha)(\p_\nu \p^\beta)K^j_{\alpha\beta} + (\p_\mu \pi^\alpha)\pi^\beta \p_\beta K^j_{\alpha\nu} + (\p_\nu \pi^\alpha)\pi^\beta \p_\beta K^j_{\mu\alpha} + \dots
 \end{align}
+
+
 
 
 
