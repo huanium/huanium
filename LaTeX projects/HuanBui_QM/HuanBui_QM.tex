@@ -8766,10 +8766,106 @@ Putting everything together we have
 \end{align}
 
 
-\textit{to be continued}
+This operator $\mathcal{O}$ is a second order differential operator. By the symmetry in the index-pairs: $\mu\nu$ and $\alpha\beta$, we have the following property:
+\begin{align}
+\mathcal{O}^{\mu\nu,\alpha\beta} = \mathcal{O}^{\nu\mu,\alpha\beta} = \mathcal{O}^{\mu\nu,\beta\alpha} = \mathcal{O}^{\nu\mu,\beta\alpha}.
+\end{align}
+There's nothing surprising about this. It is just a fact that might be useful later. \\
 
+With this operator, the equation of motion can now be written succinctly as
+\begin{align}
+\boxed{\f{\delta \lag}{\delta h_{\mu\nu}} = \mathcal{O}^{\mu\nu,\alpha\beta}h_{\alpha\beta}= 0} 
+\end{align}
 
+Recall in QFT where the propagator $\D$ is defined as the inverse of the differential operator $A$, we do the same thing here and define the propagator $\D_{\alpha\beta,\sigma\lambda}$ as the inverse of $\mathcal{O}^{\mu\nu,\alpha\beta}$:
+\begin{align}
+\boxed{\mathcal{O}^{\mu\nu,\alpha\beta}\D_{\alpha\beta,\sigma\lambda} = \f{i}{2}\lp \delta^\mu_\sigma \delta^\nu_\lambda + \delta^\nu_\sigma\delta^\mu_\lambda \rp}
+\end{align}
+which obeys the same index symmetries as $\mathcal{O}$.\\
 
+To derive an expression for $\D$, we first write $\mathcal{O}$ in momentum space:
+\begin{align}
+\tensor{\mathcal{O}}{^{\mu\nu}_{\alpha\beta}}(\p \to ip) = &-\lp \tensor{\eta}{^{(\mu}_\alpha}\tensor{\eta}{^{\nu)}_\beta}  - \eta^{\mu\nu}\eta_{\alpha\beta} \rp (p^2 + m^2)\nn\\
+&+2p^{(\mu} p_{(\alpha} \tensor{\eta}{^{\nu)}_{\beta)}} - p_\alpha p_\beta \eta^{\mu\nu} - p^\mu p^\nu \eta_{\alpha\beta}
+\end{align}
+where $\p \to ip$ denotes replacing $\p$ by $ip$ when we go to momentum space. \\
+
+Upon inspection, we can solve for $\D$ and find
+\begin{align}
+\boxed{\D_{\alpha\beta,\sigma\lambda} = \f{-i}{p^2 +m^2}\lb \f{1}{2}\lp P_{\alpha\sigma}P_{\beta\lambda} + P_{\alpha\lambda}P_{\beta\sigma} \rp - \f{1}{D-1}P_{\alpha\beta}P_{\sigma\lambda} \rb}
+\end{align}
+where
+\begin{align}
+P_{\alpha\beta} = \eta_{\alpha\beta} + \f{p_\alpha p_\beta}{m^2}.
+\end{align}
+I won't into the details about how we can obtain this. I will just say that we can readily verify that $\D$ is indeed the inverse of the $\mathcal{O}$, in momentum space. \\
+
+When the momentum is large, the propagator behaves as $\sim p^2 / m^4$ (rather than $1/p^2$ in the meson theory, say), and so we can't verify if the theory is renormalizable or not using the conventional power counting method. We will see later how to overcome this difficulty by rewriting the theory in a way in which all propagators go similar to $\sim 1/p^2$ at high energy.   \\
+
+We might learn something from comparing this propagator to the propagator in the $m=0$ case. In the $m=0$ case, the action can be written as
+\begin{align}
+S_{m=0} = \int d^Dx\, \f{1}{2}h_{\mu\nu}\mathcal{E}^{\mu\nu,\alpha\beta}h_{\al\be}
+\end{align} 
+where now the differential operator $\mathcal{E}$ is just the operator $\mathcal{O}$ evaluated at $m=0$:
+\begin{align}
+\tensor{\mathcal{E}}{^{\mu\nu}_{\alpha\beta}} &= \tensor{\mathcal{O}}{^{\mu\nu}_{\alpha\beta}}({m=0})\nn\\
+&=  \lp \tensor{\eta}{^{(\mu}_\alpha}\tensor{\eta}{^{\nu)}_\beta}  - \eta^{\mu\nu}\eta_{\alpha\beta} \rp \square -2\p^{(\mu} \p_{(\alpha} \tensor{\eta}{^{\nu)}_{\beta)}} + \p_\alpha \p_\beta \eta^{\mu\nu} + \p^\mu\p^\nu \eta_{\alpha\beta}
+\end{align}
+This propagator also inherits the usual index symmetry: $\mu \leftrightarrow \nu$ and $\alpha \leftrightarrow \beta$. Letting $\mathcal{E}$ act on some symmetric tensor $Z_{\alpha\beta}$ we find
+\begin{align}
+\mathcal{E}^{\mu\nu,\alpha\beta}Z_{\alpha\beta} &= \tensor{\mathcal{E}}{^{\mu\nu}_{\alpha\beta}}Z^{\alpha\beta}\nn\\
+&= \lc\lp \tensor{\eta}{^{(\mu}_\alpha}\tensor{\eta}{^{\nu)}_\beta}  - \eta^{\mu\nu}\eta_{\alpha\beta} \rp \square -2\p^{(\mu} \p_{(\alpha} \tensor{\eta}{^{\nu)}_{\beta)}} + \p_\alpha \p_\beta \eta^{\mu\nu} + \p^\mu\p^\nu \eta_{\alpha\beta}\rc Z^{\alpha\beta}\nn\\
+&= \square Z^{\mu\nu} - \eta^{\mu\nu}\square Z -2\p^{(\mu} \p_{(\alpha} \tensor{\eta}{^{\nu)}_{\beta)}}Z^{\alpha\beta} + \p^\mu\p^\nu Z + \eta^{\mu\nu}\p_\alpha\p_\beta Z^{\alpha\beta}\nn\\
+&= \square Z^{\mu\nu} - \eta^{\mu\nu}\square Z -2\p^{(\mu} \p_{\alpha} \tensor{Z}{^{\nu)\alpha}} + \p^\mu\p^\nu Z + \eta^{\mu\nu}\p_\alpha\p_\beta Z^{\alpha\beta}.
+\end{align}
+
+Now, recall that the $m=0$ action has the gauge symmetry
+\begin{align}
+\delta h_{\mu\nu} = \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu
+\end{align}
+which is broken when $m\neq 0$, which implies that the operator $\mathcal{E}$ is not invertible (has non-trivial kernel, i.e. there are distinct solutions to the same problem). In order to find the propagator (of equivalently the inverse of the differential operator), we must impose a gauge. We in fact have seen this gauge before in Zee's and Sean Carroll's treatment of massive gravity. The necessary gauge condition is called the harmonic gauge or de Donder gauge or Lorentz gauge:
+\begin{align}
+\p^\mu h_{\mu\nu} - \f{1}{2}\p_\nu h = 0.
+\end{align}   
+We also know that in this gauge the equation of motion reads
+\begin{align}
+\square h_{\mu\nu} - \f{1}{2}\eta_{\mu\nu}\square h  =0.
+\end{align}
+The Lagrangian associated with this gauge condition has an additive gauge-fixing term
+\begin{align}
+\lag_{GF} = -\lp \p^\nu h_{\mu\nu} - \f{1}{2}\p_\mu h \rp^2,
+\end{align}
+which we also have seen in Zee's treatment. This term actually follows from the Faddeev-Popov gauge fixing process, but I won't go into too much detail here (for reference, please refer to \textit{Gravity as a Field Theory} in one of the earlier sections). \\
+
+When we write the gauge-fixed action as
+\begin{align}
+S = \int d^Dx\, (\lag + \lag_{GF}) = \int d^Dx\, \f{1}{2}h_{\mu\nu}\tilde{\mathcal{O}}^{\mu\nu,\alpha\beta}h_{\alpha\beta}
+\end{align}
+where, from our results in \textit{Gravity and Beyond}
+\begin{align}
+\lag + \lag_{GF} &= -\f{1}{2}\p_\lambda h^{\mu\nu}\p^\lambda h_{\mu\nu} +\f{1}{4} \p_\lambda \tensor{h}{^\mu_\mu} \p^\lambda \tensor{h}{^\nu_\nu} \nn\\
+&= \f{1}{2}h_{\mu\nu}\square h^{\mu\nu} - \f{1}{4}h\square h
+\end{align}
+where some slight discrepancies in the signs of the Lagrangian here and in the earlier sections arise due to whether we vary $\lag$ with respect to  $h_{\mu\nu}$ or $h^{\mu\nu}$ (proof: a quick check in xACT). The second inequality is obtained from integrating the first line by parts (hence the minus signs). \\
+
+With this, the new differential operator is (compare this to what we found earlier and see that they match!)
+\begin{align}
+\tilde{\mathcal{O}}^{\mu\nu,\alpha\beta} = \square\lb \f{\eta^{\mu\alpha}\eta^{\nu\beta} + \eta^{\mu\beta}\eta^{\nu\alpha} - \eta^{\mu\nu}\eta^{\alpha\beta}}{2}\rb
+\end{align}
+Going to momentum space and requiring 
+\begin{align}
+\tilde{\mathcal{O}}^{\mu\nu,\alpha\beta} \D_{\alpha\beta,\sigma\lambda} = \f{i}{2}\lp \delta^\mu_\sigma \delta^\nu_\lambda + \delta^\nu\sigma \delta^\mu_\lambda \rp,
+\end{align}
+i.e., that $\D$ is the inverse of the $\tilde{\mathcal{O}}$, we find (once again we can check with \textit{Gravity and Beyond} to see these results match up to a factor of $i$ or a minus sign due to the identity convention):
+\begin{align}
+\boxed{\D_{\alpha\beta,\sigma\lambda} = \f{-i}{p^2}\lb \f{1}{2}\lp \eta_{\alpha\sigma}\eta_{\beta\lambda} + \eta_{\alpha\lambda}\eta_{\beta\sigma} \rp - \f{1}{D-2}\eta_{\alpha\beta}\eta_{\sigma\lambda} \rb}
+\end{align}
+Notice that this propagator grows as $\sim 1/p^2$ for high energy, which is good, except this is the massless case. Comparing this result to the massive propagator, and ignoring terms that blow up when $m \to 0$, we observe a difference in the coefficient of the last term, even as $m\to 0$. When $D=4$, it is $1/2$ for the massless case and $1/3$ for the massive case:
+\begin{align}
+\f{1}{D-1} \to \f{1}{4-1} = \f{1}{3} \text{massive}\nn\\
+\f{1}{D-2} \to \f{1}{4-2} = \f{1}{2} \text{massless}
+\end{align}
+This is the first hint of the vDVZ discontinuity (and various other problems that arise later).  
 
 
 
@@ -8850,7 +8946,7 @@ We are often interested in sources that are conserved, i.e., $\p_\mu T^{\mu\nu} 
 \boxed{(\square - m^2)h_{\mu\nu} = -\kappa \lb T_{\mu\nu} - \f{1}{D-1}\lp \eta_{\mu\nu} - \f{\p_\mu \p_\nu}{m^2} \rp T  \rb}
 \end{align}
 The general solution for a conserved source is then
-\begin{align}
+\begin{align}\label{soln}
 \boxed{h_{\mu\nu}(x) = \kappa\int \f{d^D p}{(2\pi)^D}e^{ipx}\f{1}{p^2 + m^2} \lb T_{\mu\nu}(p) - \f{1}{D-1}\lp \eta_{\mu\nu} + \f{p_\mu p_\nu}{m^2} \rp T(p) \rb}
 \end{align}
 where
@@ -8868,9 +8964,34 @@ is the inverse Fourier transform of the source.
 
 \subsubsection{Solution for a point source}
 
+We will now focus to $D=4$ so that 
+\begin{align}
+\kappa = M_P^{-(D-2)/2} = \f{1}{M_P}.
+\end{align}
+We consider as a source the stress tensor of a mass $M$ point particle at rest at the origin:
+\begin{align}
+\boxed{T^{\mu\nu}(x) = M \delta^\mu_0 \delta^\nu_0 \delta^3(\mathbf{x})}
+\end{align} 
+In momentum space this is 
+\begin{align}
+\boxed{T^{\mu\nu}(p) = 2\pi M \delta^\mu_0 \delta^\nu_0 \delta(p^0)}
+\end{align}
+upon taking the Fourier transform of the $T^{\mu\nu}(x)$.\\
+
+This source is conserved, by inspection. Using \eqref{soln}, we find
+\begin{align}
+solnnnn
+\end{align}
 
 
-\textit{to be continued}
+
+
+
+
+
+
+
+
 
 
 
