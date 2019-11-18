@@ -3565,7 +3565,7 @@ we have the volume element is
 d^3k = k^2 \sin \theta \,dk,d\theta\,d\phi = -  k^2 \, d(\cos\theta)\,d\phi.
 \end{align}
 But notice that even though we get an extra minus sign, the integration bounds also flips accordingly, so the overall sign of the integral doesn't chance. Thus,
-\begin{align}
+\begin{align}\label{inverse-sq}
 E &= -\int \f{d^3k}{(2\pi)^3}\f{e^{i\vec{k}\cdot(\vec{x}_1 - \vec{x}_2)}}{\vec{k}^2 + m^2} \nonumber\\
 &= -\f{1}{(2\pi)^3}\int_0^{2\pi}d\phi\,\int^\infty_0 dk\,k^2 \int^{1}_{-1}d(\cos\theta)\f{e^{ikx\cos\theta}}{k^2 + m^2} \nonumber\\
 &= -\f{1}{(2\pi)^2}\int^\infty_0 dk\,k^2 \int^{1}_{-1}du\,\f{e^{ikru}}{k^2 + m^2} \nonumber\\
@@ -8823,12 +8823,12 @@ Now, recall that the $m=0$ action has the gauge symmetry
 \begin{align}
 \delta h_{\mu\nu} = \p_\mu \epsilon_\nu + \p_\nu \epsilon_\mu
 \end{align}
-which is broken when $m\neq 0$, which implies that the operator $\mathcal{E}$ is not invertible (has non-trivial kernel, i.e. there are distinct solutions to the same problem). In order to find the propagator (of equivalently the inverse of the differential operator), we must impose a gauge. We in fact have seen this gauge before in Zee's and Sean Carroll's treatment of massive gravity. The necessary gauge condition is called the harmonic gauge or de Donder gauge or Lorentz gauge:
+which is broken when $m\neq 0$, which implies that the operator $\mathcal{E}$ is not invertible (has non-trivial kernel, i.e. there are distinct solutions to the same problem). In order to find the propagator (of equivalently the inverse of the differential operator), we must impose a gauge. We in fact have seen this gauge before in Zee's and Sean Carroll's treatment of massive gravity. The necessary gauge condition is called the harmonic gauge or de Donder gauge or Lorenz gauge:
 \begin{align}
 \p^\mu h_{\mu\nu} - \f{1}{2}\p_\nu h = 0.
 \end{align}   
 We also know that in this gauge the equation of motion reads
-\begin{align}
+\begin{align}\label{no-source}
 \square h_{\mu\nu} - \f{1}{2}\eta_{\mu\nu}\square h  =0.
 \end{align}
 The Lagrangian associated with this gauge condition has an additive gauge-fixing term
@@ -8883,7 +8883,7 @@ In this section we introduce a source into the action and repeat what we did in 
 
 
 First, we add a fixed external symmetric source $T^{\mu\nu}$ to the action: 
-\begin{empheq}[box=\widefbox]{align}
+\begin{empheq}[box=\widefbox]{align*}
 S_{FP} = \int d^Dx\, &-\f{1}{2}\p_\lambda h_{\mu\nu} \p^\lambda h^{\mu\nu} + \p_\mu h_{\nu\lambda}\p^\nu h^{\mu\lambda}\nn\\& - \p_\mu h^{\mu\nu}\p_\nu h + \f{1}{2}\p_\lambda h \p^\lambda h -\f{1}{2}m^2\lp h_{\mu\nu}h^{\mu\nu} - h^2 \rp + \kappa h_{\mu\nu}T^{\mu\nu}
 \end{empheq}
 where
@@ -8962,7 +8962,7 @@ is the inverse Fourier transform of the source.
 
 
 
-\subsubsection{Solution for a point source}
+\subsubsection{Solution for a point source ($m\neq 0$)}
 
 We will now focus to $D=4$ so that 
 \begin{align}
@@ -8974,31 +8974,171 @@ We consider as a source the stress tensor of a mass $M$ point particle at rest a
 \end{align} 
 In momentum space this is 
 \begin{align}
-\boxed{T^{\mu\nu}(p) = 2\pi M \delta^\mu_0 \delta^\nu_0 \delta(p^0)}
+\boxed{T^{\mu\nu}(p) = 2\pi M \delta^\mu_0 \delta^\nu_0 \delta(p^0) \implies T(p) = \eta_{\mu\nu}T^{\mu\nu}(p) = 2\pi M \eta_{00}\delta(p^0)}
 \end{align}
 upon taking the Fourier transform of the $T^{\mu\nu}(x)$.\\
 
-This source is conserved, by inspection. Using \eqref{soln}, we find
+This source is conserved, by inspection. Using \eqref{soln}, we find (using the metric convention $\eta_{\mu\nu} = (-\,+\,+\,+)$)
 \begin{align}
-solnnnn
+h_{00}(x) &= \f{1}{M_P}\int \f{d^4p}{(2\pi)^4}e^{ipx}\f{1}{p^2 + m^2}\lb T_{00}(p') - \f{1}{3}\lp \eta_{00} + \f{p_0^2}{m^2} \rp T(p') \rb\nn\\
+&= \f{1}{M_P}\int \f{d^4p}{(2\pi)^4}e^{ipx}\f{1}{p^2 + m^2}\lb T_{00}(p') - \f{1}{3}\lp \eta_{00} + \f{p_0^2}{m^2} \rp \lp 2\pi M \eta_{00}\delta(p^{0'})  \rp \rb\nn\\
+&= \f{M}{M_P}\int \f{d^4p}{(2\pi)^3}e^{ipx}\f{1}{p^2 + m^2}\lb \delta(p^{0'}) - \f{1}{3}\lp -1 + \underbrace{\f{p_0^2}{m^2}}_{1} \rp \delta(p^{0'}) \rb\nn\\
+&= \f{2M}{3M_P}\int \f{d^4p}{(2\pi)^3}e^{ipx}\f{1}{p^2 + m^2}\delta(p^0)\nn\\
+&= \f{2M}{3M_P}\int \f{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot \mathbf{x}}\f{1}{\mathbf{p}^2 + m^2}.
+\end{align}
+Thus we have
+\begin{align}
+\boxed{h_{00}(x) = \f{2M}{3M_P}\int \f{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot \mathbf{x}}\f{1}{\mathbf{p}^2 + m^2}}
+\end{align}
+
+We also have
+\begin{align}
+h_{0i}(x) &= \f{1}{M_P}\int \f{d^4p}{(2\pi)^4}e^{ipx}\f{1}{p^2 + m^2}\lb T_{00}(p) - \f{1}{3}\lp \eta_{0i} + \f{p_0p_i}{m^2} \rp T(p') \rb\nn\\
+&= \f{1}{M_P}\int \f{d^4p}{(2\pi)^4}e^{ipx}\f{1}{p^2 + m^2}\lb T_{0i}(p) - \f{1}{3}\lp  \f{p_0p_i}{m^2} \rp \lp 2\pi M \eta_{00}\delta(p^{0'})  \rp \rb\nn\\
+&= \f{1}{M_P}\int \f{d^4p}{(2\pi)^4}e^{ipx}\f{1}{p^2 + m^2}\lb 0 + 0 \rb\nn\\
+&= 0
+\end{align}
+and so
+\begin{align}
+\boxed{h_{0i}(x) = 0}
+\end{align}
+And finally,
+\begin{align}
+h_{ij}(x) &= \f{1}{M_P}\int \f{d^4p}{(2\pi)^4}e^{ipx}\f{1}{p^2 + m^2}\lb T_{ij}(p) - \f{1}{3}\lp \eta_{ij} + \f{p_i p_j}{m^2} \rp T(p') \rb\nn\\
+&= \f{1}{M_P}\int \f{d^4p}{(2\pi)^4}e^{ipx}\f{1}{p^2 + m^2}\lb 0 - \f{1}{3}\lp \delta_{ij} + \f{p_i p_j}{m^2} \rp \lp 2\pi M \eta_{00}\delta(p^{0'})  \rp \rb\nn\\
+&= \f{M}{3M_P}\int \f{d^4p}{(2\pi)^3}e^{ipx}\f{1}{p^2 + m^2}\lb \lp \delta_{ij} + \f{p_i p_j}{m^2} \rp  \delta(p^{0'})   \rb\nn\\
+&= \f{M}{3M_P}\int \f{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot \mathbf{x}}\f{1}{\mathbf{p}^2 + m^2} \lp \delta_{ij} + \f{p_i p_j}{m^2} \rp.
+\end{align}
+So,
+\begin{align}
+\boxed{h_{ij}(x) = \f{M}{3M_P}\int \f{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot \mathbf{x}}\f{1}{\mathbf{p}^2 + m^2} \lp \delta_{ij} + \f{p_i p_j}{m^2} \rp}
 \end{align}
 
 
+Recalling \eqref{inverse-sq} in \textit{From field to particle}, we have actually done the $h_{00}(x)$ integral. So we will just write (by analogy)
+\begin{align}
+{h_{00}(x) = \f{2M}{3M_P}\int \f{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot \mathbf{x}}\f{1}{\mathbf{p}^2 + m^2}= \f{2M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}}
+\end{align}
+which suggests going to spherical coordinates with $r$ being the norm of the vector $x^i$, i.e., $r = \sqrt{x_ix^i}$, integrated from $0$ to $\infty$. \\
 
+To evaluate the $h_{ij}(x)$ integral, we can differentiate under the integral sign the integrand of $h_00(x)$ without respect to $x^i$ and $x^j$ to bring down $p_i$ and $p_j$:
+\begin{align}
+\p_i \p_j \lp e^{i p_\alpha x^\alpha} \f{1}{p_\beta p^\beta + m^2}\rp  =  \p_i \lb i p_j e^{i p_\alpha x^\alpha} \f{1}{p_\beta p^\beta + m^2}\rb=  -p_ip_j e^{i\mathbf{p}\cdot \mathbf{x}}\f{1}{\mathbf{p}^2 + m^2}.
+\end{align} 
+This, with $r = \sqrt{x_\alpha x^\alpha}$, gives
+\begin{align}
+\int \f{d^3\mathbf{p}}{(2\pi)^3}\f{e^{i\mathbf{p}\cdot \mathbf{x}} p_i p_j}{\mathbf{p}^2 + m^2} &= -\p_i\p_j \int \f{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot \mathbf{x}}\f{1}{\mathbf{p}^2 + m^2} \nn\\
+&= -\p_i \p_j \f{1}{4\pi}\f{e^{-mr}}{r} \nn\\
+&= -\p_i \p_j \f{1}{4\pi}\f{e^{-m\sqrt{x_\alpha x^\alpha}}}{\sqrt{x_\alpha x^\alpha}} = -\p_i \p_j \f{1}{4\pi}\f{e^{-m\sqrt{\eta_{\alpha\beta}x^\alpha x^\beta}}}{\sqrt{\eta_{\alpha\beta}x^\alpha x^\beta}}\nn\\
+&= -\p_i \lb \f{1}{4\pi} \lp -\frac{e^{-m r} (m r+1)}{r^2} \rp \underbrace{\p_j \sqrt{\eta_{\alpha\beta}x^\alpha x^\beta}}_{x^j/r}   \rb\nn\\
+&= -\p_i \lb \f{1}{4\pi} \lp -\frac{e^{-m r} (m r+1)}{r^2} \rp \f{x^j}{r}  \rb\nn\\
+&= -\p_i \lb \f{1}{4\pi} \lp -\frac{e^{-m r} (m r+1)}{r^3} \rp x^j  \rb\nn\\
+&= \f{1}{4\pi}\lb  \frac{-e^{-m r} \left(m^2 r^2+3 m r+3\right)}{r^4}  \f{x^i}{r} x^j +  \frac{e^{-m r} (m r+1)}{r^3}  \delta_{ij} \rb\nn\\
+&= \f{1}{4\pi}\f{e^{-mr}}{r}\lb \f{1}{r^2}(1+mr)\delta_{ij} - \underbrace{\f{1}{r^4}(3+3mr + m^2r^2)x_ix_j}_{\spadesuit_{ij}}\rb\nn\\
+&\equiv \f{1}{4\pi}\f{e^{-mr}}{r}\lb \f{1}{r^2}(1+mr)\delta_{ij} - \spadesuit_{ij}\rb.
+\end{align}
+Thus we have
+\begin{align}
+h_{ij}(x) &= \f{M}{3M_P}\lc \delta_{ij}\f{1}{4\pi}\f{e^{-mr}}{r}\lp 1 + \f{1}{m^2r^2}(1+mr) \rp - \f{\spadesuit_{ij}}{m^2} \rc\nn\\
+&= \f{M}{3M_P}\lc \delta_{ij}\f{1}{4\pi}\f{e^{-mr}}{r}\f{1+mr+m^2r^2}{m^2r^2} - \f{\spadesuit_{ij}}{m^2} \rc\nn\\
+\end{align}
+Putting these results into the expressions for $h_{00}$, $h_{0i}$, and $h_{ij}$ we find
+\begin{empheq}[box=\widefbox]{align*}
+&h_{00}(x) = \f{2M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}\nn\\
+&h_{0i}(x) = 0\nn\\
+&h_{ij}(x) = \f{M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}\lb \f{1+mr+m^2r^2}{m^2r^2} \delta_{ij} - \f{1}{m^2 r^4}(3+3mr + m^2r^2)x_ix_j \rb
+\end{empheq}
+We note the Yukawa suppression factors $e^{-mr}$ characteristic of a massive field. \\
 
+Now that we have all the components of $h_{\mu\nu}$, for future reference, we will record these expressions in spherical coordinates for the spatial variables. Using the identity:
+\begin{align}
+\boxed{\lb F(r)\delta_{ij} +  G(r)x_i x_j \rb\, dx^idx^j = \lb F(r) + r^2 G(r)\rb\,dr^2 + F(r)r^2\,d\Omega^2}
+\end{align}
+which can be readily verified using $r = \sqrt{\eta_{\alpha\beta}x^\alpha x^\beta}$, we can rewrite the line element in spherical coordinates as
+\begin{align}
+h_{\mu\nu}\,dx^\mu dx^\nu &= h_{00}\,dx^0dx^0 + 0 + 0 + h_{ij}\,dx^idx^j\nn\\
+&= \underbrace{\f{2M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}}_{-B(r)}\, dt^2 \nn\\
+&\quad + \f{M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}\lb \f{1+mr+m^2r^2}{m^2r^2} \delta_{ij} - \f{3+3mr + m^2r^2}{m^2 r^4}x_ix_j \rb\,dx^idx^j\nn\\
+&= -B(r)\,dt^2 +  \underbrace{\f{M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}\f{1+mr+m^2r^2}{m^2r^2}}_{A(r)}\delta_{ij}\,dx^idx^j \nn\\
+&\quad\underbrace{- \f{M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}\f{1}{m^2r^4}(3+3mr+m^2r^2)}_{G(r)}x_ix_j\,dx^idx^j\nn\\
+&= -B(r)\,dt^2 + \lb  A(r) + r^2 G(r) \rb\,dr^2 + A(r)r^2\,d\Omega^2\nn\\
+&= -B(r)\,dt^2 \underbrace{-\f{M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}\frac{2 (m r+1)}{m^2 r^2}}_{C(r)}\,dr^2 + A(r)r^2\,d\Omega^2  \nn\\
+&= - B(r)\,dt^2 + C(r)\,dr^2 + A(r)r^2\,d\Omega^2.
+\end{align}
+To summarize: we have successfully written $h_{\mu\nu}(x)$ line element in spherical coordinates $h_{\mu\nu}(x) \to h_{\mu\nu}(r)$
+\begin{align}
+\boxed{h_{\mu\nu}\,dx^\mu dx^\nu - B(r)\,dt^2 + C(r)\,dr^2 + A(r)r^2\,d\Omega^2}
+\end{align}
+where
+\begin{empheq}[box=\widefbox]{align*}
+B(r) &= -\f{2M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}\nn\\
+C(r) &= -\f{2M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}\frac{1 + mr}{m^2 r^2}  \nn\\
+A(r) &= \f{M}{3M_P}\f{1}{4\pi}\f{e^{-mr}}{r}\f{1+mr+m^2r^2}{m^2r^2} 
+\end{empheq}
+When $r\ll 1/m$ these expressions reduce to
+\begin{empheq}[box=\widefbox]{align*}
+B(r) &= -\f{2M}{3M_P}\f{1}{4\pi r}\nn\\
+C(r) &= -\f{2M}{3M_P}\f{1}{4\pi m^2 r^3}  \nn\\
+A(r) &= \f{M}{3M_P}\f{1}{4\pi m^2 r^3} 
+\end{empheq}
 
+\subsubsection{Solution for a point source $m = 0$}
+For comparison, we compute the point source solution for the massless case as well. We choose the Lorenz gauge (or harmonic gauge) as before
+\begin{align}
+\p^\mu h_{\mu\nu} - \f{1}{2}\p_\nu h = 0,
+\end{align} 
+in which the equation of motion simplifies to 
+\begin{align}\label{new-eom}
+\square h_{\mu\nu} - \f{1}{2}\eta_{\mu\nu}\square h = -\kappa T_{\mu\nu}
+\end{align}
+which can be easily obtained by taking into account for an addition source term in equation \eqref{no-source}. Contracting this equation gives
+\begin{align}
+\square h - \f{D}{2}\square h = -\kappa T\implies \square h = \f{2}{D-2}\kappa T
+\end{align}
+which upon back-substitution gives
+\begin{align}
+\square h_{\mu\nu} = -\kappa \lb T_{\mu\nu} - \f{1}{D-2}\eta_{\mu\nu}T \rb.
+\end{align}
+With these, we can solve \eqref{new-eom} by Fourier transforming (just as we did before with the sourced solution with $m=0$):
+\begin{align}\label{new-soln}
+\boxed{h_{\mu\nu}(x) = \kappa \int \f{d^Dp}{(2\pi)^D} e^{ip\cdot x}\f{1}{p^2}\lb T_{\mu\nu}(p) - \f{1}{D-2}\eta_{\mu\nu}T(p) \rb}
+\end{align}         
+where
+\begin{align}
+T^{\mu\nu}(p) = \int d^Dx\, e^{-p\cdot x}T^{\mu\nu}(x) 
+\end{align}
+is the Fourier transform of the source. We can readily this is a solution by evaluating $\square h_{\mu\nu}$. \\
 
-
-
-
-
-
-
+When $D=4$ and $T^{\mu\nu}(x)$ is a point source - a point particle of mass M at the origin of the same form as before:
+\begin{align}
+T^{\mu\nu}(x) = M\delta^\mu_0\delta^\nu_0\delta^3(x) \iff T^{\mu\nu}(p) = 2\pi M\delta^\mu_0 \delta^\nu_0\delta(p^0),
+\end{align}
+then the general solution we found \eqref{new-soln} tells us that
+\begin{empheq}[box=\widefbox]{align*}
+&h_{00}(x) = \f{M}{2M_P}\int \f{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot\mathbf{x}}\f{1}{\mathbf{p}^2}  = \f{M}{2M_P}\f{1}{4\pi r}\nn\\
+&h_{0i}(x) = 0\nn\\
+&h_{ij}(x) = \f{M}{2M_P}\int \f{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot \mathbf{x}}\f{1}{\mathbf{p}^2}\delta_{ij} = \f{M}{2M_P}\f{1}{4\pi r}\delta_{ij}.
+\end{empheq}
+For later reference, we record his result in spherical spatial coordinates as well. Using the same identity
+\begin{align}
+\lb F(r)\delta_{ij} +  G(r)x_i x_j \rb\, dx^idx^j = \lb F(r) + r^2 G(r)\rb\,dr^2 + F(r)r^2\,d\Omega^2
+\end{align}
+to get spherical coordinates we find a metric of the form
+\begin{align}
+h_{\mu\nu}\,dx^\mu dx^\nu = -B(r)\,dt^2 + C(r)\,dr^2 + A(r)r^2\,d\Omega^2
+\end{align}
+with
+\begin{empheq}[box=\widefbox]{align*}
+&B(r) = -\f{M}{2M_P}\f{1}{4\pi r}\nn\\
+&C(r) = +\f{M}{2M_P}\f{1}{4\pi r}\nn\\
+&A(r) = +\f{M}{2M_P}\f{1}{4\pi r}\nn\\
+\end{empheq}
+The procedure for obtaining this is exactly the same as we just did for the $m\neq 0$ sourced equation, except things are much simpler because we don't have the $x_ix_j$ term to worry about. One can verify this just by inspection.
 
 
 
 \subsubsection{The vDVZ discontinuity}
-
+In this subsection we extract some physical prediction from the point source solution. Assume we have a test particle moving in this field, and that this test particle responds to $h_{\mu\nu}$ the same way that a test particle in GR responds to the metric deviation $\delta g_{\mu\nu} = (2/M_P)h_{\mu\nu}$. 
 
 
 
