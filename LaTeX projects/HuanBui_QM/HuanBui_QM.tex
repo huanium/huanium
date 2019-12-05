@@ -9738,17 +9738,33 @@ which follows from the fact that
 \end{align}
 after defining $A_\mu \to A_\mu + \p_\mu \phi$, and rescaling $A_\mu \to (1/m)A_\mu$ and $\phi \to (1/m^2)\phi$. In any case, these are minor details we don't have to worry about too much. \\
 
-With these gauge symmetries, we impose the following gauge conditions:
+Now, remember that in order to find the propagators for these fields (scalar $\phi$, vector $A_\mu$, and tensor $h_{\mu\nu}$), we must be able to invert the differential operators that correspond to each field in the Lagrangian. Since there are gauge symmetries, these differential operators don't have trivial kernel (i.e. not invertible). This requires some gauge-fixing to allow for operator inversion. There are 2 gauge conditions we would like to fix: one in $\Lambda$ and one in $\epsilon_\mu$. These are the residual ``degrees of freedom'' that we need to eliminate for things to be invertible. \\
+
+We can try to fix the $\epsilon_\mu$ symmetry first. From the gauge symmetries, we observe that if we say
+\begin{align}
+\p^\nu h'_{\mu\nu} - \f{1}{2}\p_\mu h' + mA_\mu = 0
+\end{align}
+then we can fix the $\epsilon_\mu$ symmetry up to a residual transformation satisfying
+\begin{align}
+(\square - m^2)\epsilon_\mu = 0,
+\end{align}
+which is good, except it is invariant under $\Lambda$ transformations. This requires fixing the $\Lambda$ symmetry. We observe that by fixing 
+\begin{align}
+\p_\mu A^\mu + m\lp \f{1}{2}h' + 2\f{D-1}{D-2}\phi \rp = 0
+\end{align} 
+we fix the $\Lambda$ symmetry up to a residual transformation satisfying 
+\begin{align}
+(\square - m^2)\Lambda = 0.
+\end{align}
+
+Thus, we impose the following gauge conditions:
 \begin{empheq}[box=\widefbox]{align*}
 \p^\nu h'_{\mu\nu} - \f{1}{2}\p_\mu h' + mA_\mu = 0\nn\\
 \p_\mu A^\mu + m\lp \f{1}{2}h' + 2\f{D-1}{D-2}\phi \rp = 0
 \end{empheq}
-The first gauge condition resembles the Lorenz gauge (or harmonic gauge), differing by that $mA_\mu$ term. Why? \\
 
 
-What do they do?\\
-
-Once we have these two gauges, we can add the following gauge-fixing terms (which are just zeros)
+Once we have these two gauges, we can add the following gauge-fixing terms (which are just zeros by gauge-fixing)
 \begin{align}
 \boxed{S_{GF1} = \int d^Dx\, -\lp \p^\nu h'_{\mu\nu} - \f{1}{2}\p_\mu h' + mA_\mu  \rp^2 }
 \end{align}
@@ -9757,22 +9773,39 @@ and
 \boxed{S_{GF2} = \int d^Dx\, -\lb \p_\mu A^\mu + m\lp \f{1}{2}h' + 2\f{D-1}{D-2}\phi \rp  \rb^2 }
 \end{align}
 to the full action (just as we have done before with the original harmonic gauge) to obtain
-\begin{align}
-eh
-\end{align}
+\begin{empheq}[box=\widefbox]{align*}
+S + S_{GF1} + S_{GF2} &= \int d^Dx\, \lb \f{1}{2}h'_{\mu\nu}\lp \square - m^2\rp h'^{\mu\nu} - \f{1}{4}h'\lp \square - m^2 \rp h'\rb\nn\\
+&+ \lb A_\mu \lp \square - m^2 \rp A^\mu \rb+ \lb 2\f{D-1}{D-2}\phi   \lp \square - m^2 \rp\phi \rb\nn\\
+&\kappa h'_{\mu\nu}T^{\mu\nu} + \f{2}{D-2}\kappa \phi T - \f{2}{m}\kappa A_\mu \p_\nu T^{\mu\nu} + \f{2}{m^2}\kappa \phi \p \p T
+\end{empheq}
 Recall that the sole purpose of doing this is so that we can write the integrand (the Lagrangian) in terms of the fields and propagators (refer to the part about gauge harmonic for details). In other words, by adding these gauge-fixing terms, we in effect ``diagonalize'' the action. \\
 
 With the action in propagator form, we can read off the propagators of $h'_{\mu\nu}$, $A_\mu$, and $\phi$ respectively:
 \begin{align}
-a
+\D[h](p) = \f{-i}{p^2 + m^2}\lb \f{1}{2}\lp \eta_{\alpha\sigma}\eta_{\beta\lambda} + \eta_{\alpha\lambda}\eta_{\beta\sigma} \rp - \f{1}{D-2}\eta_{\alpha\beta}\eta_{\sigma\lambda} \rb,
 \end{align}
 \begin{align}
-b
+\D[A](p) = \f{1}{2}\f{-i\eta_{\mu\nu}}{p^2+m^2},
 \end{align}
 \begin{align}
-c
+\D[\phi](p) = \f{D-2}{4(D-1)}\f{-i}{p^2+m^2}
 \end{align}
-which all behave as $\sim 1/p^2$ at high momenta, so we can apply the usual power-counting methods. 
+which all behave as $\sim 1/p^2$ at high momenta, so we can apply the usual power-counting methods. These propagators might look a bit unusual, but when we set $D=4$,
+\begin{align}
+\D[h](p) = \f{-i}{p^2 + m^2}\f{1}{2}\lb \eta_{\alpha\sigma}\eta_{\beta\lambda} + \eta_{\alpha\lambda}\eta_{\beta\sigma}  - \eta_{\alpha\beta}\eta_{\sigma\lambda} \rb,
+\end{align}
+\begin{align}
+\D[A](p) = \f{1}{2}\f{-i\eta_{\mu\nu}}{p^2+m^2},
+\end{align}
+and
+\begin{align}
+\D[\phi](p) = \f{1}{6}\f{-i}{p^2+m^2}
+\end{align}
+we see that these are the propagators we have seen before, and the differential operator-containing terms in the action can be written as
+\begin{align}
+\int d^Dx\, \f{1}{2} f_{\dots} \mathcal{O}^{\dots} f_{\dots}
+\end{align}
+for each corresponding field $f$ (scalars, vectors, tensors, etc.) where $\mathcal{O}^{\dots}$ is the inverse of the spatial propagator $\D[f](x)$. I won't worry too much about the details here, because we're not getting any new insights.  
 
 
 
@@ -9788,10 +9821,170 @@ which all behave as $\sim 1/p^2$ at high momenta, so we can apply the usual powe
 \newpage
 
 
-\subsection{Non-Linear Massive Gravity}
+\subsection{Nonlinear Massive Gravity}
+
+Up to this point, we have studied only the linear theory of massive gravity, which is determined by the requirement that it propagates only one massive spin 2 degree of freedom. We now turn to the study of the possible interactions and non-linearities for massive gravity. 
+ 
 
 \subsubsection{Massive General Relativity}
+
+
+
+Recall the original Einstein-Hilbert action for gravity:
+\begin{align}
+S = \f{1}{16\pi G}\int d^Dx\, \sqrt{-g}R\equiv \int d^Dx\, \sqrt{-g}M_P^2R
+\end{align}
+where $R$ is the Ricci scalar, and $M_P \equiv 1/4\pi G$ is the Planck mass. By Hinterbichler's convention, however, $M_P^2 \equiv 1/8\pi G$, so we will be following this convention and write
+\begin{align}
+S = \f{1}{2\kappa^2}\int d^Dx\, \sqrt{-g}R
+\end{align}
+where $\kappa  \equiv 1/M_P$ in Hinterbichler's convention. \\
+
+What we want in a full theory of massive gravity is some nonlinear theory whose linear expansion around some background is the massive Fierz-Pauli theory. This theory is no longer GR (or Einstein gravity) in general, because we no longer have an obvious gauge invariance constraint.\\
+
+Our first modification to the original GR is adding the Fierz-Pauli term to the full nonlinear GR action. Doing this implies that all nonlinear interactions are due to GR. The addition of the Fierz-Pauli term is given by
+\begin{align}
+\boxed{S = \f{1}{2\kappa^2}\int d^Dx\, \lb \sqrt{-g}R - \sqrt{-g^{(0)}}\f{1}{4}m^2 g^{(0)\mu\alpha}g^{(0)\nu\beta}\lp h_{\mu\nu}h_{\alpha\beta} - h_{\mu\alpha}h_{\nu\beta} \rp \rb}
+\end{align}
+where 
+\begin{align}
+\boxed{h_{\mu\nu} = g_{\mu\nu} - g^{(0)}_{\mu\nu}}
+\end{align}
+The Lagrangian now explicitly depends on a fixed metric $g^{(0)}_{\mu\nu}$, called the \textit{absolute metric}, on which the massive graviton $h_{\mu\nu}$ propagates. This means contraction, raising, and lowering of indices of $h_{\mu\nu}$ are done via $g^{(0)}_{}\mu\nu$, and not $g_{\mu\nu}$, which is the full metric. This is similar to what we had before, where $\eta_{\mu\nu}$ was responsible general ``index-manipulation.'' The presence of this absolute metric in the mass term breaks the diffeomorphism invariance of the Einstein-Hilbert term. \\
+
+Varying this action with respect to $g_{\mu\nu}$ (the full metric, NOT the perturbation $h_{\mu\nu}$), we find the following equation of motion
+\begin{align}
+\boxed{0 = \sqrt{-g}\lp R^{\mu\nu} - \f{1}{2}Rg^{\mu\nu} \rp + \sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)\mu\alpha}g^{(0)\nu\beta}h_{\alpha\beta} - g^{(0)\alpha\beta}h_{\alpha\beta}g^{(0)\mu\nu}\rp}
+\end{align} 
+(\textbf{Fun Exercise: How was this found?}) We see that because we're varying with respect to the full metric $g_{\mu\nu}$, which contracts (and raises and lowers, etc.) the indices of $R_{\mu\nu}$, we just get back the Einstein tensor $G^{\mu\nu} \equiv R^{\mu\nu} - (1/2)Rg^{\mu\nu}$ for the first term in the action. The second term is bit more tricky. I will get back to how we take the variational derivative of the second term with respect to $g_{\mu\nu}$ later when I have time. We actually don't have to worry too much about this result, since we are interested in a much more general Fierz-Pauli potential. In addition to this, we will later see that we can in fact raise/lower indices of $h$ using $g_{\mu\nu}$, except we must also find the correct relationship between the coefficients in the $g^{(0)}_{\mu\nu}$ and the $g_{\mu\nu}$ variational derivatives.\\
+
+In any case, we observe that if the absolute metric $g^{(0)}_{\mu\nu}$ satisfies the Einstein equations, then $g^{(0)}_{\mu\nu} = g^{\mu\nu} \iff h_{\mu\nu} = 0$ is a solution. In this case, we just get back the original GR. When dealing with massive gravity and more complicated nonlinear solutions thereof, we can have two background structures. On one hand, we can have the \textit{absolute metric}, which breaks diffeomorphism. On the other, there is the background metric, which is a solution to the full nonlinear equations, about which we may expand the action. Often the solution metric we are expanding around will be the same as the absolute metric, but if we were expanding around a different solution, say a black hole, there would be two distinct structures: the black hole solution and the absolute metric.  \\
+
+We are interested in more general interactions beyond the action provided above. We will be adding interaction terms with no derivatives, since these are most important at low energies. The most general such potential which reduces to Fierz-Pauli at quadratic order involves adding terms cubic and higher in $h_{\mu\nu}$ in all possible ways. With this, we write in general:
+\begin{align}
+\boxed{S = \f{1}{2\kappa^2}\int d^Dx\, \lb \sqrt{-g}R - \sqrt{-g^{(0)}}\f{1}{4}m^2 U(g^{(0)},h) \rb}
+\end{align}
+The interaction potential $U$ is the most general one that reduces to Fierz-Pauli at linear order. The power series representation of this potential $U$ is given by
+\begin{align}
+U(g^{(0)},h) &= \sum^N_{n=2}U_n(g^{(0)},h) \nn\\
+&= U_2(g^{(0)},h) + U_3(g^{(0)},h) + U_4(g^{(0)},h) + U_5(g^{(0)},h) + \dots
+\end{align}
+where just as before
+\begin{align}
+U_2(g^{(0)},h) &= g^{(0)\mu\alpha}g^{(0)\nu\beta}\lp h_{\mu\nu}h_{\alpha\beta} - h_{\mu\alpha}h_{\nu\beta} \rp   \nn\\
+&= \underbrace{g^{(0)\mu\alpha}g^{(0)\nu\beta}h_{\mu\nu}h_{\alpha\beta}}_{\equiv [h^2]} - \underbrace{g^{(0)\mu\alpha}h_{\mu\alpha}g^{(0)\nu\beta}h_{\nu\beta}}_{\equiv [h]^2}\nn\\
+&= [h^2] - [h]^2
+\end{align}
+and further
+\begin{align}
+U_3(g^{(0)},h) &= C_1[h^3] + C_2[h^2][h] + C_3[h]^3\nn\\
+U_4(g^{(0)},h) &= D_1[h^4] + D_2[h^3][h] + D_3[h^2]^2 + D_4[h^2][h]^2 + D_5[h]^4\nn\\
+U_5(g^{(0)},h) &= F_1[h^5] + F_2[h^4][h] + F_3[h^3][h]^2 + F_4[h^3][h^2]\nn\\ &\,\,\,\,\,\,+ F_5[h^2]^2[h] + F_6[h^2][h]^3 + F_7[h]^5\nn\\
+&\vdots
+\end{align}
+The square bracket indicates a trace, with indices raised with $g^{(0)\mu\nu}$:
+\begin{align}
+&[h] = g^{(0)\mu\nu}h_{\mu\nu},\nn\\
+&[h^2] = g^{(0)\mu\nu}h_{\mu\nu}g^{(0)\alpha\beta}h_{\alpha\beta} \nn\\
+&\vdots
+\end{align}
+The coefficients $C_k$ are generic. Note that the dimension of $\vec{C_k}$ in $U_n(g^{(0)},h)$ whenever $n>D$ is actually redundant by 1, not $n$, because of Cayley-Hamiltonian theorem, which guarantees that existence of combination of the contractions (the combination that is the characteristic polynomial $\lag_h^{TD}(h)$) that annihilates $U_n(g^{(0)}_h)$. This means one of the coefficients in $U_n(g^{(0)},h)$ whenever $n>D$ can be set to zero. \\
+
+For convenience, we will want to reorganize the terms in the potential by raising and lowering with the full metric $g^{\mu\nu}$ rather than the absolute metric $g^{(0)\mu\nu}$, so that we get a common factor of $\sqrt{-g}$ in the action. Under this ``transformation'' we can write the action in terms of the new potential $V(g,h) = U(g^{(0)},h)$:
+\begin{align}
+\boxed{S = \f{1}{2\kappa^2}\int d^Dx\, \lb \sqrt{-g}\lp R - \f{1}{4}m^2 V(g,h) \rp \rb}
+\end{align}
+where just as before:
+\begin{align}
+\boxed{V(g,h) = \sum^N_{n=2}V_n(g,h) = V_2(g,h) + V_3(g,h) + V_4(g,h) + V_5(g,h) + \dots}
+\end{align}
+with 
+\begin{align}
+V_2(g^{(0)},h) &= g^{\mu\alpha}g^{\nu\beta}\lp h_{\mu\nu}h_{\alpha\beta} - h_{\mu\alpha}h_{\nu\beta} \rp   \nn\\
+&= \underbrace{g^{\mu\alpha}g^{\nu\beta}h_{\mu\nu}h_{\alpha\beta}}_{\equiv \langle h^2\rangle } - \underbrace{g^{\mu\alpha}h_{\mu\alpha}g^{\nu\beta}h_{\nu\beta}}_{\equiv \langle h \rangle ^2}= \langle h^2\rangle  - \langle h\rangle ^2\nn\\
+V_3(g,h) &= C_1\langle h^3 \rangle  + C_2\langle h^2\rangle \langle h\rangle + C_3\langle h\rangle^3\nn\\
+V_4(g,h) &= D_1\langle h^4\rangle  + D_2\langle h^3\rangle \langle h\rangle + D_3\langle h^2\rangle^2 + D_4\langle h^2\rangle\langle h\rangle^2 + D_5\langle h\rangle^4\nn\\
+V_5(g,h) &= F_1\langle h^5\rangle  + F_2\langle h^4\rangle\langle h\rangle + F_3\langle h^3\rangle \langle h\rangle^2 + F_4\langle h^3\rangle\langle h^2\rangle\nn\\ &\,\,\,\,\,\,+ F_5\langle h^2\rangle^2\langle h\rangle + F_6\langle h^2\rangle\langle h\rangle^3 + F_7\langle h\rangle^5\nn\\
+&\vdots
+\end{align}
+where the angled brackets are traces with he indices raised with respect to $g^{\mu\nu}$ (not $g^{(0)\mu\nu}$ anymore). It does not matter if we use the full or absolute metric, as long as we correctly relate the coefficients of the two by expanding the inverse full metric and the full determinant in powers of $h_{\mu\nu}$ raise with the absolute metric. The full metric in terms of a power series in $h$ is:
+\begin{align}
+\boxed{g^{\mu\nu} = g^{(0)\mu\nu} - h^{\mu\nu} + h^{\mu\lambda}\tensor{h}{_\lambda^\nu} - h^{\mu\lambda}\tensor{h}{_\lambda^\sigma}\tensor{h}{_\sigma^\nu} + \dots}
+\end{align}
+We can actually verify this in xACT with the following commands:
+\begin{lstlisting}
+Per = Perturbed[g0[a, b], 3] // ExpandPerturbation
+
+FirstOrderOnly1 = h[LI[n_], __] :> 0 /; n > 1;
+
+Per /. FirstOrderOnly1
+\end{lstlisting}
+The first command gives the 3rd order perturbation of $g^{\mu\nu}$. Now, we want to express the inverse of $g_{\mu\nu} = g^{(0)}_{\mu\nu} + h_{\mu\nu}$ as a power series in $h^{\mu\nu}$. The problem is the first command in xACT gives us the full expansion including higher perturbative $h_{\mu\nu}$ terms, which we don't want. This is where the first command comes in and sets every $h^{\mu\nu}$ of order higher than 1 (in the perturbation sense, not powers of $h$) to zero. The third command applies this condition to the output of the first command and gives:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{first-order}
+\end{figure}
+
+
+
+By setting $\epsilon = 1$ we get the desired expansion above. Presumably we should be able to get expansions to very orders of $h$ this way. Let's try order 5:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{order5}
+\end{figure}
+
+in more readable symbols:
+\begin{align}
+g^{\mu\nu} = g^{(0)\mu\nu} -h^{ab} + h^{ac}\tensor{h}{_c^b} - h^{ac}\tensor{h}{_c^d}\tensor{h}{_d^b} + h^{ac}\tensor{h}{_c^d}\tensor{h}{_d^e}\tensor{h}{_e^b} - h^{ac}\tensor{h}{_c^d}\tensor{h}{_d^e}\tensor{h}{_e^f}\tensor{h}{_f^b} + \dots
+\end{align}
+
+We also need to expand the determinant. Hinterbichler says:
+\begin{align}
+\boxed{\sqrt{-g} = \sqrt{-g^{(0)}}\lb 1 + \f{1}{2}h - \f{1}{4}\lp h^{\mu\nu}h_{\mu\nu} - \f{1}{2}h^2 \rp + \dots \rb}
+\end{align}
+but I will need to reproduce this somehow, by hand or by xACT. (\textbf{Exercise})\\
+
+We also have the following useful identity:
+\begin{align}
+\boxed{\langle h^n \rangle = \sum^\infty_{l=0}(-1)^l {{l+n-1}\choose{l}} [h^{l+n}]}
+\end{align}
+
+
+
+
+
+
+
+\newpage
 \subsubsection{Spherical solutions and the Vainshtein radius}
+
+Next, we look at static spherical solutions. Let $D=4$, and for definiteness we pick the action
+\begin{align}
+{S = \f{1}{2\kappa^2}\int d^Dx\, \lb \sqrt{-g}R - \sqrt{-g^{(0)}}\f{1}{4}m^2 g^{(0)\mu\alpha}g^{(0)\nu\beta}\lp h_{\mu\nu}h_{\alpha\beta} - h_{\mu\alpha}h_{\nu\beta} \rp \rb}
+\end{align}
+where the mass term is minimal. We will attempt to find spherically symmetric solutions to the equation of motion
+\begin{align}
+{0 = \sqrt{-g}\lp R^{\mu\nu} - \f{1}{2}Rg^{\mu\nu} \rp + \sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)\mu\alpha}g^{(0)\nu\beta}h_{\alpha\beta} - g^{(0)\alpha\beta}h_{\alpha\beta}g^{(0)\mu\nu}\rp}
+\end{align} 
+which we took for granted (good to check/reproduce). \\
+
+Recall that in flat Minkowskian space, the line element is
+\begin{align}
+g^{(0)\mu\nu}dx^\mu dx^\nu = -dt^2 + dr^2 + r^2 d\Omega^2
+\end{align}
+where we're using the $(-,+,+,+)$ convention. We thus consider a spherically symmetric solution (hopefully a good ansatz) whose line element is
+\begin{align}
+g_{\mu\nu}dx^\mu dx^\nu = -B(r)dt^2 + C(r)dr^2+ A(r)r^2d\Omega^2.
+\end{align}
+Here we're of course assuming (and hoping) that our ansatz works and is diagonal, or else we will get mixed $r,t,\Omega$ terms in the line element. \\
+
+Next, we plug this ansatz into the $tt,rr,\theta\theta \equiv \phi\phi$ equations of motion. 
+\begin{align}
+\text{to be continued}\dots
+\end{align}
+
+
+\newpage
 \subsubsection{Nonlinear Hamiltonian \& The Boulware-Deser mode}
 
 
@@ -9842,6 +10035,9 @@ Now, suppose we want to compare two distinct sites $i,j$ with two different coor
 	\centering
 	\includegraphics[scale=0.3]{link}
 \end{figure}
+
+
+
 These are not just any $Y_{ji}$, of course. They have to obey the transformation
 \begin{align}
 Y_{ji} \to f_j^{-1} \circ Y_{ji} \circ f_i
