@@ -12966,9 +12966,9 @@ which is slightly different.
 
 \newpage
 
-\section{Non-Markovian collective emission[...]}
+\section{ONF experiment at JQI}
 
-This is the summary and reproduction of the results from this \href{https://arxiv.org/pdf/1907.12017.pdf}{\underline{paper}} titled ``Non-Markovian collective emission from macroscopically separated emitters'' by Kanupriya et al. 
+This is the relevant \href{https://arxiv.org/pdf/1907.12017.pdf}{\underline{theory paper}} titled ``Non-Markovian collective emission from macroscopically separated emitters'' by Kanupriya et al. 
 
 \subsection{Introduction/Motivation}
 
@@ -12995,7 +12995,7 @@ Because the atoms are macroscopically separated, there is a nontrivial retardati
 
 To further see why the Markovian assumption fails, we consider the apparent ``superradiance paradox:'' Suppose $v_g /\gamma < d < v_g/(2\gamma)$. Given that superradiance is an interference effect, one would expect to observe superradiance emission if these is no way to distinguish which atom emitted the field. If the atoms radiate collectively at rate $2\gamma$, then the coherent length is $v_g/(2\gamma)$, which is too short (compared to $d$) for the fields to interfere. This suggests they would have emitted independently. On the other hand, if we assume they emit independently, then the coherence length $v_g/\gamma$ is longer than $d$ and thus interference (hence superradiance) should occur. This paradoxical picture invalidates the Markovian approximation. The conventional notion of an exponential decay defining the photon coherence length is no longer valid.  
 
-\subsection{Development}
+\subsection{Theory}
 
 Following the electric dipole and rotating wave approximations the atoms-field interaction Hamiltonian is given by
 \begin{align}
@@ -13016,33 +13016,86 @@ Here $c_m$ is the excitation amplitude for the $m^{th}$ atom. $c_{a,b}(\omega,t)
 
 
 
+The evolution of the excitation amplitudes of the $m^{\text{th}}$ atom is given in terms of the coupled delayed differential equation
+\begin{align}
+\dot{c}_m(t) = -\f{\gamma}{2}\lb c_m(t) + \beta c_n(t - d/v_g)\Theta(t - d/v_g) e^{i\phi_p}\rb
+\end{align}
+for $m \neq n$, and $ \phi_p \equiv k_0 d = 2 p \pi$ is assumed for the field phase difference upon propagation, $\gamma \equiv \gamma_{1D} + \gamma_{3D}$ is the total spontaneous emission rate, $\gamma_{1D} = \beta \gamma \equiv 4\pi \abs{g(\omega_0)}^2$ is the spontaneous emission rate into the waveguide, where $\beta$ is the coupling efficiency. The first term in the equation above is the independent decay, while the second gives the retarded backaction via the field with delay $d/v_g$. \\
+
+For atoms in the super-($+$) or sub-radiant ($-$) states
+\begin{align}
+\ket{\phi_{\pm}} \equiv \f{1}{\sqrt{2}} \lp \ket{eg} \pm \ket{ge} \rp
+\end{align}
+the Laplace-transformed coefficients is given by
+\begin{align}
+\tilde{c}_{\pm}(s) \equiv \int^\infty_0 e^{-st}c_{m\pm}(t)\,dt = \f{1}{\sqrt{2}\gamma[\tilde{s} + 1/2 \pm \beta e^{-\eta \tilde{s}}/2]}
+\end{align}
+where $\tilde{s} \equiv s / \gamma$ and $\eta \equiv d\gamma/v_g$ is the separation normalized by the photon coherence length. When the atoms are slightly separated, i.e. $\eta \ll 1$, we find up to linear terms in $\eta$:
+\begin{align}
+\tilde{c}_{\pm}(s)\approx \f{1}{\sqrt{2}\gamma[\tilde{s}(1\mp \beta \eta/2) + \gamma/2(1\pm \beta)]}
+\end{align}
+which gives the effective spontaneous emission rate:
+\begin{align}
+\gamma^{\pm} \approx \f{1 \pm \beta}{1 \mp \beta\eta/2}\gamma.
+\end{align}
+When $0 < 0 \ll 1$, this can exceed the usual Dicke superradiant emission rate $2\gamma$ for $\beta = 1$. Also, when $\beta < 1$, the effective decay is slower than that for the coincident case. \\
+
+In general, for arbitrarily separated atoms, we must rely on the treatment of delay differential equations. The general expression for the excitation amplitudes of the atoms is 
+\begin{align}
+c_{\pm}(t) = \f{1}{\sqrt{2}}\sum_{n\in \mathbb{Z}} \alpha_n^{(\pm)} e^{-\gamma_n^{(\pm)}t/2}
+\end{align}
+where
+\begin{align}
+\alpha_n^{(\pm)} \equiv \lb 1 + W_n\lp \mp \f{\eta}{2}\beta e^{\eta/2} \rp \rb^{-1}
+\end{align}
+and the effective decay rate
+\begin{align}
+\gamma_n^{(\pm)} \equiv \gamma\lb 1 - \f{2W_n \lp \mp \f{\eta}{2}\beta e^{\eta/2} \rp}{\eta} \rb
+\end{align}
+where $W_n(x)$ is the $n^{\text{th}}$ branch of the Lambert $W$-function. \\
+
+When the initial state is superradiant, provided $\beta = 1$ the instantaneous decay rate can be up to $4.59 \gamma$, whereas in the Markovian regime constructive interference only allows for at most $2\gamma$. 
 
 
+\subsection{Experiment}
+
+How do we actually observe this non-Markovian effect in the lab? The short answer is it's complicated. Theory laid out by Kanupriya made a number of assumptions that are not readily realizable in the lab, such that the fact that the separation is some multiplied of $2\pi$, and so on. Also, we have 2 \textbf{ensembles} of atoms in the lab setting instead of 2 \textbf{atoms} as in the paper. This means there's both superradiance effects among the atoms at each ensemble as well as (possibly) superradiance effects between the two ensembles.\\
+
+Another challenge is the difficulty of picking out superradiance effects from the regular exponential decay. Here's the current excitation setup:
+
+\begin{align}
+\text{Insert scheme here}
+\end{align}
+
+Since we're detecting photons at the ends of the fiber, all photons from both decays profiles are accumulated into a single profile. While it's been observed that there's some interesting features at the supposed ``coherence length'' 
+
+\begin{align}
+\text{insert sample profile here}
+\end{align}
+
+we still can't tell if there's any superradiance or this is just a simple delay effect (without backaction, etc). \\
+
+Right now, the excitation beam is incident on the ensemble site, crossing the fiber like so
+\begin{align}
+\text{insert drawing here}
+\end{align}
+which is potentially disadvantageous because (1) the probability of atom-fiber coupling is low and (2) atoms are coupled to and decay into the vacuum instead of into the fiber. This would significantly reduce the probability of interference between the two atomic ensembles. 
+
+\begin{align}
+\text{scheme here}
+\end{align}
+
+Hyok proposes that we excite the atoms by sending the light into the fiber. This way, we are guaranteed that most atoms involved in the process are atoms near the ONF. One thing to worry about, though, is that as atoms emit photons (some of which goes into the fiber) the photons are radiatively-trapped by the surrounding atoms in the MOT. After some long time, these trapped photons can pile up and expect a high probability of coupling back into the ONF, ruining the decay profile. One way to avoid this is depumping the surrounding atoms away from the the atoms near the ONF (i.e. start by depumping then pump only atoms near the ONF back to the correct state), so that once the emitted photons are not trapped in the MOT cloud. 
+
+\begin{align}
+\text{explain by picture}
+\end{align}
+
+While the radiation-trapping photons might give rise to some interesting superradiance-backaction type phenomena, it's wiser for us to depump the surrounding the atoms to dark states. By doing so, we will also be able to observe fluorescence from the atoms near the ONF. This, along with detecting the decay profile at the ends of the fiber, gives us not only the collective but also the independent behavior of each ensemble. Hopefully this gives us enough information to piece out the superradiance effect.   \\
+
+Suggested reading: \href{https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.96.010501}{\underline{Timing is Everything by M. Scully}}. This paper suggests that if we excited the atoms along with ONF using a beam guided by the ONF then the emitted photons will travel along the ONF in the same direction as the excitation beam, i.e., there's minimal backwards/scattered emission. There are assumptions made, but if we could achieve this we might get some insights into the problem. 
 
 
-
-
-
-
-
-
-\chapter{PROBLEMS \& SOLUTIONS}
-
-\newpage
-
-\section{Quantum Mechanics}
-
-\newpage
-
-\section{Quantum Optics}
-
-\newpage
-
-\section{Quantum Information}
-
-
-
-\newpage
 
 
 \end{document}
