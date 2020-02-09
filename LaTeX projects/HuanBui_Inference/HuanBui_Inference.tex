@@ -880,10 +880,127 @@ follows the $F$-distribution with degrees of freedom $r_1 = r_2 = 2$, by definit
 
 \section{Sampling \& Statistics}
 
+In statistical inferences, our ignorance about the pdf/pmf of a random variable $X$ can be classified in two ways:
+\begin{itemize}
+	\item The pdf/pmf is unknown.
+	\item The pdf/pmf is assumed/known but its parameter vector $\theta$ is not.
+\end{itemize}
+
+We consider the second class of classification for now.\\
+
+\noindent \textbf{Definition:} If the random variables $X_1, X_2, \dots, X_n$ are iid, then these random variables constitute a \textbf{random sample} of size $n$ from the common distribution. \\
+
+
+\noindent\textbf{Definition:} Let $X_1, \dots, X_n$ denote a sample on a random variable $X$. Let $T = T(X_1,\dots,X_n)$ be a function of the sample. Then $T$ is called a \textbf{statistic}. 
+
+
+
+
+
 \subsection{Point estimators}
+
+\noindent \textbf{Definition:} (\textit{Unbiasedness}) Let $X_1,\dots,X_n$ denote a sample on a random variable $X$ with pdf $f(x;\theta)$, $\theta\in \Omega$. Let $T = T(X_1,\dots,X_n)$ be a statistic. We say that $T$ is an \textit{unbiased} estimator of $\theta$ if $E[T] = \theta$.  \\
+
+We now introduce the concept of the \textbf{maximum likelihood estimator (mle)}. The information in the sample and the parameter $\theta$ are involved in the joint distribution of the random sample. We write this as
+\begin{align}
+\boxed{L(\theta) = L(\theta; x_1,\dots,x_n) = \prod^n_{i=1}f(x_i;\theta).}
+\end{align}
+This is called the \textbf{likelihood function} of the random sample. A measure of the center of $L(\theta)$ seems to be an appropriate estimate of $\theta$. We often use the value of $\theta$ at which $L(\theta)$ is maximized. If this value is unique, then it is called the \textbf{maximum likelihood estimator} (mle), denoted as $\hat{\theta}$:
+\begin{align}
+\hat{\theta} = \text{Argmax}L(\theta).
+\end{align}
+We often work with the log of the likelihood in practice, which is the function $l(\theta) = \log(L(\theta))$. The logarithm is a strictly increasing function, so its maximum is obtained exactly when the maximum of $L(\theta)$ is obtained. In most models, the pdf and pmf are differentiable functions of $\theta$, in which cases $\hat{\theta}$ solves the equation:
+\begin{align}
+\boxed{\p_\theta l(\theta) = 0 }
+\end{align}
+This is equivalent to saying $\hat{\theta}$ maximizes $l(\theta)$. If $\theta$ is a vector of parameters, this results in a system of equations to be solved simultaneously. These equations are called the \textbf{estimating equations}, (EE).
+
+
+
+
 \subsection{Histogram estimates of pmfs and pdfs}
+
+
+Let $X_1,\dots,X_n$ be a random sample on a random variable $X$ with cdf $F(x)$. A histogram of the sample is an estimate of the pmf or pdf depending on whether $X$ is discrete of continuous. We make no assumptions on the form of the distribution of $X$. In particular, we don't assume the parametric form of the distribution, hence the histogram is often called the \textbf{nonparametric} estimator. 
+
+
+
+
+
+
+
 \subsubsection{The distribution of $X$ is discrete}
+
+Assume $X$ is a discrete r.v. with pmf $p(x)$. Consider a sample $X_1,\dots,X_n$. Suppose $X \in \mathcal{D} = \{ a_1,\dots, a_n \}$, then intuitively the estimate of $p(a_j)$ is the relative frequency of $a_j$. More formally, for $j = 1,\dots,m$ we define the statistic
+\begin{align}
+I_j(X_i) = \begin{cases}
+1 \quad X_i = a_j\\ 0 \quad X_i \neq a_j
+\end{cases}
+\end{align} 
+Then the estimate of $p(a_j)$ is the average
+\begin{align}
+{\hat{p}(a_j) = \f{1}{n}\sum^n_{i=1}I_j(X_i)}
+\end{align}
+The estimators $\{ \hat{p}(a_1),\dots, \hat{p}(a_m) \}$ constitute the nonparametric estimate of the pmf $p(x)$. We note that $I_j(X_i)$ has a Bernoulli distribution with probability $p(a_j)$, and so
+\begin{align}
+E[\hat{p}(a_j)] = \f{1}{n}\sum^n_{i=1}E[I_j(X_i)] = \f{1}{n}\sum^n_{i=1}p(a_j) = p(a_j),
+\end{align}
+which means $\hat{p}(a_j)$ is an \textit{unbiased estimator} of $p(a_j)$. \\
+
+Now, suppose that the space of $X$ is infinite, i.e, $\mathcal{D} = \{ a_1, \dots, \}$ then in practice we select a value, say $a_m$, and make the groupings
+\begin{align}
+\{a_1\}, \{a_2\}, \dots, \{a_m\}, \tilde{a}_{m+1} = \{ a_{m+1}, \dots \}
+\end{align}
+Let $\hat{p}(\tilde{a}_{m+1})$ be the proportion of the sample items that are greater than or equal to $a_{m+1}$. Then the estimates $\{ \hat{p}(a_1),\dots \hat{p}(a_{m+1}) \}$ form our estimate of $p(x)$. To merge groups, the rule of thumb is to select $m$ so that the frequency of the category $a_m$ exceeds twice the combined frequencies of the categories $a_{m+1}, a_{m+2}, \dots$\\
+
+A histogram is a \textit{barplot} pf $\hat{p}(a_j)$ versus $a_j$. When $a_j$ contains no ordinal information (e.g. hair colors, etc) then such histograms consist of nonabutting bars and are called \textit{bar charts}. When the space $\mathcal{D}$ is ordinal, then the histograms is an abutting bar chart plotted in the natural order of the $a_j$'s. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsubsection{The distribution of $X$ is continuous}
+
+Assume $X$ is a continuous r.v. with pdf $f(x)$. Consider a sample $X_1,\dots,X_n$. We first sketch an estimate for this pdf at a specified value of $x$. For a given $h > 0$, we consider the interval $(x-h,x+h)$. By MVT, we have for $\xi, \abs{x-\xi} < h$:
+\begin{align}
+P(\abs{X-x} < h) = \int^{x+h}_{x-h}f(t)\,dt \approx 2hf(x).
+\end{align}
+The LHS is the porprotion of the sample items that fall in the interval $(x-h,x+h)$. This suggests the use of the estimate of $f(x)$ at a given $x$:
+\begin{align}
+\hat{f}(x) = \f{\#\{ \abs{X_i - x} < h  \}}{2hn}.
+\end{align} 
+More formally, the indicator statistic is, for $i = 1,\dots, n$
+\begin{align}
+I_i(x) = \begin{cases}
+1 \quad x-h < X_i < x+h\\
+- \quad \Else
+\end{cases},
+\end{align}
+from which we obtain the nonparametric estimator of $f(x)$:
+\begin{align}
+\hat{f}(x) = \f{1}{2hn}\sum^n_{i=1} I_i(x).
+\end{align}
+Since the sample items are iid:
+\begin{align}
+E[\hat{f}(x)] = \f{1}{2hn}nf(\xi)2h = f(\xi) \to f(x) \quad \text{as } h\to 0.
+\end{align}
+Therefore $\hat{f}(x)$ is \textit{approximately} (as opposed to \textit{exact} in the discrete case) an unbiased estimator of $f(x)$. $I_i$ is called the \textbf{rectangular kernel} with \textbf{bandwidth} $2h$.  \\
+
+Provided realized values $x_1,\dots,x_n$ of the random sample of $X$ with pdf $f(x)$, there are many ways to obtained a histogram estimate of $f(x)$. First, select an integer $m$, an $h > 0$, and a value $a < \min(x_i)$, so that the $m$ intervals cover the range of the sample. These intervals form our classes.  
+
 
 
 \section{Confidence Intervals}

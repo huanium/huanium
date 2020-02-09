@@ -1,0 +1,237 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\makeatletter
+%\renewcommand{\@chapapp}{Part}
+%\renewcommand\thechapter{$\bf{\ket{\arabic{chapter}}}$}
+%\renewcommand\thesection{$\bf{\ket{\arabic{section}}}$}
+%\renewcommand\thesubsection{$\bf{\ket{\arabic{subsection}}}$}
+%\renewcommand\thesubsubsection{$\bf{\ket{\arabic{subsubsection}}}$}
+\makeatother
+
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+\begin{document}
+\begin{center}
+	\huge{Understanding Convolution Powers of Complex Functions on $\mathbb{Z}^d$}\\
+	$\,$\\
+	\normalsize{\today}\\
+	\normalsize{Huan Q. Bui}
+\end{center}
+
+
+
+\newpage
+
+\section{Some definitions}
+
+$L^1([a,b])$ is...\\
+
+\noindent $\mathcal{C}^1[(a,b)]$ is...\\
+
+
+
+
+\section{van der Corput's \& related lemmas}
+We are interested in integrals of the form
+\begin{align}
+\int_{\mathbb{R}^d} e^{iP(\xi) - ix\cdot \xi}\,d\xi.
+\end{align}
+To understand the behavior of this integral in higher dimensions, it is helpful to understand the 1-dimensional version of these integrals, called oscillatory integrals:
+\begin{align}
+\int_a^b g(\xi)e^{if(\xi)}\,d\xi.
+\end{align}
+The following five lemmas gives us a good understanding of the bounds of these integrals, under certain hypotheses.\\
+
+\begin{lemma}
+	Let $h \in L^1([a,b])$ and $g \in \mathcal{C}^1([a,b])$ be complex valued. For any $M$ such that
+	\begin{align}
+	\abs{\int^x_a h(u)\,du} \leq M
+	\end{align}
+	for all $x\in [a,b]$ we have
+	\begin{align}
+	\abs{\int^b_a g(u)h(u)\,du} \leq M(\norm{g}_\infty + \norm{g'}_1).
+	\end{align}
+\end{lemma}
+
+
+\begin{lemma}
+	Let $f\in \mathcal{C}^1([a,b])$ be real valued and suppose that $f'$ is a monotonic function such that $f'(x) \neq 0$ for all $x\in [a,b]$. 
+	\begin{align}
+	\abs{\int^b_a e^{if(u)}\,du} \leq \f{4}{\lambda}
+	\end{align}
+	where
+	\begin{align}
+	\lambda = \inf_{x\in [a,b]}\abs{f'(x)}.
+	\end{align}
+\end{lemma}
+
+\begin{lemma}
+	Let $f\in \mathcal{C}^2([a,b])$ be real valued and suppose that $f''(x)\neq 0$ for all $x\in [a,b]$.
+	\begin{align}
+	\abs{\int^b_a e^{if(u)}\,du} \leq \f{8}{\sqrt{\rho}}
+	\end{align}
+	where
+	\begin{align}
+	\rho = \inf_{x\in [a,b]}\abs{f''(x)}.
+	\end{align}
+\end{lemma}
+
+
+\begin{lemma}
+	Let $g\in \mathcal{C}^1([a,b])$ be complex valued and let $f\in \mathcal{C}^2([a,b])$ be real valued and such that $f''(x) \neq 0$ for all $x\i [a,b]$.
+	\begin{align}
+	\abs{\int^b_a g(u)e^{if(u)}\,du}\leq \min\lc \f{4}{\lambda}, \f{8}{\sqrt{\rho}} \rc(\norm{g}_\infty + \norm{g'}_1),
+	\end{align}
+	where
+	\begin{align}
+	\lambda = \inf_{x\in [a,b]}\abs{f'(x)};\quad \rho = \inf_{x\in[a,b]}\abs{f''(x)}.
+	\end{align}
+\end{lemma}
+
+
+\begin{lemma}
+	Let $\nu : \mathbb{R} \to \mathbb{C}$ be analytic on a neighborhood of $\xi_0$ where $\abs{\nu(\xi_0)} = 1$. If $\xi_0$ is a point of order $m \geq 2$ for $\nu$, then there is $\delta > 0$ such that
+	\begin{align}
+	\f{1}{2\pi}\int_{\abs{\xi - \xi_0} \leq \delta} \nu(\xi)e^{-ix\xi}\,d\xi = O(n^{-1/m})
+	\end{align}
+	where the limit is uniform in $x\in \mathbb{R}$.
+\end{lemma}
+
+
+
+
+\section{Oscillatory Integrals}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+\end{document}
