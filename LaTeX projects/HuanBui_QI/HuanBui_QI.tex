@@ -739,6 +739,7 @@ In higher dimensions, the same story goes, and we end up with only unitary opera
 
 \subsection{Circuit diagrams}
 
+Here are some visual examples of what quantum circuits:
 \begin{center}
 $\,$\Qcircuit @C=1em @R=0em {
 	& \multigate{5}{\mathcal{F}} & \qw \\
@@ -747,9 +748,8 @@ $\,$\Qcircuit @C=1em @R=0em {
 	& \ghost{\mathcal{F}} & \qw \\
 	& \ghost{\mathcal{F}} & \qw \\
 	& \ghost{\mathcal{F}} & \qw
-}
+}
 \end{center}
-
 \begin{center}
 	$\,$\Qcircuit @C=1em @R=.7em {
 		& \ctrl{2} & \ctrlo{1} & \ctrl{1}
@@ -762,7 +762,6 @@ $\,$\Qcircuit @C=1em @R=0em {
 		& \meter & \cctrl{-1}
 	}
 \end{center}
-
 \begin{center}
 	$\,$\Qcircuit @C=1.3em @R=.6em {
 		& & & & & & \mbox{Syndrome Measurement} & & & &
@@ -790,20 +789,202 @@ $\,$\Qcircuit @C=1em @R=0em {
 \end{center}
 
 
+Circuit diagrams follow the flow of time (conventionally left-to-right). For example:
+\begin{center}
+	$\,$\Qcircuit @C=1em @R=0em {
+		& \ket{\psi} & & \gate{U} & \qw & &  U\ket{\psi}
+	}
+\end{center}
 
-hello goodbye\\
+However, when writing the outcome of a quantum circuit, one must be careful to follow the rule of function composition. For example:
+\begin{center}
+	$\,$\Qcircuit @C=1em @R=0em {
+		& \ket{\psi} & & \gate{U} & \gate{V} & \qw & &  VU\ket{\psi}
+	}
+\end{center}
+
+
 
 
 
 \subsection{Measurement gates and the Born rule}
 
+
+A single Cbit can either be in the state $\ket{0}$ or $\ket{1}$. On the other hand, a single Qbit can be in an infinite number of superpositions of the states $\ket{0}$ and $\ket{1}$. Further, because of this property, Qbits can be transformed under a much richer set of transformations. Thus, it can seem that quantum computers would be vastly more powerful than classical computers. However, the catch lies in observing/measuring the states of the physical bit. For classical bits, simply looking at the physical bit can tell us the state of the Cbit. The Cbit remains intact after the observation. When we have $n$ Qbits in a superposition of computational basis states, there is nothing we can do to observe the amplitudes without projecting them onto one of the basis states and destroying the Qbit state in the process.\\
+
+\textit{Making a measurement} consists of performing a certain test on each Qbit, the outcome of which is either 0 or 1, which some probability. If the state of $n$ Qbits is
+\begin{align}
+\ket{\psi}_n = \sum_{0 \leq x \leq 2^n}\alpha_x \ket{x}_n
+\end{align}
+then the probability that the zeros and ones resulting from measurements of all the Qbits will give the binary expansion of the integer $x$ is:
+\begin{align}
+p(x) = \abs{\alpha_x}^2
+\end{align}
+This is known as the \textit{Born rule}. An $n$-Qbit \textit{measurement gate} is depicted schematically as follows
+\begin{center}
+	$\,$\Qcircuit @C=1em @R=0em {
+		& \ket{\psi}_n = \sum \alpha_x\ket{x}_n &&& & & \mathbf{M}_n \to x & \qw & &  \ket{x}_n
+	}
+\end{center}
+
+In contrast to unitary gates, which are invertible and hence produce a unique output for each input, the state of the Qbits emerging from a measurement gate is only statistically determined by the state of the input Qbits. This action cannot be undone, and hence \textbf{measurement is irreversible}. The action of the measurement gate is also NOT linear. \\
+
+$n$-Qbit measurement gates can be realized by applying 1-Qbit measurement gates to each of the $n$ Qbits. A measurement reduces the initial quantum state to one of the computational basis states. This change of state is called the \textit{reduction} or the \textit{collapse} of the quantum state. \\
+
+There is a possibility of misunderstanding the Born rule by asserting that when a single Qbit to be in superposition its ``actual state'' is either $\ket{0}$ with probability $\abs{a_0}^2$ or $\ket{1}$ with probability $\abs{a_1}^2$, say. Here's why the Qbit could not have been in either states initially. Consider 
+\begin{align}
+\ket{\psi} = \f{1}{\sqrt{2}}\lp \ket{0} + \ket{1} \rp.
+\end{align} 
+The Qbit is initially in superposition. Now applying the Hadamard transformation to it 
+\begin{align}
+\had \ket{\psi} = \ket{0}.
+\end{align}
+According to the Born rule, if we measure a Qbit in the state $\ket{\psi}$, we get $\ket{0}$ with probability 1. Now, if the Qbit were in either $\ket{0}$ or $\ket{1}$ with equal probability initially, then the Hadamard gate would put it in either the superposition $(1/\sqrt{2})(\ket{0}+\ket{1})$ or the superposition $(1/\sqrt{2})(\ket{0}-\ket{1})$, which directly contradicts the result $\had \ket{\psi} = \ket{0}$. \\
+
+The Born rule is often stated in terms of inner products or projections operators. The probability of a measurement giving the result $0 \leq x \leq 2^n$ is 
+\begin{align}
+\boxed{p_{\psi}(x) = \abs{\alpha_x}^2 = \abs{\braket{x}{\psi}}^2}
+\end{align}
+In terms of projection operators:
+\begin{align}
+\boxed{p_\psi(x) = \braket{x}{\psi}\braket{\psi}{x} = \bra{x}\mathbf{P}_\psi\ket{x}}
+\end{align}
+or 
+\begin{align}
+\boxed{p_\psi(x) = \braket{\psi}{x}\braket{x}{\psi} = \bra{\psi}\mathbf{P}_x\ket{\psi}}
+\end{align}
+where $\mathbf{P}_\psi = \ket{\psi}\bra{\psi}$ is the projection operator on the state $\psi$, and $\mathbf{P}_x = \ket{x}\bra{x}$ on the state $\ket{x}$. 
+
+
+
+
 \subsection{The generalized Born rule}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{measurement}
+\end{figure}
+
+The stronger form of the Born rule applies when one measures only a single one of $n+1$ Qbits by sending it through a standard 1-Qbit measurement gate. The general form of the $(n+1)$ Qbits is given by
+\begin{align}
+\ket{\Psi}_{n+1} = \sum^{2^{n+1}-1}_{x=0}\gamma(x)\ket{x}_{n+1}, \quad \sum^{2^{n+1}-1}_{x=0}\abs{\gamma(x)}^2 = 1
+\end{align}
+from which we write explicitly as a combination of the measured Qbit and the other $n$ Qbits:
+\begin{align}
+\ket{\Psi} = \alpha_0\ket{0}\ket{\Phi_0}_n + \alpha_1 \ket{1}\ket{\Phi_1}_n
+\end{align}
+where
+\begin{align}
+\ket{\Phi_0}_n = \f{1}{\alpha_0}\sum^{2^{n}-1}_{x=0}\gamma(x)\ket{x}_n; \quad 
+\ket{\Phi_1}_n = \f{1}{\alpha_1}\sum^{2^{n}-1}_{x=0}\gamma(2^n+x)\ket{x}_n
+\end{align}
+and of course to normalize things
+\begin{align}
+\alpha^2_0 = \sum^{2^n-1}_{x=0}\abs{\gamma(x)}^2, \quad \alpha^2_1 = \sum^{2^n-1}_{x=0}\abs{\gamma(2^n + x)}^2.
+\end{align}
+Note that $\ket{\Phi_0}_n$ and $\ket{\Phi_1}_n$ are not necessarily orthogonal.\\
+
+In plain English, the rule asserts that if one measures only the single Qbit whose state symbol is explicitly separated out from the other $n$ Qbits, then the measurement gate will produce $x$ (0 or 1) with probability $\abs{\alpha_x}^2$. The resulting state vector will be the product state $\ket{x}\ket{\Phi_x}_n$. \\
+
+If the Qbit being measured is initially unentangled with the other $n$ Qbits, then the action of the measurement gate on the measured Qbit is just that specified by the Born rule. The unmeasured Qbits are as if they are not there and remain in their original states throughout the process. 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{measurement1}
+\end{figure}
+
+Applying the generalized Born rule $n$ times to successive 1-Qbit measurements of each of $n$ Qbits initially in $\ket{\psi}_n$, one can show that the final state is $x$ with probability $\abs{\alpha_x}^2$.  Hence, there is only a single primitive piece of measurement hardware: the 1-
+Qbit measurement gate. \\
+
+Even more generally, suppose we have the general state of $m+n$ Qbits:
+\begin{align}
+\ket{\psi}_{m+n} = \sum^{2^m}_{x=0}\alpha_x\ket{x}_m\ket{\Phi_x}_n
+\end{align}
+where $\sum_x\abs{\alpha_x}^2 = 1$ and the states $\ket{\Phi_x}$ are normalized but not necessarily orthogonal. Applying the Born rule $m$ times to $m$ Qbits we see that if just $m$ Qbits ($\ket{x}_m$) are measured, then with probability $\abs{\alpha_x}^2$ the result will be $x$, and the resulting state vector will be the product state $\ket{x}_m\ket{\Phi_x}_n$.
+
 
 \subsection{Measurement gates and state preparation}
 
-\subsection{Constructing arbitrary 1- and 2-Qbit state}
+The measurement gate is useful for producing states with definite states. A measurement that registers $x$ outputs a state in the classical basis $\ket{x}_n$. If we then $\X$ each Qbit that registered a 1 in the measurement and do nothing to the Qbits that registered a 0 then the resulting Qbits will be in the state $\ket{0}_n$. Most quantum-computational algorithms take this state as its input. \\
 
-\subsection{Summary}
+Measurement gates therefore plays two role: \textit{state preparation} and extracting information from the Qbits. 
+
+
+\subsection{Constructing arbitrary 1- and 2-Qbit states}
+
+We will first consider the case for a single Qbit. Let $\ket{\psi}$ be any 1-Qbit state, and let $\ket{\phi}$ be an orthogonal state, i.e. $\braket{\psi}{\phi} = 0$. The state $\ket{\phi}$ is unique up to an overall phase. Because $\ket{0}$ and $\ket{1}$ are linearly independent, there is a unique linear transformatin taking them into $\ket{\psi}$ and $\ket{\phi}$. Also, because $\ket{\phi}$ and $\ket{\psi}$ are orthonormal, this linear transformation must be unitary. We will call it $\mathbf{u}$, where
+\begin{align}
+\ket{\psi} = \mathbf{u}\ket{0}.  
+\end{align}
+By showing the existence of such a unitary gate $\mathbf{u}$, we're done. \\
+
+Any arbitrary unentangled 2-Qbit state, which is just a fancy way to say it is a tensor product of two 1-Qbit states, can be constructed out of $\ket{00}$ by applying a tensor product of two unitaries to each of the $\ket{0}$ individual states. This follows from the previous argument. To sum this up, we say that an unentangled state requires an unentangled gate to prepare. \\
+
+When the 2-Qbit state is entangled, however, its production requires a 2-Qbit gate that is not a tensor product of two single-Qbit unitaries. The solution, as it turns out, is using a combination of a single cNOT gate and some 1-Qbit unitaries. Consider the general 2-Qbit state:
+\begin{align}
+\ket{\Psi} = \alpha_{00}\ket{00} + \alpha_{01}\ket{01} + \alpha_{10}\ket{10} + \alpha_{11}\ket{11}.
+\end{align}
+Observe that this can be re-written in the following way:
+\begin{align}
+\ket{\Psi} = \ket{0}\otimes \ket{\psi} + \ket{1}\otimes\ket{\phi}
+\end{align}
+where $\ket{\phi} = \alpha_{00}\ket{0} + \alpha_{01}\ket{1}$ and $\ket{\phi} = \alpha_{10}\ket{0} + \alpha_{11}\ket{1}$.  \\
+
+Next, consider a unitary $\mathbf{u}$ whose action on the computational basis is the following:
+\begin{align}
+\mathbf{u}\ket{0} = a\ket{0} + b\ket{1}, \quad \mathbf{u}\ket{1} = -b^*\ket{0} + a^*\ket{1}
+\end{align}
+where $\abs{a}^2 + \abs{b}^2=  1$, as usual. Applying $\mathbf{u}\otimes \Id$ to $\ket{\Psi}$, we get
+\begin{align}
+\lp\mathbf{u}\otimes \Id\rp \ket{\Psi} &= \lp a\ket{0} + b\ket{1}  \rp\otimes\ket{\psi} +  \lp -b^*\ket{0} + a^*\ket{1}\rp\otimes\ket{\phi}\nn\\
+&= \ket{0}\otimes \ket{\psi'} + \ket{1}\otimes \ket{\phi'}
+\end{align}
+where
+\begin{align}
+\ket{\psi'}= a\ket{\psi} - b^*\ket{\phi}; \quad \ket{\phi'} = b\ket{\psi} + a^*\ket{\phi}.
+\end{align}
+Now, if $\ket{\psi'}$ and $\ket{\phi'}$ are orthogonal, then we're done. We wish to choose complex numbers $a,b$ to achieve this. Consider the inner product of $\ket{\psi'}$ and $\ket{\phi'}$:
+\begin{align}
+\braket{\phi'}{\psi'} = a^2\braket{\phi}{\psi} - b^2\braket{\phi}{\phi} + {ab^*\lp \braket{\psi}{\psi} - \braket{\phi}{\phi} \rp}
+\end{align}
+If $\braket{\psi}{\phi} \neq 0$ then setting $\braket{\phi'}{\psi'}$ to 0 gives an quadratic equation for the ratio $a/b^*$ = 0, for which there are two complex solutions. Setting $a$ determines a $\mathbf{u}$ for which
+\begin{align}
+\lp \mathbf{u}\otimes \Id \rp\ket{\Psi} = \ket{0}\otimes\ket{\psi'} + \ket{1}\otimes\ket{\phi'}
+\end{align} 
+where $\braket{\psi'}{\phi'} = 0$. If $\braket{\phi}{\psi} =0$ then there's nothing else for us to do. $\mathbf{u} \equiv \Id$. \\
+
+Let $\lambda, \mu$ be positive reals such that 
+\begin{align}
+\ket{\psi''} = \f{\ket{\psi'}}{\lambda}, \quad \ket{\phi''} = \f{\ket{\phi'}}{\mu}
+\end{align}
+are normalized. This makes $\ket{\psi''}$ and $\ket{\phi''}$ an orthonormal pair. Following an argument earlier, there exists a unitary $\mathbf{v}$ for which 
+\begin{align}
+\ket{\psi''} = \mathbf{v}\ket{0}, \quad \ket{\phi''} = \mathbf{v}\ket{1}.
+\end{align} 
+From here, we see that 
+\begin{align}
+\ket{\Psi} = \lp \mathbf{u}^\dagger \otimes \mathbf{v} \rp\lp \lambda\ket{0}\otimes \ket{0} + \mu\ket{1}\otimes \ket{1} \rp.
+\end{align}
+Now, note that $\mathbf{C}_{10}\ket{00} \to \ket{00}$ and $\mathbf{C}_{10}\ket{10} \to \ket{11}$. So we can write the equality as follows
+\begin{align}
+\ket{\Psi} = \lp \mathbf{u}^\dagger \otimes \mathbf{v} \rp \mathbf{C}_{10} \lp \lambda\ket{0} + \mu\ket{1}\rp\otimes \ket{0}.
+\end{align}
+But we're not finished. Remember that we wish to obtain $\ket{\Psi}$ from $\ket{00} = \ket{0}\otimes \ket{0}$. However, we're very close now, as we only need to obtain $\lambda\ket{0} + \mu\ket{1}$ from $\ket{0}$. Fortunately, we already know how to do this! Consider another unitary $\mathbf{w}$ for which 
+\begin{align}
+\mathbf{w}\ket{0} = \lambda\ket{0} + \mu\ket{1}
+\end{align}
+whose existence is guaranteed by our earlier arguments. So, with a single cNOT and three unitaries, we can prepare any entangled 2-Qbit state from $\ket{00}$ via
+\begin{align}
+\ket{\Psi} = \lp \mathbf{u}^\dagger \otimes \mathbf{v} \rp \mathbf{C}_{10}\lp\mathbf{w}\otimes \Id\rp\ket{00}.
+\end{align}
+
+
+
+
+
+
+
+
 
 
 
