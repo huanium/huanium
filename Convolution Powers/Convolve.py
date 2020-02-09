@@ -9,13 +9,19 @@ import time
 
 
 def convolve(n_times):
-    Phi = np.array([[0, 0, 0, 0, 0],
-                    [0, complex(0,-1)*(np.sqrt(3)-1), complex(2,-2), complex(0,-1)*(np.sqrt(3)-1), 0],
-                    [-2, 5+np.sqrt(3), 8, 5+np.sqrt(3), -2],
-                    [0, complex(0, 1)*(np.sqrt(3)-1), complex(2,+2), complex(0, 1)*(np.sqrt(3)-1), 0],
-                    [0, 0, 0, 0, 0]])
+    #Phi = np.array([[0, 0, 0, 0, 0],
+    #                [0, complex(0,-1)*(np.sqrt(3)-1), complex(2,-2), complex(0,-1)*(np.sqrt(3)-1), 0],
+    #                [-2, 5+np.sqrt(3), 8, 5+np.sqrt(3), -2],
+    #                [0, complex(0, 1)*(np.sqrt(3)-1), complex(2,+2), complex(0, 1)*(np.sqrt(3)-1), 0],
+    #                [0, 0, 0, 0, 0]])
 
-    Phi = Phi/(22+2*np.sqrt(3))
+
+    Phi = np.array([[(1+complex(0,1))/4, 1/np.sqrt(2), -(1+complex(0,1))/4],
+                    [0, 0, 0],
+                    [(1+complex(0,1))/4, -1/np.sqrt(2), -(1+complex(0,1))/4]])
+
+    #Phi = Phi/(22+2*np.sqrt(3))
+    Phi = Phi/(np.sqrt(2+np.sqrt(2)))
     conv_power = np.copy(Phi)
 
     i=0
@@ -28,13 +34,19 @@ def convolve(n_times):
 
 
 def fast_convolve(n_times, support_bound):
-    Phi = np.array([[0, 0, 0, 0, 0],
-                    [0, complex(0,-1)*(np.sqrt(3)-1), complex(2,-2), complex(0,-1)*(np.sqrt(3)-1), 0],
-                    [-2, 5+np.sqrt(3), 8, 5+np.sqrt(3), -2],
-                    [0, complex(0, 1)*(np.sqrt(3)-1), complex(2,+2), complex(0, 1)*(np.sqrt(3)-1), 0],
-                    [0, 0, 0, 0, 0]])
+    #Phi = np.array([[0, 0, 0, 0, 0],
+    #                [0, complex(0,-1)*(np.sqrt(3)-1), complex(2,-2), complex(0,-1)*(np.sqrt(3)-1), 0],
+    #                [-2, 5+np.sqrt(3), 8, 5+np.sqrt(3), -2],
+    #                [0, complex(0, 1)*(np.sqrt(3)-1), complex(2,+2), complex(0, 1)*(np.sqrt(3)-1), 0],
+    #                [0, 0, 0, 0, 0]])
 
-    Phi = Phi/(22+2*np.sqrt(3))    
+
+    Phi = np.array([[(1+complex(0,1))/4, 1/np.sqrt(2), -(1+complex(0,1))/4],
+                    [0, 0, 0],
+                    [(1+complex(0,1))/4, -1/np.sqrt(2), -(1+complex(0,1))/4]])
+
+    #Phi = Phi/(22+2*np.sqrt(3))
+    Phi = Phi/(np.sqrt(2+np.sqrt(2)))
     conv_power = np.copy(Phi)
 
     i=0
@@ -42,7 +54,7 @@ def fast_convolve(n_times, support_bound):
         conv_power = signal.convolve2d(Phi, conv_power, 'full')
         dim_f = np.shape(conv_power)
         if dim_f[0] > support_bound or dim_f[0] > support_bound:
-            conv_power = cropND(conv_power,(40,40))
+            conv_power = cropND(conv_power,(support_bound,support_bound))
         i += 1
 
     return conv_power
@@ -62,8 +74,8 @@ if __name__ == '__main__':
     while True:
         start = time.time()
         n_times = int(input('Convolve how many times? '))
-        support_bound = 60 # decides how of the support is cropped
-        max_xy = 30
+        support_bound = 120 # decides how of the support is cropped
+        max_xy = 50
         
         #data = np.real(convolve(n_times))
         data = np.real(fast_convolve(n_times, support_bound))

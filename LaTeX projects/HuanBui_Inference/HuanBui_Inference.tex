@@ -999,26 +999,514 @@ E[\hat{f}(x)] = \f{1}{2hn}nf(\xi)2h = f(\xi) \to f(x) \quad \text{as } h\to 0.
 \end{align}
 Therefore $\hat{f}(x)$ is \textit{approximately} (as opposed to \textit{exact} in the discrete case) an unbiased estimator of $f(x)$. $I_i$ is called the \textbf{rectangular kernel} with \textbf{bandwidth} $2h$.  \\
 
-Provided realized values $x_1,\dots,x_n$ of the random sample of $X$ with pdf $f(x)$, there are many ways to obtained a histogram estimate of $f(x)$. First, select an integer $m$, an $h > 0$, and a value $a < \min(x_i)$, so that the $m$ intervals cover the range of the sample. These intervals form our classes.  
+Provided realized values $x_1,\dots,x_n$ of the random sample of $X$ with pdf $f(x)$, there are many ways to obtained a histogram estimate of $f(x)$. First, select an integer $m$, an $h > 0$, and a value $a < \min(x_i)$, so that the $m$ intervals cover the range of the sample. These intervals form our classes.  Let $A_j =  ( a+ (2j-3)h, a+ (2j-1)h ] $ for $j = 1,\dots,m$. Let $\hat{f}_h(x)$ denote our histogram estimate. For $a-h < x \leq (2m-1)h$, $x$ is in one and only one $A_j$. Then for $x \in A_j$, we define
+\begin{align}
+\hat{f}_h(x) = \f{\# \{ x_i \in A_j \}}{2hn} \geq 0.
+\end{align}
+We see that 
+\begin{align}
+\int^\infty_{\infty}\hat{f}_h(x)\,dx &= \int^{a+(2m-1)h}_{a-h}\hat{f}_h(x)\,dx \nn\\
+&= \sum^m_{j=1}\int_{A_j}\f{\#\{ x_i \in A_j \}}{2hn}\,dx \nn\\
+&= \f{1}{2hn}\sum^m_{j=1}\#\{  x_i \in A_j \}[h(2j-1-2j+3)]\nn\\
+&= \f{2h}{2hn}n\nn\\
+&= 1.
+\end{align}
+So $\hat{f}_h(x)$ satisfies the properties of a pdf. 
+
+
+
+
+
 
 
 
 \section{Confidence Intervals}
+\noindent \textbf{Definition:} Let $X_1, \dots, X_n$ be a sample on a r.v. $X$ which has the pdf $f(x;\theta), \theta \in \Omega$. Let $0 < \alpha < 1$ be specified. Let $L = L(X_1,\dots,X_n)$ and $U =U(X_1,\dots,X_n)$ be two statistics. We say that the interval $(L,U)$ is a $(1-\alpha)100\%$ \textbf{confidence interval} for $\theta$ if
+\begin{align}
+1- \alpha \equiv P_\theta[\theta\in (L,U)].
+\end{align}  
+That is, the probability that the interval includes $\theta$ is $1-\alpha$, which is called the \textbf{confidence coefficient} or the \textbf{confidence level} of the interval.\\
+
+Under normality, the confidence interval for $\mu$ is given by
+\begin{align}
+\boxed{\lp \bar{x} - t_{\alpha/2,n-1} s/\sqrt{n}, \bar{x}+ t_{\alpha/2, n-1}s/\sqrt{n} \rp}
+\end{align}
+where $t_{\alpha/2,n-1}$ is the upper $\alpha/2$ critical points of a $t$-distribution with $n-1$ df. This CI is referred to as the $(1-\alpha)100\%$ \textbf{$t$-interval} for $\mu$. $s$ is referred to as the \textbf{standard error} of $\bar{X}$. 
+
+\noindent \textbf{The Central Limit Theorem:} Let $X_1,\dots,X_n$ denote the observations of a random sample from a distribution that has mean $\mu$ and finite variance $\sigma^2$. Then the distribution function of the r.v. $W_n = (\bar{X} - \mu)/(\sigma/\sqrt{n})$ converges to $\Phi$, the distribution function of the $\N(0,1)$ distribution, as $n\ to \infty$. \\
+
+
+When the sample is large, the CI for $\mu$ can be given by
+\begin{align}
+\boxed{\lp \bar{x} - z_{\alpha/2}s/\sqrt{n}, \bar{z} + z_{\alpha/a}s/\sqrt{n} \rp}
+\end{align}
+In general, for the same $\alpha$, the $t$-CI is larger (and hence more conservative) than the $z$-CI. When $\sigma$ is known, we replace $s$ by $\sigma$. \\
+
+The larger sample CI for $p$ is given by
+\begin{align}
+\boxed{\lp \hat{p} - z_{\alpha/2}\sqrt{\hat{p}(1-\hat{p})/n}, \hat{p}+ z_{\alpha/2}\sqrt{\hat{p}(1-\hat{p})}/n \rp}
+\end{align} 
+where $\sqrt{\hat{p}(1-\hat{p})/n}$ is called the standard error of $\hat{p}$. 
+
+
+
 \subsection{CI for difference in means}
+
+By independence of samples, 
+\begin{align}
+\text{Var}(\hat{\Delta}) = \f{\sigma_1^2}{n_1} + \f{\sigma^2_2}{n_2}
+\end{align}
+where $\hat{\Delta} = \bar{X} - \bar{Y}$. We can readily show that $\hat{\Delta}$ is an unbiased estimator of $\Delta = \mu_1 - \mu_2$. Let the sample variances
+\begin{align}
+S_j^2 = \f{1}{n_j - 1}\sum^{n_j}_{i=1}(X_i - \bar{X})^2
+\end{align}
+be given. Then th random variable follows the $\N(0,1)$:
+\begin{align}
+\boxed{Z = \f{\hat{\Delta} - \Delta}{\sqrt{\f{S_1^2}{n_1} + \f{S^2_2}{n_2}}} \sim \N(0,1)}
+\end{align}
+The approximate $(1-\alpha)100\%$ CI for $\Delta = \mu_1 - \mu_2$ is then given by
+\begin{align}
+\lp (\bar{x} - \bar{y}) - z_{\alpha/2}\sqrt{\f{S_1^2}{n_1} + \f{S^2_2}{n_2}}, 
+(\bar{x} - \bar{y}) + z_{\alpha/2}\sqrt{\f{S_1^2}{n_1} + \f{S^2_2}{n_2}} \rp
+\end{align}
+This is a large sample $(1-\alpha)100\%$ CI for $\mu_1 - \mu_2$. \\
+
+Now, suppose ${X} \sim \N(\mu_1, \sigma^2)$ and ${Y} \sim \N(\mu_2, \sigma^2)$ (i.e. $X$ and $Y$ are normally distributed with the same variance) are independent. We want to show $\Delta \sim t$-distribution. We know that $\bar{X} \sim \N(\mu_1, \sigma^2/n_1)$ and $\bar{Y} \sim \N(\mu_2, \sigma^2/n_2)$, so it is true that
+\begin{align}
+\f{(\bar{X} - \bar{Y}) - (\mu_1 - \mu_2)}{\sigma\sqrt{1/n_1 + 1/n_2}} \sim \N(0,1).
+\end{align}
+This quantity will later be the numerator of our $T$-statistic. Now, let
+\begin{align}
+S_p^2 = \f{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1 + n_2 - 2}
+\end{align}
+then $S_p^2$, the \textbf{pooled estimator} of $\sigma^2$, is also an unbiased estimator of $\sigma^2$. Because $(n_i - 1)S_i^2/\sigma^2 \sim \chi^2(n-1)$, we have that $(n-2)S_p^2/\sigma^2 \sim\chi^2(n-2)$. And so
+\begin{align}
+\boxed{T = \f{\f{(\bar{X} - \bar{Y}) - (\mu_1 - \mu_2)}{\sigma\sqrt{1/n_1 + 1/n_2}}}{\sqrt{(n-2)S_p^2/(n-2)\sigma^2}} = \f{(\bar{X} - \bar{Y}) - (\mu_1 - \mu_2)}{S_p\sqrt{1/n_1 + 1/n-2}} \sim t_{n-2}}
+\end{align}
+From here, it is easy to work out the $(1-\alpha)100\%$ CI for $\mu_1 - \mu_2$:
+\begin{align}
+\boxed{\lp (\bar{x}-\bar{y})-t_{\alpha/2,n-2}s_p\sqrt{\f{1}{n_1}+ \f{1}{n_2}},  (\bar{x}-\bar{y}) + t_{\alpha/2,n-2}s_p\sqrt{\f{1}{n_1}+ \f{1}{n_2}} \rp}
+\end{align}
+
+There is some difficulty when the unknown variances $\sigma$ in the distributions of $X$ and $Y$ are not equal. 
+
+
 \subsection{CI for difference in proportions}
+
+Our estimator of the difference in proportions $p_1 - p_2$ is $\bar{X} - \bar{Y} \equiv \hat{p}_1 - \hat{p}_2$ where $X \sim b(1,p_1)$ and $Y \sim b(1,p_2)$. Of course, we know that $\sigma_1^2 = p_1(1 - p_1)$ and $\sigma_2^2 = p_2(1 - p_2)$. From here, the approximate $(1-\alpha)100\%$ confidence interval for $p_1 - p_2$ is 
+\begin{align}
+\boxed{(\hat{p}_1 - \hat{p}_2) \pm z_{\alpha/2}\sqrt{\f{\hat{p}_1(1-\hat{p}_1)}{n_1} + \f{\hat{p}_2(1-\hat{p}_2)}{n_2}}}
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \section{Order Statistics}
+
+
+Let $X_1, X_2,\dots,X_n$ denote a random sample from a distribution of the continuous type having a pdf $f(x)$ that has support $S = (a, b)$, where $−\infty \leq a<b \leq \infty$. Let $Y_1 < Y_2 < \dots < Y_n$ represent $X_1, X_2,\dots,X_n$ when the latter are arranged in ascending order of magnitude. We call $Y_i, i = 1, 2,...,n$, the $i$th order statistic of the random sample $X_1, X_2,\dots,X_n$. We have a theorem which gives the joint pdf of $Y_1,Y_2,\dots,Y_n$.\\
+
+\noindent \textbf{Theorem:} The joint pdf of $Y_1, Y_2, \dots, Y_n$ is given by
+\begin{align}
+g(y_1, y_2, \dots, y_n) = \begin{cases}
+n!f(y_1)\dots f(y_n)\quad a < y_1 < \dots < y_n <b\\
+0 \quad \Else
+\end{cases}.
+\end{align}
+\textit{Proof:} The support of $X_1,\dots,X_n$ can be partitioned into $n!$ mutually disjoint sets that map onto the support of the $Y_i$'s. Obviously the Jacobian for each transformation is either $1$ or $-1$. 
+\begin{align}
+g(y_1,y_2,\dots,y_n) &= \sum^{n!}_{i=1}\abs{J_i}f(y_1)\dots f(y_n)\nn\\
+&= \begin{cases}
+n! f(y_1)\dots f(y_n)\quad a < y_1 \dots < y_n < b\\
+0 \quad \Else
+\end{cases}
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Quantiles}
+
+Let $X$ be a random variable with a continuous cdf $F(x)$. For $0 <p< 1$, define
+the $p$th quantile of $X$ to be $\xi_p = F^{-1}(p)$. Let $X_1, X_2,\dots,X_n$ be a random sample from the distribution of $X$ and let $Y_1 < Y_2 < \dots < Y_n$ be the corresponding order statistics. Let $k$ be the greatest integer less than or equal to $p(n + 1)$. We next define an estimator of$\xi_p$
+after making the following observation. The area under the pdf $f(x)$ to the left of
+$Y_k$ is $F(Y_k)$. The expected value of this area is 
+\begin{align}
+E[F(Y_k)] = \int^b_a F(y_k)g_k(y_k)\,dy_k
+\end{align}
+where $g_k(y_k)$ is the pdf of $Y_k$. Consider the transformation $z = F(y_k)$, then the integral becomes
+\begin{align}
+E[F(Y_k)] = \int^1_0 \f{n!}{(k-1)!(n-k)!}z^k (1-z)^{n-k}\,dz = \dots = \f{k}{n+1}
+\end{align} 
+where we recognize the similarity between the integral and the integral of a beta pdf. So, on the average, there is $k/(n + 1)$ of the total area to the left of $Y_k$. Because
+$p = k/(n + 1)$, it seems reasonable to take $Y_k$ as an estimator of the quantile $\xi_p$. Hence, we call $Y_k$ the \textbf{$p$th sample quantile}. It is also called the \textbf{$100p$th percentile} of the sample.\\
+
+A \textbf{five-number} summary of the data consists of the following five sample quantiles: the minimum ($Y_1$), the first quartile ($Y_{.25(n+1)}$), the median, the third quartile ($Y_{.75(n+1)}$), and the maximum ($Y_n$). For this section, we use the notation $Q_1$, $Q_2$, and $Q_3$ to denote, respectively, the first quartile, median, and third quartile of the sample.\\
+
+The five-number summary is the basis for a useful and quick plot of the data.
+This is called a \textbf{boxplot} of the data. In the \textbf{box and whisker} plots, we also define a potential outlier. Let $h = 1.5(Q_3 - Q_1)$. The \textbf{lower/upper fence} is defined by $L/UF = Q_{1/3} \mp h$. Points lying outside the $(LF,UF)$ interval are called \textbf{potential outliers}. 
+
+
+
 \subsection{CI for quantiles}
+
+Let $X$ be a continuous random variable with cdf $F(x)$. For $0 <p< 1$, define the
+$100p$th distribution percentile to be $\xi_p$, where $F(\xi_p) = p$. For a sample of size $n$ on
+$X$, let $Y_1 < Y_2 < \dots < Y_n$ be the order statistics. Let $k = [(n + 1)p]$. Then the
+$100p$th sample percentile $Y_k$ is a point estimate of $\xi_p$.\\
+
+Let $i < [(n + 1)p] < j$, and consider the order statistics $Y_i < Y_j$ and the event $Y_i < \xi_p < Y_j$. The event $Y_i < \xi_p < Y_j$ is equivalent to obtaining between $i$ (inclusive) and $j$ (exclusive) successes in $n$ independent trials. So,
+\begin{align}
+P(Y_i < \xi_p < Y_j) = \sum^{j-1}_{w=i} {n\choose{w}}p^w(1-p)^{n-w}.
+\end{align}
+
+For the median, we denote $\xi_{1/2}$ the median of $F(x)$, i.e. $\xi_{1/2}$ solves $F(x) = 1/2$. Let $Q_2$ denote the sample median, which is a point estimator of $\xi_{1/2}$. Take $c_{\alpha/2}$ such that $P[S \leq c_{\alpha/2}] = \alpha/2$ where $S \sim b(n,1/2)$. Then note also that $P[S \leq c_{\alpha/2}] = \alpha/2$. From here we have
+\begin{align}
+P[Y_{c_{\alpha/2}} < \xi_{1/2} < Y_{n-c_{\alpha/2}}] = 1-\alpha.
+\end{align}
+So, if $y_{\alpha/2 + 1}$ and $y_{n-\alpha/2}$ are the realized values of the order statistics $Y_{c_{\alpha/2} + 1}$ and $Y_{n-c_{\alpha/2}}$ then the interval 
+\begin{align}
+\boxed{\lp y_{c_{\alpha/2}}, y_{n - c_{\alpha/2}} \rp  }
+\end{align}
+is a $(1-\alpha)100\%$ confidence interval for $\xi_{1/2}$. 
+
+
+
+
+
+
+\section{Introduction to Hypothesis Testing}
+
+Suppose a r.v. $X \sim f(x;\theta)$, where $\theta \in \Omega$. Suppose that $\theta \in \omega_0$ or $\theta \in \omega_1$ where $\omega_0$ and $\omega_1$ are disjoint subsets of $\Omega$ and $\omega_0 \cup \omega_1 = \Omega$. We label these hypotheses as
+\begin{align}
+&H_0 : \theta \in \omega_0 \nn\\
+&H_1 : \theta \in \omega_1.
+\end{align}
+$H_0$ is called the \textbf{null hypothesis}. $H_1$ is called the \textbf{alternative hypothesis}. Type I error occurs when we decide that $\theta \in \omega_1$ when in fact $\theta \in \omega_0$. Type II error occurs when we decide the opposite. \\
+
+We require the \textbf{critical region}, $C$, to complete the testing structure for the general problem. Consider the r.v. $X$ and the hypotheses given above. $C$ is such that
+\begin{align}
+&\text{Reject } H_0 \text{ if } (X_1,\dots, X_n) \in C\nn\\
+&\text{Reject } H_1 \text{ if } (X_1,\dots, X_n) \in C^c.
+\end{align} 
+\textbf{Type I} error occurs if $H_0$ is rejected when it is true. \textbf{Type II} error occurs if $H_0$ is retained when $H_1$ is true. \\
+
+\noindent \textbf{Definition:} We say a critical region $C$ is of \textbf{size} $\alpha$ if 
+\begin{align}
+\boxed{\alpha = \max_{\theta \in \omega_0} P_\theta[(X_1,\dots,X_n)] \in C}
+\end{align}
+Over all critical regions of size $\alpha$, we want to consider critical regions that have lower probabilities of Type II error, i.e., for $\theta \in \omega_1$, we want to maximize
+\begin{align}
+{1 - P_\theta[\text{Type II Error}] = P_\theta[(X_1, \dots, X_n) \in C]}
+\end{align}
+The probability on the right side of the equation above is called the \textbf{power} of the test at $\theta$. It is the probability that the test detects the alternative when $\theta \in \omega_1$ is the true parameter. Minimizing Type II error requires maximizing the test power. The \textbf{power function} of $C$ is 
+\begin{align}
+\gamma_C(\theta) = P_\theta[(X_1,\dots,X_n) \in C]; \quad \theta \in \omega_1.
+\end{align} 
+Given two critical regions $C_1,C_2$ both of size $\alpha$. $C_1$ is better than $C_2$ if $\gamma_{C_1}(\theta) \geq \gamma_{C_2}(\theta)$ for all $\theta\in \omega_1$. \\
+
+A \textbf{simple} hypothesis completely specifies the underlying distribution. A \textbf{composite} hypothesis can be composed of many simple hypotheses and hence do not completely specify the distribution. $\alpha$ is often referred to as the \textbf{significance level} of the test associated with that critical region. 
+
+
+
+
+\section{Additional comments about statistical test}
+
+
+
+\subsection{Observed Significance Level, $p$-value}
+Suppose $H_0: \mu = \mu_0$ and $H_1: \mu > \mu_0$, where $\mu_0$ is maximized. Then we reject $H_0$ in favor $H_1$ if $\bar{X} \geq k$ where $\bar{X}$ is the sample mean. The p-value is the probability that under $H_0$, $\bar{X} \geq \bar{x}$:
+\begin{align}
+\boxed{p-\text{value} = P_{H_0}(\bar{X} \geq \bar{x})}
+\end{align}
+If $\alpha > p$ then we reject $H_0$ in favor of $H_1$. Else, we fail to reject $H_1$. 
+
+
+
+\section{Chi-Square Tests}
+
+
+\section{The Method of Monte Carlo}
+
+\subsection{Accept-Reject Generation Algorithm}
+
+\section{Bootstrap Procedures}
+
+\subsection{Percentile Bootstrap CI}
+\subsection{Bootstrap Testing Procedures}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 \section{Problems}
-\textbf{4.1.1}\\
-\textbf{4.1.3}\\
-\textbf{4.1.8}
+\textbf{4.1.1} Twenty motors were put on test under a high-temperature setting. The
+lifetimes in hours of the motors under these conditions are given below. Also, the
+data are in the file \textbf{lifetimemotor.rda} at the site listed in the Preface. Suppose
+we assume that the lifetime of a motor under these conditions, $X$, has a $\Gamma(1, \theta)$
+distribution.\\
+
+\begin{tabular}{c c c c c c c c c c }
+	1 &4& 5& 21& 22& 28& 40& 42& 51& 53\\
+	58 &67& 95& 124& 124& 160& 202& 260& 303& 363
+\end{tabular}
+
+
+\begin{enumerate}[(a)]
+	\item Obtain a histogram of the data and overlay it with a density estimate, using
+	the code \textbf{hist(x,pr=T); lines(density(x))} where the R vector\textbf{x} contains
+	the data. Based on this plot, do you think that the $\Gamma(1, \theta)$ model is credible?
+	
+	\item Assuming a $\Gamma(1, \theta)$ model, obtain the maximum likelihood estimate $\hat{\theta}$ of $\theta$ and locate it on your histogram. Next overlay the pdf of a $\Gamma(1, \hat{\theta})$ distribution on the histogram. Use the R function \textbf{dgamma(x,shape=1,scale=$\hat{\theta}$)} to evaluate the pdf.
+	
+	\item Obtain the sample median of the data, which is an estimate of the median
+	lifetime of a motor. What parameter is it estimating (i.e., determine the
+	median of $X$)?
+	
+	\item Based on the mle, what is another estimate of the median of $X$?
+\end{enumerate}
+
+
+\noindent \textit{Solution:}  
+\begin{enumerate}[(a)]
+	\item For some reason R does not recognize the dataset as of numeric type. Because the dataset is small enough, I recoded and fed it by hand to the data vector $y$:
+	\begin{lstlisting}
+	> lines(density(y))
+	> y <- c(1,4,5,21,22,28,40,42,51,53,58,67,
+			95,124,124,160,202,260,303,363)
+	> hist(y,pr=T)
+	> lines(density(y))
+	\end{lstlisting}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{411a}
+	\end{figure}
+	The $\Gamma(1,\theta)$, or $\text{Exp}(\theta)$, model seems to be \textbf{credible} as far as the histogram is concerned. However, the overlaying density does not look like a $\Gamma(1,\theta)$. \qed
+	
+	
+	
+	\item Assuming the $\Gamma(1,\theta)$ model, then the pdf on the support $\R^+$ is given by
+	\begin{align}
+	f(y) = \f{1}{\theta}e^{-y/\theta},
+	\end{align}
+	from which we obtain the logarithm of the likelihood function:
+	\begin{align}
+	l(\theta) = \log\lp \prod^n_{i=1} \f{1}{\theta}e^{-y_i/\theta} \rp = -n\log\theta - \f{1}{\theta}\sum^n_{i=1}y_i.
+	\end{align}
+	The first partial derivative wrt $\theta$ is then
+	\begin{align}
+	\p_\theta l(\theta) = -\f{n}{\theta} + \f{1}{\theta^2}\sum^n_{i=1}y_i.
+	\end{align}
+	Setting $\p_\theta l(\theta) = 0$, we get (by inspection) that $l(\theta)$ is extremized iff $\theta = (1/n)\sum^n_{i=1}y_i = \bar{y}$. We also have that $\p_{\theta\theta} < 0\, \forall \theta \in \R^+$, which means $l(\theta)$ is maximized globally at $\bar{y}$. From here, the statistic 
+	\begin{align}
+	\hat{\theta} = \bar{Y} = \mathbf{101.15}
+	\end{align} 
+	is the mle of $\theta$. (Also note that because $E[Y] = \theta \implies E[\bar{Y}] = \theta$, $\hat{\theta}$ is an unbiased estimator of $\theta$.)
+	\begin{lstlisting}
+	> mean(y)
+	[1] 101.15
+	> abline(v = mean(y), lwd=3, lty=2)
+	> z=dgamma(y, shape=1, scale=mean(y))
+	> lines(z~y,lty=2)
+	\end{lstlisting}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{411b}
+	\end{figure}
+	
+	
+	
+	
+	\item The sample median of the data is \textbf{55.5}
+	\begin{lstlisting}
+	> median(y)
+	[1] 55.5
+	\end{lstlisting}
+	The median of $Y \sim \Gamma(1,\theta) \equiv \text{Exp}(\theta)$ is the value of $y'$ at which 
+	\begin{align}
+	0.5 = \int^{y'}_{0}\f{1}{\theta}e^{-y/\theta}\,dy = 1 - e^{-y'/\theta} \implies y' = \theta \ln 2,
+	\end{align} 
+	which means that the median of $Y \sim \Gamma(1,\theta) \equiv \text{Exp}(1,\theta)$ is the half-life, $\theta \ln 2$. Since the sample median is just $\theta$ multiplied by $\ln 2$, the sample median also estimates the parameter $\theta$. 
+	
+	
+	
+	\item From part (a), we know that $\hat{\theta} = \bar{Y}$, the sample mean, is the mle of $\theta$, the population mean. From part (c), we have shown that the median of $Y \sim \Gamma(1,\theta)$ is simply $\theta \ln 2$. By simple inspection we see that $\hat{\theta}\ln 2 = \hat{Y} \ln 2$ is the (\textit{unbiased}) mle of $\theta \ln 2$, the median of $Y$. \qed 
+	
+	
+	
+\end{enumerate}
+
+
+
+
+
+
+
+
+\newpage
+
+\noindent \textbf{4.1.3} Suppose the number of customers $X$ that enter a store between the hours
+9:00 a.m. and 10:00 a.m. follows a Poisson distribution with parameter $\theta$. Suppose
+a random sample of the number of customers that enter the store between 9:00 a.m.
+and 10:00 a.m. for 10 days results in the values\\
+
+\begin{tabular}{c c c c c c c c c c}
+	9& 7& 9 &15& 10& 13& 11& 7 &2& 12
+\end{tabular}
+
+
+\begin{enumerate}
+	\item Determine the maximum likelihood estimate of $\theta$. Show that it is an unbiased
+	estimator.
+	
+	\item Based on these data, obtain the realization of your estimator in part (a).
+	Explain the meaning of this estimate in terms of the number of customers.
+
+\end{enumerate}
+
+
+\noindent \textit{Solution:} 
+\begin{enumerate}
+	\item Let $X \sim \text{Poi}(\theta)$ be given, then the pmf of $X$ is given by
+	\begin{align}
+	p(x) = \begin{cases}
+	\f{\theta^x e^{-\theta}}{x!}, \quad x\in \mathbb{N}\\ 
+	0, \quad \Else
+	\end{cases}.
+	\end{align}
+	Assuming the $X_i$'s $\sim \text{Poi}(\theta)$ are iid, where $i=1,\dots,n$, then the logarithm of the likelihood function is 
+	\begin{align}
+	l(\theta) &= \log \lp \prod^n_{i=1} \f{\theta^{x_i} e^{-\theta}}{x_i!} \rp\nn\\
+	&= \log \lp e^{-n\theta}\theta^{\sum_{i=1}^n x_i}  \prod^n_{i=1}\f{1}{x_i!} \rp\nn\\
+	&= -n\theta + \lp \sum^n_{i=1}x_i\rp\log \theta - \sum^n_{i=1}\log x_i!. 
+	\end{align}
+	Setting $\p_\theta l(\theta) = 0$, we solve for $\theta$:
+	\begin{align}
+	\p_\theta l(\theta) = -n +  \f{1}{\theta}\sum^n_{i=1}x_i = 0 \iff \theta = \f{1}{n}\sum^n_{i=1} x_i = \bar{x}
+	\end{align}
+	By inspection, $\p_{\theta\theta}l(\theta) < 0 \forall \theta \in \mathbb{R}^+$, and so the statistic
+	\begin{align}
+	\hat{\theta} = \bar{Y}
+	\end{align}
+	is the mle of $\theta$. Further, it is an unbiased estimator of $\theta$ simply because
+	\begin{align}
+	E[Y] =  \theta \implies E[\bar{Y}] = \theta.
+	\end{align}
+	\qed
+	
+	
+	\item Part (a) says the sample means is the mle of $\theta$. The means of the given sample is \textbf{9.5}.
+	\begin{lstlisting}
+	> mean(c(9 ,7, 9, 15, 10, 13, 11, 7, 2, 12))
+	[1] 9.5
+	\end{lstlisting}
+	This says that on average, 9.5, or about 9-10 customers enter the store between the hours 9:00 a.m. and 10:00 a.m.. \qed
+	
+	
+	
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{4.1.8} Recall that for the parameter $\eta = g(\theta)$, the mle of $\eta$ is $g(\hat{\theta})$, where $\hat{\theta}$ is the mle of $\theta$. Assuming that the data in Example 4.1.6 were drawn from a Poisson distribution with mean $\lambda$, obtain the mle of $\lambda$ and then use it to obtain the mle of the pmf. Compare the mle of the pmf to the nonparametric estimate. Note: For the domain value 6, obtain the mle of $P(X \geq 6)$.\\
+
+\noindent \textit{Solution:} Based on the previous problem, the mle of $\lambda$ is the sample means, which has the value \textbf{2.13}.
+\begin{lstlisting}
+> mean(c(2,1,1,1,1,5,1,1,3,0,2,1,1,3,4,2,1,2,2,6,5,2,3,2,4,1,3,1,3,0))
+[1] 2.133333
+\end{lstlisting}
+Because the sample means $\bar{x}$ is the mle of $\lambda$, and the pmf is given by
+\begin{align}
+p(x) = \begin{cases}
+\f{\lambda^x e^{-\lambda}}{x!}, \quad x \in \mathbb{N}\\ 
+0, \quad \Else
+\end{cases},
+\end{align}
+the mle of the pmf is given by
+\begin{align}
+\tilde{p}(x) = \begin{cases}
+\f{\bar{x}^x e^{-\bar{x}}}{x!}, \quad x \in \mathbb{N}\\ 
+0, \quad \Else
+\end{cases}.
+\end{align}
+Next, we compare the mle of the pmf to the nonparametric estimate:\\
+
+\begin{tabular}{ c c c c c c c c}
+	j & 0 &1& 2& 3& 4& 5& $\geq$ 6 \\
+	$\hat{p}(j)$& 0.067 & 0.367 & 0.233 & 0.167 & 0.067 & 0.067 & 0.033\\
+	$\tilde{p}(j)$ & 0.118 & 0.253 & 0.270  & 0.192  & 0.102 & 0.044  &  0.022
+\end{tabular}\\
+
+
+\textbf{Mathematica code for $P(j \geq 6)$ for $\tilde{p}(j)$:}
+\begin{lstlisting}
+P[x_] := (2.1333333)^x*E^(-2.1333333)/x!
+
+N[Sum[P[y], {y, 6, Infinity}]]
+
+0.0218705
+\end{lstlisting}
+
+
+
+
 
 
 	
