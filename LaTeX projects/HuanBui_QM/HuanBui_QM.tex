@@ -10085,7 +10085,7 @@ R^{00} - \f{1}{2}Rg^{00}
 \end{align}
 for $\mu = \nu = 0$. First, $g^{00} = -1/B$ trivially. But what about $R^{00}$ and $R$? We will rely on Mathematica. Part of the calculations is done based on the Mathematica code provided by \href{https://arxiv.org/pdf/0904.4184.pdf}{\underline{Catalogue of Spacetimes}}. \\
 
-\href{}{\underline{Here}} is the link to the notebook, which contains all calculations. The notebook requires no additional packages. It should run on any basic Mathematica installation. \\
+\href{https://huanqbui.com/LaTeX projects/HuanBui_QM/Cartesian_Vainshtein.nb}{\underline{Here}} is the link to the notebook, which contains just the calculations for the $tt$ equation. There will be another notebook with the spherical calculations for the other $rr,\theta\theta\equiv \phi\phi$ equations as well. \textit{I'm writing this from the future... the solution below is found using Cartesian coordinates instead of spherical. While it is correct (and I have checked many times to make sure it was correct) it is very, very, cumbersome. The new notebook contains the spherical calculations for this $tt$ equation as well. If the reader is curious and wants to download a notebook to view the calculations, I recommend downloading the other notebook, link in the section where we derive the $rr$-equation.} The notebook requires no additional packages. It should run on any basic Mathematica installation. \\
  
 We first clear some symbols, define the dimensions, metric, etc:
 \begin{lstlisting}
@@ -10376,7 +10376,7 @@ The simplified form, the \textbf{$tt$ equation} is:
 
 Next, we find the $rr$ equation. It is at this point that we realized we've been doing things the HARD WAY by working in Cartesian coordinates. There's a reason, however. In Cartesian coordinates, the determinant of $g_{\mu\nu}$ does not have dependence on $r$ and $\sin\theta$. In spherical coordinates, however, there is. I think that because the $\sin\theta$ term appears in both the determinant of the $g$ metric and the Minkowskian metric, we can just ignore it because the LHS must be zero.\\
 
-In any case, we learned something by taking the Cartesian route. We will soon see how well-behaved things become once we go to spherical coordinates. I have uploaded a \href{}{new Mathematica notebook} with the actual, full, spherical solution. This notebook contains the derivation of the $tt$ equation as well.  \\
+In any case, we learned something by taking the Cartesian route. We will soon see how well-behaved things become once we go to spherical coordinates. I have uploaded a \href{https://huanqbui.com/LaTeX projects/HuanBui_QM/SphericalSolution_Vainshtein.nb}{\underline{new Mathematica notebook}} with the actual, full, spherical solution. This notebook contains the derivation of the $tt$ equation as well.  \\
 
 From here on, we will be using metrics in spherical coordinates. From the specified line elements, the metrics are:
 \begin{align}
@@ -10396,6 +10396,224 @@ and
 	&&&r^2\sin^2\theta
 	\end{pmatrix}}
 \end{align}
+
+Let us redefine everything in terms of spherical coordinates in the notebook and go over the calculations again. Trust me this will be quick.
+\begin{lstlisting}
+Clear[coord, metric, inversemetric, affine, t, r, \[Theta], \[Phi]]
+
+n := 4
+
+coord := {t, r, \[Theta], \[Phi]}
+
+metric := {{-B[r], 0, 0, 0},
+{0, C[r], 0, 0},
+{0, 0, r^2*A[r], 0},
+{0, 0, 0, r^2*Sin[\[Theta]]^2*A[r]}}
+
+inversemetric := Simplify[Inverse[metric]]
+
+
+Calculating the Christoffel symbols of the second kind: 
+
+affine := affine = 
+Simplify[Table[(1/2) Sum[
+inversemetric[[Mu, Rho]] (D[metric[[Rho, Nu]], coord[[Lambda]]] + 
+D[metric[[Rho, Lambda]], coord[[Nu]]] - 
+D[metric[[Nu, Lambda]], coord[[Rho]]]), {Rho, 1, n}], {Nu, 1, 
+n}, {Lambda, 1, n}, {Mu, 1, n}]]
+
+listaffine := 
+Table[If[UnsameQ[affine[[Nu, Lambda, Mu]], 
+0], {Style[
+Subsuperscript[\[CapitalGamma], Row[{coord[[Nu]], coord[[Lambda]]}], 
+coord[[Mu]]], 18], "=", Style[affine[[Nu, Lambda, Mu]], 14]}], {Lambda, 
+1, n}, {Nu, 1, Lambda}, {Mu, 1, n}]
+
+Simplify[TableForm[Partition[DeleteCases[Flatten[listaffine], Null], 3], 
+TableSpacing -> {1, 2}] /. rule1]
+\end{lstlisting}
+
+
+Here are the Christoffel symbols in spherical coordinates:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{sphericalchristoffel}
+\end{figure}
+
+Let the calculations continue...
+\begin{lstlisting}
+Defining the Riemann tensor.
+
+riemann := 
+riemann = Table[
+D[affine[[Nu, Sigma, Mu]], coord[[Rho]]] - 
+D[affine[[Nu, Rho, Mu]], coord[[Sigma]]] + 
+Sum[affine[[Rho, Lambda, Mu]] affine[[Nu, Sigma, Lambda]] - 
+affine[[Sigma, Lambda, Mu]] affine[[Nu, Rho, Lambda]], {Lambda, 1, 
+n}], {Mu, 1, n}, {Nu, 1, n}, {Rho, 1, n}, {Sigma, 1, n}]
+
+
+
+Defining the Riemann tensor with lower indices.
+
+riemannDn := 
+riemannDn = 
+Table[Simplify[
+Sum[metric[[Mu, Kappa]] riemann[[Kappa, Nu, Rho, Sigma]], {Kappa, 1, 
+n}]], {Mu, 1, n}, {Nu, 1, n}, {Rho, 1, n}, {Sigma, 1, n}]
+
+listRiemann := 
+Table[If[UnsameQ[riemannDn[[Mu, Nu, Rho, Sigma]], 
+0], {Style[
+Subscript[R, 
+Row[{coord[[Mu]], coord[[Nu]], coord[[Rho]], coord[[Sigma]]}]], 16], 
+"=", riemannDn[[Mu, Nu, Rho, Sigma]]}], {Nu, 1, n}, {Mu, 1, Nu}, {Sigma, 
+1, n}, {Rho, 1, Sigma}]
+
+Simplify[Simplify[
+TableForm[Partition[DeleteCases[Flatten[listRiemann], Null], 3], 
+TableSpacing -> {2, 2}] /. rule1] /. rule1]
+\end{lstlisting}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{sphericalriemann}
+\end{figure}
+
+
+Then comes the Ricci quantities:
+\begin{lstlisting}
+Defining Ricci tensor:
+
+ricci := ricci = 
+Table[Simplify[Sum[riemann[[Rho, Mu, Rho, Nu]], {Rho, 1, n}]], {Mu, 1, 
+n}, {Nu, 1, n}]
+
+listRicci := 
+Table[If[UnsameQ[ricci[[Mu, Nu]], 
+0], {Style[Subscript[R, Row[{coord[[Mu]], coord[[Nu]]}]], 16], "=", 
+Style[ricci[[Mu, Nu]], 16]}], {Nu, 1, 4}, {Mu, 1, Nu}]
+
+TableForm[Partition[DeleteCases[Flatten[listRicci], Null], 3], 
+TableSpacing -> {1, 2}]
+
+Defining Ricci scalar:
+
+ricciscalar := 
+ricciscalar = 
+Simplify[Sum[
+Sum[inversemetric[[Mu, Nu]] ricci[[Nu, Mu]], {Mu, 1, n}], {Nu, 1, n}]]
+
+Simplify[Simplify[ricciscalar]]
+
+RR = Simplify[ricciscalar]
+\end{lstlisting}
+
+Here's the output:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{sphericalricci}
+	\includegraphics[scale=0.4]{sphericalricciscalar}
+\end{figure}
+
+
+Next we consider $R_{rr}$. We want $R^{rr}$, so we simply multiplying $R_{rr}$ by $1/C^2$, because $g_{\mu\nu}$ is diagonal in spherical coordinates. We first consider the term
+\begin{align}
+R^{rr} - \f{1}{2}Rg^{rr}.
+\end{align}
+To this end we repeat the process with the LeftTerm and RightTerm earlier to get
+\begin{lstlisting}
+LeftTerm := 
+Simplify[Simplify[
+Simplify[Simplify[Simplify[Simplify[Rrr/C[r]^2]]]]]];
+
+RightTerm := 
+Simplify[Simplify[
+Simplify[Simplify[Simplify[Simplify[(1/2)*RR*(1/C[r])]]]]]];
+
+Simplify[LeftTerm - RightTerm] // ExpandAll // ExpandAll
+\end{lstlisting}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{sphericalleftright}
+\end{figure}
+
+Of course things cancel again!  Simplifying gives
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{sphericalleftrightcancel}
+\end{figure}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{simplified}
+\end{figure}
+
+\newpage
+
+Next, we consider the term
+\begin{align}
+\sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)1\al}g^{(0)1\be}h_{\alpha\beta} - g^{(0)\al\be}h_{\al\be}g^{(0)11}  \rp.
+\end{align}
+Of course the first term is just going to be $h_{11} = C-1$. The second term has some contractions with factors of sines and $r^2$ floating around. But we can do this quickly by ignoring everything that is not the functions $A,B,C$. We can do this because when we multiplying the inverses $g^{(0)\mu\nu}$ with $h_{\mu\nu}$, the $r^2$ and sine factors automatically cancel out. The result is
+\begin{align}
+\sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)1\al}g^{(0)1\be}h_{\alpha\beta} - g^{(0)\al\be}h_{\al\be}g^{(0)11}  \rp &= \f{-m^2}{2}\lp 2(A-1) - (-B+1) \rp\nn\\
+&= \boxed{\f{-m^2(2A+B-3)}{2}}
+\end{align}
+Putting everything together, we will find the $rr$ equation:
+\begin{align}
+0 &= \sqrt{-g}\lp R^{rr} - \f{1}{2}Rg^{rr} \rp + \sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)1\al}g^{(0)1\be}h_{\alpha\beta} - g^{(0)\al\be}h_{\al\be}g^{(0)11}  \rp\nn\\
+0 &= \f{r^2B(A')^2 + 4A^2(B+rB') + A[-4B(C-rA')+2r^2A'B']}{A^2BC^2r^2}\nn\\
+&\quad\quad - \f{2m^2(2A+B-3)}{\sqrt{A^2BC}}
+\end{align}
+Simplifying this gives the $rr$ equation:
+\begin{empheq}[box=\widefbox]{align}
+0 &= \f{4(B+rB')A^2 + [2r^2A'B'-4B(C-rA')]A + Br^2(A')^2 }{A^2BC^2r^2}\nn\\
+&\quad\quad - \f{2(2A+B-3)m^2}{\sqrt{A^2BC}}
+\end{empheq}
+
+Finally, to get the $\theta\theta\equiv\phi\phi$ equation, we go through the process above once more. To make things a little easier, I'll just derive the $\theta\theta$ equation with $R_{\theta\theta}$ instead of $R^{\theta\theta}$. This way, I don't have to worry about factors of contractions, etc. 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{theta}
+\end{figure}
+This simplifies to 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{thetasimplified}
+\end{figure}
+
+
+On to the $\sqrt{g^{(0)}}$ terms, we compute
+\begin{align}
+ \sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)2\al}g^{(0)2\be}h_{\alpha\beta} - g^{(0)\al\be}h_{\al\be}g^{(0)22}  \rp.
+\end{align}
+
+I won't show the rest of the calculations here. The $\theta\theta\equiv \phi\phi$ equation is
+\begin{empheq}[box=\widefbox]{align}
+0 &= -2B^2C^2m^2rA^4 - 2B^2C^2(B+C-3)m^2rA^3\nn\\
+& - \sqrt{A^2BC}\{2C'B^2 + [rB'C' - 2C(B'+rB'')]B + Cr(B')^2  \}A\nn\\
+& +B\sqrt{A^2BC}[CrA'B'+B(4CA'-rC'A'+2CrA'')]A - B^2C\sqrt{A^2BC}r(A')^2.
+\end{empheq}
+I'll just put the other two equations here, for convenience. The $rr$ equation is
+\begin{empheq}[box=\widefbox]{align}
+0 &= \f{4(B+rB')A^2 + [2r^2A'B'-4B(C-rA')]A + Br^2(A')^2 }{A^2BC^2r^2}\nn\\
+&\quad\quad - \f{2(2A+B-3)m^2}{\sqrt{A^2BC}}
+\end{empheq}
+The $tt$ equation is
+\begin{empheq}[box=\widefbox]{align}
+0 &=  4BC^2m^2r^2A^3 + [2B(C-3)C^2m^2r^2 - 4\sqrt{A^2BC}(C-rC')]A^2 \nn\\
+&\quad\quad 2\sqrt{A^2BC}[2C^2-2r(3A'+rA'')C+r^2A'C']A + C\sqrt{A^2BC}r^2(A')^2
+\end{empheq}
+
+
+
+
+
+
+
+
+
 
 
 
