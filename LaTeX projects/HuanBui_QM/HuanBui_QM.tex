@@ -10068,18 +10068,20 @@ and
 \begin{align}
 g^{(0)\alpha\beta}h_{\alpha\beta}g^{(0)00} &= g^{(0)\alpha\beta}g^{(0)00}\lp g_{\al\be} - g_{\al\be}^{(0)}  \rp\nn\\
 &= \sum^4_{\alpha=0}\lb g^{(0)\alpha\al}g^{(0)00}\lp g_{\al\al} - g_{\al\al}^{(0)}  \rp  \rb\nn\\
-&= \lp-B+1\rp  + \lp A + x^2G -1  \rp +  \lp A + y^2G - 1 \rp + \lp A + z^2G - 1 \rp\nn\\
-&= (-B+1) + (C-3).
+&= \lp-B+1\rp  - \lp A + x^2G -1  \rp -  \lp A + y^2G - 1 \rp - \lp A + z^2G - 1 \rp\nn\\
+&= (-B+1) - (3A + r^2G -3).
 \end{align}
 And so we have successfully dealt with the second term:
 \begin{align}
 &\sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)0\alpha}g^{(0)0\beta}h_{\alpha\beta} - g^{(0)\alpha\beta}h_{\alpha\beta}g^{(0)00}\rp\nn\\
-= &\f{m^2}{2}\lb (-B + 1) - (-B+1) - (C-3) \rb\nn\\
-= &\boxed{\f{-m^2}{2}(C-3)}
+= &\,\f{m^2}{2}\lb (-B + 1) - (-B+1) - (3A + r^2G-3) \rb\nn\\
+= &\,\f{m^2}{2}(-3A - r^2G + 3) \nn\\
+= &\,\f{m^2}{2}\lp -3A + 3 - r^2 \f{C-A}{r^2}\rp\nn\\
+= &\,\boxed{\f{m^2}{2}\lp  2A + C - 3\rp}
 \end{align}
 Now comes the difficult part of unpacking the Ricci tensor and scalar. We wish to evaluate the term
 \begin{align}
-R^{00} - \f{1}{2}Rg^{\mu\nu}
+R^{00} - \f{1}{2}Rg^{00}
 \end{align}
 for $\mu = \nu = 0$. First, $g^{00} = -1/B$ trivially. But what about $R^{00}$ and $R$? We will rely on Mathematica. Part of the calculations is done based on the Mathematica code provided by \href{https://arxiv.org/pdf/0904.4184.pdf}{\underline{Catalogue of Spacetimes}}. \\
 
@@ -10144,10 +10146,256 @@ Simplify[TableForm[Partition[DeleteCases[Flatten[listaffine], Null], 3],
 TableSpacing -> {1, 2}] /. rule1]
 \end{lstlisting}
 
+This outputs an entire table of nontrivial Christoffel symbols which we won't worry about. Here's a snippet of the output:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{christoffel}
+\end{figure}
+
+Next, we define and compute the lower-index Riemann tensors:
+\begin{lstlisting}
+Defining the Riemann tensor.
+
+riemann := 
+riemann = Table[
+D[affine[[Nu, Sigma, Mu]], coord[[Rho]]] - 
+D[affine[[Nu, Rho, Mu]], coord[[Sigma]]] + 
+Sum[affine[[Rho, Lambda, Mu]] affine[[Nu, Sigma, Lambda]] - 
+affine[[Sigma, Lambda, Mu]] affine[[Nu, Rho, Lambda]], {Lambda, 1, 
+n}], {Mu, 1, n}, {Nu, 1, n}, {Rho, 1, n}, {Sigma, 1, n}]
+
+
+
+Defining the Riemann tensor with lower indices.
+
+riemannDn := 
+riemannDn = 
+Table[Simplify[
+Sum[metric[[Mu, Kappa]] riemann[[Kappa, Nu, Rho, Sigma]], {Kappa, 1, 
+n}]], {Mu, 1, n}, {Nu, 1, n}, {Rho, 1, n}, {Sigma, 1, n}]
+
+listRiemann := 
+Table[If[UnsameQ[riemannDn[[Mu, Nu, Rho, Sigma]], 
+0], {Style[
+Subscript[R, 
+Row[{coord[[Mu]], coord[[Nu]], coord[[Rho]], coord[[Sigma]]}]], 16], 
+"=", riemannDn[[Mu, Nu, Rho, Sigma]]}], {Nu, 1, n}, {Mu, 1, Nu}, {Sigma, 
+1, n}, {Rho, 1, Sigma}]
+
+Simplify[Simplify[
+TableForm[Partition[DeleteCases[Flatten[listRiemann], Null], 3], 
+TableSpacing -> {2, 2}] /. rule1] /. rule1]
+\end{lstlisting}
+
+There are (obviously) a lot of them. Here are some:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{riemann}
+\end{figure}
+
+Almost there... Next, we define the Ricci tensors:
+\begin{lstlisting}
+Defining Ricci tensor:
+
+ricci := ricci = 
+Table[Simplify[Sum[riemann[[Rho, Mu, Rho, Nu]], {Rho, 1, n}]], {Mu, 1, 
+n}, {Nu, 1, n}]
+
+listRicci := 
+Table[If[UnsameQ[ricci[[Mu, Nu]], 
+0], {Style[Subscript[R, Row[{coord[[Mu]], coord[[Nu]]}]], 16], "=", 
+Style[ricci[[Mu, Nu]], 16]}], {Nu, 1, 4}, {Mu, 1, Nu}]
+
+TableForm[Partition[DeleteCases[Flatten[listRicci], Null], 3], 
+TableSpacing -> {1, 2}]
+\end{lstlisting}
+There aren't too many of these, but no expression is short enough to fit the width of the page, so I will just include $R_{tt}$ and truncated versions of $R_{xx}, R_{yy},\dots$
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{riccitensors}
+\end{figure}
+
+Okay. Moving on to the last item: the Ricci scalar.
+\begin{lstlisting}
+Defining Ricci scalar:
+
+ricciscalar := 
+ricciscalar = 
+Simplify[Sum[
+Sum[inversemetric[[Mu, Nu]] ricci[[Nu, Mu]], {Mu, 1, n}], {Nu, 1, n}]]
+
+Simplify[Simplify[ricciscalar]]
+\end{lstlisting}
+The output isn't very useful to work with:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{ricciscalar}
+\end{figure}
+so we will define more rules to simplify it to a useful form:
+\begin{lstlisting}
+rule2 = {Sqrt[x^2 + y^2 + z^2] -> R};
+
+rule3 = {(x^2 + y^2 + z^2)^(-1/2) -> R^(-1)};
+
+rule4 = {(x^2 + y^2 + z^2)^(3/2) -> R^3};
+
+rule5 = {(x^2 + y^2 + z^2) -> R^2};
+
+rule6 = {Sqrt[R^2]^(-1) -> R^(-1)};
+
+RR = Simplify[
+Simplify[Simplify[
+Simplify[
+Simplify[
+Simplify[Simplify[ricciscalar] /. rule1] /. rule2] /. 
+rule3] /. rule4] /. rule5] /. rule6]
+
+(1/(2 R^2 A[R]^2 B[R]^2 C[
+R]^2))(R^2 B[R]^2 C[R] Derivative[1][A][R]^2 + 
+2 A[R] B[R] (-R^2 C[R] Derivative[1][A][R] Derivative[1][B][R] + 
+B[R] (2 C[R]^2 + R^2 Derivative[1][A][R] Derivative[1][C][R] - 
+2 R C[R] (3 Derivative[1][A][R] + 
+R (A^\[Prime]\[Prime])[R]))) + 
+A[R]^2 (R^2 C[R] Derivative[1][B][R]^2 - 
+4 B[R]^2 (C[R] - R Derivative[1][C][R]) + 
+R B[R] (R Derivative[1][B][R] Derivative[1][C][R] - 
+2 C[R] (2 Derivative[1][B][R] + R (B^\[Prime]\[Prime])[R]))))
+\end{lstlisting}
+In symbols:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.32]{ricciscalar1}
+\end{figure}
+
+Now, we want the quantity, which is LeftTerm minus RightTerm
+\begin{align}
+R^{00} - \f{1}{2}Rg^{00} \equiv \text{LeftTerm} - \text{RightTerm}. 
+\end{align}
+The \textbf{LeftTerm} is obtained from raising the indices of $R_{\mu\nu}$. This turned out not to be very difficult, because $g^{0\nu}$ entries are all zero except at $\nu = 0$ where $g^{00} = -1/B$. We need two of these to raise the indices of $R_{\mu\nu}$, so as a result we have $R^{00} = (1/B^2)R_{00}$. The \textbf{Rtt} term in the code below is just $R^{00}$.
+
+\begin{lstlisting}
+LeftTerm := 
+Simplify[Simplify[
+Simplify[
+Simplify[
+Simplify[Simplify[Rtt /. rule1] /. rule2] /. rule3] /. 
+rule4] /. rule5] /. rule6];
+
+RightTerm := 
+Simplify[Simplify[
+Simplify[
+Simplify[
+Simplify[Simplify[(1/2)*RR*(-1/B[R]) /. rule1] /. rule2] /. 
+rule3] /. rule4] /. rule5] /. rule6];
+
+LeftTerm - RightTerm
+\end{lstlisting} 
+
+The \textbf{RightTerm} is just $(1/2)Rg^{00}$. The output is
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{leftright}
+\end{figure}
+
+Next, we define more rules to help with simplifying things:
+\begin{lstlisting}
+rule7 = {(2 C[R]^2 + R^2 Derivative[1][A][R] Derivative[1][C][R] - 
+2 R C[R] (3 Derivative[1][A][R] + R (A^\[Prime]\[Prime])[R])) ->
+STUFF1};
+
+Simplify[LeftTerm - RightTerm /. rule7]
+
+rule8 = {R^2 C[R] Derivative[1][A][R]^2 -> STUFF2};
+
+Simplify[Simplify[LeftTerm - RightTerm /. rule7] /. rule8]
+
+rule9 = {-4 A[R]^2 (C[R] - R Derivative[1][C][R]) -> STUFF3};
+
+Simplify[Simplify[
+Simplify[LeftTerm - RightTerm /. rule7] /. rule8] /. rule9]
+
+rule10 = {2 STUFF1 A[R] -> STUFF4};
+
+Simplify[Simplify[
+Simplify[Simplify[LeftTerm - RightTerm /. rule7] /. rule8] /. 
+rule9] /. rule10]
+
+rule11 = {STUFF2 + STUFF3 + STUFF4 -> STUFF5};
+
+Simplify[Simplify[
+Simplify[
+Simplify[Simplify[LeftTerm - RightTerm /. rule7] /. rule8] /. 
+rule9] /. rule10] /. rule11]
+\end{lstlisting}
+
+
+We expand the final output and look for things to cancel:
+\begin{lstlisting}
+
+Simplify[Simplify[
+Simplify[
+Simplify[Simplify[LeftTerm - RightTerm /. rule7] /. rule8] /. 
+rule9] /. rule10] /. rule11] // ExpandAll
+
+\end{lstlisting}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{outputt}
+\end{figure}
+
+Do you see where things cancel? \\
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{outputtt}
+\end{figure}
 
 
 
 
+So we're left with just
+\begin{align}
+R^{00} - \f{1}{2}Rg^{00} = \f{r^2C(A')^2 - 4A^2(C-rC') + 2A\lp 2C^2+r^2A'C'-2r(3A'+rA'')C \rp}{4r^2A^2BC^2}.
+\end{align}
+Next, we bring in the square root of minus the determinant of $g$:
+\begin{align}
+&\sqrt{-g}\lp R^{00} - \f{1}{2}Rg^{00} \rp \nn\\
+= &\sqrt{A^2BC} \f{r^2C(A')^2 - 4A^2(C-rC') + 2A\lp 2C^2+r^2A'C'-2r(3A'+rA'')C \rp}{4r^2A^2BC^2}.
+\end{align}
+
+And... we have the $tt$ equation:
+\begin{align}
+0 &= \sqrt{-g}\lp R^{00} - \f{1}{2}Rg^{00} \rp + \sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)00\al}g^{(0)0\be}h_{\al\be} - g^{(0)\al\be}h_{\al\be}g^{(0)00} \rp \nn\\
+0 &= \sqrt{A^2BC}\lc{r^2C(A')^2 - 4A^2(C-rC') + 2A\lp 2C^2+r^2A'C'-2r(3A'+rA'')C \rp}\rc\nn\\
+&\quad  + \f{m^2}{2}\lp  2A + C - 3\rp(4r^2A^2BC^2)
+\end{align}
+The simplified form, the \textbf{$tt$ equation} is:
+\begin{empheq}[box=\widefbox]{align}
+0 &=  4BC^2m^2r^2A^3 + [2B(C-3)C^2m^2r^2 - 4\sqrt{A^2BC}(C-rC')]A^2 \nn\\
+&\quad\quad 2\sqrt{A^2BC}[2C^2-2r(3A'+rA'')C+r^2A'C']A + C\sqrt{A^2BC}r^2(A')^2
+\end{empheq}
+
+Next, we find the $rr$ equation. It is at this point that we realized we've been doing things the HARD WAY by working in Cartesian coordinates. There's a reason, however. In Cartesian coordinates, the determinant of $g_{\mu\nu}$ does not have dependence on $r$ and $\sin\theta$. In spherical coordinates, however, there is. I think that because the $\sin\theta$ term appears in both the determinant of the $g$ metric and the Minkowskian metric, we can just ignore it because the LHS must be zero.\\
+
+In any case, we learned something by taking the Cartesian route. We will soon see how well-behaved things become once we go to spherical coordinates. I have uploaded a \href{}{new Mathematica notebook} with the actual, full, spherical solution. This notebook contains the derivation of the $tt$ equation as well.  \\
+
+From here on, we will be using metrics in spherical coordinates. From the specified line elements, the metrics are:
+\begin{align}
+\boxed{[g_{\mu\nu}] = \begin{pmatrix}
+	-B &&&\\
+	&C&&\\
+	&&Ar^2&\\
+	&&&Ar^2\sin^2\theta
+	\end{pmatrix}}
+\end{align}
+and
+\begin{align}
+\boxed{[g^{(0)}_{\mu\nu}] = \begin{pmatrix}
+	-1 &&&\\
+	&1&&\\
+	&&r^2&\\
+	&&&r^2\sin^2\theta
+	\end{pmatrix}}
+\end{align}
 
 
 
