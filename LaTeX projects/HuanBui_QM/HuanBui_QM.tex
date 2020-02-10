@@ -9999,16 +9999,16 @@ C(r) \equiv A(r) + r^2 G(r).
 \end{align}
 As matrices:
 \begin{align}
-[g_{\mu\nu}] = \begin{pmatrix}
+\boxed{[g_{\mu\nu}]_{\text{Cartesian}} = \begin{pmatrix}
 -B(r) &&&\\
 &A(r) + x^2G(r)&xyG(r)&xzG(r)\\
 &yxG(r)&A(r)+ y^2G(r)&yzG(r)\\
 &zxG(r)&zyG(r)&A(r)+ z^2G(r)
-\end{pmatrix}
+\end{pmatrix}}
 \end{align}
 and
 \begin{align}
-[g^{(0)}_{\mu\nu}] = \begin{pmatrix}
+[g^{(0)}_{\mu\nu}]_{\text{Spherical}} = \begin{pmatrix}
 -1 &&&\\
 &1& & \\
 &&r^2&\\
@@ -10027,12 +10027,30 @@ The output says the determinant of the $[g_{\mu\nu}]$ matrix is
 \begin{align}
 -B(r)A^2(r)\lb A + \underbrace{(x^2 + y^2 + z^2)}_{r^2}G(r) \rb = -A^2B\underbrace{(A+r^2G)}_{C(r)} = -A^2BC.  
 \end{align}
-So, ${\sqrt{-g} = \sqrt{A^2BC}}$.  Next, the determinant of $[g^{(0)}_{\mu\nu}]$ is easy:
+So, ${\sqrt{-g} = \sqrt{A^2BC}}$.  Next, we want to evaluate $\sqrt{-g^{(0)}}$. However, note that $[g_{\mu\nu}^{(0)}]$ is in spherical coordinates, while $[g_{\mu\nu}]$ is in Cartesian coordinates. We wish to be consistent, so we will just evaluate $\sqrt{-g^{(0)}}$ ``by analogy'' by reading off the numbers from the line element. Because
 \begin{align}
-\sqrt{-g^{(0)}} = r^2\sin\theta.
+g^{(0)}_{\mu\nu}dx^\mu dx^\nu &= -dt^2 + dr^2 + r^2 d\Omega^2 \nn\\
+&= -(1)dt^2 + \lp 1 + 0 r^2 \rp dr^2 + (1)r^2d\Omega^2\nn\\
+\text{and }  g_{\mu\nu}dx^\mu dx^\nu &= -B(r)dt^2 + C(r)dr^2+ A(r)r^2d\Omega^2\nn\\
+&= -B(r)dt^2 + \lp A(r) + G(r) r^2 \rp dr^2+ A(r)r^2d\Omega^2
 \end{align}
+and because $\sqrt{-g} = \sqrt{A^2BC}$, we just have $\sqrt{-g^{(0)}} = \sqrt{-1} = 1$, in Cartesian coordinates, as expected. We're also writing the line element wrt $g^{(0)}$ like above so that it resembles the form of $[g_{\mu\nu}]$:
+\begin{align}
+\boxed{[g^{(0)}_{\mu\nu}]_{\text{Cartesian}} = \begin{pmatrix}
+-1 &&&\\
+&1 + 0x^2&0xy&0xz\\
+&0yx&1+0y^2&0yz\\
+&0zx&0zy&1+0z^2
+\end{pmatrix} = \begin{pmatrix}
+-1 &&&\\
+&1&&\\
+&&1&\\
+&&&1
+\end{pmatrix}}
+\end{align}
+which is also expected. Throughout the derivations, we will be using the boxed matrices as our metrics, both of which are in Cartesian coordinates. \\
 
-Moving on, we first consider the $tt$ equation:
+With this, we first consider the $tt$ equation:
 \begin{align}
 {0 = \sqrt{-g}\lp R^{00} - \f{1}{2}Rg^{00} \rp + \sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)0\alpha}g^{(0)0\beta}h_{\alpha\beta} - g^{(0)\alpha\beta}h_{\alpha\beta}g^{(0)00}\rp}
 \end{align}
@@ -10040,17 +10058,106 @@ We will unpack the second term first. Recall that
 \begin{align}
 h_{\mu\nu} = g_{\mu\nu} - g_{\mu\nu}^{(0)}.
 \end{align}
-Then
+So
 \begin{align}
 g^{(0)0\alpha}g^{(0)0\beta}h_{\alpha\beta} &= g^{(0)0\alpha}g^{(0)0\beta}\lp g_{\al\be} - g_{\al\be}^{(0)} \rp\nn\\
 &= \underbrace{g^{(0)00}g^{(0)00}}_{1}\lp g_{00} - g_{00}^{(0)} \rp\nn\\
-&= -B(r) + 1
+&= -B(r) + 1,
 \end{align}
 and
 \begin{align}
 g^{(0)\alpha\beta}h_{\alpha\beta}g^{(0)00} &= g^{(0)\alpha\beta}g^{(0)00}\lp g_{\al\be} - g_{\al\be}^{(0)}  \rp\nn\\
-&= 
+&= \sum^4_{\alpha=0}\lb g^{(0)\alpha\al}g^{(0)00}\lp g_{\al\al} - g_{\al\al}^{(0)}  \rp  \rb\nn\\
+&= \lp-B+1\rp  + \lp A + x^2G -1  \rp +  \lp A + y^2G - 1 \rp + \lp A + z^2G - 1 \rp\nn\\
+&= (-B+1) + (C-3).
 \end{align}
+And so we have successfully dealt with the second term:
+\begin{align}
+&\sqrt{-g^{(0)}}\f{m^2}{2}\lp g^{(0)0\alpha}g^{(0)0\beta}h_{\alpha\beta} - g^{(0)\alpha\beta}h_{\alpha\beta}g^{(0)00}\rp\nn\\
+= &\f{m^2}{2}\lb (-B + 1) - (-B+1) - (C-3) \rb\nn\\
+= &\boxed{\f{-m^2}{2}(C-3)}
+\end{align}
+Now comes the difficult part of unpacking the Ricci tensor and scalar. We wish to evaluate the term
+\begin{align}
+R^{00} - \f{1}{2}Rg^{\mu\nu}
+\end{align}
+for $\mu = \nu = 0$. First, $g^{00} = -1/B$ trivially. But what about $R^{00}$ and $R$? We will rely on Mathematica. Part of the calculations is done based on the Mathematica code provided by \href{https://arxiv.org/pdf/0904.4184.pdf}{\underline{Catalogue of Spacetimes}}. \\
+
+\href{}{\underline{Here}} is the link to the notebook, which contains all calculations. The notebook requires no additional packages. It should run on any basic Mathematica installation. \\
+ 
+We first clear some symbols, define the dimensions, metric, etc:
+\begin{lstlisting}
+Clear[coord, metric, inversemetric, affine, t, x, y, z]
+
+r := Sqrt[x^2 + y^2 + z^2]
+
+n := 4
+
+coord := {t, x, y, z}
+
+metric := {{-B[r], 0, 0, 0},
+{0, A[r]+x^2*(-A[r]+C[r])/r^2, x*y*(-A[r]+C[r])/r^2, x*z*(-A[r] + C[r])/r^2},
+{0, y*x*(-A[r]+C[r])/r^2, A[r]+y^2*(-A[r]+C[r])/r^2, y*z*(-A[r] + C[r])/r^2},
+{0, z*x*(-A[r]+C[r])/r^2, z*y*(-A[r]+C[r])/r^2, A[r] + z^2*(-A[r]+C[r])/r^2}}
+\end{lstlisting}
+Note that the metric $g_{\mu\nu}$ we should be using here must be in terms of $B(r), A(r), C(r)$, since we ultimately want solutions in terms of these functions. In matrix form, $[g_{\mu\nu}]$ is
+\begin{align}
+\boxed{[g_{\mu\nu}] = \begin{pmatrix}
+	-B &&&\\
+	&A + x^2\lp \f{C-A}{r^2} \rp&xy\lp \f{C-A}{r^2} \rp&xz\lp \f{C-A}{r^2} \rp\\
+	&yx\lp \f{C-A}{r^2} \rp&A+ y^2\lp \f{C-A}{r^2} \rp&yz\lp \f{C-A}{r^2} \rp\\
+	&zx\lp \f{C-A}{r^2} \rp&zy\lp \f{C-A}{r^2} \rp&A+ z^2\lp \f{C-A}{r^2} \rp
+	\end{pmatrix}}
+\end{align}
+It is easy to check that $\sqrt{-g} = \sqrt{A^2BC}$ by brute forcing in Mathematica. I won't reproduce the results here. \\
+
+Next, we find the inverse metric, in order to set up for calculations of Christoffel symbols, Riemann, Ricci tensors, and the Ricci scalar. 
+\begin{lstlisting}
+inversemetric := Simplify[Inverse[metric]]
+\end{lstlisting}
+Next, we calculate Christoffel symbols of the 2nd kind:
+\begin{lstlisting}
+
+Calculating the Christoffel symbols of the second kind: 
+
+affine := affine = 
+Simplify[Table[(1/2) Sum[
+inversemetric[[Mu, Rho]] (D[metric[[Rho, Nu]], coord[[Lambda]]] + 
+D[metric[[Rho, Lambda]], coord[[Nu]]] - 
+D[metric[[Nu, Lambda]], coord[[Rho]]]), {Rho, 1, n}], {Nu, 1, 
+n}, {Lambda, 1, n}, {Mu, 1, n}]]
+
+listaffine := 
+Table[If[UnsameQ[affine[[Nu, Lambda, Mu]], 
+0], {Style[
+Subsuperscript[\[CapitalGamma], Row[{coord[[Nu]], coord[[Lambda]]}], 
+coord[[Mu]]], 18], "=", Style[affine[[Nu, Lambda, Mu]], 14]}], {Lambda, 
+1, n}, {Nu, 1, Lambda}, {Mu, 1, n}]
+
+Simplify[TableForm[Partition[DeleteCases[Flatten[listaffine], Null], 3], 
+TableSpacing -> {1, 2}] /. rule1]
+\end{lstlisting}
+
+
+
+
+
+
+
+
+
+
+
+%and with $\theta = \pi/2$:
+%\begin{align}
+%g^{(0)\alpha\beta}h_{\alpha\beta}g^{(0)00} &= g^{(0)\alpha\beta}g^{(0)00}\lp g_{\al\be} - g_{\al\be}^{(0)}  \rp\nn\\
+%&= \sum^4_{\alpha=0}\lb g^{(0)\alpha\al}g^{(0)00}\lp g_{\al\al} - g_{\al\al}^{(0)}  \rp  \rb\nn\\
+%&= \lp-B+1\rp  - \lp A + x^2G-1  \rp - \f{1}{r^2} \lp A + y^2G - r^2 \rp \nn\\
+%&\quad -\f{1}{r^2\sin^2\theta}\lp A + z^2G - r^2\sin^2\theta \rp\nn\\
+%&= \lp-B+1\rp  - \lp A + x^2G-1  \rp - \f{1}{r^2} \lp A + y^2G - r^2 \rp \nn\\
+%&\quad -\f{1}{r^2}\lp A + z^2G - r^2 \rp.
+%\end{align}
+
 
 
 
