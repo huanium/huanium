@@ -6,6 +6,7 @@
 \usepackage{bm}
 \usepackage{authblk}
 \usepackage{empheq}
+\usepackage[shortlabels]{enumitem}
 \usepackage{amsfonts}
 \usepackage{esint}
 \usepackage[makeroom]{cancel}
@@ -1069,6 +1070,379 @@ whose existence is guaranteed by our earlier arguments. So, with a single cNOT a
 
 \chapter{Quantum Information \& Quantum Computation}
 \newpage
+
+
+
+
+\chapter{Problems}
+
+\newpage
+
+\section{Problem Set 1}
+
+
+
+\noindent \textbf{1. Computational complexity.}  As mentioned in class, improved algorithms can vastly reduce
+the number of required gates (or steps) needed to perform a calculation. In class I used the
+example of the bubble sort versus the heap sort and the straightforward discrete Fourier
+transform versus the fast Fourier transform. In both of those examples the difference in
+complexity of the algorithm was $N^2$ vs. $N \log N$, where for those problems $N$ was the number
+of elements that be sorted or the number of points in a time-series. With the algorithmic
+change of scaling with $N$ the difference in number of operations becomes huge as $N$ gets
+large, but both $N^2$ and $N \log N$ are polynomial in $N$ and the solution is considered \textit{efficiently
+computable} with either algorithm.\\
+
+To think more about what is meant by not being efficiently computable, you will now consider
+the goal of finding prime factors of a (large) composite number. The basic idea of finding
+prime factors is that given an integer $n$-bit integer $N$ find a factorization
+\begin{align}
+N = pq
+\end{align}
+where at least one of the integers $p$ and $q$ are prime.
+\begin{enumerate}[(a)]
+	\item The most straightforward algorithm for finding prime factors is called ``trial division'' or
+	``direct-search factorization'' and it is just what it sounds like. Start testing all integers
+	up to $p = \sqrt{N}$ as possible factors. A number $N$ is represented by a binary number
+	with $n = \lg(N)$ bits. Show that this leads to an exponential scaling in the number of
+	bits $\mathcal{O}(2^{n/2})$, which is exponential in the number of bits. This is still the most efficient algorithm for relatively small numbers.
+	\item  As mentioned in class the most efficiently known classical factoring algorithm for large
+	numbers is the ``number field sieve'' and its complexity is $\mathcal{O}\lp e^{cn^{1/3}(\ln n )^{2/3}}  \rp$, where $c =
+	(64/9)^{1/3}$, which is also exponential in the number of bits. Shor’s quantum algorithm is $\mathcal{O}(n^3)$ which is polynomial in $n$, and thus is efficient. Create a table showing the
+	difference in the number of steps (time) needed to factor an n-bit number using these
+	four methods for $n =$ 4, 16, 32, 64, 128, 256, 512, and 1024. The RSA challenge for RSA-768 a 768 bit (232 decimal digit) number was factored in
+	2009 using the number field sieve after several years using ``many hundreds of machines.''
+	A similar effort factored RSA-240 (795 bits) in 2019
+\end{enumerate}
+
+
+\noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item Let a number $N$ be given. $N$ is represented by a binary number with $n = \lg(N)$ bits. The trial division algorithm tests integers up to $p = \sqrt{N}$, which can be represented by a binary number with $\tilde{n} = \lg(\sqrt{N}) = n/2$. It follows that the number of test integers (from 1 to $p$) is on the order of $2^{n/2}$. This means there is an exponential scaling in the number of bits $\mathcal{O}\lp 2^{n/2} \rp$. 
+	\item 
+	$\,$\\
+	\begin{tabular}{|c|c|c|}
+		\hline
+		n & $\exp\lc \sqrt[3]{64/19}\sqrt[3]{n}(\ln n)^{2/3}  \rc$ & $n^3$\\
+		\hline
+		4&$19.3$&$64$\\
+		16&$1730$&$4096$\\
+		32&$5.41\times 10^4$&$3.28 \times 10^4$\\
+		64&$5.43\times 10^6$&$2.62 \times 10^5$\\
+		128&$2.53\times 10^9$&$2.10 \times 10^6$\\
+		256&$8.92\times 10^{12}$&$1.68 \times 10^7$\\
+		512&$4.46\times 10^{17}$&$1.34 \times 10^8$\\
+		1024&$7.16\times 10^{23}$&$1.07\times 10^9$\\
+		\hline
+	\end{tabular}
+\end{enumerate}
+\qed
+
+
+
+
+\newpage
+
+
+
+
+
+\noindent \textbf{2. Reversible Computation.} Quantum computation is reversible. That is, no matter how
+sophisticated the computation is, you can always run the program in reverse and figure out
+what was input to start the computation. In 1973 Charles Bennett (IBM) showed that you
+could perform any classical computation using reversible gates, and reversible computation
+has been a part of theoretical computer-science since then. The NOT gate is reversible, but
+the standard two-CBit gates, AND, OR, and XOR, are clearly not reversible because they
+have two inputs and only one output so you can’t recreate their inputs knowing their outputs.
+
+
+
+
+
+
+
+
+\begin{enumerate}
+	\item \textit{Controlled-not (CNOT)}. While the standard exclusive-or (XOR, $\oplus$) gate of Boolean logic
+	is not reversible, there is a reversible equivalent to the XOR gate called the controlled-not (CNOT) gate. As shown below in both the circuit diagram and the truth table it
+	has two inputs and two outputs.
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.25]{cnot}
+	\end{figure}
+	Show by creating the truth table that the CNOT gate is reversible - that you can find
+	the inputs if you know the outputs. In fact, you can show that CNOT is its own inverse.
+	To do this you will ``prove'' the identity $a \oplus (a \oplus b) = b$.
+	
+	\item \textit{Toffoli Gate}. While the CNOT gate is reversible, it is not universal. That is, you cannot
+	implement every possible logic operation with the CNOT. The NAND gate is actually
+	\textit{universal}: you can create any logical operation using just NAND gates (but of course
+	it isn’t reversible). In 1980 Tommaso Toffoli (MIT) described a universal reversible
+	gate – now called the Toffoli gate or sometimes the ``controlled-controlled-not.'' [There’s
+	another universal reversible gate called the Fredkin gate (or ``controlled-swap'') named
+	after its inventor Edward Fredkin.] The Toffoli gate has three inputs and three outputs
+	and its behavior is shown in the circuit diagram shown below. The outputs are a copy
+	of both inputs and the logical expression $c \oplus (a \land b)$.
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.25]{toffoli}
+	\end{figure}
+	There are 8 possible input combinations to the Toffoli gate. Create a truth table for the
+	Toffoli gate and show that for $c = 0$ that the output is $a \land b$ and for $c = 1$ that the output
+	is $a \land b$ where $\land$ is the symbol for AND. That is, show the Toffoli gate can generate the
+	same logical output as the AND or NAND gates.
+	Show that the Toffoli gate is its own inverse by creating the truth table using the three
+	outputs you calculated as inputs to a Toffoli gate.
+	Why would the Toffoli gate be called the controlled-controlled-not (CCNOT)?
+\end{enumerate}
+
+
+\noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item 
+	$\,$CNOT:\\
+	\begin{tabular}{| c  c |  c c| c| }
+		\hline
+		$a$ & $b$ & $a$ & $a\oplus b$  & $a\oplus(a\oplus b)$ \\
+		\hline
+		0&0&0&0&0\\
+		0&1&0&1&1\\
+		1&0&1&1&0\\
+		1&1&1&0&1\\
+		\hline
+	\end{tabular}
+
+	We have just shown (by exhaustion) that $a\oplus(a\oplus b) = b$, which means we can invert the CNOT gate to obtain its input $(a,b)$ for any given output $(a,a\oplus b)$. 
+	
+	\item 
+	$\,$Toffoli:\\
+	\begin{tabular}{| c  c  c  c| c c c| }
+		\hline
+		$a$ & $b$ & $c$ & $(a\land b)$ & $a$ & $b$&  $c\oplus (a\land b)$ \\
+		\hline
+		0&0&0&0&0&0&0\\
+		0&0&1&0&0&0&1\\
+		0&1&0&0&0&1&0\\
+		0&1&1&0&0&1&1\\
+		1&0&0&0&1&0&0\\
+		1&0&1&0&1&0&1\\
+		1&1&0&1&1&1&1\\
+		1&1&1&1&1&1&0\\
+		\hline
+	\end{tabular}
+
+	We see that $\text{Toff}[a,b,0]=a\land b$, and $\text{Toff}[a,b,1] = \overline{a\land b}$. So, by setting $c$ to be $0$ or $1$, we can make the Toffoli gate an AND or a NAND gate. \\
+	
+	To show that the Toffoli gate is its own inverse, we show $c = (a\land b) \oplus c\oplus (a\land b)$, once again by exhaustion:\\
+	
+	\begin{tabular}{| c  c  c  c| c c c| c |}
+		\hline
+		$a$ & $b$ & $c$ & $(a\land b)$ & $a$ & $b$&  $c\oplus (a\land b)$ & $(a\land b) \oplus c\oplus (a\land b)$  \\
+		\hline
+		0&0&0&0&0&0&0&0\\
+		0&0&1&0&0&0&1&1\\
+		0&1&0&0&0&1&0&0\\
+		0&1&1&0&0&1&1&1\\
+		1&0&0&0&1&0&0&0\\
+		1&0&1&0&1&0&1&1\\
+		1&1&0&1&1&1&1&0\\
+		1&1&1&1&1&1&0&1\\
+		\hline
+	\end{tabular}
+
+	The Toffoli gate would be called the controlled-controlled-not because unlike the CNOT where there is one control bit and one target bit, the Toffoli gate has \textbf{two} control bits, namely $a$ and $b$, and one target bit, namely $c$. The Toffoli gate flips $c$ if and only if $a = b = 1$. 
+	
+\end{enumerate}
+
+
+\qed
+
+
+\newpage
+\noindent \textbf{3.} In Section 1.4, Mermin defines several 1-Cbit operations that do not correspond to any physical operation but which can be useful in deriving relationships between operations that do
+have a physical meaning. The first two of these operators are the ``projection operators.'' 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{proj}
+\end{figure}
+\begin{enumerate}[(a)]
+	\item Show, using their matrix form, that as Mermin states on the top of page 12, the two
+	matrices have eigenvalues of 0 and +1. Determine eigenvectors of each matrix assuming
+	that they are in the form of probabilistic CBits
+	\begin{align*}
+	\ket{a} = \begin{pmatrix}
+	a_0 \\ a_1
+	\end{pmatrix}
+	\end{align*}
+	where the convention of probability requires $a_0 + a_1 = 1$. 
+	
+	\item Show, using the definitions, that the properties of Eq. 1.33 and 1.34 are correct.
+	
+\end{enumerate}
+
+
+\noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item Because $\mathbf{n}$ and $\tilde{\mathbf{n}}$ are diagonal matrices with only entries $0$ and $1$ along the diagonals, their eigenvalues are 0 and 1. \\
+	
+	The (stochastic) 1-eigenvector of $\mathbf{n}$, say $\ket{a}_1= (a_0\,\,a_1)^\top$ where $a_0 + a_1 = 1$, must be ${\ket{a}_1 = (1\,\,0)^\top}$ because $\mathbf{n}(a_0\,\,a_1)^\top = (a_0\,\,0)^\top$. By a similar argument, the (stochastic) 0-eigenvector of $\mathbf{n}$ must be ${\ket{a}_0 = (0\,\,1)^\top}$. By symmetry, the 1-eigenvector of $\tilde{\mathbf{n}}$ is ${\ket{\tilde{a}}_{{1}} = (0\,\,1)^\top}$, and the 0-eigenvector of $\tilde{\mathbf{n}}$ is ${\ket{\tilde{a}}_{{0}} = (1\,\,0)^\top}$.
+	
+	\item We note that projections are \textit{idempotents}, so $\mathbf{n}^2 = \mathbf{n}$ and $\tilde{\mathbf{n}}^2 = \tilde{\mathbf{n}}$ automatically. Next, because the images of $\mathbf{n}$ and $\tilde{\mathbf{n}}$ are orthogonal spaces (spanned by $(1\,\,0)^\top$ and $(0\,\,1)^\top$, respectively), $\mathbf{n}\tilde{\mathbf{n}} = \tilde{\mathbf{n}}\mathbf{n} = \mathbf{0}_{2\times 2}$. Finally, $\mathbf{n} + \tilde{\mathbf{n}} = \Id$ because the idempotents $\mathbf{n}$ and $\tilde{\mathbf{n}}$ \textit{resolve identity} $\Id$. \\
+	
+	We can also verify these properties algebraically:
+	\begin{align}
+	&\mathbf{n}^2 = \begin{pmatrix}
+	1&0\\0&0
+	\end{pmatrix}\begin{pmatrix}
+	1&0\\0&0
+	\end{pmatrix} = \begin{pmatrix}
+	1&0\\0&0
+	\end{pmatrix}\\
+	&\tilde{\mathbf{n}}^2 = \begin{pmatrix}
+	0&0\\0&1
+	\end{pmatrix}\begin{pmatrix}
+	0&0\\0&1
+	\end{pmatrix}=\begin{pmatrix}
+	0&0\\0&1
+	\end{pmatrix}\\
+	&\mathbf{n}\tilde{\mathbf{n}}= \begin{pmatrix}
+	1&0\\0&0
+	\end{pmatrix}
+	\begin{pmatrix}
+	0&0\\0&1
+	\end{pmatrix} = \begin{pmatrix}
+	0&0\\0&0
+	\end{pmatrix} = \begin{pmatrix}
+	0&0\\0&1
+	\end{pmatrix}\begin{pmatrix}
+	1&0\\0&0
+	\end{pmatrix} = \tilde{\mathbf{n}}\mathbf{n}\\
+	&\mathbf{n} +  \tilde{\mathbf{n}}  = \begin{pmatrix}
+	1&0\\0&0
+	\end{pmatrix} + \begin{pmatrix}
+	0&0\\0&1
+	\end{pmatrix} = \begin{pmatrix}
+	1&0\\0&1
+	\end{pmatrix} = \Id
+	\end{align} 
+	
+	Next we consider the $\X = \begin{pmatrix}
+	0&1\\1&0
+	\end{pmatrix}$, the bit-flip:
+	\begin{align}
+	&\mathbf{n}\X = \begin{pmatrix}
+	1&0\\0&0
+	\end{pmatrix}\begin{pmatrix}
+	0&1\\1&0
+	\end{pmatrix}= \begin{pmatrix}
+	0&1\\0&0
+	\end{pmatrix}=\begin{pmatrix}
+	0&1\\1&0
+	\end{pmatrix}\begin{pmatrix}
+	0&0\\0&1
+	\end{pmatrix} = \mathbf{X}\tilde{\mathbf{n}}\\
+	&\tilde{\mathbf{n}}\X = \begin{pmatrix}
+	0&0\\0&1
+	\end{pmatrix}\begin{pmatrix}
+	0&1\\1&0
+	\end{pmatrix}= \begin{pmatrix}
+	0&0\\1&0
+	\end{pmatrix}=\begin{pmatrix}
+	0&1\\1&0
+	\end{pmatrix}\begin{pmatrix}
+	1&0\\0&0
+	\end{pmatrix} = \mathbf{X}{\mathbf{n}}.
+	\end{align}
+	Mermin explained why this makes sense, so I won't repeat that.
+	
+	
+\end{enumerate}
+
+\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{4.} Another pair of operators which do not have physical meaning when acting on CBits are the
+``phase-flip operator'' $\mathbf{Z}$ and Hadamard operator $\had$. 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.26]{ZH}
+\end{figure}
+where $\X$ is the ``bit-flip'' (NOT) operator. Both $\mathbf{Z}$ and $\had$ will be used and do have meaning when applied to QBits.
+
+\begin{enumerate}[(a)]
+	\item Show, using their matrix forms, that the three single-bit gates $\X$, $\mathbf{Z}$, and $\had$ are their
+	own inverse. That is, show that $\X^2 = \Id$, $\mathbf{Z}^2 = \Id$, and $\had^2 = \Id$.
+	\item Show, using their matrix forms, that the identities of Eq. 1.43 are correct. That is, show
+	that using a Hadamard gate to perform a ``similarity transformation'' you can convert a bit-flip to a phase-flip and vice-versa.
+\end{enumerate}
+
+\noindent \textit{Solution:} 
+
+\begin{enumerate}[(a)]
+	\item 
+	\begin{align}
+	\mathbf{Z}^2 &= \begin{pmatrix}
+	1&0\\0&-1
+	\end{pmatrix}\begin{pmatrix}
+	1&0\\0&-1
+	\end{pmatrix} = \begin{pmatrix}
+	1&0\\0&1
+	\end{pmatrix}\\
+	\X^2 &= \begin{pmatrix}
+	0&1\\1&0
+	\end{pmatrix}\begin{pmatrix}
+	0&1\\1&0
+	\end{pmatrix} = \begin{pmatrix}
+	1&0\\0&1
+	\end{pmatrix}\\
+	\had^2 &= \f{1}{2}\begin{pmatrix}
+	1&1\\1&-1
+	\end{pmatrix}\begin{pmatrix}
+	1&1\\1&-1
+	\end{pmatrix} = \begin{pmatrix}
+	1&0\\0&1
+	\end{pmatrix}.
+	\end{align}
+	
+	\item 
+	\begin{align}
+	\had \X \had &= \f{1}{2}\begin{pmatrix}
+	1&1\\1&-1
+	\end{pmatrix}\begin{pmatrix}
+	0&1\\1&0
+	\end{pmatrix}\begin{pmatrix}
+	1&1\\1&-1
+	\end{pmatrix} = \begin{pmatrix}
+	1&0\\0&-1
+	\end{pmatrix} = \mathbf{Z}\\
+	\had \X\had &= \mathbf{Z} \implies \X = \had^{-1}\mathbf{Z}\had^{-1}  \implies \X = \had \mathbf{Z} \had \quad (\had^{-1} = \had) 
+	\end{align}
+\end{enumerate}
+\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
