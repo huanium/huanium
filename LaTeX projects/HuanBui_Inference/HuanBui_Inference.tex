@@ -1256,8 +1256,85 @@ If $\alpha > p$ then we reject $H_0$ in favor of $H_1$. Else, we fail to reject 
 
 \section{Chi-Square Tests}
 
+Let r.v. $X_i \sim \N(\mu_i,\sigma_i^2)$ for $i=1,\dots,n$. Let $X_1,\dots,X_n$ be mutually independent. The joint pdf is then
+\begin{align}
+\f{1}{\sigma_1\dots\sigma_n(\sqrt{2\pi})^{n}}\exp\lb -\f{1}{2}\sum^n_{i=1}\lp \f{x_i - \mu_i}{\sigma_i} \rp^2 \rb
+\end{align}
+The r.v. 
+\begin{align}
+\sum^n_{i=1}\lp \f{x_i - \mu_i}{\sigma_i} \rp^2
+\end{align}
+has a $\chi^2(n)$ distribution. \\
+
+We will now consider some r.v.s that have approximate $\chi^2$ distribution. Suppose $X_1 \sim b(n,p_1)$. Consider the r.v. defined by
+\begin{align}
+Y = \f{X_1 - p_1}{\sqrt{np_1(1-p_1)}}
+\end{align}
+which has, as $n\to\infty$, an approximate $\N(0,1)$. We know from earlier discussions that $Y^2 \sim \N(0,1)$. Now, let $X_2 = n-X_1$ and $p_2 = 1-p_1$. Let $Q_1 = Y^2$. Then we have
+\begin{align}
+Q_1 = \f{(X_1 - np_1)^2}{np_1(1-p_1)} = \f{(X_1-np_1)^2}{np_1} + \f{(X_1 - np_1)^2}{n(1-p_1)} = \f{(X_1-np_1)^2}{np_1} + \f{(X_2-np_2)^2}{np_2}.
+\end{align}
+In general, let $X_1,\dots,X_{k-1}$ have a multinomial distribution with the parameters $n$ and $p_{1},\dots,p_{k-1}$. Let $X_k = n-(X_1+\dots+X_{k-1})$ and let $p_k = 1-(p_1+\dots+p_{k-1})$. Define $Q_{k-1}$ by
+\begin{align}
+Q_{k-1} = \sum^k_{i=1}\f{(X_i - np_i)^2}{np_i}
+\end{align}
+As $n\to \infty$, $Q_{k-1} \sim \chi^2(k-1)$. This makes the r.v. $Q_{k-1}$ a basis of the tests of certain statistical hypotheses. For instance, when the joint pdf of $X_1,X_2,\dots,X_{k-1}$ (and $X_k = n - X_1 - \dots - X_{k-1}$) is a multinomial pmf with parameters $n$ and $p_1,\dots,p_{k-1}$ (and $p_k = 1- p_1 - \dots - p_{k-1}$), we can consider the simple null hypothesis $H_0: p_1 = p_{10}, \dots, p_{k-1} = p_{(k-1)0}$ where $p_{10},\dots,p_{(k-1)0}$ are specified numbers. Under this null, the r.v.
+\begin{align}
+Q_{k-1}=\sum^k_{1}\f{(X_i - np_{i0})^2}{np_{i0}}
+\end{align} 
+has an approximate $\chi^2(k-1)$. Intuitively, when $H_0$ is true, $np_{i0}$ must be the expected value of $X_i$, which means $Q_{k-1}$ is not too large. Thus, we reject $H_0$ if $Q_{k-1} \geq c$. The critical value $c$ is specified by the significance level $\alpha$, \textbf{c = qchisq(1-$\alpha$,k-1)}. This is frequently called the \textbf{goodness-of-fit} test.\\
+
+We can have a chi-square test for \textbf{homogeneity}. Consider two multinomial distributions with parameters $n_j, p_{1j},\dots,p_{kj}$ and $j=1,2$. Let $X_{ij}$ where $i = 1,\dots,k$ and $j=1,2$ be frequencies. Suppose $n_1,n_2$ large and the observations are independent, then the r.v.
+\begin{align}
+\sum^2_{j=1}\sum^n_{i=1}\f{(X_{ij} - n_jp_{ij})^2}{n_jp_{ij}} \sim \chi^2(2k-2)
+\end{align}
+because it is the sum of two independent r.v.'s each of which $\sim \chi^2(k-1)$. The null hypothesis we consider is
+\begin{align}
+H_0: p_{11} = p_{12}; \dots; p_{k1} = p_{k2},
+\end{align}
+where each $p_{i1} = p_{i2}$ where $i=1,\dots,k$ is unspecified. It turns out that the mle of $p_{i1} = p_{i2}$ is given by
+\begin{align}
+\theta = \f{X_{i1}+X_{i2}}{n_1+n_2}
+\end{align}
+which makes intuitive sense. Note that we need only $k-1$ points estimates, and so the r.v.
+\begin{align}
+Q_{k-1} = \sum^2_{j=1}\sum^k_{i=1}\f{\lc X_{ij} - n_j[(X_{i1}+X_{i2})/(n_1+n_2)] \rc^2}{n_j[(X_{i1}+X_{i2})/(n_1+n_2)]} \sim \chi^2(2k-2-(k-1) = k-1).
+\end{align}
+With this, we can test if two multinomial distributions are the same. \\
+
+We can also test for \textbf{independence}. Suppose the result of an experiment is classified by only two attributes $A$ (of $a$ possible outcomes) and $B$ (of $b$ possible outcomes). These events are $A_1,\dots,A_a$ for attribute $A$ and $B_1,\dots,B_b$ for attribute $B$. Then consider $p_{ij} = P(A_i\cap A_j)$. Say the experiment is repeated $n$ independent times and $X_{ij}$ denotes the frequency of the event $A_i \cap B_j$. There are $k=ab$ such events, so the r.v.
+\begin{align}
+Q_{ab-1} = \sum^b_{j=1}\sum^a_{i=1}\f{(X_{ij} - np_{ij})^2}{np_{ij}} \sim \chi^2(ab-1),
+\end{align}
+provided $n$ is large. To test for independence, $H_0: P(A_i\cap B_j) = P(A_i)P(B_j)$ for all $i,j$. To test $H_0$, we cannot compute $Q_{ab-1}$, but instead compute 
+\begin{align}
+\sum^b_{j=1}\sum^a_{i=1}\f{[X_{ij} -n(X_{i.}/n)(X_{.j}/n)]^2}{n(X_{i.}/n)(X_{.j}/n)} \sim \chi^2(ab-1-(a+b-2) = (a-1)(b-1))
+\end{align}
+where
+\begin{align}
+\hat{p}_{i.} = \f{X_{i.}}{n}, \quad X_{i.} = \sum^b_{j=1}X_{ij}, i=1,\dots,a\\
+\hat{p}_{.j} = \f{X_{.j}}{n}, \quad X_{.j} = \sum^a_{i=1}X_{ij}, j=1,\dots,b
+\end{align}
+
+
+Just a sanity check, the chi-square statistic always has the form of $\sum \text{Expected - Observed}^2/\text{Expected}$. All tests' statistics have this form. The differences are subtle and are context-based. 
+
 
 \section{The Method of Monte Carlo}
+
+\noindent \textbf{Theorem:} Suppose the r.v. $U$ has a uniform $(0,1)$ distribution. Let $F$ be a continuous distribution function (cdf). Then the r.v. $X = F^{-1}(U) \sim F$.\\
+
+\noindent \textit{Proof:} We assume that $F(x)$ is strictly monotone. 
+\begin{align}
+P[X\leq x] &= P[F^{-1}(U) \leq x]\nn\\
+&= P[U \leq F(x)]\nn\\
+&= F(x).
+\end{align} \qed
+
+
+
+
+
 
 \subsection{Accept-Reject Generation Algorithm}
 

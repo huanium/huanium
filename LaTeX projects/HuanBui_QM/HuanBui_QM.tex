@@ -9122,7 +9122,7 @@ For later reference, we record his result in spherical spatial coordinates as we
 \lb F(r)\delta_{ij} +  G(r)x_i x_j \rb\, dx^idx^j = \lb F(r) + r^2 G(r)\rb\,dr^2 + F(r)r^2\,d\Omega^2
 \end{align}
 to get spherical coordinates we find a metric of the form
-\begin{align}
+\begin{align}\label{mass}
 h_{\mu\nu}\,dx^\mu dx^\nu = -B(r)\,dt^2 + C(r)\,dr^2 + A(r)r^2\,d\Omega^2
 \end{align}
 with
@@ -10607,11 +10607,141 @@ The $tt$ equation is
 \end{empheq}
 
 
+The next step is to solve for $A(r), B(r), C(r)$. To do this we first expand them in the flat space regime, where
+\begin{align}
+&B_0(r) = 1\\
+&A_0(r) = 1\\
+&C_0(r) = 1.
+\end{align}
+To obtain higher order terms, we introduce the expansion
+\begin{align}
+&B(r) = B_0(r) + \epsilon B_1(r) + \epsilon^2 B_2(r) + \dots\\
+&C(r) = C_0(r) + \epsilon C_1(r) + \epsilon^2 C_2(r) + \dots\\
+&A(r) = A_0(r) + \epsilon A_1(r) + \epsilon^2 A_2(r) + \dots
+\end{align}
+Plugging this into the equations we just found and collecting terms of $\mathcal{O}(\epsilon), \mathcal{O}(\epsilon^2),\dots$. This allows us to solve for $B_1,A_1,C_1$, then $B_2,A_2,C_2$, and so on. At $\mathcal{O}(\epsilon)$, we define the expansions in Mathematica only up to $\mathcal{O}(\epsilon)$. (Note: there are probably other ways to do this, but I like it this way. In addition, I will stop including the code because the notebook can be downloaded via the link above. I will just include important outputs from now on. )
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{expand}
+\end{figure}
+Next, we define the $tt,rr,\theta\theta$ equations, using these new function(al)s. (Again, there's probably a more clever and more efficient way to do this, but my method works so far so I'll stick with it.)  
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{tt}
+	\includegraphics[scale=0.4]{rr}
+	\includegraphics[scale=0.4]{thth}
+\end{figure}
+Once that is done, we must define some rules for simplification. Some of these rules are for helping Mathematica simplify, but some are also important when we extract out $\mathcal{O}(\epsilon)$ terms. 
+\begin{lstlisting}
+rule12 = {Sqrt[(1 + e A1[r])^2 (1 + e B1[r]) (1 + e C1[r])] -> 1};
 
+rule13 = {Derivative[1][AA][r] -> e*Derivative[1][A1][r]};
 
+rule14 = {(AA^\[Prime]\[Prime])[r] -> e*Derivative[2][A1][r]};
 
+rule15 = {(CC^\[Prime]\[Prime])[r] -> e*Derivative[2][C1][r]};
 
+rule16 = {Derivative[1][CC][r] -> e*Derivative[1][C1][r]};
 
+rule17 = {Sqrt[(1 + e A1[r])^2 (1 + e B1[r]) (1 + e C1[r])]^(-1) -> 1};
+
+rule18 = {(1 + e A1[r])^2 (1 + e B1[r]) (1 + e C1[r]) -> 1};
+
+rule19 = {((1 + e A1[r])^2 (1 + e B1[r]) (1 + e C1[r])^2)^(-1) -> 1};
+
+rule20 = {Derivative[1][BB][r] -> e*Derivative[1][B1][r]};
+
+rule21 = {(BB^\[Prime]\[Prime])[r] -> e*Derivative[2][B1][r]};
+\end{lstlisting}
+With these rules, we proceed to collect the $\mathcal{O}(\epsilon)$ terms in each equation:
+\begin{lstlisting}
+ttSim := Coefficient[
+tt /. rule12 /. rule13 /. rule14 /. rule15 /. rule16, e] // Simplify
+
+rrSim := rr /. rule12 /. rule13 /. rule14 /. rule15 /. rule16 /. 
+rule17 /. rule18 /. rule19 /. rule20 /. rule21
+
+rrSimSim = 
+Coefficient[rrSim /. rule12 /. rule13 /. rule14 /. rule15 /. rule16, 
+e] // Simplify
+
+ththSim := 
+thth /. rule12 /. rule13 /. rule14 /. rule15 /. rule16 /. rule17 /. 
+rule18 /. rule19 /. rule20 /. rule21
+
+thSimSim = 
+Coefficient[
+ththSim /. rule12 /. rule13 /. rule14 /. rule15 /. rule16 /. 
+rule17 /. rule18 /. rule19 /. rule20 /. rule21, e] // Simplify
+\end{lstlisting}
+
+Some equations are stubborn and require multiple simplifying, but the result is quite satisfying. Here are the coefficients of $\epsilon$ in the $tt,rr,\theta\theta$ equations, respectively:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{e1}
+	\includegraphics[scale=0.4]{e2}
+	\includegraphics[scale=0.4]{e3}
+\end{figure}
+Now, these coefficients must all be zero when $A,B,C$ solve the $tt,rr,\theta\theta$ equations, so we have (in more readable symbols):
+\begin{align}
+&2(m^2r^2-1)A_1+(m^2r^2+2)C_1+2r(-3A_1'+C_1'-rA_1'')= 0\\
+&\f{-1}{2}B_1m^2+\lp \f{1}{r^2}-m^2 \rp A_1 + \f{r(A_1'+B_1')-C_1}{r^2} = 0\\
+&rA_1m^2+rB_1m^2+rC_1m^2-2A_1'-B_1'+C_1'-rA_1''-rB_1''=0
+\end{align}
+Okay. To solve for $A_1,B_1,C_1$, we start with simultaneously solving three equations algebraically for $A_1,A_1',A_1''$ in terms of $B,C$ are their derivatives. To do this, we use Mathematica's NSolve:
+\begin{lstlisting}
+NSolve[{ttSim == 0, rrSimSim == 0, thSimSim == 0}, {A1[r], 
+Derivative[1][A1][r], Derivative[2][A1][r]}] // 
+Simplify // FullSimplify
+\end{lstlisting}
+Here I'm storing the solutions in new variables for ease of access:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{AA}
+\end{figure}
+Once this is done, we write down two equations: (1) $A_1' = \p_r A_1$, and (2) $A_1''=\p_r A_1$, then proceed to algebraically solve this system for $C_1$ and $C_1'$ in terms of $B_1$ and its derivatives. I will only the include the input.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{CC}
+\end{figure}
+Finally, settings $C_1' - \p_r C_1 = 0$, we get a second-order differential equation for $B_1(r)$:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{BB}
+\end{figure}
+Of course this simplifies to 
+\begin{align}
+\boxed{-3rB_1m^2 + 6B_1' + 3rB_1'' = 0}
+\end{align}
+This can be DSolve'd easily in Mathematica:
+\begin{lstlisting}
+DSolve[-3 m^2 r B1[r] + 6 Derivative[1][B1][r] + 
+3 r (B1^\[Prime]\[Prime])[r] == 0, B1[r], r]
+\end{lstlisting}
+which says
+\begin{align}
+B_1(r) = \mathfrak{C_1}\f{e^{-mr}}{r} + \mathfrak{C_2}\f{e^{mr}}{2mr}
+\end{align}
+where $\mathfrak{C_1}$ and $\mathfrak{C_2}$ are integration constants. Now, when $m\to 0$, $B_1(r)$ must remain finite, so we rule out the other linearly independent solution. This gives 
+\begin{align}
+{B_1(r) = -\f{8GM}{3}\f{e^{-mr}}{r}}
+\end{align}
+where the integration constant has been chosen so that we agree with the solution \eqref{mass} obtained from the Green's function. \\
+
+From here, it is \textit{very easy} to get $C_1, A_1$ from $B_1$, because we already solved for these in terms of $B$ and $B,C$ respectively:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{ABC}
+\end{figure}
+\begin{empheq}[box=\widefbox]{align}
+B_1(r) &= -\f{8GM}{3}\f{e^{-mr}}{r}\\
+C_1(r) &= -\f{8GM}{3}\f{e^{-mr}}{r}\f{1+mr}{m^2r^2}\\
+A_1(r) &= \f{4GM}{3}\f{e^{-mr}}{r}\f{1+mr+m^2r^2}{m^2r^2}
+\end{empheq}
+
+So, the $\mathcal{O}(\epsilon)$ problem is done, so we move on to the $\mathcal{O}(\epsilon^2)$ problem. The procedure will be exactly the same, so I will just put the code-outputs here without saying much. Some new rules will be defined along the way to help Mathematica with simplification. Also, so as not to completely ruin the previous code for the $\mathcal{O}(\epsilon)$ problem, I will be using slightly different names for some functions. 
+
+\textit{to be continued -- Things got quite bad}
 
 
 
