@@ -49,13 +49,13 @@ def fast_convolve(n_times, support_bound):
     #Phi = Phi/(np.sqrt(2+np.sqrt(2)))
 
 
-    Phi = np.array([[0,0,complex(0,1),0,0],
-                    [0,0,complex(0,-4),0,0],
-                    [-complex(0,1)/12,-4/3,1,-4/3,-complex(0,1)/12],
-                    [0,0,complex(0,-4),0,0],
-                    [0,0,complex(0,1),0,0]])
+    Phi = np.array([[0,0,complex(0,1)/8,0,0],
+                    [0,0,complex(0,-1)/2,0,0],
+                    [0,complex(0,-1)/2,complex(0,-1),complex(0,-1)/2,0],
+                    [0,0,complex(0,-1)/2,0,0],
+                    [0,0,complex(0,1)/8,0,0]])
 
-    Phi = Phi/((-(5/3) - (37*complex(0,1))/6))
+    Phi = Phi/(-(11*complex(0,1)/4))
 
     conv_power = np.copy(Phi)
 
