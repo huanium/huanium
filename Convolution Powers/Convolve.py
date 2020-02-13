@@ -41,12 +41,22 @@ def fast_convolve(n_times, support_bound):
     #                [0, 0, 0, 0, 0]])
 
 
-    Phi = np.array([[(1+complex(0,1))/4, 1/np.sqrt(2), -(1+complex(0,1))/4],
-                    [0, 0, 0],
-                    [(1+complex(0,1))/4, -1/np.sqrt(2), -(1+complex(0,1))/4]])
+    #Phi = np.array([[(1+complex(0,1))/4, 1/np.sqrt(2), -(1+complex(0,1))/4],
+    #                [0, 0, 0],
+    #                [(1+complex(0,1))/4, -1/np.sqrt(2), -(1+complex(0,1))/4]])
 
     #Phi = Phi/(22+2*np.sqrt(3))
-    Phi = Phi/(np.sqrt(2+np.sqrt(2)))
+    #Phi = Phi/(np.sqrt(2+np.sqrt(2)))
+
+
+    Phi = np.array([[0,0,complex(0,1),0,0],
+                    [0,0,complex(0,-4),0,0],
+                    [-complex(0,1)/12,-4/3,1,-4/3,-complex(0,1)/12],
+                    [0,0,complex(0,-4),0,0],
+                    [0,0,complex(0,1),0,0]])
+
+    Phi = Phi/((-(5/3) - (37*complex(0,1))/6))
+
     conv_power = np.copy(Phi)
 
     i=0
@@ -74,7 +84,7 @@ if __name__ == '__main__':
     while True:
         start = time.time()
         n_times = int(input('Convolve how many times? '))
-        support_bound = 120 # decides how of the support is cropped
+        support_bound = 120 # decides how the support is cropped
         max_xy = 50
         
         #data = np.real(convolve(n_times))
@@ -87,8 +97,8 @@ if __name__ == '__main__':
         cropped = cropND(data,(2*s,2*s))
 
         dim = np.shape(cropped)
-        x = range((-dim[0]//2),(dim[0]//2))
-        y = range((-dim[1]//2),(dim[1]//2))
+        x = range((-dim[0]//2)+1,(dim[0]//2)+1)
+        y = range((-dim[1]//2)+1,(dim[1]//2)+1)
 
         hf = plt.figure()
         ha = hf.add_subplot(projection='3d')
