@@ -48,14 +48,24 @@ def fast_convolve(n_times, support_bound):
     #Phi = Phi/(22+2*np.sqrt(3))
     #Phi = Phi/(np.sqrt(2+np.sqrt(2)))
 
+    
+    Phi = np.zeros(shape=(9,9),dtype=np.complex_)
 
-    Phi = np.array([[0,0,complex(0,1/2),0,0],
-                    [0,0,complex(0,-2),0,0],
-                    [0,complex(0,-2),complex(4,-4),complex(0,-2),0],
-                    [0,0,complex(0,-2),0,0],
-                    [0,0,complex(0,1/2),0,0]])
+    Phi[ 0+9//2][ 0+9//2]  = complex(173/256,-7/32)
+    Phi[ 1+9//2][ 0+9//2]  = complex(1/8,1/16)      
+    Phi[-1+9//2][ 0+9//2]  = complex(1/8,1/16)      
+    Phi[ 2+9//2][ 0+9//2]  = -1/32               
+    Phi[-2+9//2][ 0+9//2]  = -1/32
+    Phi[ 0+9//2][ 1+9//2]  = complex(7/64,1/16)
+    Phi[ 0+9//2][-1+9//2]  = complex(7/64,1/16)
+    Phi[ 0+9//2][ 2+9//2]  = -complex(7/128,1/64)
+    Phi[ 0+9//2][-2+9//2]  = -complex(7/128,1/64)
+    Phi[ 0+9//2][ 3+9//2]  = 1/64
+    Phi[ 0+9//2][-3+9//2]  = 1/64
+    Phi[ 0+9//2][ 4+9//2]  = -1/512
+    Phi[ 0+9//2][-4+9//2]  = -1/512
 
-    Phi = Phi/np.sqrt(137)
+    #Phi = Phi/np.sqrt(137)
 
     conv_power = np.copy(Phi)
 
@@ -84,14 +94,14 @@ if __name__ == '__main__':
     while True:
         start = time.time()
         n_times = int(input('Convolve how many times? '))
-        support_bound = 80 # decides how the support is cropped
-        max_xy = 40
+        support_bound = 100 # decides how the support is cropped
+        max_xy = 50
         
         #data = np.real(convolve(n_times))
-        #data = np.real(fast_convolve(n_times, support_bound))
+        data = np.real(fast_convolve(n_times, support_bound))
         #print(data)
         #data = np.imag(fast_convolve(n_times, support_bound))
-        data = np.absolute(fast_convolve(n_times, support_bound))
+        #data = np.absolute(fast_convolve(n_times, support_bound))
 
         # if the support of the conv_power is too large --> keep it from -20 to 20
         s = min(np.shape(data)[0], max_xy)
