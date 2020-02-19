@@ -51,21 +51,49 @@ def fast_convolve(n_times, support_bound):
     
     Phi = np.zeros(shape=(9,9),dtype=np.complex_)
 
-    Phi[ 0+9//2][ 0+9//2]  = complex(173/256,-7/32)
-    Phi[ 1+9//2][ 0+9//2]  = complex(1/8,1/16)      
-    Phi[-1+9//2][ 0+9//2]  = complex(1/8,1/16)      
-    Phi[ 2+9//2][ 0+9//2]  = -1/32               
-    Phi[-2+9//2][ 0+9//2]  = -1/32
-    Phi[ 0+9//2][ 1+9//2]  = complex(7/64,1/16)
-    Phi[ 0+9//2][-1+9//2]  = complex(7/64,1/16)
-    Phi[ 0+9//2][ 2+9//2]  = -complex(7/128,1/64)
-    Phi[ 0+9//2][-2+9//2]  = -complex(7/128,1/64)
-    Phi[ 0+9//2][ 3+9//2]  = 1/64
-    Phi[ 0+9//2][-3+9//2]  = 1/64
-    Phi[ 0+9//2][ 4+9//2]  = -1/512
-    Phi[ 0+9//2][-4+9//2]  = -1/512
+    # Note: Phi[y][x]
 
-    #Phi = Phi/np.sqrt(137)
+    '''
+    # just Phi with monoterms, oscillatory
+    Phi[ 0+9//2][ 0+9//2]  = complex(173/256,-7/32)
+    Phi[ 0+9//2][ 1+9//2]  = complex(1/8,1/16)      
+    Phi[ 0+9//2][-1+9//2]  = complex(1/8,1/16)      
+    Phi[ 0+9//2][ 2+9//2]  = -1/32               
+    Phi[ 0+9//2][-2+9//2]  = -1/32
+    Phi[ 1+9//2][ 0+9//2]  = complex(7/64,1/16)
+    Phi[-1+9//2][ 0+9//2]  = complex(7/64,1/16)
+    Phi[ 2+9//2][ 0+9//2]  = -complex(7/128,1/64)
+    Phi[-2+9//2][ 0+9//2]  = -complex(7/128,1/64)
+    Phi[ 3+9//2][ 0+9//2]  = 1/64
+    Phi[-3+9//2][ 0+9//2]  = 1/64
+    Phi[ 4+9//2][ 0+9//2]  = -1/512
+    Phi[-4+9//2][ 0+9//2]  = -1/512
+
+    '''
+    # new Phi, with cross terms, oscillatory
+    # mono terms 
+    Phi[ 0+9//2][ 0+9//2]  = complex(301/384,-7/48)
+    Phi[ 0+9//2][ 1+9//2]  = 1/24     
+    Phi[ 0+9//2][-1+9//2]  = complex(1/6,1/24)      
+    Phi[ 0+9//2][ 2+9//2]  = -1/48               
+    Phi[ 0+9//2][-2+9//2]  = -1/48
+    Phi[ 1+9//2][ 0+9//2]  = complex(7/96,1/24)
+    Phi[-1+9//2][ 0+9//2]  = complex(7/96,1/24)
+    Phi[ 2+9//2][ 0+9//2]  = -complex(7/192,1/96)
+    Phi[-2+9//2][ 0+9//2]  = -complex(7/192,1/96)
+    Phi[ 3+9//2][ 0+9//2]  = 1/96
+    Phi[-3+9//2][ 0+9//2]  = 1/96
+    Phi[ 4+9//2][ 0+9//2]  = -1/768
+    Phi[-4+9//2][ 0+9//2]  = -1/768
+    
+    # cross terms
+    Phi[-1+9//2][-1+9//2]  =  1/24
+    Phi[ 1+9//2][-1+9//2]  =  1/24
+    Phi[ 1+9//2][ 1+9//2]  = -1/24
+    Phi[-1+9//2][ 1+9//2]  = -1/24
+
+
+
 
     conv_power = np.copy(Phi)
 
@@ -73,6 +101,10 @@ def fast_convolve(n_times, support_bound):
     while i < n_times:
         conv_power = signal.convolve2d(Phi, conv_power, 'full')
         dim_f = np.shape(conv_power)
+
+        
+
+        
         if dim_f[0] > support_bound or dim_f[0] > support_bound:
             conv_power = cropND(conv_power,(support_bound,support_bound))
         i += 1
@@ -94,8 +126,8 @@ if __name__ == '__main__':
     while True:
         start = time.time()
         n_times = int(input('Convolve how many times? '))
-        support_bound = 100 # decides how the support is cropped
-        max_xy = 50
+        support_bound = 80 # decides how the support is cropped
+        max_xy = 40
         
         #data = np.real(convolve(n_times))
         data = np.real(fast_convolve(n_times, support_bound))
