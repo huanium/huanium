@@ -54,7 +54,7 @@ def fast_convolve(n_times, support_bound):
 
     # Note: Phi[y][x]
 
-    
+    '''
     # just Phi with monoterms, oscillatory
     Phi[ 0+9//2][ 0+9//2]  = complex(173/256,-7/32)
     Phi[ 0+9//2][ 1+9//2]  = complex(1/8,1/16)      
@@ -92,7 +92,7 @@ def fast_convolve(n_times, support_bound):
     Phi[ 1+9//2][-1+9//2]  =  1/24
     Phi[ 1+9//2][ 1+9//2]  = -1/24
     Phi[-1+9//2][ 1+9//2]  = -1/24
-    '''
+    
 
 
     conv_power = np.copy(Phi)

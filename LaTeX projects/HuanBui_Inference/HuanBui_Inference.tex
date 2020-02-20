@@ -625,249 +625,6 @@ and using (a)-(c) gives us (d). \textit{Hint}: consider what distributions the n
 
 
 
-\newpage
- 
-\section{Problems}
-
-\noindent \textbf{3.6.4}
-\begin{enumerate}[(a)]
-	\item $X$ has a standard normal distribution:
-	\begin{lstlisting}
-	x=seq(-6,6,.01); plot(dnorm(x)~x)
-	\end{lstlisting}
-	\item $X$ has a $t$-distribution with 1 degree of freedom.
-	\begin{lstlisting}
-	lines(dt(x,1)~x,lty=2)
-	\end{lstlisting}
-	\item $X$ has a $t$-distribution with 3 degrees of freedom.
-	\begin{lstlisting}
-	lines(dt(x,3)~x,lty=2)
-	\end{lstlisting}
-	\item $X$ has a $t$-distribution with 10 degrees of freedom.
-	\begin{lstlisting}
-	lines(dt(x,10)~x,lty=2)
-	\end{lstlisting}
-	\item $X$ has a $t$-distribution with 30 degrees of freedom.
-	\begin{lstlisting}
-	lines(dt(x,30)~x,lty=2)
-	\end{lstlisting}
-\end{enumerate}
-
-\begin{figure}[!htb]
-	\centering
-	\subfloat[]{{\includegraphics[width=3.35cm]{364a} }}
-	\qquad
-	\subfloat[]{{\includegraphics[width=3.35cm]{364b} }}
-	\qquad
-	\subfloat[]{{\includegraphics[width=3.35cm]{364c} }}\\
-	\subfloat[]{{\includegraphics[width=4cm]{364d} }}
-	\quad
-	\subfloat[]{{\includegraphics[width=4cm]{364e} }}
-\end{figure}
-
-
-
-
-\newpage
-\noindent\textbf{3.6.5}
-\begin{enumerate}[(a)] 
-	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.046}$.
-	\begin{lstlisting}
-	> 2*(1 - pnorm(2))
-	[1] 0.04550026
-	\end{lstlisting}
-	
-	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.295}$.
-	\begin{lstlisting}
-	> 2*(1 - pt(2,1))
-	[1] 0.2951672
-	\end{lstlisting}
-	
-	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.139}$.
-	\begin{lstlisting}
-	> 2*(1 - pt(2,3))
-	[1] 0.139326
-	\end{lstlisting}
-	
-	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.073}$.
-	\begin{lstlisting}
-	> 2*(1 - pt(2,10))
-	[1] 0.07338803
-	\end{lstlisting}
-	
-	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.055}$.
-	\begin{lstlisting}
-	> 2*(1 - pt(2,30))
-	[1] 0.05462504
-	\end{lstlisting}
-\end{enumerate}
-
-
-
-
-
-
-\newpage
-\noindent\textbf{3.6.11:} Let $T = W/\sqrt{V/r}$, where the independent variables $W \sim \mathcal{N}(0,1)$ and $V \sim \chi^2(r)$. Show that $T^2\sim F(r_1 = 1, r_2 = r)$. \textit{Hint}: What is the distribution of the numerator of $T^2$?\\
-
-\noindent \textit{Solution:} Let the independent random variables $U,V$ be given, with $W\sim \N(0,1)$ and $U\sim \chi^2(r)$. The random variable $T^2$, where $T = W / \sqrt{V/r}$ is given by
-\begin{align}
-T^2 = \lp \f{W}{\sqrt{V/r}} \rp^2 = \f{W^2}{V/r}.
-\end{align}
-Because $W \sim \N(0,1)$, we have that $W^2 \sim \chi^2(1)$ (by theorem). Now, $T^2$ has the form 
-\begin{align}
-T^2 = \f{W^2}{V/r} = \f{W^2/1}{V/r}
-\end{align}
-where $1$ is the df of $\chi^2(1)$ which $W$ follows, and $r$ is the df of $\chi^2(r)$ which $U$ follows. Thus, $T^2 \sim F(1,r)$, by the definition of the $F$-distribution. \qed
-
-
-
-
-
-
-\newpage
-
-\noindent\textbf{3.6.15:} Let $X_1$, $X_2$ be iid with common distribution having the pdf 
-\begin{align}
-f(x) = \begin{cases}
-e^{-x}, \quad 0< x < \infty\\
-0, \quad \text{else}
-\end{cases}
-\end{align}
-Show that $Z = X_1/X_2$ has an $F$-distribution.\\
-
-\noindent \textit{Solution:}  It suffices to show that $Z$ can be written as a ratio of two $\chi^2$-distributed independent random variables. To this end, we can consider the mgf $M_X(t)$ of $X_1$, which is also identically that of $X_2$ since $X_1, X_2$ are iid:
-\begin{align}
-M_X(t) = E[e^{tx}] = \int^\infty_0 e^{tx}e^{-x} \,dx = (1-t)^{-1}.
-\end{align}
-However, this does not quite match the mgf for a $\chi^2(2)$. To circumvent this problem, we rewrite
-\begin{align}
-Z = \f{X_1}{X_2} =\f{2X_1/2}{2X_2/2}  = \f{(X_1+X_1)/2}{(X_2+X_2)/2},
-\end{align}
-as we expect $r=2$. Let $Y_1 = X_1 + X_1$. Then we have trivially $Y_1 =2X_1$, and so $\abs{J} = 2$. With this, $Y_1$ has the pdf 
-\begin{align}
-\tilde{f}_Y(y) = \abs{J}f(x) = 2f(x) = \begin{cases}
-2e^{-y/2}, \quad 0 < y < \infty\\
-0, \quad \Else
-\end{cases}. 
-\end{align}
-From here, we find the mgf of $Y_1$ to be 
-\begin{align}
-M_{Y_1}(t) = E[e^{ty}] = \f{1}{2}\int^\infty_{0}e^{ty}e^{-y/2}\,dy = (1-2t)^{-1} = (1-2t)^{-2/2}, t < \f{1}{2}.
-\end{align}
-By symmetry, $M_{Y_2}(t)$ is identically $M_{Y_1}(t)$, and both are the mgf for $\chi^2(r=2)$. Because each mgf uniquely determines a pdf, $Y_1, Y_2 \sim \chi^2(r=2)$ identically and independently (for each depends exclusively on $X_1$, $X_2$, respectively). Therefore, 
-\begin{align}
-Z = \f{(X_1+X_1)/2}{(X_2+X_2)/2} = \f{Y_1/2}{Y_2/2}
-\end{align}
-follows the $F$-distribution with degrees of freedom $r_1 = r_2 = 2$, by definition. \qed
-
-
-
-
-
-
-\newpage
-\noindent\textbf{3.6.16:} Let $X_1, X_2, X_3$ be independent r.v. with $X_i \sim \chi^2(r_i)$. 
-\begin{enumerate}[(a)]
-	\item Show that $Y_1 = X_1/X_2$ and $Y_2 = X_1 + X_2$ are independent and that $Y_2 \sim \chi^2(r_1 + r_2)$. 
-	
-	\item Deduce that 
-	\begin{align}
-	\f{X_1/r_1}{X_2/r_2} \text{ and } \f{X_3/r_3}{(X_1 + X_2)/(r_1 + r_2)}
-	\end{align}
-	are independent $F$-variables. 
-\end{enumerate}
-
-\noindent \textit{Solution:}  
-
-\begin{enumerate}[(a)]
-	\item We consider the transformation
-	\begin{align}
-	y_1 &= u(x_1,x_2) = \f{x_1}{x_2}\\
-	y_2 &= v(x_1,x_2) = x_1 + x_2.
-	\end{align}
-	whose inverse is 
-	\begin{align}
-	x_1 = \bar{u}(y_1, y_2) = \f{y_1y_2}{1+y_1}\nn\\
-	x_2 = \bar{v}(y_1, y_2) = \f{y_2}{1+y_1}.
-	\end{align}
-	The absolute value of the Jacobian is 
-	\begin{align}
-	\abs{J} = \abs{\det\begin{pmatrix}
-		\p_{y_1}\bar{u} & \p_{y_2}\bar{u}\\
-		\p_{y_1}\bar{v} & \p_{y_2}\bar{v}\\
-		\end{pmatrix}} = \f{y_2}{(1+y_1)^2},
-	\end{align}
-	which maps one-to-one from the space of $X_1,X_2$ $\R^+\times \R^+$ onto the space of $Y_1, Y_2$ $\R^+\times \R^+$. Since $X_1, X_2$ are independent, we consider the joint pdf of $X_1, X_2$:
-	\begin{align}
-	h(x_1, x_2) = \begin{cases}
-	\f{x_1^{r_1/2-1}x_2^{r_2/2-1}}{\Gamma(r_1/2)\Gamma(r_2/2)2^{(r_1+r_2)/2}}e^{-(x_1+x_2)/2}, \quad 0 < x_1,x_2 < \infty\\
-	0, \quad \text{else}
-	\end{cases}
-	\end{align}
-	from which we can deduce the joint pdf for $Y_1, Y_2$:
-	\begin{align}
-	\tilde{h}(y_1,y_2) &= \abs{J}h\lp \f{y_1y_2}{1+y_1}, \f{y_2}{1+y_1} \rp\nn\\
-	&= \begin{cases}
-	\f{y_2(y_1y_2)^{r_1/2-1}y_2^{r_2/2-1} (1+y_1)^{-r_1/2-r_2/2 + \cancel{ 2}}}{\cancel{(1+y_1)^2}\Gamma(r_1/2)\Gamma(r_2/2)2^{(r_1+r_2)/2}}e^{-y_2/2}, \,\, 0 < y_1,y_2 < \infty\\
-	0, \quad \text{else}
-	\end{cases}\nn\\
-	&= \begin{cases}
-	\f{y_2^{r_1/2+r_2/2-1}y_1^{r_1/2-1}(1+y_1)^{-r_1/2-r_2/2}}{\Gamma(r_1/2)\Gamma(r_2/2)2^{(r_1+r_2)/2}}e^{-y_2/2}, \,\, 0 < y_1,y_2 < \infty\\
-	0, \quad \text{else}
-	\end{cases}
-	\end{align}
-	Without further computation we see that $\tilde{h}(y_1,y_2)$ can be written as a product of two nonnegative functions of $y_1$ and $y_2$. In view of Theorem 2.4.1, $Y_1$ and $Y_2$ are independent. \qed \\
-	
-	Next, we wish to show $Y_2 \sim \chi^2(X_1, X_2)$, to which end we find the marginal pdf $g_2(y_2)$ of $Y_2$:
-	\begin{align}
-	g_2(y_2) &= \int^\infty_0 \tilde{h}(y_1,y_2)\,dy_1\nn\\
-	&= \mathfrak{C}\int^\infty_0 {y_1^{r_1/2-1}(1+y_1)^{-r_1/2-r_2/2}}\,dy_1\nn\\
-	&= \mathfrak{C}\f{\Gamma(r_1/2)\Gamma(r_2/2)}{\Gamma[(r_1+r_2)/2]}
-	\end{align}
-	where $\mathfrak{C}$ contains all the $y_1$-independent elements. From here, via simple back-substitution we obtain the marginal pdf for  $Y_2$:
-	\begin{align}
-	g_2(y_2) = \begin{cases}
-	\f{y_2^{(r_1+r_2)/2 - 1 }}{\Gamma[(r_1+r_2)/2]2^{(r_1+r_2)/2}}e^{-y_2/2}, \quad 0 < y_2 < \infty\\
-	0, \quad \Else
-	\end{cases},
-	\end{align}
-	i.e., $Y_2 \sim \chi^2(r_1 + r_2)$. \qed\\
-	
-	\textbf{Mathematica code:}
-	\begin{lstlisting}
-	In[20]:= Integrate[
-	x^(r1/2 - 1) (1 + x)^(-r1/2 - r2/2), {x, 0, Infinity}]
-	
-	Out[20]= ConditionalExpression[(Gamma[r1/2] Gamma[r2/2])/
-	Gamma[(r1 + r2)/2], Re[r2] > 0 && Re[r1] > 0]
-	\end{lstlisting}
-	
-	
-	
-	
-	
-	\item By definition, because $X_1, X_2$ are independent random variables with $X_i \sim \chi^2(r_i)$, 
-	\begin{align}
-	\Omega = \f{X_1/r_1}{X_2/r_2} \sim F(r_1, r_2).
-	\end{align}
-	Also, because $X_3 \sim \chi^2(r_3)$ and $(X_1 + X_2) \sim \chi^2(r_1 + r_2)$ (from (a)), we have
-	\begin{align}
-	\Lambda = \f{X_3/r_3}{(X_1 + X_2)/(r_1 + r_2)} \sim F(r_3, r_1 + r_2)
-	\end{align}
-	as well. Furthermore, because 
-	\begin{align}
-	&\Omega = \f{X_1/r_1}{X_2/r_2} = \f{r_2}{r_1}Y_1\\
-	&\Lambda = \f{r_1+r_2}{r_3}\f{X_3}{Y_2}
-	\end{align}
-	and because $X_1, X_2, X_3$ are independent, we have that $Y_1, Y_2, X_3$ are independent. Therefore, it is necessary that $\Omega \sim F(r_1, r_2)$ and $\Lambda \sim F(r_3, r_1 + r_2)$ are independent as well. \qed
-	
-\end{enumerate}
-
-
-
-
-
 
 
 
@@ -1363,7 +1120,279 @@ P[X\leq x] &= P[F^{-1}(U) \leq x]\nn\\
 
 
 
-\section{Problems}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+\chapter{Problems}
+
+
+\newpage
+
+\section{Problem Set 1}
+
+\noindent \textbf{3.6.4}
+\begin{enumerate}[(a)]
+	\item $X$ has a standard normal distribution:
+	\begin{lstlisting}
+	x=seq(-6,6,.01); plot(dnorm(x)~x)
+	\end{lstlisting}
+	\item $X$ has a $t$-distribution with 1 degree of freedom.
+	\begin{lstlisting}
+	lines(dt(x,1)~x,lty=2)
+	\end{lstlisting}
+	\item $X$ has a $t$-distribution with 3 degrees of freedom.
+	\begin{lstlisting}
+	lines(dt(x,3)~x,lty=2)
+	\end{lstlisting}
+	\item $X$ has a $t$-distribution with 10 degrees of freedom.
+	\begin{lstlisting}
+	lines(dt(x,10)~x,lty=2)
+	\end{lstlisting}
+	\item $X$ has a $t$-distribution with 30 degrees of freedom.
+	\begin{lstlisting}
+	lines(dt(x,30)~x,lty=2)
+	\end{lstlisting}
+\end{enumerate}
+
+\begin{figure}[!htb]
+	\centering
+	\subfloat[]{{\includegraphics[width=3.35cm]{364a} }}
+	\qquad
+	\subfloat[]{{\includegraphics[width=3.35cm]{364b} }}
+	\qquad
+	\subfloat[]{{\includegraphics[width=3.35cm]{364c} }}\\
+	\subfloat[]{{\includegraphics[width=4cm]{364d} }}
+	\quad
+	\subfloat[]{{\includegraphics[width=4cm]{364e} }}
+\end{figure}
+
+
+
+
+\newpage
+\noindent\textbf{3.6.5}
+\begin{enumerate}[(a)] 
+	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.046}$.
+	\begin{lstlisting}
+	> 2*(1 - pnorm(2))
+	[1] 0.04550026
+	\end{lstlisting}
+	
+	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.295}$.
+	\begin{lstlisting}
+	> 2*(1 - pt(2,1))
+	[1] 0.2951672
+	\end{lstlisting}
+	
+	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.139}$.
+	\begin{lstlisting}
+	> 2*(1 - pt(2,3))
+	[1] 0.139326
+	\end{lstlisting}
+	
+	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.073}$.
+	\begin{lstlisting}
+	> 2*(1 - pt(2,10))
+	[1] 0.07338803
+	\end{lstlisting}
+	
+	\item $P(\abs{X} \geq 2) = 2\times[1 - P(X \leq 2)] = \textbf{0.055}$.
+	\begin{lstlisting}
+	> 2*(1 - pt(2,30))
+	[1] 0.05462504
+	\end{lstlisting}
+\end{enumerate}
+
+
+
+
+
+
+\newpage
+\noindent\textbf{3.6.11:} Let $T = W/\sqrt{V/r}$, where the independent variables $W \sim \mathcal{N}(0,1)$ and $V \sim \chi^2(r)$. Show that $T^2\sim F(r_1 = 1, r_2 = r)$. \textit{Hint}: What is the distribution of the numerator of $T^2$?\\
+
+\noindent \textit{Solution:} Let the independent random variables $U,V$ be given, with $W\sim \N(0,1)$ and $U\sim \chi^2(r)$. The random variable $T^2$, where $T = W / \sqrt{V/r}$ is given by
+\begin{align}
+T^2 = \lp \f{W}{\sqrt{V/r}} \rp^2 = \f{W^2}{V/r}.
+\end{align}
+Because $W \sim \N(0,1)$, we have that $W^2 \sim \chi^2(1)$ (by theorem). Now, $T^2$ has the form 
+\begin{align}
+T^2 = \f{W^2}{V/r} = \f{W^2/1}{V/r}
+\end{align}
+where $1$ is the df of $\chi^2(1)$ which $W$ follows, and $r$ is the df of $\chi^2(r)$ which $U$ follows. Thus, $T^2 \sim F(1,r)$, by the definition of the $F$-distribution. \qed
+
+
+
+
+
+
+\newpage
+
+\noindent\textbf{3.6.15:} Let $X_1$, $X_2$ be iid with common distribution having the pdf 
+\begin{align}
+f(x) = \begin{cases}
+e^{-x}, \quad 0< x < \infty\\
+0, \quad \text{else}
+\end{cases}
+\end{align}
+Show that $Z = X_1/X_2$ has an $F$-distribution.\\
+
+\noindent \textit{Solution:}  It suffices to show that $Z$ can be written as a ratio of two $\chi^2$-distributed independent random variables. To this end, we can consider the mgf $M_X(t)$ of $X_1$, which is also identically that of $X_2$ since $X_1, X_2$ are iid:
+\begin{align}
+M_X(t) = E[e^{tx}] = \int^\infty_0 e^{tx}e^{-x} \,dx = (1-t)^{-1}.
+\end{align}
+However, this does not quite match the mgf for a $\chi^2(2)$. To circumvent this problem, we rewrite
+\begin{align}
+Z = \f{X_1}{X_2} =\f{2X_1/2}{2X_2/2}  = \f{(X_1+X_1)/2}{(X_2+X_2)/2},
+\end{align}
+as we expect $r=2$. Let $Y_1 = X_1 + X_1$. Then we have trivially $Y_1 =2X_1$, and so $\abs{J} = 2$. With this, $Y_1$ has the pdf 
+\begin{align}
+\tilde{f}_Y(y) = \abs{J}f(x) = 2f(x) = \begin{cases}
+2e^{-y/2}, \quad 0 < y < \infty\\
+0, \quad \Else
+\end{cases}. 
+\end{align}
+From here, we find the mgf of $Y_1$ to be 
+\begin{align}
+M_{Y_1}(t) = E[e^{ty}] = \f{1}{2}\int^\infty_{0}e^{ty}e^{-y/2}\,dy = (1-2t)^{-1} = (1-2t)^{-2/2}, t < \f{1}{2}.
+\end{align}
+By symmetry, $M_{Y_2}(t)$ is identically $M_{Y_1}(t)$, and both are the mgf for $\chi^2(r=2)$. Because each mgf uniquely determines a pdf, $Y_1, Y_2 \sim \chi^2(r=2)$ identically and independently (for each depends exclusively on $X_1$, $X_2$, respectively). Therefore, 
+\begin{align}
+Z = \f{(X_1+X_1)/2}{(X_2+X_2)/2} = \f{Y_1/2}{Y_2/2}
+\end{align}
+follows the $F$-distribution with degrees of freedom $r_1 = r_2 = 2$, by definition. \qed
+
+
+
+
+
+
+\newpage
+\noindent\textbf{3.6.16:} Let $X_1, X_2, X_3$ be independent r.v. with $X_i \sim \chi^2(r_i)$. 
+\begin{enumerate}[(a)]
+	\item Show that $Y_1 = X_1/X_2$ and $Y_2 = X_1 + X_2$ are independent and that $Y_2 \sim \chi^2(r_1 + r_2)$. 
+	
+	\item Deduce that 
+	\begin{align}
+	\f{X_1/r_1}{X_2/r_2} \text{ and } \f{X_3/r_3}{(X_1 + X_2)/(r_1 + r_2)}
+	\end{align}
+	are independent $F$-variables. 
+\end{enumerate}
+
+\noindent \textit{Solution:}  
+
+\begin{enumerate}[(a)]
+	\item We consider the transformation
+	\begin{align}
+	y_1 &= u(x_1,x_2) = \f{x_1}{x_2}\\
+	y_2 &= v(x_1,x_2) = x_1 + x_2.
+	\end{align}
+	whose inverse is 
+	\begin{align}
+	x_1 = \bar{u}(y_1, y_2) = \f{y_1y_2}{1+y_1}\nn\\
+	x_2 = \bar{v}(y_1, y_2) = \f{y_2}{1+y_1}.
+	\end{align}
+	The absolute value of the Jacobian is 
+	\begin{align}
+	\abs{J} = \abs{\det\begin{pmatrix}
+		\p_{y_1}\bar{u} & \p_{y_2}\bar{u}\\
+		\p_{y_1}\bar{v} & \p_{y_2}\bar{v}\\
+		\end{pmatrix}} = \f{y_2}{(1+y_1)^2},
+	\end{align}
+	which maps one-to-one from the space of $X_1,X_2$ $\R^+\times \R^+$ onto the space of $Y_1, Y_2$ $\R^+\times \R^+$. Since $X_1, X_2$ are independent, we consider the joint pdf of $X_1, X_2$:
+	\begin{align}
+	h(x_1, x_2) = \begin{cases}
+	\f{x_1^{r_1/2-1}x_2^{r_2/2-1}}{\Gamma(r_1/2)\Gamma(r_2/2)2^{(r_1+r_2)/2}}e^{-(x_1+x_2)/2}, \quad 0 < x_1,x_2 < \infty\\
+	0, \quad \text{else}
+	\end{cases}
+	\end{align}
+	from which we can deduce the joint pdf for $Y_1, Y_2$:
+	\begin{align}
+	\tilde{h}(y_1,y_2) &= \abs{J}h\lp \f{y_1y_2}{1+y_1}, \f{y_2}{1+y_1} \rp\nn\\
+	&= \begin{cases}
+	\f{y_2(y_1y_2)^{r_1/2-1}y_2^{r_2/2-1} (1+y_1)^{-r_1/2-r_2/2 + \cancel{ 2}}}{\cancel{(1+y_1)^2}\Gamma(r_1/2)\Gamma(r_2/2)2^{(r_1+r_2)/2}}e^{-y_2/2}, \,\, 0 < y_1,y_2 < \infty\\
+	0, \quad \text{else}
+	\end{cases}\nn\\
+	&= \begin{cases}
+	\f{y_2^{r_1/2+r_2/2-1}y_1^{r_1/2-1}(1+y_1)^{-r_1/2-r_2/2}}{\Gamma(r_1/2)\Gamma(r_2/2)2^{(r_1+r_2)/2}}e^{-y_2/2}, \,\, 0 < y_1,y_2 < \infty\\
+	0, \quad \text{else}
+	\end{cases}
+	\end{align}
+	Without further computation we see that $\tilde{h}(y_1,y_2)$ can be written as a product of two nonnegative functions of $y_1$ and $y_2$. In view of Theorem 2.4.1, $Y_1$ and $Y_2$ are independent. \qed \\
+	
+	Next, we wish to show $Y_2 \sim \chi^2(X_1, X_2)$, to which end we find the marginal pdf $g_2(y_2)$ of $Y_2$:
+	\begin{align}
+	g_2(y_2) &= \int^\infty_0 \tilde{h}(y_1,y_2)\,dy_1\nn\\
+	&= \mathfrak{C}\int^\infty_0 {y_1^{r_1/2-1}(1+y_1)^{-r_1/2-r_2/2}}\,dy_1\nn\\
+	&= \mathfrak{C}\f{\Gamma(r_1/2)\Gamma(r_2/2)}{\Gamma[(r_1+r_2)/2]}
+	\end{align}
+	where $\mathfrak{C}$ contains all the $y_1$-independent elements. From here, via simple back-substitution we obtain the marginal pdf for  $Y_2$:
+	\begin{align}
+	g_2(y_2) = \begin{cases}
+	\f{y_2^{(r_1+r_2)/2 - 1 }}{\Gamma[(r_1+r_2)/2]2^{(r_1+r_2)/2}}e^{-y_2/2}, \quad 0 < y_2 < \infty\\
+	0, \quad \Else
+	\end{cases},
+	\end{align}
+	i.e., $Y_2 \sim \chi^2(r_1 + r_2)$. \qed\\
+	
+	\textbf{Mathematica code:}
+	\begin{lstlisting}
+	In[20]:= Integrate[
+	x^(r1/2 - 1) (1 + x)^(-r1/2 - r2/2), {x, 0, Infinity}]
+	
+	Out[20]= ConditionalExpression[(Gamma[r1/2] Gamma[r2/2])/
+	Gamma[(r1 + r2)/2], Re[r2] > 0 && Re[r1] > 0]
+	\end{lstlisting}
+	
+	
+	
+	
+	
+	\item By definition, because $X_1, X_2$ are independent random variables with $X_i \sim \chi^2(r_i)$, 
+	\begin{align}
+	\Omega = \f{X_1/r_1}{X_2/r_2} \sim F(r_1, r_2).
+	\end{align}
+	Also, because $X_3 \sim \chi^2(r_3)$ and $(X_1 + X_2) \sim \chi^2(r_1 + r_2)$ (from (a)), we have
+	\begin{align}
+	\Lambda = \f{X_3/r_3}{(X_1 + X_2)/(r_1 + r_2)} \sim F(r_3, r_1 + r_2)
+	\end{align}
+	as well. Furthermore, because 
+	\begin{align}
+	&\Omega = \f{X_1/r_1}{X_2/r_2} = \f{r_2}{r_1}Y_1\\
+	&\Lambda = \f{r_1+r_2}{r_3}\f{X_3}{Y_2}
+	\end{align}
+	and because $X_1, X_2, X_3$ are independent, we have that $Y_1, Y_2, X_3$ are independent. Therefore, it is necessary that $\Omega \sim F(r_1, r_2)$ and $\Lambda \sim F(r_3, r_1 + r_2)$ are independent as well. \qed
+	
+\end{enumerate}
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
 \textbf{4.1.1} Twenty motors were put on test under a high-temperature setting. The
 lifetimes in hours of the motors under these conditions are given below. Also, the
 data are in the file \textbf{lifetimemotor.rda} at the site listed in the Preface. Suppose
@@ -1397,7 +1426,7 @@ distribution.\\
 	\begin{lstlisting}
 	> lines(density(y))
 	> y <- c(1,4,5,21,22,28,40,42,51,53,58,67,
-			95,124,124,160,202,260,303,363)
+	95,124,124,160,202,260,303,363)
 	> hist(y,pr=T)
 	> lines(density(y))
 	\end{lstlisting}
@@ -1485,7 +1514,7 @@ and 10:00 a.m. for 10 days results in the values\\
 	
 	\item Based on these data, obtain the realization of your estimator in part (a).
 	Explain the meaning of this estimate in terms of the number of customers.
-
+	
 \end{enumerate}
 
 
@@ -1580,6 +1609,239 @@ N[Sum[P[y], {y, 6, Infinity}]]
 
 0.0218705
 \end{lstlisting}
+
+
+
+
+
+
+\newpage
+
+\section{Problem Set 2}
+
+
+
+
+\noindent \textbf{4.2.2.} Consider the data on the lifetimes of motors given in Exercise 4.1.1. Obtain
+a large sample 95\% confidence interval for the mean lifetime of a motor.\\
+
+\noindent \textit{Solution:} 
+
+
+
+
+\newpage
+\noindent\textbf{4.2.6.} $\overline{X}$ is the sample mean of a sample of size $n$ from $\N(\mu,9)$. Find $n$ such that 
+\begin{align}
+P(\bar{X}-1\leq n \leq \bar{X}+1) = 0.90
+\end{align}
+
+\noindent \textit{Solution:} 
+
+
+
+\newpage
+\noindent\textbf{4.2.18.} $X_i$'s $\sim \N(\mu,\sigma^2)$, with $\mu,\sigma^2$ unknown. A confidence interval for $\sigma^2$ can be found as follows.
+We know that $(n−1)S^2/\sigma^2$ is a random variable with a $\chi^2(n−1)$ distribution. Thus
+we can find constants $a$ and $b$ so that $P((n − 1)S^2/σ\sigma^2 < b)=0.975$ and $P(a <
+(n − 1)S^2/\sigma^2 < b)=0.95$. In R, $b = qchisq(0.975,n-1)$, while $a = qchisq(0.025,n-1).$
+
+
+\begin{enumerate}[(a)]
+	\item Show that this second probability statement can be written as
+	\begin{align}
+	P((n − 1)S^2/b < \sigma^2 < (n − 1)S^2/a)=0.95.
+	\end{align}
+	\item If $n = 9$ and $S^2 = 7.93$, find a 95\% confidence interval for $\sigma^2$.
+	\item If $\mu$ is known, how would you modify the preceding procedure for finding a
+	confidence interval for $\sigma^2$?
+\end{enumerate}
+
+
+\noindent \textit{Solution:}
+
+\begin{enumerate}[(a)]
+	\item 
+\end{enumerate}
+
+
+
+
+ 
+\newpage
+\noindent\textbf{4.2.21.} Let two independent random samples, each of size 10, from two normal
+distributions $\N(\mu_1, \sigma^2)$ and $\N(\mu_2, \sigma^2)$ yield $x = 4.8, s^2_1 = 8.64, y = 5.6, s^2_2 = 7.88$. Find a 95\% confidence interval for $\mu_1 − \mu_2$.\\
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent\textbf{4.2.22.} Let two independent random variables, $Y_1$ and $Y_2$, with binomial distributions that have parameters $n_1 = n_2 = 100$, $p_1$, and $p_2$, respectively, be observed
+to be equal to $y_1 = 50$ and $y_2 = 40$. Determine an approximate 90\% confidence
+interval for $p_1 − p_2$.\\
+
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent\textbf{4.2.27.} Let $X_1, X_2,\dots,X_n$ and $Y_1, Y_2,\dots,Y_m$ be two independent random samples
+from the respective normal distributions $\N(\mu_1, \sigma^2_1)$ and $\N(\mu_2, \sigma^2_2)$, where the four
+parameters are unknown. To construct a confidence interval for the ratio, $\sigma^2_1/\sigma^2_2$, of
+the variances, form the quotient of the two independent χ2 variables, each divided
+by its degrees of freedom, namely,
+\begin{align}
+F = \f{\f{(m-1)S_2^2}{\sigma^2_2}/(m-1)}{\f{(n-1)S_1^2}{\sigma^2_1}/(n-1)} = \f{S_2^2/\sigma_2^2}{S_1^2/\sigma_1^2}
+\end{align}
+where $S_1^2, S_2^2$ are respectively sample variances. 
+
+\begin{enumerate}
+	\item What kind of distribution does $F$ have?
+	\item Rewrite the second probability statement as
+	\begin{align}
+	P \lb a\f{S_1^2}{S_2^2} < \f{\sigma_1^2}{\sigma_2^2} < b \f{S_1^2}{S^2_2} \rb = 0.95.
+	\end{align}
+	The observed values, $s^2_1$ and $s_2^2$, can be inserted in these inequalities to provide
+	a 95\% confidence interval for $\sigma^2_1/σ^2_2$. 
+\end{enumerate}
+
+
+
+
+
+\noindent \textit{Solution:} 
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent\textbf{4.5.1.} Show that the approximate power function given in expression (4.5.12) of
+Example 4.5.3 is a strictly increasing function of $\mu$. Show then that the test discussed
+in this example has approximate size $\alpha$ for testing
+\begin{align}
+H_0: \mu \leq \mu_0\quad \text{versus} \quad H_1: \mu > \mu_0.
+\end{align}
+
+
+\noindent \textit{Solution:} 
+
+
+
+\newpage
+\noindent\textbf{4.5.2.} For the Darwin data tabled in Example 4.5.5, verify that the Student t-test
+statistic is 2.15. \\
+
+
+\noindent \textit{Solution:} 
+
+
+
+
+\newpage
+\noindent\textbf{4.5.5.} Let X1, X2 be a random sample of size n = 2 from the distribution having
+pdf f(x; θ) = (1/θ)e−x/θ, 0 <x< ∞, zero elsewhere. We reject H0 : θ = 2 and
+accept H1 : θ = 1 if the observed values of X1, X2, say x1, x2, are such that
+\begin{align}
+\f{f(x_1;2)f(x_2;2)}{f(x_1;1)f(x_2;1)} \leq \f{1}{2}
+\end{align}
+
+
+
+Here $\Omega = \{θ : θ = 1, 2\}$. Find the significance level of the test and the power of the
+test when $H_0$ is false.\\
+
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent\textbf{4.5.12.} Let $X_1, X_2,\dots,X_8$ be a random sample of size $n = 8$ from a Poisson
+distribution with mean $\mu$. Reject the simple null hypothesis $H_0 : \mu = 0.5$ and
+accept $H_1 : \mu > 0.5$ if the observed $\sum^8_{i=1} x_i \geq 8.$
+\begin{enumerate}[(a)]
+	\item Show that the significance level is \texttt{1-ppois(7,8*.5).}
+	\item Use R to determine $\gamma(0.75)$, $\gamma(1)$, and $\gamma(1.25)$.
+	\item Modify the code in Exercise 4.5.9 to obtain a plot of the power function.
+\end{enumerate}
+
+
+\noindent \textit{Solution:} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{4.6.4.} (Note that it is fine to make a heuristic argument here. Just make sure that it is clear with
+supporting graphs/figures (hand drawn is fine).) Consider the one-sided t-test for $H_0 : \mu = \mu_0$ versus $H_{A1} : \mu>\mu_0$ constructed in Example 4.5.4 and the two-sided t-test for t-test for $H_0 : \mu = \mu_0$ versus
+$H_1 : \mu = \mu_0$ given in (4.6.9). Assume that both tests are of size $\alpha$. Show that for
+$\mu>\mu_0$, the power function of the one-sided test is larger than the power function of the two-sided test.\\
+
+
+\noindent \textit{Solution:} 
+
+
+
+\newpage
+\textbf{4.6.7.} Among the data collected for the World Health Organization air quality
+monitoring project is a measure of suspended particles in $\mu$g/m$^3$. Let $X$ and $Y$ equal
+the concentration of suspended particles in $\mu$g/m$^3$ in the city center (commercial
+district) for Melbourne and Houston, respectively. Using $n = 13$ observations of $X$
+and $m = 16$ observations of $Y$ , we test $H_0 : \mu_X = \mu_Y$ against $H_1 : \mu_X < \mu_Y$.
+
+\begin{enumerate}[(a)]
+	\item Define the test statistic and critical region, assuming that the unknown variances are equal. Let $\al = 0.05$.
+	\item If $\bar{x} = 72.9$, $s_x = 25.6$, $y = 81.7$, and $s_y = 28.3$, calculate the value of the
+	test statistic and state your conclusion.
+\end{enumerate}
+
+
+\noindent \textit{Solution:}
+\begin{enumerate}[(a)]
+	\item 
+\end{enumerate}
+
+\newpage
+\textbf{4.6.8.} Let $p$ equal the proportion of drivers who use a seat belt in a country that
+does not have a mandatory seat belt law. It was claimed that $p = 0.14$. An
+advertising campaign was conducted to increase this proportion. Two months after
+the campaign, $y = 104$ out of a random sample of $n = 590$ drivers were wearing
+their seat belts. Was the campaign successful?
+\begin{enumerate}
+	\item Define the null and alternative hypotheses.
+	\item Define a critical region with an $\al = 0.01$ significance level.
+	\item Determine the approximate $p$-value and state your conclusion.
+\end{enumerate}
+
+
+\noindent \textit{Solution:}
+\begin{enumerate}[(a)]
+	\item 
+\end{enumerate}
+
+
+
+
+\newpage
+
 
 
 

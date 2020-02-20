@@ -11,8 +11,9 @@
 \usepackage{esint}
 \usepackage[makeroom]{cancel}
 \usepackage{dsfont}
-\usepackage{centernot}
 \usepackage{mathtools}
+\usepackage{blkarray, bigstrut}
+\usepackage{centernot}
 \usepackage{bigints}
 \usepackage{amsthm}
 \theoremstyle{definition}
@@ -92,6 +93,8 @@
 \newcommand{\had}{\mathbf{H}}
 \newcommand{\Y}{\mathbf{Y}}
 %\setcounter{chapter}{-1}
+
+
 
 
 \makeatletter
@@ -1090,7 +1093,8 @@ complexity of the algorithm was $N^2$ vs. $N \log N$, where for those problems $
 of elements that be sorted or the number of points in a time-series. With the algorithmic
 change of scaling with $N$ the difference in number of operations becomes huge as $N$ gets
 large, but both $N^2$ and $N \log N$ are polynomial in $N$ and the solution is considered \textit{efficiently
-computable} with either algorithm.\\
+computable} with either algorithm.
+\\
 
 To think more about what is meant by not being efficiently computable, you will now consider
 the goal of finding prime factors of a (large) composite number. The basic idea of finding
@@ -1171,7 +1175,8 @@ have two inputs and only one output so you can’t recreate their inputs knowing
 	\end{figure}
 	Show by creating the truth table that the CNOT gate is reversible - that you can find
 	the inputs if you know the outputs. In fact, you can show that CNOT is its own inverse.
-	To do this you will ``prove'' the identity $a \oplus (a \oplus b) = b$.
+	To do this you will ``prove'' the identity $a \oplus (a \oplus b) = b$.
+
 	
 	\item \textit{Toffoli Gate}. While the CNOT gate is reversible, it is not universal. That is, you cannot
 	implement every possible logic operation with the CNOT. The NAND gate is actually
@@ -1259,7 +1264,8 @@ have two inputs and only one output so you can’t recreate their inputs knowing
 
 \newpage
 \noindent \textbf{3.} In Section 1.4, Mermin defines several 1-Cbit operations that do not correspond to any physical operation but which can be useful in deriving relationships between operations that do
-have a physical meaning. The first two of these operators are the ``projection operators.'' 
+have a physical meaning. The first two of these operators are the ``projection operators.'' 
+
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.3]{proj}
@@ -1430,6 +1436,307 @@ where $\X$ is the ``bit-flip'' (NOT) operator. Both $\mathbf{Z}$ and $\had$ will
 	\end{align}
 \end{enumerate}
 \qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\section{Problem set 2}
+
+
+
+\noindent \textbf{1.} Compute, using the matrix representations of the operators and probability-vector states, the result of applying a Hadamard transofmr to both bits of a two-Cbit state $\ket{ba} = \ket{b}\ket{a} = \ket{b}\otimes \ket{a}$ first by creating the tensor product of the two vectors $\had \ket{b}\otimes \had\ket{a}$ and second by creating the tensor product of the Hadamard operators $\had_1 \had_0 = \had \otimes \had$ and applying it to the state $\ket{b}\ket{a}$.\\
+
+
+
+\noindent \textit{Solution:} The tensor product works the way we want it to work:
+\begin{align}\label{first}
+\had \ket{b} \otimes \had\ket{a} &= \f{1}{\sqrt{2}}\begin{pmatrix}
+1 & 1 \\ 1 & -1
+\end{pmatrix}\begin{pmatrix}
+b_0 \\ b_1
+\end{pmatrix}  \otimes \f{1}{\sqrt{2}}\begin{pmatrix}
+1 & 1 \\ 1 & -1
+\end{pmatrix}\begin{pmatrix}
+a_0 \\ a_1
+\end{pmatrix}  \nn\\
+&= \f{1}{\sqrt{2}} \begin{pmatrix}
+b_0 + b_1 \\ b_0 - b_1
+\end{pmatrix} \otimes \f{1}{\sqrt{2}}\begin{pmatrix}
+a_0 + a_1 \\ a_0 - a_1
+\end{pmatrix} \nn\\
+&= \f{1}{\sqrt{2}}\lb (b_0+b_1)\ket{0} + (b_0 - b_1)\ket{1} \rb \otimes \f{1}{\sqrt{2}}\lb (a_0+a_1)\ket{0} + (a_0 - a_1)\ket{1} \rb \nn\\
+&= \f{1}{2}\lb (b_0+b_1)(a_0+a_1)\ket{00} + (b_0-b_1)(a_0+a_1)\ket{10}\right. \nn\\
+&\left.\quad + (b_0+b_1)(a_0-a_1)\ket{01} + (b_0-b_1)(a_0-a_1)\ket{11} \rb.
+\end{align}
+
+\begin{align}\label{second}
+(\had\otimes \had)\ket{ba} &= 
+\f{1}{\sqrt{2}}\begin{pmatrix}
+\f{1}{\sqrt{2}}\begin{pmatrix}
+1 & 1 \\ 1 & -1
+\end{pmatrix} & \f{1}{\sqrt{2}}\begin{pmatrix}
+1 & 1 \\ 1 & -1
+\end{pmatrix}\\
+\f{1}{\sqrt{2}}\begin{pmatrix}
+1 & 1 \\ 1 & -1
+\end{pmatrix} & -\f{1}{\sqrt{2}}\begin{pmatrix}
+1 & 1 \\ 1 & -1
+\end{pmatrix}
+\end{pmatrix}\begin{pmatrix}
+b_0\begin{pmatrix}
+a_0\\a_1
+\end{pmatrix}\\
+b_1\begin{pmatrix}
+a_0\\a_1
+\end{pmatrix}
+\end{pmatrix} \nn\\
+&= \f{1}{2}\begin{pmatrix}
+1&1&1&1\\
+1&-1&1&-1\\
+1&1&-1&-1\\
+1&-1&-1&1
+\end{pmatrix}\begin{pmatrix}
+b_0a_0\\b_0a_1\\b_1a_0\\b_1a_1
+\end{pmatrix}\nn\\
+&= \dots \text{(multiply in and factor)}\nn\\
+&= \f{1}{2}\lb (b_0+b_1)(a_0+a_1)\ket{00} + (b_0-b_1)(a_0+a_1)\ket{10}\right. \nn\\
+&\left.\quad + (b_0+b_1)(a_0-a_1)\ket{01} + (b_0-b_1)(a_0-a_1)\ket{11} \rb.
+\end{align}
+From Eq. \eqref{first} and \eqref{second}, 
+\begin{align}
+\boxed{\had \ket{b}\otimes \had \ket{a} = (\had\otimes \had)\ket{ba}}
+\end{align}\qed
+
+
+
+
+\newpage
+
+
+\noindent \textbf{2.} Writing out the matrix representations, show that Mermin's identity $\mathbf{S}_{ij} = \mathbf{C}_{ij}\mathbf{C}_{ji}\mathbf{C}_{ij}$ is true for $\mathbf{S}_{ij}$.\\
+
+
+
+\noindent \textit{Solution:} Let $i=0,j=1$, then 
+\begin{align}
+\mathbf{C}_{01}\mathbf{C}_{10}\mathbf{C}_{01} &= \begin{pmatrix}
+1 &&&\\&&&1\\&&1&\\&1&&
+\end{pmatrix}
+\begin{pmatrix}
+1&&&\\&1&&\\&&&1\\&&1&
+\end{pmatrix}
+\begin{pmatrix}
+1 &&&\\&&&1\\&&1&\\&1&&
+\end{pmatrix}\nn\\
+&= \begin{pmatrix}
+1 &&&\\&&&1\\&&1&\\&1&&
+\end{pmatrix}
+\begin{pmatrix}
+1 &&&\\&&&1\\&1&&\\&&1&
+\end{pmatrix}\nn\\
+&= \begin{pmatrix}
+1&&&\\&&1&\\&1&&\\&&&1
+\end{pmatrix}\nn\\
+&= \mathbf{S}_{10} = \mathbf{S}_{01}.
+\end{align}
+Let $i=1,j=0$, then
+\begin{align}
+\mathbf{C}_{10}\mathbf{C}_{01}\mathbf{C}_{01} &=
+\begin{pmatrix}
+1&&&\\&1&&\\&&&1\\&&1&
+\end{pmatrix} \begin{pmatrix}
+1 &&&\\&&&1\\&&1&\\&1&&
+\end{pmatrix}
+\begin{pmatrix}
+1&&&\\&1&&\\&&&1\\&&1&
+\end{pmatrix}\nn\\
+&= \begin{pmatrix}
+1&&&\\&1&&\\&&&1\\&&1&
+\end{pmatrix}\begin{pmatrix}
+1&&&\\&&&1\\&1&&\\&&1&
+\end{pmatrix} \nn\\
+&= \begin{pmatrix}
+1&&&\\&&1&\\&1&&\\&&&1
+\end{pmatrix}\nn\\
+&=\mathbf{S}_{10} = \mathbf{S}_{01}.
+\end{align}\qed
+
+
+\newpage
+
+
+
+
+\noindent \textbf{3.} Show, using matrix operations, that surrounding a CNOT with two Hadamard gates switches the role of the control-bit and target bit. Specifically, using the matrices show that $\mathbf{C}_{10} = (\had_0 \had_1)\mathbf{C}_{01}(\had_0\had_1)$, or formally that 
+\begin{align}
+\mathbf{C}_{10} = (\had \otimes \had) \mathbf{C}_{01} (\had \otimes \had).
+\end{align}
+This will demonstrate a special case  of 
+\begin{align}
+\mathbf{C}_{ji} = (\had_j \had_i) \mathbf{C}_{ij} (\had_i \had_j).
+\end{align}
+
+
+
+\noindent \textit{Solution:} 
+\begin{align}
+(\had \otimes \had) \mathbf{C}_{01} (\had \otimes \had) &=  \f{1}{4}\begin{pmatrix}
+1&1&1&1\\
+1&-1&1&-1\\
+1&1&-1&-1\\
+1&-1&-1&1
+\end{pmatrix}\begin{pmatrix}
+1 &&&\\&&&1\\&&1&\\&1&&
+\end{pmatrix}\begin{pmatrix}
+1&1&1&1\\
+1&-1&1&-1\\
+1&1&-1&-1\\
+1&-1&-1&1
+\end{pmatrix}\nn\\
+&= \f{1}{4}\begin{pmatrix}
+1&1&1&1\\
+1&-1&1&-1\\
+1&1&-1&-1\\
+1&-1&-1&1
+\end{pmatrix}\begin{pmatrix}
+1& 1& 1& 1\\
+1& -1& -1& 1\\
+1& 1& -1& -1\\
+1& -1& 1& -1
+\end{pmatrix}\nn\\
+&= \f{1}{4}\begin{pmatrix}
+1&&&\\&1&&\\&&&1\\&&1&
+\end{pmatrix} \nn\\
+&= \mathbf{C}_{10}
+\end{align}
+
+Conversely,
+\begin{align}
+(\had \otimes \had) \mathbf{C}_{10} (\had \otimes \had) &=  \f{1}{4}\begin{pmatrix}
+1&1&1&1\\
+1&-1&1&-1\\
+1&1&-1&-1\\
+1&-1&-1&1
+\end{pmatrix}\begin{pmatrix}
+1 &&&\\&1&&\\&&&1\\&&1&
+\end{pmatrix}\begin{pmatrix}
+1&1&1&1\\
+1&-1&1&-1\\
+1&1&-1&-1\\
+1&-1&-1&1
+\end{pmatrix}\nn\\
+&= \f{1}{4}\begin{pmatrix}
+1&1&1&1\\
+1&-1&1&-1\\
+1&1&-1&-1\\
+1&-1&-1&1
+\end{pmatrix}\begin{pmatrix}
+1& 1& 1& 1\\
+1& -1& 1& -1\\
+1& -1& -1& 1\\
+1& 1& -1& -1
+\end{pmatrix}\nn\\
+&= \f{1}{4}\begin{pmatrix}
+1&&&\\&&&1\\&&1&\\&1&&
+\end{pmatrix} \nn\\
+&= \mathbf{C}_{01}
+\end{align}
+
+
+
+\newpage
+
+
+
+\noindent \textbf{4.} Following the examples in class of determining the matrices for the ``conditional operations'' $\mathbf{S}_{01} = \mathbf{S}_{10}, \mathbf{C}_{01}, \mathbf{C}_{10}, \mathbf{T}_{210}$ determine the $8\times 8$ matrix that represents the Toffoli gate $\mathbf{T}_{012}$, which uses Cbits 0 and 1 as the control bits and Cbits 2 as the target bit. 
+\begin{align}
+\mathbf{T}_{012}\ket{c}\ket{b}\ket{a} = \ket{c\oplus (a\land b)}\ket{b}\ket{a}.
+\end{align}
+
+
+
+\noindent \textit{Solution:} Truth table for $\mathbf{T}_{012}$:\\
+	
+	
+\begin{tabular}{| c  c  c  c| c c c| }
+	\hline
+	$c$ & $b$ & $a$ & $(a\land b)$ & $c\oplus(a\land b)$ & $b$&  $a$ \\
+	\hline
+	0&0&0&0&0&0&0\\
+	0&0&1&0&0&0&1\\
+	0&1&0&0&0&1&0\\
+	0&1&1&1&1&1&1\\
+	1&0&0&0&1&0&0\\
+	1&0&1&0&1&0&1\\
+	1&1&0&0&1&1&0\\
+	1&1&1&1&0&1&1\\
+	\hline
+\end{tabular}\\
+
+
+
+
+We see that $\mathbf{T}_{012}$ acts as identity for all states except for some cases:
+\begin{align}
+&\mathbf{T}_{012}\ket{011} = \ket{111}\\
+&\mathbf{T}_{012}\ket{111} = \ket{011},
+\end{align}
+as expected. These correspond to two off-diagonal indices in the matrix for $\mathbf{T}_{012}$. Based on the $\mathbf{T}_{210}$ matrix:
+\begin{align}
+\begin{blockarray}{ccccccccc}
+\ket{000} & \ket{001} & \ket{010} & \ket{011} & \ket{100} & \ket{101}& \ket{110} & \ket{111} \\
+\begin{block}{(cccccccc)c}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \ket{000} \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & \ket{001} \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \ket{010} \\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & \ket{011} \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & \ket{100} \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & \ket{101} \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \ket{110} \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & \ket{111} \\
+\end{block}
+\end{blockarray}
+\end{align}
+
+By analogy, the matrix for $\mathbf{T}_{012}$ is:
+\begin{align}
+\begin{blockarray}{ccccccccc}
+\ket{000} & \ket{001} & \ket{010} & \ket{011} & \ket{100} & \ket{101}& \ket{110} & \ket{111} \\
+\begin{block}{(cccccccc)c}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \ket{000} \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & \ket{001} \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \ket{010} \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \ket{011} \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & \ket{100} \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & \ket{101} \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & \ket{110} \\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & \ket{111} \\
+\end{block}
+\end{blockarray}
+\end{align}
 
 
 
