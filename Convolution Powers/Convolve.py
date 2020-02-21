@@ -34,7 +34,7 @@ def convolve(n_times):
 
 
 
-def fast_convolve(n_times, support_bound):
+def fast_convolve(n_times, support_bound, drift):
     #Phi = np.array([[0, 0, 0, 0, 0],
     #                [0, complex(0,-1)*(np.sqrt(3)-1), complex(2,-2), complex(0,-1)*(np.sqrt(3)-1), 0],
     #                [-2, 5+np.sqrt(3), 8, 5+np.sqrt(3), -2],
@@ -74,8 +74,8 @@ def fast_convolve(n_times, support_bound):
     # new Phi, with cross terms, oscillatory
     # mono terms 
     Phi[ 0+9//2][ 0+9//2]  = complex(301/384,-7/48)
-    Phi[ 0+9//2][ 1+9//2]  = complex(0,1/24)     
-    Phi[ 0+9//2][-1+9//2]  = complex(1/6,1/24)      
+    Phi[ 0+9//2][-1+9//2]  = complex(0,1/24)     
+    Phi[ 0+9//2][ 1+9//2]  = complex(1/6,1/24)      
     Phi[ 0+9//2][ 2+9//2]  = -1/48               
     Phi[ 0+9//2][-2+9//2]  = -1/48
     Phi[ 1+9//2][ 0+9//2]  = complex(7/96,1/24)
@@ -93,85 +93,87 @@ def fast_convolve(n_times, support_bound):
     Phi[ 1+9//2][ 1+9//2]  = -1/24
     Phi[-1+9//2][ 1+9//2]  = -1/24
     
-
-
     conv_power = np.copy(Phi)
     offset = np.array([0,0])
 
-    #print('Max of Phi: ')
-    #print(unravel_index(np.absolute(Phi).argmax(), np.absolute(Phi).shape))
-
     i=0
-    drift = False
+    if drift:
+        while i < n_times:
+            i += 1
+            init_vec = unravel_index(np.absolute(conv_power).argmax(), np.absolute(conv_power).shape)
+            conv_power = signal.convolve2d(Phi, conv_power, 'full')
+            after_vec = unravel_index(np.absolute(conv_power).argmax(), np.absolute(conv_power).shape)
+            offset += np.subtract(init_vec , after_vec)
 
-    while i < n_times:
-
-        i += 1
-
-        init_vec = unravel_index(np.absolute(conv_power).argmax(), np.absolute(conv_power).shape)
-        conv_power = signal.convolve2d(Phi, conv_power, 'full')
-        after_vec = unravel_index(np.absolute(conv_power).argmax(), np.absolute(conv_power).shape)
-        offset += np.subtract(init_vec , after_vec)
-
-        # print(offset)
-
-        dim_f = np.shape(conv_power)
+            dim_f = np.shape(conv_power)
         
-        if dim_f[0] > support_bound or dim_f[0] > support_bound:
+            if dim_f[0] > support_bound or dim_f[0] > support_bound:
+                conv_power = crop(conv_power, support_bound)
 
-
-            # if DRIFT:
-            #conv_power = crop(conv_power, support_bound)
-
-            # if NOT:
-            conv_power = cropND(conv_power,(support_bound,support_bound))
+    else:
+        while i < n_times:
+            i += 1
+            conv_power = signal.convolve2d(Phi, conv_power, 'full')
+            dim_f = np.shape(conv_power)
+        
+            if dim_f[0] > support_bound or dim_f[0] > support_bound:
+                conv_power = cropND(conv_power, support_bound)
             
 
-    # print(offset)        
-    return (conv_power,drift)
+    return conv_power
 
 
-def cropND(img, bounding):
-    if bounding[0] <= np.shape(img)[0] and bounding[1] <= np.shape(img)[1]:
-        start = tuple(map(lambda a, da: a//2-da//2, img.shape, bounding))
-        end = tuple(map(operator.add, start, bounding))
-        slices = tuple(map(slice, start, end))
-        return img[slices]
-    return img
-
+def cropND(img, sup_bd):
+    #if bounding[0] <= np.shape(img)[0] and bounding[1] <= np.shape(img)[1]:
+    #    start = tuple(map(lambda a, da: a//2-da//2, img.shape, bounding))
+    #    end = tuple(map(operator.add, start, bounding))
+    #    slices = tuple(map(slice, start, end))
+    #    return img[slices]
+    if sup_bd < np.shape(img)[0] and sup_bd < np.shape(img)[1]:
+        dim = np.shape(img)
+        return img[(dim[0]//2)-sup_bd//2:(dim[0]//2)+sup_bd//2,
+                (dim[1]//2)-sup_bd//2:(dim[1]//2)+sup_bd//2]
+    
 
 def crop(img, sup_bd):
 
     # find location of maximum and center there
     center = unravel_index(np.absolute(img).argmax(), np.absolute(img).shape)
-    return img[center[0]-sup_bd//4:center[0]+sup_bd//4,
-               center[1]-sup_bd//4:center[1]+sup_bd//4]
+    return img[center[0]-sup_bd//2:center[0]+sup_bd//2,
+               center[1]-sup_bd//2:center[1]+sup_bd//2]
 
 
 if __name__ == '__main__':
 
     
     while True:
-        start = time.time()
+        
         n_times = int(input('Convolve how many times? '))
         support_bound = int(input('NxN suppport bound, N = '))
-        # decides how the support is cropped
+        drift_ans = str(input('Expect asymetric drift? [y/n]: '))
         print('Calculating...')
+        start = time.time()
 
-        output = fast_convolve(n_times, support_bound)
+        if drift_ans == 'y':
+            drift = True
+        elif drift_ans == 'n':
+            drift = False
+        else:
+            print('WARNING: Write "y" for YES and "n" for NO.')
+            print('------------------------------------------')
+            print('\n')
+            continue
+
+        data = np.real(fast_convolve(n_times, support_bound, drift))
         #data = np.real(convolve(n_times))
-        data = np.real(output[0])
-        drift = output[1]
-        #print(drift)
-        #print(data)
         #data = np.imag(fast_convolve(n_times, support_bound))
         #data = np.absolute(fast_convolve(n_times, support_bound))
 
         
-        s = min(np.shape(data)[0], support_bound//2)
-        cropped = cropND(data,(2*s,2*s))
+        #s = min(np.shape(data)[0], support_bound//1.5)
+        #cropped = cropND(data,2*s)
 
-        dim = np.shape(cropped)
+        dim = np.shape(data)
         x = range((-dim[0]//2)+1,(dim[0]//2)+1)
         y = range((-dim[1]//2)+1,(dim[1]//2)+1)
 
@@ -179,8 +181,8 @@ if __name__ == '__main__':
 
         hf = plt.figure()
         ha = hf.add_subplot(projection='3d')
-        ha.set_xlim(-np.shape(cropped)[0]//2, np.shape(cropped)[0]//2)
-        ha.set_ylim(-np.shape(cropped)[0]//2, np.shape(cropped)[0]//2)
+        ha.set_xlim(-np.shape(data)[0]//2, np.shape(data)[0]//2)
+        ha.set_ylim(-np.shape(data)[0]//2, np.shape(data)[0]//2)
 
         drift = False # I'm setting this for now for testing
         if drift:
@@ -194,7 +196,7 @@ if __name__ == '__main__':
         
 
         X, Y = np.meshgrid(x, y)  
-        surf = ha.plot_surface(X, Y, cropped , rstride=1, cstride=1, cmap='plasma', edgecolor='none', linewidth=0.2)
+        surf = ha.plot_surface(X, Y, data , rstride=1, cstride=1, cmap='plasma', edgecolor='none', linewidth=0.2)
 
         end = time.time()
         print('Time elapsed (s): ', end - start)
