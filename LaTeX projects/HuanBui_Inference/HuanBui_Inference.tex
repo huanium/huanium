@@ -1741,14 +1741,16 @@ interval for $p_1 - p_2$.\\
 
 \noindent \textit{Solution:} The $90\%$ CI for the difference in proportions looks like
 \begin{align}
-\lp (\hat{p_1} - \hat{p_2}) - z_{\alpha/2}\sqrt{\f{\hat{p_1}(1-\hat{p_1})}{n_1}} + \f{\hat{p_1}(1-\hat{p_1})}{n_1} \rp
+\lp (\hat{p_1} - \hat{p_2}) - z_{\alpha/2}\sqrt{\f{\hat{p_1}(1-\hat{p_1})}{n_1} + \f{\hat{p_2}(1-\hat{p_2})}{n_2}} , \right.\nn\\ \left. (\hat{p_1} - \hat{p_2}) + z_{\alpha/2}\sqrt{\f{\hat{p_1}(1-\hat{p_1})}{n_1} + \f{\hat{p_2}(1-\hat{p_2})}{n_2}} \rp
 \end{align}
 where $\alpha_{0.05} = 1.644854$. Plugging in numbers, we find
 \begin{align}
-\lp 0.5-0.4 - 1.644854\sqrt{ \f{(0.5)(0.5)}{100} + \f{(0.4)(0.6)}{100} },\right.\nn\\ \left. 0.5-0.4 + 1.644854\sqrt{ \f{(0.5)(0.5)}{100} + \f{(0.4)(0.6)}{100} }  \rp = \boxed{ (-0.01513978,0.2151398) }
+&\lp 0.5-0.4 - 1.644854\sqrt{ \f{(0.5)(0.5)}{100} + \f{(0.4)(0.6)}{100} },\right.\nn\\ &\quad \left. 0.5-0.4 + 1.644854\sqrt{ \f{(0.5)(0.5)}{100} + \f{(0.4)(0.6)}{100} }  \rp\nn\\
+ = &\boxed{ (-0.01513978,0.2151398) }
 \end{align}\qed
 
-
+
+
 \newpage
 \noindent\textbf{4.2.27.} Let $X_1, X_2,\dots,X_n$ and $Y_1, Y_2,\dots,Y_m$ be two independent random samples
 from the respective normal distributions $\N(\mu_1, \sigma^2_1)$ and $\N(\mu_2, \sigma^2_2)$, where the four
@@ -1897,7 +1899,7 @@ f(x) &= \f{1}{\Gamma(k)\theta^k}x^{k-1}e^{-x/\theta}, \quad x\in \mathbb{R}^+\nn
 we have that $X_1,X_2 \sim \Gamma(k=1,\theta=2)$, iid, implies $X_1+X_2 \sim \Gamma(k= 2, \theta = 2)$. From here, it is ``easy'' to calculate $\alpha$:
 \begin{align}
 \alpha &= P(x_1+x_2 \leq 2\ln(2)\vert \theta = 2) = \int^{2\ln(2)}_0 \f{1}{\Gamma(2)\theta^2}\xi e^{-\xi/\theta}\,d\xi\nn\\
-&= \int^{2\ln(0)}_0 \f{1}{4}\xi e^{\xi/2}\,d\xi\nn\\
+&= \int^{2\ln(2)}_0 \f{1}{4}\xi e^{-\xi/2}\,d\xi\nn\\
 &= \f{1}{2}(1-\ln(2)) \approx \boxed{0.1534}
 \end{align}
 
@@ -1967,9 +1969,9 @@ accept $H_1 : \mu > 0.5$ if the observed $\sum^8_{i=1} x_i \geq 8.$
 	\end{lstlisting}
 	\item 	\textbf{R code:}
 	\begin{lstlisting}
-	> theta=seq(.75,1.25,.25); gam=1-ppois(7,theta*8)
-	> plot(gam~theta,pch=" ",xlab=expression(theta),ylab=expression(gamma))
-	> lines(gam~theta)
+> theta=seq(.75,1.25,.25); gam=1-ppois(7,theta*8)
+> plot(gam~theta,pch=" ",xlab=expression(theta),ylab=expression(gamma))
+> lines(gam~theta)
 	\end{lstlisting}
 	We're interested in the range of $\theta \in [0.75, 1.25]$. I'm making the step size small to make the power function look smooth.\\
 	
@@ -2015,14 +2017,11 @@ Since $t_{\alpha/2,n-1} > t_{\alpha,n-1} $ , we have that
 \begin{align}
 \gamma_2(\mu) = P(\abs{\cdot} \geq t_{\alpha/2}) \leq P(\cdot \geq t_\al) = \gamma_1(\mu).
 \end{align}
-And so, for a given $\mu > \mu_0$, the power function of the one-sided test is larger than the power function of the two-sided test. \\
+And so, for a given $\mu > \mu_0$, the power function of the one-sided test is larger than the power function of the two-sided test. \qed
 
-\noindent Pictorally,
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[scale=0.15]{ta}
-	\includegraphics[scale=0.15]{ta2}
-\end{figure}
+
+
+
 
 
 
