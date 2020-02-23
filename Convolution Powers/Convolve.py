@@ -74,8 +74,8 @@ def fast_convolve(n_times, support_bound, drift):
     # new Phi, with cross terms, oscillatory
     # mono terms 
     Phi[ 0+9//2][ 0+9//2]  = complex(301/384,-7/48)
-    Phi[ 0+9//2][-1+9//2]  = complex(0,1/24)     
-    Phi[ 0+9//2][ 1+9//2]  = complex(1/6,1/24)      
+    Phi[ 0+9//2][-1+9//2]  = complex(7/96,1/24)     
+    Phi[ 0+9//2][ 1+9//2]  = complex(3/32,1/24)      
     Phi[ 0+9//2][ 2+9//2]  = -1/48               
     Phi[ 0+9//2][-2+9//2]  = -1/48
     Phi[ 1+9//2][ 0+9//2]  = complex(7/96,1/24)
@@ -88,10 +88,10 @@ def fast_convolve(n_times, support_bound, drift):
     Phi[-4+9//2][ 0+9//2]  = -1/768
     
     # cross terms
-    Phi[-1+9//2][-1+9//2]  =  1/24
-    Phi[ 1+9//2][-1+9//2]  =  1/24
-    Phi[ 1+9//2][ 1+9//2]  = -1/24
-    Phi[-1+9//2][ 1+9//2]  = -1/24
+    Phi[-1+9//2][-1+9//2]  =  1/192
+    Phi[ 1+9//2][-1+9//2]  =  1/192
+    Phi[ 1+9//2][ 1+9//2]  = -1/192
+    Phi[-1+9//2][ 1+9//2]  = -1/192
     
     conv_power = np.copy(Phi)
     offset = np.array([0,0])
