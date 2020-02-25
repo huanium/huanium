@@ -9861,7 +9861,7 @@ Varying this action with respect to $g_{\mu\nu}$ (the full metric, NOT the pertu
 In any case, we observe that if the absolute metric $g^{(0)}_{\mu\nu}$ satisfies the Einstein equations, then $g^{(0)}_{\mu\nu} = g^{\mu\nu} \iff h_{\mu\nu} = 0$ is a solution. In this case, we just get back the original GR. When dealing with massive gravity and more complicated nonlinear solutions thereof, we can have two background structures. On one hand, we can have the \textit{absolute metric}, which breaks diffeomorphism. On the other, there is the background metric, which is a solution to the full nonlinear equations, about which we may expand the action. Often the solution metric we are expanding around will be the same as the absolute metric, but if we were expanding around a different solution, say a black hole, there would be two distinct structures: the black hole solution and the absolute metric.  \\
 
 We are interested in more general interactions beyond the action provided above. We will be adding interaction terms with no derivatives, since these are most important at low energies. The most general such potential which reduces to Fierz-Pauli at quadratic order involves adding terms cubic and higher in $h_{\mu\nu}$ in all possible ways. With this, we write in general:
-\begin{align}
+\begin{align}\label{general-massive}
 \boxed{S = \f{1}{2\kappa^2}\int d^Dx\, \lb \sqrt{-g}R - \sqrt{-g^{(0)}}\f{1}{4}m^2 U(g^{(0)},h) \rb}
 \end{align}
 The interaction potential $U$ is the most general one that reduces to Fierz-Pauli at linear order. The power series representation of this potential $U$ is given by
@@ -10922,7 +10922,7 @@ g_{\mu\nu}(x) \to \f{\p f^\al}{\p x^\mu} \f{\p f^\be}{\p x^\nu} g_{\al\be}(f(x))
 \end{align}
 where $f(x)$ is any arbitrary gauge function, which must be a diffeomorphism. In massive gravity, gauge invariance is broken only by the mass term. To restore invariance, we introduce a St\"{u}ckelberg field $Y^\mu(x)$ and apply it to the metric $g_{\mu\nu}$:
 \begin{align}
-g_{\mu\nu}(x) \to G_{\mu\nu} = \f{\p Y^\al}{\p Y^\mu} \f{\p f^\be}{\p x^\nu} g_{\al\be}(Y(x))
+g_{\mu\nu}(x) \to G_{\mu\nu} = \f{\p Y^\al}{\p x^\mu} \f{\p Y^\be}{\p x^\nu} g_{\al\be}(Y(x))
 \end{align}
 
 The Einstein-Hilbert term $\sqrt{-g}R$ does not change under this substitution, because it is gauge invariant. The substitution looks similar to a gauge transformation with gauge parameter $Y^\mu$, so no $Y$ fields are introduced into the Einstein-Hilbert part of the action.\\
@@ -10932,16 +10932,147 @@ The graviton mass term, however, picks up dependence on $Y's$ in such a way that
 &g_{\mu\nu}(x)\to\f{\p f^\al}{\p x^\mu} \f{\p f^\be}{\p x^\nu} g_{\al\be}(f(x))\\
 & Y^\mu(x) \to f^{-1}(Y(x))^\mu
 \end{align}
-with $f(x)$ being the gauge function. 
+with $f(x)$ being the gauge function. This is because the combination $G_{\mu\nu}$ is gauge invariance. To see this we transform $g_{\mu\nu}$:
+\begin{align}\label{transf}
+G_{\mu\nu} = \p_\mu Y^\al \p_\nu Y^\be g_{\al\be}(Y(x)) \to \p_\mu Y^\al \p_\nu Y^\be [???]
+\end{align}
+How does $g_{\al\be}(Y(x))$ transform under $f$? To correctly do this transformation, we can start with transforming something easy first, say the scalar field, $\phi$. We know that $\phi(x)$ transforms under $f$ as $\phi \to \phi(f(x))$. We wish to know how $\phi(Y(x))$ transforms under $f$. Well,
+\begin{align}
+\phi(Y(x)) \equiv \int \,dy \, \phi(y)\delta(y - Y(x)).
+\end{align}
+Now that $\phi$ has coordinate dependence, $y$, we now how coordinate transforms under $f$: $y\to f(y)$. So, under $f$,
+\begin{align}
+\phi(Y(x)) \equiv \int \,dy \, \phi(y)\delta(y - Y(x)) \to  \int \,dy \, \phi(f(y))\delta(y - Y(x)) = \phi(f(Y(x))).
+\end{align}
+You can repeat this procedure for the metric. We know that under $f$,
+\begin{align}
+g_{\mu\nu} \to \p_\mu f^\al \p_\nu f^\be g_{\al\be}(f(x))
+\end{align}
+so $g_{\al\be}(Y(x))$ transforms as
+\begin{align}
+g_{\al\beta}(Y(x)) \to \lp\p_\al f^\lambda\vert_Y\rp \lp \p_\be f^\sigma\vert_Y\rp g_{\lambda\sigma}(f(Y(x))). 
+\end{align}
+where $\vert_Y$ denotes ``evaluated at $Y$.'' With this, we can complete Eq. \eqref{transf}:
+\begin{align}
+G_{\mu\nu} = \p_\mu Y^\al \p_\nu Y^\be g_{\al\be}(Y(x)) \to \p_\mu Y^\al \p_\nu Y^\be \lb \p_\al f^\lambda\vert_Y \p_\beta f^\sigma\vert_Y g_{\lambda\sigma}(f(Y(x))) \rb
+\end{align}
+But that's not all, we want to pull back, using $f^{-1}$, to get $g_{\lambda\sigma}(Y(x))$. To this end, we simple replace instances of $Y$ by $f^{-1}(Y)$, so that the transformation continues as
+\begin{align}
+G_{\mu\nu} &\to \p_\mu Y^\al \p_\nu Y^\be \lb \p_\al f^\lambda\vert_Y \p_\beta f^\sigma\vert_Y g_{\lambda\sigma}(f(Y(x))) \rb\nn\\
+&\to \p_\mu [f^{-1}(Y)]^\al \p_\nu [f^{-1}(Y)]^\be \lb \p_\al f^\lambda\vert_{f^{-1}(Y)} \p_\beta f^\sigma\vert_{f^{-1}(Y)} g_{\lambda\sigma}(f([f^{-1}(Y)])) \rb\nn\\
+&= \p_\mu [f^{-1}(Y)]^\al \p_\nu [f^{-1}(Y)]^\be \lb \p_\al f^\lambda\vert_{f^{-1}(Y)} \p_\beta f^\sigma\vert_{f^{-1}(Y)} g_{\lambda\sigma}(Y(x))) \rb\nn\\
+&= (\p_\rho [f^{-1}]^\al\vert_Y)( \p_\mu Y^\rho)( \p_\tau [f^{-1}]^\be\vert_Y)( \p_\nu Y^\tau) ( \p_\al f^\lambda\vert_{f^{-1}(Y)})( \p_\beta f^\sigma\vert_{f^{-1}(Y)}) g_{\lambda\sigma}(Y(x))) \nn\\
+& \quad\text{(just the chain rule)}\nn\\
+&= \delta^\lambda_\rho \delta^\sigma_\tau\p_\mu Y^\rho \p_\nu Y^\tau g_{\lambda\sigma}(Y(x))
+\end{align}
+where we have used the fact that 
+\begin{align}
+(\p_\rho [f^{-1}]^\al\vert_Y)( \p_\al f^\lambda\vert_{f^{-1}(Y)}) = \delta^\lambda_\rho
+\end{align}
+which relies on the calculus fact:
+\begin{align}
+\p_x f^{-1}(X) = \f{1}{f'(f(x))}.
+\end{align}
+Putting everything together, we see that
+\begin{align}
+G_{\mu\nu} \to \dots \to \dots &= \delta^\lambda_\rho \delta^\sigma_\tau\p_\mu Y^\rho \p_\nu Y^\tau g_{\lambda\sigma}(Y(x)) \nn\\
+&=\p_\mu Y^\lambda \p_\nu Y^\sigma g_{\lambda\sigma}(Y(x)) \nn\\
+&= G_{\mu\nu},
+\end{align}
+i.e.,
+\begin{align}
+\boxed{g_{\mu\nu} \to G_{\mu\nu} \to \p_\mu Y^\lambda \p_\nu Y^\sigma g_{\lambda\sigma}(Y(x)) \equiv G_{\mu\nu}}
+\end{align}
+which says that the combination $G_{\mu\nu}$ is gauge invariant. \\
+
+Now, we expand $Y$ about the identity function
+\begin{align}
+Y^\al(x) = x^\al + A^\al(x).
+\end{align}
+Then the gauge-invariant combination $G_{\mu\nu}$ expands as
+\begin{align}\label{xpand}
+G_{\mu\nu} &= \f{\p Y^\al(x)}{\p x^\mu(x)} \f{\p Y^\be}{\p x^\nu} g_{\al\be}(Y(x))\nn\\
+&= \f{\p (x^\al + A^\al)}{\p x^\mu} \f{\p(x^\be + A^\be)}{\p x^\nu} g_{\al\be}(x+A)\nn\\
+&= (\delta^\al_\mu + \p_\mu A^\al)(\delta^\be_\nu + \p_\nu A^\be)\lp g_{\al\be} + A^\mu \p_\mu g_{\al\be} + \f{1}{2}A^\mu A^\nu \p_\mu \p_\nu g_{\al\be} +  \text{ h.o.t.s.} \rp\nn\\
+&= g_{\mu\nu} + A^\lambda \p_\lambda g_{\mu\nu} + \p_\mu A^\al g_{\al\nu} + \p_\nu A^\al g_{\al\mu} + \f{1}{2} A^\al A^\be \p_\al\p_\be g_{\mu\nu}\nn\\
+&\quad  + \p_\mu A^\al \p_\nu A^\beta g_{\al\be} + \p_\mu A^\al A^\be \p_\be g_{\al\nu} + \p_\nu A^\al A^\be \p_\be g_{\mu\al} + \text{h.o.t.s.}
+\end{align}
+
+Next, we look at the infinitesimal transformation properties of $g,A,G,Y$ under the infinitesimal general coordinate transforms generated by
+\begin{align}
+f(x) = x + \xi(x) \implies f^{-1}(x) \approx x - \xi(x)
+\end{align}
+which is a diffeomorphism. The transformations of $g,A,G,Y$ are given by taking the the Lie derivatives (for more information, refer to the \href{https://huanqbui.com/LaTeX projects/Classical_Fields_Theory/HuanBui_ClassicalFieldTheory.pdf}{\underline{CFT notes}}) - ``C'' for \textit{classical}. The metric tensor transforms via the Lie derivative rule for tensors:
+\begin{align}
+\boxed{\delta g_{\mu\nu} = \xi^\lambda \p_\lambda g_{\mu\nu} + \p_\mu \xi^\lambda g_{\lambda\nu} + \p_\nu \xi^\lambda g_{\mu\lambda}}
+\end{align}
+To find how $Y$ transforms under $f$, we just plug $Y$ into the transformation $f$:
+\begin{align}
+Y^\mu(x) \to f^{-1}(Y(x))^\mu \approx  Y^\mu(x) - \xi^\mu (Y(x))
+\end{align}
+which gives
+\begin{align}
+\boxed{\delta Y^\mu = -\xi^\mu (Y)}
+\end{align}
+and
+\begin{align}
+\boxed{\delta A^\mu = -\xi(x+A) = -\xi^\mu - A^\al \p_\al \xi^\mu - \f{1}{2}A^\al A^\be \p_\al\p_\be \xi^\mu - \text{ h.o.t.s.}}
+\end{align}
+The $A^\mu$ are the Goldstone bosons that nonlinearly carry the broken diffeomorphism invariance in massive gravity. The gauge-invariant combination $G_{\mu\nu}$ is of course gauge-invariant:
+\begin{align}
+\boxed{\delta G_{\mu\nu} = 0} 
+\end{align}
+
+With these, we can now St\"{u}ckelberg the general massive gravity action of the form of Eq. \eqref{general-massive}:
+\begin{align}
+\boxed{S = \f{1}{2\kappa^2}\int d^Dx\, \lb \sqrt{-g}R - \sqrt{-g^{(0)}}\f{1}{4}m^2 U(g^{(0)},h) \rb}
+\end{align}
+where interaction potential $U$ is the most general one that reduces to Fierz-Pauli at linear order. The Einstein-Hilbert term is intact, while in the mass term we write all $h_{\mu\nu}$'s with lower indices to get rid of the dependence on the absolute metric $g^{(0)}_{\mu\nu}$ (which is also the background metric). We then replace all occurrences of $h_{\mu\nu}$ with$H_{\mu\nu}$ given by
+\begin{align}
+\boxed{H_{\mu\nu}(x) = G_{\mu\nu}(x) - g^{(0)}_{\mu\nu}(x)}
+\end{align}
+We then expand $G_{\mu\nu}$ in terms of $A^\lambda$ and $g_{\mu\nu}$ as in Eq. \eqref{xpand} and $Y^\mu$ as $x^\mu + A^\mu(x)$. To linear order in $h_{\mu\nu} \equiv g_{\mu\nu} - g^{(0)}_{\mu\nu}$ and $A_\mu$ we have
+\begin{align}
+\boxed{H_{\mu\nu} = h_{\mu\nu} + \nabla_\mu^{(0)}A_\nu + \nabla^{(0)}_\nu A_\mu}
+\end{align}
+where indices on $A$ are lowered with $g^{(0)}_{\mu\nu}$. (\textit{The derivation is left as an index-manipulation exercise}.)\\
+
+When the background metric is flat, i.e. $g^{(0)}_{\mu\nu} \equiv \eta_{\mu\nu}$, the expansion is
+\begin{align}
+\boxed{H_{\mu\nu} = h_{\mu\nu} + \p_\mu A_\nu + \p_\nu A_\mu + \p_\mu ^\al \p_\nu A_\al + \text{ h.o.t.s.}}
+\end{align}
+(\textit{Once again, the derivation is left as an exercise in index manipulation}.) The higher order terms are terms with at least one power of $h$. \\
+
+As in the linear case, we also want to introduce a $U(1)$ gauge symmetry, so let
+\begin{align}
+A_\mu \to A_\mu + \p_\mu \phi.
+\end{align}
+With this, the expansion for the flat background metric takes the form
+\begin{align}
+H_{\mu\nu} &= h_{\mu\nu} + \p_\mu A_\nu + \p_\nu A_\mu + 2\p_\mu \p_\nu \phi + \p_\mu A^\al \p_\nu A_\al \nn\\
+&\quad \p_\mu A^\al \p_\nu \p_\al \phi + \p_\mu\p^\al \phi \p_\nu A_\al + \p_\mu \p^\al \phi \p_\nu \p_\al \phi + \text{ h.o.t.s.}
+\end{align}
+Similarly, higher order terms are terms with at least one power of $h$. The gauge transformation rules in this case are
+\begin{align}
+&\delta h_{\mu\nu} = \p_\mu \xi_\nu + \p_\nu \xi_\mu + \lag_\xi h_{\mu\nu}\\
+&\delta \phi = -\Lambda\\
+&\delta A_\mu = \p_\mu \Lambda -\xi_\mu - A^\al \p_\al \xi_\mu -\f{1}{2}A^\al A^\be \p_\al \p_\be \xi_\mu - \text{ h.o.t.s.}
+\end{align}
+where $\lag_\xi$ denotes the Lie derivative. 
 
 
 
 
+\subsubsection{Another way to St\"{u}ckelberg}
+
+In the last section we introduced gauge invariance and the St\"{u}ckelberg fields by replacing the metric $g_{\mu\nu}$ by the invariant combination $G_{\mu\nu}$. One draw back of this method is that the St\"{u}ckelberg expansion involves an infinite number of terms of higher order in $h_{\mu\nu}$. This is not good when we want to keep track of the $h_{\mu\nu}$'s.\\
+
+
+In this section, we introduce the St\"{u}ckelberg fields through the background metric $g^{(0)}_{\mu\nu}$, then allow $g_{\mu\nu}$ to transform covariantly. 
 
 
 
-
-
+ 
 
 
 
