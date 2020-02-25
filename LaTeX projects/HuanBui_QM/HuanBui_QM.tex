@@ -6340,7 +6340,7 @@ As a little ``sanity check,'' when $d=2$, when $C(d) = 2\pi$. When $d=3$, $C(d) 
 \boxed{H = \int d^d_E k \,F(k^2) = C(d)\int^\infty_0 dk\, k^{d-1}F(k^2)= \f{2\pi^{d/2}}{\Gamma\lp d/2 \rp}\int^\infty_0 dk\, k^{d-1}F(k^2)}
 \end{align}
 
-So, when $d=4$ (which is the value of $d$ we are interested in), 
+So, when $d=4$ (which \textbf{is the }value of $d$ we are interested in), 
 \begin{align}
 \int d^4_E k \, F(k^2) = (2\pi^2) \int^\infty_0 dk\,k^3 F(k^2).
 \end{align}
@@ -10739,9 +10739,142 @@ C_1(r) &= -\f{8GM}{3}\f{e^{-mr}}{r}\f{1+mr}{m^2r^2}\\
 A_1(r) &= \f{4GM}{3}\f{e^{-mr}}{r}\f{1+mr+m^2r^2}{m^2r^2}
 \end{empheq}
 
-So, the $\mathcal{O}(\epsilon)$ problem is done, so we move on to the $\mathcal{O}(\epsilon^2)$ problem. The procedure will be exactly the same, so I will just put the code-outputs here without saying much. Some new rules will be defined along the way to help Mathematica with simplification. Also, so as not to completely ruin the previous code for the $\mathcal{O}(\epsilon)$ problem, I will be using slightly different names for some functions. 
+So, the $\mathcal{O}(\epsilon)$ problem is done, so we move on to the $\mathcal{O}(\epsilon^2)$ problem. The procedure will be exactly the same, so I will just put the code-outputs here without saying much. Some new rules will be defined along the way to help Mathematica with simplification. Also, so as not to completely ruin the previous code for the $\mathcal{O}(\epsilon)$ problem, I will be using slightly different names for some functions. Thanks to Hinterbichler himself, I will be using a different function, \texttt{SeriesCoefficient[ ]}, for expanding and collecting the $\mathcal{O}(\epsilon^2)$ terms. This is a better way to do things than using just the naive \texttt{Coefficient[..., $\epsilon^2$]} function. First, we redefine the expansions:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{expansions}
+\end{figure}
 
-\textit{to be continued -- Things got quite bad}
+Then we start with our original $tt$, $rr$, and $\theta\theta$ equations:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{tt2}
+\end{figure}
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{rr2}
+	\includegraphics[scale=0.25]{thth2}
+\end{figure}
+
+To make Mathematica appropriately expand the series expansion of $B,C,A$ in these equations, we define 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{ruleA}
+\end{figure}\\
+
+
+
+With this, the $tt$ equation, under the solved $B_1, C_1, A_1$ is given by
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.2]{tt2Sim}
+\end{figure}\\
+
+
+
+
+Notice that we're now using \texttt{SeriesCoefficient[]} instead of \texttt{Coefficient} like last time. We write
+\begin{align}
+0 = 
+4 (-1 + m^2 r^2) A_2[r] +  \f{1}{9m^4r^6}
+ 2 e^{-2 m r} \lb 9 e^{2 m r} m^4 r^6 (2 + m^2 r^2) C_2[r] + \right. \nn\\ 
+\left.  2 \lp   180 G^2 M^2 + 360 G^2 m M^2 r + 276 G^2 m^2 M^2 r^2 + 
+72 G^2 m^3 M^2 r^3\right. \right. \nn\\ 
+\left. - 24 G^2 m^4 M^2 r^4 - 16 G^2 m^5 M^2 r^5 - 
+12 G^2 m^6 M^2 r^6 \right.\nn\\
+\left.  - 27 e^{2 m r} m^4 r^7 A_2'[r] + 
+9 e^{2 m r} m^4 r^7 C_2'[r] - 
+9 e^{2 m r} m^4 r^8 A_2''[r]    \rp \left.    \rb
+\end{align}
+
+
+We do a similar thing for the $rr$ equation:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{rr2Sim}
+\end{figure}
+We write
+\begin{align}
+0 = \f{1}{9 m^4 r^8} 2 e^{-2 m r} \lb -18 e^{2 m r}
+m^4 r^6 (-1 + m^2 r^2) A_2[r] - 9 e^{2 m r} m^6 r^8 B_2[r] \right.\nn\\ 
+\left. + 
+2 \lp 36 G^2 M^2 + 72 G^2 m M^2 r + 116 G^2 m^2 M^2 r^2 + 
+136 G^2 m^3 M^2 r^3 \right. \right. \nn\\
+\left. + 120 G^2 m^4 M^2 r^4 + 
+48 G^2 m^5 M^2 r^5 - 12 G^2 m^6 M^2 r^6 \right.\nn\\
+\left. -  9 e^{2 m r} m^4 r^6 C_2[r] + 
+9 e^{2 m r} m^4 r^7 A_2'[r] + 
+9 e^{2 m r} m^4 r^7 B_2'[r]\rp \left. \rb
+\end{align}
+
+Same thing for the $\theta\theta$ equation:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{thth2Sim}
+\end{figure}
+We write
+\begin{align}
+0 = \f{2}{9} \lb -\f{216e^{-2mr}G^2M^2}{m^4 r^7} 
+-\f{432e^{-2mr}G^2M^2}{m^3 r^6}
+-\f{536 e^{-2mr}G^2M^2}{m^2 r^5}
+-\f{496 e^{-2mr}G^2M^2}{m r^4}  \right. \nn\\
+\left. - \f{400 e^{-2 m r} G^2 M^2}{r^3} 
+- \f{256 e^{-2 m r}G^2 m M^2}{r^2} 
+- \f{120 e^{-2 m r} G^2 m^2 M^2}{r} - 9 m^2 r B_2[r] 
+\right. \nn\\
+\left. - 9 m^2 r A_2[r] - 9 m^2 r C_2[r] + 18 A_2'[r] + 9 B_2'[r] - 9 C_2'[r] + 9 r A_2''[r] + 9r B_2''[r] \rb 
+\end{align}
+
+Solving $tt=0, rr=0, \theta\theta = 0$ for $A_2, A_2', A_2''$ we get
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{A2}
+	\includegraphics[scale=0.25]{A2bis}
+\end{figure}\\
+
+
+\newpage
+Then we solve for $C_2, C_2'$ from the $A_2$ equations:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.2]{C2}
+\end{figure}\\
+
+
+Setting $C_2' = (\p_r)C_2$ we get the equation for $B_2$:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.17]{B2_new}
+\end{figure}\\
+
+
+
+
+
+We are only interested in the leading order term for $B_2$, we so find it. Plugging $B_2$ back into the $C_2$ and $A_2$ equations and taking their leading terms we get
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.17]{A2B2C2}
+\end{figure}\\
+
+
+
+\newpage
+
+With these, we set $\epsilon \to 1$ plug them back into the original expansion. After some factorizations we get
+\begin{empheq}[box=\widefbox]{align}
+B(r) &= 1 - \f{8}{3}\f{GM}{r}\lp 1 - \f{1}{6}\f{GM}{m^4r^5} + \dots\rp\nn\\
+C(r) &= 1- \f{8}{3}\f{GM}{m^2r^3}\lp 1 - 14\f{GM}{m^4r^5} + \dots \rp\nn\\
+A(r) &= 1 + \f{4}{3}\f{GM}{m^2r^3}\lp 1 - 4\f{GM}{m^4r^5} + \dots \rp
+\end{empheq}
+
+where the dots represent higher powers in the nonlinearity parameter $\epsilon$. The nonlinearity expansion is an expansion in the parameter $r_V/r$, with
+\begin{align}
+\boxed{r_V \equiv \lp \f{GM}{m^4} \rp^{1/5}}
+\end{align}
+is known as the \textbf{Vainshtein} radius. Notice that with this procedure, we can go on to extract solutions at $\mathcal{O}(\epsilon^n)$. However, we won't do that for now.\\
 
 
 
@@ -10749,14 +10882,14 @@ So, the $\mathcal{O}(\epsilon)$ problem is done, so we move on to the $\mathcal{
 
 
 
-
+When $m\to 0$, $r_V \to \infty$, and hence the radius beyond which the solution can be trusted gets pushed out to infinity. Vainshtein argued (in 1972) that this perturbation expansion breaks down and says nothing about the true nonlinear behavior of masive gravity in the massless limit. Thus there was reason to hope that the vDVZ discontinuity was merely an artifact of linear perturbation theory, and that the true nonlinear solutions showed a smooth limit. 
 
 
 
 \newpage
 \subsubsection{Nonlinear Hamiltonian \& The Boulware-Deser mode}
 
-
+We'll skip this section entirely. 
 
 
 
@@ -10773,12 +10906,54 @@ So, the $\mathcal{O}(\epsilon)$ problem is done, so we move on to the $\mathcal{
 \subsection{The Nonlinear St\"{u}ckelberg Formalism}
 
 
+In this section we extend the St\"{u}ckelberg trick to full nonlinear order. This allows us to trace the breakdown in the linear expansion to strong coupling of the longitudinal mode. It also tells us about quantum corrections, the scale of the effective field theory and where it breaks down.  
 
 
-\subsection{St\"{u}kelberg for gravity and the restoration of diffeomorphism invariance}
+
+
+\subsubsection{St\"{u}kelberg for gravity and the restoration of diffeomorphism invariance}
+
+
+In this subsubsection we construct the full nonlinear gravitational St\"{u}ckelberg. The paper by Arkani-Hamed et. al. introduces this extensively. \\
+
+The full finite gauge transformation for gravity is
+\begin{align}
+g_{\mu\nu}(x) \to \f{\p f^\al}{\p x^\mu} \f{\p f^\be}{\p x^\nu} g_{\al\be}(f(x))
+\end{align}
+where $f(x)$ is any arbitrary gauge function, which must be a diffeomorphism. In massive gravity, gauge invariance is broken only by the mass term. To restore invariance, we introduce a St\"{u}ckelberg field $Y^\mu(x)$ and apply it to the metric $g_{\mu\nu}$:
+\begin{align}
+g_{\mu\nu}(x) \to G_{\mu\nu} = \f{\p Y^\al}{\p Y^\mu} \f{\p f^\be}{\p x^\nu} g_{\al\be}(Y(x))
+\end{align}
+
+The Einstein-Hilbert term $\sqrt{-g}R$ does not change under this substitution, because it is gauge invariant. The substitution looks similar to a gauge transformation with gauge parameter $Y^\mu$, so no $Y$ fields are introduced into the Einstein-Hilbert part of the action.\\
+
+The graviton mass term, however, picks up dependence on $Y's$ in such a way that it will not be invariant under the following gauge transformation:
+\begin{align}
+&g_{\mu\nu}(x)\to\f{\p f^\al}{\p x^\mu} \f{\p f^\be}{\p x^\nu} g_{\al\be}(f(x))\\
+& Y^\mu(x) \to f^{-1}(Y(x))^\mu
+\end{align}
+with $f(x)$ being the gauge function. 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
 
 \subsubsection{St\"{u}ckelberg formalism by Arkani-Hamed et al. (extra)}
 

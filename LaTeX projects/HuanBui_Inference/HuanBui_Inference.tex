@@ -2128,6 +2128,471 @@ their seat belts. Was the campaign successful?
 
 
 
+
+
+
+\section{Problem set 3}
+
+
+
+
+
+
+
+\noindent \textbf{4.7.4}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{474}
+\end{figure}
+
+
+
+\noindent \textit{Solution:} The test statistic under the null hypothesis $H_0: \p_i = 1/6 \forall i$ is 
+\begin{align}
+\chi = \sum^6_{i=1}\f{(\text{Freq}_i - 20)^2}{20} = \f{(b-20)^2}{20} + 4\cdot 0 + \f{(40-b-20)^2}{20}=\f{(b-20)^2}{10}.
+\end{align}
+Under the null hypothesis, $\chi \sim \chi^2(df = 5)$. At $\alpha = 0.025$, we reject the null hypothesis whenever $\chi \geq \texttt{qchisq(1-0.025,5)} = 12.8325$, i.e.,
+\begin{align}
+\f{(b-20)^2}{10} \geq 12.8325 \implies \boxed{b \leq 8 \lor b \geq  32}
+\end{align}
+\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent\textbf{4.7.5} 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{475}
+\end{figure}
+
+
+
+\noindent \textit{Solution:} The test statistic under $H_0: p_a = 9/16, p_b = 3/16, p_c = 3/16, p_d = 1/16$, the test statistic is
+\begin{align}
+\chi = \f{(86 - 90)^2}{90} + \f{(35- 30)^2}{30} + \f{(26-30)^2}{30} + \f{(13 -10)^2}{10} = \f{22}{9}.
+\end{align}
+Under $H_0$, $\chi \sim \chi^2(df = 4-1 = 3)$. The p-value for this $\chi$ is $\texttt{1-pchisq(22/9, 3) = 0.4854149} > 0.01$. So, we don't have enough evidence to reject $H_0$, i.e. the data is consistent with the Mendelian theory. \qed
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent\textbf{4.7.6}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{476a}
+	\includegraphics[scale=0.5]{476b}
+\end{figure}
+
+
+
+\noindent \textit{Solution:} Using the code provided by the problem we get
+\begin{lstlisting}
+> r1=c(15,25,32,17,11);r2=c(9,18,29,28,16);mat=rbind(r1,r2)
+> chisq.test(mat)
+
+Pearson's Chi-squared test
+
+data:  mat
+X-squared = 6.4019, df = 4, p-value = 0.1711
+\end{lstlisting}
+Since $p = 0.1711 > 0.05$, we don't have enough evidence to reject $H_0$, i.e. the two teaching procedures are (statistically) equally effective.\qed 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent\textbf{4.8.9} (use acceptance sampling)
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{489}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}  \textbf{R code:}
+\begin{lstlisting}
+# acceptance sampling
+# approximate the Cauchy distribution
+
+x <- runif(100000,-7,7)
+y <- runif(100000,0,1)
+
+z <- cbind(x,y)
+accept <- NULL
+reject <- NULL
+
+dens <- function(x){
+	d <- 1/((pi^2)*(x^2+1))
+	return(d)}
+
+for (i in 1:length(x)){
+	d <- dens(x[i])
+	if (y[i] < d) {
+		accept <- rbind(accept,z[i,])}
+	else{
+		reject <- rbind(reject,z[i,])}
+}
+# plot accepted values in red
+plot(accept[,1],accept[,2], 
+main = "Approximated Distribution", ylim=c(0,1), col="red")
+
+# plot rejected values in blue
+points(reject[,1], reject[,2], col = "dark blue")
+\end{lstlisting}
+
+Here's a small sample:
+\begin{lstlisting}
+> accept
+x            y
+[1,] -0.2257702402 8.676955e-02
+[2,] -0.3536258731 6.871887e-02
+[3,]  4.1498403600 4.068073e-03
+[4,] -0.3986396971 3.033239e-02
+[5,]  0.7077048477 1.492551e-02
+[6,] -0.0422784868 1.612575e-02
+[7,] -0.6391186416 1.029603e-02
+[8,]  0.4845524384 6.119987e-02
+[9,]  0.3572320105 2.479371e-02
+.
+.
+.
+\end{lstlisting}
+
+\newpage
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Cauchy}
+\end{figure}
+
+\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent\textbf{4.8.10} (use inverse transformation sampling)
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{4810}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}  We first want to find the cdf $F$, given $f(x)$. Well, 
+\begin{align}
+F(x) = \int^x_{-\infty} f(x')\,dx' = \int^x_0 \f{1}{\theta^3}3x'^2 e^{-x'^3/\theta^3}\,dx' = \dots = 1 - e^{-x^3/\theta^3}.
+\end{align}
+With this, let $u \sim U(0,1)$ then 
+\begin{align}
+F^{-1}(u) = \sqrt[3]{-\theta^3\ln(1-u)} \sim \text{Wei}(k=3, \theta), \quad 0 \leq u \leq 1.
+\end{align} 
+
+Suppose $\theta = 2$ then in R, we do the following:
+\begin{lstlisting}
+# inverse transformation sampling
+# generate vector of random uniform(0,1)
+u <- runif(100000)
+
+# set beta and transform to random weibull(shape=3, scale=theta)
+beta = 2
+x <- (-(beta^3)*log(1 - u))^(1/3)
+hist(x, main="Histogram of Tranformed Variable", pr = TRUE)
+
+# overlay weibull
+curve(dweibull(x, shape = 3, scale=2), 
+col="darkgreen", lwd=3, add=TRUE)
+\end{lstlisting}
+
+Here's a sample:
+\begin{lstlisting}
+> x <- (-(beta^3)*log(1 - u))^(1/3)
+> x
+1.57511912 1.81610458 2.51359811 1.12564398 1.21991006
+1.10365173 0.71966428 2.06591082 3.08423326 1.67620145
+1.02533405 1.24429387 0.94192313 2.19097666 1.98069305
+0.43007645 1.18581709 1.11303036 1.63002049 2.37205273
+2.45962833 1.67162606 1.61624974 1.46149955 1.92907758
+1.12735030 1.02997348 2.25870529 1.58137215 2.71199084
+1.05306668 1.43121600 1.17977939 1.24985669 2.22292333
+1.86914252 3.01206737 1.11948037 1.64757666 1.35904188
+1.39351092 2.60002179 1.12125772 2.15576011 2.41963279
+\end{lstlisting}
+
+\newpage
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{weibull}
+\end{figure}\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent\textbf{4.9.4} (for part B, write your own R function to generate the bootstrap distribution of the median -
+using the code posted on Moodle is an okay starting point)
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{494}
+\end{figure}
+
+
+
+\noindent \textit{Solution:} 
+
+
+\begin{enumerate}[(a)]
+	\item The median $x_{1/2}$ for a $\Gamma(1,\beta)$ is such that
+	\begin{align}
+	\f{1}{2} = \int^{x_{1/2}}_0 \f{1}{\beta} e^{-x/\beta} = 1 - e^{-x_{1/2}/\beta} \implies \boxed{x_{1/2} = \beta \ln(2)}
+	\end{align}
+	
+	
+	\item Here's the R code (I'm not using Prof. O'Brien's code here)
+	\begin{lstlisting}
+	> x <- c(131.7, 182.7, 73.3, 10.7, 150.4, 42.3, 22.2, 17.9, 264.0,
+	154.4, 4.3, 265.6, 61.9, 10.8, 48.8, 22.5, 8.8, 150.6, 103.0, 85.9)
+	> percentciboot <- function(x,b,alpha){
+	+   theta=median(x); thetastar=rep(0,b); n=length(x)
+	+   for(i in 1:b){xstar=sample(x,n,replace=T)
+	+   thetastar[i]=median(xstar)}
+	+   thetastar=sort(thetastar); pick=round((alpha/2)*(b+1))
+	+   lower=thetastar[pick]; upper=thetastar[b-pick+1]
+	+   list(theta=theta,lower=lower,upper=upper)}
+	> percentciboot(x,3000,.10)
+	
+	$theta
+	[1] 67.6
+	
+	$lower
+	[1] 30.1
+	
+	$upper
+	[1] 131.7
+	
+	> median(x)
+	[1] 67.6
+	
+	> 100*log(2)
+	[1] 69.31472
+	\end{lstlisting}
+	The 90\% bootstrap percentile CI for the median is given by $(30.1, 131.7)$. The true median is given by $\beta ln(2) = 100 \ln(2)  \approx 69.31472$. So, yes, the 90\% CI traps the true median in this case.
+	
+	
+	
+\end{enumerate}\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent\textbf{4.9.11}
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{4911}
+\end{figure}
+
+
+
+\noindent \textit{Solution:} 
+
+\begin{enumerate}[(a)]
+	\item $E(z^*)$:
+	\begin{align}
+	E(z^*) = \sum^n_{i=1}\f{x_i - \bar{x} + \mu_0}{n} = \bar{x} - \bar{x}+\mu_0 = \boxed{\mu_0}
+	\end{align}
+	
+	\item $V(z^*)$:
+	\begin{align}
+	V(z^*) = \sum^n_{i=1}(z_i - E(z^*))^2 = \sum^n_{i=1}(x_i - \bar{x}+\mu_0 - \mu_0)^2 = \boxed{\sum^n_{i=1}(x_i - \bar{x})^2}
+	\end{align}
+\end{enumerate}\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent\textbf{4.9.13}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{4913}
+\end{figure}
+
+
+
+\noindent \textit{Solution:} Here's the R code:
+\begin{lstlisting}
+> X <- c(119.7, 104.1, 92.8, 85.4, 108.6, 93.4, 67.1, 88.4, 101.0, 97.2,
++        95.4, 77.2, 100.0, 114.2, 150.3, 102.3, 105.8, 107.5, 0.9, 94.1)
+> boottestonemed <-
++   function(x,theta0,b){
++     #
++     #  x = sample
++     #  theta0 is the null value of the mean
++     #  b is the number of bootstrap resamples
++     #
++     #  origtest contains the value of the test statistics 
++     #           for the original sample
++     #  pvalue is the bootstrap p-value
++     #  teststatall contains the b bootstrap tests
++     #
++     n<-length(x)
++     v<-median(x)
++     z<-x-median(x)+theta0
++     counter<-0
++     teststatall<-rep(0,b)
++     for(i in 1:b){xstar<-sample(z,n,replace=T)
++     vstar<-median(xstar)
++     if(vstar >= v){counter<-counter+1}
++     teststatall[i]<-vstar}
++     pvalue<-counter/b
++     list(origtest=v,pvalue=pvalue,teststatall=teststatall)
++     #list(origtest=v,pvaule=pvalue)
++   }
+> boottestonemed(X,90,3000)
+$origtest
+[1] 98.6
+
+$pvalue
+[1] 0.006
+\end{lstlisting}
+
+At such a low p-value ($p = 0.006$), we reject the null hypothesis $H_0$. So even though we don't reject $H_0$ with the test based on sampling mean, we \textit{do} reject $H_0$ with the test based on medians. \qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\section{Problem set 4}
+
+
+
+
 	
 	
 \end{document}
