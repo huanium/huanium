@@ -1084,6 +1084,84 @@ But this means that $\braket{\phi}{\psi}$ is close to either 0 or 1. This means 
 
 
 
+The Deutsch's problem is an example of a quantum tradeoff that sacrifices particular information to acquire relational information.\\
+
+Consider only functions $f$ that take a single bit into a single bit. There are only 4 such functions, since there are two possibilities for the input and two possibilities for the output. These functions are
+\begin{align}
+&\mathbf{U}_{f_0} \equiv \Id\\
+&\mathbf{U}_{f_1} \equiv \mathbf{C}_{io}\\
+&\mathbf{U}_{f_2} \equiv \mathbf{C}_{io}\X_o\\
+&\mathbf{U}_{f_3} \equiv \X_o
+\end{align}
+where of course $i,o$ are for \textit{input} and \textit{output}, respectively. In general,
+\begin{align}
+\mathbf{U}_f(\ket{x}\ket{y}) = \ket{x}\ket{y\oplus f(x)}.
+\end{align}
+Schematically, this looks like
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{U}
+	\caption{By Mermin}
+\end{figure}
+When $f$ is unknown, we can find out what $f$ is by letting $\mathbf{U}_f$ act twice, once on $\ket{0}\ket{0}$ and then on $\ket{1}\ket{0}$. But what if we could only let it act once? And what if we are only interested in knowing whether $f$ is constant (in which case it is $f_1$ or $f_3$) or not constant ($f_2$ or $f_4$)? With a classical computer, we will have to evaluate both $f(1)$ and $f(0)$, but with a quantum computer we only need to let $\mathbf{U}_f$ act once, only with the tradeoff of not knowing the values of $f(0)$ and $f(1)$.  \\
+
+To do this we use the Hadamard to put the input into superposition:
+\begin{align}
+\mathbf{U}_f (\had \otimes \Id) (\ket{0}\ket{0}) = \f{1}{\sqrt{2}}\ket{0}\ket{f(0)} + \f{1}{\sqrt{2}}\ket{1}\ket{f(1)}.
+\end{align}
+This doesn't solve the problem, but we see that we can make further unitary transformations to the state above before making measurements that enable us half the time to state with assurance whether or not $f(0) = f(1)$. \\
+
+Suppose that instead of starting with letting the Hadamard act on the input of $\ket{0}\ket{0}$, we let two Hadamards act on $\ket{1}\ket{1}$, i.e. 
+\begin{align}
+(\had\otimes \had)(\X \otimes \X)(\ket{0}\ket{0}) &= (\had \otimes \had)(\ket{1}\otimes \ket{1})\nn\\
+&= \lp\f{1}{\sqrt{2}}\ket{0} - \f{1}{\sqrt{2}}\ket{1} \rp \lp\f{1}{\sqrt{2}}\ket{0} - \f{1}{\sqrt{2}}\ket{1} \rp \nn\\
+&= \f{1}{2}\lp \ket{0}\ket{0} - \ket{1}\ket{0} - \f{0}{1} + \ket{1}\ket{1} \rp.
+\end{align}
+Then, letting $\mathbf{U}_f$ act on this state to get
+\begin{align}
+\mathbf{U}_f (\had\otimes \had)(\X \otimes \X)(\ket{0}\ket{0}) &= \dots\nn\\
+&= \f{1}{2}\lp \ket{0}\ket{f(0)} - \ket{1}\ket{f(1)} - \ket{0}\ket{1 \oplus {f}(0)} + \ket{1}\ket{1\oplus {f}(1)} \rp\nn\\
+&\equiv \f{1}{2}\lp \ket{0}\ket{f(0)} - \ket{1}\ket{f(1)} - \ket{0}\ket{\tilde{f}(0)} + \ket{1}\ket{\tilde{f}(1)} \rp
+\end{align}
+where we have defined
+\begin{align}
+\tilde{f} \equiv 1 \oplus f.
+\end{align}
+Now, if $f(0) = f(1)$ then the state above becomes
+\begin{align}
+\f{1}{2}\lp \ket{0} - \ket{1} \rp \lp \ket{f(0)} - \ket{\tilde{f}(0)} \rp, \quad f(0) = f(1)
+\end{align}
+else ($f(0) \neq f(1)$) then the state above becomes
+\begin{align}
+\f{1}{2}\lp \ket{0} + \ket{1} \rp \lp \ket{f(0)} - \ket{\tilde{f}(0)} \rp, \quad f(0) \neq f(1)
+\end{align}
+since $f(1) = \tilde{f}(0)$ whenever $f(0) \neq f(1)$.\\
+
+Now, because
+\begin{align}
+\had \lp \ket{0} \pm \ket{1} \rp  &= \f{1}{\sqrt{2}}\lp \ket{0} + \ket{1} \rp \pm \f{1}{\sqrt{2}}\lp \ket{0} - \ket{1} \rp\nn\\
+&= \begin{cases}
+\sqrt{2}\ket{0}, \quad (+) \\ 
+\sqrt{2}\ket{1}, \quad (-)
+\end{cases},
+\end{align}
+when we let $\had$ act on the \textit{input} register of the state above, we have
+\begin{align}
+\begin{cases}
+\ket{1}\f{1}{\sqrt{2}}\lp \ket{f(0)} - \ket{\tilde{f}(0)} \rp, \quad f(0) = f(1)\\
+\ket{0}\f{1}{\sqrt{2}}\lp \ket{f(0)} - \ket{\tilde{f}(0)} \rp, \quad f(0) \neq f(1)
+\end{cases}.
+\end{align}
+Putting everything together we have
+\begin{align}
+\boxed{(\had \otimes \Id) \mathbf{U}_f (\had \otimes \had) (\X \otimes \X)(\ket{0}\ket{0}) = \begin{cases}
+\ket{1}\f{1}{\sqrt{2}}\lp \ket{f(0)} - \ket{\tilde{f}(0)} \rp, \quad f(0) = f(1)\\
+\ket{0}\f{1}{\sqrt{2}}\lp \ket{f(0)} - \ket{\tilde{f}(0)} \rp, \quad f(0) \neq f(1)
+\end{cases}}
+\end{align}
+Now, notice that the state of the input register will be $\ket{1}$ if $f(0) = f(1)$, and $\ket{0}$ if $f(0) \neq f(1)$. So, by measuring the input register, we can tell if $f$ is constant. \\
+
+Notice that the output register in both cases are the same (differ only in the sign, but that doesn't make the state distinguishable). But in any case, we learn whether or not $f$ is constant by calling $\mathbf{U}_f$ only once. 
 
 
 
