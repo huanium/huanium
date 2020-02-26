@@ -1001,7 +1001,98 @@ whose existence is guaranteed by our earlier arguments. So, with a single cNOT a
 
 
 \subsection{The general computational process}
+In general, we need at least $n+m$ Qbits for computations, where $n$ is the number of Qbits required to specify the input $x$, and $m$ is the number of Qbits required to specify the output $f(x)$. The set of $n$ Qbits is called the \textit{input register}. The set of $m$ Qbits is called the \textit{output register}. Havig separate input and output registers is standard practice in the classical theory of reversible computation. Since quantum computers must operate reversibly, they are generally designed to operate with both input and output registers. \\
+
+We view a quantum computation $f$on $n+m$ Qbits as a unitary transformation $\mathbf{U}_f$ acting on the $n+m$ Qbit states:
+\begin{align}
+\mathbf{U}_f (\ket{x}_n\ket{y}_m) = \ket{x}_n \ket{y\oplus f(x)}_m
+\end{align}
+where $\oplus$ indicates mod 2 addition, or XOR. If $y=0$  then 
+\begin{align}
+\mathbf{U}_f(\ket{x}_n \ket{0}_m) = \ket{x}_n \ket{f(x)}_m
+\end{align}
+so we have $f(x)$ in the output register, while the input register $\ket{x}_n$ is intact (and is independent on the state of $y$). \\
+
+Clearly, $\mathbf{U}_f$ is its own inverse:
+\begin{align}
+\mathbf{U}_f\mathbf{U}_f (\ket{x}\ket{y}) = \mathbf{U}_f(\ket{x}\ket{y\oplus f(x)}) = \ket{x}\ket{y\oplus f(x)\oplus f(x)} =\ket{x}\ket{y}.
+\end{align} 
+Now, if we apply to each Qbit in the 2-Qbit state $\ket{0}\ket{0}$ the 1-Qbit Hadamard, then we get
+\begin{align}
+(\had \otimes \had)(\ket{0}\otimes \ket{0}) &= (\had\ket{0})\otimes(\had\ket{0})\nn\\
+&= \f{1}{\sqrt{2}}(\ket{0} + \ket{1}) \otimes \f{1}{\sqrt{2}}(\ket{0} + \ket{1})\nn\\
+&= \f{1}{2}(\ket{00} + \ket{01} + \ket{10} + \ket{11})\nn\\
+&= \f{1}{2}(\ket{0}_2 + \ket{1}_2 + \ket{2}_2 + \ket{3}_2).
+\end{align}
+This generalizes to the $n$-fold tensor product of $n$ Hadamards, applied to the $n$-Qbit state $\ket{0}_n$:
+\begin{align}
+{\had^{\otimes n}\ket{0}_n = \f{1}{2^{n/2}}\sum_{0 \leq x \leq 2^n} \ket{x}_n}
+\end{align}
+
+If the initial state of the input register is $\ket{0}_n$, then the output state is the perfect superposition of all possible $n$-Qbit inputs. If we than apply $\mathbf{U}_f$ to that superposition, with $0$ initially in the output register, then we get
+\begin{align}
+\mathbf{U}_f (\had^{\otimes n} \otimes \Id_m)(\ket{0}_n\ket{0}_m) &= \f{1}{2^{n/2}}\sum_{0\leq x\leq 2^n} \mathbf{U}_f (\ket{x}_n \ket{0}_m)\nn\\
+&= \f{1}{2^{n/2}} \sum_{0\leq x\leq 2^n} \ket{x}_n \ket{f(x)}_m.
+\end{align}
+
+Why is this important? This is called \textit{quantum parallelism}. If before letting $\mathbf{U}_f$ act, we only apply the $\had$ transformation to every Qbit of the input register (all initially in 0), then the result of the computation s described by a state whose structure cannot be explicitly specified without knowing the result of all $2^n$ evaluations of the function $f$. So, if we start with 100 Qbits in the input register, if a hundred Hadamard gates act on the input register before the application of $\mathbf{U}_f$, then the form of the final state contains the results of $2^{100} \approx 10^{30}$ evaluations of the function $f$! \\
+
+Another ``miracle'' is that we can't say the result of the computation is \textit{actually} $2^n$ evaluations of $f$, because when we have a collection of Qbits in a definite but unknown state, there is no way to find out what that state is.
+
+
+
+\subsection{No-cloning theorem}
+
+If there were a way to make copies of the output state prior to making measurements (without running the whole computation again) then one could learn the values of $f$ for several different values of $x$. However, this is forbidden by the so-called \textit{no-cloning theorem}. \\
+
+
+The no-cloning theorem is a consequence of linearity. Suppose to get a contradiction that cloning is possible, i.e. 
+\begin{align}
+\mathbf{U}(\ket{\psi}\ket{0}) = \ket{\psi}\ket{\psi}, \quad \mathbf{U}(\ket{\phi}\ket{0}) = \ket{\phi}\ket{\phi}
+\end{align}
+then from linearity:
+\begin{align}
+\mathbf{U}(a\ket{\psi} + b\ket{\phi})\ket{0} = a\ket{\psi}\ket{\psi} + b\ket{\phi}\ket{\phi}.
+\end{align}
+But if $\mathbf{U}$ closed arbitrary inputs, we would also have
+\begin{align}
+\mathbf{U}(a\ket{\psi} + b\ket{\phi})\ket{0} &= (a\ket{\psi} + b\ket{\phi})(a\ket{\psi} + b\ket{\phi})\nn\\
+&= a^2\ket{\psi}\ket{\psi} + b^2\ket{\phi}\ket{\phi} + ab\ket{\phi}\ket{\phi} + ab\ket{\phi}\ket{\psi}\nn\\
+&\neq a\ket{\psi}\ket{\psi} + b\ket{\phi}\ket{\phi}
+\end{align}
+unless $ab=0$. \\
+
+Okay, but what about creating a reasonable, but not quite exact, clone? Suppose
+\begin{align}
+\mathbf{U}(\ket{\psi}\ket{0}) \approx \ket{\psi}\ket{\psi}, \quad \mathbf{U}(\ket{\phi}\ket{0}) \approx \ket{\phi}\ket{\phi}
+\end{align}
+then since $\mathbf{U}$ preserves the inner product we must have that
+\begin{align}
+\braket{\phi}{\psi} \approx \braket{\phi}{\psi}^2.
+\end{align}
+But this means that $\braket{\phi}{\psi}$ is close to either 0 or 1. This means that $\mathbf{U}$ does well only if $\ket{\psi}$ and $\ket{\phi}$ are very nearly the same, or are very nearly orthogonal. In any case, $\mathbf{U}$ isn't too useful. 
+
+
+
+
+
+
+
+
 \subsection{Deutsch's problem}
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Why additional Qbits needn't mess things up}
 \subsection{The Bernstein-Vazirani problem}
 \subsection{Simon's problem}

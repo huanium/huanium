@@ -1079,21 +1079,73 @@ Just a sanity check, the chi-square statistic always has the form of $\sum \text
 
 \section{The Method of Monte Carlo}
 
-\noindent \textbf{Theorem:} Suppose the r.v. $U$ has a uniform $(0,1)$ distribution. Let $F$ be a continuous distribution function (cdf). Then the r.v. $X = F^{-1}(U) \sim F$.\\
+The idea of Monte Carlo methods is to use random numbers to simulate random phenomena and to make numerical approximations. In general, we use Monte Carlo methods for
+\begin{itemize}
+	\item Inverse transform sampling: take a random uniform $(0,1)$ and transform it into a different distribution.
+	\item Accept-Reject Algorithm, which is a method that uses a random uniform generator to produce a set of random numbers that follows some other distribution. 
+	\item To approximate the value of definite integrals.
+\end{itemize}
 
-\noindent \textit{Proof:} We assume that $F(x)$ is strictly monotone. 
+\subsection{Inverse Transform}
+
+For example, we want to simulate coin flips of a coin that is biased and comes up heads with probability $p$. Here's the algorithm:
+\begin{itemize}
+	\item Generate a random uniform $(0,1) \to u_1$
+	\item If $u_1 < p \implies $ heads, else tails.
+	\item Repeat
+\end{itemize}
+
+For any multinomial distribution with probabilities $p_1,\dots,p_k$ we can follow this process:
+\begin{itemize}
+	\item Generate a random uniform $u-1 \sim (0,1)$.
+	\item If $u_1 \leq p_1 \implies$ assign outcome $1$.
+	\item Elif $u_1 \leq p_1 + p_2 \implies$ assign outcome $2$.
+	\item \dots
+	\item Elif $u_1 \leq p_1 + \dots + p_{k-1} \implies$ assign outcome $k-1$.
+	\item Else, assign outcome $k$. 
+\end{itemize}
+Basically, what we're doing here is using the CDF to check against $u$. \\
+
+
+In the continuous case, we generate $u \sim (0,1)$ but we want a random variable with some other density $X \sim f_X(x)$. Assuming that $X = T(U)$, starting with the CDF of $X$:
 \begin{align}
-P[X\leq x] &= P[F^{-1}(U) \leq x]\nn\\
-&= P[U \leq F(x)]\nn\\
-&= F(x).
-\end{align} \qed
+F(x) &= P(X \leq x)\nn\\
+&= P(T(u) \leq x)\nn\\
+&= P(u \leq T^{-1}(x))\nn\\
+&= F_u(T^{-1}(x))\nn\\
+&= T^{-1}(x)
+\end{align}
+where the last equality follows from the fact that $F_u(u)$ is just the identity function. So we have
+\begin{align}
+\boxed{F(x) = T^{-1}(x)}
+\end{align}
+which means $F$ and $T$ are inverses of each other. \\
 
+For example, we can use the inverse transform to generate random $\text{Exp}(\beta)$:
+\begin{align}
+f_X(x) = \f{1}{\beta}e^{-x/\beta}, \quad x\in \mathbb{R}^+
+\end{align}
+We want to find $F_X(x)$ first:
+\begin{align}
+F_X(x) = \int_0^x \f{1}{\beta} e^{-x'/\beta}\,dx' = 1 - e^{-x/\beta}.
+\end{align}
+And so it is easy to see that
+\begin{align}
+T^{-1}(x) = 1 - e^{-x/\beta} \implies u = 1 - e^{-x/\beta} \implies x = \beta \log(1-u).
+\end{align}
+From here, we can generate a sample of uniform $u$'s to get $X \sim \text{Exp}(\beta)$. \\
 
-
+Note that a disadvantage to this method is the fact that for this to work we must be able to write down the inverse CDF in some closed form. The advantage, though, is that this method is very efficient if it works. This is because for each $u$ we generate we get an $x$. This is not the case for the methods we will discuss next. 
 
 
 
 \subsection{Accept-Reject Generation Algorithm}
+
+
+
+
+
+
 
 \section{Bootstrap Procedures}
 
