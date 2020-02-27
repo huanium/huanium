@@ -1173,8 +1173,43 @@ Notice that the output register in both cases are the same (differ only in the s
 
 \subsection{Why additional Qbits needn't mess things up}
 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{mnr}
+\end{figure}
 
-Recall that in general, we use $n+m$ Qbits to perform quantum computations, where $n$ is the number of Qbits in the input register and $m$ in the output register.   
+
+We use $n+m$ Qbits to perform quantum computations, where $n$ is the number of Qbits in the input register and $m$ in the output register. In general, however, we also need $r$ additional Qbits. The action of the computer on these Qbits is then described by a unitary $\mathbf{W}_f$, which acts on all $m+n+r$ Qbits. Only in special cases do we have $\mathbf{W}_f$ act separately on the input and output registers and leaving the additional Qbits alone. In general, the $r$ additional Qbits get entangled with the $m+n$ Qbits too. \\
+
+Let the initial state be
+\begin{align}
+\ket{\Psi}_{n+m+r} = \ket{x}_n \ket{y}_m \ket{\psi}_r
+\end{align}
+then applying the global unitary gate $\mathbf{W}_f$ gives:
+\begin{align}
+\mathbf{W}_f \ket{\Psi}_{n+m+r} = \ket{x}_n \ket{y+\oplus f(x)}_m \ket{\phi}_r.
+\end{align}
+The state of the addition Qbits is not necessarily intact. However, we require that the additional Qbits are not only unentangled with the input and output registers, but also its state $\ket{\phi}_r$ is independent of the initial state of the input and output registers. When this is the case, the action of $\mathbb{W}_f$ on $n+m$ Qbits can be represented by the unitary $\mathbf{U}_f$ on the subspace $n+m$ alone, while the $r$ additional Qbits are taken from the initial pure state $\ket{\psi}_r$ to a final pure state $\ket{\phi}_r$ that is independent of the initial contents of the input and output registers. \\
+
+So how do we construct $\mathbf{W}_f$ so that it acts as if $\mathbf{U}_f$ is acting on the $n+m$ Qbits alone and leaving the additional Qbits intact? Schematically, this looks like
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{W}
+\end{figure} 
+
+There are three steps to the solution:
+\begin{enumerate}
+	\item First, we apply a unitary transformation $\mathbf{V}$ that acts only on the $n$ and $r$ input register and additional Qbits. We can design the $\mathbf{V}$ gate such that if the initial input state is $\ket{x}_n$ and $\ket{\psi}_r$ then the output is $\ket{f(x)}_m$ and $\ket{\psi}_{n+r-m}$. We will then proceed to feed $\ket{f(x)}_m$ to the next gate.
+	\item In this step, we let $y$ change into $y\oplus f(x)$ without changing the states of the other $n+r$ Qbits. This can be done with $m$ CNOT gates that combine to make a single unitary $\mathbf{C}_m$ gate. The control bits here will be the bits in $\ket{f(x)}_m$, so they remain unchanged. Only the $\ket{y}_m$ Qbits states get changed. 
+	\item Finally, because the state of the $n+r$ Qbits is not altered by $\mathbf{C}_m$, we simply let $\mathbf{V}^\dagger$ reverse these back to their original states, to give us the original $\ket{\psi}_r$, $\ket{x}_n$, with $\ket{y\oplus f(x)}_m$ 
+\end{enumerate}
+
+
+As an aside, the $m$ CNOT gate, for $m=5$, looks like
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{mcnot}
+\end{figure}
 
 
 
@@ -1205,6 +1240,44 @@ Recall that in general, we use $n+m$ Qbits to perform quantum computations, wher
 
 
 \subsection{The Bernstein-Vazirani problem}
+
+Consider the function $f(x) = a \cdot x$, where $a\cdot x$ denotes the the mod-2 sum of the products of the corresponding bits of $a$ and $x$, i.e., 
+\begin{align}
+a\cdot x = \bigoplus_{i=0} a_0 x_0
+\end{align}
+where of course $a_i, x_i$ take values $\{ 0,1\}$, and $a$ is a non-negative integer less than $2^n$. The problem is to find $a$. More specifically, suppose we have a subroutine which evaluates $f(x) = a\cdot x$, how many times do we have to query $f(x)$ in order to find what $a$ is? Note that the a rule one has to follow here is that any additional Qbits used by the algorithm (so, except for the input and output registers) must return to their initial state once the evaluation has completed. \\
+
+Classically, here's how we do it. Let a number $a$ be given. Because the expansion of $2^m$ has a 1 in position $m$ and 0 in all other positions, the $m^{\text{th}}$ bit of $a$ is $a\cdot 2^m$ (it's easy to see how this works by writing down the mod-2 inner product).  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Simon's problem}
 \subsection{Constructing Toffoli gates}
 
@@ -2003,7 +2076,7 @@ and other identities show that
 \end{align}
 
 
-\noindent \textit{Solution:} We can create a lot of cancellations using the identities $\n\X = \X \tilde{\n}$ and $\tilde{n}\X = \X\n$:
+\noindent \textit{Solution:} We can create a lot of cancellations using the identities $\n\X = \X \tilde{\n}$ and $\tilde{\n}\X = \X\n$:
 \begin{align}
 \mathbf{S}_{ij} &= \mathbf{C}_{ij}\mathbf{C}_{ji}\mathbf{C}_{ij}\nn\\
 &= [\tilde{\n}_i\Id_j + \n_i \X_j][\tilde{\n}_j\Id_i + \n_j \X_i][\tilde{\n}_i\Id_j + \n_i \X_j]\nn\\
@@ -2079,7 +2152,7 @@ and other identities show that
 	\item The given state can be rewritten in the $0-1$ basis:
 	\begin{align}
 	\f{1}{\sqrt{2}}(\ket{R} - \ket{L}) = \f{1}{2}\begin{pmatrix}
-	0 2i
+	0 \\ 2i
 	\end{pmatrix} = i\begin{pmatrix}
 	0\\1
 	\end{pmatrix} = i\ket{1}
@@ -2112,6 +2185,7 @@ and other identities show that
 
 
 
+
 \noindent \textbf{5.} A rotation operator $\mathbf{R}_\phi$ on photons is one that takes a photon linearly polarized at angle $\alpha$ and converts it into a linearly polarized photon at angle $\al+\phi$. A matrix representation of the rotation operator in the computation basis is
 \begin{align}
 \mathbf{R}_\phi = \begin{pmatrix}
@@ -2123,7 +2197,7 @@ and other identities show that
 	\item Show that $\mathbf{R}_\phi\ket{0} = \ket{\phi}$ and $\mathbf{R}_\phi \ket{1} = \ket{\pi/2+ \phi}$
 	\item Show that $\mathbf{R}_\phi \ket{\al} = \ket{\al + \phi}$, where $\ket{\al} = \ket{\epsilon_{\alpha,0}}$
 	\item Show that $\mathbf{R}_\phi$ acting on a right-handed photon $\mathbf{R}_\phi\ket{R}$ gives you back a right handed photon with an overall phase shift $\phi$.
-	\item Show that the sequence of three operators $\mathbf{R}_{-\phi}\Z \mathbf{R}_\phi$ on a photon in the state $\ket{\epsilon}$ is equivalent to the Hadamard gate if $\phi = \pi/8$. To do this you just need to show that $\mathbf{R}_{-\phi}\Z \mathbf{R}_\phi = \had$ when $\phi = \pi/8$. 
+	\item Show that the sequence of three operators $\mathbf{R}_{\phi}\Z \mathbf{R}_{-\phi}$ on a photon in the state $\ket{\epsilon}$ is equivalent to the Hadamard gate if $\phi = \pi/8$. To do this you just need to show that $\mathbf{R}_{-\phi}\Z \mathbf{R}_\phi = \had$ when $\phi = \pi/8$. 
 \end{enumerate}
 
 
