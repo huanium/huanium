@@ -12972,7 +12972,9 @@ in better notation (I think) for clarity:
 \end{align}
 
 \begin{framed}
-	\textit{Proof:} I'd like to show how this Lagrangian for $\phi$ is obtained, as it is the origin of the Vainshtein mechanism which we will cover shortly after this. Being able to know where this action comes from will give us some sense of how the Vainshtein radius emerges, how ghosts come about, and how the vDVZ discontinuity is resolved. \\
+	\textit{Proof-ish:} I'd like to show how this Lagrangian for $\phi$ is obtained (up to some overall constant multiple), as it is the origin of the Vainshtein mechanism which we will cover shortly after this. Being able to know where this action comes from will give us some sense of how the Vainshtein radius emerges, how ghosts come about, and how the vDVZ discontinuity is resolved. \\
+	
+	The way this is done will be similar but slightly different from what some papers on this topic approach the derivation in that it is much more clear how terms appear/cancel each other. The way this is usually done is people would expand the action to second order, make some arguments, then go to third order. This jump feels weird to me. My approach is straight brute force with a touch of dimensional analysis at the end. The reader will definitely find this approach much more digestible than how this is often presented in the literature. \\
 	
 	Okay. Recall in Section 2.7.5 that we started with the naive massive gravity, with $1/M_P$:
 	\begin{align}
@@ -12982,27 +12984,134 @@ in better notation (I think) for clarity:
 	\begin{align}
 	S_\text{mass} = \f{-M_P^2}{2}\f{m^2}{4}\int d^4x\, \eta^{\mu\nu}\eta^{\al\be}\lp h_{\mu\al}h_{\nu\be} - h_{\mu\nu}h_{\al\be} \rp.
 	\end{align}
+	Note that some papers instead use the following expression for the mass term:
+	\begin{align}
+	S_\text{mass} = \f{-M_P^2}{2}\f{m^2}{4}\int d^4x\, h^{\mu\nu}h^{\al\be}\lp \eta_{\mu\al}\eta_{\nu\be} - \eta_{\mu\nu}\eta_{\al\be} \rp.
+	\end{align}	
+	But upon inspection this expression is equivalent to the one above. For consistency, I will be using the one above (but actually there's no difference after contractions are made).\\
+	
+	
 	We plug (1) the replacement (including higher order terms):
 	\begin{align}
 	H_{\mu\nu} &= {h_{\mu\nu}} + {\p_\mu A_\nu} + {\p_\nu A_\mu} + {2\p_\mu \p_\nu \phi} + {\p_\mu A^\al \p_\nu A_\al} \nn\\
-	&\quad {\p_\mu A^\al \p_\nu \p_\al \phi} + {\p_\mu\p^\al \phi \p_\nu A_\al} + \p_\mu \p^\al \phi \p_\nu \p_\al \phi + \text{ h.o.t.s.},
+	&\quad + {\p_\mu A^\al \p_\nu \p_\al \phi} + {\p_\mu\p^\al \phi \p_\nu A_\al} + \p_\mu \p^\al \phi \p_\nu \p_\al \phi + \text{ h.o.t.s.},
 	\end{align}
-	(2) the canonical normalization
+%	(2) the canonical normalization
+	and (2) the conformal transformation
+	\begin{align}
+	h_{\mu\nu} = \hat{h}_{\mu\nu} - \eta_{\mu\nu} \phi
+	\end{align} 
+	into the mass term
+	\begin{align}
+	S_\text{mass} &= \f{-M_P^2}{2}\f{m^2}{4}\int d^4x\, \eta^{\mu\nu}\eta^{\al\be}\lp h_{\mu\al}h_{\nu\be} - h_{\mu\nu}h_{\al\be} \rp
+	\end{align}
+	and will only do the canonical normalization after all is done. \\
+	
+	First, we want to evaluate
+	\begin{align}
+	\eta^{\mu\nu}\eta^{\al\be}\lp h_{\mu\al}h_{\nu\be} - h_{\mu\nu}h_{\al\be} \rp&=\tensor{H}{^{\mu\nu}}\tensor{H}{_{\mu\nu}} - H^2
+	\end{align}
+	to which end we must find $H$ (since we know $H_{\mu\nu}$) already:
+	\begin{align}
+	H &= \hat{h} - 4\phi + 2\p A + 2\square \phi + \tensor{A}{^\lambda_{,\nu}}\tensor{A}{_{\lambda,}^\nu} + 2 \tensor{A}{^\lambda_,^\nu}\phi_{,\nu\lambda} + \phi_{,\nu\lambda}\phi_,^{\nu\lambda} \nn\\
+	&= \hat{h} - 4\phi + 2\p A + 2\square \phi + \tensor{A}{^\lambda_{,\nu}}\tensor{A}{_{\lambda,}^\nu} + 2 \tensor{A}{^\lambda_,^\nu}\phi_{,\nu\lambda} + (\p_\mu\p_\nu \phi)^2.
+	\end{align}
+	Under the conformal transformation $H_{\mu\nu}$ is slightly modified:
+	\begin{align}
+	H_{\mu\nu} &= {\hat{h}_{\mu\nu}} - \eta_{\mu\nu}\phi + {\p_\mu A_\nu} + {\p_\nu A_\mu} + {2\p_\mu \p_\nu \phi} + {\p_\mu A^\al \p_\nu A_\al} \nn\\
+	&\quad + {\p_\mu A^\al \p_\nu \p_\al \phi} + {\p_\mu\p^\al \phi \p_\nu A_\al} + \p_\mu \p^\al \phi \p_\nu \p_\al \phi + \text{ h.o.t.s.},
+	\end{align}
+	So far we have not made any approximations (except for the expansion of $H_{\mu\nu}$). We're also using the comma notation for derivatives, to save space:
+	\begin{align}
+	&A_{\nu,\mu} \equiv \p_\mu A_\nu \quad \dots
+	\end{align}
+	and of course $\p A \equiv \p^\mu A_\mu$ and so on.
+	
+	When we evaluate
+	\begin{align}
+	H_{\mu\nu}H^{\mu\nu} - H^2,
+	\end{align}
+	the lowest order terms will gather to form a familiar combination:
+	\begin{align}
+	&\lp \hat{h}_{\mu\nu} + A_{\mu,\nu} + A_{\nu,\mu} \rp \lp \hat{h}^{\mu\nu} + \tensor{A}{^\mu_,^\nu} + \tensor{A}{^\nu_,^\mu} \rp - \lp h + 2\p A \rp^2\nn\\
+	=& (h^{\mu\nu}h_{\mu\nu} - h^2) + 4\lp h_{\mu\nu}\p^\mu A^\nu - h\p A \rp  + 2A_{\nu,\mu}A_{\mu,\nu} + 2A_{\nu,\mu}\tensor{A}{^\mu_,^\nu} - 4\tensor{A}{^\mu_,^\nu}A_{\nu,\mu}.
+	\end{align}
+	where the last term comes from $-4(\p A)^2$ (the verification is very easy so I'll leave it to the reader).\\
+	
+	The reader should be able to convince himself that
+	\begin{align}
+	2A_{\nu,\mu}A_{\mu,\nu} + 2A_{\nu,\mu}\tensor{A}{^\mu_,^\nu} - 4\tensor{A}{^\mu_,^\nu}A_{\nu,\mu} \equiv F_{\mu\nu}F^{\mu\nu}.
+	\end{align}
+	And so the lower order terms combine to form a familiar combination that we have seen in Section 2.7.5:
+	\begin{align}
+	(h_{\mu\nu}h^{\mu\nu} - h^2) + 4(h_{\mu\nu}\p^\mu A^\nu - h\p A) + F_{\mu\nu}F^{\mu\nu}
+	\end{align}
+	Okay, what do the higher order terms do? There are \textit{many} higher order terms, so we should be clever as to which terms should be of interest. We know that ultimate we won't care about terms involving $A$ and $h$ because ultimately we are interested in what $\phi$ does. In other words, our goal here is to obtain the action for $\phi$, i.e., $\lag_\phi$. \\
+	
+	Also, we are interested in the cubic behavior of $\phi$, as this is where the scaling $\Lambda_5^5$ comes into play. So, we will pay attention to just terms that give us high orders of $\phi$. So what are these terms? It is \textit{actually} easy to just write out what $H_{\mu\nu}, H^{\mu\nu}$, and $H$ are and see for yourself that the \textit{interesting} terms, with multiplicity, are the following.\\
+	
+	The first term comes from both the $H_{\mu\nu}H^{\mu\nu}$ product and $H^2$:
+	\begin{align}
+	-4 \phi_{,\mu\nu}\eta^{\mu\nu}\phi + 16 \phi \square \phi \equiv 12 \phi \square \phi
+	\end{align}
+	where I have used the fact that integrating by parts moves a derivative and flips a sign (here I integrated by parts twice to create the $\square \phi$ term in the first summand).\\
+	
+	Another interesting term is
+	\begin{align}
+	4(\square \phi)(\phi_{,\mu\nu} \tensor{\phi}{_,^{\mu\nu}}) \equiv 4(\square \phi)(\p_\mu\p_\nu \phi)^2
+	\end{align}
+	which comes from $H^2$. \\
+	
+	And the last term is
+	\begin{align}
+	4\tensor{\phi}{_,^{\al\nu}}\tensor{\phi}{_{,\nu}^\lambda}\tensor{\phi}{_{,\al\lambda}} \equiv -4(\square \phi)^3
+	\end{align}
+	where again I have used integration by parts (three times) to move the derivatives to create $\square \phi$.\\
+	
+	Now, since we don't care about the $h, A$ terms anymore (because we have done all the transformations except for scaling), we won't worry about their combination. Instead, we'll just look at the action for $\phi$. Up to some constant multiple, $S_\phi$ is
+	\begin{align}
+	S_\phi = -\f{M_P^2}{2}\f{m^2}{4}\int d^4x\, \al\phi \square \phi - \lb \be(\square\phi)^3 - \square \phi (\p_\mu \p_\nu \phi)^2 \rb
+	\end{align}
+	where $\al,\be$ are just leading constants. In particular, $\beta$ is some scaling for the cubic terms that will appear once the canonical normalization is finished.\\
+	
+	It turns out (after some careful counting that I won't worry about - since the goal is to obtain the scaling for $\beta$) that $S_\phi$ has the form
+	\begin{align}
+	S_\phi = -\f{M_P^2}{2}\f{m^2}{4}\int d^4x\, \f{3}{2}\phi \square \phi - \lb \be(\square\phi)^3 - \square \phi (\p_\mu \p_\nu \phi)^2 \rb + \phi T
+	\end{align}
+	where the $\phi T$ term just follows from the matter term. We won't worry too much about it. It is easy to verify its existence, but there's not much use in that.\\
+	
+	Now, let us introduce the canonical normalizations:
 	\begin{align}
 	&\hat{h} = \f{1}{2}M_P h\\
 	&\hat{A} = \f{1}{2}mM_P A\\
 	&\hat{\phi} = \f{1}{2}m^2 M_P \phi
 	\end{align}
-	and (3) the conformal transformation
+	We are interested in particular to $\hat\phi \to \phi$ transformation. To put all the $\phi$'s in terms of $\hat{\phi}$ in the cubic terms, we require a factor of
 	\begin{align}
-	\hat h_{\mu\nu} = h'_{\mu\nu} + m^2 \phi \eta_{\mu\nu}
-	\end{align} \\
-	into the mass term (ready?)
-	\begin{align}
-	S_\text{mass} &= \f{-M_P^2}{2}\f{m^2}{4}\int d^4x\, \eta^{\mu\nu}\eta^{\al\be}\lp h_{\mu\al}h_{\nu\be} - h_{\mu\nu}h_{\al\be} \rp\nn\\
-	&= \f{-M_P^2}{2}\f{m^2}{4}\int d^4x\, 
+	\lp \f{1}{M_P m^2} \rp^3.
 	\end{align}
+	In this case, the action becomes
+	\begin{align}
+	S_\phi \sim -\f{M_P^2}{2}\f{m^2}{4}\int d^4x\, \f{1}{M_P^2 m_2}\f{3}{2}\hat\phi \square \hat\phi - \lb \lp \f{1}{M_P m^2} \rp^3(\square\hat\phi)^3 - \square \hat\phi (\p_\mu \p_\nu \phi)^2 \rb \nn\\+ \f{1}{M_Pm^2}\hat\phi T
+	\end{align}
+	The acute reader will notice that the units for the first term is actually \textit{put} there, i.e. it was not supposed to be quantity. However, I will just note here that to correctly obtain the units or the first term one will have to perform the conformal transformation \textit{after} the expansion, because what the conformal transformation does it actually gives $\phi$ and extra $m^2$, which cancels with the $m^4$ in the denominator, and ultimate make the leading factor of $\hat\phi\square \hat\phi$ unity. The conformal transformation is done by plugging
+	\begin{align}
+	\tilde{h}_{\mu\nu} = \hat{h}_{\mu\nu} - m^2 \eta_{\mu\nu}\phi
+	\end{align} 
+	into the combination containing $F_{\mu\nu}F^{\mu\nu}$. The reader will see after from algebraic manipulation that $\phi$ indeed picks up an $m^2$. \\
 	
+	In any case, we see that when the leading factor $\phi \square \phi$ is unity, the leading factor of the cubic terms is
+	\begin{align}
+	\boxed{\f{M_P^2 m^2}{1} \f{1}{(M_P^2 m^2)^3} \equiv \f{1}{M_P m^4} \equiv \f{1}{\Lambda_5^5}}
+	\end{align}
+	And so we proved-ish that the scale is 
+	\begin{align}
+	\boxed{\Lambda^5_5 \equiv (M_P m^4)^{1/5}}
+	\end{align}
+	and that the action for $\phi$ is 
+	\begin{align}
+	\boxed{S_\phi = \int d^4x\, -3(\p \hat{\phi})^2 + \f{2}{\Lambda_5^5}[(\square \hat\phi)^3 - (\square \hat\phi)(\p_\mu \p_\nu \hat\phi)^2] + \f{1}{M_P}\hat\phi T}
+	\end{align} \qed
 \end{framed}
 
 
