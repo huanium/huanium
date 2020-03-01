@@ -1532,10 +1532,10 @@ However, this does not quite match the mgf for a $\chi^2(2)$. To circumvent this
 \begin{align}
 Z = \f{X_1}{X_2} =\f{2X_1/2}{2X_2/2}  = \f{(X_1+X_1)/2}{(X_2+X_2)/2},
 \end{align}
-as we expect $r=2$. Let $Y_1 = X_1 + X_1$. Then we have trivially $Y_1 =2X_1$, and so $\abs{J} = 2$. With this, $Y_1$ has the pdf 
+as we expect $r=2$. Let $Y_1 = X_1 + X_1$. Then we have trivially $Y_1 =2X_1$, and so $\abs{J} = 1/2$. With this, $Y_1$ has the pdf 
 \begin{align}
-\tilde{f}_Y(y) = \abs{J}f(x) = 2f(x) = \begin{cases}
-2e^{-y/2}, \quad 0 < y < \infty\\
+\tilde{f}_Y(y) = \abs{J}f(x) = \f{1}{2}f(x) = \begin{cases}
+\f{1}{2}e^{-y/2}, \quad 0 < y < \infty\\
 0, \quad \Else
 \end{cases}. 
 \end{align}
@@ -2876,7 +2876,32 @@ At such a low p-value ($p = 0.006$), we reject the null hypothesis $H_0$. So eve
 
 
 
-\noindent \textit{Solution:} 
+\noindent \textit{Solution:} By definition,
+\begin{align}
+Y_n \xrightarrow{P} \theta &\iff \forall \epsilon > 0, \lim_{n\to \infty}P[\abs{Y_n - \theta} \geq \epsilon ] = 0\nn\\
+&\iff \forall \epsilon > 0, \lim_{n\to \infty}P[\abs{\min\{ X_1,\dots,X_n\} - \theta} \geq \epsilon ] = 0\nn\\
+&\iff \forall \epsilon > 0, \lim_{n\to \infty}P[\min\{ X_1,\dots,X_n\} - \theta \geq \epsilon] = 0\nn\\
+&\iff \forall \epsilon > 0, \lim_{n\to \infty}P[Y_n  \geq \epsilon+\theta] = 0
+\end{align}
+where the second to last equivalence statement comes from the fact that $x_i > \theta\, \forall i = 1,2,\dots,n$. To show $Y_n \xrightarrow{P} \theta$, we find the cdf for $Y_n$:
+\begin{align}
+F_{Y_n}(y) &= P(Y_n < y)\nn\\
+&= 1- P(Y_n \geq y_m)\nn\\
+&= 1 - \prod^n_{i=1}P(X_i \geq y)\nn\\
+&= 1 - \prod^n_{i=1}\int^\infty_{y} e^{-(x-\theta)}\,dx\nn\\
+&= 1 - \prod^n_{i=1} e^{-(y - \theta)}\nn\\
+&= 1 - e^{-n(y - \theta)}\nn\\
+P(Y_n \geq y) &= e^{-n(y - \theta)}.
+\end{align}
+Let $\epsilon > 0$ be given. Then 
+\begin{align}
+P(Y_n \geq \epsilon+\theta) = e^{-n(\epsilon + \theta - \theta)} = e^{-n\epsilon},
+\end{align}
+and so 
+\begin{align}
+\lim_{n\to \infty}P[\abs{Y_n - \theta} \geq \epsilon ] = \lim_{n\to \infty}P[Y_n  \geq \epsilon+\theta] = \lim_{n\to \infty} e^{-n\epsilon} = 0 \implies Y_n \xrightarrow{P} \theta.
+\end{align}\qed
+
 
 
 \newpage
@@ -2888,7 +2913,25 @@ At such a low p-value ($p = 0.006$), we reject the null hypothesis $H_0$. So eve
 	\includegraphics[scale=0.25]{522}
 \end{figure}
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} Let $F_{Z_n}$ and $F_Z$ be, respectively, the cdfs of $Z_n$ and $Z$. Then by definition 
+\begin{align}
+Z_n \xrightarrow{D} Z \iff \lim_{n\to \infty} F_{Z_n}(z) = F_Z(z)
+\end{align}
+for all $z$ at which $F_Z(z)$ is continuous. Now, we don't know what $F_Z$ is in this case, but we can find what $F_{Z_n}$ converges to when $n\to \infty$. To show this, we find $F_{Z_n}$:
+\begin{align}
+F_{Z_n}(z) &= P(Z_n \leq z)\nn\\
+&= P(n(Y_1 - \theta) \leq z)\nn\\
+&= P(Y_1 \leq z/n + \theta)\nn\\
+&= 1 - e^{-n(z/n+ \theta - \theta)}, \quad \text{calculated in Problem 5.1.7}\nn\\
+&= 1 - e^{-z}.
+\end{align}
+And so (obviously)
+\begin{align}
+\lim_{n\to \infty} F_{Z_n}(z) = 1 - e^{-z} \equiv \text{cdf}(\text{Exp}(1))
+\end{align}
+Therefore, $Z_n \xrightarrow{D} Z \sim \text{Exp}(1)$.\qed
+
+
 
 \newpage
 
@@ -2902,7 +2945,48 @@ At such a low p-value ($p = 0.006$), we reject the null hypothesis $H_0$. So eve
 \end{figure}
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} Let $X_n \sim \Gamma(\al = n, \be)$ be given, where $\be$ is not a function of $n$. Let $Y_n = X_n/n$. To find the limiting distribution of $Y_n$, we find $\lim_{n\to \infty} M_{Y_n}(t)$. The reason we don't want to find the cdf $F_{Y_n}$ is that integrals involving the Gamma distribution are often ugly.
+\begin{align}
+M_{Y_n}(t) &= E[e^{tY_n}] =  E[e^{tX_n/n}] \equiv E[e^{t_n X_n}] \nn\\
+&= (1 - \be t_n)^{-n}\nn\\
+&= \lp 1 - \f{\beta t}{n} \rp^{-n}.
+\end{align}
+And so using the identity 
+\begin{align}
+\lim_{n\to \infty} \lp 1- \f{1}{n} \rp^{-n} = e,
+\end{align}
+by change of variables we obtain
+\begin{align}
+\lim_{n\to \infty}M_{Y_n}(t) = \lim_{n\to \infty} \lp 1 - \f{\beta t}{n} \rp^{-n} = e^{\be t} 
+\end{align}
+So what is the limiting distribution of $Y_n$? By definition,
+\begin{align}
+M_Y(t) = E[e^{tY}] = \int_\infty^\infty f_Y(y)e^{yt}\,dy  = e^{\beta t}.
+\end{align}
+Upon inspection, this equality holds if and only if $f_Y(y) \equiv \delta(y-\beta)$, the delta function centered at $\beta$. 
+\begin{align}
+\int^\infty_{-\infty} \delta(y-\beta)e^{yt}\,dy = e^{\beta t}.
+\end{align}
+And so, the limiting distribution of $Y_n$ is the degenerate distribution with parameter $\beta$:
+\begin{align}
+Y_n \xrightarrow{D} Y \sim \delta(y - \beta) \equiv \begin{cases}
+1, \quad y = \beta\\
+0, \quad \text{else}
+\end{cases}.
+\end{align}
+\qed
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 
 
@@ -2914,7 +2998,45 @@ At such a low p-value ($p = 0.006$), we reject the null hypothesis $H_0$. So eve
 \end{figure}
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} We have $X_1, \dots, X_{72}$, with 
+\begin{align}
+X_i \sim f(x) = \begin{cases}
+\f{1}{x^2}, \quad 1 < x < \infty\\
+0, \quad \text{else}
+\end{cases}.
+\end{align}
+We first find the probability that any given observation is less than 3:
+\begin{align}
+P(X < 3) = \int_1^3 \f{1}{x^2}\,dx = \f{2}{3}.
+\end{align}
+So we have a ``binomial situation'' where the probability of success is $p=2/3$. Given $n=72$ trials, we have $\mu = np = 72(2/3) = 48$ and $\sigma = \sqrt{np(1-p)} = 4$. We wish to find the probability of having more than 50 successes. To this end, we use the normal approximation (CLT), which says
+\begin{align}
+\f{Y_{72} - \mu}{\sigma} \sim \N(0,1).
+\end{align}
+And so
+\begin{align}
+P(Y_{72} > 50) &\approx P\lp Z \geq \f{51 - 48}{4}  \rp\nn\\
+&= \texttt{1-pnorm(3/4)}\nn\\
+&= \boxed{0.2266274}
+\end{align}
+Or we can also use the continuity correction to get
+\begin{align}
+P(Y_{72} > 50) &\approx P\lp Z \geq \f{50.5 - 48}{4}  \rp\nn\\
+&= \texttt{1-pnorm((50.5-48)/4)}\nn\\
+&= \boxed{0.2659855}
+\end{align}
+\qed
+
+
+
+
+
+
+
+
+
+
+
 
 \newpage
 
@@ -2928,11 +3050,21 @@ At such a low p-value ($p = 0.006$), we reject the null hypothesis $H_0$. So eve
 
 
 
-\noindent \textit{Solution:} By definition,
+\noindent \textit{Solution:} We want to use the $\Delta$-method for this problem. Since $\bar{X} \sim \N(\mu, \sigma^2/n)$, we have
 \begin{align}
-Y_n \xrightarrow{P} \theta \iff 
+\sqrt{n}(\bar{X} - \mu) \xrightarrow{D} \N(0,\sigma^2),
 \end{align}
-
+by a simple change of variables. The function $u(\bar{X}) = \bar{X}^3$ is differential at for all $\bar{X}$ and $u'(\bar{X}) \neq 0$ in general, so by the $\Delta$-method,
+\begin{align}
+&\sqrt{n}(u(\bar{X}) - u(\mu)) \xrightarrow{D} \N(0, \sigma^2(u'(\mu))^2)\nn\\
+\iff &\sqrt{n}(u(\bar{X}) - u(\mu)) \xrightarrow{D} \N(0, \sigma^2(3\mu^2)^2)\nn\\
+\iff &\sqrt{n}(u(\bar{X}) - \mu^3) \xrightarrow{D} \N(0, 9\sigma^2\mu^4).
+\end{align}
+\noindent But of course, the convergence in distribution above is equivalent to 
+\begin{align}
+u(\bar{X}) = \bar{X}^3 \xrightarrow{D} \N\lp\mu^3, \f{9\sigma^2\mu^4}{n} \rp,
+\end{align}
+again by change of variables. \qed
 
 
 
