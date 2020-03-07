@@ -1144,11 +1144,139 @@ Note that a disadvantage to this method is the fact that for this to work we mus
 \subsection{Evaluating definite integrals}
 
 
+This is based on the idea that 
+\begin{align}
+E[g(x)] = \int^\infty_{-\infty}g(x)f(x)\,dx.
+\end{align}
+For example,
+\begin{align}
+\int^1_0 e^{-x^2/2}\,dx = E[e^{-x^2/2}] 
+\end{align}
+where $x\sim U(0,1)$. \\
+
+We could estimate $g(.)$ by 
+\begin{align}
+\bar g = \f{1}{J}\sum^J_{i=1}[g(x^{(j)})] 
+\end{align}
+where $x^{(j)} \sim f(x)$. If we take enough random variables, $\bar g \to E[g]$. We could also use the CLT to calculate error bounds:
+\begin{align}
+\bar g \pm z_{\al/2}SE(\bar g),
+\end{align}
+where 
+\begin{align}
+SE(\bar g) = \f{1}{J^2}\sum^J_{i=1}\lp g(x^{(j)}) - \bar g \rp^2.
+\end{align}
+For example, we can try to evaluate 
+\begin{align}
+\int^\infty_0 x^4e^{-x^2/2}\,dx.
+\end{align}
+We identify $g(x) = x^4$, and $e^{-x}$ as the density for $\text{Exp}(1)$. What we can do is generate a sample of random $\text{Exp}(1)$, lu into $x^4$ then take the average value of $x^4$. 
+
+
 
 
 
 
 \newpage
+
+
+\section{Bootstrapping}
+
+The basic idea of bootstrapping is this: We have a sample of data $x_1,\dots,x_n = \vec{X}$. We will replicate sample infinitely many times. This will be a model for the population. \\
+
+Note that this process doesn't work well in the case that our sample is poorly representative. In practice, we obtain many bootstrap samples $X^*$'s where each $X^*$ is a resample from our original sample where we randomly select $X^*_i$ from $\vec{X}$ \textbf{with replacement}. \\
+
+The bootstrap sample is the same size as the original sample. \\
+
+If we're interested in estimating a parameter using an estimator $\hat{\theta} = f(\vec{X})$, then we can calculate an estimate $\hat{\theta}^* = f(\vec{X}^*)$ from each bootstrap sample. The bootstrap distribution of $\hat\theta^*$ models the sampling distribution of $\hat\theta$. \\
+
+For example, let $x_1, \dots, x_n$ be a random sample from some population with an unknown mean $\mu$. We can think about taking a simple bootstrap sample, $X_i^*$, then calculate its mean. Of course, this is an unbiased estimator for $\mu$. \\
+
+If we take many bootstrap samples $X^*_i$ and calculate the mean of each, we could generate a bootstrap for $\bar{X}^*$. In an estimation setting, the most common use of bootstrap distribution is to estimate the SE of $\hat\theta$. \\
+
+We can also find CI using percentiles/normal approximation this way.\\
+
+
+
+\subsection{Bootstrapping for Hypothesis Testing}
+
+
+
+Say we have $H_0 : \mu = \mu_0$ and $H_a : \mu > \mu_0$. To test these hypotheses with bootstrapping, we shift the original data such that the shifted mean is $\mu_0$, i.e. we do $X_i - \bar{X} + \mu_0$ to all observations. \\
+
+From here, we bootstrap and generate a sampling distribution for the mean of the bootstrap samples. Then, we look and count how many bootstraps means are greater than the observed means and find the associated $p$-value. \\
+
+We note that the advantage of doing this is we don't make any distributional assumptions. The disadvantage (kind of) is that this process can be a little too computationally expensive. However, with modern computers, this is no longer a major problem. \\
+
+For example, say we want to compare two means. $H_0 : \Delta = 0$, $H_a :\Delta \neq 0$. Say we have two samples (of different sample sizes) from cdfs $F(x)$ and $F(x - \Delta)$, respectively. Under the null, these samples come from the same distribution. So, we can follow these steps:
+\begin{itemize}
+	\item Combine the samples into a single sample.
+	\item Take one bootstrap of size $n_1$ and one of size $n_2$. 
+	\item Calculate the difference in means. 
+	\item Repeat many times
+	\item Count how many bootstrap differences are further from 0 than he original observed difference in means. 
+	\item Extract the p-value (either by percentile or by SE).
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1182,6 +1310,12 @@ If so, we write
 \begin{align}
 X_n \xrightarrow{P} X.
 \end{align}
+
+
+
+
+
+\noindent \textbf{Theorem: } (handy theorem) If $\hat\theta_n$ is an unbiased estimator of $\theta$, then $\hat\theta_n \xrightarrow{P} \hat\theta$ if $\lim_{n\to \infty} \text{Var}{(\hat\theta_n)} = 0$.\\
 
 
 
@@ -1368,6 +1502,14 @@ and so
 \lim_{n\to \infty} M(t;n) = e^{t^2/2}, \quad t \in \mathbb{R}.
 \end{align}
 So ${Y_n} \sim \N(0,1) $.
+
+
+
+
+
+
+
+
 
 
 
