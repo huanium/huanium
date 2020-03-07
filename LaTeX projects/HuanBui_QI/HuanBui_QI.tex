@@ -2045,8 +2045,8 @@ show that
 \begin{align}
 \mathbf{S}_{ij}^2 &= \lb \n_i\n_j + \tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j + \X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j) \rb^2\nn\\
 &= \n_i\n_j\n_i\n_j + \tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j\tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j + \X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)\X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j) \nn\\
-&\quad \cancel{\n_i\n_j\tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j} + {\tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j\X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)} + \cancel{\X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)\n_i\n_j} \nn\\
-&\quad \cancel{\tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j\n_i\n_j} + \cancel{\X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)\tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j} + \cancel{\n_i\n_j\X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)}\nn\\
+&\quad +\cancel{\n_i\n_j\tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j} + {\tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j\X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)} + \cancel{\X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)\n_i\n_j} \nn\\
+&\quad +\cancel{\tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j\n_i\n_j} + \cancel{\X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)\tilde{\mathbf{\n}}_i \tilde{\mathbf{\n}}_j} + \cancel{\n_i\n_j\X_i\X_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)}\nn\\
 &= \n_i \n_j + \tilde{\n}_i\tilde{\n}_j +  (\tilde{\n}_i\n_j+\n_i\tilde{\n}_j)\underbrace{\X_i^2\X_j^2}_{\Id_4}(\n_i\tilde{\n}_j+\tilde{\n}_i\n_j) \nn\\ &\quad +\cancel{\X_i\X_j\n_i\n_j(\n_i\tilde{\mathbf{n}}_j + \tilde{\mathbf{n}}_i \n_j)}\nn\\
 &= \n_i \n_j + \tilde{\n}_i\tilde{\n}_j + \mathbf{0} + \tilde{\n}_i\n_j + \n_i\tilde{\n}_j + \mathbf{0}\nn\\
 &= \n_i(\n_j+ \tilde{\n}_j) + \n_j(\n_j + \tilde{\n}_j)\nn\\
@@ -2613,7 +2613,28 @@ that he now possesses.\\
 
 
 \noindent \textit{Solution:} 
+Let Alice and Bob share a pair of Qbits in the entangled state $\ket{\psi_{01}}$:
+\begin{align}
+\ket{\psi_{01}}_{BA} = \f{1}{\sqrt{2}}\lp \ket{01}_{BA} + \ket{10}_{BA} \rp.
+\end{align}
+Alice can apply $\Id_0, \X_0, \Y_0,$ or $\Z_0$ on her one Qbit. In each case, the outcome is 
+\begin{align}
+&(\Id \otimes \Id)\ket{\psi_{01}} = \f{1}{\sqrt{2}}\lp \ket{01} + \ket{10} \rp = \ket{\psi_{01}}\nn\\
+&(\Id \otimes \X)\ket{\psi_{01}} = \f{1}{\sqrt{2}}\lp \ket{00} + \ket{11} \rp = \ket{\psi_{00}}\nn\\
+&(\Id \otimes \Y)\ket{\psi_{01}} = \f{1}{\sqrt{2}}\lp i(-1)^1\ket{00} + i(-1)^0\ket{11} \rp = \f{-i}{\sqrt{2}}\lp \ket{00}- \ket{11} \rp = -i\ket{\psi_{10}}\nn\\
+&(\Id \otimes \Z)\ket{\psi_{01}} = \f{1}{\sqrt{2}}\lp (-1)^1\ket{01} + (-1)^0\ket{10} \rp = \f{-1}{\sqrt{2}}\lp \ket{01} - \ket{10} \rp = -\ket{\psi_{11}}.
+\end{align}
+What Bob can do given these (distinguishable) outputs is inverting them using $\had_1 \mathbf{C}_{10}$. By making measurements in the computational basis, Bob can determine exactly what operator Alice has used on her Qbit:
+\begin{align}
+\ket{\psi_{01}}  &\xrightarrow{\had_1\mathbf{C}_{10}} \ket{01} \implies \text{Alice used } \Id\nn\\
+\ket{\psi_{00}}  &\xrightarrow{\had_1\mathbf{C}_{10}} \ket{00}\implies \text{Alice used } \X_0 \nn\\
+-i\ket{\psi_{10}}  &\xrightarrow{\had_1\mathbf{C}_{10}} -i\ket{10}\implies \text{Alice used } \Y_0 \nn\\
+-\ket{\psi_{11}}  &\xrightarrow{\had_1\mathbf{C}_{10}} -\ket{11}\implies \text{Alice used } \Z_0. 
+\end{align}
 
+
+
+\qed
 
 
 
@@ -2659,6 +2680,16 @@ Consider a partial measurement of the system where Qbit 1 is measured.
 
 
 \noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item The probability that when Qbit 1 is measured the outcome will be a 0 is $(1/\sqrt{2})^2 = \boxed{1/2}$. The state of the system after Qbit 1 has been measured to be 0 is 
+	\begin{align}
+	\ket{\psi'}_2 = \f{\f{1}{\sqrt{2}}\ket{00}  }{\norm{\f{1}{\sqrt{2}}\ket{00} }} = \boxed{\ket{00}}
+	\end{align}
+	\item  The probability that when Qbit 1 is measured the outcome will be a 1 is one minus the probability that when Qbit 1 is measured the outcome will be a 0. So, the answer is $1 - 1/2 = \boxed{1/2}$. The state of the system after Qbit 1 has been measured to be 1 is
+	\begin{align}
+	\ket{\psi'}_2 = \f{\f{-1}{2}\ket{00}+ \f{i}{2}\ket{11}   }{\norm{\f{-1}{2}\ket{00}+ \f{i}{2}\ket{11} }} = \boxed{\f{-1}{\sqrt{2}}\lp \ket{10} - i\ket{11} \rp}
+	\end{align} 
+\end{enumerate}\qed
 
 
 
@@ -2712,23 +2743,20 @@ Brassard, Cr\'epeau, Jozsa, Peres, and Wooters in 1993 was described to me by Bi
 as ``games with algebra.'' The original article can be found via this \href{https://pdfs.semanticscholar.org/a3e4/5ffd3886f1a26f849514de3791054eebcc42.pdf}{\underline{link}}.\\
 
 \noindent Here's a way to understand the algebraic game. In the initial state of the system, Alice has
-two Qbits (0 and 1) and Bob has one Qbit (2).  Qbits 1 and 0 are in the entangled state $\ket{\psi_{00}}$, and Qbit 0 is in an unknown state $\ket{\al} = \al_0 \ket{0} + \al_1 \ket{1}$.  The state is written most naturally
+two Qbits (0 and 1) and Bob has one Qbit (2).  Qbits 1 and 0 are in the entangled state $\ket{\psi_{00}}$, and Qbit 2 is in an unknown state $\ket{\al} = \al_0 \ket{0} + \al_1 \ket{1}$.  The state is written most naturally
 as a 3-bit partially entangled state
 \begin{align}
-\ket{\psi}_3 = \ket{\al}\ket{\psi_{00}}
+\ket{\psi}_3 = \ket{\al}\ket{\psi_{00}}.
 \end{align}
-or, expanding it out, we can write it as
-\begin{align}
-\ket{\psi}_3 = \f{1}{\sqrt{2}}\lp \al_0 \ket{000} + \al_0 \ket{011} + \al_1 \ket{100} + \al_1 \ket{111}  \rp.
-\end{align}
+%or, expanding it out, we can write it as
+%\begin{align}
+%\ket{\psi}_3 = \f{1}{\sqrt{2}}\lp \al_0 \ket{000} + \al_0 \ket{011} + \al_1 \ket{100} + \al_1 \ket{111}  \rp.
+%\end{align}
 Show that this state can be written (most unnaturally!) as
 \begin{align}
 \ket{\psi}_3 = \f{1}{2} \lp \ket{\psi_{00}}\ket{\al} + \ket{\psi_{01}}\X\ket{\al} + \ket{\psi_{10}}\Z\ket{\al} + \ket{\psi_{11}}\X \Z \ket{\al} \rp
 \end{align}
-where the single-Qbit operators $\X$ and $\Z$ act only on Qbit 0 and the Bell-states are for Qbits
-2 and 1. \\
-
-\noindent Explain how the observation that you just demonstrated provided the motivation for the
+where the single-Qbit operators $\X$ and $\Z$ act only on Qbit 0 and the Bell-states are for Qbits 2 and 1. Explain how the observation that you just demonstrated provided the motivation for the
 protocol that we discussed in class for quantum teleportation.\\
 
 
@@ -2747,8 +2775,32 @@ to which end we use the identities:
 \end{align}
 We proceed by expanding the LHS until we get to the RHS:
 \begin{align}
-hello
+&\,\,\f{1}{2} \lp \ket{\psi_{00}}\ket{\al} + \ket{\psi_{01}}\X\ket{\al} + \ket{\psi_{10}}\Z\ket{\al} + \ket{\psi_{11}}\X \Z \ket{\al} \rp = \ket{\al}\ket{\phi_{00}}\nn\\
+=&\,\, \f{1}{2\sqrt{2}}\lb \lp \ket{00} + \ket{11} \rp\lp \al_0 \ket{0} + \al_1 \ket{1} \rp  + \lp \ket{10} + \ket{01} \rp \lp \al_1\ket{0} + \al_0\ket{1} \rp\right.\nn\\
+&\,\,\quad\left. + \lp \ket{00} - \ket{11} \rp  \lp \al_0 \ket{0} - \al_1\ket{1} \rp + \lp \ket{01} - \ket{10} \rp\lp \al_0\ket{1} - \al_1\ket{0} \rp  \rb\nn\\
+=&\,\, \f{1}{2\sqrt{2}}\lb 2\al_0\ket{000} + (\al_1-\al_1) \ket{001} + (\al_1-\al_1)\ket{010} + 2\al_0 \ket{011} \right.\nn\\
+&\,\,\quad\left. +2\al_1\ket{100} + (\al_0 - \al_0)\ket{101} + (\al_0 - \al_0)\ket{110} + 2\al_1 \ket{111} \rb\nn\\
+=&\,\, \f{1}{\sqrt{2}} \lp \al_0 \ket{000} + \al_0 \ket{011} + \al_1\ket{100} + \al_1\ket{111} \rp\nn\\
+=&\,\, (\al_0\ket{0} + \al_1\ket{1}) \f{1}{\sqrt{2}}\lp \ket{00} + \ket{11}  \rp\nn\\
+=&\,\, \ket{\al}\ket{\psi_{00}}.
 \end{align}
+
+This result motivates the protocol for quantum teleportation in the following way. Suppose Bob (who is the sender in this case) has a Qbit in some arbitrary state $\ket{\al}$ and wants to send this state (not the Qbit, just the state) to Alice, without knowing what state his Qbit is in. What Alice and Bob can do is to have first share an pair of Qbits in the Bell state $\ket{00}$, each possessing one Qbit of the pair.  Then, they can consider the system of three Qbits whose state is $\ket{\psi}_3 = \ket{\al} \otimes \ket{\psi_{00}}$. From the exercise, we know that $\ket{\psi}_3$ can be written as
+\begin{align}
+\ket{\psi}_3 = \f{1}{2} \lp \ket{\psi_{00}}\ket{\al} + \ket{\psi_{01}}\X\ket{\al} + \ket{\psi_{10}}\Z\ket{\al} + \ket{\psi_{11}}\X \Z \ket{\al} \rp.
+\end{align}
+Now, we see that Bob's Qbits are in one of the four Bell states $\ket{\psi_{yx}}$. By applying the inversion $\had_2 \mathbf{C}_{21}$ to $\ket{\psi_{yx}}$, followed by measurements on the computational basis, Bob can send two classical bits $\ket{y}$ and $\ket{x}$, $x,y \in \{0,1\}$ to Alice. With these classical bits, there is a way for Alice to make sure her Qbit is in $\ket{\al}$:
+\begin{itemize}
+	\item If Bob sends $\ket{00}$,  Alice does nothing. Her Qbit is already in $\ket{\al}$.
+	\item If  Bob sends $\ket{01}$,  Alice applies $\X$ to her Qbit: $\X (\X \ket{\al}) = \ket{\al}$. 
+	\item If Bob sends $\ket{10}$,  Alice applies $\Z$ to her Qbit: $\Z (\Z \ket{\al}) = \ket{\al}$.
+	\item if Bob sends $\ket{11}$,  Alice applies $\Z\X$ to her Qbit: $\Z\X (\X\Z)\ket{\al} = \ket{\al}$.
+\end{itemize}  
+Here we rely on the fact that the Pauli matrices are involutory, i.e. $\sigma_i^2 = \Id, \forall i = 1,2,3$. \\
+
+With this protocol, Bob can send the state $\ket{\al}$ of his Qbit to Alice's Qbit.  \qed
+
+
 
 
 
@@ -2837,7 +2889,7 @@ As you showed on an earlier assignment $\mathbf{R}_\phi$ is a unitary operator w
 	\end{pmatrix}^\top$. With these, we expand the RHS to (hopefully) get the LHS: 
 	\begin{align}
 	&\f{1}{\sqrt{2}}\lp \ket{\phi\phi} + \ket{\phi_\perp\phi_\perp} \rp\nn\\
-	=& \f{1}{\sqrt{2}}\lp \begin{pmatrix}
+	=& \f{1}{\sqrt{2}}\lb \begin{pmatrix}
 	\cos\phi \\ \sin\phi
 	\end{pmatrix} \otimes \begin{pmatrix}
 	\cos\phi \\ \sin\phi
@@ -2845,12 +2897,12 @@ As you showed on an earlier assignment $\mathbf{R}_\phi$ is a unitary operator w
 	-\sin\phi \\ \cos\phi
 	\end{pmatrix} \otimes \begin{pmatrix}
 	-\sin\phi \\ \cos\phi
-	\end{pmatrix} \rp\nn\\
-	=& \f{1}{\sqrt{2}}\lp \begin{pmatrix}
+	\end{pmatrix} \rb\nn\\
+	=& \f{1}{\sqrt{2}}\lb \begin{pmatrix}
 	\cos^2\phi \\ \f{\sin 2 \phi}{2} \\ \f{\sin 2\phi}{2} \\ \sin^2\phi \\ 
 	\end{pmatrix} + \begin{pmatrix}
 	\sin^2\phi \\ -\f{\sin 2 \phi}{2} \\ -\f{\sin 2 \phi}{2} \\ \cos^2\phi
-	\end{pmatrix} \rp\nn\\
+	\end{pmatrix} \rb\nn\\
 	=& \f{1}{\sqrt{2}}\begin{pmatrix}
 	1 & 0 & 0 & 1
 	\end{pmatrix}^\top\nn\\
@@ -2888,13 +2940,13 @@ As you showed on an earlier assignment $\mathbf{R}_\phi$ is a unitary operator w
 	\end{cases}
 	\end{align}
 	
-	We can write this protocol more concisely as $\boxed{\lp \Z \X \rp^x, x \in \{0,1\}}$. \qed
+	We can write this protocol more concisely as $\boxed{\lp \Z \X \rp^x, x \in \{0,1\}}$. 
 	
 
 	
 	
 	
-\end{enumerate}
+\end{enumerate}\qed
 
 
 
