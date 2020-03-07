@@ -2735,6 +2735,20 @@ protocol that we discussed in class for quantum teleportation.\\
 
 
 \noindent \textit{Solution:} 
+We want to show that 
+\begin{align}
+\f{1}{2} \lp \ket{\psi_{00}}\ket{\al} + \ket{\psi_{01}}\X\ket{\al} + \ket{\psi_{10}}\Z\ket{\al} + \ket{\psi_{11}}\X \Z \ket{\al} \rp = \ket{\al}\ket{\phi_{00}},
+\end{align}
+to which end we use the identities:
+\begin{align}
+\X \ket{\al} &= \X (\al_0 \ket{0} + \al_1 \ket{1}) = \al_0\ket{1} + \al_1\ket{0}\nn\\
+\Z \ket{\al} &= \Z (\al_0 \ket{0} + \al_1 \ket{1}) = \al_0 \ket{0} - \al_1\ket{1}\nn\\
+\X\Z\ket{\al} &= \X (\al_0 \ket{0} - \al_1\ket{1}) = \al_0 \ket{1} - \al_1 \ket{0}.
+\end{align}
+We proceed by expanding the LHS until we get to the RHS:
+\begin{align}
+hello
+\end{align}
 
 
 
@@ -2769,13 +2783,13 @@ $\al + \phi$. The matrix representation of the rotation operator in the computat
 \end{align}
 As you showed on an earlier assignment $\mathbf{R}_\phi$ is a unitary operator with $\mathbf{R}_\phi^\dagger = \mathbf{R}^{-1}_\phi = \mathbf{R}_{-\phi}$ and $\mathbf{R}_\phi \ket{0} = \ket{\phi}$ and $\mathbf{R}_\phi \ket{1} = \ket{\pi/2 + \phi}$. To slightly simplify notation, call $\ket{\pi/2 + \phi} = \ket{\phi_\perp}$. 
 \begin{enumerate}[(a)]
-	\item Show that $\X \Z \ket{\phi_\perp} = \ket{\phi}$.
+	\item Show that $ \Z \X\ket{\phi_\perp} = \ket{\phi}$.
 	\item Show that the entangled (Bell) state $\ket{\psi_{00}}$ can also be written as 
 	\begin{align}
-	\ket{\psi_{00}} = \f{1}{\sqrt{2}}\ket{0\phi\phi} + \f{1}{\sqrt{2}}\ket{\phi_\perp \phi_\perp}.
+	\ket{\psi_{00}} = \f{1}{\sqrt{2}}\ket{\phi\phi} + \f{1}{\sqrt{2}}\ket{\phi_\perp \phi_\perp}.
 	\end{align}
 	This says something special about the state $\ket{\psi_{00}}$. What? 
-	\item Imagine that Alice applies the operator $\mathbf{\R}_\phi^{-1}$ to her Qbit. What is the state of the system after she does that?
+	\item Imagine that Alice applies the operator $\mathbf{R}_\phi^{-1}$ to her Qbit. What is the state of the system after she does that?
 	\item Alice measures her QBit. What is the probability that she measures 0? What is the
 	probability that she measures 1?
 	\item What state does Bob’s QBit have if Alice measures 0? What state does Bob’s QBit have
@@ -2786,8 +2800,101 @@ As you showed on an earlier assignment $\mathbf{R}_\phi$ is a unitary operator w
 
 
 
-
+\newpage
 \noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item We want to show that $\Z\X \mathbf{R}_{\pi/2} = \Id$, since 
+	\begin{align}
+	\Z\X\ket{\phi_\perp} = \ket{\phi} \forall \ket{\phi} &\iff \Z \X \mathbf{R}_{\pi/2}\ket{\phi} = \ket{\phi} \forall \ket{\phi}\nn\\
+	&\iff \Z \X \mathbf{R}_{\pi/2} \equiv \Id.
+	\end{align}
+	Since $\Z \X \mathbf{R}_{\pi/2}$ is a linear operator, its action is completely determined by what it does to the basis vectors:
+	\begin{align}
+	&\Z \X \mathbf{R}_{\pi/2}\ket{0} = \Z \X \ket{\pi/2} = \Z \ket{0} = \ket{0}\nn\\
+	&\Z \X \mathbf{R}_{pi/2}\ket{1} = \Z \X \ket{\pi} = -\Z \X \ket{0} = -\Z\ket{1} = \ket{1},
+	\end{align}
+	where we have used the fact that $\ket{1} \equiv \ket{\pi/2}$ and $-\ket{0} \equiv \ket{\pi}$. This can readily be checked by plugging in values of $\phi$ into $\begin{pmatrix}
+	\cos \phi & \sin\phi
+	\end{pmatrix}^\top$. \\
+	
+	Since $\Z \X \mathbf{R}_{\pi/2}$ acts as the identity on the entire computation basis, it \textit{is} the identity function, by linearity. Evidently: for any $\ket{\phi} = \cos\phi \ket{0} + \sin\phi \ket{1}$, 
+	\begin{align}
+	\Z \X \mathbf{R}_{\pi/2}(\cos\phi \ket{0} + \sin\phi \ket{1}) = \cos\phi \ket{0} + \sin\phi \ket{1} \equiv \ket{\phi}.
+	\end{align}
+	
+	
+	
+	Therefore,
+	\begin{align}
+	\ket{\phi} = \Z \X \mathbf{R}_{\pi/2}\ket{\phi} = \Z \X \ket{\phi_\perp}, \forall \ket{\phi}.
+	\end{align}
+	
+	
+	\item In the computational basis, $\ket{\phi} = \begin{pmatrix}
+	\cos\phi & \sin\phi
+	\end{pmatrix}^\top$, and $\ket{\phi_\perp} = \begin{pmatrix}
+	-\sin\phi & \cos\phi
+	\end{pmatrix}^\top$. With these, we expand the RHS to (hopefully) get the LHS: 
+	\begin{align}
+	&\f{1}{\sqrt{2}}\lp \ket{\phi\phi} + \ket{\phi_\perp\phi_\perp} \rp\nn\\
+	=& \f{1}{\sqrt{2}}\lp \begin{pmatrix}
+	\cos\phi \\ \sin\phi
+	\end{pmatrix} \otimes \begin{pmatrix}
+	\cos\phi \\ \sin\phi
+	\end{pmatrix} + \begin{pmatrix}
+	-\sin\phi \\ \cos\phi
+	\end{pmatrix} \otimes \begin{pmatrix}
+	-\sin\phi \\ \cos\phi
+	\end{pmatrix} \rp\nn\\
+	=& \f{1}{\sqrt{2}}\lp \begin{pmatrix}
+	\cos^2\phi \\ \f{\sin 2 \phi}{2} \\ \f{\sin 2\phi}{2} \\ \sin^2\phi \\ 
+	\end{pmatrix} + \begin{pmatrix}
+	\sin^2\phi \\ -\f{\sin 2 \phi}{2} \\ -\f{\sin 2 \phi}{2} \\ \cos^2\phi
+	\end{pmatrix} \rp\nn\\
+	=& \f{1}{\sqrt{2}}\begin{pmatrix}
+	1 & 0 & 0 & 1
+	\end{pmatrix}^\top\nn\\
+	\equiv& \ket{\phi_{00}}.
+	\end{align}
+	So we're done. This result says that $\ket{\phi_{00}}$ is invariant under rotations by $\phi$ on both Qbits, i.e. $\mathbf{R}_\phi\otimes\mathbf{R}_\phi\ket{\psi_{00}}= \ket{\psi_{00}}$. Further, by the previous part, $\ket{\psi_{00}}$ is also invariant under $(\Z\X)\otimes (\Z\X)$, by symmetry:
+	\begin{align}
+	(\Z \X) \otimes (\Z\X)\ket{\psi_{00}} \xrightarrow{\phi \leftrightarrow \phi_\perp} \ket{\psi_{00}}.
+	\end{align}
+	
+	\item Let 
+	\begin{align}
+	\ket{\phi_{00}} = \f{1}{\sqrt{2}}\lp \ket{\phi\phi}  + \ket{\phi_\perp\phi_\perp}\rp
+	\end{align}
+	be given. By the previous part, we know that the expression above is equivalent to $(1/\sqrt{2})\lp \ket{00} + \ket{11} \rp$. So, when Alice applies the operator $\mathbf{R}_{\phi}^{-1} \equiv \mathbf{R}_{-\phi}$ on her (0) Qbit, $\ket{\phi_{00}}$ is transformed into
+	\begin{align}
+	(\Id \otimes \mathbf{R}_{-\phi})\ket{\psi_{00}} &= \f{1}{\sqrt{2}}\lp \ket{\phi}\mathbf{R}_{-\phi}\ket{\phi} + \ket{\phi_\perp}\mathbf{R}_{-\phi}\ket{\phi_\perp} \rp\nn\\
+	&= \boxed{\f{1}{\sqrt{2}}\lp \ket{\phi 0} + \ket{\phi_\perp 1} \rp}
+	\end{align}
+	where we have used the identifications: $\ket{\phi_\perp} \equiv\ket{\phi + \pi/2}$ and $\ket{\pi/2} \equiv \ket{1}$. 
+	
+	
+	\item Evidently, the probability that Alice measures 0 is 1/2, because $(\Id \otimes \mathbf{R}_{-\phi})\ket{\psi_{00}}$ is in equal superposition of $\ket{\phi 0}$ and $\ket{\phi_\perp 1}$. By symmetry, the probability that Alice measures 1 is also 1/2 
+	
+	\item  If Alice measures 0, then Bob's Qbit is in the state $\ket{\phi}$. If Alice measures 1, then Bob's Qbit is in the state $\ket{\phi_\perp}$.
+	
+	
+	\item Let Alice's measurement be given as $x \in \{0,1\}$. To ensure that his Qbit is in the state $\ket{\phi}$, Bob must leave his Qbit (in state $\ket{\phi}$) alone if $x=0$ and apply $\Z\X$ to his Qbit (now in state $\ket{\phi_\perp}$) to send it to $\ket{\phi}$ if $x = 1$. \\
+	
+	The protocol can be summarized as
+	\begin{align}
+	\begin{cases}
+	x = 0 \implies \text{Bob does nothing to his Qbit} \implies \Id\ket{\phi} = \ket{\phi}\\
+	x = 1 \implies \text{Bob applies $\Z\X$ to his Qbit} \implies \Z \X \ket{\phi_\perp} = \ket{\phi}.
+	\end{cases}
+	\end{align}
+	
+	We can write this protocol more concisely as $\boxed{\lp \Z \X \rp^x, x \in \{0,1\}}$. \qed
+	
+
+	
+	
+	
+\end{enumerate}
 
 
 
