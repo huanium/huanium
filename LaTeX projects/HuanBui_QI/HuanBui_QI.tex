@@ -2956,4 +2956,525 @@ As you showed on an earlier assignment $\mathbf{R}_\phi$ is a unitary operator w
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+
+\section{Problem set 6}
+
+
+
+\noindent \textbf{1. Monroe Colloquium}\\
+
+
+
+\noindent \textbf{2. Deutsch's Original Algorithm.} In class on March 12th we discussed the Deutsch problem. Determining if a function $f(x)$ is either constant or balanced, where $x$ is a single bit.\\
+
+\noindent There are four functions on one bit, $f_0$ gives the constant output $0$, $f_1$ gives the constant output $1$, $f_b$ (buffer) gives an output equal to the input, and $f_i$ (invert) has an output
+equal to ¯$x$. The functions $f_0$ and $f_1$ are constant, and the functions $f_b$ and $f_i$ are balanced.
+Tabulated they are:\\
+\begin{center}
+\begin{tabular}{|c|c|c|}
+	\hline
+	$x$&0&1\\
+	\hline
+	$f_0(x)$&0&0\\
+	\hline
+	$f_1(x)$&1&1\\
+	\hline
+	$f_b(x)$&0&1\\
+	\hline
+	$f_i(x)$&1&0\\
+	\hline
+\end{tabular}
+\end{center}
+
+\noindent In Appendix F, Mermin looks at the approach that Deutsch originally considered (in 1985) for determining if a function $f : \{0, 1\} \to \{0, 1\}$ is balanced or constant. As mentioned in class the algorithm outlined in Mermin Chapter 2 and in class was developed much later (1997) by Cleve, Ekert, Macchiavello, and Mosca using the idea of ``phase kickback.''\\
+
+\noindent Consider the ``quantum parallelism'' approach to the Deutsch problem shown below as a quantum circuit diagram.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{deutsch}
+\end{figure}
+
+\noindent In the diagram Qbit 1 is the ``input register'' and Qbit 0 is the ``output register.''
+
+\begin{enumerate}[(a)]
+	\item Show that the output of the operator $\mathbf{U}_f$ is, as written in Eq. F.2-F.5 in Mermin
+	\begin{align*}
+	\ket{\psi_0} &= \ket{+}\ket{0}\nn\\
+	\ket{\psi_1} &= \ket{+}\ket{1}\nn\\
+	\ket{\psi_b} &= \f{1}{\sqrt{2}}\lp \ket{0}\ket{0} + \ket{1}\ket{1} \rp = \ket{\psi_{00}}\nn\\
+	\ket{\psi_i} &= \f{1}{\sqrt{2}}\lp \ket{0}\ket{1} + \ket{1}\ket{0} \rp = \ket{\psi_{01}}
+	\end{align*}
+	The states due to the constant functions are product states, and the output states due to the balanced functions are two of the entangled Bell states. Deutsch’s idea was to show that you could manipulate the output state in such a way that a measurement of the output could distinguish between constant and balanced functions half the time, but that half the time you would make a measurement that gave no information at all.
+	
+	\item Think about measuring the states of Qbits 0 and 1 for the four different states above. What does it allow you to distinguish about the states?
+	
+	
+	\item Consider the approach described by Mermin when you apply a Hadamard gate to both Qbits 0 and 1 after the application of $\mathbf{U}_f$. Show that Eqs. F.6-F.9 in Mermin are correct, namely that
+	\begin{align}
+	\had^{\otimes 2}\ket{\psi_0} &= \f{1}{\sqrt{2}}\lp \ket{00} + \ket{01} \rp\nn\\
+	\had^{\otimes 2}\ket{\psi_1} &= \f{1}{\sqrt{2}}\lp \ket{00} - \ket{01} \rp\nn\\
+	\had^{\otimes 2}\ket{\psi_b} &= \f{1}{\sqrt{2}}\lp \ket{00} + \ket{11} \rp = \ket{\psi_{00}}\nn\\
+	\had^{\otimes 2}\ket{\psi_i} &= \f{1}{\sqrt{2}}\lp \ket{00} - \ket{11} = \ket{\psi_{10}} \rp
+	\end{align}
+	where $\had^{\otimes 2}$ is the Hadamard gate applied to both Qbits. 
+	
+	
+	\item In your own words, explain how these states allow you to determine whether or not the
+	function is constant or balance half the time.
+	
+	
+	\item (Optional. For those who took PH431.) Follow, and outline in detail, Mermin’s argument
+	that there is NO possible operation you can do to the two output Qbits that allow you
+	to determine whether the function is balanced or constant with certainty (100\% of the
+	time).
+	
+	
+	\item (Optional$^2$. For those who are looking for a serious challenge.) Follow, and outline in
+	detail, Mermin’s argument that the best you can do with operations on the two output
+	Qbits is to determine whether the function is balanced or constant 50\% of the time.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{enumerate}
+
+
+
+\noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item The unitary $\mathbf{U}_f$ is such that
+	\begin{align}
+	\mathbf{U}_f \ket{xy} = \ket{x}\ket{y\oplus f(x)},
+	\end{align}
+	where $y\in \{0,1\}$ and $\ket{x} = \had\ket{x'} = \ket{\pm}$ with $x' \in \{0,1\}$. With this, the general output of $\mathbf{U}_f$ has the form:
+	\begin{align}
+	\mathbf{U}_f\lp \had_1\ket{00} \rp 
+	&= \f{1}{\sqrt{2}}\mathbf{U}_f(\ket{00}+\ket{10})\nn\\
+	&= \f{1}{\sqrt{2}}\lp \ket{0}\ket{0\oplus f(0)} + \ket{1}\ket{0\oplus f(1)} \rp\nn\\
+	&= \frac{1}{\sqrt{2}}\lp \ket{0}\ket{f(0)} + \ket{1}\ket{f(1)} \rp
+	\end{align}
+	like that in Eq. F-1. It follows that the four possible $f$'s and associated outputs of $\mathbf{U}_f$ are
+	\begin{align}
+	&f \equiv f_0: \quad \ket{\psi_0} = \mathbf{U}_f\lp \had_1\ket{00} \rp 
+	= \f{1}{\sqrt{2}}\lp \ket{0}\ket{0} + \ket{1}\ket{0} \rp 
+	= \ket{+}\ket{0} \nn\\
+	&f \equiv f_1: \quad \ket{\psi_1} = \mathbf{U}_f\lp \had_1\ket{00} \rp 
+	= \f{1}{\sqrt{2}}\lp \ket{0}\ket{1} + \ket{1}\ket{1} \rp 
+	= \ket{+}\ket{1} \nn\\
+	&f \equiv f_b: \quad \ket{\psi_b} = \mathbf{U}_f\lp \had_1\ket{00} \rp 
+	=  \f{1}{\sqrt{2}}\lp \ket{0}\ket{0} + \ket{1}\ket{1} \rp\nn\\
+	&f \equiv f_i: \quad \ket{\psi_i} = \mathbf{U}_f\lp \had_1\ket{00}\rp 
+	=  \f{1}{\sqrt{2}}\lp \ket{0}\ket{1} + \ket{1}\ket{0} \rp.
+	\end{align}
+	where the values of $f$ for each $f_j$ is tabulated above. 
+	
+	
+	\item Looking at the general form of $\mathbf{U}_f$ again,
+	\begin{align}
+	\ket{\psi} = \f{1}{\sqrt{2}}\lp \ket{0}\ket{f(0)} + \ket{1}\ket{f(1)} \rp,
+	\end{align}
+	we see that a direct measurement of both Qbits reveals the value $f$ takes at either $0$ or $1$. In particular, suppose we see both Qbit 1 in state 0. Then, if we see Qbit 1 in state 0 then we know $f$ is either $f_0$ or $f_b$ but can't tell which is $f$ is; similarly, if we see Qbit 1 in state 1 then we know $f$ is either $f_1$ or $f_i$ but can't tell which is $f$. Repeating this argument for Qbit 0, we see that we cannot distinguish $f_0$ from $f_i$ and $f_1$ from $f_0$. To resolve this problem, we will want to distinguish between the two cases:
+	\begin{align}
+	\mbox{\textbf{Case 1:}}\quad \ket{\psi} = \ket{\psi_0} \mbox{or} \ket{\psi_1};\quad 	\mbox{\textbf{Case 2:}}\quad \ket{\psi} = \ket{\psi_i} \mbox{or} \ket{\psi_b}
+	\end{align} 
+	To this end, we will want to use a $\had^{\otimes 2}$ that appears in the next item. 
+		
+	
+	
+	
+	
+	\item In this item, we are just verifying that $\had^{\otimes 2}$ transforms the outputs in part (a) into those given in part (c):
+	\begin{align}
+	\had^{\otimes 2}\ket{\psi_0} &= \had^{\otimes 2} \lp \ket{+}\ket{0}\rp\nn\\
+	&= \had\ket{+} \otimes \had\ket{0}\nn\\
+	&= \ket{0} \otimes \ket{+}\nn\\
+	&= \f{1}{\sqrt{2}}   \lp \ket{00} + \ket{01}  \rp
+	\end{align}
+	\begin{align}
+	\had^{\otimes 2}\ket{\psi_1} &= \had^{\otimes 2} \lp \ket{+}\ket{1}\rp \nn\\
+	&= \had\ket{+}\otimes \had\ket{1}\nn\\
+	&= \ket{0}\otimes \ket{-}\nn\\
+	&= \f{1}{\sqrt{2}} \lp \ket{00} - \ket{01}  \rp
+	\end{align}
+	\begin{align}
+	\had^{\otimes 2}\ket{\psi_b} &= \had^{\otimes 2} \lp \f{1}{\sqrt{2}}\lp \ket{0}\ket{0} + \ket{1}\ket{1} \rp\rp\nn\\
+	&= \f{1}{\sqrt{2}}\lp \ket{+}\ket{+} + \ket{-}\ket{-} \rp\nn\\
+	&= \f{2}{2\sqrt{2}}\lp \ket{00} + \ket{11} \rp\nn\\
+	&= \f{1}{\sqrt{2}}\lp \ket{0}\ket{0} + \ket{1}\ket{1} \rp
+	\end{align}
+	\begin{align}
+	\had^{\otimes 2}\ket{\psi_i} &= \had^{\otimes 2} \lp \f{1}{\sqrt{2}}\lp \ket{0}\ket{1} + \ket{1}\ket{0} \rp\rp\nn\\
+	&= \f{1}{\sqrt{2}}\lp \ket{+}\ket{-} + \ket{-}\ket{+} \rp\nn\\
+	&= \f{2}{2\sqrt{2}}\lp \ket{00} - \ket{11} +  \rp \nn\\
+	&= \f{1}{\sqrt{2}}\lp \ket{00} - \ket{11} \rp.
+	\end{align}
+	
+	
+	\item Suppose we measure both Qbits. If $f$ is a constant function, then we will see $00$ half the time and $01$ half the time. If $f$ is balanced, then we will see $00$ half the time and $11$ half the time. So, for any $f$, we will always see $00$ half the time. In the other half of the time we will see either $11$ or $01$, from which we can deduce (with absolute certainty) either $f$ is balanced (if $11$) or constant (if $01$). So, the probability of success here is $50\% \times 100\% = 50\%$. 
+	
+	
+	
+	\item \underline{Claim}: There is no transformation on $\ket{\psi} =  \mathbf{U}_f\had_1\ket{00}$ that could enable one to tell whether $f$ is constant or balanced with certainty. 
+	
+	\begin{proof}
+		Suppose (to get a contradiction) that there exists such a (unitary) 2-Qbit transformation. We will call it $\mathbf{U}$. For $\mathbf{U}$ to work, it must be such that each measurement on a Qbit is ``meaningful.'' In particular, $\mathbf{U}$ should not act like $\had$ which allows $\ket{00}$ to appear in all of the outputs, rendering the observation $00$ meaningless. This imposes the condition that the computational basis states that appear in $\mathbf{U}\ket{\psi_0}$ and $\mathbf{U}\ket{\psi_1}$ cannot appear in $\mathbf{U}\ket{\psi_b}$ and $\mathbf{U}\ket{\psi_i}$ (and vice versa), because otherwise this ``common basis state, $\ket{e}$'' will appear as $\mathbf{U}\ket{e}$ output states of both cases of $f$, making the probability of successfully discriminating the cases less than 1. We claim, however, that this condition cannot be satisfied for the following reason: The condition above implies that the vector space spanned by the computation basis can be decomposed into a direct sum of orthogonal subspaces $\V \oplus \V^\perp$, where $\mathbf{U}\ket{\psi_0}, \mathbf{U}\ket{\psi_1} \in \V$, and $\mathbf{U}\ket{\psi_i}, \mathbf{U}\ket{\psi_b}\in \V^\perp$. It follows that $v\perp v'\,\forall v\in \V, v'\in \V^\perp$. In particular, we must have that
+		\begin{align}
+		0=\braket{\mathbf{U}\psi_{1,0}}{\mathbf{U}\psi_{i,b}} = \braket{\mathbf{U}^\dagger\mathbf{U}\psi_{1,0}}{\psi_{i,b}} = \braket{\psi_{1,0}}{\psi_{i,b}}
+		\end{align}  
+		when in fact
+		\begin{align}
+		\braket{\psi_{1,0}}{\psi_{i,b}} = 1/2.
+		\end{align}
+		So that's a contradiction. Thus, no such $\mathbf{U}$ exists.
+	\end{proof}
+	
+	
+	
+	
+	\item \underline{Claim:} The probability of correctly determining whether $f$ is constant or balanced (by applying a unitary to $\mathbf{U}_f\had_1\ket{00}$) is \textit{at most} 50\%.
+	\begin{proof}
+		Suppose we bring in $n$ additional ancillary Qbits. These might be used to transform the input and output registers after the application of $\mathbf{U}_f$ on the Qbits 0 and 1. Let a unitary $\mathbf{W}$ denote this transformation. $\mathbf{W}$ acts on the state space spanned by $n+2$ Qbits. Suppose further (without loss of generality) that these $n$ Qbits are initially in $\ket{0}_n$ (since any general state $\ket{\chi}_n$ can be written as $\mathbf{\mathcal{U}}\ket{0}_n$ where $\mathcal{U}$ is some unitary, which we let $\mathbf{W}$ absorb). \\
+		
+		Now let the state $\ket{\psi} = \mathbf{U}_f\had_1\ket{00}$ be given. Let $\mathbf{W}$ act on $\ket{\psi}$. The probability of measuring $x_2\in [0,2^2)$ for the Qbit pair and $y_n\in [0,2^n)$ for the $n$ additional Qbits is given by
+		\begin{align}
+		{\Pr}_{\ket{\psi}_2}(x_2,y_{n}) = \abs{ \bra{x_2y_n} \mathbf{W}\ket{\psi_2,0_n}}^2 = 0
+		\end{align}
+		where the short-hand $\ket{\psi_2,0_n}$ denotes $\ket{\psi}_2\otimes \ket{0}_n$. Let any arbitrary pair state $\ket{\phi}$ given, then
+		\begin{align}
+		{\Pr}_{\ket{\phi}_2}(x,y)= 0 \iff \bra{x_2y_n} \mathbf{W}\ket{\phi_2,0_n} = 0.
+		\end{align}
+		Suppose these $\ket{\phi}$'s span some subspace $\V$ and that ${\Pr}_{\ket{\phi}} (x,y) = 0$ for all $\ket{\phi}$, then linearity says that for any $v \in \V$, ${\Pr}_v(x,y) = 0$ as well. Now, consider (again) the four possible states of $\mathbf{U}_f\had_1\ket{00}$:
+		\begin{align}
+		&f \equiv f_0: \quad \ket{\psi_0} = \mathbf{U}_f\lp \had_1\ket{00} \rp 
+		= \f{1}{\sqrt{2}}\lp \ket{0}\ket{0} + \ket{1}\ket{0} \rp 
+		= \ket{+}\ket{0} \nn\\
+		&f \equiv f_1: \quad \ket{\psi_1} = \mathbf{U}_f\lp \had_1\ket{00} \rp 
+		= \f{1}{\sqrt{2}}\lp \ket{0}\ket{1} + \ket{1}\ket{1} \rp 
+		= \ket{+}\ket{1} \nn\\
+		&f \equiv f_b: \quad \ket{\psi_b} = \mathbf{U}_f\lp \had_1\ket{00} \rp 
+		=  \f{1}{\sqrt{2}}\lp \ket{0}\ket{0} + \ket{1}\ket{1} \rp\nn\\
+		&f \equiv f_i: \quad \ket{\psi_i} = \mathbf{U}_f\lp \had_1\ket{00}\rp 
+		=  \f{1}{\sqrt{2}}\lp \ket{0}\ket{1} + \ket{1}\ket{0} \rp.
+		\end{align}
+		Any measurement that allows us to distinguish with certainty \textbf{Case 1} from \textbf{Case 2} must have \textit{zero} probability for detecting either (i) any linear combination of $\ket{\psi_0}$ and $\ket{\psi_1}$ OR (ii) any linear combination of $\ket{\psi_i}$ and $\ket{\psi_b}$ (this OR is exclusive). Otherwise, if there's some nonzero probability of detecting some states in both \textbf{Case 1} and \textbf{Case 2} then we cannot distinguish the cases. \\
+		
+		With this, we consider the state
+		\begin{align}
+		\ket{\al} = \f{1}{2}\lp \ket{00} + \ket{01} + \ket{10} + \ket{11}  \rp.
+		\end{align}
+		We notice that $\ket{\al}$ requires the full 2-Qbit computational basis to describe. Any measurement outcomes $x,y$ with $ {\Pr}_{\ket{\al}} (x,y) \neq 0$ is meaningless. It follows that the probability of a measurement outcome that \textit{fails} to discriminate \textbf{Case 1} from \textbf{Case 2} is \textit{at least}:
+		\begin{align}
+		{\Pr}_{\mbox{min}} = \sum\limits_{\substack{x,y\\{\Pr}_{\ket{\al}} (x,y) \neq 0}} {\Pr}_{\ket{\psi}} (x,y).
+		\end{align}
+		Next, we want to relate $\ket{\psi}$ to $\ket{\al}$. It turns out that every one of $\ket{\psi}$ can be written as
+		\begin{align}
+		\ket{\psi} = \f{1}{\sqrt{2}}\lp \ket{\al} + \ket{\be} \rp
+		\end{align}
+		where $\ket{\be} \perp \ket{\al}$. Explicitly:
+		\begin{align}
+		\ket{\psi_0} = \f{1}{\sqrt{2}}\lb \ket{\al} + \f{1}{2}\lp \ket{00} - \ket{01} + \ket{10} - \ket{11}  \rp   \rb\nn\\
+		\ket{\psi_1} = \f{1}{\sqrt{2}}\lb \ket{\al} - \f{1}{2}\lp \ket{00} - \ket{01} + \ket{10} - \ket{11}  \rp  \rb\nn\\
+		\ket{\psi_b} = \f{1}{\sqrt{2}}\lb \ket{\al} + \f{1}{2}\lp \ket{00} - \ket{01} - \ket{10} + \ket{11}  \rp   \rb\nn\\
+		\ket{\psi_i} = \f{1}{\sqrt{2}}\lb \ket{\al} - \f{1}{2}\lp \ket{00} - \ket{01} - \ket{10} + \ket{11}  \rp    \rb
+		\end{align}
+		From here, we have that
+		\begin{align}
+		{\Pr}_{\ket{\psi}} (x,y) &= \abs{\bra{x,y} \mathbf{W}\ket{\psi,0}}^2 \nn\\
+		&= \f{1}{2}\abs{\bra{x,y} \mathbf{W}\ket{\al,0} + \bra{x,y} \mathbf{W}\ket{\be,0}}^2\nn\\
+		&= \f{1}{2}\lp {\Pr}_{\ket{\al}}(x,y) + {\Pr}_{\ket{\be}}(x,y) + 2\Re\lc \bra{\be,0}\mathbf{W}^\dagger\ket{x,y}\bra{x,y}\mathbf{W}\ket{\al,0}  \rc  \rp
+		\end{align}
+		where we have used the identity
+		\begin{align}
+		\abs{a+b}^2 &= (a+b)\cdot(\overline{a+b})\nn\\
+		&= \abs{a}^2 + \abs{b}^2 + \underbrace{a\bar{b} + \bar{a}b}\nn\\
+		& = \abs{a}^2 + \abs{b}^2 + 2\Re{a\cdot \bar{b}}.
+		\end{align}
+		And so we have
+		\begin{align}
+		{\Pr}_{\mbox{min}} &= \sum\limits_{\substack{x,y\\{\Pr}_{\ket{\al}} (x,y) \neq 0}} {\Pr}_{\ket{\psi}} (x,y)\nn\\
+		&= \f{1}{2}\sum\limits_{\substack{x,y\\{\Pr}_{\ket{\al}} (x,y) \neq 0}}\lb  {\Pr}_{\ket{\al}}(x,y) + {\Pr}_{\ket{\be}}(x,y)\right.\nn\\
+		&\qquad\left. + 2\Re\lc \bra{\be,0}\mathbf{W}^\dagger\ket{x,y}\bra{x,y}\mathbf{W}\ket{\al,0}  \rc   \rb
+		\end{align}
+		Now, we will extend this sum to all $x,y$. We notice that
+		\begin{align}
+		\sum_{x,y}{\Pr}_{\ket{\al}}(x,y) &= \underbrace{\sum\limits_{\substack{x,y\\{\Pr}_{\ket{\al}} (x,y) \neq 0}} {\Pr}_{\ket{\al}}(x,y)}_{1} + \underbrace{\sum\limits_{\substack{x,y\\{\Pr}_{\ket{\al}} (x,y) = 0}} {\Pr}_{\ket{\al}}(x,y)}_{0}\nn\\
+		&=1,
+		\end{align}
+		and 
+		\begin{align}
+		2\Re \sum_{x,y}  \bra{\be,0}\mathbf{W}^\dagger\ket{x,y}\bra{x,y}\mathbf{W}\ket{\al,0}   &=  2\Re \bra{\be,0} \mathbf{W}^\dagger\mathbf{W}\ket{\al,0}\nn\\
+		&= 2\Re\bra{\be,0}\Id\ket{\al,0}\nn\\
+		&= 2\Re\braket{\be,0}{\al,0}\nn\\
+		&= 0,
+		\end{align}
+		since $\ket{\al}$ and $\ket{\be}$ are orthogonal. So,
+		\begin{align}
+		{\Pr}_{\mbox{min}} = \f{1}{2}\lp 1 +  \sum\limits_{\substack{x,y\\{\Pr}_{\ket{\al}} (x,y) \neq 0}} {\Pr}_{\ket{\be}}(x,y) \rp \geq \f{1}{2}. 
+		\end{align}
+		So, the probability of failing is at least $1/2$, i.e. the probability of success is at most $1/2$. 
+		
+		
+	\end{proof} 
+	
+	
+	
+	
+	
+	
+	
+	
+\end{enumerate}
+
+
+
+
+
+\newpage
+
+
+
+\noindent \textbf{3. The binary dot product.} In several problems we’ll see during the rest of the semester we
+will see the ``dot product'' $a \cdot b$ appear. This represents the ``bitwise'' inner product of two $n$-bit binary numbers $a$ and $b$
+\begin{align}
+a\cdot b \equiv_2 a_{n-1}b_{n-1} + \dots + a_1b_1 + a_0b_0 .
+\end{align}
+In quantum computer science the dot product is defined modulo-2, which means that it is given by a one-bit number - zero if the dot product is even, and 1 if the dot product is odd.
+\begin{enumerate}[(a)]
+	\item For two five bit numbers $a = 10101$ and $b = 11011$, what is the dot product $a \cdot b$? How about for $a = 11001$ and $b = 11011$?
+	
+	\item Show that the ``normal'' way (not modulo 2) of calculating the dot product gives the same result for
+	\begin{align}
+	\phi = (-1)^{a\cdot b}.
+	\end{align}
+	Most of the time we use it, the dot product will appear in this form.
+	
+	
+	\item Show that the dot product could also be written
+	\begin{align}
+	a\cdot b = a_{n-1}b_{n-1} \oplus\dots \oplus a_1b_1 \oplus a_0b_0
+	\end{align}
+	which is how Mermin writes it.
+\end{enumerate}
+
+
+
+
+
+
+
+
+\noindent \textit{Solution:}
+
+
+\begin{enumerate}[(a)]
+	\item We just apply the formula given in the problem to compute these values:
+	\begin{align}
+	&10101 \cdot 11011 \equiv_2 1\cdot 1 + 0\cdot 1 + 1\cdot 0 + 0 \cdot 1 + 1 \cdot 1 \equiv_2 1 + 1 \equiv_2 \boxed{0}\nn\\
+	&11001 \cdot 11011 \equiv_2 1\cdot 1 + 1 \cdot 1 + 0 \cdot 0 + 0 \cdot 1 + 1\cdot 1 \equiv_2 1 + 1 + 1\equiv_2 \boxed{1}\nn
+	\end{align} 
+	\item Let  $c = a\cdot b$ (without modulo 2). We know that $c \text{ odd } \iff c\text{ mod } 2 = 1$. So, $(-1)^c = (-1)^{c\text{ mod } 2}$ for all values of $c = a\cdot b$.  
+
+	\item The addition $\oplus$ is addition mod 2. \underline{To prove}:
+	\begin{align}
+	a\cdot b = a_{n-1}b_{n-1} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \equiv_2 a_{n-1}b_{n-1} + \dots + a_1b_1 + a_0b_0
+	\end{align}
+	We can do this by induction. Suppose $n=1$, then $a,b\in \{0,1\}$. Because $a,b\in \{0,1\}$, $a\cdot b \equiv_2 ab = a\oplus b$. So this base case holds. Next, suppose the statement holds up to $n$, i.e.,
+	\begin{align}
+	a_{n-1}b_{n-1} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \equiv_2 a_{n-1}b_{n-1} + \dots + a_1b_1 + a_0b_0.
+	\end{align}  
+	We want to show it also holds for $n+1$:
+	\begin{align}
+	a_{n}b_{n} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \equiv_2 a_{n}b_{n} + \dots + a_1b_1 + a_0b_0.
+	\end{align} 
+	We write the RHS as
+	\begin{align}
+	&a_nb_n + \lp a_{n-1}b_{n-1} + \dots + a_1b_1 + a_0b_0 \rp \nn\\
+	\equiv_2\,\,& a_nb_n + \lp a_{n-1}b_{n-1} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \rp.
+	\end{align}
+	We notice that $a_n,b_n\in \{0,1\}$ and $a_{n-1}b_{n-1} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \in \{0,1\}$. By the definition of $\oplus$, we have
+	\begin{align}
+	&a_nb_n + \lp a_{n-1}b_{n-1} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \rp\nn\\ 
+	\equiv_2\,\,& a_nb_n \oplus \lp a_{n-1}b_{n-1} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \rp\nn\\
+	=\,\,&\text{LHS}.
+	\end{align}
+	So, 
+	\begin{align}
+	a_{n}b_{n} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \equiv_2 a_{n}b_{n} + \dots + a_1b_1 + a_0b_0
+	\end{align}
+	as desired. \qed
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+\end{enumerate}
+
+
+
+\newpage
+
+
+
+
+\noindent \textbf{4. Walsh-Hadamard.} A question that will come up in algorithms is what the outcome is when
+an $n$-Qbit Hadamard gate (sometimes called the Walsh-Hadamard gate $\had^{\otimes n}$
+is applied to a general quantum state. \\
+
+\noindent In class we saw that
+\begin{align}
+\had^{\otimes n}\ket{0}_n = \f{1}{\sqrt{2^n}}\sum_{0\leq y < 2^n}\ket{y}_n
+\end{align}
+where $y$ is one of the $2^n$ $n$-Qbit eigenstates in the computational basis. The goal of this problem is to show that
+\begin{align}
+\had^{\otimes n}\ket{x}_n = \f{1}{\sqrt{2^n}}\sum_{0 \leq y < 2^n} (-1)^{x\cdot y}\ket{y}_n
+\end{align}
+where $x$ is a single eigenstate in the computational basis. 
+\begin{enumerate}[(a)]
+	\item Show that for a 1-Qbit state $\ket{x}$ you can write
+	\begin{align}
+	\had\ket{x} = \f{1}{\sqrt{2}}\sum_{0\leq y < 2}(-1)^{x\cdot y}\ket{y}
+	\end{align}
+	for $x,y\in \{0,1\}$.
+	
+	\item Show further that for a 2-Qbit state $\ket{x}_2 = \ket{x_1}\ket{x_0}$ that
+	\begin{align}
+	\had^{\otimes 2}\ket{x_1x_0} = \frac{1}{2}\lb \ket{00} + (-1)^{x_0}\ket{01} + (-1)^{x_1}\ket{10} + (-1)^{x_1+x_0}\ket{11} \rb
+	\end{align}
+	
+	\item Show that for you can write the result of the last pair as
+	\begin{align}
+	\had^{\otimes 2}\ket{x_1x_0} = \f{1}{\sqrt{2^2}}\sum_{0 \leq y < 2^2} (-1)^{x\cdot y}\ket{y}
+	\end{align}
+	for $x,y\in \{0,1\}^{2}$.
+	
+	
+	\item Show that, as stated above, for $n$-Qbit states $\ket{x}_n$ that
+	\begin{align}
+	\had^{\otimes n}\ket{x}_n = \f{1}{\sqrt{2^n}} \sum_{0 \leq y < 2^n}(-1)^{x\cdot y}\ket{y}_n.
+	\end{align}
+	
+	
+	
+	
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\noindent \textit{Solution:}
+
+\begin{enumerate}[(a)]
+	\item Let a 1-Qbit eigenstate $\ket{x}$ be given. If $\ket{x} = \ket{0\mbox{ or }1}$ then 
+	\begin{align}
+	\had\ket{x} &= \ket{\pm}\nn\\
+	&= \f{1}{\sqrt{2}}\lp \ket{0} \pm \ket{1} \rp\nn\\
+	&= \f{1}{\sqrt{2}}\lp (-1)^{(0\mbox{ or }1)\cdot 0}\ket{0} + (-1)^{(0\mbox{ or }1)\cdot 1}\ket{1} \rp\nn\\
+	&= \f{1}{\sqrt{2}}\lp (-1)^{x\cdot 1}\ket{0} + (-1)^{x\cdot 1}\ket{1} \rp \nn\\
+	&= \f{1}{\sqrt{2}}\sum_{0\leq y < 2}(-1)^{x\cdot y}\ket{y}.
+	\end{align}
+	\item We use the result from (a) to show the claim in (b):
+	\begin{align}
+	\had^{\otimes 2}\ket{x_1x_0} &= \had\ket{x_1}\otimes \had\ket{x_0}\nn\\
+	&= \f{1}{2}\lp \sum_{0\leq y < 2}(-1)^{x_1\cdot y}\ket{y} \rp \otimes \lp \sum_{0\leq y < 2}(-1)^{x_0\cdot y}\ket{y} \rp\nn\\
+	&= \f{1}{2} \lp (-1)^{(x_1+x_0)\cdot 0}\ket{00} + (-1)^{x_1\cdot 0+ x_0\cdot 1} \ket{01} \right.\nn\\
+	&\,\,\left.+ (-1)^{x_1\cdot 1 + x_0\cdot 0}\ket{10} + (-1)^{(x_1+x_0)\cdot 1}\ket{11} \rp\\
+	&= \frac{1}{2}\lb \ket{00} + (-1)^{x_0}\ket{01} + (-1)^{x_1}\ket{10} + (-1)^{x_1+x_0}\ket{11} \rb
+	\end{align}
+	\item Clearly,
+	\begin{align}
+	&x_1\cdot 0 + x_0 \cdot 0 = x\cdot y\bigg\vert_{\ket{y} = \ket{00}},\quad x_1\cdot 0 + x_0 \cdot 1 = x\cdot y\bigg\vert_{\ket{y} = \ket{01}}\nn\\
+	&x_1\cdot 1 + x_0 \cdot 0 = x\cdot y\bigg\vert_{\ket{y} = \ket{10}},\quad x_1\cdot 1 + x_0 \cdot 1 = x\cdot y\bigg\vert_{\ket{y} = \ket{11}}
+	\end{align}
+	So, we just rewrite the third equality in part (b) as
+	\begin{align}
+	&\f{1}{\sqrt{2^2}}   \lp (-1)^{x\cdot 00} \ket{00} + (-1)^{x\cdot 01} \ket{01} + (-1)^{x\cdot 10} \ket{10} + (-1)^{x\cdot 11} \ket{11}  \rp\nn\\
+	=& \f{1}{\sqrt{2^2}}\sum_{0\leq y< 2^2}(-1)^{x\cdot y}\ket{y}.
+	\end{align}
+	
+	
+	
+	\item Now we want to generalize to $n$. We show that the given statement holds, by induction. In parts (a) to (c), we have shown that the base cases hold. Now, suppose the statement holds up to $n$, i.e.,
+	\begin{align}
+	\had^{\otimes n}\ket{x}_n = \f{1}{\sqrt{2^n}} \sum_{0 \leq y < 2^n}(-1)^{x\cdot y}\ket{y}_n.
+	\end{align}
+	We want to show it also holds for $n+1$. So, \underline{to prove}:
+	\begin{align}
+	\had^{\otimes (n+1)}\ket{x}_{n+1} = \f{1}{\sqrt{2^{n+1}}} \sum_{0 \leq y < 2^{n+1}}(-1)^{x\cdot y}\ket{y}_{n+1}.
+	\end{align}
+	We first look at the LHS. Let $\ket{x}_{n+1} = \ket{x_n}\otimes \ket{x_{n-1}\dots x_0}_{n}$ with $x_i\in\{0,1\}$, then we have that
+	\begin{align}
+	\had^{\otimes (n+1)}\ket{x}_{n+1} &= \had \ket{x_n} \had^{\otimes n}\ket{x_{n-1}\dots x_0}_n \equiv \had \ket{x_n} \had^{\otimes n}\ket{b}_n \nn\\
+	&= \lp \f{1}{\sqrt{2}}\sum_{0\leq y < 2}(-1)^{x_n\cdot y}\ket{y} \rp \otimes \lp \f{1}{\sqrt{2^n}} \sum_{0 \leq y' < 2^n}(-1)^{b\cdot y'}\ket{y'}_n \rp\nn\\
+	&=  \f{1}{\sqrt{2^{n+1}}}\sum\limits_{\substack{0\leq y < 2\\0 \leq y' < 2^n}}   (-1)^{x_n\cdot y + b\cdot y'}\ket{yy'}_{n+1}.
+	\end{align}
+	It is not difficult to see that for any $0 \leq y < 2^{n+1}$
+	\begin{align}
+	x_0\cdot y + b\cdot y' \equiv_2 = x_ny_n + x_{n-1}y_{n-1} + \dots + x_0 y_0 = x\cdot y.
+	\end{align}
+	And so we have
+	\begin{align}
+	&\f{1}{\sqrt{2^{n+1}}}\sum\limits_{\substack{0\leq y < 2\\0 \leq y' < 2^n}}   (-1)^{x_n\cdot y + b\cdot y'}\ket{yy'}_{n+1}\nn\\
+	&= \f{1}{\sqrt{2^{n+1}}}\sum_{0 \leq y< 2^{n+1}}  (-1)^{x\cdot y}\ket{y}_{n+1}.
+	\end{align}
+	Thus, we have proven the equality:
+	\begin{align}
+	\had^{\otimes n}\ket{x}_n = \f{1}{\sqrt{2^n}} \sum_{0 \leq y < 2^n}(-1)^{x\cdot y}\ket{y}_n.
+	\end{align}
+	\qed
+	
+	
+\end{enumerate}
+
+
+
+
+
+
+
+\newpage
+
+
+
+
 \end{document}
