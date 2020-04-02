@@ -1249,7 +1249,35 @@ where of course $a_i, x_i$ take values $\{ 0,1\}$, and $a$ is a non-negative int
 
 Classically, here's how we do it. Let a number $a$ be given. Because the expansion of $2^m$ has a 1 in position $m$ and 0 in all other positions, the $m^{\text{th}}$ bit of $a$ is $a\cdot 2^m$ (it's easy to see how this works by writing down the mod-2 inner product).  This means that with a classical computer, we can learn the values of $n$ bits of $a$ by applying $f$ to $x = 2^m$, $m \in [0,n]$, $n$ times.  This requires querying $f$ $n$ times. \\
 
-Quantum computers, on the other hand, requires a \textbf{single} query to completely determine $a$, regardless of how big $n$ is. 
+Quantum computers, on the other hand, requires a \textbf{single} query to completely determine $a$, regardless of how big $n$ is. There are two ways to discuss how this works. The first way goes into the algebra, while the second gives pictorial, circuit-theoretical approach to solving this problem. I won't worry about the second approach and will only focus on the first approach. \\
+
+The (conventional) first way to do this exploits a trick that is useful in dealing with functions like $f$ that act on $n$ Qbits without output to a single Qbit. Suppose the 1-Qbit output register is initially prepared in the state $\had \X \ket{0} = \had\ket{1} = (1/\sqrt{2})(\ket{0} - \ket{1})$. We know that 
+\begin{align}
+\U_f \ket{x}_n\ket{y}_1 = \ket{x}_n\ket{y\oplus f(x)}  = \ket{x}_n\ket{\bar{y}}_1 \iff f(x) = 1.
+\end{align} 
+This means
+\begin{align}
+\U_f \ket{x}_n\f{1}{\sqrt{2}}\lp \ket{0} - \ket{1} \rp = (-1)^{f(x)}\ket{x}_n \f{1}{\sqrt{2}}\lp \ket{0} - \ket{1} \rp.
+\end{align}
+We see that by taking the state of the 1-Qbit output register to be $(1/\sqrt{2})(\ket{0} - \ket{1})$, we convert a bit flip to an overall change of sign. This is the first trick. The second trick is not exactly a trick, but a fact that we will see in the homework:
+\begin{align*}
+\had^{\otimes n}\ket{x}_n = \f{1}{\sqrt{2^n}} \sum_{0\leq y < 2^n}(-1)^{x\cdot y}\ket{y}.
+\end{align*}
+With this, if we start with the $n$-Qbit input register in the standard initial state $\had^{\otimes n}\ket{0}$, put the 1-Qbit output register into $\had\ket{1}$, apply $\U_f$, and then again apply $\had^{\otimes n}$ to the input register we will get
+\begin{align}
+(\had^{\otimes n} \otimes \Id)\U_f(\had^{\otimes n} \otimes \had)\ket{0}_n\ket{1}_1 = \f{1}{2^n}\sum_{0\leq x,y< 2^n}(-1)^{f(x)+x\cdot y}\ket{y}\f{1}{\sqrt{2}}\lp \ket{0} - \ket{1} \rp.
+\end{align}
+I will spare the reader the details of this calculation. Parts of this calculation will be verified in the exercises. By inspection, however, the reader should be able to convince himself this result makes sense. \\
+
+From here, we do sum over $x$ first. If $f(x) = a\cdot x$ then the sum over $x$ produces the factor
+\begin{align}
+\sum_{0\leq x < 2^n}(-1)^{a\cdot x +  x\cdot y} = \prod_{j=1}^n \sum_{x_j\in \{0,1\}} (-1)^{(a_j + y_j)x_j}.
+\end{align}
+At least one term in the product is zero unless every bit $y_j$ of $y$ is equal to the corresponding bit $a_j$ of $a$, i.e., unless $y=a$ (check this by inspection). Therefore, if I apply a final $\had$ onto the 1-Qbit output register to make things a little nicer, then the entire computational process reduces to
+\begin{align}
+\had^{\otimes (n+1)}\U_f \had^{\otimes (n+1)}\ket{0}_n\ket{1}_1 = \ket{a}_n\ket{1}_1.
+\end{align} 
+So by putting the input and output registers into the appropriate initial states, after a single call for the subroutine followed by $\had^{\otimes n}$ to the input register, the state of the input register becomes $\ket{a}$. Now, all $n$ bits of the number $a$ can ne determined by measuring the input register, even though we have called the subroutine only once.
 
 
 
@@ -1263,9 +1291,7 @@ Quantum computers, on the other hand, requires a \textbf{single} query to comple
 
 
 
-
-
-
+   
 
 
 
@@ -1281,6 +1307,24 @@ Quantum computers, on the other hand, requires a \textbf{single} query to comple
 
 
 \subsection{Simon's problem}
+
+
+In the Bernstein-Vazirani problem, a classical computer must call the subroutine $n$ times, while a quantum computer only need to call the subroutine once. As the problem grows, the classical complexity scales linearity, while the quantum complexity is still constantly one. In the Simon's problem, the speed-up is even more dramatic. The classical complexity grows exponentially with the size of the problem, while the quantum complexity only grows linearly. \\
+
+This speed-up involves a probabilistic element characteristic of many quantum computations. The characterization of how the number of calls of the subroutine scales with the number of bits in $a$ applies not to calculating directly, but to learning it with probability very close to 1. \\
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Constructing Toffoli gates}
 
 
@@ -3304,7 +3348,7 @@ In quantum computer science the dot product is defined modulo-2, which means tha
 	\begin{align}
 	a\cdot b = a_{n-1}b_{n-1} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \equiv_2 a_{n-1}b_{n-1} + \dots + a_1b_1 + a_0b_0
 	\end{align}
-	We can do this by induction. Suppose $n=1$, then $a,b\in \{0,1\}$. Because $a,b\in \{0,1\}$, $a\cdot b \equiv_2 ab = a\oplus b$. So this base case holds. Next, suppose the statement holds up to $n$, i.e.,
+	We can do this by induction. Suppose $n=1$, then $a,b\in \{0,1\}$. Because $a,b\in \{0,1\}$, $a\cdot b \equiv_2 ab$. So this base case holds. Next, suppose the statement holds up to $n$, i.e.,
 	\begin{align}
 	a_{n-1}b_{n-1} \oplus\dots \oplus a_1b_1 \oplus a_0b_0 \equiv_2 a_{n-1}b_{n-1} + \dots + a_1b_1 + a_0b_0.
 	\end{align}  
@@ -3444,7 +3488,7 @@ where $x$ is a single eigenstate in the computational basis.
 	\end{align}
 	We first look at the LHS. Let $\ket{x}_{n+1} = \ket{x_n}\otimes \ket{x_{n-1}\dots x_0}_{n}$ with $x_i\in\{0,1\}$, then we have that
 	\begin{align}
-	\had^{\otimes (n+1)}\ket{x}_{n+1} &= \had \ket{x_n} \had^{\otimes n}\ket{x_{n-1}\dots x_0}_n \equiv \had \ket{x_n} \had^{\otimes n}\ket{b}_n \nn\\
+	\had^{\otimes (n+1)}\ket{x}_{n+1} &= \had \ket{x_n} \otimes \had^{\otimes n}\ket{x_{n-1}\dots x_0}_n \equiv \had \ket{x_n} \otimes \had^{\otimes n}\ket{b}_n \nn\\
 	&= \lp \f{1}{\sqrt{2}}\sum_{0\leq y < 2}(-1)^{x_n\cdot y}\ket{y} \rp \otimes \lp \f{1}{\sqrt{2^n}} \sum_{0 \leq y' < 2^n}(-1)^{b\cdot y'}\ket{y'}_n \rp\nn\\
 	&=  \f{1}{\sqrt{2^{n+1}}}\sum\limits_{\substack{0\leq y < 2\\0 \leq y' < 2^n}}   (-1)^{x_n\cdot y + b\cdot y'}\ket{yy'}_{n+1}.
 	\end{align}
@@ -3454,8 +3498,7 @@ where $x$ is a single eigenstate in the computational basis.
 	\end{align}
 	And so we have
 	\begin{align}
-	&\f{1}{\sqrt{2^{n+1}}}\sum\limits_{\substack{0\leq y < 2\\0 \leq y' < 2^n}}   (-1)^{x_n\cdot y + b\cdot y'}\ket{yy'}_{n+1}\nn\\
-	&= \f{1}{\sqrt{2^{n+1}}}\sum_{0 \leq y< 2^{n+1}}  (-1)^{x\cdot y}\ket{y}_{n+1}.
+	\f{1}{\sqrt{2^{n+1}}}\sum\limits_{\substack{0\leq y < 2\\0 \leq y' < 2^n}}   (-1)^{x_n\cdot y + b\cdot y'}\ket{yy'}_{n+1}= \f{1}{\sqrt{2^{n+1}}}\sum_{0 \leq y< 2^{n+1}}  (-1)^{x\cdot y}\ket{y}_{n+1}.
 	\end{align}
 	Thus, we have proven the equality:
 	\begin{align}
