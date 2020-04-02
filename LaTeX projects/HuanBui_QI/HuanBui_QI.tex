@@ -1313,8 +1313,41 @@ In the Bernstein-Vazirani problem, a classical computer must call the subroutine
 
 This speed-up involves a probabilistic element characteristic of many quantum computations. The characterization of how the number of calls of the subroutine scales with the number of bits in $a$ applies not to calculating directly, but to learning it with probability very close to 1. \\
 
+The subroutine $\U_f$ in Simon's problem evaluates a function $f$ on $n$ bits is two to one, i.e., it is a function from $n$ to $n-1$ bits. It is constructed so that the $n$-bit integers $x$ and $y$ are related by $x = y\oplus a \iff x \oplus y = a$. This is essentially a period-finding problem:
+\begin{align}
+f(x \oplus a) =  f(x).
+\end{align} 
+Of course the period here is $a$. Simon's problem is a precursor of Shor's period-finding algorithm where one finds the period $a$ under the ordinary addition $f(a+x) = f(x)$. \\
 
+With a classical computer, what you have to do to find $a$ is feeding the subroutine with a bunch of $x$, and compare $f(x\oplus a)$ against $f(x)$ until you see a match. At any stage of the process prior to success, if you have picked $m$ different values of $x$, then all you know is that $a\neq x_i \oplus x_j$ for all pairs $x_i,x_j$. This means you have eliminated at most $(m/2)(m-1)$ values of $a$. Now, there are $2^n-1$ possible values for $a$. The chance of success won't be large unless  $(m/2)(m-1)$ is sufficiently close to $2^n$. This means $m\sim 2^{n/2}$ is required. This means the number of trials grows exponentially. \\
 
+In (spectacular) contrast, a quantum computer can determine $a$ with not much more than $n$ queries. Let's see how this is done:\\
+
+To do this we first return to the standard procedure and let $\U_f$ act on $\had^{\otimes n}\ket{0}_n$. This gives
+\begin{align}
+\U_f (\had^{\otimes} \ket{0}_n) = \f{1}{2^{n/2}}\sum_{0\leq x < 2^n} \ket{x}\ket{f(x)}
+\end{align}
+which the reader can verify from the results in the exercises. \\
+
+Now, if we subject only the output register to a measurement, then the measurement gate is equally likely to indicate each of the $2^{n-1}$ different values of $f$. Looking at the RHS of the equation above again, since $f$ is periodic, we know that each value of $f$ appears in two terms that have the same amplitudes. The Born rule (of partial measurement) tells us that the input register must be in the state
+\begin{align}
+\f{1}{\sqrt{2}}\lp \ket{x_0} + \ket{x_0 \oplus a} \rp
+\end{align}
+for that value $x_0$ for which $f(x_0)$ agrees with the random value of $f$ given by the measurement. \\
+
+This looks good, because we just created a superposition of just two computational basis states, associated with two $n$-bit integers, that differ in $\oplus$ by $a$. If we knew these two integers their bitwise mod 2 sum would be $a$. However, when a register is in quantum state there is no way to learn what state it is in. By subjecting the state above to a direct measurement all we can learn is either $x_0$, a random number, or $x_0 \oplus a$, another random number. $a$ appears only in the relation between these two integers, only one of which we know.\\
+
+But we can cure this problem. Just like in the Deutsch's problem, we can ignore the possibility of learning either number. It is possible that by applying some operations before measuring can let us extract the relation $a$. This operation is $\had^{\otimes n}$:
+\begin{align}
+\had^{\otimes n}\f{1}{\sqrt{2}}\lp \ket{x_0} + \ket{x_0 \oplus a} \rp &= \f{1}{\sqrt{2^{n+1}}}\sum_{0\leq y < 2^n} \lp (-1)^{x_0\cdot y} + (-1)^{(x_0\oplus a)\cdot y} \rp \ket{y}\nn\\
+&= \f{1}{\sqrt{2^{n-1}}} \sum_{a\cdot y = 0}(-1)^{x_0\cdot y}\ket{y}.
+\end{align}  
+If we now measure the input register, we learn with equal probability any of the values of $y$ for which $a\cdot y = 0$. With this, each call for $\U_f$ gives us a $y$ such that $a\cdot y =0$. \\
+
+Next, we want to show that this enables us to determine $a$ with high probability with not many more than $n$ calls for $\U_f$. With a single call for $\U_f$, unless we get $y=0$ (which is unlikely), we learn a nonzero value of $y$, and therefore a nontrivial subset of the $n$ bits of $a$ whose mod 2 sum vanishes. This means we have cut the number of possible choice for $a$ by a half, from $2^n-1$ to $2^{n-1}-1$. If we repeat this procedure, we will likely learn another nonzero value of $y$ that isn't a repeat of the previous $y$. This enables us to again halve the number of possible candidates for $a$. It turns out (after from mathematical analysis) that with $n+x$ calls for $\U_f$ the probability $q$ of acquiring enough information to determine $a$ is
+\begin{align}
+q = \lp 1-\f{1}{2^{x+n}}\rp \lp 1-\f{1}{2^{x+n-1}}\rp \dots \lp 1-\f{1}{2^{x+2}} \rp \geq 1-\f{1}{2^{x+1}}.
+\end{align} 
 
 
 
