@@ -14726,8 +14726,32 @@ where these ${\epsilon^{\dots}}_{\dots}$ are Levi-Civita symbols/tensors. The re
 
 Now this equation can be rewritten in terms of the linearized curvature invariants in the following way (again, the reader can take this for what it is; verification is hard):
 \begin{align}
-\boxed{R^{(1)} + \f{2\al}{\Lambda_3^3}G^{(1)\mu\nu}\Pi_{\mu\nu} + \f{6\be}{\Lambda_3^6}\lp \rp \Pi_{\mu\nu}\Pi_{\al\be} = 0}
+&R^{(1)} + \f{2\al}{\Lambda_3^3}G^{(1)\mu\nu}\Pi_{\mu\nu} + \f{6\be}{\Lambda_3^6}( g^{\mu\nu}G^{(1)\al\be}\nn\\ &\quad - g^{\mu\be}G^{(1)\al\nu} + g^{\al\be} R^{(1)\mu\nu} - g^{\al\nu} R^{(1)\mu\be} - R^{(1)\mu\al\nu\be} ) \Pi_{\mu\nu}\Pi_{\al\be} = 0
 \end{align}
+where $R^{(1)}_{\mu\nu}, G^{(1)}_{\mu\nu} \equiv \mathcal{E}^{\al\be}_{\mu\nu} h_{\al\be}$ and $R^{(1)}_{\mu\nu\al\be}$ denote respectively the linearized Ricci, Einstein, and Riemann tensors composed of the helicity-2 field $h_{\mu\nu}$. The presence of the Riemann tensor here makes it impossible in general to algebraically reduce the system of equations of motion to a set of pure $\pi$ and pure $h_{\mu\nu}$ equations, whereas for $\be = 0$ this is possible. In any case, plugging the ansatz above into this equation yields:
+\begin{align}
+\boxed{\lp 2r^2f' - r^2 a' + 2\f{\al}{\Lambda_3^3}r\pi'(a' - f') + 6\f{\be}{\Lambda_3^6} a'(\pi')^2 \rp' = 0}
+\end{align}
+Now we explore the space of spherically symmetric, static solutions to the system of the boxed equations. We are interested in a spherical source of size $R$, constant density $\rho$ and negligible pressure, so that the only non-vanishing component of the energy-momentum tensor is $T_{00} = \rho \theta(R)$. Integrating the boxed equations subject to the boundary conditions
+\begin{align}
+a(0) = f(0) = \pi(0) = 0,
+\end{align}
+one reduces the system to the following set of equations for the radial derivatives of the fields,
+\begin{empheq}[box = \widefbox]{align*}
+a' &= -\f{M(r)}{M_P r^2} - \Lambda_3^3 r \lambda(1 + 2\beta \lambda^2)\\
+f' &= -\f{M(r)}{M_P r^2} + \Lambda_3^3 r \lambda(1 + 2\beta \lambda^2)\\
+3\lambda - 6 \al \lambda^2 + (2\al^2 - 8\be)\lambda^3 - 12\be^2 \lambda^5 &= \begin{cases}
+(r_*/r)^3(1+ 6\be\lambda^2), \quad \text{outside source}\\
+(r_*/R)^3(1+ 6\be\lambda^2), \quad \text{inside source}
+\end{cases}
+\end{empheq}
+where $M(r)$ denotes the mass of the source within a sphere of radius $r$, and 
+\begin{align}
+\lambda \equiv \f{\pi'}{\Lambda_3^3 r}, \quad r_* = \lp \f{M}{M_P^2 m^2} \rp^{1/3} = \lp \f{M}{M_P} \rp^{1/3} \f{1}{\Lambda_3} .
+\end{align}
+
+
+
 
 
 
@@ -14737,11 +14761,73 @@ Now this equation can be rewritten in terms of the linearized curvature invarian
 \subsubsection{Solutions}
 
 
+We first concentrate on solutions outside the source. The helicity-0 equation (the last equation) is quintic in $\lambda$, so it cannot be solved exactly and in general we should expect multiple solutions. Outside the source, there exists a distance scale - the Vainshtein radius $r_*$, at which a typical solution changes regime; we will therefore divide the space further into regions outside and inside the Vainshtein radius and solve the system in each of these regions separately.\\
+
+The nontrivial part is to find an appropriate matching of solutions in the two regions, which in principle requires an exact solution to the system. Having no handle on exact analytic solutions, we will look at what numerical analysis says.
+
+
+
 \begin{itemize}
 	\item \textbf{Beyond the Vainshtein radius}
-	\item \textbf{Within the Vainshtein radius}
-	\item \textbf{Matching at the Vainshtein radius}
+	When $r \gg r_*$, there are two types of solutions. One of them is obtained by simply neglecting all nonlinearities in $\lambda$ in the last equation, so that
+	\begin{align}
+	\lambda = \f{1}{3}\lp \f{r_*}{r} \rp^3 \implies \boxed{\pi = -\f{1}{3}\f{M}{M_P r}, \quad a = \f{4}{3}\f{M}{M_P r}, \quad f = \f{2}{3}\f{M}{M_P r}}
+	\end{align}
+	with corrections suppressed by powers of $r_*/r$. This is an asymptotically flat solution of the linear FP theory - fields vanish at infinity, and it manifestly exhibits the vDVZ discontinuity. This type of asymptotic behavior one encounters in straightforward nonlinear generalizations of the FP massive gravity.\\
+	
+	Since the right hand side of inside/outside equation contains a small overall factor $(r_*/r)^3$, a second solution for which the left hand vanishes in the zeroth approximation is possible. In this case,
+	\begin{align}
+	\lambda \propto \pi' / r = C \implies \boxed{\pi \sim \Lambda_3^3 r^2, \quad a,f \sim \Lambda_3^3 r^2}
+	\end{align}
+	with $C$ a nonzero constant and up to corrections suppressed by powers of $r_*/r$.  This is an asymptotically non-decaying solution - both the helicity-0 and helicity-2 fields increase with distance on this branch. We will later see the importance of this.
+	
+	
+	
+	
+	
+	
+	
+	
+	\item \textbf{Within the Vainshtein radius} Well within the Vainshtein radius, $r_*/r \gg 1$, and for $\be < 0$, there exists a solution for which the right hand of the inside/outside equation vanishes in the zeroth approximation. On this branch, the leading $r-$dependence of the fields reads
+	\begin{align}
+	&\lambda = \sqrt{\f{-1}{6\be}} + \mathcal{O}\lp \lp \f{r}{r_*} \rp^3 \rp\nn\\ \implies &\boxed{ \pi \sim \Lambda_3^3 r^2,\quad  a = f = \f{M}{M_P r} + \mathcal{O}\lp \lp \f{r}{r_*} \rp^3 \f{M}{M_P r} \rp}
+	\end{align}
+	and one recovers with great precision the gravitational potential of GR (remember that $a(r)$ belongs to the diagonal of $h_{\mu\nu}$), up to tiny corrections due to the helicity-0 graviton. So, for $\be < 0$, the theory admits the Vainshtein mechanism. \\
+	
+	
+	Finally, there's a solution for which the usual $1/r$ part of the gravitational potential is completely screened inside the Vainshtein radius. Mathematically, this corresponds
+	to last terms on each side of the outside/inside equation being dominant over the rest of the contributions. Then, the leading dependence on $r$ in $a$ and $f$ cancels, leaving the following expressions for the solution at hand,
+	\begin{align}
+	\lambda \approx \lp \f{-1}{2\be} \rp^{1/3} \f{r_*}{r} \implies \boxed{a \sim \f{M}{M_P r_*^2}r, \quad f \sim \f{M}{M_P r_*} \ln r}
+	\end{align}
+	This modifies the gravitational potential within $r_*$ to an observationally unacceptable form.\\
+	
+	Within the source, as it follows from (14), λ is constant, matching the value at $r = R$ of a particular solution inside the Vainshtein radius discussed above. This means, that $\pi$ and its first derivative are continuous across the surface of the source.
+	
+	
+	\item \textbf{Matching at the Vainshtein radius} Matching the solutions found inside and outside the Vainshtein radius is hard. This procedure requires numerical analysis. This means we cannot have a general result here. Rather, we will look at results for a particular choice of the parameters $\al$ and $\be$. \\
+	
+	The main takeaway here is that if $\be < 0$, Vainshtein mechanism works. This means that the GR solution (solution 3) which exhibits the Vainshtein mechanism inside $r_*$, does match the asymptotically flat Solution 1, exhibiting the vDVZ discontinuity beyond the Vainshtein scale.
+	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{lambda31}
+		\includegraphics[scale=0.3]{lambda32}
+	\end{figure}
+
+	In Figure 1, the asymptotic of the plotted solution at $r/r_* \to 0$ and $r/r_* \to \infty$ clearly coincide with Solution 3 ($\lambda \sim C$) and Solution 1 ($ \lambda \propto 1/r^3 $) respectively.  In Figure 2, the asymptotically non-decaying Solution 2 ($\lambda \sim C$) outside the Vainshtein radius matches the Solution 4 ($\lambda \propto  1/r$) inside. \\
+	
+	It is important to address the fact, that the leading terms in the expressions for $\lambda$ for Solutions 2 and 3 do not depend on the mass of the source. One can then ask the question: how physical are these solutions, since the fields do not vanish even in the $M \to 0$ (decoupling) limit? In this limit, the non-decaying Solution 2 describes an asymptotically non-flat configuration with nonzero (and increasing with distance) gravitational potential throughout the whole space. On the other hand, the region of validity of the the sub-Vainshtein Solution 3, $ r \ll r_* $ shrinks to zero for the vanishing mass of the source. Moreover, for any nonzero $M$, corrections to the gravitational potential are tiny within the Vainshtein radius, as noted above 4. Finally, for $M = 0$, there of course exists a physical solution, on which all fields are
+	identically zero.
+	
+	
 \end{itemize}
+
+
+
+\textbf{Summary:} In general there are multiple spherically
+symmetric, static solutions in the Minkowski-space decoupling limit of ghost-free nonlinear extensions of the Fierz-Pauli model. Moreover, for a
+wide range of parameters, defined by $\beta < 0$, the Vainshtein mechanism seems to work in the theory - there exists an asymptotically-flat solution, which screens the contribution of the helicity-0 mode at sub-Vainshtein scales, successfully hiding it from the Solar System tests. In addition, there exists an asymptotically non-decaying solution, which totally screens the $1/r$ potential inside the Vainshtein radius, dramatically reducing the gravitational attraction at these scales - this scenario is clearly ruled out by observations.
 
 
 
@@ -14754,7 +14840,10 @@ Now this equation can be rewritten in terms of the linearized curvature invarian
 \subsection{Quantum corrections in the $\Lambda_3$ theory}
 
 
-
+Once again, we expect quantum mechanically the presence of all operators with at least two derivatives per $\phi$, now suppressed by the cutoff $\Lambda_3$,
+\begin{align}
+\sim  \f{\p^q  (\p^2 \phi)^p}{\Lambda_3^{3p+q-4}}.
+\end{align}
 \newpage
 
 
