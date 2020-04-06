@@ -62,6 +62,8 @@
 \newcommand{\x}{\xi}
 
 
+\newcommand{\Var}{\text{Var}}
+
 \newcommand{\Else}{\text{else}}
 \newcommand{\N}{\mathcal{N}}
 
@@ -1283,7 +1285,7 @@ For example, say we want to compare two means. $H_0 : \Delta = 0$, $H_a :\Delta 
 
 
 
-\section{Consistency and Limiting Distributions}
+\chapter{Consistency and Limiting Distributions}
 
 
 
@@ -1295,7 +1297,7 @@ For example, say we want to compare two means. $H_0 : \Delta = 0$, $H_a :\Delta 
 
 
 
-\subsection{Convergence in Probability}
+\section{Convergence in Probability}
 
 
 \noindent \textbf{Definition:} Let $\{X_n\}$ be a sequence of r.v. and let $X$ be  a r.v. defined on a sample pace. $X_n$ \textit{converges in probability} to $X$ if, for all $\epsilon < 0$,
@@ -1360,7 +1362,7 @@ X_n Y_n \xrightarrow{P} XY.
 \noindent \textit{Proof:} This proof uses the result from the previous theorem. The key is to write $X_n Y_n$ as a combination of $X_n^2, Y_n^2,$ and $(X_n - Y_n)^2$. Applying the previous to obtain the desired conclusion.\qed
 
 
-\subsubsection{Sampling and Statistic}
+\subsection{Sampling and Statistic}
 
 
 \noindent \textbf{Definition:} (Consistency) Let $X$ be a r.v. with cdf $F(x,\theta)$ with $\theta \in \Omega$. Let $X_1, \dots, X_n$ be a sample from the distribution of $X$ and let $T_n$ denote a statistic. $T_n$ is a \textbf{consistent} estimator of $\theta$ iff
@@ -1370,7 +1372,7 @@ T_n \xrightarrow{P} \theta.
 
 
 
-\subsection{Convergence in Distribution}
+\section{Convergence in Distribution}
 
 
 \noindent \textbf{Definition:} (Convergence in Distribution) Let $\{X_n\}$ be a sequence ra r.v. and let $X$ be a r.v.. Let $F_{X_n}$ and $F_X$ be, respectively, the cdfs of $X_n$ and $X$. Let $C(F_X)$ denote the set of all points where $F_X$ is continuous. We say that $X_n$ \textit{converges in distribution} to $X$ if
@@ -1409,7 +1411,7 @@ A_n + B_nX_n \xrightarrow{D} a + bX.
 
 
 
-\subsubsection{Bounded in Probability}
+\subsection{Bounded in Probability}
 
 \noindent \textbf{Definition:} We say that the sequence of random variables $\{X_n\}$ is bounded in probability if, for all $\epsilon > 0$, there exists a constant $B_\epsilon > 0$ and an integer $N_\epsilon$ such that
 \begin{align}
@@ -1441,7 +1443,7 @@ X_n Y_n \xrightarrow{P} 0.
 
 
 
-\subsubsection{$\Delta$-method}
+\subsection{$\Delta$-method}
 
 Little $o$ notation: $a = o(b)$ if and only if $a/b \to 0$ as $b\to 0$.\\
 
@@ -1460,13 +1462,13 @@ Suppose $g(x)$ is differentiable at $\theta$ and $g'(\theta) \neq 0$, then
 
 
 
-\subsubsection{Moment Generating Function Technique}
+\subsection{Moment Generating Function Technique}
 
 
 
 \noindent \textbf{Theorem:} Let $\{ X_n \}$ be a sequence of r.v. with mgf $M_{X_n}(t)$ that exists for $-h < t < h$ for all $n$. Let $X$ be a r.v. with mdf $M(t)$, which exists for $\abs{t} \leq h_1 \leq h$. If $\lim_{n\to \infty} M_{X_n}(t) = M(t)$ for $\abs{t} \leq h_1$, then $X_n \xrightarrow{D} X$.
 
-\subsection{Central Limit Theorem}
+\section{Central Limit Theorem}
 
 \textbf{Theorem:} (CLT) Let $X_1, \dots, X_n$ denote the observations of a r.v. from a distribution that has mean $\mu$ and positive variance $\sigma^2$. Then the r.v.
 \begin{align}
@@ -1506,6 +1508,381 @@ So ${Y_n} \sim \N(0,1) $.
 
 
 
+
+
+
+\newpage
+
+
+
+\chapter{Maximum Likelihood Methods}
+\newpage
+
+\section{Maximum Likelihood Estimation}
+
+Recall the likelihood function:
+\begin{align}
+\lag(\theta;\mathbf{x}) = \prod^n_{i=1}f(x_i;\theta), \quad \theta \in \Omega
+\end{align}
+where $f(x_i;\theta)$ is the pdf which the variables $X_i$ follow that depends on the parameter $\theta$ and $\mathbf{x} = (x_1,x_2,\dots,x_n)^\top$ is the sample. It's often more convenient to use the log likelihood:
+\begin{align}
+l(\theta) = \ln \lag(\theta) = \sum^n_{i=1}\log f(x_i;\theta).
+\end{align}
+$\hat{\theta}$ is the mle of $\theta$ if $\hat{\theta}$ maximizes $l(\theta)$. Let $\theta_0$ denote the true value of $\theta$. We will look at theorem which shows that the maximum of $\lag(\theta)$ asymptotically separates the true model at $\theta_0$ from models at $\theta \neq \theta_0$. To prove this theorem, we look at \textit{regularity conditions}:\\
+
+
+\noindent \textbf{Regularity Conditions.} Regular conditions are
+\begin{itemize}
+	\item The cdfs are distinct, i.e., $\theta \neq \theta' \implies F(x_i;\theta) \neq F(x_i;\theta')$.
+	\item The pdfs have common support for all $\theta$.
+	\item The point $\theta_0$ is an interior point in $\Omega$. 
+\end{itemize}
+
+
+\begin{thm}
+	Assume that $\theta_0$ is the true parameter and that 
+	\begin{align}
+	E_{\theta_0}[f(X_i,\theta)/f(X_i;\theta_0)]
+	\end{align}
+	exists. Under the first two regularity conditions
+	\begin{align}
+	\lim_{n\to \infty} P_{\theta_0}[\lag(\theta_0,\mathbf{X}) > \lag(\theta;\mathbf{X})] = 1, \quad \forall \theta \neq \theta_0.
+	\end{align}
+\end{thm}
+
+
+\begin{defn}
+	(Maximum Likelihood Estimator). We say that $\hat\theta = \hat\theta(\mathbf{X})$ is a maximum likelihood estimator (mle) of $\theta$ if 
+	\begin{align}
+	\hat\theta = \text{Argmax} \lag(\theta,\mathbf{X})
+	\end{align}
+	where the notation means $\lag(\theta, \mathbf{X})$ attains maximum at $\hat\theta$. 
+\end{defn}
+
+
+
+\begin{thm}
+	(Invariance Property) Let $X_1,\dots, X_n$ be iid with pdf $f(x;\theta),\theta \in \Omega$. FOr a specified function $g$, let $\eta = g(\theta)$ be a parameter of interested. Suppose $\hat\theta$ is the mle of $\theta$. Then $g(\hat\theta)$ is the mle of $\eta = g(\theta)$. 
+\end{thm}
+
+
+
+\begin{thm}
+	Assume that $X_1,\dots,X_n$ satisfy the regularity conditions, where $\theta_0$ is the true parameter, and further that $f(x;\theta)$ is differentiable w.r.t. $\theta \in \Omega$. Then the likelihood equation,
+	\begin{align}
+	\p_\theta \lag(\theta) = 0 \iff  \p_\theta l(\theta) = 0
+	\end{align}
+	has a solution $\hat\theta_n$ such that $\hat\theta_n \xrightarrow{P} \theta_0$.
+\end{thm}
+
+
+
+
+\begin{thm}
+	Assume that $X_1,\dots,X_n$ satisfy the regularity conditions, where $\theta_0$ is the true parameter, and that $f(x;\theta)$ is differentiable w.r.t. $\theta \in \Omega$. Suppose the likelihood equation has the \textbf{unique} solution $\hat\phi_n$. Then $\hat\theta_n$ is a consistent estimator of $\theta_0$.
+\end{thm}
+
+
+
+So far, we know that two things that make mle good:
+\begin{itemize}
+	\item Invariance property
+	\item Consistency of MLEs.
+\end{itemize}
+
+
+\begin{exmp}
+	Let $X_1,\dots,X_n$ be iid Exp($\theta$) r.v.'s. We want to find $\hat\theta_{\text{MLE}}$. We know that
+	\begin{align}
+	f(x_i;\theta) = \f{1}{\theta}e^{-x_i/\theta}; \quad x_i > \theta, \theta > 0.
+	\end{align}
+	The likelihood function is
+	\begin{align}
+	\lag(\theta) = \f{1}{\theta^n}e^{-\sum^n_{i=1}x_i/\theta}.
+	\end{align}
+	The log likelihood is
+	\begin{align}
+	l(\theta) = -n\ln \theta - \f{1}{\theta} \sum_{x_i}.
+	\end{align}
+	from which we can easily solve the mle
+	\begin{align}
+	\hat\theta = \f{1}{n}\sum_i x_i = \bar{x}.
+	\end{align}
+	Since all regular conditions are satisfied, this is a \textit{good} mle.
+	
+	
+	
+\end{exmp}
+
+
+
+\begin{exmp}
+	Let $X_1,\dots,X_n$ be iid $U(0,\theta)$ r.v.. We want to find the $\hat{\theta}_{ML}$. Now,
+	\begin{align}
+	f(x_i;\theta) = \f{1}{\theta}; 0 \leq x_i \leq \theta; \theta > 0.
+	\end{align} 
+	We note that the second and third regularity conditions do not hold. Next,
+	\begin{align}
+	\lag(\theta) = \f{1}{\theta^n} \implies l(\theta) = -n\ln\theta.
+	\end{align} 
+	We want $\hat\theta$ to be as small as possible to maximize $\lag(\theta)$, but it also has to be bigger than all of the observations. Thus, $\hat\theta_{ML} = \max_i(X_i)$.
+\end{exmp}
+
+
+\begin{exmp}
+	Let $X_i \sim \N(\mu,\sigma^2)$ r.v.. We want to find $\hat\mu$ and $\hat\sigma^2$. We know that
+	\begin{align}
+	f(x_i; \mu,\sigma^2) = \f{1}{\sqrt{2\pi \sigma^2}} e^{-(x_i - \mu)^2/2\sigma^2}; x_i,\mu \in \mathbb{R}, \sigma^2 > 0.
+	\end{align} 
+	The log likelihood is easy: 
+	\begin{align}
+	l(\mu,\sigma^2) = -\f{n}{2}\ln(2\pi) - \f{n}{2}\ln(\sigma^2) - \f{1}{2\sigma^2}\sum (x_i - \mu)^2.
+	\end{align}
+	Then 
+	\begin{align}
+	\p_\mu l(\mu,\sigma^2) = -\f{1}{\sigma^2}\sum (x_i - \mu) = 0 \implies \hat\mu = \bar{x}.
+	\end{align}
+	Also,
+	\begin{align}
+	\p_{\sigma^2} = -\f{n}{2}\f{1}{\sigma^2} + \f{1}{2\sigma^4}\sum (x_i - \bar{x})^2 = 0 \implies \hat\sigma^2 = \f{1}{n}\sum (x_i - \bar{x})^2.
+	\end{align}
+	Because the regularity conditions are satisfied, these are consistent estimators. 
+\end{exmp}
+
+
+\begin{exmp}
+	Let $X_i \sim $ Bernoulli with parameter $p$, i.e., $P(x_i = 1) = p$ and $P(x_i = 0) = 1-p$. Then 
+	\begin{align}
+	P(x_1,\dots,x_n) = p^{\sum x_i}(1-p)^{n-\sum x_i}.
+	\end{align}
+	Then the log likelihood function is just
+	\begin{align}
+	l(p) = \sum x_i \ln p + \lp n - \sum x_i \rp \ln (1-p).
+	\end{align}
+	It follows that
+	\begin{align}
+	\p_p l(p) = \f{\sum x_i}{p} - \f{n - \sum x_i}{1-p} = 0\implies \hat{p} = \f{\sum x_i}{n}.
+	\end{align}
+	This is a consistent estimator because the regularity conditions are satisfied. 
+
+	
+	
+\end{exmp}
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{exmp}
+	Let $X_i \sim \text{Poi}(\lambda)$. We want to find $\hat\lambda$. We have
+	\begin{align}
+	p(x_i \vert \lambda) = \f{e^{-\lambda} \lambda^{x_i}}{x_i!}, \quad x_i = 1,2,\dots, \quad \lambda > 0.
+	\end{align}
+	The log likelihood function is 
+	\begin{align}
+	l(\lambda) = -ns + \sum x_i \ln \lambda - \sum \ln (x_i!).
+	\end{align}
+	So,
+	\begin{align}
+	\p_\lambda l(\lambda) = 0 \implies \hat\lambda = \bar{x}.
+	\end{align}
+	From WLLN, $\bar{x} \to \mu$, so as long as the regularity conditions are satisfied (which they are), then we have a consistent estimator for $\mu$. 
+	
+	
+	
+	
+	
+	
+\end{exmp}
+
+
+
+
+
+
+\section{Rao-Cram\'er Lower Bound and Efficiency}
+
+
+\noindent \textbf{Additional Regularity Conditions.} 
+\begin{itemize}
+	\item The pdf of $f(x;\theta)$ is twice differentiable as a function of $\theta$.
+	\item The integral $\int f(x;\theta)\,dx$ can be differentiated twice under the integral sign as a function of $\theta$.
+\end{itemize}
+
+
+All four regularity conditions we have seen so far combined means that the parameter $\theta$ does not appear in the endpoints of the interval in which $f(x;\theta) > 0$ and that we can interchange integration and differentiation w.r.t $\theta$. The derivation is below is the the continuous case, the the discrete case can be handled in a similar manner. I'll summarize the derivation in a few steps below:
+\begin{align}
+1 = \int^\infty_{-\infty} f(x;\theta)\,dx \xrightarrow{\p_\theta} 0  = \int^\infty_{-\infty} \p_\theta f(x;\theta)\,dx.  
+\end{align}
+Next, 
+\begin{align}
+\p_\theta f(x;\theta) = \f{\p_\theta f(x;\theta)}{f(x;\theta)} f(x;\theta) \implies 0 = \int^\infty_{-\infty} {\p_\theta \ln f(x;\theta)} f(x;\theta)\,dx.
+\end{align}
+And so writing this as an expection:
+\begin{align}
+E\lb {\p_\theta \ln f(X;\theta)} \rb = 0. 
+\end{align}
+Now, if we take the second derivative of the identity integral we get
+\begin{align}
+0 = \int^\infty_{-\infty} \p^2_\theta \ln f(x;\theta)f(x;\theta)\,dx + \int^\infty_{-\infty} \lp \p_\theta \ln f(x;\theta) \rp^2 f(x;\theta)\,dx.
+\end{align}
+The second term on the RHS can be written as an expectation, called the \textbf{Fisher information}, denoted $I(\theta)$:
+\begin{align}
+\boxed{ I(\theta) = E\lb \lp \p_\theta \ln f(X;\theta) \rp^2 \rb = -E\lb \p_\theta^2 \ln f(X;\theta)  \rb}
+\end{align}
+Now, because $E\lb {\p_\theta \ln f(x;\theta)} \rb = 0$ we can see that 
+\begin{align}
+\boxed{I(\theta) = \text{Var}\lb \p_\theta \ln f(X;\theta) \rb}
+\end{align}
+The important function 
+\begin{align}
+\p_\theta \ln f(x;\theta)
+\end{align}
+is called the \textbf{score function}. Recall that it determines the estimating equations for the mle, i.e., the mle $\hat\theta$ solves
+\begin{align}
+\sum^n_{i=1} \p_\theta \ln f(x_i;\theta) = 0.
+\end{align}
+For an $n$-sample of iid r.v., 
+\begin{align}
+nI(\theta) = \text{Var}\lp \p_\theta \n \lag (\theta,\mathbf{X}) \rp.
+\end{align}
+
+
+
+\begin{thm}
+	(Rao-Cram\'er Lower Bound.) Let $X_1,\dots, X_n$ be iid with pdf $f(x;\theta), \theta \in \Omega$. Assume that all four regularity conditions hold. Let $Y = u(X_1,\dots,X_n)$ be a statistic with mean $E[Y] = k(\theta)$. Then
+	\begin{align}
+	\text{Var}(Y) \geq \f{[k'(\theta)]^2}{nI(\theta)}
+	\end{align}
+\end{thm}
+
+\begin{proof}
+	Here's a sketch of the proof. Define 
+	\begin{align}
+	Z = \sum^n_{i=1} \p_\theta \ln f(X_i;\theta).
+	\end{align}
+	Then $E[Z] = 0$ and $\text{Var}[Z] = nI(\theta)$. Now, verify that
+	\begin{align}
+	k'(\theta) = E[YZ] = E[Y]E[Z] + \rho \sigma_Y \sqrt{nI(\theta)}
+	\end{align} 
+	where $\rho$ is the correlation coefficient between $Y$ and $Z$. Using $E[Z] = 0$ and rearrange, we get the desired result. 
+\end{proof}
+
+
+
+\begin{thm}
+	Under the assumptions of the Rao-Cram\'er lower bound theorem, if $Y = u(X_1,\dots,X_n)$ is an unbiased estimator of $\theta$, so that $k(\theta) = \theta$, then the Rao-Cram\'er inequality becomes 
+	\begin{align}
+	\text{Var}(Y) \geq \f{1}{nI(\theta)}
+	\end{align}
+\end{thm}
+
+
+
+
+
+\begin{defn}
+	(\textbf{Efficient Estimator.}) Let $Y$ be an unbiased estimator of a parameter $\theta$ in the case of point estimator. The statistic $Y$ is caed an \textbf{efficient estimator} of $\theta$ if and only if $\text{Var}(Y)$ attains the Rao-Cram\'er lower bound.  
+\end{defn}
+
+
+\begin{defn}
+	(\textbf{Efficiency.}) In cases in which we can differentiate w.r.t a parameter under an integral or summation symbol, the ratio of the Rao-Cram\'er lower bound to the actual variance of any unbiased estimator of a parameter is called the \textbf{efficiency} of that estimator. 
+\end{defn}
+
+
+
+
+
+
+\noindent \textbf{Additional Regularity Condition.} (the total is 5 after this)
+\begin{itemize}
+	\item The pdf $f(x;\theta)$ is three times differentiable as a function of $\theta$. Further, for all $\theta \in \Omega$, there exists a constant $c$ and a function $M(x)$ such that
+	\begin{align}
+	\abs{\p^3_\theta \ln f(x;\theta) } \leq M(x),
+	\end{align}
+	with $E_{\theta_0}[M(X)] < \infty$ for all $\theta_0 - c < \theta < \theta_0 + c$ and all $x$ in the support of $X$. 
+\end{itemize}  
+
+
+
+
+\begin{thm}
+	Assume $X_1,\dots, X_n$ are iid with pdf $f(x;\theta)$ for $\theta_0 \in \Omega$ such that the 5 regularity conditions are satisfied. Suppose further that the Fisher information satisfies $0 < I(\theta_0 ) < \infty$. Then any consistent sequence of solutions of the mle equations satisfies
+	\begin{align}
+	\sqrt{n}(\hat\theta - \theta_0) \xrightarrow{D} \N\lp 0,\f{1}{I(\theta_0)} \rp
+	\end{align}
+\end{thm}
+
+
+
+\begin{defn}
+	Let $X_1,\dots,X_n$ be iid with pdf $f(x;\theta)$. Suppose $\hat{\theta}_{1n} = \hat{\theta}_{1n}(X_1,\dots,X_n)$ is an estimator of $\theta_0$ such that $\sqrt{n}(\hat{\theta}_{1n} - \theta_0) \xrightarrow{D} \N(0,\sigma^2_{\hat{\theta}_{1n}})$. Then
+	\begin{itemize}
+		\item The \textbf{asymptotic efficiency} of $\hat{\theta}_{1n}$ is defined to be
+		\begin{align}
+		e(\hat\theta_{1n}) = \f{1/I(\theta_0)}{\sigma^2_{\hat\theta_{1n}}}
+		\end{align}
+		
+		\item The estimator $\hat\theta_{1n}$ is said to be \textbf{asymptotically efficient} if the ratio in the previous item is 1. 
+		
+		\item Let $\hat\theta_{2n}$ be another estimator such that  $\sqrt{n}(\hat{\theta}_{2n} - \theta_0) \xrightarrow{D} \N(0,\sigma^2_{\hat{\theta}_{2n}})$. Then the \textbf{asymptotic relative efficiency} (ARE) of $\hat\theta_{1n}$ to $\hat\theta_{2n}$ is the reciprocal of the ratio of their respective asymptotic variances, i.e., 
+		\begin{align}
+		e(\hat\theta_{1n}, \hat\theta_{2n}) = \f{\sigma^2_{\hat\theta_{2n}}}{\sigma^2_{\hat\theta_{1n}}}.
+		\end{align}
+	\end{itemize}
+\end{defn}
+
+
+
+
+
+
+\begin{thm}
+	Under the assumptions of Theorem 4.2.3., suppose $g(x)$ is a continuous function of $x$ that is differentiable at $\theta_0$ such that $g'(\theta_0) \neq 0$. Then 
+	\begin{align}
+	\sqrt{n}(g(\hat\theta_n) - g(\theta_0)) \xrightarrow{D} \N\lp 0, \f{g'(\theta_0)^2}{I(\theta_0)} \rp.
+	\end{align}
+\end{thm}
+
+\begin{proof}
+	The proof uses previous theorems and the $\Delta$-method. 
+\end{proof}
+
+
+
+\begin{thm}
+	Under the assumptions of Theorem 4.2.3., 
+	\begin{align}
+	\sqrt{n}(\hat\theta_n - \theta_0) = \f{1}{I(\theta_0)}\f{1}{\sqrt{n}}\sum^n_{i=1}\p_\theta \ln f(X_i; \theta_0) + R_n
+	\end{align}
+	where $R_n \xrightarrow{P} 0$. 
+\end{thm}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Maximum Likelihood Tests}
+\section{Multiparameter Case: Estimation}
+\section{Multiparameter Case: Testing}
+\section{The EM algorithm}
 
 
 
@@ -3216,8 +3593,172 @@ again by change of variables. \qed
 
 
 
+\section{Problem set 5}
 
 
+\noindent \textbf{6.1.1}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{611}
+\end{figure}
+ 
+ 
+ 
+\noindent \textit{Solution:}
+
+
+
+
+
+
+\newpage
+\noindent \textbf{6.1.2}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{612}
+\end{figure}
+
+
+\noindent \textit{Solution:}
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{6.1.4}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{614}
+\end{figure}
+
+\noindent \textit{Solution:}
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{6.1.10}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{6110}
+\end{figure}
+
+\noindent \textit{Solution:}
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{6.2.2}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{622a}
+	\includegraphics[scale=0.25]{622b}
+\end{figure}
+
+\noindent \textit{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{6.2.7}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{627a}
+	\includegraphics[scale=0.25]{627b}
+\end{figure}
+
+\noindent \textit{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{6.2.8}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{628}
+\end{figure}
+
+
+\noindent \textit{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{6.2.9}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{629}
+\end{figure}
+
+
+\noindent \textit{Solution:}
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+\section{Problem set 6}
 
 	
 	
