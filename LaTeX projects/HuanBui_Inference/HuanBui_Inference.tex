@@ -1774,15 +1774,15 @@ is called the \textbf{score function}. Recall that it determines the estimating 
 \begin{align}
 \sum^n_{i=1} \p_\theta \ln f(x_i;\theta) = 0.
 \end{align}
-For an $n$-sample of iid r.v., 
+For an $n$-sample of iid r.v., the Fisher information is 
 \begin{align}
-nI(\theta) = \text{Var}\lp \p_\theta \n \lag (\theta,\mathbf{X}) \rp.
+\mathcal{I}(\theta) = nI(\theta) = \text{Var}\lp \p_\theta \ln \lag (\theta,\mathbf{X}) \rp.
 \end{align}
 
 
 
 \begin{thm}
-	(Rao-Cram\'er Lower Bound.) Let $X_1,\dots, X_n$ be iid with pdf $f(x;\theta), \theta \in \Omega$. Assume that all four regularity conditions hold. Let $Y = u(X_1,\dots,X_n)$ be a statistic with mean $E[Y] = k(\theta)$. Then
+	(\textbf{Rao-Cram\'er Lower Bound.}) Let $X_1,\dots, X_n$ be iid with pdf $f(x;\theta), \theta \in \Omega$. Assume that all four regularity conditions hold. Let $Y = u(X_1,\dots,X_n)$ be a statistic with mean $E[Y] = k(\theta)$. Then
 	\begin{align}
 	\text{Var}(Y) \geq \f{[k'(\theta)]^2}{nI(\theta)}
 	\end{align}
@@ -1808,6 +1808,83 @@ nI(\theta) = \text{Var}\lp \p_\theta \n \lag (\theta,\mathbf{X}) \rp.
 	\text{Var}(Y) \geq \f{1}{nI(\theta)}
 	\end{align}
 \end{thm}
+
+
+\begin{exmp}
+	Consider a single observation from a Poisson-$\lambda$. We want to find $I(\lambda)$. Well, 
+	\begin{align}
+	P(x_i;\lambda) = \f{e^{-\lambda} \lambda^{x_i}}{x_i!}, \quad x_i \in \mathbb{N}, \lambda > 0 \in \Omega.
+	\end{align}
+	The regularity conditions are satisfied. Now,
+	\begin{align}
+	I(\lambda) = E\lb \lp \p_\lambda \ln  P(x_i,\lambda)\rp^2 \rb.
+	\end{align}
+	We can find
+	\begin{align}
+	\p_\lambda \ln  P(x_i,\lambda) = -1 + \f{x_i}{\lambda}.
+	\end{align}
+	And so
+	\begin{align}
+	I(\lambda) &= E\lb x_i^2/\lambda^2 - 2x_i/\lambda + 1  \rb = \f{E[x_i^2]}{\lambda^2} - \f{2}{\lambda}E[x_i] + 1\nn\\
+	&= \f{1}{\lambda^2}(\lambda + \lambda^2) - \f{2}{\lambda}\lambda + 1= \f{1}{\lambda}.
+	\end{align}
+	We can do it using the other expectation too, but let's not worry about that. What about a sample of $n$ iid such r.v.'s? The answer is just $n/\lambda$. 
+\end{exmp}
+
+\begin{exmp}
+	Let $X_i \sim \text{Poi}(\lambda)$. Find $\hat\mu_{ML}$. Well, 
+	\begin{align}
+	l(\lambda) = -n\lambda + \sum^n_{i=1}x_i \ln \lambda - \sum \ln x_i!.
+	\end{align}
+	And so,
+	\begin{align}
+	\p_\lambda l(\lambda) = -n + \f{1}{\lambda}\sum^n_{i=1}x_i = 0 \implies \hat\mu_{ML} = \bar{X}.
+	\end{align}
+	This is unbiased. We also know that
+	\begin{align}
+	\Var(\bar{X}) = \f{\lambda}{n}.
+	\end{align}
+	How does this compare with the CRLB? We have an unbiased estimator, and so 
+	\begin{align}
+	\Var(\bar{X}) \geq \f{1}{nI(\lambda)} = \f{\lambda}{n}. 
+	\end{align}
+	In this case, our estimator $\bar{X}$ does achieve the CRLB, which makes it a good mle. 
+\end{exmp}
+
+
+
+\begin{exmp}
+	Let $X_i \sim \N(\mu,\sigma^2)$ where $\mu$ is unknown but $\sigma^2$ is. What is $n I(\mu)$? Well, for a single observation,
+	\begin{align}
+	f(x_i;\mu) = \f{1}{\sqrt{2\pi \sigma^2}}e^{-(x_i - \mu)^2/2\sigma^2}; \quad x_i,\mu \in \mathbb{R}.
+	\end{align}
+	Next,
+	\begin{align}
+	l(x_i;\mu) = \f{-1}{2}\ln (2\pi \sigma^2) - \f{1}{2\sigma^2}(x_i - \mu)^2.
+	\end{align}
+	This the score function. The information is 
+	\begin{align}
+	I(\mu) = E\lb l(x_i;\mu)^2 \rb = -E\lb \p^2_\mu f(x_i;\mu) \rb = \f{1}{\sigma^2}.
+	\end{align}
+	And so,
+	\begin{align}
+	nI(\mu)  = \f{n}{\sigma^2}.
+	\end{align}
+	And so, the CRLB for an unbiased estimator is $\sigma^2/n$.
+\end{exmp}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3884,7 +3961,9 @@ as expected. Now, since $1/2 \leq p \leq 1$, we must consider the case where $\b
 	\includegraphics[scale=0.25]{622b}
 \end{figure}
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} 
+
+
 
 
 
