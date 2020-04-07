@@ -1891,7 +1891,7 @@ For an $n$-sample of iid r.v., the Fisher information is
 
 
 \begin{defn}
-	(\textbf{Efficient Estimator.}) Let $Y$ be an unbiased estimator of a parameter $\theta$ in the case of point estimator. The statistic $Y$ is caed an \textbf{efficient estimator} of $\theta$ if and only if $\text{Var}(Y)$ attains the Rao-Cram\'er lower bound.  
+	(\textbf{Efficient Estimator.}) Let $Y$ be an unbiased estimator of a parameter $\theta$ in the case of point estimator. The statistic $Y$ is called an \textbf{efficient estimator} of $\theta$ if and only if $\text{Var}(Y)$ attains the Rao-Cram\'er lower bound.  
 \end{defn}
 
 
@@ -3962,8 +3962,36 @@ as expected. Now, since $1/2 \leq p \leq 1$, we must consider the case where $\b
 \end{figure}
 
 \noindent \textit{Solution:} 
-
-
+\begin{align}
+nE\lb \lp \p_\theta \ln f(x;\theta) \rp^2 \rb = nE \lb \lp \p_\theta (-\ln \theta) \rp^2 \rb = n E\lb \f{1}{\theta^2} \rb = \f{n}{\theta^2}.
+\end{align}
+The reciprocal of this is therefore 
+\begin{align}
+\f{\theta^2}{n}.
+\end{align}
+On the other hand,
+\begin{align}
+\Var\lb \f{(n+1)}{n}Y_n \rb &= \lp \f{n+1}{n} \rp^2 \lp E[Y_n^2] - E[Y_n]^2 \rp.
+\end{align}
+The cdf of $x$ is given by $F_X(x) = x/\theta$. The cdf of $Y_n$ is therefore 
+\begin{align}
+F_Y(x) = \prod^n_{i=1}F_x(x) = \f{x^n}{\theta^n} \implies f_Y(x) = n\f{x^{n-1}}{\theta^n}.
+\end{align}
+And so 
+\begin{align}
+E[Y_n] &= \int^\theta_0 n \f{x^{n-1}\cdot x}{\theta^n}\,dx = \f{n\theta}{n+1}.\\
+E[Y_n^2] &= \int^\theta_0 n \f{x^{n-1}\cdot x^2}{\theta^n}\,dx = \f{n\theta^2}{n+2}.
+\end{align}
+So,
+\begin{align}
+\Var\lb \f{(n+1)}{n}Y_n \rb = \lp \f{n+1}{n} \rp^2 \lb  \f{n\theta^2}{n+2}  - \lp \f{n\theta}{n+1} \rp^2 \rb = \f{\theta^2}{n(n+2)}.
+\end{align}
+So, obviously,
+\begin{align}
+\Var[Y_n]  = \f{\theta^2}{n(n+2)} < \f{\theta^2}{n}.
+\end{align}
+However, since the support of $f(x;\theta)$ depends on $\theta$, CRLB does not apply. 
+\qed
 
 
 
@@ -3987,6 +4015,60 @@ as expected. Now, since $1/2 \leq p \leq 1$, we must consider the case where $\b
 \noindent \textit{Solution:}
 
 
+\begin{enumerate}[(a)]
+	\item From 6.1.1. we know that 
+	\begin{align}
+	\p_\theta l(\theta) = -\f{4n}{\theta} + \f{1}{\theta^2}\sum^n_{i=1} x_i \implies \p^2_\theta l(\theta) = \f{4n}{\theta^2} - \f{2}{\theta^3}\sum^n_{i=1} x_i
+	\end{align}
+	And so 
+	\begin{align}
+	nI(\theta) 
+	&= -E\lb\f{4n}{\theta^2} - \f{2}{\theta^3}\sum^n_{i=1} x_i \rb\nn\\ 
+	&= -\f{4n}{\theta^2} + \f{2}{\theta^3}\sum^n_{i=1}E[x_i]\nn\\
+	&= -\f{4n}{\theta^2} + \f{2}{\theta^3}n 4\theta\nn\\
+	&= -\f{4n}{\theta^2} + \f{8n}{\theta^2}\nn\\
+	&= \boxed{\f{4n}{\theta^2}}  \implies \boxed{I(\theta) = \f{4}{\theta^2}}
+	\end{align}
+	
+	
+	\item From 6.1.1., $\hat\theta = \bar{X}/4$, which is unbiased because 
+	\begin{align}
+	E[\hat\theta] = \f{1}{4}E[\bar{X}] = \f{1}{4}\f{4n\theta}{n} = \theta.
+	\end{align}
+	This is an efficient estimator of $\theta$ because 
+	\begin{align}
+	\Var[\hat\theta] &= \f{1}{16}\Var[\bar{X}] = \f{1}{16n^2}\Var\lb \sum^n_{i=1}x_i \rb\nn\\
+	&= \f{1}{16n^2}\sum^n_{i=1}\Var[x_i]\nn\\
+	&= \f{1}{16n^2}n4\theta^2 \nn\\
+	&= \f{\theta^2}{4n}.
+	\end{align}
+	So, we see that 
+	\begin{align}
+	\Var[\hat\theta] = \f{1}{nI(\theta)},
+	\end{align}
+	which means $\Var(Y)$ attains the Rao-Cram\'er lower bound.
+	
+	
+	\item The observations are iid with $\Gamma(\al=4,\be = \theta)$. The regularity conditions are also satisfied. Since the Fisher information $I(\theta) = 4n/\theta^2$ is positive and finite, Theorem 6.2.2. says that
+	\begin{align}
+	\sqrt{n}(\hat\theta - \theta) \xrightarrow{D} \N\lp 0, \f{1}{I(\theta)} \rp = \boxed{\N \lp 0, \f{\theta^2}{4} \rp}
+	\end{align}
+	
+	
+	
+	\item The 95\% CI for $\theta$, with $\al = 0.025, n = 25, \sigma = \hat\theta/2$, is given by
+	\begin{align}
+	\lp \hat\theta - z_{\al/2}\f{\hat\theta/2}{\sqrt{n}}, \hat\theta + z_{\al/2}\f{\hat\theta/2}{\sqrt{n}} \rp &= \lp 5.03 - 1.96\f{5.03/2}{5}, 5.03 + 1.96\f{5.03/2}{5}  \rp \nn\\
+	&=  \boxed{\lp 4.04, 6.02 \rp}
+	\end{align}
+	
+	
+	
+	
+\end{enumerate}\qed
+
+
+
 
 
 
@@ -4008,6 +4090,64 @@ as expected. Now, since $1/2 \leq p \leq 1$, we must consider the case where $\b
 
 \noindent \textit{Solution:}
 
+\begin{enumerate}[(a)]
+	\item Well, the likelihood is just the pdf:
+	\begin{align}
+	f(x;\theta) = \f{1}{\sqrt{2\pi \theta}}e^{-x^2/2\theta}, \theta \in \mathbb{R}^+\setminus\{\infty\}.
+	\end{align}
+	Then, the log likelihood is
+	\begin{align}
+	l(\theta) = -\f{1}{2}\ln (2\pi \theta) - \f{x^2}{2\theta} \implies \p_\theta l(\theta)  = -\f{1}{2\theta} + \f{x^2}{2\theta^2}.
+	\end{align}
+	The Fisher information is then 
+	\begin{align}
+	I(\theta) &= -E[\p^2_\theta l(\theta)]\nn\\
+	&= -E\lb \f{1}{2\theta^2} - \f{X^2}{\theta^3}   \rb\nn\\
+	&= -\f{1}{2\theta^2} + \f{1}{\theta^3} E[X^2]\nn\\
+	&= -\f{1}{2\theta^2} + \f{1}{\theta^3} (\Var[X] + \cancel{E[X]^2})\nn\\
+	&= -\f{1}{2\theta^2} + \f{1}{\theta^3} \theta\nn\\
+	&= \boxed{\f{1}{2\theta^2}}
+	\end{align}
+	
+	\item We know that the mle of $\theta$ is given by
+	\begin{align}
+	\hat\theta = \f{1}{n}\sum^n_{i=1}(x_i - 0)^2,
+	\end{align}
+	which is just the sample variance with denominator $n$. Now, $\hat\theta$ is an unbiased estimator of $\theta$ because
+	\begin{align}
+	E[\hat\theta] &= \f{1}{n}\sum^n_{i=1}E[X_i^2 + 2X_i\cdot 0 + 0] = \f{1}{n}\sum^n_{i=1}E[X_i^2]= \f{n}{n}\Var[X] = \theta.
+	\end{align} 
+	Next we want to find $\Var[\hat\theta]$. Well,
+	\begin{align}
+	\Var[\hat\theta] &= \Var\lb \f{1}{n}\sum^n_{i=1} X_i^2 \rb\nn\\
+	&= \f{1}{n^2}\sum^n_{i=1} \Var[X_i^2] \nn\\
+	&= \f{n}{n^2}\lp E[X_i^4] - E[X_i^2]^2 \rp\nn\\
+	&= \f{n}{n^2}\lp E[X_i^4] - \Var[X_i]^2 \rp\nn\\
+	&= \f{n}{n^2}\lp E[X_i^4] - \theta^2 \rp.
+	\end{align}
+	To find $E[X_i^4]$ we can either brute force:
+	\begin{align}
+	E[X^4] = \int_\mathbb{R}x^4 \f{1}{\sqrt{2\pi \theta}}e^{-x^2/2\theta}\,dx = 3\theta^2.
+	\end{align}
+	Or use the MGF:
+	\begin{align}
+	&M(t) = e^{\cancel{\mu t} + \theta t^2/2}\nn\\
+	& \implies E[X^4] = M^{(4)}(0) = (3\theta^2 + 6 t^2 \theta^3 + t^4\theta^4)e^{\theta t^2/2}\bigg\vert_{t=0} = 3\theta^2.
+	\end{align}
+	And so,
+	\begin{align}
+	\Var[\hat\theta] = \f{1}{n}\lp 3\theta^2 - \theta^2 \rp = \boxed{\f{2\theta^2}{n}}
+	\end{align}
+	Because $\Var[\hat\theta] = 2\theta^2/n = 1/nI(\theta)$, the CRLB is attained. Further, because $\hat\theta$ is an unbiased estimator of $\theta$, $\hat\theta$ is an efficient estimator of $\theta$. 
+	
+	
+	
+	\item Since all regularity conditions are met, we can use Theorem 6.2.2., which says that 
+	\begin{align}
+	\sqrt{n}(\hat\theta - \theta) \xrightarrow{D} \N(0, 1/I(\theta)) = \boxed{\N \lp 0,2\theta^2\rp}
+	\end{align}
+\end{enumerate}\qed
+
 
 
 
@@ -4028,7 +4168,35 @@ as expected. Now, since $1/2 \leq p \leq 1$, we must consider the case where $\b
 \end{figure}
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} Well, we first show that $Y$ is an unbiased estimator of $\theta$:
+\begin{align}
+E[Y] = 2E[\bar{X}] = \f{2}{n}nE[X_i] = 2E[X_i] = 2\int_0^\infty \f{3x\theta^3}{(x+\theta)^4}\,dx = 2\f{\theta}{2} = \theta.
+\end{align}
+So, yes, $Y$ is an unbiased estimator of $\theta$. \\
+
+The efficiency of $Y$ is given by
+\begin{align}
+\epsilon = \f{CRLB}{\Var[Y]} = \f{1}{\Var[Y] \cdot nI(\theta)}
+\end{align}
+To find this we next find the Fisher information:
+\begin{align}
+I(\theta) &= -E\lb \p_\theta^2 l(\theta) \rb\nn\\
+&=-E\lb \p_\theta^2 \ln \f{3\theta^3}{(X+\theta)^4} \rb\nn\\
+&= -E\lb \p_\theta^2 \ln \f{3\theta^3}{(X+\theta)^4} \rb\nn\\
+&= -E\lb \f{\theta^2 - 6\theta X - 3X^2}{\theta^2(\theta+X)^2}  \rb\nn\\
+&= -\int^\infty_0 \f{\theta^2 - 6\theta x - 3x^2}{\theta^2(\theta+x)^2}\cdot \f{3\theta^3}{(x+\theta)^4} = \f{3}{5\theta^2}.
+\end{align}
+Next, we find the variance of $Y$:
+\begin{align}
+\Var[Y] &= \Var[2\bar{X}] = \f{4}{n^2}\Var\lb \sum^n_{i=1} X_i \rb = \f{4n}{n^2}\Var[X_i]= \f{4}{n}\lp E[X_i^2] - E[X_i]^2 \rp\nn\\
+&= \f{4}{n} \lc \int_0^\infty \f{3x^2\theta^3}{(x+\theta)^4}\,dx - \lb \int^\infty_0 \f{3x\theta^2}{(x+\theta)^4}\,dx \rb^2\rc\nn\\
+&= \f{4}{n}\lp \theta^2 - \f{\theta^2}{4} \rp = \f{3\theta^2}{n}.
+\end{align}
+So, 
+\begin{align}
+\epsilon = \f{5\theta^2}{3\theta^2 \cdot 3} = \boxed{\f{5}{9}}
+\end{align}
+
 
 
 
@@ -4050,6 +4218,91 @@ as expected. Now, since $1/2 \leq p \leq 1$, we must consider the case where $\b
 
 
 \section{Problem set 6}
+
+
+
+
+
+\noindent \textbf{6.3.1}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+
+
+
+\noindent \textbf{6.3.6}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent \textbf{6.3.11}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent \textbf{6.3.18}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent \textbf{6.4.1}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent \textbf{6.4.3}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent \textbf{6.4.5}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent \textbf{6.5.3}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent \textbf{6.5.6}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+\noindent \textbf{6.5.7}
+
+
+\noindent \textit{Solution:} 
+
+
+\newpage
+
+
+
+\section{Problem set 7}
+
+
+
 
 	
 	
