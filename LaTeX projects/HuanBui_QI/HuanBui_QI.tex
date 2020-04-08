@@ -3552,5 +3552,232 @@ where $x$ is a single eigenstate in the computational basis.
 
 
 
+\section{Problem set 7}
+
+
+
+\noindent \textbf{1. Phase Kickback and the Deutsch Problem.}  The 100\% solution to the Deutsch problem,
+the Deutsch-Jozsa problem, and the Bernstein-Vazirani problem (the first we discussed on
+March 12th, and the second and third will be discussed for the next class) all use the clever
+approach of ``phase kickback'' to get an answer to the question. This problem is designed
+to have you walk through the application of phase kickback in the Deutsch problem. This
+problem has a 1-Qbit input register and a 1-Qbit output register.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{phase1}
+\end{figure}
+\begin{enumerate}[(a)]
+	\item What is the state of the system just before the operator $\U_f$ ?
+	
+	\item Determine, using what you know about phase kickback, the state of the system just after
+	the application of $\U_f$ (and before the final Hadamard) given that you don't know which
+	of the four 1-bit to 1-bit functions has been applied.
+	\item The four 1-bit to 1-bit functions are defined by the following table.
+	
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		$x$ & $f_0(x)$ & $f_1(x)$ & $f_b(x)$ & $f_i(x)$ \\
+		\hline
+		0 & 0 & 1 & 0 & 1\\
+		\hline
+		1 & 0 & 1 & 1 & 0\\
+		\hline
+	\end{tabular}
+	\end{center}
+	What is the state of the system after the application of $\U_f$ (and before the final
+	Hadamard) for each of the four functions? What's the difference between constant
+	and balanced functions?
+	
+	\item  What is the state of the system after the final Hadamard gate for each of the four possible
+	1-bit to 1-bit functions $\U_f$ ? How can you distinguish constant and balanced functions?
+\end{enumerate}
+
+\noindent \textit{Solution:}
+
+
+\qed
+
+
+
+\newpage
+
+
+
+\noindent \textbf{2.} Consider the output of the Deutsch-Josza problem where the oracle encodes a function $f : \{0, 1\}^n \to \{0, 1\}$ which is known to be either balanced or constant. As shown in the Screencast, after the final set of Hadamards, the state of the input register
+is
+\begin{align}
+\ket{\psi_i} &= \f{1}{2^n}\sum_{0 \leq x < 2^n} (-1)^{f(x)} \sum_{0\leq y < 2^n} (-1)^{x\cdot y} \ket{y}_n \nn\\&= \f{1}{2^n} \sum_{0\leq y < 2^n} \sum_{0\leq x < 2^n}(-1)^{f(x)}(-1)^{x\cdot y}\ket{y}_n.
+\end{align}
+\begin{enumerate}[(a)]
+	\item Show, following the argument made in the Screencast, that the state of the input register $\ket{\psi_i}$ for constant functions leads to a 100\% probability of finding the state in the state $\ket{0}_n$.
+	
+	\item Show, following the argument made in the Screencast, that the state of the input register $\ket{\psi_i}$ for balanced functions leads to a 0\% probability of finding the state in the state $\ket{0}_n$.
+	
+	\item Argue, extending the argument made in the Screencast, that the state of the input
+	register $\ket{\psi_9}$ for constant functions leads to a 0\% probability of finding the state in the state $\ket{x}_n$ for $x \neq 0$.
+	
+	\item Argue, extending the argument made in the Screencast, that the state of the input
+	register $\ket{\psi_9}$ for balanced functions leads to a nonzero probability of finding the state in the state $\ket{x}_n$ for $x \neq 0$.
+\end{enumerate}
+
+\noindent \textit{Solution:}
+
+
+\qed
+
+
+\newpage
+
+
+\noindent \textbf{3. A quantum decoder.}  Note: This problem is based on an idea from a lecture by John Watrous, who was at the University of Calgary when he wrote it, but is now at the University of Waterloo and is a member of the Institute for Quantum Computing.
+
+In electronics a decoder is a device that sets an output to one for a specific pair of inputs. In the language of quantum computation, an output of a decoder is an oracle that encodes a function of the form $f : \{0, 1\}^2 \to \{0, 1\}$. 
+
+There are four possible decoders, tabulated below.
+\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		$x$ & $f_{00}(x)$ & $f_{01}(x)$ & $f_{10}(x)$ & $f_{11}(x)$  \\
+		\hline
+		00 & 1 & 0 & 0 & 0\\
+		\hline
+		00 & 0 & 1 & 0 & 0 \\
+		\hline 
+		00 & 0& 0 & 1 & 0 \\
+		\hline 
+		11 & 0 & 0 & 0 & 1\\
+		\hline
+	\end{tabular}
+\end{center}
+
+If you didn't know which decoder you had, you would need to query the decoder three times to be sure of what one you had. With phase kickback you can do it in one query.
+
+Consider a device $\U_f$ that encodes one of the four decoders, using the phase kickback approach as shown in the quantum circuit diagram below.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{phase2}
+\end{figure}
+
+\begin{enumerate}[(a)]
+	\item What is the state of the system just before the operator $\U_f$ ?
+	\item Determine, using what you know about phase kickback, the state of the system just after
+	the application of $\U_f$ given that you don't know which of the decoder circuits has been
+	implemented.
+	\item Explain why the output for each of the four decoders is an equal superposition of the
+	four states ($\ket{00},\ket{01}, \ket{10}, \ket{11}$) with the phase of the ``marked'' state being -1, while all the rest have a phase +1.
+	\item These states are all orthogonal entangled states (but not the Bell states). Since they are
+	orthogonal, if you (or John Watrous) are clever you can create a quantum circuit that
+	disentangle them and put them in basis states of the computational basis. Show that
+	for the function f00 that circuit below leads to the state $ \ket{\psi(f_{00})} = \ket{00}\ket{-}$.
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{phase3}
+	\end{figure}
+
+	\item  (Optional, continuation). Show that the same circuit serves to put the state into the
+	appropriate state $\ket{\psi}(f_{ij}) = \ket{ij}\ket{-}$.
+\end{enumerate}
+
+
+
+\noindent \textit{Solution:}
+
+\qed
+
+
+
+\newpage
+
+\noindent \textbf{4. Bernstein-Vazirani without Phase Kickback.}  The idea of this problem is to look again
+at the Bernstein-Vazirani problem without using phase kickback as an introduction to the
+techniques used for Simon’s problem. 
+
+Recall that in the Bernstein-Vazirani problem you are given a function $f : \{0, 1\}^n \to \{0, 1\}$ that encodes a hidden bit-string a such that $f(x) = a \cdot x$ (mod 2) for any input string $x$.
+
+Consider the circuit below that implements a 2-Qbit version of the Bernstein-Vazirani problem
+with the string $a = 10$.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{phase4}
+\end{figure}
+
+
+\begin{enumerate}[(a)]
+	\item What is the state of the system after the application of $\U_f$?
+	\item Are the input and output registers entangled? How do you know?
+
+	\item Imagine that you measured the output register and found that the output register was
+	in the state $\ket{1}$. What is the state of the system after that (partial) measurement?
+	\item Look at the solution you got, and note that the states $\ket{x_i}$ of the input register correspond to states with $a \cdot x_i = 1$.
+	\item  Imagine that you measured the output register and found that the output register was in the state $\ket{0}$. What is the state of the system after that (partial) measurement?
+	\item  Look at the solution you got, and note that the states $\ket{x_j}$ of the input register correspond to states with $a · x_j = 0$. Of course if you measured the output you would only find one
+	of the states.
+	\item Now, after measuring y and x this way a couple of times you would have a set of equations
+	$a \cdot x = 0 or a \cdot x = 1$ for different x values. Convince yourself that you could use these values to figure out $a$. (Unless you are unlucky and get $x = 0$, which tells you nothing,
+	because $a \cdot 0 = 0$ for all $a$.)
+\end{enumerate}
+
+Note: This approach is no more efficient than a classical algorithm would be if you randomly
+chose input values. The importance of this approach – using multiple queries and then using
+the resulting classical answers to determine the behavior of the oracle – was recognized by
+Dan Simon for a function $f : \{0, 1\}^n \to \{0, 1\}^n$.\\
+
+
+
+
+
+
+
+
+
+
+\noindent \textit{Solution:}
+
+
+
+
+\qed
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Problem set 8}
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
