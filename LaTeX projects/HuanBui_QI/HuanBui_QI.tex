@@ -3595,6 +3595,35 @@ problem has a 1-Qbit input register and a 1-Qbit output register.
 
 \noindent \textit{Solution:}
 
+\begin{enumerate}[(a)]
+	\item Just before $\U_f$, the state of the system is given by
+	\begin{align}
+	\had \ket{ 0} \otimes \had \X \ket{0} = \ket{+-}
+	\end{align}
+	since $\X$ flips $\ket{0}$ to $\ket{1}$ and $\had\ket{1} = \ket{-}$. 
+	
+	
+	\item We did this in (physical) class. The formula for the output immediately after the application of $\U_f$, provided in the input in the problem is  
+	\begin{align}
+	\boxed{\ket{\psi} = \f{1}{\sqrt{2}}  \sum_{0 \leq x < 2} (-1)^{f(x)}\ket{x} \otimes \ket{-}   }
+	\end{align}
+	
+	
+	\item We do this one by one:
+	\begin{align}
+	&f = f_{0}: \ket{ \psi } = \f{1}{\sqrt{2}} (\ket{0} + \ket{1})  \ket{-} = \ket{+-}\nn\\
+	&f = f_{1}: \ket{ \psi } = \f{1}{\sqrt{2}} (-\ket{0} - \ket{1})  \ket{-} = -\ket{+-}\nn\\
+	&f = f_{b}: \ket{ \psi } = \f{1}{\sqrt{2}} (\ket{0} - \ket{1})  \ket{-} = \ket{--}\nn\\
+	&f = f_{i}: \ket{ \psi } = \f{1}{\sqrt{2}} (-\ket{0} + \ket{1})  \ket{-} = -\ket{--}
+	\end{align}
+	Constant functions return Qbits with different handedness, while balanced functions return Qbits with the same handedness. More importantly, constant and balanced functions produce different handedness for Qbit 1. With the Hadamard, we will be able to distinguish these handedness and hence the balanced/constant nature of $f$.
+	
+	
+	
+	
+	\item If the output immediately after $\U_f$ is $\ket{+-}$ then the final output is $\had_1\ket{+-} = \ket{01}$. If the output immediately after $\U_f$ is $\ket{--}$ then the final output is $\had_1\ket{--} = \ket{11}$. By measuring Qbit 1, we can distinguish constant and balanced functions. If Qbit 1 is in state 0 then $f$ is constant, else $f$ is balanced. 
+\end{enumerate}
+
 
 \qed
 
@@ -3670,19 +3699,101 @@ Consider a device $\U_f$ that encodes one of the four decoders, using the phase 
 	\item These states are all orthogonal entangled states (but not the Bell states). Since they are
 	orthogonal, if you (or John Watrous) are clever you can create a quantum circuit that
 	disentangle them and put them in basis states of the computational basis. Show that
-	for the function f00 that circuit below leads to the state $ \ket{\psi(f_{00})} = \ket{00}\ket{-}$.
+	for the function $f_{00}$ that circuit below leads to the state $ \ket{\psi(f_{00})} = \ket{00}\ket{-}$.
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[scale=0.3]{phase3}
 	\end{figure}
 
 	\item  (Optional, continuation). Show that the same circuit serves to put the state into the
-	appropriate state $\ket{\psi}(f_{ij}) = \ket{ij}\ket{-}$.
+	appropriate state $\ket{\psi(f_{ij})} = \ket{ij}\ket{-}$.
 \end{enumerate}
 
 
 
 \noindent \textit{Solution:}
+
+
+\begin{enumerate}[(a)]
+	\item The state of the system just before entering $\U_f$ is 
+	\begin{align}
+	 \had \otimes \had \otimes \had \X \ket{000} = \had \ket{0} \otimes \had \ket{0} \otimes \had\ket{1} = \ket{++-}.
+	\end{align}
+	
+	
+	\item The function $\U_f$ is defined by
+	\begin{align}
+	\U_f \ket{ x_1 x_0 y} = \ket{ x_1 x_0} \ket{ y \oplus f(x_1x_0)}.
+	\end{align}
+	
+	Given the input $\had^{\otimes n} \ket{0}_n \otimes (\had \X)\ket{0}$ the function $\U_f$ defined above, the output is
+	\begin{align}
+	\U_f \lc \had^{\otimes n} \ket{0}_n \otimes (\had \X)\ket{0} \rc = \f{1}{\sqrt{2^n}}\sum_{0 \leq x < 2^n}(-1)^{f(x)} \ket{x}_n \otimes \ket{-}.
+	\end{align}
+	In class we did an example at $n=1$, but it is not hard to see how the example generalizes. The key is the identity: $\ket{ 0\oplus a } = - \ket{1 \oplus a} = (-1)^{f(a)}(\ket{0} - \ket{1}) $. The factor $\lp \ket{ 0} - \ket{1}\rp$ ultimately factors out as a $\ket{-}$ in the formula. \\
+	
+	Okay, with this, setting $n=2$ (2 input Qbits) we see what the output immediately after $\U_f$ is:
+	\begin{align}
+	\boxed{\f{1}{\sqrt{2^2}}\sum_{0 \leq x < 2^2}(-1)^{f(x)} \ket{x}_2 \otimes \ket{-}}
+	\end{align}
+	
+	
+	\item We can do this in general for any $n$, not just for the $n=2$ case. Say the marked state is $x = \al$, then it follows that $f_\al(x) = 1$ if and only if $x = \al$, and (of course) for $2^n-1$ other times $f_\al(x) = 0$. Look at the output immediately after $\U_f$ again:
+	\begin{align}
+	\f{1}{\sqrt{2^n}}\sum_{0 \leq x < 2^n}(-1)^{f(x)} \ket{x}_n \otimes \ket{-}.
+	\end{align}
+	We can write this sum as
+	\begin{align}
+	 &\f{1}{\sqrt{2^n}}(-1)^{f_\al(\al)}\ket{ \al}\otimes \ket{-} + \f{1}{\sqrt{2^n}}\sum_{\substack{{0 \leq x < 2^n}\\ {x\neq \al}}} (-1)^{f_\al(x)} \ket{x}_n \otimes \ket{-}\nn\\
+	 =& \f{1}{\sqrt{2^n}} (-1)\ket{\al}\otimes \ket{-} + \f{1}{\sqrt{2^n}}\sum_{\substack{{0 \leq x < 2^n}\\ {x\neq \al}}} (1)\cdot \ket{x}_n   \otimes \ket{-}.
+	\end{align}
+	So, we see that not only this is an equal superposition of all computational basis states, it is also one where the marked state $\ket{\al}$ carries a phase of $(-1)$, while the other states $+1$. And to get an exact answer for item (c), we can just let $n=2$. 
+	
+	
+	
+	\item Assume $f = f_{00}$. Then the output immediately after $\U_f$ is given by
+	\begin{align}
+	\f{1}{\sqrt{2^2}}\sum_{0 \leq x < 2^2}(-1)^{f_{00}(x_1x_0)}\ket{x_1x_0} \otimes \ket{ - }.
+	\end{align}   
+	Since all operators act on the two input Qbits, we can just ignore that output Qbit for now. Now, we want to evaluate:
+	\begin{align}
+	&\,\had^{\otimes 2}\mathbf{C}_{21}^\Z\Z^{\otimes 2}\had^{\otimes 2}\f{1}{\sqrt{2^2}}\sum_{0 \leq x < 2^2}(-1)^{f_{00}(x_1x_0)}\ket{x_1x_0}\nn\\
+	=\,& \f{1}{2}\had^{\otimes 2}\mathbf{C}_{21}^\Z \Z^{\otimes 2}\had^{\otimes 2}\lb -\ket{00} + \ket{01} +  \ket{10} + \ket{11} \rb\nn\\
+	=\,& \f{1}{2}\had^{\otimes 2}\mathbf{C}_{21}^\Z \Z^{\otimes 2} \lb -\ket{++} + \ket{-+} + \ket{+-} + \ket{--}  \rb\nn\\
+	=\,& \f{1}{2}\had^{\otimes 2}\mathbf{C}_{21}^\Z \lb -\ket{--} + \ket{+-} + \ket{-+} + \ket{++} \rb\nn\\
+	=\,& \f{1}{2}\had^{\otimes 2}\mathbf{C}_{21}^\Z \lb \sqrt{2}\ket{1}\ket{-} + \sqrt{2}\ket{0} \ket{+} \rb\nn\\
+	=\,& \f{1}{\sqrt{2}}\had^{\otimes 2}\mathbf{C}_{21}^\Z\lb \ket{1}\ket{-} + \ket{0} \ket{+} \rb\nn\\
+	=\,& \f{1}{\sqrt{2}}\had^{\otimes 2} \lb \ket{1}\ket{+} + \ket{0}\ket{+} \rb\nn\\
+	=\,& \had^{\otimes 2}\ket{++}\nn\\
+	=\,& \ket{00}.
+	\end{align}
+	And so the final state of the system is $\ket{00}\ket{ - }$. 
+	
+	
+	
+	
+	\item How do we do this in general? Since there are only 3 more cases, it's worth doing this by exhaustion. We already know what happens when $i=j=0$. Now consider $i=0, j=1$. In this case, $\ket{01}$ will carry a $-1$ phase, which turns the seventh line to $\sim \had^{\otimes 2} \lb -\ket{1}\ket{+} + \ket{0}\ket{+} \rb \sim \had^{\otimes 2}\ket{-+} = \ket{10}$. When $i=j=1$, the state $\ket{11}$ carries the $-1$ phase. This turns the sixth line $\mathcal{O}\lb \ket{0}\ket{-} - \ket{1}\ket{+} \rb$ where $\mathcal{O}$ is a combination of operators and scalars. Applying $\mathbf{C}_{21}^{\Z}$, followed by $\had^{\otimes}$, gives $\had^{\otimes 2}\ket{--} = \ket{11}$. By elimination, we know when $i=1,j=0$, the output is going to be $\ket{01}$. But we can also check (why not?). When $i=1,j=0$, the term $\ket{10}$ carries a $-1$ phase. This result in the sixth line being $\sim \mathcal{O}[\ket{0}\ket{-} + \ket{1}\ket{+}]$. Applying $\mathbf{C}_{21}^{\Z}$ followed by $\had^{\otimes 2}$ gives $\had^{\otimes 2} \lp \ket{0}\ket{-} + \ket{1}\ket{-} \rp \sim \had^{\otimes 2}\ket{+-} = \ket{01}$. \\
+	
+	To summarize:
+	\begin{center}
+	\begin{tabular}{|c|c|c|}
+		\hline
+			& $j=0$ & $j=1$ \\
+		\hline
+		$i=0$ & $\ket{00}$ &  $\ket{10}$\\
+		\hline
+		$i=1$ & $\ket{01}$ & $\ket{11}$ \\
+		\hline
+	\end{tabular}
+	\end{center}
+	
+\end{enumerate}
+
+
+
+
+
+
 
 \qed
 
@@ -3731,10 +3842,13 @@ Dan Simon for a function $f : \{0, 1\}^n \to \{0, 1\}^n$.\\
 
 
 
-
+\newpage
 
 
 \noindent \textit{Solution:}
+
+
+
 
 
 

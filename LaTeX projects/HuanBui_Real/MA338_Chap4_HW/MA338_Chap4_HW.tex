@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{amsfonts}
+\usepackage{cancel}
 \usepackage{xcolor}
 \hypersetup{
 	colorlinks,
@@ -13,7 +14,7 @@
 	urlcolor={blue!80!black}
 }
 \usepackage{newpxtext,newpxmath}
-\usepackage[left=1.25in,right=1.25in,top=1.5in,bottom=1.5in]{geometry}
+\usepackage[left=1.25in,right=1.25in,top=0.9in,bottom=0.9in]{geometry}
 
 
 %\newcommand{\fig}[1]{figure #1}
@@ -171,22 +172,32 @@ To show $f$ is not continuous at $(0,0)$ we look at where $\{ f(x_n,y_n)\}$ conv
 
 Now we want to show the restrictions of $f,g$ to any straight line in $\mathbb{R}^2$ are continuous. There are two cases: $x=c$ (the ``vertical'' line) and $y = ax+b$.  If $x=c$ constant, then if $c\neq 0$, then $f(x,y) = cy^2 / (x^2 + c^4)$ and $g(x,y) = cy^2 / (c^2 + y^6)$ are both continuous in $y$ and hence are continuous. If $c = 0$ then $f = g = 0$, also continuous. 
 
-Consider straight lines: $y = ax + b$. If $b = 0$, then if for nonzero $(x,y)$, $f(x,y) = a^2x / (1 + a^4x^2)$ and $g = a^2x / (1 + a^6 x^4)$. As $x\to 0$, it is clear that $f \to 0$ and $g\to 0$, so $f,g$ are also continuous. If $b\neq 0$ then we don't have to worry because these lines don't pass the origin (which is are things can be bad). \hfill $\square$\\
+Consider straight lines: $y = ax + b$. If $b = 0$, then if for nonzero $(x,y)$, $f(x,y) = a^2x / (1 + a^4x^2)$ and $g = a^2x / (1 + a^6 x^4)$. As $x\to 0$, it is clear that $f \to 0$ and $g\to 0$, so $f,g$ are also continuous. If $b\neq 0$ then we don't have to worry because these lines don't pass the origin (which is where things can be bad). \hfill $\square$\\
 
 
 
 
 
 \noindent \textbf{4.8}   
-\noindent \textit{Proof.} Let $f$ a real uniformly continuous function on the bounded set $E \subset \mathbb{R}$. We want to show $f$ is bounded on $E$. Suppose $E$ is bounded by $M > 0$. Let $\epsilon > 0$ be given, then there is a $\delta > 0$ such that $\abs{f(p) - f(q)} < \epsilon$ for all $p,q\in E$ for which $\abs{p-q} < \delta$.  
+\noindent \textit{Proof.} Let $f$ a real uniformly continuous function on the bounded set $E \subset \mathbb{R}$. We want to show $f$ is bounded on $E$. Suppose $E$ is bounded by $M > 0$. Let $\epsilon > 0$ be given, then there is a $\delta > 0$ such that $\abs{f(p) - f(q)} < \epsilon$ for all $p,q\in E$ for which $\abs{p-q} < \delta$.  Since $E$ is bounded, we can find a finite cover for $E$:
+\begin{align*}
+E \subset \bigcup_{1\leq i \leq n} (x_i - \delta, x_i + \delta).
+\end{align*}
+where $x_i \in E$. Now we look at all the $f(x_i)$. For every $x \in E$, $x \in (x_i - \delta, x_i + \delta)$ for some $i$. By uniform continuity, $\abs{f(x) - f(x_i)} < \epsilon$. In other words, $\abs{f(x)} < \epsilon + \abs{f(x_i)}$. This holds for for all $x\in E$, so $f$ is bounded above by $\sup_i \{ f(x_i) \} + \epsilon$ and below by $\inf_i \{  f(x_i) \} - \epsilon$. Since $f$ is also continuous, it also makes sense to use $\max/\min$ instead of $\sup/\inf$.\\  
  
 
-To show that the conclusion is false if boundedness of $E$ is omitted, we look at a counterexample. 
+To show that the conclusion is false if boundedness of $E$ is omitted, we look at a counterexample. Look at the function $f(x) = x$ with $x\in \mathbb{R}$. $f$ is as uniformly continuous as one would like, but $f$ is not bounded. \hfill $\square$\\ 
 
 
 
 \noindent \textbf{4.9}   
-\noindent \textit{Proof.} 
+\noindent \textit{Proof.} We want to show that the definition of uniform continuity can be rephrased as: for every $\epsilon > 0$ there is a $\delta > 0$ such that $\text{diam} f(E) < \epsilon$ for all $E \subset X$ with $\text{diam}E < \delta$. To do this, we recall the definition of uniform continuity: $f: X \to Y$ is said to be \textit{uniformly continuous} if for every $\epsilon > 0$ there exists a $\delta > 0$ such that $d_Y(f(p), f(q)) < \epsilon$ for all $p,q \in X$ for which $d_X(q,p) < \delta$.\\
+
+\noindent $(\rightarrow)$ Let $\epsilon > 0$ be given. Let $q,p\in X$ for which $d_X(q,p) < \delta$ for some $\delta$. Take $E = \{p,q \}$, then $\text{diam} E = d_X(q,p) < \delta$. By the new definition $\text{diam}f(E) < \epsilon$. Further, by the definition of the diameter of a set, $\text{diam}E \geq d_X(q,p)$, so $\text{diam} f(E) \geq d_Y (f(p), f(q))$, because we're taking the sup over more terms. This implies $d_Y(f(p), f(q)) < \epsilon$ whenever $d_X(q,p) < \delta$. New definition implies old definition. \\
+
+\noindent $(\leftarrow)$  Let $E \subset X$ be given with $\text{diam}E < \delta$. By definition, for any $p,q \in E$, $d_X(q,p) \leq \text{diam} E < \delta $. The old definition says that $d_Y(f(p), f(q)) < \epsilon/2$, for any $p,q \in E$, and so $\text{diam} f(E) = \sup_{p,q\in E} d_Y(f(q), f(p)) \leq \epsilon/2 < \epsilon$. This means for every $\epsilon > 0$ there is a $\delta > 0$ such that $\text{diam} f(E) < \epsilon$ for all $E\subset X$ for which $\text{diam} E < \delta$. So, the old definition implies the new definition. \hfill $\square$\\  
+
+
 
 
 
@@ -194,9 +205,14 @@ To show that the conclusion is false if boundedness of $E$ is omitted, we look a
 
 
 \noindent \textbf{4.10}   
-\noindent \textit{Proof.} 
+\noindent \textit{Proof.} Here we want to prove Theorem 4.19 in a different fashion. Theorem 4.19 says: If $f$ is a continuous mapping of a compact metric space $X$ into a metric space $Y$ then $f$ is uniformly continuous. The alternative proof goes by contradiction. Assume (to get a contradiction) that $f$ is $\cancel{\text{uniformly}}$ continuous. Since $f$ is not uniformly continuous, for some $\epsilon > 0$ there are sequences $\{ q_n\}$ and $\{ p_n\}$ in $X$ such that $d_X(p_n , q_n) \to 0$ but $d_Y(f(p_n), f(q_n)) > \epsilon$.   \\
 
-
+Consider the sequences $\{ q_n\}$ and $\{ p_n\}$ above. Theorem 2.37 says that if $E$ is an infinite subset of a compact set $K$ then $E$ has a limit point in $K$. This means that the sequences $\{ p_n \}$ and $\{ q_n \}$ converge to points $p$ and $q$ in $E$, respectively. Now, since $d_X(p_n,q_n) \to 0$, $p=q$ which means that $f(p_{n}) \to f(p) = f(q) \leftarrow f(q_n)$ (because $f$ is continuous).  Also,
+\begin{align*}
+d_Y(f(p_{n}) , f(q_{n})) &\leq d_Y(f(p_{n}), f(p)) + d_Y(f(q_{n}), f(p))\\
+&=  d_Y(f(p_{n}), f(p)) + d_Y(f(q_{n}), f(q)) \to 0 + 0 = 0.
+\end{align*}
+However, this contradicts $d_Y(f(p_n), f(q_n)) > \epsilon$. So, $f$ must be uniformly continuous. \hfill $\square$
   
 \end{document}
 
