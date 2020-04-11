@@ -77,6 +77,7 @@
 
 \newcommand{\f}[2]{\frac{#1}{#2}}
 
+
 \newcommand{\ift}{\infty}
 
 \newcommand{\lp}{\left(}
@@ -1904,6 +1905,11 @@ For an $n$-sample of iid r.v., the Fisher information is
 
 
 
+
+
+
+
+
 \noindent \textbf{Additional Regularity Condition.} (the total is 5 after this)
 \begin{itemize}
 	\item The pdf $f(x;\theta)$ is three times differentiable as a function of $\theta$. Further, for all $\theta \in \Omega$, there exists a constant $c$ and a function $M(x)$ such that
@@ -1923,6 +1929,7 @@ For an $n$-sample of iid r.v., the Fisher information is
 	\end{align}
 \end{thm}
 
+In practical terms, this tells us that the MLEs for large $n$ have a normal distribution and that they have variance that approaches CRLB. 
 
 
 \begin{defn}
@@ -1944,7 +1951,7 @@ For an $n$-sample of iid r.v., the Fisher information is
 
 
 
-
+\textbf{Note:} MLEs are asymptotically efficient estimators.
 
 
 \begin{thm}
@@ -1971,7 +1978,29 @@ For an $n$-sample of iid r.v., the Fisher information is
 
 
 
-
+\begin{exmp}
+	Let $X_1,\dots,X_n$ be iid $\text{Exp}(\theta)$ r.v., Find the information contained in the sample about $\theta$. Well, 
+	\begin{align}
+	f(x_i;\theta) = \f{1}{\theta}e^{-x_i/\theta}, x_i >0, \theta > 0. 
+	\end{align}
+	The information is given by
+	\begin{align}
+	I(\theta) = - E[\p^2_\theta l(\theta)] = \dots = -\f{1}{\theta^2} + \f{2}{\theta^3}E[x_i] = \f{1}{\theta^2}.
+	\end{align}
+	So the amount of information contained in the sample is $nI(\theta) = n/\theta^2$. \\
+	
+	Now consider two estimators for $\theta$: $\bar{Y}$ and $n \min X_i$. We know that $\bar{Y}$ is unbiased. Let's check if $n \min X_i$ is unbiased: $E[n \min X_i] = n E [\min X_i]$. Well,
+	\begin{align}
+	E [\min X_i] &= \int^\infty_0 y g_{\min} (y)\,dy\nn\\
+	&= \int^\infty_0 y n [1 - F(y)]^{n-1} f(y)\,dy\nn\\
+	&= \dots\nn\\
+	&= \int^\infty_0 y \f{n}{\theta}e^{-ny/\theta}\,dy\nn\\
+	&= \f{\theta}{n}.
+	\end{align}
+	So $E[n \min X_i] = \theta$, unbiased. \\
+	
+	Now, the CRLB is $1/nI(\theta) = \theta^2/n$, which is the smallest possible variance for an unbiased estimator. Now, $\Var(\bar{Y}) = \theta^2/n$. And so this estimator has efficiency of 1 and is an efficient estimator. $\Var(n \min X_i)$ turns out to be $\theta^2 \geq \theta^2/n$. So, the relative efficiency of $\hat\theta_1$ and $\hat\theta_2$ is $1/n$. The asymptotic efficiency is going to be zero. 
+\end{exmp}
 
 
 
@@ -1982,7 +2011,195 @@ For an $n$-sample of iid r.v., the Fisher information is
 
 
 \section{Maximum Likelihood Tests}
+
+
+Consider the two-sided hypothesis
+\begin{align}
+H_0 : \theta = \theta_0 \quad H_a : \theta \neq \theta_0.
+\end{align}
+The log likelihood is given by
+\begin{align}
+l(\theta)  = \sum^n_{i=1} \ln f(X_i;\theta).
+\end{align}
+If $\theta_0$ is the true value of $\theta$, then asymptotically $\lag(\theta_0)$ is the maximum value of $\lag(\theta)$. Consider the ratio of two likelihood functions
+\begin{align}
+\Lambda = \f{\lag(\theta_0)}{\lag (\hat\theta)} \leq 1. 
+\end{align}
+If $H_0$ is true, $\Lambda$ large and is close to 1. If $H_1$ is true, $\Lambda$ is smaller. For a specified significance level $\al$, we get a decision rule: Reject $H_0$ if $\Lambda \leq c$ where $c$ is such that $\al = P_{\theta_0}(\Lambda \leq c)$. This is called the \textbf{likelihood ratio test}.
+
+
+
+
+
+\begin{thm}
+	Assume the same regularity conditions as for Theorem 4.2.3, under the null hypothesis $H_0 : \theta = \theta_0$,
+	\begin{align}
+	-2\ln \Lambda \xrightarrow{D} \chi^2(1).
+	\end{align}	
+\end{thm}
+
+
+\begin{proof}
+	The proof uses Taylor expansion about $\theta_0$ of $l(\theta)$ to first order, evaluated at the mle $\hat\theta$.  
+\end{proof}
+
+
+Define the test statistic $\chi^2_L = -2\ln \Lambda$. The theorem above suggests the decision rule: Reject $H_0$ if $\chi^2_L \geq \chi^2_\al(1)$.\\
+
+
+In practice, there two other likelihood-related tests. A natural statistic is based on the asymptotic distribution of $\hat\theta$. Consider the statistic
+\begin{align}
+\chi^2_W = \lc \sqrt{nI (\hat\theta)} (\hat\theta - \theta_0) \rc^2.
+\end{align}
+Because $I(\theta)$ is a continuous function, $I(\hat\theta) \xrightarrow{P} I(\theta_0)$ under the null hypothesis. So, under the null hypothesis, $\chi_W^2$ has an asymptotic $\chi^2$-distribution with one degree of freedom. So the decision rule is to reject $H_0$ if $\chi^2_W \geq \chi^2_\al(1)$. This is often referred to as a \textbf{Wald}-type test. \\
+
+The third test is called the \textbf{scores}-type test. The \textbf{scores} are the components of the vector
+\begin{align}
+\mathbf{S}(\theta) = \lp \p_\theta \ln f(X_1;\theta), \dots, \p_\theta \ln f(X_n;\theta) \rp'.
+\end{align}
+In our notation we have
+\begin{align}
+\f{1}{\sqrt{n}} l'(\theta_0) = \f{1}{\sqrt{n}} \sum^n_{i=1}\p_\theta \ln f(X_i; \theta_0).
+\end{align}
+Define the statistic
+\begin{align}
+\chi^2_R = \lp \f{I'(\theta_0)}{\sqrt{n I(\theta_0)}} \rp^2
+\end{align}
+The decision rule is to reject $H_0$ in favor of $H_a$ if $\chi^2_R \geq \chi^2_\al(1)$.
+
+
+
+
+
+
+
+\begin{exmp}
+	Let $X_1,\dots, X_n$ be iid $\N(\mu,\sigma^2)$ r.v. where both $\mu$ and $\sigma^2$ are unknown. $H_0 : \mu = \mu_0$ and $H_a : \mu \neq \mu_0$. The null space is $\{ (\mu,\sigma^2): \mu = \mu_0, \sigma^2 > 0 \}$ and the alternative space is $\{ (\mu,\sigma^2): \mu\neq \mu_0 , \sigma^2 > 0 \}$. The union of these two spaces is $\{ (\mu,\sigma^2): \mu \in \mathbb{R}, \sigma^2 > 0 \}$. Under the null, $\mu = \mu_0$ and $\sigma^2$ is unknown. 
+	\begin{align}
+	\p_{\sigma^2} l(\mu_0, \sigma^2) = -\f{n}{\sigma^2} + \f{1}{2\sigma^4}\sum (x_i - \mu_0)^2 = 0 \implies \hat\sigma_0^2 = \f{1}{n}\sum (x_i  - \mu_0)^2.
+	\end{align} 
+	And so 
+	\begin{align}
+	\lag_0(\hat\theta) = (2\pi)^{-n/2} (\hat\sigma_0)^{-n/2}\exp\lb -\f{1}{2\sigma_0^2}\sum(x_i - \mu_0)^2 \rb.
+	\end{align}
+	This is the likelihood in null space. Under the joint null alternative space where $\mu \in \mathbb{R}$ and $\sigma^2 > 0$, 
+	\begin{align}
+	l(\mu,\sigma^2) = -\f{n}{2}\ln(2\bar{x}) - \f{n}{2}\ln(\sigma^2) - \f{1}{2\sigma^2}\sum(x_i - \mu)^2.
+	\end{align}
+	We need to estimate both $\mu$ and $\sigma^2$. We have
+	\begin{align}
+	&\p_\mu l(\mu,\sigma^2) = \f{1}{\sigma^2}\sum(x_i - \mu) = 0 \implies \hat\mu = \bar{x} \\
+	&\p_{\sigma^2} l(\mu,\sigma^2) = -\f{n}{2\sigma^2} + \f{1}{2\sigma^2}\sum(x_i - \mu)^2 = 0 \implies \hat\sigma^2 = \f{1}{n}\sum( x_i - \mu)^2.
+	\end{align}
+	The likelihood in this case is
+	\begin{align}
+	\lag(\hat\theta) = (2\pi)^{-n/2} (\hat\sigma^2)^{-n/2}\exp\lb -\f{1}{2\sigma^2}\sum(x_i - \bar{x})^2 \rb.
+	\end{align}
+	Now, we reject if 
+	\begin{align}
+	 \Lambda = \f{\lag_0}{\lag} = \dots = \lp \f{\hat\sigma^2}{\hat\sigma_0^2} \rp^{n/2} < K
+	\end{align}
+	which is equivalent to when 
+	\begin{align}
+	\f{\hat\sigma^2}{\hat\sigma_0^2} = \f{\sum(x_i - \bar{x})^2}{\sum (x_i - \mu_0)^2 } < K^{2/n} \equiv K'.
+	\end{align}
+	Now, note that 
+	\begin{align}
+	\sum (x_i - \mu_0)^2 = \sum\lb (x_i - \bar{x}) + (\bar{x} - \mu_0) \rb^2 = \sum (x_i - \bar{x})^2 + n(\bar{x} - \mu_0)^2.
+	\end{align}
+	So, we reject whenever
+	\begin{align}
+	\f{\sum(x_i - \bar{x})^2}{\sum (x_i - \bar{x})^2 + n(\bar{x} - \mu_0)^2} < K^{2/n} = \f{1}{1 + \f{n(\bar{x} - \mu_0)^2}{\sum (x_i - \bar{x})^2}} <  K'
+	\end{align}
+	which is equivalent to 
+	\begin{align}
+	\f{n (\bar{x}- \mu_0)^2}{\sum (x_i - \bar{x})^2} > \f{1}{K} - 1 \equiv K'' \iff \f{n (\bar{x}- \mu_0)^2}{\f{1}{n-1}\sum (x_i - \bar{x})^2} =  \f{n (\bar{x}- \mu_0)^2}{S^2}> (n-1)K'',
+	\end{align}
+	where $K''$ is another constant. So we reject whenever
+	\begin{align}
+	\abs{\f{\bar{x} - \mu_0}{S/\sqrt{n}}} > \sqrt{(n-1)K''}
+	\end{align}
+	where the LHS is a $t$-statistic with $(n-1)$ df.
+	
+\end{exmp}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Multiparameter Case: Estimation}
+
+
+In this section we consider the case where $\bm{\theta}$ is a vector of $p$ parameters. Let $X_1,\dots, X_n$ be iid with common pdf $f(x;\bm\theta)$ where $\bm\theta \in \Omega \in \mathbb{R}^p$. The likelihood function and its log are given by
+\begin{align}
+&\lag(\bm\theta) = \prod^n_{i=1} f(x_i ;\bm\theta)\\
+&l(\bm\theta) = \ln \lag(\bm\theta) = \sum^n_{i=1} \ln f(x_i ;\bm\theta).
+\end{align}
+There are more regularity conditions to make the theory work, but we won't worry about those. We will also worry only about the continuous case, because the discrete cases can be treated in similar ways. \\
+
+Here are some facts: just like before, $\lag(\bm\theta)$ is maximized at the true value of $\bm\theta$. The quantity that maximizes $\lag(\bm\theta)$ is called the \textbf{maximum likelihood estimator} and we denote it $\hat{\bm\theta}$. It also holds that $\hat\eta = g(\hat{\bm\theta})$ if $\eta = g(\bm\theta)$. \\
+
+
+
+\begin{thm}
+	Let $X_1,\dots,X_n$ be iid with pdf $f(x;\bm\theta)$ for $\bm\theta \in \Omega$. Assume that the regularity conditions hold, then 
+	\begin{enumerate}
+		\item The likelihood equation, 
+		\begin{align}
+		\p_{\bm\theta} l(\bm\theta) = \mathbf{0}
+		\end{align}
+		has a solution $\hat{\bm\theta}_n$ such that $\hat{\bm\theta} \xrightarrow{P} \bm\theta$. 
+		
+		\item For any sequence that satisfies the first item 
+		\begin{align}
+		\sqrt{n} (\hat{\bm\theta}_n - \bm\theta) \xrightarrow{D} \N_p (\mathbf{0}, \mathbf{I}^{-1}(\bm\theta) ).
+		\end{align}
+	\end{enumerate}
+\end{thm}
+
+
+\begin{thm}
+	Let $X_1,\dots,X_n$ be iid with pdf $f(x;\bm\theta)$ for $\bm\theta \in \Omega$. Assume the regularity conditions hold. Let $\hat{\bm\theta}_n$ be a sequence of consistent solutions of the likelihood equation. Then $\hat{\bm\theta}_n$ are asymptotically efficient estimates; that is, for $j = 1,\dots,p$,
+	\begin{align}
+	\sqrt{n}(\hat\theta_{i,j} - \theta_j) \xrightarrow{D} \N(0, [\mathbf{I}^{-1}(\bm\theta)]_{jj}).
+	\end{align}
+\end{thm}
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Multiparameter Case: Testing}
 \section{The EM algorithm}
 
@@ -1997,6 +2214,18 @@ For an $n$-sample of iid r.v., the Fisher information is
 
 
 
+
+
+\newpage
+
+
+
+\chapter{Sufficiency}
+
+
+\section{Measures of Quality of Estimators}
+
+\section{A Sufficient Statistic for a Parameter}
 
 
 
