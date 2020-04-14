@@ -2047,25 +2047,7 @@ If $H_0$ is true, $\Lambda$ large and is close to 1. If $H_1$ is true, $\Lambda$
 Define the test statistic $\chi^2_L = -2\ln \Lambda$. The theorem above suggests the decision rule: Reject $H_0$ if $\chi^2_L \geq \chi^2_\al(1)$.\\
 
 
-In practice, there two other likelihood-related tests. A natural statistic is based on the asymptotic distribution of $\hat\theta$. Consider the statistic
-\begin{align}
-\chi^2_W = \lc \sqrt{nI (\hat\theta)} (\hat\theta - \theta_0) \rc^2.
-\end{align}
-Because $I(\theta)$ is a continuous function, $I(\hat\theta) \xrightarrow{P} I(\theta_0)$ under the null hypothesis. So, under the null hypothesis, $\chi_W^2$ has an asymptotic $\chi^2$-distribution with one degree of freedom. So the decision rule is to reject $H_0$ if $\chi^2_W \geq \chi^2_\al(1)$. This is often referred to as a \textbf{Wald}-type test. \\
 
-The third test is called the \textbf{scores}-type test. The \textbf{scores} are the components of the vector
-\begin{align}
-\mathbf{S}(\theta) = \lp \p_\theta \ln f(X_1;\theta), \dots, \p_\theta \ln f(X_n;\theta) \rp'.
-\end{align}
-In our notation we have
-\begin{align}
-\f{1}{\sqrt{n}} l'(\theta_0) = \f{1}{\sqrt{n}} \sum^n_{i=1}\p_\theta \ln f(X_i; \theta_0).
-\end{align}
-Define the statistic
-\begin{align}
-\chi^2_R = \lp \f{I'(\theta_0)}{\sqrt{n I(\theta_0)}} \rp^2
-\end{align}
-The decision rule is to reject $H_0$ in favor of $H_a$ if $\chi^2_R \geq \chi^2_\al(1)$.
 
 
 
@@ -2127,9 +2109,75 @@ The decision rule is to reject $H_0$ in favor of $H_a$ if $\chi^2_R \geq \chi^2_
 
 
 
+In practice, there two other likelihood-related tests. A natural statistic is based on the asymptotic distribution of $\hat\theta$. Consider the statistic
+\begin{align}
+\chi^2_W = \lc \sqrt{nI (\hat\theta)} (\hat\theta - \theta_0) \rc^2.
+\end{align}
+Because $I(\theta)$ is a continuous function, $I(\hat\theta) \xrightarrow{P} I(\theta_0)$ under the null hypothesis. So, under the null hypothesis, $\chi_W^2$ has an asymptotic $\chi^2$-distribution with one degree of freedom. So the decision rule is to reject $H_0$ if $\chi^2_W \geq \chi^2_\al(1)$. This is often referred to as a \textbf{Wald}-type test. \\
+
+The third test is called the \textbf{scores}-type test. The \textbf{scores} are the components of the vector
+\begin{align}
+\mathbf{S}(\theta) = \lp \p_\theta \ln f(X_1;\theta), \dots, \p_\theta \ln f(X_n;\theta) \rp'.
+\end{align}
+In our notation we have
+\begin{align}
+\f{1}{\sqrt{n}} l'(\theta_0) = \f{1}{\sqrt{n}} \sum^n_{i=1}\p_\theta \ln f(X_i; \theta_0).
+\end{align}
+Define the statistic
+\begin{align}
+\chi^2_R = \lp \f{I'(\theta_0)}{\sqrt{n I(\theta_0)}} \rp^2
+\end{align}
+The decision rule is to reject $H_0$ in favor of $H_a$ if $\chi^2_R \geq \chi^2_\al(1)$.
+
+
+\begin{exmp}
+	(MLR test) Suppose we want to test whether or not the mean number of goals scored in all English league soccer games is 3. Suppose $X \sim \text{Poi}(\lambda)$. We set $H_0 : \lambda = 3$ and $H_a : \lambda \neq 3$. The joint pdf is 
+	\begin{align}
+	\lag(\lambda) = p(x_i \vert \lambda)= \f{e^{-n\lambda} \lambda^{\sum x_i}}{\prod x_i!}, \quad x_i = 0,1,2,3,\dots
+	\end{align}
+	Say $n=380$ and $\bar{x} = 2.534$. We can find the MLE of $\lambda$, $\hat\lambda = \bar{x}$. The null space is $\{ \lambda: \lambda = 3\}$, and the alternative space is $\{ \lambda: \lambda \neq 3. \lambda > 0 \}$. The joint space is $\{ \lambda : \lambda > 0 \}$. Now,
+	\begin{align}
+	\lag(\hat\lambda_0) = \f{e^{-380\cdot 3} 3^{963}}{\dots}
+	\end{align}
+	and
+	\begin{align}
+	\lag(\hat\lambda) = \f{e^{-380\cdot 2.534} 2.534^{963}}{\dots}
+	\end{align}
+	and so 
+	\begin{align}
+	\Lambda = \f{\lag_0}{\lag} 
+	\end{align}
+	Asymptotically, $-2\ln \Lambda \sim \chi^2(1)$. We reject if $-2\ln \Lambda > \chi^2_{1,0.05} = 3.84$. We find that $-2\ln \Lambda = 29.03 > 3.84$, so we reject. 
+\end{exmp}
 
 
 
+
+
+
+\begin{exmp}
+	(Wald test) 
+	\begin{align*}
+	\chi^2_W = \lb \f{\hat\lambda - \lambda_0}{1/\sqrt{n I(\hat\lambda)}} \rb^2 \sim \chi^2(1)
+	\end{align*}
+	under $H_0$. The information can be found to be $n/\lambda$. Plugging in the numbers we find
+	\begin{align*}
+	\chi^2_W = \lb \f{\bar{x} - \lambda_0}{1/\sqrt{n/\bar{x}}} \rb^2=  \lb (2.534-3)/(1/\sqrt{380\cdot 1/2.534}) \rb^2 = 32.56 > 3.84,
+	\end{align*}
+	so we still reject. 
+\end{exmp}
+
+
+
+\begin{exmp}
+	(Score test) 
+	\begin{align*}
+	\chi^2_R =  \f{(I'(\theta_0))^2}{n I(\theta_0)} = \dots = \f{(-380 + 963/3)^2}{380/3} = 27.48 \sim \chi^2.
+	\end{align*}
+	So we reject as well. 
+\end{exmp}
+
+So, $\chi^2_R$ is in general not as conservative as $\chi^2_W$. The LRT is somewhere in the middle. 
 
 
 
@@ -2187,6 +2235,49 @@ Here are some facts: just like before, $\lag(\bm\theta)$ is maximized at the tru
 
 
 
+\begin{exmp}
+	Let $X_i$ be iid $\N(\mu,\sigma^2)$. Find MLE for $\mu$ and $\sigma^2$. Now, $\bm{\theta} = (\mu,\sigma^2)$, and 
+	\begin{align}
+	\lag(\bm\theta) = \prod f(x_i\vert \bm\theta) = \prod \lb (2\pi \sigma^2)^{1/2} \exp\lp -\f{1}{2\sigma^2}(x_i - \mu)^2 \rp \rb.
+	\end{align}
+	Then
+	\begin{align}
+	\p_\mu l(\bm\theta) = \f{1}{\sigma^2}\sum(x_i - \mu) = 0 \implies \hat\mu = \bar{x}
+	\end{align}
+	and
+	\begin{align}
+	\p_{\sigma^2} l(\bm\theta) = \f{-n}{2\sigma^2} + \f{1}{2\sigma^4}\sum(x_i - \mu)^2 = 0\implies \hat\sigma^2 = \f{1}{n}\sum (x_i - \mu)^2.
+	\end{align}
+\end{exmp}
+
+
+What is the information in the multiparameter setting? It's a matrix with elements
+\begin{align}
+\boxed{I_{jk} = -E \lb \f{\p^2 \ln f(x_i\vert \bm\theta)}{\p \theta_j \p\theta_k} \rb}
+\end{align}
+Back to the normal situation:
+\begin{align}
+I(\bm\theta) &= -E \begin{bmatrix}
+-\f{1}{\sigma^2} & -\f{1}{\sigma^4}(x_i - \mu) \\
+ -\f{1}{\sigma^4}(x_i - \mu) & \f{1}{2\sigma^4} - \f{1}{\sigma^6}(x_i - \mu)^2
+\end{bmatrix}\\& = \begin{bmatrix}
+\f{1}{\sigma^2} & 0 \\
+0 & -\f{1}{2\sigma^4} + \f{1}{\sigma^6}\sigma^2 
+\end{bmatrix}
+= 
+\begin{bmatrix}
+\f{1}{\sigma^2} & 0 \\ 0 & \f{1}{2\sigma^4}
+\end{bmatrix}
+\end{align}
+CRLB for $\bar{x}$ is 
+\begin{align}
+\f{1}{n I_{11}(\bm\theta)} = \f{\sigma^2}{n}.
+\end{align}
+The CRLB for $\hat\sigma^2$ is 
+\begin{align}
+\f{1}{nI_{22}(\bm\theta)} = \f{2\sigma^4}{n}.
+\end{align}
+
 
 
 
@@ -2201,6 +2292,95 @@ Here are some facts: just like before, $\lag(\bm\theta)$ is maximized at the tru
 
 
 \section{Multiparameter Case: Testing}
+
+
+Here we talk about likelihood ratio tests in the multiparameter setting. Recall that the test statistic is 
+\begin{align}
+\Lambda = \f{\lag(\hat\theta_0)}{\lag(\hat\theta)}  
+\end{align}
+where the numerator is maximized in null space and the denominator is maximized in the joint (null + alternative) space. We reject if $\Lambda < c$. $c$ is found from the null distribution. 
+
+
+
+\begin{exmp}
+	Let $X_i \sim \exp (\theta)$ and $Y_i \sim \exp(\mu)$. $H_0 : \mu = \theta$ and $H_a : \mu \neq \theta$. The null space is $\{ \{ \theta,\mu\}: \theta = \mu > 0 \}$. The alternative space is $\{ \{ \theta,\mu \}: \theta \neq \mu, \theta,\mu \neq 0 \}$. The joint space is just $\{ \{ \theta,\mu \}, \theta >0, \mu > 0 \}$. It's easy to see that
+	\begin{align}
+	\lag(\theta,\mu \vert X,Y) = \f{1}{\theta^n}e^{\sum^n x_i/\theta} \f{1}{\mu^m}e^{\sum^m y_i/\mu} .
+	\end{align}
+	From here one finds that under $H_0: \theta = \mu$:
+	\begin{align}
+	l(\Theta_0) = -(n+m) \ln\theta-\f{1}{\theta}\lp \sum x_i + \sum y_i \rp.
+	\end{align}
+	And so
+	\begin{align}
+	\p_\theta l(\theta) = 0 \implies \hat\theta_0 = \f{1}{n+m} \lp \sum x_i + \sum y_i \rp.
+	\end{align}
+	With this, we can plug back in to calculate the numerator:
+	\begin{align}
+	\lag(\hat\Theta_0) = \dots = \lp\f{1}{n+m} \sum x_i + \sum y_j \rp^{-n-m} \exp(-n-m).
+	\end{align}
+	In the joint space, 
+	\begin{align}
+	l(\Theta) = -n \ln \theta - \f{1}{\theta}\sum x_i - m \ln \mu - \f{1}{\mu}\sum y_j.
+	\end{align}
+	And so
+	\begin{align}
+	\p_\theta l(\Theta) = 0 \implies \hat\theta = \bar{x}\\
+	\p_\mu l(\mu) = 0 \implies \hat\mu =  \bar{y}.
+	\end{align}
+	With these,
+	\begin{align}
+	\lag(\hat\Theta) &= \dots\\
+	&= \f{1}{\lp \f{1}{n}\sum x_i \rp^n} \exp \lb -\f{1}{\f{1}{n}\sum x_i} \sum x_i\rb  
+	\f{1}{\lp \f{1}{m}\sum y_i \rp^m} \exp \lb -\f{1}{\f{1}{m}\sum y_i} \sum y_i\rb\\
+	&=\f{1}{\lp \f{1}{n}\sum x_i \rp^n} e^{-n} \f{1}{\lp \f{1}{m}\sum y_i \rp^m} e^{-m}.
+	\end{align}
+	Putting everything together, we find
+	\begin{align}
+	\Lambda = \f{\lag_0}{\lag} = \dots = \f{\f{1}{(n+m)^{-n-m}} \lp \sum x_i + \sum y_j \rp^{-n-m}   }{\f{1}{n^n} \f{1}{m^m} \lp \sum x_i \rp^{-n} \lp \sum y_i \rp^{-m}}.
+	\end{align}
+	We reject if $\Lambda < c$, iff
+	\begin{align}
+	\f{(n+m)^{n+m}}{n^n m^m} \f{\lp \sum x_i \rp^{n} \lp \sum y_i \rp^{m}}{\lp \sum x_i + \sum y_j \rp^{n+m} } < c
+	\end{align}
+	iff (letting $c$ absorb the constant)
+	\begin{align}
+	\f{\lp \sum x_i \rp^{n} \lp \sum y_i \rp^{m}}{\lp \sum x_i + \sum y_j \rp^{n+m} } < c'
+	\end{align}
+	
+	
+	What does the distribution of $\Lambda$ look like? Notice that we reject if
+	\begin{align}
+	\Lambda &= \f{(n+m)^{n+m}}{n^n m^m} \f{\lp \sum x_i \rp^{n} \lp \sum y_i \rp^{m}}{\lp \sum x_i + \sum y_j \rp^{n+m} }\\
+	&= \f{(n+m)^{n+m}}{n^n m^m}\lp \f{ \sum x_i}{ \sum x_i + \sum y_j  }  \rp^n\lp \f{ \sum y_i}{ \sum x_i + \sum y_j  }  \rp^m \\
+	&= \f{(n+m)^{n+m}}{n^n m^m} T^n T(1-T)^{m} < c
+	\end{align}
+	which is akin to saying that we reject if $T < a$ or $T > b$ when these constants satisfy 
+	\begin{align}
+	a^n (1-a)^m  = b^n (1-b)^n.
+	\end{align}
+	What is the distribution of $T$ under $H_0$? Note that under $H_0$, $\sum x_i \sim \Gamma(n,\theta)$ and $\sum y_i \sim \Gamma(m, \mu= \theta)$. Use transformation method to show that $T \sim \beta(n,m)$.\\
+	
+	Reminder: in large samples, $-2\ln \Lambda \sim \chi^2_1$ 
+\end{exmp}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \section{The EM algorithm}
 
 
