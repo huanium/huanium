@@ -4019,7 +4019,7 @@ The outputs of the specific function $f(x)$ for the eight possible inputs are ta
 
 For the rest of this problem, consider the quantum algorithm for solving Simon's problem shown in the circuit diagram above.
 
-\begin{enumerate}[(b)]
+\begin{enumerate}[(a)]\setcounter{enumi}{1}
 	\item What is the state of the system $\ket{\psi_1}$ just before the oracle?
 
 	
@@ -4058,16 +4058,95 @@ For the rest of this problem, consider the quantum algorithm for solving Simon's
 \noindent \textit{Solution:}
 
 \begin{enumerate}[(a)]
-	\item 
-	\item 
-	\item 
-	\item 
-	\item 
-	\item 
-	\item 
-	\item 
-	\item
-\end{enumerate}
+	\item We know that $f$ is a $2$ to $1$ function. So, it suffices to look at two inputs $x_0\neq y_0$ such that $f(x_0) = f(y_0)$.  In this case, we necessarily have $x_0 = y_0 \oplus a$. Since we're working over the finite field $\mathbb{F}^{2n}$, we know that
+	\begin{align}
+	x_0 &= y_0 \oplus a \nn\\
+	\iff x_0\oplus y_0 &= y_0 \oplus y_0 \oplus a, \quad \text{addition is commutative}\nn\\
+	\iff x_0 \oplus y_0 &= a.
+	\end{align}
+	From the table, we know that $001$ and $100$ give the same output $000$. And so $a = 001 \oplus 100 = 101$. So, $\boxed{a= 101}$. As a sanity check, $000\oplus 101 = 010 \oplus 111 \oplus 011 \oplus 110 = 101$ as well. 
+	
+	
+	
+	\item Just before the oracle, the state of the system is 
+	\begin{align}
+	\ket{\psi_1} &= (\had^{\otimes n}\otimes \Id^{\otimes n}) \ket{0}_n \ket{0}_n\nn\\
+	&= \f{1}{\sqrt{2^n}} \sum_{0 \leq x < 2^n} \ket{x}_n \ket{0}_n\nn\\
+	&= \f{1}{\sqrt{2^3}} \sum_{0 \leq x < 2^3} \ket{x}_3 \ket{0}_3, \quad n=3.
+	\end{align}
+	
+	
+	
+	
+	
+	
+	\item The state of the system just after the oracle is 
+	\begin{align}
+	\ket{\psi_2} &= \U_f \ket{\psi_1}\nn\\
+	&= \U_f \f{1}{\sqrt{2^3}} \sum_{0 \leq x < 2^3} \ket{x}_3 \ket{0}_n\nn\\
+	&= \f{1}{\sqrt{2^3}} \sum_{0 \leq x < 2^3} \ket{x}_3 \ket{f(x)}_3.
+	\end{align}
+	
+	
+	
+	\item If $x_0 = 001$, then after the measurement the state of the system must carry $\ket{001}$ in the output register. Since $f$ is 2-to-1, there are two states with the output register in $\ket{001}$. So, 
+	\begin{align}
+	\ket{\psi_3} = \f{1}{\sqrt{2}} \lb \ket{010} + \ket{111} \rb \ket{001}.
+	\end{align}
+	
+	
+	
+	\item To find the state after Hadamard-ing the input register, we just go through the straightforward computation:
+	\begin{align}
+	\ket{\psi_4} &= \had^{\otimes 3} \otimes \Id^{\otimes 3} \f{1}{\sqrt{2}}\lb \ket{010} + \ket{111} \rb \ket{001}\nn\\
+	&= \f{1}{\sqrt{2}}\lb \ket{+-+} + \ket{---} \rb \ket{001}\nn\\
+	&= \f{1}{\sqrt{2}} \f{1}{\sqrt{2^3}}\lb \ket{000} - \ket{010} + \ket{101} - \ket{111}  \rb\ket{001}.
+	\end{align} 
+	
+	
+	
+	\item We can see easily that each component-state $z_i$ of the input register is such that $z_i \cdot a = 0$:
+	\begin{align}
+	&000 \cdot 101 = 0 \oplus 0 \oplus 0 = 0\nn\\
+	&010 \cdot 101 = 0 \oplus 0 \oplus 0 = 0\nn\\
+	&101 \cdot 101 = 0 \oplus 0 \oplus 0 = 0\nn\\
+	&111 \cdot 101 = 0 \oplus 0 \oplus 0 = 0.
+	\end{align} 
+	We can also see states that are not those above have the property that $z_j \cdot a = 1$:
+	\begin{align}
+	&001 \cdot 101 = 0 \oplus 0 \oplus 1 = 1\nn\\
+	&011 \cdot 101 = 0 \oplus 0 \oplus 1 = 1\nn\\
+	&100 \cdot 101 = 1 \oplus 0 \oplus 0 = 1\nn\\
+	&110 \cdot 101 = 1 \oplus 0 \oplus 0 = 1.
+	\end{align} 
+	
+	
+	
+	
+	\item  If $f_1 = 101$, then $\ket{\psi_3} \sim \lb \ket{011} + \ket{110} \rb \ket{101}$. Normalizing this gives
+	\begin{align}
+	\ket{\psi_3} = \f{1}{\sqrt{2}}\lb \ket{011} + \ket{110} \rb\ket{101}.
+	\end{align}
+	
+	
+	
+	
+	
+	\item Hadamard-ing to the input register we get $\ket{\psi_4} \sim \lb \ket{+--} + \ket{--+} \rb \ket{101} \sim \lb \ket{000} - \ket{010} - \ket{101} + \ket{111} \rb \ket{101}$. We see that the components of the input register in this case is the same as before. Of course, after normalization,
+	\begin{align}
+	\ket{\psi_4} = \f{1}{\sqrt{2}}\f{1}{\sqrt{2^3}} \lb \ket{000} - \ket{010} - \ket{101} + \ket{111} \rb \ket{101}.
+	\end{align}
+	
+	
+
+	\item Let $a = a_2a_1a_0 \neq 000$. If measurements of the input register gives $z_0 = 010$ and $z_1 = 111$, then we know that $0= 010 \cdot a_2 a_1 a_0 = 111 \cdot a_2 a_1 a_0 = 0$. The first equality tells us that $a_1 = 0$. The last equality tells us that $a_2 \oplus 0 \oplus a_0 = 0$, which means $a_2 = a_1 = 1$ (since they can't both be 0). So $a = 101$, as expected. 
+	
+	
+	
+	
+	
+	
+\end{enumerate}\qed
 
 
 
@@ -4084,7 +4163,19 @@ For the rest of this problem, consider the quantum algorithm for solving Simon's
 
 
 
-\noindent \textbf{2. A Simon's Algorithm Primer'.} You are given a unitary operator $\U_f$ that encodes the function $f : \{0,1\}^n \to \{0,1\}^n$ which has the characteristics $f(x) = f(x\oplus a)$ but this time for $a=0$. The fact that $a = 0$ means that every output value of $f(x)$ is distinct -- the function is one-to-one.	 
+\noindent \textbf{2. A Simon's Algorithm Primer'.} You are given a unitary operator $\U_f$ that encodes the function $f : \{0,1\}^n \to \{0,1\}^n$ which has the characteristics $f(x) = f(x\oplus a)$ but this time for $a=0$. The fact that $a = 0$ means that every output value of $f(x)$ is distinct -- the function is one-to-one.	\\
+
+Show that employing the circuit diagram from the prior problem will lead to set of all $2^n$ possible states of the input register, each with an equal probability $P_i = 1/2^n$ of being measured in the final step of the algorithm.\\
+
+Notice that in this case (if you didn’t know that $a = 0$ and weren't assured that $a \neq 0$) if
+you just ran the algorithm you could also generate a set of equations satisfying $a \cdot z_i = 0$ for
+$0 \leq i \leq n_1$. If you did the same classical post-processing (solving the equations for $a$ you
+would get some nonzero value. Of course all states satisfy $a \cdot z_i = 0$ if $a = 0$. You'd then have
+to check two inputs $x$ and $x \oplus a$ to the oracle - maybe $\ket{000}$ and $\ket{a}$ - and see if they have the
+same output value. If not then you know $a = 0$.\\
+
+
+\noindent \textit{Solution:} When $a = 0 \implies f$ is 1-to-1 (and onto), we have, by looking at $\ket{\psi_2}$ in the previous problem, that each $\ket{x}$ goes with a distinct $\ket{f(x)}$. This means $\ket{\psi_3}$ is a tensor product of two n-Qbit computational basis states, the first is that of the input register, the second output register.  Because the input register is now in a basis state, Hadamard-ing it gives an equal superposition of all $2^n$ computational basis states without destructive interference (unlike in the previous problem where this happens). This means each state of the input register has an amplitude $1/\sqrt{2^n}$, which corresponds to a probability $P_i = 1/2^n$ of being measured. \qed
 
 
 
