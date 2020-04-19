@@ -4633,9 +4633,65 @@ So,
 
 
 \noindent \textbf{6.3.1}
-
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{631}
+\end{figure}
 
 \noindent \textit{Solution:} 
+
+\begin{enumerate}[(a)]
+	\item 
+	\textbf{R code:}
+	\begin{lstlisting}
+	> dt = c(19, 15, 76, 23, 24, 66, 27, 12, 25, 7, 6, 16, 51, 26, 39)
+	> hist(dt)
+	> abline(v=50)
+	\end{lstlisting}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{631-hist}
+	\end{figure}
+
+
+
+
+	\item $H_0: \theta = 50$, $H_a : \theta \neq 50$. Example 6.3.1 says that we reject $H_0$ if
+	\begin{align}
+	\f{2}{\theta_0} \sum^n_{i=1}X_i \geq \chi^2_{1-\al/2}(2n)\mbox{ or } \f{2}{\theta_0} \sum^n_{i=1}X_i \leq \chi^2_{\al/2}(2n)
+	\end{align}
+	In our case, 
+	\begin{align}
+	\tau = \f{2}{\theta_0} \sum^n_{i=1}X_i  = 17.28,
+	\end{align}
+	while 
+	\begin{align}
+	&\chi^2_{0.10/2}(30) = 18.49266\nn\\
+	&\chi^2_{1-0.10/2}(30) = 43.77297.
+	\end{align}
+	Since $\tau < \chi^2_{0.10/2}(30)$, we \textbf{reject} $H_0$.\\
+	
+	\textbf{R code:}
+	\begin{lstlisting}
+	> sum(dt)
+	[1] 432
+	> (2/50)*sum(dt)
+	[1] 17.28
+	> length(dt)
+	[1] 15
+	> qchisq(0.10/2,30)
+	[1] 18.49266
+	> qchisq(1-0.10/2,30)
+	[1] 43.77297
+	\end{lstlisting}
+	\qed
+	
+	
+	
+	
+	
+	
+\end{enumerate}
 
 
 \newpage
@@ -4643,65 +4699,408 @@ So,
 
 
 \noindent \textbf{6.3.6}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{636}
+\end{figure}
 
 
 \noindent \textit{Solution:} 
+The mle for $\sigma^2$ is 
+\begin{align}
+\hat\sigma^2 = \f{1}{n}\sum (X_i  -\mu_0)^2.
+\end{align}
+With this, 
+\begin{align}
+\Lambda = \f{\lag(\theta_0)}{\lag(\hat\theta)} = \lp \f{\hat\sigma^2}{\theta_0}\rp^{n/2} \exp\lb \f{-1}{2\theta_0}\sum^n_{i=1}(x_i - \mu_0)^2 + \f{n}{2}\f{\sum(x_i - \mu_0)^2}{\sum(x_i - \mu_0)^2} \rb.
+\end{align}
+This has the form $\Lambda = n^{-n/2} W^{n/2} e^{-W/2} e^{n/2}$, which is unimodal. So, $\Lambda \leq C \implies W \in (c_1, c_2)$ for some $c_1, c_2$. This says we can use $W$ as a testing statistic. Now, under $H_0: \theta = \theta_0$, we have that $X_i \sim \N(\mu_0, \theta=\theta_0)$, and so $(X_i - \mu_0)/\sqrt{\theta_0} \sim \N(0,1) $. This means $W = \sum^n (X_i - \mu_0)^2/\theta_0 \sim \chi^2(n)$. \\
+
+We reject whenever $W \geq \chi^2_{1-\al/2}(n)$ or $W \leq \chi^2_{\al/2}(n)$. \qed
+
+
+
+
+
+
+
+
+
 
 
 \newpage
 \noindent \textbf{6.3.11}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{6311}
+\end{figure}
 
 
 \noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item 
+	We know that
+	\begin{align}
+	\hat\beta = \f{1}{n\al} \sum^n_{i=1}X_i = \f{\bar{X}}{\al} = \f{\bar{X}}{4}.
+	\end{align}
+	\begin{align}
+	\Lambda &= \f{\lag(\hat\theta)}{\lag (\theta_0)} = \f{1/\hat\theta^{4n}}{1/\theta_0^{4n}} \exp \lb -\lp  \f{1}{\hat\theta}- \f{1}{\theta_0} \rp\sum x_i  \rb\nn\\
+	&\sim (4 n)^{-4n}\lp\sum x_i/\theta_0\rp^{-4n} \exp \lb -\sum X_i/\theta_0 \rb \exp\lb 4n \rb\nn\\
+	&= (4 n)^{-4n}W^{-4n}\theta_0^{4n} \exp \lb -W/\theta_0 \rb \exp\lb 4n \rb.
+	\end{align}
+	So, $\Lambda$ depends on $W$ as desired. Now, since $X_i \sim \Gamma(4,\theta_0)$ under $H_0$, we have
+	\begin{align}
+	\f{2W}{\theta_0} = \f{2}{\theta_0}\sum X_i \sim \Gamma\lp n\al, \f{2\theta_0}{\theta_0} \rp = \Gamma(4n,2) = \boxed{\chi^2(4n)}
+	\end{align} 
+	
+	
+	\item 
+	\begin{align}
+	c_1 = \f{\theta_0}{2}\chi^2_{\al/2}(4n) = \f{3}{2}\times 9.590777 = \boxed{14.38617}\nn\\
+	c_2 = \f{\theta_0}{2}\chi^2_{1-\al/2}(4n) = \f{3}{2}\times 34.16961 = \boxed{51.25441}
+	\end{align}
+	
+	
+	\textbf{R code:}
+	\begin{lstlisting}
+	> qchisq(1-0.05/2,4*5)
+	[1] 34.16961
+	> qchisq(0.05/2,4*5)
+	[1] 9.590777
+	> 34.16961*1.5
+	[1] 51.25441
+	> 9.590777*1.5
+	[1] 14.38617 
+	\end{lstlisting}
+\end{enumerate}\qed
+
+
+
+
+
+
+
+
 
 
 \newpage
 \noindent \textbf{6.3.18}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{6318}
+\end{figure}
 
 
-\noindent \textit{Solution:} 
+\noindent \textit{Solution:} The setup of this problem is exactly like that of 6.3.11. The likelihood ratio test of $H_0 : \beta = \beta_0$ versus $H_a : \beta \neq \beta_0$ is based upon the statistic $W = \sum X_i $. The null distribution of $2W/\beta_0$ is $\chi^2(n\al)$, under $H_0$. We reject whenever $W \leq c_1$ or $W \geq c_2$, where 
+\begin{align}
+&c_1 = \f{\beta_0}{2}\chi^2_{\al/2}(\al n) \nn\\
+&c_2 = \f{\beta_0}{2}\chi^2_{1-\al/2}(\al n). 
+\end{align}
+
+\qed
 
 
 \newpage
 \noindent \textbf{6.4.1}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{641}
+\end{figure}
 
 
 \noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item The mle for each $p_i$ is 
+	\begin{align}
+	\hat{p}_i = \f{\mbox{\# Observations of $i$}}{n}.
+	\end{align}
+	
+	\item 
+	\begin{align}
+	CI_1 &= \lp \hat{p}_1 - z_{\al/2}\sqrt{\hat{p}_1(1-\hat{p}_1)/n}, \hat{p}_1 + z_{\al/2}\sqrt{\hat{p}_1(1-\hat{p}_1)/n} \rp \nn\\
+	&= \lp \f{60}{200} - 1.96\times 0.0324037 , \f{60}{200} + 1.96\times 0.0324037  \rp\nn\\ 
+	&= \boxed{(0.2364887, 0.3635113)}
+	\end{align}
+	\begin{align}
+	CI_2 
+	&= \lp \f{45}{200} - 1.96\times 0.02952753 , \f{45}{200} + 1.96\times 0.02952753  \rp\nn\\ 
+	&= \boxed{(0.167126, 0.282874)}
+	\end{align}
+	\begin{align}
+	CI_3
+	&= \lp \f{70}{200} - 1.96\times 0.03372684 , \f{70}{200} + 1.96\times 0.03372684  \rp\nn\\ 
+	&= \boxed{(0.2838954, 0.4161046)}
+	\end{align}
+	\begin{align}
+	CI_4 
+	&= \lp \f{25}{200} - 1.96\times 0.02338536  , \f{25}{200} + 1.96\times 0.02338536  \rp\nn\\ 
+	&= \boxed{(0.0791647, 0.7732091)}
+	\end{align}
+	
+\end{enumerate}\qed
+
+
+
 
 
 \newpage
 \noindent \textbf{6.4.3}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{643}
+\end{figure}
 
-
-\noindent \textit{Solution:} 
+\noindent \textit{Solution:}  The likelihood function is 
+\begin{align}
+\lag(\theta_1, \theta_2) = \f{1}{\theta_2^n} \exp \lb -\f{1}{\theta_2}\sum^n_{i=1} (x_i - \theta_1) \rb.
+\end{align}
+with the support given in the problem. We find 
+\begin{align}
+\ln \lag = -n \ln \theta_2 - \f{1}{\theta_2}\sum^n_{i=1}(x_i - \theta_1).
+\end{align}
+And so,
+\begin{align}
+\p_{\theta_1} \ln \lag(\theta_1,\theta_2) = \f{n}{\theta_2} > 0  \implies \boxed{\hat\theta_1 = \text{Argmax}\ln\lag(\theta_1,\theta_2) = \min_i X_i }\nn\\
+\p_{\theta_2} \ln \lag(\hat\theta_1,\theta_2) = -\f{n}{\theta_2} + \f{1}{\theta_2^2} \sum^n_{i=1}\lp x_i - \hat\theta_1 \rp = 0 \implies \boxed{\hat\theta_2 = \f{1}{n}\sum^n_{i=1}(X_i - \min_i X_i) }
+\end{align}
+where we have used $\hat\theta_1 = \min_i X_i$ in writing the mle for $\theta_2$. \qed
 
 
 \newpage
 \noindent \textbf{6.4.5}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{645}
+\end{figure}
 
 
-\noindent \textit{Solution:} 
+\noindent \textit{Solution:} It's not difficult to see that
+\begin{align}
+&\hat\theta - \hat\rho = \min Y_i = Y_1\nn\\
+&\hat\theta + \hat\rho = \max Y_i = Y_n.
+\end{align}
+Solving this for $\hat\theta, \hat\rho$ gives
+\begin{align}
+&\hat\theta = \f{Y_n + Y_1}{2}\nn\\
+&\hat\rho = \f{Y_n - Y_1}{2}.
+\end{align}
+Next, 
+\begin{align}
+F_{Y_1}(x) = P(Y_1 \leq x) &= P(\min_i Y_i \leq x)\nn\\
+&= 1 - P(\min_i Y_i > x)\nn\\
+&= 1 - \prod^n_{i=1}P(Y_i > x)\nn\\
+&= 1 - (1 - F_{Y_i}(x))^n = 1 - \lp 1- \int^x_{\theta-\rho}\f{1}{2\rho}\,dx \rp^n\nn\\
+&= 1 - \lp 1- \f{x-\theta+\rho}{2\rho} \rp^n\nn\\
+\implies  f_{Y_1}(x) &= \f{n(\theta + \rho - x)^{n-1}}{(2\rho)^n}
+\end{align}
+And so, 
+\begin{align}
+E[Y_1] = \int_{\theta-\rho}^{\theta+\rho} x\f{n(\theta + \rho - x)^{n-1}}{(2\rho)^n}\,dx = \f{1 - n }{1 + n} \rho + \theta
+\end{align}
+Next, 
+\begin{align}
+F_{Y_n}(x) = P(Y_n \leq x) &= P(\max_i Y_i \leq x)\nn\\
+&= \prod^n_{i=1}P(Y_i \leq x) = \prod^n_{i=1}F_{Y_i}\nn\\
+&= \f{(x-\theta+\rho)^{n}}{(2\rho)^n}\nn\\
+\implies f_{Y_n}(x) &= \f{n(x-\theta+\rho)^{n-1}}{(2\rho)^n}.
+\end{align}
+And so,
+\begin{align}
+E[Y_n] = \int^{\theta+\rho}_{\theta-\rho} x \f{n(x-\theta+\rho)^{n-1}}{(2\rho)^n}\,dx = \f{n-1}{n+1}\rho + \theta.
+\end{align}
+With these,
+\begin{align}
+E[\hat\theta] = E\lb \f{Y_n + Y_1}{2} \rb = \f{1}{2}E\lb 2\theta\rb &= \theta\nn\\
+E[\hat\rho] = E\lb \f{Y_n - Y_1}{2} \rb = \f{1}{2}E\lb \f{n-1-1+n}{n+1}\rho \rb &= \rho.
+\end{align}
+So, $\hat\theta$ and $\hat\rho$ are unbiased. \qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage
 \noindent \textbf{6.5.3}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{653}
+\end{figure}
 
 
 \noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item $H_0 : p_1 = p_2$ and $H_a : p_1 \neq p_2$. 
+	\begin{align}
+	\chi^2_W &= \f{(\hat{p}_1 - \hat{p}_2)^2}{(\hat{p}_1 + \hat{p}_2 - (\hat{p}_1 - \hat{p}_2)^2 )/n} \nn\\
+	&= \f{(60/200 - 45/200)^2}{(60/200 + 45/200 - (60/200 - 45/200)^2 )/200}\nn\\
+	&= \boxed{2.167}
+	\end{align}
+	Clearly, $2.167 < 3.81 = \chi^2_{0.05}(1)$. So, we fail to reject $H_0$ -- there is not enough evidence to reject the null hypothesis that the proportions of people who vote Yes and No are the same.
+	
+	
+	
+	\item The 95\% CI for $p_1 - p_2$ is 
+	\begin{align}
+	&\lp \f{60}{200} - \f{45}{200} \rp \pm z_{0.05/2}\lp \f{\f{60}{200} + \f{45}{200} - \lp \f{60}{200} - \f{45}{200} \rp^2}{200} \rp^{1/2}\\
+	&= \lp   -0.025  ,  0.175  \rp.
+	\end{align}
+	Since the CI contains 0, we fail to reject $H_0$. 
+	
+	
+\end{enumerate}\qed
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage
 \noindent \textbf{6.5.6}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{656}
+\end{figure}
 
 
 \noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item $H_0 : \theta_1 = \theta_2$ and $H_a : \theta_1 \neq \theta_2$. $X_i \sim \N(0,\theta_1)$ and $Y_i \sim \N(0, \theta_2)$. So,
+	\begin{align}
+	\lag(\theta_1,\theta_2) = (2\pi \theta_1)^{-n/2}(2\pi \theta_2)^{-m/2} \exp \lb -\f{1}{2\theta_1}\sum^n_{i=1} x_i^2  - \f{1}{2\theta_2}\sum^m_{i=1} y_i^2 \rb.
+	\end{align}
+	Under $H_0: \theta_1 = \theta_2$:
+	\begin{align}
+	\p_\theta \ln \lag(\theta_1 = \theta_2 = \theta) = 0 &\implies -\f{n+m}{2} -\f{1}{2\theta}\lb \sum^n x_i^2 + \sum^m y_i^2 \rb  = 0 \nn\\
+	&\implies \hat\theta = \f{1}{n+m} \lb  \sum^n x_i^2 + \sum^m y_i^2 \rb.
+	\end{align}
+	With this, 
+	\begin{align}
+	\lag(\hat\Theta_0) &= \lp \f{2\pi}{n+m}\lb \sum^n x_i^2 + \sum^m y_i^2 \rb \rp^{-\f{n+m}{2}} \exp\lb -\f{\sum^n x_i^2 + \sum^m y_i^2}{\f{2}{n+m}\lp \sum^n x_i^2 + \sum^m y_i^2 \rp}  \rb\nn\\
+	&= \lp \f{2\pi}{n+m}\lb \sum^n x_i^2 + \sum^m y_i^2 \rb \rp^{-\f{n+m}{2}} \exp\lb \f{-n-m}{2}\rb.
+	\end{align}
+	In the joint space, 
+	\begin{align}
+	&\hat\theta_1 = \f{1}{n}\sum^n x_i^2\nn\\
+	&\hat\theta_2 = \f{1}{m}\sum^m y_i^2.
+	\end{align}
+	With these,
+	\begin{align}
+	\lag(\hat\Theta) = \lp \f{2\pi}{n}\sum^n x_i^2 \rp^{-n/2} \lp \f{2\pi}{m}\sum^m y_i^2 \rp^{-m/2} \exp\lb \f{-n-m}{2} \rb.
+	\end{align}
+	And so we have
+	\begin{align}
+	\Lambda &= \f{\lag_0}{\lag} = \f{\lp \f{1}{n+m}\lb \sum^n x_i^2 + \sum^m y_i^2 \rb \rp^{-\f{n+m}{2}}}{\lp \f{1}{n}\sum^n x_i^2 \rp^{-n/2} \lp \f{1}{m}\sum^m y_i^2 \rp^{-m/2}}\nn\\
+	&= \f{(n+m)^{\f{n+m}{2}}}{n^{n/2} m^{m/2}} \f{\lp \sum^n x_i^2 \rp^{n/2} \lp \sum^m y_i^2 \rp^{m/2}}{\lb \sum^n x_i^2 + \sum^m y_i^2 \rb ^{\f{n+m}{2}}}\nn\\
+	&= \f{(n+m)^{\f{n+m}{2}}}{n^{n/2} m^{m/2}} \lp \underbrace{\f{\sum^n x_i^2}{\sum^n x_i^2 + \sum^m y_i^2 }}_{T} \rp^{n/2} \lp\underbrace{ \f{\sum^n x_i^2}{\sum^m y_i^2 + \sum^m y_i^2 }}_{1-T}  \rp^{m/2}.
+	\end{align}
+	
+	
+	\item $\Lambda \leq k$ is equivalent to $W \leq c_1$ or $W \geq c_2$ with 
+	\begin{align}
+	\boxed{W = \f{\f{1}{n}\sum^n x_i^2 }{\f{1}{m}\sum^m y_i^2} \sim F(n,m)}
+	\end{align}
+	such that $1/T = 1 + 1/W$. This is because $\sum^n x_i^2/\theta \sim \chi^2(n), \sum^m y_i^2/\theta \sim \chi^2(m)$ under $H_0$.
+\end{enumerate}\qed
+
+
+
+
+
+
+
 
 
 \newpage
 \noindent \textbf{6.5.7}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{657}
+\end{figure}
 
 
-\noindent \textit{Solution:} 
+\noindent \textit{Solution:} We did this in ``class,'' so I will skip a few steps. Let $X_i \sim \exp (\theta_1)$ and $Y_i \sim \exp(\theta_2)$. $H_0 : \theta_1 = \theta_2$ and $H_a : \theta_1 \neq \theta_2$. The null space is $\{ \{ \theta_1,\theta_2\}: \theta_1 = \theta_2 > 0 \}$. The alternative space is $\{ \{ \theta_1,\theta_2 \}: \theta_1 \neq \theta_2, \theta_1,\theta_2 \neq 0 \}$. The joint space is just $\{ \{ \theta_1,\theta_2 \}, \theta_1 >0, \theta_2 > 0 \}$. It's easy to see that
+\begin{align}
+\lag(\theta_1,\theta_2 \vert X,Y) = \f{1}{\theta_1^n}e^{\sum^n x_i/\theta_1} \f{1}{\theta_2^m}e^{\sum^m y_i/\theta_2} .
+\end{align}
+From here one finds that under $H_0: \theta_1 = \theta_2 = \theta$:
+\begin{align}
+l(\Theta_0) = -(n+m) \ln\theta-\f{1}{\theta}\lp \sum x_i + \sum y_i \rp.
+\end{align}
+And so
+\begin{align}
+\p_\theta l(\theta) = 0 \implies \hat\theta_0 = \f{1}{n+m} \lp \sum x_i + \sum y_i \rp.
+\end{align}
+With this, we can plug back in to calculate the numerator:
+\begin{align}
+\lag(\hat\Theta_0) = \dots = \lp\f{1}{n+m} \lb\sum x_i + \sum y_j \rb \rp^{-n-m} \exp(-n-m).
+\end{align}
+In the joint space, 
+\begin{align}
+l(\Theta) = -n \ln \theta - \f{1}{\theta}\sum x_i - m \ln \mu - \f{1}{\mu}\sum y_j.
+\end{align}
+And so
+\begin{align}
+\p_{\theta_1} l(\Theta) = 0 \implies \hat\theta_1 = \bar{x}\\
+\p_{\theta_2} l(\Theta) = 0 \implies \hat\theta_2 =  \bar{y}.
+\end{align}
+With these,
+\begin{align}
+\lag(\hat\Theta) &= \dots\\
+&= \f{1}{\lp \f{1}{n}\sum x_i \rp^n} \exp \lb -\f{1}{\f{1}{n}\sum x_i} \sum x_i\rb  
+\f{1}{\lp \f{1}{m}\sum y_i \rp^m} \exp \lb -\f{1}{\f{1}{m}\sum y_i} \sum y_i\rb\\
+&=\f{1}{\lp \f{1}{n}\sum x_i \rp^n} e^{-n} \f{1}{\lp \f{1}{m}\sum y_i \rp^m} e^{-m}.
+\end{align}
+Putting everything together, we find
+\begin{align}
+\Lambda = \f{\lag_0}{\lag} = \dots = \f{\f{1}{(n+m)^{-n-m}} \lp \sum x_i + \sum y_j \rp^{-n-m}   }{\f{1}{n^n} \f{1}{m^m} \lp \sum x_i \rp^{-n} \lp \sum y_i \rp^{-m}}.
+\end{align}
+We reject if $\Lambda < c$, iff
+\begin{align}
+\f{(n+m)^{n+m}}{n^n m^m} \f{\lp \sum x_i \rp^{n} \lp \sum y_i \rp^{m}}{\lp \sum x_i + \sum y_j \rp^{n+m} } < c
+\end{align}
+iff (letting $c$ absorb the constant)
+\begin{align}
+\f{\lp \sum x_i \rp^{n} \lp \sum y_i \rp^{m}}{\lp \sum x_i + \sum y_j \rp^{n+m} } < c'
+\end{align}
+
+
+What does the distribution of $\Lambda$ look like? Notice that we reject if
+\begin{align}
+\Lambda &= \f{(n+m)^{n+m}}{n^n m^m} \f{\lp \sum x_i \rp^{n} \lp \sum y_i \rp^{m}}{\lp \sum x_i + \sum y_j \rp^{n+m} }\\
+&= \f{(n+m)^{n+m}}{n^n m^m}\lp \f{ \sum x_i}{ \sum x_i + \sum y_j  }  \rp^n\lp \f{ \sum y_i}{ \sum x_i + \sum y_j  }  \rp^m \\
+&= \f{(n+m)^{n+m}}{n^n m^m} T^n (1-T)^{m} < c
+\end{align}
+which is akin to saying that we reject if $T < a$ or $T > b$. What is the distribution of $T$ under $H_0$? Note that under $H_0$, $\sum x_i \sim \Gamma(n,\theta)$ and $\sum y_i \sim \Gamma(m, \theta)$. By transformation method, we can show that $\boxed{T \sim \beta(n,m)}$. \\
+
+
+Notice that 
+\begin{align}
+\f{1}{T} = 1 + \f{\sum y_j}{\sum x_i} =  1 + \f{m}{n}\f{\sum y_j/m}{\sum x_i/n}
+\end{align}
+Since $\sum X_i \sim  \Gamma(n,\theta), \sum Y_i \sim \Gamma(m,\theta)$ under $H_0$ we have that $2\theta X_i \sim \chi^2(2n)$ and $2\theta Y_i \sim \chi^2(2m)$. This means we can call
+\begin{align}
+\boxed{W = \f{\sum y_j/m}{\sum x_i/n} = \f{2\theta \sum y_i/m}{2\theta \sum x_i/n} \sim F(2m,2n)}. 
+\end{align}
+
+\qed
 
 
 \newpage
@@ -4712,6 +5111,15 @@ So,
 
 
 
+\newpage
+
+
+\section{Problem set 8}
+
+
+
+
+\newpage
 
 	
 	
