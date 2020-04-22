@@ -2381,8 +2381,6 @@ where the numerator is maximized in null space and the denominator is maximized 
 
 
 
-\section{The EM algorithm}
-
 
 
 
@@ -2403,10 +2401,216 @@ where the numerator is maximized in null space and the denominator is maximized 
 \chapter{Sufficiency}
 
 
+
+
+
 \section{Measures of Quality of Estimators}
+
+
+
+
+\begin{defn}
+	For a given positive integer $n$, $Y = u(X_1,\dots,X_n)$ is called a \textbf{minimum variance unbiased estimator} (MVUE) of the parameter $\theta$ if $Y$ is unbiased, i.e., $E[Y] = \theta$, and if $\Var(Y) \leq \Var(Y')$ where $Y'$ is any other unbiased estimator of $\theta$. 
+\end{defn}
+
+
+
+
+From a different standpoint, consider the data $X_1,\dots,X_n$ from a density $f(x_i;\theta)$ and let $Y = u(X_1,\dots,X_n)$ be a statistic from which we will generate the estimator. Then $\delta(Y)$  is the estimator of $\theta$. $\delta$ is called the \textbf{decision rule}. A value of $\delta(Y)$ is called a \textbf{decision}. \\
+
+The decision can be right or wrong, and how far off we are can be quantified by a \textbf{loss function} $L(\theta,\delta(Y))$. The expectation value of $L(\theta, \delta(Y))$ is called the \textbf{risk function}. 
+\begin{align}
+R(\theta, \delta) = E [L(\theta,\delta(Y))] = \int^\infty_{-\infty} L(\theta,\delta(Y)) f_Y(y;\theta)\,dy.
+\end{align} 
+We would like to minimize this, but usually can't be the loss is dependent on $\theta$. Instead we might choose as our decision function the one that minimizes the maximum of the risk function, i.e. pick the best worst case scenario. \\
+
+If 
+\begin{align}
+\boxed{\max_\theta [R(\theta,\delta_0(Y))] \leq \max_\theta [R(\theta,\delta_0(Y))]}
+\end{align}
+then $\delta_0$ is called the \textbf{minimax} decision function. 
+
+
+
+
+\begin{exmp}
+	Consider sample $X_1,\dots,X_{25}$ r.v. from $\N(\theta,1)$. Let $Y = \bar{X}$ and $L[\theta,\delta(Y)] = (\theta - \delta(Y))^2$. Compare two decision functions $\delta$ given by $\delta_1(y) = y$ and $\delta_2(y) = 0$ for $y\in \mathbb{R}$. Then,
+	\begin{align}
+	R(\theta, \delta_1) = E[(\theta - Y)^2]  = \f{\sigma^2}{n} = \f{1}{25}
+	R(\theta, \delta_2) = E[(\theta - 0)^2] = \theta^2
+	\end{align}
+	If $\theta = 0$, then $\delta_2$ is a good decision rule, and $R(0,\delta_2) = 0$. If $\theta$ 	differs by more than $1/5$ then $R(\theta,\delta_2) > R(\theta,\delta_1)$. So we choose the function that has the smallest max:
+	\begin{align}
+	\max_\theta R(0,\delta_1) = \max_\theta (1/25) = 1/25.
+	\end{align} 	
+
+	
+	
+\end{exmp}
+
+
+If we restrict estimators to those such that $E[\delta(Y)] = \theta$ and $L(\theta, \delta(Y)) = (\theta - \delta(Y))^2$, the decision function that minimizes the risk function yields an unbiased estimator with the minimum variance. We call this the MVUE. \\
+
+If we replace $E[\delta(Y)] = \theta$ with some other condition, then $\delta(Y)$ (if it exists) that minimizes $E[(\theta - \delta(Y))^2]$ uniformly in $\theta$, is called the \textbf{minimum-max squared estimator}.\\
+
+The loss function given by $E[(\theta - \delta(Y))^2] = \text{MSE}(\delta(Y)) = [\mbox{Bias}(\delta (Y))]^2 + \Var(\delta(Y))$. This makes sense, because if unbiased (bias = 0) then minimizing risk exactly corresponds to minimizing the variance. \\
+
+Note that the MSE -- $L(\theta, \delta(Y)) = E[(\theta - \delta(Y))^2]$ isn't the only loss function that people use. For example, we could also use $L(\theta, \delta(Y)) = \abs{\delta - \delta(Y)}$, which is called the absolute error loss function. \\
+
+In a nutshell, the MSE is bias$^2$ + variance. So if we limit ourselves to unbiased estimators and minimize the variance then we'll get the MVUE. \\
+
+We might want to to trade some bias for a reduction in variance. 
+
+
+
+
+
 
 \section{A Sufficient Statistic for a Parameter}
 
+A sufficient statistic is one that captures all of the available information in the sample concerning a parameter 
+
+\begin{defn}
+	Let $X_1,\dots,X_n$ denote a random sample of size $n$ from a distribution that has pdf/pmf $f(x;\theta)$, $\theta \in \Omega$. Let $Y_1 = u_1 (X_1,\dots,X_n)$ be a statistic whose pdf/pmf is $f_{Y_1}(y_1;\theta)$. Then $Y_1$ is a \textbf{sufficient statistic} for $\theta$ iff 
+	\begin{align}
+	\f{\prod^n_{i=1}f(x_i;\theta)}{f_{Y_1}[u_1(X_1,\dots,X_n);\theta]} = H(x_1,\dots,x_n)
+	\end{align}
+	where $H(x_1,\dots,x_n)$ does not depend upon $\theta \in \Omega$.
+\end{defn}
+
+Another way to put this is that if we condition the joint pdf of $X_1,\dots,X_n$ on $Y_1$ and that conditional distribution, $f(X_1,\dots,X_n ; Y_1)$ does not depend on $\theta$ then $Y_1$ is a sufficient statistic for $\theta$. 
+
+
+
+\begin{exmp}
+	Consider $X_i \sim \mbox{Ber}(p)$ iid. Then $f(x_i) = p^{x_i}(1-p)^{1-x_i}$. Is $Y = \sum x_i$ a sufficient statistic for $p$? Well,
+	\begin{align}
+	\f{\prod^n P(X_i = x_i)}{P(Y_1 = y_1)} = \f{p^y (1-p)^{n-y}}{{{n}\choose{y}}p^y (1-p)^{n-y} } = \f{1}{{{n}\choose{y}}}
+	\end{align}
+	which does not depend on $p$, so $Y$ is sufficient. 
+\end{exmp}
+
+
+
+
+
+
+
+\begin{thm}[Neyman -- Factorization Theorem]
+	Let $X_1,\dots,X_n$ be a random sample from a distribution that has a pdf or pmf $f(x;\theta), \theta \in \Omega$. The statistic $Y_1 = u_1(X_1,\dots,X_n)$ is a sufficient statistic for $\theta$ iff we can find two nonnegative functions $k_1,k_2$ such that 
+	\begin{align*}
+	f(x_1;\theta) \dots f(x_n; \theta) = k_1[u_1(x_1,\dots,x_n);\theta] k_2(x_1,\dots,x_n)
+	\end{align*} 
+	where $k_2$ does not depend on $\theta$. 
+\end{thm}
+
+
+
+\begin{exmp}
+	Let $X_1,\dots,X_n \sim \mbox{Poi}(\lambda)$. We want to find a sufficient statistic for $\lambda$. Well,
+	\begin{align}
+	p(X_1,x_2,\dots,X_n ; \lambda) &= \prod^n_{i=1}\f{e^{-\lambda} \lambda^{x_i}}{x_i!}\nn\\
+	&= e^{-n\lambda}\lambda^{\sum x_i}\f{1}{\prod x_i!}\nn\\
+	&= \lb e^{-n\lambda} \lambda^{\sum x_i} \rb \lb \f{1}{\prod x_i!} \rb
+	\end{align}
+	The first term is $k_1$ and the second term is $k_2$. $\sum x_i$ is sufficient for $\lambda$. We can verify that $\sum x_i$ is sufficient using the definition. We need to know the distribution of $\sum x_i$, which is just $\mbox{Poi}(n\lambda)$. Well,
+	\begin{align}
+	\f{P(x_1,\dots,X_n ; \lambda)}{P_Y(y)} = \f{\f{e^{-n\lambda} \lambda^y}{\prod^n_{i=1}x_i!}}{\f{e^{-n\lambda}(n\lambda)^y}{y!}} = \f{y!}{\prod x_i!}\f{1}{ny}.
+	\end{align}
+	which is something that does not depend on $\lambda$, which means $\sum x_i$ is sufficient. 
+\end{exmp}
+
+
+
+
+
+
+
+
+
+
+
+\section{Properties of a Sufficient Statistic}
+
+There are many sufficient statistics for a parameter $\theta$. Any ``statistic'' that contains all the information in the sample useful for estimating $\theta$ is efficient. The observations themselves $(X_1,\dots,X_n)$ are sufficient, as well as the order statistics $(X_{(1)},\dots,X_{(n)})$. Any 1-1 function of a sufficient statistic is sufficient. \\
+
+Factorization theorem says: $f(x_1,\dots,x_n) = k_1[Y_1;\theta] K_2 [x_1,\dots,x_n]$ where $Y_1$ is a sufficient statistic. \\
+
+The sufficient statistic that best captures the information about $\theta$ in the sample is called the \textbf{minimal sufficient statistic}. 
+
+
+
+\begin{thm}[Rao-Blackwell] 
+	Let $X_1,\dots, X_n$, $n$ a positive integer, denote a random sample from a distribution that has a pdf/pmf $f(x_i;\theta), \theta \in \Omega$. Let $Y_1 = u_1(X_1,\dots,X_n)$ be a sufficient statistic for $\theta$, and $Y_2 = u_2(X_1,\dots,X_n)$, not a function of $Y_1$ alone, be an unbiased estimator of $\theta$. Then $E[Y_2 \vert y_1] = \varphi(y_1)$ defines a statistic $\varphi(Y_1)$. This statistic $\varphi(Y_1)$ is a function of the sufficient statistic for $\theta$; it is an unbiased estimator of $\theta$, and its variance is less than or equal to that of $Y_2$. 
+\end{thm}
+
+Rao-Blackwell tells us that if we want to find the minimum variance unbiased estimator (MVUE) we can restrict our search to functions of sufficient statistics.
+
+
+\begin{thm}
+	Let $X_1,\dots,X_n$ be random sample from $f(x_i;\theta)$. If a sufficient statistic $Y_1 = u_1(X_1,\dots,X_n)$ for $\theta$ exists and if a mle $\hat\theta$ of $\theta$ also exists uniquely, then $\hat\theta$ is a function of $Y_1 = u_1(X_1,\dots,X_n)$. 
+\end{thm} 
+
+
+
+\begin{exmp}
+	Let $X_1,\dots,X_n$ be a random sample from a Weibull distribution. 
+	\begin{align}
+	f(x_i;\theta) = \f{2x_i}{\theta}e^{-x_i^2/\theta}; \quad x_i > 0.
+	\end{align}
+	The likelihood function is 
+	\begin{align}
+	\lag(\theta) = \dots = \lp \f{2}{\theta} \rp^n \lp \prod^n x_i \rp e^{-\sum x_i^2/\theta}.
+	\end{align}
+	Find sufficient statistic :
+	\begin{align}
+	&K_1(Y_1;\theta) = \lp \f{2}{\theta} \rp^n  e^{-\sum x_i^2/\theta}\nn\\
+	&K_2(X_1,\dots,X_n) = \prod x_i.
+	\end{align}
+	So, $Y_1 = \sum x_i^2$ is our sufficient statistic. What is the expectation of $Y_1$? It turns out that $E[Y_1] = n\theta \implies \hat\theta = \f{1}{n}\sum x_i^2$, and so $E[\hat\theta] = \theta \implies $ MVUE. 
+\end{exmp}
+
+
+
+
+\section{Completeness and Uniqueness}
+
+
+
+\subsection{Completeness}
+
+\begin{defn}
+	Let the r.v. $Z$ of either the continuous type of the discrete type have a pdf or pmf that is one member of the family $\{  h(z;\theta) : \theta \in \Omega \}$. If the condition $E[u(Z)] = 0 \forall \theta \in \Omega$, requires that $u(z)$ be zero except on a set of points that has probability zero for each $h(z;\theta), \theta \in \Omega$, then the family $\{ h(z;\theta): \theta \in \Omega \}$ is called the \textbf{complete family} of probability density of mass functions.
+\end{defn}
+
+
+
+\begin{exmp}
+	If $az^2 + bz + c = 0$ for more than two values of $z$ then $a=b=c=0$. Use this show that the family of binomial distributions with $n=2, p=\theta$ is complete. \\
+	
+	
+	Set $E[u(Z)] = 0$. Well, 
+	\begin{align*}
+	E[u(Z)] &= \sum^2_{z=0}u(Z){{2}\choose{z}} \theta^z (1-\theta)^{2-z}\nn\\
+	&= u(0)(1-\theta)^2 + 2u(1)\theta(1-\theta)  	+ u(2)\theta^2\nn\\
+	&= [\dots]\theta^2 + [\dots]\theta + [\dots]\nn\\
+	&= 0
+	\end{align*}
+	iff $u(0) = u(1) = u(2) = 0$. So, the binomial family $(2,\theta)$ is complete. 
+\end{exmp}
+
+
+\begin{exmp}
+	Let 
+	\begin{align}
+	f(x;\theta) = \begin{cases}
+	1/2\theta, \quad x\in (-\theta,\theta), \theta \in \mathbb{R}^+\\
+	0, \Else
+	\end{cases}
+	\end{align}
+	Is this family complete? Well, take $u(X) = X$, then because $E[X] = \dots = 0$ but $u(X) = X \neq 0$, the family is NOT complete. 
+	
+\end{exmp}
 
 
 
@@ -2419,18 +2623,50 @@ where the numerator is maximized in null space and the denominator is maximized 
 
 
 
+\subsection{Uniqueness}
+
+
+\begin{thm}[Lehmann and Scheff\'e]
+	Let $X_1,\dots,X_n$, $n$ a fixed positive integer, denote a random sample from a distribution that has a pdf or pmf $f(x;\theta), \theta \in \Omega$, let $Y_1 = u_1(X_1,\dots,X_n)$ be a sufficient statistic for $\theta$, and let the family $\{ f_{Y_1}(y_1;\theta) : \theta \in \Omega \}$ be complete. If there is a function of $Y_1$ that is an unbiased estimator of $\theta$, then this function of $Y_1$ is the unique MVUE of $\theta$.
+\end{thm}
+
+
+In this case, we say that $Y_1$ is complete and sufficient. 
+
+
+
+\begin{exmp}
+	Let $X_1,\dots,X_n$ be r.v. iid of Uniform $(0,\theta)$ with $0 < \theta < \infty$. We want to find a sufficient statistic for $\theta$. Well,
+	\begin{align}
+	f(x_1,\dots,x_n) = \f{1}{\theta^n}I(X_{(1)} > 0)I(X_{1} < \theta).
+	\end{align}
+	Using factorization theorem, we have that 
+	\begin{align}
+	&K_1[Y_1,\theta] = \f{1}{\theta^n}I(Y_{(n)} > 0)\nn\\
+	&K_2[X_1,\dots,X_n] = I(X_{(1)} > 0).
+	\end{align}
+	So, $Y_{(1)}$ (the max) is sufficient for $\theta$. This turns out to be minimal too. Now,
+	\begin{align}
+	g_{(n)}(Y) = ny^{n-1}\theta^{-n}
+	\end{align}
+	is the density for $Y_{(1)}$. Suppose $g(t)$ is a function that satisfies $E[g(t)] = 0$, so 
+	\begin{align}
+	E[g(t)] = \int^\theta_0 g(t)nt^{n-1}\theta^{-n}\,dt = 0.
+	\end{align}
+	If this holds then taking $\p_\theta$ of both sides we get $\theta^{-1}ng(\theta) = 0 \implies g(\theta)= 0$. So the family of $f_{Y_1}(y_1)$ is complete. \\
+	
+	Now, $E[Y_1] = \int^\theta_0 x nx^{n-1}/\theta = n\theta/(n+1)$, and so $(n+1)Y_1/n$ is an unbiased estimator that is a function of a sufficient statistic that has a complete distribution ($Y_1$ is complete sufficient statistic). So $(n+1)/n X_{(n)} \equiv (n+1)\max/n$ is a MVUE.  
+\end{exmp}
 
 
 
 
 
 
+\section{The Exponential Class of Distributions}
 
 
-
-
-
-
+\section{Functions of a Parameter}
 
 
 
@@ -5109,9 +5345,179 @@ Since $\sum X_i \sim  \Gamma(n,\theta), \sum Y_i \sim \Gamma(m,\theta)$ under $H
 
 \section{Problem set 7}
 
+\noindent \textbf{7.2.1}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{721}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+
+
+\noindent\textbf{7.2.4}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{724}
+\end{figure}
+
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+\noindent\textbf{7.2.7}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{727}
+\end{figure}
+
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+
+\noindent\textbf{7.2.8}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{728}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+
+\noindent\textbf{7.3.1} (Do only for exercises 7.2.1 and 7.2.4)
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{731}
+\end{figure}
+
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+
+\noindent\textbf{7.3.3}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{733}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+
+
+
+\noindent\textbf{7.3.4}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{734}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+
+
+
+\noindent\textbf{7.4.3}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{743}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+
+
+
+\noindent\textbf{7.4.5}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{745}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+
+
+
+\noindent\textbf{7.4.9}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{749}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}
+\newpage
+
+
+
+
+
+
+\noindent\textbf{7.5.1}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{751}
+\end{figure}
+
+
+
+\noindent \textit{Solution:}
+
 
 
 \newpage
+
+
+
+
+
+\noindent\textbf{7.5.3}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{753}
+\end{figure}
+\noindent \textit{Solution:}
+\newpage
+
+
+
+
 
 
 \section{Problem set 8}
