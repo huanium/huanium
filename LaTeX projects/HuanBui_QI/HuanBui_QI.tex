@@ -4308,21 +4308,33 @@ So the prime factors of $15$ are $3$ and $5$. We know that these are all the pri
 \noindent \textbf{11.} (Optional) What is the order of $G_{55}$? What is the order of the element 7 within $G_{55}$? Using that order, determine the prime factors of 55.\\
 
 
-\noindent \textit{Solution:} Fermat's little theorem says $\abs{G_{55}} = \abs{G_{5\cdot 11}} = (5-1)(11-1) = 40$. We can also check this in Sage:
+\noindent \textit{Solution:} Suppose we can cheat and know 5 and 11 are the prime factors of 55. Fermat's little theorem says $\abs{G_{55}} = \abs{G_{5\cdot 11}} = (5-1)(11-1) = 40$. We can also check this in Sage:
 \begin{lstlisting}
 sage: euler_phi(55)
 >>>   40
 \end{lstlisting}
 
+Suppose we don't cheat then it is still possible to go through and find the elements of $G_{55}$ one-by-one. This can be done in Excel, Python, etc. \\
+
+The order of the element 7 divides the order of the group, which is 40. The factors of 40 are 1, 2, 4, 5, 8, 10, 20, 40. We easily eliminate 1 and 2. $7^{40} \equiv_{55} 1$, so let's check 20: $7^{20} \equiv_{55} 36^{5} \equiv_{55} = 31\cdot 31\cdot 36 \mod 5 = 26\cdot 36 \mod 55 = 1$. Note that the order of $7$ cannot be lower than 20 because in the process about we never see $(1\mod 55)^x\mod 55$ where $x$ is a factor of 20. So, $\abs{7} = 20$. \\
+
+So we have $N=55, k = 20, a = 7$. So,
+\begin{align}
+&\lp 2^{20/2} - 1 \rp \mod 55 = 1023 \mod 55 = 33\nn\\
+&\lp 2^{20/2} + 1 \rp \mod 55 = 1025 \mod 55 = 35
+\end{align}
+The rest is easy:
+\begin{align}
+&\gcd(55,33) = 11\nn\\
+&\gcd(55,35) = 5.
+\end{align}
+So the algorithm says $5$ and $11$ are the prime factors of $55$, as expected. \hfill $\square$\\
 
 
 
-\newpage
 
 
-\noindent \textbf{12.} The goal of this problem is to work through an example of RSA encryption and decryption to
-see how they work. In this example, Bob wants to ask Alice what her favorite mascot is, and she want an encoded message from Alice (which is ``mule''). Bob chooses to use the integer
-N = 55 and the coding number c = 17 as the public key.
+\noindent \textbf{12.} The goal of this problem is to work through an example of RSA encryption and decryption to see how they work. In this example, Bob wants to ask Alice what her favorite mascot is, and she want an encoded message from Alice (which is ``mule''). Bob chooses to use the integer $N = 55$ and the coding number $c = 17$ as the public key.
 
 
 \begin{enumerate}[(a)]
@@ -4346,7 +4358,44 @@ N = 55 and the coding number c = 17 as the public key.
 
 
 
+\noindent \textit{Solution:} 
 
+
+
+\begin{enumerate}[(a)]
+	\item In the ordered English alphabet, ``mule'' is represented by the string \texttt{\{13, 21, 12, 5\}}. 
+	
+	
+	\item Now we use the public key to determine the encoded version of the message $\{e_1,e_2,e_3,e_4\}$, where $e_i = a_i^c \mod N$.
+	\begin{align}
+	13^{17} &\mod 55 = 4^8\cdot 13\mod 55=  36^2\cdot 13\mod 55=  18\nn\\
+	21^{17} &\mod 55 = (21^2)^8\cdot 21\mod 55  = 1\cdot 21\mod 55 = 21 \nn\\
+	12^{17} &\mod 55 =(34^2)^4\cdot 12\mod 55 = 1\cdot 12\mod 55 = 12\nn \\
+	5^{17} &\mod 55 =  20^4\cdot 5 \mod 55 = 15^2\cdot 5\mod 55  = 5^2\mod 55  = 25\nn 
+	\end{align} 
+	So the encoded version of the message is \texttt{\{18, 21, 12, 25\}}.
+	
+	
+	
+	\item The public key is \texttt{ \{55, 17	\}}. The number $d$ is such that
+	\begin{align}
+	17 d \mod (5-1)(11-1) = 17d\mod 40 = 1. 
+	\end{align}
+	The smallest $d$ is $\boxed{33}$. After some trials and errors I realized finding $d$ by hand wasn't very easy -- especially because 17 is prime. So I resorted to Excel. In any case, 
+	\begin{align}
+	17\cdot 33 \mod 40 = (560 + 1)\mod 40 = 1.
+	\end{align}
+	
+	
+	\item The decoded message is $\{ m_1,m_2,m_3,m_4\} $ where $m_i = e_i^{33} \mod 55$
+	\begin{align}
+	&m_1 \equiv_{55} 18^{33} \equiv_{55} 49^{16}\cdot 18 \equiv_{55} 36^8\cdot 18 \equiv_{55} 31^4 \cdot 18 \equiv_{55} 26^2\cdot 18 \equiv_{55}  13\nn\\
+	&m_2\equiv_{55} 21^{33} \equiv_{55} 1^{16}\cdot 21 \equiv_{55} 21\nn\\
+	&m_3\equiv_{55} 12^{33} \equiv_{55} 34^16\cdot 12 \equiv_{55} 1^8 \cdot 12 \equiv_{55} 12\nn \\
+	&m_4\equiv_{55} 25^{33} \equiv_{55} 20^{16}\cdot 25 \equiv_{55} 15^8 \cdot 25 \equiv_{55} 5^4\cdot 25\equiv_{55} 20\cdot 25 \equiv_{55} 5.
+	\end{align}
+	So, the the decoded message is \texttt{\{13, 21, 12, 25\}}, which is Alice's original message. \hfill $\square$
+\end{enumerate}
 
 
 
