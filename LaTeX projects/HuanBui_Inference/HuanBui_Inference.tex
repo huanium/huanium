@@ -5343,6 +5343,41 @@ Since $\sum X_i \sim  \Gamma(n,\theta), \sum Y_i \sim \Gamma(m,\theta)$ under $H
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \section{Problem set 7}
 
 \noindent \textbf{7.2.1}
@@ -5353,7 +5388,27 @@ Since $\sum X_i \sim  \Gamma(n,\theta), \sum Y_i \sim \Gamma(m,\theta)$ under $H
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} On the one hand
+\begin{align}
+\prod^n_{i=1} f(x_i;\theta) = (2\pi \theta)^{-n/2}e^{-\sum x_i^2/2\theta}.
+\end{align}
+On the other hand, $x_i/\sqrt{\theta} \sim \N(0,1)$, which means $Y = \sum X_i^2/\theta \sim \chi^2(n)$, whose pdf is 
+\begin{align}
+f_{Y}\lp\sum X_i^2/\theta\rp = \f{1}{2^{n/2}\Gamma(n/2)}\lp\sum X_i^2/\theta\rp^{n/2-1}e^{-\lp\sum X_i^2/\theta\rp/2}.
+\end{align}
+And so,
+\begin{align}
+\f{(2\pi \theta)^{-n/2}e^{-\sum x_i^2/2\theta}}{\theta^{-1} \f{1}{2^{n/2}\Gamma(n/2)}\lp\sum X_i^2/\theta\rp^{n/2-1}e^{-\lp\sum X_i^2/\theta\rp/2} } \mbox{ is independent of } \theta,
+\end{align}
+where the factor $\theta^{-1}$ in the denominator comes from the scaling Jacobian. Since the ratio is independent of $\theta$, we say $\sum X_i^2$ is sufficient. \\
+
+
+
+Alternative, we can also use the factorization theorem here, with $k_2 = 1$ and $k_1 = \prod f(x_i; \theta)$. \qed 
+
+
+
+
 \newpage
 
 
@@ -5368,7 +5423,20 @@ Since $\sum X_i \sim  \Gamma(n,\theta), \sum Y_i \sim \Gamma(m,\theta)$ under $H
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} On the one hand,
+\begin{align}
+A = \prod^n_{i=1}f(x_i;\theta) = (1-\theta)^{\sum x_i}\theta^n.
+\end{align}
+On the other hand, since each $X_i \sim \mbox{Geom}(\theta)$, the sum $Y = \sum^n_{i=1} X_i \sim \mbox{NegBin}(n,\theta)$, which means 
+\begin{align*}
+B = f_Y\lp y=\sum x_i \rp = {{\sum x_i+r-1}\choose{\sum x_i}} \theta^n (1-\theta)^{\sum x_i}
+\end{align*}
+Clearly, the ratio is independent of $\theta$, so we say $\sum X_i$ is sufficient. \\
+
+Alternative, we can also use the factorization theorem, with $k_2 = 1$ and $k_1 = A$. \qed
+
+
+
 \newpage
 
 
@@ -5381,7 +5449,14 @@ Since $\sum X_i \sim  \Gamma(n,\theta), \sum Y_i \sim \Gamma(m,\theta)$ under $H
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} Let $X_1,\dots, X_n$ be iid r.v. from $\Gamma(\theta,\be)$. Consider $Y = \prod X_i$. Then we have
+\begin{align*}
+\prod^n_{i=1} f(x_i;\theta) = \lb \f{1}{\Gamma(\theta)^n \beta^{n\theta}}\prod^n_{i=1}x_i^{\theta-1}\rb \lb  e^{\sum x_i/\beta} \rb
+\end{align*} 
+where $\beta = 6$ is fixed. We can identify the first term as $k_1$ and the second term as $k_2$. $k_1, k_2$ are both nonnegative functions. $k_1$ is a function of $Y$ and $\theta$, and $k_2$ is a function of only the data. So the factorization theorem tells us $Y$ is sufficient. \qed
+
+
+
 \newpage
 
 
@@ -5394,7 +5469,22 @@ Since $\sum X_i \sim  \Gamma(n,\theta), \sum Y_i \sim \Gamma(m,\theta)$ under $H
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} Let $X_1,\dots,X_n$ be iid r.v. from $B(\theta,\theta)$, then 
+\begin{align}
+f(x_i;\theta) = \f{\Gamma(2\theta)x_i^{\theta-1}(1-x_i)^{\theta-1}}{\Gamma^2(\theta)}
+\end{align}
+So,
+\begin{align}
+\prod^n_{i=1}f(x_i;\theta) = \f{\Gamma^n(2\theta)\prod^n_{i=1}\lb x_i^{\theta-1}(1-x_i)^{\theta-1}\rb}{\Gamma^{2n}(\theta)}
+\end{align}
+We identify
+\begin{align*}
+\prod^n_{i=1} \lb x_i(1-x_i) \rb^{\theta-1}
+\end{align*}
+as a sufficient statistic by the factorization theorem, where $k_1$ is the entire $\prod^n_{i=1}f(x_i;\theta)$ and $k_2 = 1$. \qed
+
+
+
 \newpage
 
 
@@ -5408,7 +5498,19 @@ Since $\sum X_i \sim  \Gamma(n,\theta), \sum Y_i \sim \Gamma(m,\theta)$ under $H
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} Going back to 7.2.1 and 7.2.4 we see that this is the case. In both exercises, we can just set $k_2 = 1$ and $k_1 = \prod^n_{i=1}f(x_i;\theta) = \lag(x_i;\theta)$ and we can easily see that the mle of $\theta$ is a function of the sufficient statistic for $\theta$.  \\
+
+In 7.2.1, the mle of $\theta$ is $(1/n)\sum^n_{i=1}X_i^2$, and the sufficient statistic for $\theta$ is $\sum^n_{i=1}X_i^2$. So, $\hat\theta = (1/n)Y_\theta$ where $Y_\theta$ is the sufficient statistic for $\theta$.\\
+
+For 7.2.4, we have to find the mle of $\theta$. Well, the log likelihood is 
+\begin{align*}
+\p_\theta l(\theta) = \sum x_i\f{-1}{1-\theta} + \f{n}{\theta} = 0 \implies \hat\theta = \f{1}{\bar{X}+1}.
+\end{align*} 
+Of course, $\hat\theta$ is a function of the sum of the observations, $\sum X_i$, which is the sufficient statistic for $\theta$. \qed
+
+
+
+\qed
 \newpage
 
 
