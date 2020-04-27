@@ -5510,7 +5510,7 @@ Of course, $\hat\theta$ is a function of the sum of the observations, $\sum X_i$
 
 
 
-\qed
+
 \newpage
 
 
@@ -5523,7 +5523,38 @@ Of course, $\hat\theta$ is a function of the sum of the observations, $\sum X_i$
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} We have that $X_1 = Y_1 - Y_2$ and $X_2 = Y_2$ are iid r.v.'s. The joint pdf of $Y_1, Y_2$ is 
+\begin{align}
+f_{X_1,X_2} = f_{Y_1,Y_2}(y_1,y_2;\theta) = (1/\theta)^2e^{-y_2/\theta}. 
+\end{align} 
+We have 
+\begin{align}
+E[Y_2] = \int^\infty_0 y(1/\theta)^2e^{-y/\theta}\,dy = \theta,
+\end{align}
+so $Y_2$ is unbiased. Also,
+\begin{align*}
+\Var[Y_2] = E[Y_2^2] - \theta^2 = \int^\infty_0 y(1/\theta)^2e^{-y/\theta}\,dy - \theta^2 = 2\theta^2-\theta^2 = \theta^2.
+\end{align*}
+Next,
+\begin{align}
+f_{Y_1}(y_1) = \int_0^{y_1}(1/\theta)^2e^{-y_1/\theta} \,dy_2 = (1/\theta)^2y_1 e^{-y_1/\theta}. 
+\end{align}
+And so,
+\begin{align}
+f_{Y_2\vert Y_1 = y_1} = \f{(1/\theta)^2e^{-y_2/\theta}}{(1/\theta)^2y_1 e^{-y_1/\theta}} = \f{1}{y_1}, \quad y_2 \in (0,y_1)
+\end{align}
+So,
+\begin{align*}
+E[Y_2\vert y_1] = \f{y_1}{2}.
+\end{align*}
+Finally,
+\begin{align*}
+\Var[Y_1/2] = \f{1}{4}\Var[Y_1] = \f{1}{4}\Var[X_1+X_2] = \f{2\theta^2}{4} = \f{\theta^2}{2}.
+\end{align*}
+\qed
+
+
+
 \newpage
 
 
@@ -5538,7 +5569,41 @@ Of course, $\hat\theta$ is a function of the sum of the observations, $\sum X_i$
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} 
+\begin{enumerate}[(a)]
+	\item 
+	\begin{align*}
+	E[Y_2] = \int^{\infty}_0 \int^{\infty}_x y(2/\theta^2)e^{-(x+y)/\theta}\,dy\,dx = \f{3\theta}{2}.
+	\end{align*}
+	\begin{align*}
+	\Var[Y_2] = \int^{\infty}_0 \int^{\infty}_x y^2(2/\theta^2)e^{-(x+y)/\theta}\,dy\,dx = \f{3\theta}{2} - \f{9\theta^2}{4} = \f{5\theta^2}{4}.
+	\end{align*}
+	
+	
+	
+	\item 
+	\begin{align*}
+	f_X(x) = \int^\infty_{y=x}(2/\theta^2)e^{-(x+y)/\theta}\,dy = (2/\theta)e^{-2x/\theta}, \quad x\in (0,\infty)
+	\end{align*}
+	And so 
+	\begin{align*}
+	f_Y(y) = f_{X,Y}/f_X = (1/\theta) e^{-(y-x)/\theta}.
+	\end{align*}
+	So,
+	\begin{align*}
+	E[Y\vert x] = \int^\infty_x (1/\theta) e^{-(y-x)/\theta}\,dy = x + \theta.
+	\end{align*}
+	\begin{align*}
+	\Var[X+\theta] &= \Var[X] = E[X^2] - E^2[X]\\ 
+	&= \int^\infty_0 \f{2x^2}{\theta}e^{-2x/\theta}\,dx - \lp \int^\infty_0 \f{2x}{\theta}e^{-2x/\theta}\,dx\rp^2\\
+	&=  \f{\theta^2}{2} - \f{\theta^2}{4} = \f{\theta^2}{4}.
+	\end{align*}
+	
+	
+\end{enumerate}
+\qed
+
+
 \newpage
 
 
@@ -5554,6 +5619,32 @@ Of course, $\hat\theta$ is a function of the sum of the observations, $\sum X_i$
 
 
 \noindent \textit{Solution:}
+\begin{align*}
+\prod^n_{i=1}f(x_i;\theta) = \theta^{\sum x_i} (1-\theta)^{n-\sum x_i}
+\end{align*}
+the factorization theorem tells us $\sum x_i$ is sufficient. Now, set $E[u(Y_1)] = 0$ then because
+\begin{align}
+f_Y(y) = {{n}\choose{y}}\theta^y (1-\theta)^{n-y},
+\end{align}
+we have
+\begin{align}
+0 = u(0){{n}\choose{0}} \theta^0 (1-\theta)^n + u(1) {{n}\choose{1}} \theta^1 (1-\theta)^{n-1} + \dots
+\end{align}
+We can expand this out into an $n$-degree polynomial in $\theta$ that is equal to zero for all $\theta$. The leading coefficient is $u(0)$, so the polynomial is identically zero if $u(0) = 0$. Continue with this argument for the next term, we see that $u(1) = 0$ too. So, $u(x) = 0$ for all natural $x$. This means $u(Y_1) = 0$, so $Y_1$ is also complete. So, $Y_1$ is a complete statistic for $\theta$. \\
+
+To find a unique function of $Y_1$ that is the MVUE of $\theta$, it suffices to find $\varphi(Y_1)$ such that $\varphi(Y_1)$ is an unbiased estimator for $\theta$ (Lehmann-Scheff\'e theorem).  Well,
+\begin{align*}
+\varphi(Y_1) = \f{1}{n}Y_1 = \f{1}{n}\sum X_i
+\end{align*}
+is an unbiased estimator for $\theta$ since
+\begin{align*}
+E[\sum X_i/n] = E[X_i] = \theta.
+\end{align*}
+Because $Y$ is complete sufficient, this function is the unique MVUE for $\theta$. \qed
+
+
+
+
 \newpage
 
 
@@ -5568,7 +5659,7 @@ Of course, $\hat\theta$ is a function of the sum of the observations, $\sum X_i$
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} 
 \newpage
 
 
@@ -5583,7 +5674,7 @@ Of course, $\hat\theta$ is a function of the sum of the observations, $\sum X_i$
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} 
 \newpage
 
 
