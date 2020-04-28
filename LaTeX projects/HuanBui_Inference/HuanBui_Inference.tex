@@ -2666,6 +2666,83 @@ In this case, we say that $Y_1$ is complete and sufficient.
 \section{The Exponential Class of Distributions}
 
 
+If we can determine that a distribution belongs to this class, a complete sufficient can be readily determined. Consider a family $\{ f(x,\theta): \theta \in \Omega\}$ where $\Omega = \{ \theta: \gamma < \theta< \delta \}$ where $\gamma, \delta$ are constants in the extended reals (they may be $\pm \infty$) and 
+\begin{align}
+f(x;\theta) = \begin{cases}
+\exp\lb p(\theta)K(x)+ H(x) + q(\theta) \rb, x\in \mathcal{S}\\
+0,\Else
+\end{cases}
+\end{align} 
+where $\mathcal{S}$ is the support of $X$. 
+
+\begin{defn}[Regular Exponential Class] 
+	A pdf of the form above is said to be a member of the \textbf{regular exponential class} of probability density or mass functions if 
+	\begin{enumerate}
+		\item $\mathcal{S}$ the support of $X$, does not depend on $\theta$.
+		
+		\item $p(\theta)$ is a nontrivial continuous function of $\theta \in \Omega$
+		
+		\item 
+		\begin{itemize}
+			\item If $X$ is continuous, then each $K'(x) \not\equiv 0$ and $H(x)$ is a continuous function of $x\in \mathcal{S}$.
+			
+			\item If $X$ is a discrete, then $K(x)$ is a nontrivial function of $x\in \mathcal{S}$.
+		\end{itemize}
+	\end{enumerate}
+\end{defn}
+
+If the density is the regular exponential class, for a sample, we can write the density as $\exp\lb p(\theta)\sum K(x_i) + \sum H(x_i) + nq(\theta) \rb$, and so the factorization theorem tells us that the statistic $Y = \sum K(x_i)$ is sufficient. 
+
+
+\begin{thm}
+	Let $X_1,\dots,X_n$ denote a random sample from a distribution
+	that represents a regular case of the exponential class, with pdf or pmf given as above. Consider the statistic $Y_1 = \sum^n K(x_i)$. Then 
+	\begin{itemize}
+		\item The pdf or pmf for $Y_1$ has the form
+		\begin{align}
+		f_{Y_1}(y_1;\theta) = R(y_1)\exp\lb p(\theta)y_1 + nq(\theta) \rb
+		\end{align}
+		for $y_1\in \mathcal{S}_{Y_1}$ and some function $R(y_1)$. Neither $\mathcal{S}_{Y_1}$ nor $R(y_1)$ depends on $\theta$.
+		\item $E[Y_1] = -nq'(\theta)/p'(\theta)$.
+		\item $\Var[Y_1] = n\f{1}{p'(\theta)^3}\lc p''(\theta)q'(\theta) - q''(\theta)p'(\theta) \rc$
+	\end{itemize}
+\end{thm}
+
+
+\begin{thm}
+	Consider $f(x;\theta)$, $\gamma < \theta < \delta$, be a pdf or pmf of a r.v. $X$ whose distribution is a regular case of the exponential class. Then if $X_1,\dots,X_n$ is a random sample from this distribution then $Y_1 = \sum^n K(X_i)$ is a complete sufficient statistic for $\theta$. 
+\end{thm}
+
+\begin{thm}
+	If $Y_1$ is a complete sufficient statistic and $\varphi(Y_1)$ is an unbiased estimator for $\theta$, then $\varphi(Y_1)$ is the MVUE. 
+\end{thm}
+
+
+\begin{exmp}
+	Consider $\Gamma(2,\theta)$. Then 
+	\begin{align}
+	f(x;\theta) &= xe^{-x/\theta}\theta^{-2}, \quad x>0\nn\\
+	&=\exp\lb -x/\theta + \ln x -2\ln \theta\rb
+	\end{align}
+	where $p(\theta) = -1/\theta$, $K(x) = x$, $H(x) = \ln x$, and $q(\theta) = -2\ln \theta$. For a sample of size $n$, we just have $\exp\lb (-1/\theta)\sum x_i + \sum \ln x_i -2n\ln\theta \rb$, and so $Y_1 = \sum x_i \sim \Gamma(2n,\theta)$ is a complete sufficient statistic. 	We know what $\Gamma(2n,\theta)$ looks like, so we can go ahead and put it in the form
+	\begin{align}
+	f_{Y_1}(y_1) = \f{y_1^{2n-1}}{\Gamma(2n)}\exp\lb \f{-1}{\theta}y_1 - 2n\ln\theta \rb \equiv R(y_1)\exp\lb p(\theta)y_1 + n q(\theta) \rb.
+	\end{align}
+	So, 
+	$p'(\theta) = 1/\theta^2$ and $q'(\theta) = -2/\theta$ and $p''(\theta)  =-2/\theta^3$ and $q''(\theta) = 2/\theta^2$. Using the theorem we get $E[Y_1] = 2n\theta$ and $\Var[Y_1] = 2n\theta^2$, which is what we would expect for $\Gamma(2n,\theta)$. 
+\end{exmp}
+
+
+\begin{exmp}
+	Let $X_1,\dots,X_n$ be iid with $\N(\theta,\sigma^2)$. Find the MVUE of $\theta$. Well, 
+	\begin{align}
+	f(x;\theta) &= (2\pi \sigma^2)^{-1/2}\exp\lb \f{-1}{2\sigma^2}(x-\theta)^2 \rb \nn\\
+	&= \exp\lb \f{\theta}{\sigma^2}x - \f{x^2}{2\sigma^2} - \ln \sqrt{2\pi \sigma^2} - \f{\theta^2}{2\sigma^2} \rb.
+	\end{align}
+	Identifying the functions, we find that $Y_1 = \sum X_i$ is a complete sufficient statistic for $\theta$. Also, $E[Y_1] = n\theta$, so $\bar{X}$ is the MVUE for $\theta$. 
+\end{exmp}
+
+
 \section{Functions of a Parameter}
 
 
@@ -5660,6 +5737,37 @@ Because $Y$ is complete sufficient, this function is the unique MVUE for $\theta
 
 
 \noindent \textit{Solution:} 
+\begin{align}
+F_{Y_1}(y) &= P(Y_1 \leq y) = 1 - P(Y_1 \geq y)\nn\\
+&= 1 - \prod^n P(X_i \geq y) \nn\\
+&= 1- \prod^n e^{-(y - \theta)}\nn\\
+&= 1 - e^{-n(y-\theta)}
+\end{align}
+So, 
+\begin{align}
+f_{Y_1}(y) = ne^{-n(y-\theta)}.
+\end{align}
+So,
+\begin{align}
+\f{\prod^n_{i=1}e^{-(x_i-\theta)}}{ne^{-n(y-\theta)}} = \f{e^{-\sum x_i}}{ne^{-ny_1}} 
+\end{align}
+which is independent of $\theta$. So $Y_1$ is sufficient. Now, suppose $E[u(Y_1)] = 0$, then 
+\begin{align}
+\int^\infty_\theta u(y)ne^{-n(y-\theta)} = 0 \implies nu(\theta) = 0\implies u(\theta) = 0
+\end{align}
+so $Y_1$ is complete. Now, the unique function of this statistic which is the MVUE of $\theta$ is a function of $Y$ that is also an unbiased estimator for $\theta$. Further,
+\begin{align*}
+E[Y_1] = \int^\infty_\theta ne^{-n(y-\theta)}\,dy = \f{1}{n} + \theta. 
+\end{align*}
+And so the function $Y_1 - \f{1}{n}$ is an unbiased estimator for $\theta$. Since this is a function of $Y_1$ which is complete sufficient, $\min X_i - \f{1}{n}$ is an MVUE of $\theta$.  \qed
+
+
+
+
+
+
+
+
 \newpage
 
 
@@ -5675,6 +5783,56 @@ Because $Y$ is complete sufficient, this function is the unique MVUE for $\theta
 
 
 \noindent \textit{Solution:} 
+\begin{enumerate}
+	\item 
+	\begin{align*}
+	\lag(\theta) = \f{1}{3^n\theta^n}\prod^n_{i=1}I(-\theta < x_i < 2\theta)
+	\end{align*}
+	this is a decreasing function in $\theta$. Thus it is maximized whenever $\hat\theta$ is minimized, which means $\hat\theta$ has no choice but to be $\max\{-x_{(1)} , x_{(n)}/2 \}$. 
+	
+	
+	\item The factorization theorem tells us that $\max\{-x_{(1)} , x_{(n)}/2 \}$ is sufficient because $\lag$ can be factored into $K_1$ which is essentially the entire likelihood function and $K_2$ as the constantly $1$ function (multiplied by a characteristic equation which we won't worry about). 
+	
+	
+	\item The pdf for $Y_1$ can be found via
+	\begin{align}
+	F_{Y_1}(y) &= P(Y_1 \leq y) = 1- P(Y_1 > y)\nn\\
+	&= 1- \prod^n_{i=1}P(X_i > y)\nn\\
+	&= 1- \lp 1 - \f{y + \theta}{3\theta} \rp^n.
+	\end{align}
+	So, 
+	\begin{align}
+	f_{Y_1}(y) = \f{n}{(3\theta)^n}\lb 2\theta - y  \rb^{n-1}.
+	\end{align}
+	Similarly, 
+	\begin{align}
+	f_{Y_n}(y) = \f{n}{(3\theta)^n}\lb y  + \theta \rb^{n-1}.
+	\end{align}
+	So,if 
+	\begin{align}
+	0= E[u(Y_1)] = \int^{2\theta}_{-\theta}u(y)\f{n}{(3\theta)^n}\lb 2\theta - y  \rb^{n-1}  \stackrel{\p_\theta}{\implies} u(-\theta)\f{n}{(3\theta)^n}(3\theta)^{n-1} = 0
+	\end{align}
+	\begin{align}
+	0= E[u(Y_n)] = \int^{2\theta}_{-\theta}u(y)\f{n}{(3\theta)^n}\lb y + \theta  \rb^{n-1}  \stackrel{\p_\theta}{\implies} u(2\theta)\f{n}{(3\theta)^n}(3\theta)^{n-1} = 0
+	\end{align}
+	So by rescaling, $u(\theta) = 0$ identically. So, $\hat\theta$ is complete sufficient. So, if $(n+1)\hat\theta/n$ is an unbiased estimator for $\theta$, it will be an MVUE for $\theta$. Well, we need to find $E[\hat\theta]$, which means we need to find the pdf of $\hat\theta$. Well, $\hat\theta = \max\{-X_{1}, X_n/2 \}$:
+	\begin{align}
+	F_{\hat\theta}(\tau) &= P(\hat\theta \leq \tau)\nn\\
+	&= \prod^n_{i=1} P(x_i\in [-\tau,2\tau]) = \f{3^n\tau^n}{3^n\theta^n} = \f{\tau^n}{\theta^n}.
+	\end{align}
+	So, $f_{\hat\theta}(\tau) = (n/\theta)(\tau/\theta)^{n-1}$, with $0 \leq \hat\theta \leq \theta$, so
+	\begin{align}
+	E[\hat\theta] = \int^\theta_0 \tau (n/\theta) (\tau/\theta)^{n-1}\,d\tau = \f{n}{1+n}\theta.
+	\end{align}
+	So, $(n+1)\hat\theta/n$ is the unique MVUE for $\theta$. 
+	
+	
+\end{enumerate}\qed
+
+
+
+
+
 \newpage
 
 
@@ -5690,7 +5848,20 @@ Because $Y$ is complete sufficient, this function is the unique MVUE for $\theta
 
 
 
-\noindent \textit{Solution:}
+\noindent \textit{Solution:} 
+\begin{align}
+\f{1}{6\theta^4}x^3 e^{-x/\theta} = e^{-x/\theta + \ln x^3 - \ln(6\theta^4)}
+\end{align}
+We notice that $X_i \sim \Gamma(4,\theta)$. The joint pdf of the $X_i$'s is 
+\begin{align}
+\exp\lb \f{-1}{\theta}\sum x_i + \ln  \prod x_i^3 - n\ln (6\theta^4)  \rb\nn\\
+ = \exp \lb \f{-1}{\theta}\sum x_i - n\ln (6\theta^4)\rb \exp\lb \ln  \prod x_i^3  \rb
+\end{align}
+The factorization theorem tells us that $Y_1 = \sum^n_{i=1} x_i$ is a sufficient statistic. Since $K(x) = x$, theorem 7.5.2. says $Y_1$ is also complete. So, $Y_1$ is complete sufficient. Now, 
+\begin{align*}
+E[Y_1] = E\lb \sum X_i \rb = 4n\theta,
+\end{align*}
+so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and is an unbiased estimator of $\theta$. This means $(1/4n)\sum X_i$ is a MVUE of $\theta$. Since $\varphi(Y_1)$ is just a rescaled version of $Y_1$ (hence is one-to-one), $\varphi(Y_1)$ is also a complete sufficient statistic. \qed
 
 
 
@@ -5705,7 +5876,33 @@ Because $Y$ is complete sufficient, this function is the unique MVUE for $\theta
 	\centering
 	\includegraphics[scale=1]{753}
 \end{figure}
-\noindent \textit{Solution:}
+
+
+
+
+\noindent \textit{Solution:}  
+
+\begin{enumerate}
+	\item We rewrite the pdf as
+	\begin{align}
+	f(x_i;\theta) = \exp\lb \ln \theta + (\theta - 1)\ln x \rb.
+	\end{align}
+	We check that $f(x_i;\theta)$ belongs to the regular exponential family. So, the with the joint pdf given by
+	\begin{align}
+	\prod^n_{i=1}f(x_i;\theta) = \exp\lb n\ln \theta + (\theta-1)\sum^n_{i=1}\ln x_i \rb
+	\end{align}
+	Let $K(x)  = \ln x$, then Theorem 7.5.2 says that $Y_1 = \sum^n_{i=1}\ln x_i$ is complete sufficient. Now, consider the one-to-one transformation $\varphi(Y_1) = \exp\lb Y_1/n \rb $ which gives the complete sufficient statistic $\lb \prod x_i\rb^{1/n}$. So, the geometric mean is a complete sufficient statistic of $\theta$. 
+	
+	\item 
+	\begin{align}
+	\p_\theta \lb n\ln \theta + (\theta-1)\sum^n_{i=1}\ln x_i \rb = 0\nn\\
+	\implies \hat\theta = -\f{n}{\sum^n_{i=1}\ln X_i} = -\f{1}{\ln \lb\prod^n_{i=1}X_i\rb^{1/n}}
+	\end{align}
+	where of course the denominator is natural log of the geometric mean. 
+\end{enumerate}\qed
+
+
+
 \newpage
 
 
@@ -5714,6 +5911,121 @@ Because $Y$ is complete sufficient, this function is the unique MVUE for $\theta
 
 
 \section{Problem set 8}
+
+\noindent\textbf{7.6.1}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{761}
+\end{figure}
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{7.6.9}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{761}
+\end{figure}
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{7.8.1}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{781a}
+	\includegraphics[scale=0.5]{781b}
+\end{figure}
+
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{7.8.3}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{783}
+\end{figure}
+
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{7.8.5}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{785}
+\end{figure}
+
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{7.9.4}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{794}
+\end{figure}
+
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{7.9.13}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{7913}
+\end{figure}
+
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{8.1.2}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{812}
+\end{figure}
+
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{8.1.5}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{815}
+\end{figure}
+
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{8.1.8}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{818}
+\end{figure}
+
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{8.2.2}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{822}
+\end{figure}
+
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{8.2.7}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{827}
+\end{figure}
+
+\noindent\textit{Solution}:
+\newpage
+\noindent\textbf{8.2.11}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{8211}
+\end{figure}
+
+\noindent\textit{Solution}:
+\newpage
 
 
 
