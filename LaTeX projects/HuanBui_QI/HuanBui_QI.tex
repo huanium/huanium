@@ -4401,14 +4401,306 @@ So the algorithm says $5$ and $11$ are the prime factors of $55$, as expected. \
 
 
 
+\newpage
 
 
 
 
 
+\section{Problem set 10}
 
 
 
+\noindent \textbf{1.} What is the matrix representation of the operator $\U_{FT}$ for a 1-Qbit state (n=1)? Does this look like an operator you have seen before?\\
+
+\noindent \textit{Solution:} The 1-Qbit FT matrix is given by
+\begin{align}
+\U_{FT} = \f{1}{\sqrt{2}}\begin{bmatrix}
+1 & 1 \\
+1 & e^{2i\pi/2} 
+\end{bmatrix} = \f{1}{\sqrt{2}}\begin{bmatrix}
+1 & 1 \\ 1 & -1
+\end{bmatrix},
+\end{align}
+which is the just the regular 1-Qbit Hadamard. \qed\\
+
+
+\noindent \textbf{2.} What is the matrix representation of the operator $\U_{FT}$ for a 2-Qbit state (n=2)?\\
+
+
+\noindent \textit{Solution:} The 2-Qbit FT matrix is given by
+\begin{align}
+\U_{FT} = \f{1}{\sqrt{4}}\begin{bmatrix}
+1 & 1 & 1 & 1\\
+1 & e^{2i\pi/4} & e^{4i\pi/4} & e^{6i\pi/4} \\
+1 & e^{4i\pi/4} & e^{8i\pi/4} & e^{12i\pi/4} \\
+1 & e^{6i\pi/4} & e^{12i\pi/4} & e^{18i\pi/4}
+\end{bmatrix} 
+=
+\f{1}{2}\begin{bmatrix}
+1 & 1 & 1 & 1\\
+1 & i & -1 & -i \\
+1 & -1 & 1 & -1 \\
+1 & -i & -1 & i
+\end{bmatrix}
+\end{align} 
+\qed\\
+
+
+
+
+\noindent \textbf{3.} We wish to apply the 2-Qbit QFT to the state $\ket{\psi} = (1/\sqrt{2})\lp \ket{0} + \ket{2} \rp$:
+\begin{align}
+\U_{FT}\ket{\psi} = \f{1}{2\sqrt{2}}\begin{bmatrix}
+1 & 1 & 1 & 1\\
+1 & i & -1 & -i \\
+1 & -1 & 1 & -1 \\
+1 & -i & -1 & i
+\end{bmatrix}\begin{bmatrix}
+1\\0\\1\\0
+\end{bmatrix}
+=
+\f{1}{\sqrt{2}}\begin{bmatrix}
+1\\0\\1\\0
+\end{bmatrix} = \ket{\psi}.
+\end{align}\qed\\
+
+
+
+
+\noindent \textbf{4.} We wish to apply the 2-Qbit QFT to the state $\ket{\psi} = (1/\sqrt{2})\lp \ket{0} + \ket{3} \rp$:
+\begin{align}
+\U_{FT}\ket{\psi} = \f{1}{2\sqrt{2}}\begin{bmatrix}
+1 & 1 & 1 & 1\\
+1 & i & -1 & -i \\
+1 & -1 & 1 & -1 \\
+1 & -i & -1 & i
+\end{bmatrix}\begin{bmatrix}
+1\\0\\0\\1
+\end{bmatrix}
+=
+\f{1}{2\sqrt{2}}\begin{bmatrix}
+2\\1-i \\ 0 \\ 1+i
+\end{bmatrix} 
+\end{align}\qed
+
+\newpage
+
+
+
+\noindent \textbf{5.}
+
+\begin{enumerate}[(a)]
+	\item Apply the 3-Qbit QFT to the state $\ket{\psi} = (1/\sqrt{2})\lp \ket{2} + \ket{6} \rp$. What do you observe about the transformed state? 
+	\begin{align}
+	\U_{FT}\ket{\psi} &= \f{1}{\sqrt{2^4}}\begin{bmatrix}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+	1 &\sqrt{i}&i&i\sqrt{i}&-1&-\sqrt{i}&-i&-i\sqrt{i}\\
+	1&i&-1&-i&1&i&-1&-i\\
+	1&i\sqrt{i}&-i&\sqrt{i}&-1&-i\sqrt{i}&i&-\sqrt{i}\\
+	1 & -1 & 1 & -1 & 1 & -1 & 1 & -1\\
+	1&-\sqrt{i}&i&-i\sqrt{i}&-1&\sqrt{i}&-i&i\sqrt{i}\\
+	1&-i&-1&i&1&-i&-1&i\\
+	1&-i\sqrt{i}&-i&-\sqrt{i}&-1&i\sqrt{i}&i&\sqrt{i}
+	\end{bmatrix}
+	\begin{bmatrix}
+	0\\0\\1\\0\\0\\0\\1\\0
+	\end{bmatrix}\nn\\
+	&= \f{1}{{2}}\begin{bmatrix}
+	1&0&-1&0&1&0&-1&0
+	\end{bmatrix}^\top\nn\\
+	&= \f{1}{2}\lb \ket{0} - \ket{2} + \ket{4} - \ket{6} \rb.
+%	&= \f{1}{\sqrt{2}} \lc \f{1}{\sqrt{2}} \lp \ket{0} + \ket{4} \rp - \f{1}{\sqrt{2}} \lp \ket{2} + \ket{6} \rp \rc.
+	\end{align}
+	\textbf{Observations:} 
+	
+	
+	\begin{itemize}
+		
+	\item The ``distribution'' of states in the beginning is small (only two), the transformed state spans over more states (all with the same weights). In the language of FT, this makes sense that we have a large number of frequency components in the output because we start with a function that is ``uncertain'' in frequencies. 
+	
+	\item The transformed state is periodic with frequency 2 in the sense that when we plot the amplitudes as a function of the basis states, we get an ``oscillation'' between $1$ and $-1$, which repeats every $2$ states.  
+	
+	
+	\item We can think of the FT of the state $(1/\sqrt{2})(\ket{2} + \ket{6})$ as a combination of equal weights of the FT of $\ket{2}$ and $\ket{6}$. The action of the FT on $\ket{2}$ as wrapping around the origin in the $+$ direction at frequency 2 (in the sense that the amplitudes complete 2 full revolutions around the origin), while the action of the FT on $\ket{6}$ as wrapping around the origin in the $+$ direction at frequency 6. These actions combined give an overall frequency of 2.   
+	
+	\item Graphically, if we write out the basis states on a line and for each basis state we draw a complex plane then the FT of $\ket{2}$ looks like a $+$ helix of frequency 2 and the FT of $\ket{6}$ looks like a $+$ helix of frequency 6. These helices cancel in amplitudes for odd states $\ket{1},\dots$ and add for even states $\ket{0},\dots$. The FT of $\ket{2} + \ket{6}$ thus looks sinusoidal (with frequency 2) in the Real plane.   
+	
+	\end{itemize}
+	
+	\newpage
+	
+	
+	
+	\item Apply the 3-Qbit QFT to the state $\ket{\psi} = (1/\sqrt{2})\lp \ket{1} + \ket{5} \rp$. What do you observe about the transformed state?
+	\begin{align}
+	\U_{FT}\ket{\psi} &= \f{1}{\sqrt{2^4}}\begin{bmatrix}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+	1 &\sqrt{i}&i&i\sqrt{i}&-1&-\sqrt{i}&-i&-i\sqrt{i}\\
+	1&i&-1&-i&1&i&-1&-i\\
+	1&i\sqrt{i}&-i&\sqrt{i}&-1&-i\sqrt{i}&i&-\sqrt{i}\\
+	1 & -1 & 1 & -1 & 1 & -1 & 1 & -1\\
+	1&-\sqrt{i}&i&-i\sqrt{i}&-1&\sqrt{i}&-i&i\sqrt{i}\\
+	1&-i&-1&i&1&-i&-1&i\\
+	1&-i\sqrt{i}&-i&-\sqrt{i}&-1&i\sqrt{i}&i&\sqrt{i}
+	\end{bmatrix}
+	\begin{bmatrix}
+	0\\1\\0\\0\\0\\1\\0\\0
+	\end{bmatrix}\nn\\
+	&= \f{1}{{2}}\begin{bmatrix}
+	1&0&i&0&-1&0&-i&0
+	\end{bmatrix}^\top\nn\\
+	&= \f{1}{2}\lb \ket{0} + i\ket{2} - \ket{4} - i\ket{6} \rb.
+%	&= \f{1}{\sqrt{2}}\lc \f{1}{\sqrt{2}}\lp \ket{0} - \ket{4} \rp - \f{1}{\sqrt{2}}\lp \ket{2} + \ket{6} \rp \rc.
+	\end{align}
+	\textbf{Observations:} 
+	
+	\begin{itemize}
+		
+	\item The transformed state here is only different from that in (a) by shifts in the relative phases. 
+	
+	\item In the same language we used to graphically describe the states in part (a), we say that the transformed state here is a $+$ helix with frequency 1. This is because the FT of $\ket{1}$ is a $+$ helix with frequency 1 and the FT of $\ket{5}$ is a $+$ helix with frequency 5. Together, the amplitudes add for even states $\ket{0},\dots$ and cancel for odd states $\ket{1},\dots$. The resulting state is a $+$ helix of frequency 1. 
+	
+	
+	
+	\end{itemize}
+	
+	\newpage
+	
+	
+	
+	
+	\item Apply the 3-Qbit QFT to the state $\ket{\psi} = (1/{2})\lp \ket{1} + \ket{3} + \ket{5} + \ket{7} \rp$. What do you observe about the transformed state?
+	\begin{align}
+	\U_{FT}\ket{\psi} &= \f{1}{\sqrt{2^4}}\begin{bmatrix}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+	1 &\sqrt{i}&i&i\sqrt{i}&-1&-\sqrt{i}&-i&-i\sqrt{i}\\
+	1&i&-1&-i&1&i&-1&-i\\
+	1&i\sqrt{i}&-i&\sqrt{i}&-1&-i\sqrt{i}&i&-\sqrt{i}\\
+	1 & -1 & 1 & -1 & 1 & -1 & 1 & -1\\
+	1&-\sqrt{i}&i&-i\sqrt{i}&-1&\sqrt{i}&-i&i\sqrt{i}\\
+	1&-i&-1&i&1&-i&-1&i\\
+	1&-i\sqrt{i}&-i&-\sqrt{i}&-1&i\sqrt{i}&i&\sqrt{i}
+	\end{bmatrix}
+	\begin{bmatrix}
+	0\\1\\0\\1\\0\\1\\0\\1
+	\end{bmatrix}\nn\\
+	&= \f{1}{\sqrt{2}}\begin{bmatrix}
+	1&0&0&0&-1&0&0&0
+	\end{bmatrix}^\top\nn\\
+	&= \f{1}{\sqrt{2}}\lb \ket{0} - \ket{4} \rb.
+	%	&= \f{1}{\sqrt{2}}\lc \f{1}{\sqrt{2}}\lp \ket{0} - \ket{4} \rp - \f{1}{\sqrt{2}}\lp \ket{2} + \ket{6} \rp \rc.
+	\end{align}
+	\textbf{Observation(s):}
+	
+	\begin{itemize}
+		\item The original state spans multiple (4) basis states, and so it makes sense the FT spans only over 2 states. We also notice that the input is quite periodic, so it also makes sense that the output has few ``frequency'' components. 
+		
+		\item This FT is a combination of the FT of $\ket{1} + \ket{5}$ and $\ket{3} + \ket{7}$, which only differ in the relative phases. Their combination is such that the amplitudes of $\ket{2}$ and $\ket{6}$ cancel out, leaving only nonzero amplitudes for $\ket{0}$ and $\ket{4}$.
+	\end{itemize}
+	
+	\newpage
+	
+	
+	
+	\item Apply the 3-Qbit QFT to the state $\ket{\psi} = (1/{2})\lp \ket{0} + \ket{2} + \ket{4} + \ket{6} \rp$. What do you observe about the transformed state?
+	\begin{align}
+	\U_{FT}\ket{\psi} &= \f{1}{\sqrt{2^4}}\begin{bmatrix}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+	1 &\sqrt{i}&i&i\sqrt{i}&-1&-\sqrt{i}&-i&-i\sqrt{i}\\
+	1&i&-1&-i&1&i&-1&-i\\
+	1&i\sqrt{i}&-i&\sqrt{i}&-1&-i\sqrt{i}&i&-\sqrt{i}\\
+	1 & -1 & 1 & -1 & 1 & -1 & 1 & -1\\
+	1&-\sqrt{i}&i&-i\sqrt{i}&-1&\sqrt{i}&-i&i\sqrt{i}\\
+	1&-i&-1&i&1&-i&-1&i\\
+	1&-i\sqrt{i}&-i&-\sqrt{i}&-1&i\sqrt{i}&i&\sqrt{i}
+	\end{bmatrix}
+	\begin{bmatrix}
+	1\\0\\1\\0\\1\\0\\1\\0
+	\end{bmatrix}\nn\\
+	&= \f{1}{\sqrt{2}}\begin{bmatrix}
+	1&0&0&0&1&0&0&0
+	\end{bmatrix}^\top\nn\\
+	&= \f{1}{\sqrt{2}}\lb \ket{0} + \ket{4} \rb.
+	%	&= \f{1}{\sqrt{2}}\lc \f{1}{\sqrt{2}}\lp \ket{0} - \ket{4} \rp - \f{1}{\sqrt{2}}\lp \ket{2} + \ket{6} \rp \rc.
+	\end{align}
+	\textbf{Observation(s):}
+	
+	\begin{itemize}
+		\item Again, this differs from the FT in the previous item only in the relative phases. 
+	\end{itemize}
+	
+	
+	\newpage
+	
+	
+	\item Apply the 3-Qbit QFT to the state $\ket{\psi} = (1/\sqrt{3})\lp \ket{1} + \ket{4} + \ket{7} \rp$. What do you observe about the transformed state? What makes this transformation
+	different than the prior ones?
+	\begin{align}
+	\U_{FT}\ket{\psi} &= \f{1}{\sqrt{2^4}}\begin{bmatrix}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+	1 &\sqrt{i}&i&i\sqrt{i}&-1&-\sqrt{i}&-i&-i\sqrt{i}\\
+	1&i&-1&-i&1&i&-1&-i\\
+	1&i\sqrt{i}&-i&\sqrt{i}&-1&-i\sqrt{i}&i&-\sqrt{i}\\
+	1 & -1 & 1 & -1 & 1 & -1 & 1 & -1\\
+	1&-\sqrt{i}&i&-i\sqrt{i}&-1&\sqrt{i}&-i&i\sqrt{i}\\
+	1&-i&-1&i&1&-i&-1&i\\
+	1&-i\sqrt{i}&-i&-\sqrt{i}&-1&i\sqrt{i}&i&\sqrt{i}
+	\end{bmatrix}
+	\begin{bmatrix}
+	0\\1\\0\\0\\1\\0\\0\\1
+	\end{bmatrix}\nn\\
+	&= \f{1}{\sqrt{24}}\begin{bmatrix}
+	3\\-1+\sqrt{2}\\1\\-1-\sqrt{2}\\-1\\-1-\sqrt{2}\\1\\-1+\sqrt{2}
+	\end{bmatrix}.
+	%	&= \f{1}{\sqrt{2}}\lc \f{1}{\sqrt{2}}\lp \ket{0} - \ket{4} \rp - \f{1}{\sqrt{2}}\lp \ket{2} + \ket{6} \rp \rc.
+	\end{align}
+	\textbf{Observation(s):} We will make more observations after looking at part (f), but the main difference between the states here and those in the previous parts is that $\ket{1} + \ket{4} + \ket{7}$ doesn't ``complete'' a cycle. While we suspect that the function has period 3, $\ket{7+3}$ does not quite loop back to $\ket{1}$, unlike before where $\ket{6+4} \equiv \ket{2}$, for instance. This means the FT will have some ``uncertainty'' regarding the frequency components of this ``signal.'' We will see this part (f).  \\
+	
+	
+	\newpage
+	
+	\item  For the state in part (e) plot the probability of finding the system in each of
+	the computational basis states $\ket{x_i}$ after it has been Fourier transformed.
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{period}
+	\end{figure}
+	
+	
+	
+	\newpage
+	
+	
+	\item Apply the 3-Qbit QFT to the state $\ket{\psi} = (1/\sqrt{3})\lp \ket{0} + \ket{3} + \ket{6} \rp$. What do you observe about the transformed state? What makes this transformation
+	different than the prior ones?
+	\begin{align}
+	\U_{FT}\ket{\psi} &= \f{1}{\sqrt{2^4}}\begin{bmatrix}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+	1 &\sqrt{i}&i&i\sqrt{i}&-1&-\sqrt{i}&-i&-i\sqrt{i}\\
+	1&i&-1&-i&1&i&-1&-i\\
+	1&i\sqrt{i}&-i&\sqrt{i}&-1&-i\sqrt{i}&i&-\sqrt{i}\\
+	1 & -1 & 1 & -1 & 1 & -1 & 1 & -1\\
+	1&-\sqrt{i}&i&-i\sqrt{i}&-1&\sqrt{i}&-i&i\sqrt{i}\\
+	1&-i&-1&i&1&-i&-1&i\\
+	1&-i\sqrt{i}&-i&-\sqrt{i}&-1&i\sqrt{i}&i&\sqrt{i}
+	\end{bmatrix}
+	\begin{bmatrix}
+	1\\0\\0\\1\\0\\0\\1\\0
+	\end{bmatrix}\nn\\
+	&= \f{1}{\sqrt{24}}\begin{bmatrix}
+	3\\1-i+\sqrt{i}\\-i\\1+i+\sqrt{i}\\1\\1-i-\sqrt{i}\\i\\1+i-\sqrt{i}
+	\end{bmatrix}.
+	\end{align}
+	
+	\textbf{Observation(s):} The input here is linearly shifted from the input from part (f), so it makes sense that the output is phase-shifted from the output in (f) -- and it is. The number's aren't so clear so we look at the spectrum of the FT: 
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{period1}
+	\end{figure}
+	As expected, it looks exactly the same as that in (f).
+	
+\end{enumerate}\qed
 
 
 
