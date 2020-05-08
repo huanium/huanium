@@ -2645,11 +2645,11 @@ In this case, we say that $Y_1$ is complete and sufficient.
 	&K_1[Y_1,\theta] = \f{1}{\theta^n}I(Y_{(n)} > 0)\nn\\
 	&K_2[X_1,\dots,X_n] = I(X_{(1)} > 0).
 	\end{align}
-	So, $Y_{(1)}$ (the max) is sufficient for $\theta$. This turns out to be minimal too. Now,
+	So, $Y_{(n)}$ (the max) is sufficient for $\theta$. This turns out to be minimal too. Now,
 	\begin{align}
 	g_{(n)}(Y) = ny^{n-1}\theta^{-n}
 	\end{align}
-	is the density for $Y_{(1)}$. Suppose $g(t)$ is a function that satisfies $E[g(t)] = 0$, so 
+	is the density for $Y_{(n)}$. Suppose $g(t)$ is a function that satisfies $E[g(t)] = 0$, so 
 	\begin{align}
 	E[g(t)] = \int^\theta_0 g(t)nt^{n-1}\theta^{-n}\,dt = 0.
 	\end{align}
@@ -6339,8 +6339,7 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 	\includegraphics[scale=0.5]{761}
 \end{figure}
 
-\noindent\textit{Solution}: Well, $E[\bar{X}^2] = \Var[\bar{X}] + E[\bar{X}]^2 = \f{1}{n^2} + \theta^2$.
-
+\noindent\textit{Solution}: Well, $\bar{X}$ is a sufficient statistic for $\theta$. Also, $E[\bar{X}^2] = \Var[\bar{X}] + E[\bar{X}]^2 = \f{1}{n^2} + \theta^2$. Obviously the MVUE of $\theta^2$ here will be $\bar{X}^2 - \f{1}{n^2}$, by Rao-Blackwell. \qed	
 
 
 
@@ -6366,7 +6365,76 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 	\includegraphics[scale=0.5]{769}
 \end{figure}
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: 
+\begin{align}
+\lag(\theta) = \f{1}{\theta^n}\exp\lb -\f{1}{\theta}\sum x_i \rb.
+\end{align}
+\begin{align}
+\p_\theta l(\theta) = 0 \implies \hat\theta = \bar{X}.
+\end{align}
+So the mle for $\theta$ is $\bar{X}$. Now, 
+\begin{align}
+P(X\leq 2) = \int_0^2 \f{1}{\theta}e^{-x/\theta}\,dx = 1 - e^{-2/\theta}.
+\end{align}
+So the mle for $P(X\leq 2)$ is $\hat{P} = \boxed{ 1 - e^{-2/\bar{X}}}$. \\
+
+Define the function $u({X})$ as 
+\begin{align}
+u(\bar{X}) = \begin{cases}
+1,\quad x\in [0,2]\\
+0,\quad \Else
+\end{cases}
+\end{align}
+then obviously $E[u(X)] = 1\cdot P(X \leq 2) = P(X \leq 2)$, is an unbiased estimator for $P(X\leq 2)$. Rao-Blackwell says the function $\varphi(y) = E[ u(X) | Y = y]$  where $y = \sum x_i$ is the MVUE for $P(X \leq 2)$. This is because we know that $\sum x_i = n\bar{X}$ is a sufficient statistic for $\theta$. We want to evaluate $\varphi(y)$. To do this we need the joint pdf for $\sum X_i$ and $X_1$. First we have the density of $\sum x_i$:
+\begin{align}
+g(\sum x_i, \theta) = \Gamma(n,\theta) = \f{1}{\Gamma(n)\theta^n}\lp \sum x_i \rp^{n-1}e^{-\sum x_i/\theta}.
+\end{align}
+With this, the joint pdf 
+\begin{align}
+f_{X_1,\sum X_i}(x,y, \theta) 
+&= \f{\p^2 P(x_1 \leq x, \sum x_i \leq y)}{\p x_i \p\sum x_i}\nn\\
+&= \f{\p^2 P(x_1 \leq x)P(\sum_2^n x_i \leq y-x) }{\p x_1 \p \sum x_i}\nn\\
+&= \f{\p^2}{\p x_1 \p \sum x_i}\lb \f{\Gamma(1,x/\theta)}{\Gamma(1)} \f{\Gamma(n-1,(y-x)/\theta)}{\Gamma(n-1)} \rb\nn\\
+&= \f{1}{\Gamma(n-1)}\lp (x/\theta)^{1-1}e^{-x/\theta} ((y-x)/\theta^{n-1})^{n-2}e^{-(y-x)/\theta} \rp\nn\\
+&= \f{1}{\theta^{n}(n-2)!}(y-x)^{n-2}e^{-y/\theta}
+\end{align} 
+on the support $0 < x_1 < \sum x_i < \infty$. Okay, with this, the pdf of $\sum x_i$ is given by
+\begin{align}
+f_{\sum X_i}(y) 
+&= \int^\infty_0 \f{1}{\theta^{n}(n-2)!}(y-x)^{n-2}e^{-y/\theta}\,dx \n\\
+&=\dots\nn\\
+&= \f{1}{\theta^n(n-1)!}y^{n-1}e^{-y/\theta}
+\end{align}
+on the support $0 < y < \infty$, where I have used the incomplete gamma function $\Gamma(\cdot,\cdot)$.  So, the conditional pdf for $X_1 = x$ given $\sum X_i = y$ is 
+\begin{align}
+g(X_1 = x \vert \sum X_i = y)= \f{f_{X_1,\sum X_i}(x,y,\theta)}{f_{\sum X_i}(y,\theta)} = \f{(n-1)(y-x)^{n-2}}{y^{n-1}} 
+\end{align}
+From here we are effectively done:
+\begin{align}
+E[u(X)  \vert \sum X_i = y] &= \int^\infty_0 u(x) \f{(n-1)(y-x)^{n-2}}{y^{n-1}} \,dx \nn\\
+&= \int^2_0 \f{(n-1)(y-x)^{n-2}}{y^{n-1}} \,dx \nn\\
+&= \dots\nn\\
+&= 1 - \lp 1 - \f{2}{y} \rp^{n-1}.
+\end{align}
+With $y = \sum x_i$, Rao-Blackwell says the MVUE for $P(X \leq 2)$ is 
+\begin{align}
+\boxed{1 - \lp 1 -  \f{2}{n\bar{X}}\rp^{n-1}}
+\end{align}
+
+
+
+
+
+\qed
+
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{7.8.1}
 \begin{figure}[!htb]
@@ -6376,7 +6444,58 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 \end{figure}
 
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: 
+
+\begin{enumerate}[(a)]
+	\item  The likelihood function is 
+	\begin{align}
+	\lag(\theta) = \prod \theta^{x_i} (1-\theta)^{1-x_i} = \theta^{\sum x_i} (1-\theta)^{n - \sum x_i}.
+	\end{align}
+	\begin{align}
+	\p_\theta l(\theta) = 0 \implies \f{1}{\theta}\sum x_i + \f{1}{1-\theta}\sum x_i - \f{1}{\theta}n = 0 \implies \boxed{\hat\theta = \bar{X}}.
+	\end{align}
+	Looking at the likelihood function and the Factorization theorem, we know $\bar{X}$ is sufficient. There's no way to reduce the number of statistics, so this is also minimal. 
+	
+	\item The likelihood function is 
+	\begin{align}
+	\lag(\theta) = \theta^{\sum x_i} e^{-n\theta}\f{1}{\prod x_i!}.
+	\end{align}
+	\begin{align}
+	\p_\theta l(\theta) = 0 \implies \boxed{\hat\theta = \bar{X}}
+	\end{align}
+	The factorization theorem tells us that $\sum X_i$ is sufficient, so $\bar{X}$ is sufficient. This is also minimal because we can't further reduce the number of statistics. 
+	
+	\item The likelihood function is 
+	\begin{align}
+	\lag(\theta) = \f{1}{\Gamma^n(3)\theta^{3n}}\prod x_i^2 e^{-\sum x_i/\theta}.
+	\end{align}
+	\begin{align}
+	\p_\theta l(\theta) = 0 \implies \boxed{\hat\theta = \f{1}{3n}\sum X_i = \f{\bar{X}}{3}}
+	\end{align}
+	Once again this is a sufficient statistic as guaranteed by the factorization theorem, so it is minimal sufficient because we can't reduce any further. 
+	
+	\item This is well-known so I won't bother with the math anymore. $\boxed{\hat\theta = \bar{X}}$. The likelihood function looks like 
+	\begin{align}
+	\lag(\theta) \propto \prod e^{-(x_i - \theta)^2/2} = \exp \lb -\f{1}{2}\lp \sum x_i^2 - 2\theta\sum x_i + n\theta^2  \rp \rb.
+	\end{align}
+	The factorization tells us that $\sum X_i$ is a sufficient statistic for $\theta$, and hence so is $\bar{X}$. Since no more reduction can be done, $\bar{X}$ is minimal.
+	
+	\item Again, we did this before: $\boxed{\hat\theta = [(n-1)/n]S^2} = (1/n)\sum X_i^2$ where $S^2$ is the sample variance. The likelihood function looks like
+	\begin{align}
+	\lag(\theta) \propto (\theta)^{-n/2}\exp\lb -\f{1}{2\theta}\lp \sum x_i^2 \rp \rb.
+	\end{align}
+	The factorization theorem says $\sum x_i^2$ is a sufficient statistic. Rescaling this by $1/n$ gives $[(n-1)/n]S^2$ also sufficient, hence minimal sufficient (since no more reduction can be done). 
+\end{enumerate}
+
+\qed
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{7.8.3}
 \begin{figure}[!htb]
@@ -6385,7 +6504,34 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 \end{figure}
 
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: Without order, the joint pdf looks like 
+\begin{align}
+\f{1}{\theta_2^n}e^{-\f{1}{\theta_2}\sum (x_i - \theta_1)} \prod I_{(\theta,\infty)} (x_i) 
+&= \f{1}{\theta_2^n}e^{-\f{1}{\theta_2}\sum (x_i - \theta_1)}  I_{(\theta,\infty)}[\min x_i]\nn\\
+&= \f{1}{\theta_2^n}e^{-\f{1}{\theta_2}\sum (x_i - \theta_1)}  I_{(\theta,\infty)} (y_1)
+\end{align}
+because $\theta \leq \min x_i = y_1 < \infty$. The multi-parameter factorization theorem says $Y_1 = \min X_i$ and $\sum X_i \equiv \sum Y_i$ are sufficient statistics for $\theta_1, \theta_2$. Obviously, there's no reduction after this, so they are jointly minimal sufficient statistics for $\theta_1, \theta_2$. \qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{7.8.5}
 \begin{figure}[!htb]
@@ -6394,7 +6540,33 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 \end{figure}
 
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: 
+\begin{enumerate}[(a)]
+	\item Well, 
+	\begin{align}
+	\f{X_1^2}{\sum X_i^2} = \f{X_1^2/\theta^2}{\sum X_i^2/\theta^2} = \f{W_1^2}{\sum W_i^2}.
+	\end{align}
+	\item Same thing here, provided $\theta>0$,
+	\begin{align}
+	\f{\min X_i}{\max X_i} = \f{\min X_i/\theta}{\max X_i/\theta} = \f{\min W_i}{\max W_i}.
+	\end{align}
+\end{enumerate}
+
+\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{7.9.4}
 \begin{figure}[!htb]
@@ -6403,7 +6575,26 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 \end{figure}
 
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: Well, since $X/Y$ and $Y$ are independent and that functions of independent random variables are independent, we have that
+\begin{align}
+E[X^k] = E[(X/Y)^k Y^k] = E[(X/Y)^k] \cdot E[Y^k].
+\end{align}
+So,
+\begin{align}
+E[(X/Y)^k] = E[X^k]/E[Y^k].
+\end{align}
+\qed
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{7.9.13}
 \begin{figure}[!htb]
@@ -6412,7 +6603,69 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 \end{figure}
 
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: 
+\begin{enumerate}[(a)]
+	\item  The pdf is just a $\Gamma(\al = 3, \beta = 1/\theta)$, so
+	\begin{align}
+	\lag(\theta) = \f{1}{2^n}\theta^{3n}\exp\lb \theta \sum x_i \rb\prod x_i^2.
+	\end{align}
+	\begin{align}
+	\p_\theta l(\theta) = 0 \implies \hat\theta = \f{3n}{\theta} - \sum x_i = 0 \implies \boxed{\hat\theta = \f{3n}{\sum X_i} = \f{3}{\bar{X}} }.
+	\end{align}
+	Next we want to find the pdf of $Y = \sum X_i$. Well, this is easy because $X_i \sim \Gamma(3,1/\theta) \implies Y \sim \Gamma(3n,1/\theta)$. So, 
+	\begin{align}
+	E[\hat\theta] = \int^\infty_0 \f{3n}{y}\f{1}{\Gamma(3n)}\theta^{3n}y^{3n-1}e^{-\theta y}\,dy = \dots = \f{3n\theta\Gamma(3n-1)}{\Gamma(3n)} = \f{3n\theta}{3n-1} = \theta.
+	\end{align}
+	So $\hat\theta$ is an \textbf{biased}.
+	
+	\item Well obviously $Y \sim \Gamma(3n,\theta)$ is a member of the regular exponential class. Theorem 7.5.2. says that $Y = \sum X_i$ is a sufficient statistic for $\theta$ and the family $\{f_{Y}(y;\theta)\}$ is complete. This means $Y$ is complete sufficient.
+	
+	
+	\item After correcting for the bias, we have that $[(3n-1)/3n]\hat\theta$ is an unbiased estimator for $\theta$. We also have that $[(3n-1)/3n]\hat\theta$ is a function of $Y= \sum X_i$ which is a complete sufficient statistic for $\theta$. Theorem 7.5.3. says that $\boxed{[(3n-1)/3n]\hat\theta = (3n-1)/Y}$ is the MVUE for $\theta$. 
+
+	\item Basu's theorem comes in handy here. First, we have that $Y$ is a complete sufficient statistic for $\theta$. Now, we look at the statistic $Z = X_1/Y$. Let us use the fact that if $X_i \sim \Gamma(a\l,\be)$ then $\theta X_i \sim \Gamma(\al,\theta\be)$. So, $Z = X_1/Y =  \theta X_1/\theta Y$. The numerator and the denominator follow distributions $\Gamma(3,1)$ and $\Gamma(3n,1)$ respectively, independent of $\theta$. So, the pdf of $Z$ is also independent of $\theta$. This means $Z$ is ancillary for $\theta$. Basu's theorem says that $Z = X_1/Y$ and $Y$ are independent.  
+	
+ 
+	
+	\item To find the pdf of $X_1/Y$ we have to split $Y$ up. Write $Y = X_1 + S$ where $S = \sum_2^n X_i$. It's clear that $X_1 \sim \Gamma(3,1/\theta)$ and $S \sim \Gamma(3(n-1), 1/\theta)$ and that $X_1$ and $S$ are independent. Call $A = X_1/Y = X_1/(X_1 + S)$ and $B = X_1 + S$. Then we have the inverse transformation:
+	\begin{align}
+	x_1 = ab,\quad s = b-ba = b(1-a).
+	\end{align}
+	So the Jacobian is
+	\begin{align}
+	\abs{J} = \abs{\det\begin{bmatrix}
+	b&a\\ -b&1-a
+	\end{bmatrix}} = b.
+	\end{align}
+	Now, because $X_1$ and $S$ are independent,
+	\begin{align}
+	f_{A,B}(a,b) &= f_{X_1,S}(x_1,s)\cdot b\nn\\
+	&= f_{X_1}(x_1 = ab)f_{S}(s = b(1-a))\cdot b\nn\\
+	&= \f{\theta^3}{2}(ab)^2e^{-\theta ab}\f{b\theta^{3(n-1)}}{\Gamma(3(n-1))}(b(1-a))^{3(n-1)-1}e^{-\theta b(1-a)}.
+	\end{align}
+	Of course since $A,B$ are independent as shown in the previous item, we can factor $f_{A,B}$ into $f_A f_B$. We're only interested in $f_A$ which turns out to be 
+	\begin{align}
+	f_A(a) = f_{X_1/Y}(a) \propto a^2(1-a)^{3(n-1)-1} = a^{3-1}(1-a)^{3(n-1)-1}.
+	\end{align}
+	This looks like a $\beta(3,3(n-1))$, so $\boxed{X_1/Y \sim \beta(3,3(n-1))}$.
+\end{enumerate}\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{8.1.2}
 \begin{figure}[!htb]
@@ -6421,7 +6674,32 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 \end{figure}
 
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: Well, as usual we look at the likelihood ratio:
+\begin{align}
+\f{\lag(\theta')}{\lag(\theta'')} = \f{\theta'}{\theta''}e^{-(X_1 + X_2)/{\theta'} + (X_1+X_2)/{\theta''}} = 2e^{-(X_1+X_2)/4} < K \implies X_1 +X_2 > K'.
+\end{align}
+It is possible to find $K'$, as done in class. This shows we can use $X_1 + X_2$ to carry out the best test of $H_0$.\qed 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{8.1.5}
 \begin{figure}[!htb]
@@ -6430,7 +6708,29 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 \end{figure}
 
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: Again, look at the likelihood ratio:
+\begin{align}
+\f{\lag(\theta')}{\lag(\theta'')} = \f{\lag(1)}{\lag(2)} = \f{1}{2^n \prod x_i} \leq K \implies \prod x_i \geq \f{1}{2^n K} = c.
+\end{align}
+for some $c$. So, it is clear that the best critical region is $C=\{\bm{x}: \prod x_i \geq c\}$ (reject whenever $\bm{x} \in C$). \qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{8.1.8}
 \begin{figure}[!htb]
@@ -6439,7 +6739,25 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 \end{figure}
 
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: Again we look at the likelihood ratio:
+\begin{align}
+\f{\lag(1)}{\lag(2)} = \f{6^n}{\prod x_i(1-x_i)} \leq K \implies \prod x_i (1-x_i) \geq c= \f{1}{6^n K}.
+\end{align}
+So a best critical region for testing $H_0$ against $H_1$ is $C = \{  \bm{x} : c \leq \prod x_i(1-x_i)   \}$.\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{8.2.2}
 \begin{figure}[!htb]
@@ -6448,7 +6766,41 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 \end{figure}
 
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: We have found the pdf for the max of a uniform many times before, so I won't derive it again. The pdf for $Y_4$ is
+\begin{align}
+g_{Y_4}(y) = 4y^{3}/\theta^{4}. 
+\end{align} 
+Recall that the power function $\gamma(\theta)$ is 
+\begin{align}
+\gamma(\theta) = P(\mbox{ reject } H_0 | H_A \mbox{ true}) &= P(y_4 \leq 1/2 \mbox{ or } y_4 > 1 \vert \theta \neq 1).
+\end{align}
+If $0 < \theta < 1$ we have
+\begin{align}
+\gamma(\theta) = \int^{1/2}_0 4y^{3}/\theta^{4}\,dy = \boxed{\f{1}{16\theta^4}}
+\end{align}
+If $\theta > 1$ we have
+\begin{align}
+\gamma(\theta) = \int^{1/2}_0 4y^{3}/\theta^{4}\,dy + \int_{1}^\theta 4y^{3}/\theta^{4}\,dy = {\f{1}{16\theta^4} + 1 - \f{1}{\theta^4}} = \boxed{1-\f{15}{16\theta^4}}
+\end{align}
+\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{8.2.7}
 \begin{figure}[!htb]
@@ -6456,7 +6808,37 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 	\includegraphics[scale=0.5]{827}
 \end{figure}
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}:  Well,
+\begin{align}
+\f{\lag(\theta=75)}{\lag(\theta_A)} &= \exp\lb -\f{1}{2\cdot 10}\lp \sum (x_i - 75)^2  - \sum (x_i - \theta_A)^2  \rp \rb \leq K\nn\\
+&\implies \exp\lb \f{1}{10}\lp  -(\theta_A - 75)\sum x_i + \f{n}{2}\lb \theta_A^2 - 75^2 \rb\rp\rb \leq K\nn\\
+&\implies (\theta_A - 75)\sum x_i \geq \f{10n}{2}\lb \theta_A^2 - 75^2 \rb - 10\ln K\nn\\
+&\implies \sum x_i \geq \f{10n}{2}(\theta_A+75) -\f{10\ln K}{\theta_A - 75}
+\end{align}
+provided that $\theta_A > 75$, which is the case here. Call the RHS $K'$. Then, because $\sum X_i \sim \N(25\cdot 75, 2500)$ under the null, we have
+\begin{align}
+\al = 0.10 = \int^{\infty}_{K'}\f{1}{\sqrt{5000\pi}}e^{-(x-25\cdot 75)^2/(5000)}\,dx \implies K' =  \f{1}{2}\mbox{Erfc} \lb \f{-1857 + K'}{50\sqrt{2}} \rb
+\end{align}
+So,
+\begin{align}
+\mbox{Erfc}^{-1}[0.2] = \f{-1857 + K'}{50\sqrt{2}} \implies K' =  1939.08.
+\end{align}
+So, the most powerful critical region is 
+\begin{align}
+\boxed{C = \{ \bm{x}: \sum x_i \geq 1939.08 \}}
+\end{align}
+Or, in terms of the mean,
+\begin{align}
+\boxed{C = \{ \bm{x}: \bar{x} \geq 1939.08/25 = 77.5632 \}}
+\end{align}
+So we reject if $\bar{x} \geq 77.5632$. The form of this does not depend on $\theta_A$, so this test is the UMP for $H_A: \theta > 75$. \qed
+
+
+
+
+
+
+
 \newpage
 \noindent\textbf{8.2.11}
 \begin{figure}[!htb]
@@ -6464,7 +6846,21 @@ so $\varphi(Y_1) = (1/4n)Y_1$ is a function of the complete sufficient $Y_1$ and
 	\includegraphics[scale=0.5]{8211}
 \end{figure}
 
-\noindent\textit{Solution}:
+\noindent\textit{Solution}: Well, the likelihood ratio for $\theta' > \theta''$ is 
+\begin{align}
+\f{\lag(\theta')}{\lag(\theta'')} = (\theta'/\theta'')^{n}\lp\prod x_i\rp^{n(\theta' - \theta'')}.
+\end{align}
+Obviously, the likelihood has \textbf{monotone likelihood ratio} (mlr) in the statistic $\prod X_i$ because the ratio is a monotone function of $\prod X_i$. (Explicitly the function is \textit{increasing}). With this and the hypotheses $H_0: \theta = \theta'$ and $H_A : \theta < \theta'$ for fixed $\theta'$, the UMP level $\al$ decision rule for testing $H_0$ versus $H_1$ is given by
+\begin{align}
+\mbox{Reject } H_0 \mbox{ if } Y = \prod X_i  \leq  c_Y.
+\end{align}
+where $c_Y$ is determined by $\al = P_{\theta'}[Y = \prod X_i \leq c_Y]$. This makes sense because since the ratio is an increasing function in $Y$, we reject whenever the ratio is small, which is when the product is small.\qed
+
+
+
+
+
+
 \newpage
 
 

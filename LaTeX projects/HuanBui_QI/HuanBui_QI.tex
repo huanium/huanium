@@ -1345,8 +1345,312 @@ q = \lp 1-\f{1}{2^{x+n}}\rp \lp 1-\f{1}{2^{x+n-1}}\rp \dots \lp 1-\f{1}{2^{x+2}}
 \end{align} 
 
 
+\newpage
 
 
+\section{Breaking NSA encryption}
+
+\subsection{Period finding, factoring, and cryptography}
+Background: In 1993 Dan Simon found a quantum
+algorithm that can efficiently find a hidden ``period'' a for a
+function defined by
+\begin{align}
+f(x \oplus a) = f(x).
+\end{align}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{rsa1}
+\end{figure}
+
+
+Shortly afterwards, in 1994, Peter Shor used a very similar
+approach to finding the hidden period of a function 
+\begin{align}
+f(x+k) = f(x)= b^x \mod N
+\end{align}
+Our goal is to explain why this is an interesting problem. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Number-theoretic preliminaries}
+
+
+There is a relationship between finding the period of a function
+\begin{align}
+f(x) = a^x \mod N\\
+a^{x+k} = a^x \mod N.
+\end{align}
+For an integer $N = pq$, where $p$ and $q$ are primes and finding the
+prime factors $p$ and $q$ of $N$.\\
+
+Why is that interesting? $\implies$ Because public Key encryption relies on the fact that prime factorization
+of a composite number is a ``hard'' (exponential in the number of
+bits) problem.\\
+
+
+I will skip over the rest of the group theory related to this (refer to Abstract Algebra notes for this). But in any case, some of the things we'll need are: Euclid's algorithm, group theory, modular arithmetics. We will also be interested in the group 
+\begin{align}
+G_p = \{1,2,\dots, p-2,p-1\}. 
+\end{align}
+
+\noindent \textbf{Fermat's Little Theorem:} For every $a\in G_p$, $a^{p-1} \equiv 1 \mod p$. A group $G_{N=pq}$ with $N$ a product of two prime numbers $p$ and $q$ has the order $(p-1)(q-1)$. \\
+
+
+
+\noindent \textbf{Extension to Fermat's Little Theorem:} For every $a \in G_{pq}$, $a^{(p-1)(q-1)} \equiv 1 \mod pq$. \\
+
+
+
+\noindent \textbf{Lagrange's Theorem:} The order of any subgroup is a divisor of the order of the group. \\
+
+
+
+\noindent \textbf{An interesting observation:} 
+\begin{align}
+a^k \equiv 1\mod N \implies a^k - 1 \equiv 0 \mod N.
+\end{align}
+If k is even (which should be roughly half the time) we can write:
+\begin{align}
+a^k \equiv 1\mod N \implies \lp a^{k/2}-1 \rp \lp a^{k/2} + 1 \rp \equiv 0 \mod N.
+\end{align}
+
+\begin{exmp}
+	When $N=21, a=2, k=6$, we get $2^{6/2}-1 \equiv 7\mod N$ and $2^{6/2}+1 \equiv 9\mod N$. Now, $\gcd(7,21) = 7$ and $\gcd(9,21) = 3$. These are the prime factors of 21.   
+\end{exmp}
+
+\textbf{Note:} we can get unlucky for some values of $a$ where we don't learn anything. In these cases, we just try again with a different $a$. 
+
+
+\subsection{RSA encryption}
+
+
+\subsubsection{Private Key Encryption} 
+In private key encryption two parties (Alice and Bob, of course)
+know a ``secret key'' that allows them to both encrypt and
+decrypt a message.  A perfectly secure system is a ``one-time pad'' containing a list of random characters, one for each character in the message. 
+
+\begin{exmp}
+	Consider the letter $M$ in ASCII encoding: $M = 0100 1101$. And the secret code is $C = 0100 0011$. The encoded message is $E = M \oplus C = 0000 1110$. To decode, we just do $D = E\oplus C = 0100 1101 = M$. 
+\end{exmp}
+
+
+\subsubsection{Public Key Encryption}
+In public key encryption there are two keys, a public key used
+for encoding and a private key used for decoding. \\
+
+The key (sorry) to public key encryption is that even if you know
+the public key it is hard (mathematically hard) to figure out what
+the private key is, but if you generate a private key it is easy
+(mathematically easy) to generate the associated public key.\\
+
+Every time you do an online transaction – sending your credit card
+number to a company via your web browser you use public key
+encryption. In particular you use RSA (named RSA after its inventors
+Rivest, Shamir, and Adleman who designed it in 1977).\\
+
+In RSA the private (decoding) key requires knowledge of two
+prime numbers p and q and the public (encoding) key requires
+knowledge of only the composite number N = pq. The fact that
+finding primes is easy, creating a composite is easy, and
+factoring a composite is hard is the basis for RSA encryption.
+
+
+
+\subsubsection{RSA Encryption}
+In RSA the private (decoding) key requires knowledge of two
+prime numbers p and q and the public (encoding) key requires
+knowledge of only the composite number N = pq. The fact that
+finding primes is easy, creating a composite is easy, and
+factoring a composite is hard is the basis for RSA encryption.\\
+
+To generate the two keys Bob choose two large prime numbers $p$
+and $q$ which he turns into a composite number $N = pq$ and an
+encoding number (also large) $c$ that is relatively prime with
+$(p-1)(q-1)$. \\
+
+So, the public key is going to be $\{ N,c\}$. For example, say this is $\{91,11\}$ where $p=7, q=13$. Bob creates  decoding key $d$ such that $cd = 1\mod (p-1)(q-1)$. The private key is then $\{N,d\}$. For example, this can be $\{91,59\}$. \\
+
+Here's how RSA encryption works:
+\begin{itemize}
+	\item \textbf{Encoding:} Alice wants to send a private message to Bob. Bob creates a public key and sends it to Alice over a public channel.
+	\begin{itemize}
+		\item Alice creates a numerical representation of the message $\{a_1,\dots,a_n\}$
+		\item Alice encodes the message using the pubic key to create $\{ e_1, \dots, e_n \}$ where $e_i = a_i^c \mod N$. 
+		\item Alice sends the encoded message to Bob over a public channel. 
+	\end{itemize}
+	
+	\item \textbf{Decoding:} Bob needs to decode the message. (In fact, anyone who can figure out the prime factors of N = 91 could do this, but factoring is hard!) 
+	\begin{itemize}
+		\item Bob decodes the message using the private key to create $\{m_1,\dots, m_n\}$ where $m_i = e_i^d\mod N$.  
+	\end{itemize}
+\end{itemize}  
+
+There is a proof in Mermin, page 66, that decoding always works. The reader can also try to prove this on his own.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+\section{Shor's Algorithm \& The Quantum Fourier Transform}
+
+
+\subsection{Background}
+
+Background: In 1993 Dan Simon found a quantum
+algorithm that can efficiently find a hidden ``period'' a for a
+function defined by
+\begin{align}
+f(x \oplus a) = f(x).
+\end{align}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{rsa1}
+\end{figure}
+
+
+Shortly afterwards, in 1994, Peter Shor used a very similar
+approach to finding the hidden period of a function 
+\begin{align}
+f(x+k) = f(x) = b^x \mod N
+\end{align}
+Goal: Explain the approach needed to solve the problem!
+
+
+\subsection{Factoring a number quantum mechanically}
+
+Shor realized that there's an equivalence between factoring a number $N$ and finding the period (order) $r$ of the function
+\begin{align}
+f(x) = b^x \mod N.
+\end{align}
+
+\noindent \textbf{Quantum parallelism:} Shor's algorithm starts the same way as Simon's – except in this case the ``oracle'' computes a known function.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{shor1}
+\end{figure}
+
+The state of the input register after the Hadamard is of course
+\begin{align}
+\ket{\psi_i}_n = \had^{\otimes n} \ket{0}_n = \f{1}{\sqrt{2^n}}\sum_{0 \leq x < 2^n} \ket{x}_n.
+\end{align}
+And the output is 
+\begin{align}
+\ket{\psi_0}_{n_0} = \ket{0}_{n_0}
+\end{align}
+$n$ is the number of bits needed to represent the
+number of $x$ values you need to evaluate $n = 2n_0$. $n_0$ is the number of bits needed to represent $N$. \\
+
+
+\noindent \textbf{Output of the Oracle:} The output of the (linear) oracle is a state that is entangled between the
+input and output registers:
+\begin{align}
+\ket{\psi_2} = \f{1}{\sqrt{2^n}} \sum_{0 \leq x < 2^n} \ket{x}_n \ket{f(x)}_{n_0}.
+\end{align}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{shor2}
+\end{figure}
+All possible x values and their associated f(x) values
+are equally weighted. \\
+
+
+
+
+\noindent \textbf{Manipulating the output to get an answer:} The output register is measured, and gives specific value of $f(x)$, which
+is drawn with equal probability from all possible values of $f(x)$. 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.14]{shor3}
+\end{figure}
+
+Of course after the measurement, $\ket{\psi_0}_{n_0} = \ket{f_0}_{n_0}$ where $f_0 = b^{x_0}\mod N$, and
+\begin{align}
+\ket{f_0}_{n_0}= \ket{f(x_0)}_{n_0} = \ket{f(x_0 + kr)}_{n_0}
+\end{align}
+for any integer $k$ and the period $r$. \\
+
+There are many $(m)$ possible values of the input register that are
+consistent with a specific value of the output register. Here $m$ is the number of states that have $k$ values that satisfy
+\begin{align}
+x_0 + kr \leq 2^n \implies m = \lb \f{2^n}{r} \rb.
+\end{align}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{shor4}
+\end{figure}
+where
+\begin{align}
+\ket{\psi_3} = \f{1}{\sqrt{m}} \sum^{m-1}_{k=0}\ket{x_0 + kr}_n \ket{f_0}_{n_0}.
+\end{align}
+If we could just clone the output state, we could measure the state multiple times and determine a set of values separated by multiples of $r$ (and therefore $r$), but the no-cloning theorem says we're out of luck with that approach!\\
+
+
+
+
+
+
+
+\noindent \textbf{Manipulating the output to get an answer, Part 2:} We need to do something more clever than the $n$-Qbit Hadamard to figure out the periodicity of the state. That thing is the ``Quantum Fourier Transform,'' which preferentially populates states $\ket{y}_n$
+that come at integer factors of the period $r$ independent of $x_0$.  
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{shor5}
+\end{figure}
+
+
+
+
+\subsection{The Quantum Fourier Transform}
+In 1994, Peter Shor thought about using an ``oracle query''
+approach to find the period of a function 
+\begin{align}
+f(x+r) = f(x) = b^x \mod N.
+\end{align}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{shor6}
+\end{figure}
+\begin{align}
+\ket{\psi_3} = \f{1}{\sqrt{m}}\sum^{m-1}_{k=0} \ket{x_0 + kr}_n \ket{f_0}_{n_0}.
+\end{align}
+The quantum state, after measurement of the output register, is
+a state which is periodic in $r$. Goal: Explain the approach needed to solve the problem!
+
+
+ 
 
 
 
@@ -1397,20 +1701,7 @@ q = \lp 1-\f{1}{2^{x+n}}\rp \lp 1-\f{1}{2^{x+n-1}}\rp \dots \lp 1-\f{1}{2^{x+2}}
 
 
 
-\newpage
 
-
-\section{Breaking NSA encryption}
-
-\subsection{Preiod finding, factoring, and cryptography}
-\subsection{Number-theoretic preliminaries}
-\subsection{RSA encryption}
-\subsection{Quantum period finding: preliminary remarks}
-\subsection{Eliminating the 2-Qbit gates}
-\subsection{Finding the period}
-\subsection{Calculating the periodic function}
-\subsection{The unimportance of small phase errors}
-\subsection{Period finding and factoring}
 
 
 \newpage
@@ -4635,7 +4926,8 @@ which is the just the regular 1-Qbit Hadamard. \qed\\
 	
 	
 	\item Apply the 3-Qbit QFT to the state $\ket{\psi} = (1/\sqrt{3})\lp \ket{1} + \ket{4} + \ket{7} \rp$. What do you observe about the transformed state? What makes this transformation
-	different than the prior ones?
+	different than the prior ones?
+
 	\begin{align}
 	\U_{FT}\ket{\psi} &= \f{1}{\sqrt{2^4}}\begin{bmatrix}
 	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
@@ -4673,7 +4965,8 @@ which is the just the regular 1-Qbit Hadamard. \qed\\
 	
 	
 	\item Apply the 3-Qbit QFT to the state $\ket{\psi} = (1/\sqrt{3})\lp \ket{0} + \ket{3} + \ket{6} \rp$. What do you observe about the transformed state? What makes this transformation
-	different than the prior ones?
+	different than the prior ones?
+
 	\begin{align}
 	\U_{FT}\ket{\psi} &= \f{1}{\sqrt{2^4}}\begin{bmatrix}
 	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
