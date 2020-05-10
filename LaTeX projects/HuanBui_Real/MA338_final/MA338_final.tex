@@ -14,7 +14,7 @@
 	urlcolor={blue!80!black}
 }
 \usepackage{newpxtext,newpxmath}
-\usepackage[left=1.25in,right=1.25in,top=1.5in,bottom=1.5in]{geometry}
+\usepackage[left=1in,right=1in,top=1.5in,bottom=1.5in]{geometry}
 
 \newcommand{\f}[2]{\frac{#1}{#2}}
 
@@ -421,7 +421,8 @@ $\,$\\
 	
 	
 	
-	\noindent \textit{\underline{Proof}:} Let $f,g,h\in V$ and $c\in \mathbb{C}$ be given.
+	\noindent \textit{\underline{Proof}:} Let $f,g,h\in V$ and $c\in \mathbb{C}$ be given. From MA352: Complex Analysis, we know that the real and imaginary part of a continuous complex-valued function on $[0,1]$ are also continuous on $[0,1]$. This means if $f\in V$ then $\Re{f}, \Im{f} \in V$. Since products and sums of continuous functions on $[0,1]$ are also continuous on $[0,1]$. Further, the complex conjugate of a continuous function on $[0,1]$ is also a continuous function on $[0,1]$, so if $f,g\in V$ then $f\overline{g}\in V$. Now we're ready to show the axioms of a  complex inner product are satisfied. 
+	
 	\begin{itemize}
 		\item $\boxed{\langle f,g \rangle = \overline{\langle g,f\rangle}}$. We have that
 		\begin{align*}
@@ -452,37 +453,95 @@ $\,$\\
 		
 		
 		
-		\item $\boxed{\langle f+g ,h \rangle  = \langle f,h \rangle + \langle g,h\rangle}$. We have that 
+		\item $\boxed{\langle f+g ,h \rangle  = \langle f,h \rangle + \langle g,h\rangle}$. Since $f,g,h\in V$, we have that $(f+g\overline{h}) = f\overline{h} + g\overline{h} \in V$. This means $(f+g)\overline{h}, f\overline{h}, g\overline{h}$, and their respective real and imaginary parts are Riemann-integrable on $[0,1]$ (Theorem 6.8). With this, we can use the usual (linear) properties of the integral (Theorem 6.12):
+%		We have that 
+%		\begin{align*}
+%		\Re{(f+g)\overline{h}} = \Re{f\overline{h} + g\overline{h}} =\Re{f\overline{h}} + \Re{g\overline{h}}\\
+%		\Im{(f+g)\overline{h}} = \Im{f\overline{h} + g\overline{h}} =\Im{f\overline{h}} + \Im{g\overline{h}}
+%		\end{align*}
+%		So,
+%		\begin{align*}
+%		\langle f+g,h\rangle &= \int^1_0 (f+g)\overline{h}\,dx \\
+%		&= \int^1_0 \Re{(f+g)\overline{h}}\,dx + i\int^1_0 \Im{(f+g)\overline{h}}\,dx\\
+%		&= \int^1_0 \Re{f\overline{h}} + \Re{g\overline{h}}\,dx + i\int^1_0 \Im{f\overline{h}} + \Im{g\overline{h}}\,dx\\ 
+%		&= \int^1_0 \Re{f\overline{h}}\,dx + i\int^1_0\Im{f\overline{h}} \,dx  + \int^1_0 \Re{g\overline{h}}\,dx + i\int^1_0\Im{g\overline{h}} \,dx \\
+%		&= \int^1_0 f\overline{h}\,dx + \int^1_0 g\overline{h}\,dx\\
+%		&=\langle f,h\rangle + \langle g,h\rangle.
+%		\end{align*}
 		\begin{align*}
-		\Re{(f+g)h} = \Re{fh + gh} =\Re{fh} + \Re{gh}\\
-		\Im{(f+g)h} = \Im{fh + gh} =\Im{fh} + \Im{gh}
+		\langle f+g,h\rangle &= \int^1_0 (f+g)\overline{h}\,dx\\
+		&= \int^1_0 f\overline{h} + g\overline{h}\,dx\\
+		&= \int^1_0 f\overline{h}\,dx + \int^1_0 g\overline{h}\,dx\\
+		&= \langle f,h\rangle + \langle g,h\rangle.
 		\end{align*}
-		So,
+		
+		
+		\item $\boxed{\langle f, g+h \rangle  = \langle f,g \rangle + \langle f,h\rangle}$. Here we use the fact that $\overline{g+h} = \overline{g} + \overline{h}$:
 		\begin{align*}
-		\langle f+g,h\rangle &= \int^1_0 (f+g)\overline{h}\,dx \\
-		&= \\
-		&= \\
-		&= 
+		\langle f, g+h\rangle &= \int^1_0 f\overline{(g+h)}\,dx\\
+		&= \int^1_0 f\overline{g} + f\overline{h}\,dx\\
+		&= \int^1_0 f\overline{g}\,dx + \int^1_0 f\overline{h}\,dx\\
+		&= \langle f,g\rangle + \langle f,h\rangle.
 		\end{align*}
 		
 		
-		\item $\boxed{\langle f, g+h \rangle  = \langle f,g \rangle + \langle f,h\rangle}$
+		\item $\boxed{\langle cf,g\rangle = c\langle f,g\rangle}$. This follows from one of the properties of the integral:
+		\begin{align*}
+		\langle cf, g\rangle = \int^1_0 cf\overline{g}\,dx = c\int^1_0 f\overline{g}\,dx= c\langle f,g\rangle.
+		\end{align*}
 		
-		
-		\item $\boxed{\langle cf,g\rangle = c\langle f,g\rangle}$
-		
-		\item $\boxed{\langle f,cg\rangle = \overline{c}\langle f,g\rangle}$
-		
+		\item $\boxed{\langle f,cg\rangle = \overline{c}\langle f,g\rangle}$. This also follows from one of the properties of the integral:
+		\begin{align*}
+		\langle f, cg\rangle = \int^1_0 f\overline{cg}\,dx = \int^1_0 f\overline{c}\overline{g}\,dx = \overline{c}\int^1_0 f\overline{g}\,dx = \overline{c}\langle f,g\rangle.
+		\end{align*}
 		
 		\item $\langle f,f\rangle$ is a nonnegative real number and $\langle f,f \rangle = 0$ if and only if $f=0$.
+		\begin{enumerate}[(i)]
+			\item $\langle f,f\rangle$ is a nonnegative real number. First,
+			\begin{align*}
+			\langle f,f\rangle = \overline{\langle f,f\rangle}
+			\end{align*}
+			since the first axiom is satisfied. This means $\langle f,f\rangle$ is a real number. Next, suppose $f$ is a continuous function on $[0,1]$, then $f^2$ is also a continuous function on $[0,1]$. With this, we proceed:
+			\begin{align*}
+			\langle f,f\rangle =  \int^1_0  f\overline{f}\,dx &= \int^1_0 \left(\Re{f} + i\Im{f}\right)\left(\Re{f} - i\Im{f}\right) \,dx\\
+			&= \int^1_0 \left(\Re{f}\right)^2 + \left(\Im{f}\right)^2\,dx.
+			\end{align*}
+			Now, the integrand is a continuous, nonnegative, real-valued function on $[0,1]$ (hence integrable on $[0,1]$). So we have, by Theorem 6.13, 
+			\begin{align*}
+			\langle f,f\rangle 
+			= \int^1_0 \left(\Re{f}\right)^2 + \left(\Im{f}\right)^2\,dx&= \int^1_0 \abs{\left(\Re{f}\right)^2 + \left(\Im{f}\right)^2}\,dx \\
+			&\geq \abs{\int^1_0 \left(\Re{f}\right)^2 + \left(\Im{f}\right)^2\,dx} \\
+			&\geq 0.
+			\end{align*} 
+			So, $\langle f,f\rangle$ is a nonnegative real number. 
+			
+			
+			
+			
+			\item $\langle f,f \rangle = 0$ if and only if $f=0$: If $f =0$ then 
+			\begin{align*}
+			\langle f,f\rangle = \int^1_0 0\,dx= 0.
+			\end{align*}
+			If $\langle f,f\rangle = 0$ then 
+			\begin{align*}
+			\int^1_0 \left(\Re{f}\right)^2 + \left(\Im{f}\right)^2\,dx = 0 \iff \Re{f} = \Im{f} = 0 \iff f=0.
+			\end{align*}
+		Note that we don't worry about the case where $f$ can be zero almost everywhere because $f$ is continuous on $[0,1]$. 
+		 
+		\end{enumerate}
+		\hfill$\square$ 	
+
+	
+	
+
+	 
 		
-		
-		
+	
 	\end{itemize}  
 	
 	
 	
-	
+	\newpage
 	
 	
 	
@@ -499,7 +558,169 @@ $\,$\\
 		\item Given $x,y\in \mathcal{H}$ and $\alpha,\beta \in \mathbb{C}$, we define $\alpha x + \beta y$ to be the limit of the sequence $\alpha x_i + \beta y_i$, where $x_i$ is any sequence in $V$ converging to $x$, $y_i$ is any sequence in $V$ converging to $y$. Show that this definition is well-defined. 
 		
 		
+		\noindent \textit{\underline{Proof}:} First, we call Cauchy the sequence $\{y_n\}$ in $V$ equivalent to another Cauchy sequence $\{x_n\}$ in $V$ if $ \lim_{n\to \infty}d(y_n,x_n) =0$. This establishes an equivalence relation:
+		\begin{itemize}
+			\item \textit{Reflexivity:} $d(x_n,x_n) = \sqrt{\langle x_n-x_n,x_n-x_n\rangle} = \sqrt{\langle 0,0 \rangle} =0$ for all $n$, so $\lim_{n\to \infty} d(x_n,x_n) = 0$, which means $\{x_n\}$ is equivalent to itself. 
+			\item \textit{Symmetry:} Suppose $\{y_n\}$ is equivalent to $\{x_n\}$, then because 
+			\begin{align*}
+			d(y_n,y_n) = \sqrt{\langle y_n -x_n, y_n-x_n\rangle} = \sqrt{\langle x_n-y_n, x_n-y_n \rangle} = d(x_n,y_n),
+			\end{align*}
+			we have $\lim_{n\to \infty} d(y_n,x_n) = \lim{n\to \infty} d(x_n,y_n) = 0$, so $\{x_n\}$ is equivalent to $\{y_n\}$. 
+			\item \textit{Transitivity:} If $\{x_n\}$ is equivalent to $\{y_n\}$ and $\{y_n\}$ is equivalent to $\{z_n\}$ then because $
+			d(x_n,z_n) \leq d(x_n,y_n) + d(y_n , z_n)$
+			(since $d(x,y)$ defines a metric on $V$), and because $\lim_{n\to \infty}d(x_n,y_n) = 0 = \lim_{n\to\infty}d(y_n,z_n)$, we have that $\lim_{n\to \infty}d(x_n,z_n) = 0$ as well, by comparison test. So, $\{x_n\}$ is equivalent to $\{z_n\}$.   
+		\end{itemize}
+		$\mathcal{H}$ is the metric completion of $V$, so it is the set of all equivalence classes obtained above. If $X \in \mathcal{H}$ and $Y\in \mathcal{H}$ and $\{x_n\} \in X, \{y_n\}\in Y$ , then $
+		\Delta (X,Y) = \lim_{n\to \infty}d(x_n,y_n)$ defines a distance function in $\mathcal{H}$ (the proof is similar to that in Exercise 24(b), Chapter 3, Baby Rudin).
+		
+		Now, we define $\alpha x + \beta y$ to be the limit of $\{\alpha x_i + \beta y_i\}$ for $x_i \to x$ and $y_i \to y$, i.e., $\{x_i\}\in X$ and $\{ y_i\} \in Y$. To show that this definition is well-defined, we want to show that the sequences $\{\alpha x_i + \beta y_i\}$ is equivalent to the sequence $\{ \alpha u_i + \beta v_i \}$, provided that $\{x_i\}, \{u_i\} \in X$ and $\{y_i\}, \{v_i\} \in Y$. To this end, we want to show 
+		\begin{align*}
+		\lim_{i\to\infty} d(\alpha x_i + \beta y_i , \alpha u_i + \beta v_i) = 0.
+		\end{align*}
+		From our definition of the distance function $\Delta$ above, we have
+		\begin{align*}
+		\lim_{n\to \infty}d(\alpha x_i + \beta y_i, \alpha u_i + \beta v_i) = \Delta(\alpha X + \beta Y, \alpha X + \beta Y) = 0.
+		\end{align*}
+		\hfill$\square$ 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		\item Imitate the procedure above to show how to extend the inner product so that $\langle x,y\rangle$ is defined for all $x,y\in \mathcal{H}$. (Hint: extend one variable at a time.)
+		
+		
+		\noindent \textit{\underline{Proof}:} Now, we will let $\langle \cdot,\cdot \rangle_V$ denote the inner product in $V$ and $\langle  \cdot, \cdot \rangle_\mathcal{H}$ denote the inner product in $\mathcal{H}$, which we will define as an extension of $\langle \cdot, \cdot \rangle_V$. We will try to extend in one variable at a time. Let $\{x_i\} \in X \in \mathcal{H}$ and $\{y_i\} \in Y \in \mathcal{H}$ be given. We define 
+		\begin{align*}
+		\langle X,Y\rangle_\mathcal{H} = \lim_{i\to \infty}\langle x_i, y_i\rangle_V.
+		\end{align*}
+		We will first show that the limit on the right hand side exists. Then we will show that this definition is well defined. Finally, we will show that this definition gives an inner product on $\mathcal{H}$. 
+		
+		To prove: $\lim_{i\to\infty}\langle x_i,y_i \rangle$ exists. Let $\{x_i\}$ and $\{y_i\}$ be Cauchy sequences in $V$. Then we have
+		\begin{align*}
+		\abs{\langle x_n,y_n\rangle_V - \langle x_m,y_m\rangle_V} &= \abs{\langle x_n,y_n \rangle_V - \langle x_n, y_m\rangle_V + \langle x_n,y_m \rangle_V - \langle x_m,y_m \rangle_V}\\
+		&= \abs{\langle x_n, y_n -y_m \rangle_V  + \langle x_n-x_m, y_m \rangle_V }\\
+		&\leq \abs{\langle x_n, y_n -y_m \rangle_V} + \abs{\langle x_n-x_m, y_m \rangle_V}\\
+		&\leq \norm{x_n}_V\norm{y_n-y_m}_V + \norm{y_m}_V\norm{x_n - x_m}_V 
+		\end{align*}
+		where 
+		\begin{align*}
+		\norm{x_n}_V = \sqrt{\abs{\langle x_n,x_n\rangle_V}} = d(x,0)
+		\end{align*}
+		and the last inequality is the Cauchy-Schwarz inequality:
+		\begin{align*}
+		\abs{\langle x,y\rangle_V}  \leq \sqrt{\abs{\langle x,x\rangle_V}}\sqrt{\abs{\langle y,y\rangle_V}}= \norm{x}_V \norm{y}_V.
+		\end{align*}
+		Since $\{x_i\}$ and $\{y_i\}$ are Cauchy sequences, they are bounded. Thus, there exists some $M > 0$ such that for all $m,n$ 
+		\begin{align*}
+		\abs{\langle x_n,y_n\rangle_V - \langle x_m,y_m\rangle_V} \leq M\left( \norm{y_n-y_m}_V + \norm{x_n - x_m}_V \right).
+		\end{align*}
+		By the Cauchy-ness of $\{y_i\}$ and $\{x_i\}$, when given any $\epsilon > 0$,  there are $m,n$ are sufficiently large such that
+		\begin{align*}
+		\abs{\langle x_n,y_n\rangle_V - \langle x_m,y_m\rangle_V}  \leq M\left( \norm{y_n-y_m}_V + \norm{x_n - x_m}_V \right) < \epsilon.
+		\end{align*}
+		This means $\{ \langle x_i, y_i\rangle_V \}$ is a Cauchy sequence in $\mathbb{R}$. Since $\mathbb{R}$ is complete, $\{ \langle x_i, y_i\rangle_V \}$ converges, and thus $\lim_{i\to \infty}\langle x_i, y_i\rangle_V$ exists. 
+		
+		
+		Now, we want to show that the definition 
+		\begin{align*}
+		\langle X,Y\rangle_\mathcal{H} = \lim_{i\to \infty}\langle x_i, y_i\rangle_V.
+		\end{align*}
+		is well-defined. Let $\{x_i\}, \{u_i\} \in X$, i.e., $\{x_i\}$ and $\{u_i\}$ are equivalent, and $\{y_i\}, \{ v_i\} \in Y$. Then
+		\begin{align*}
+		\abs{\langle x_n,y_n\rangle_V - \langle u_n,v_n\rangle_V} &= \abs{\langle x_n,y_n \rangle_V - \langle x_n, v_n\rangle_V + \langle x_n,v_n \rangle_V - \langle u_n,v_n \rangle_V}\\
+		&= \abs{\langle x_n, y_n -v_n \rangle_V  + \langle x_n-u_n, y_m \rangle_V }\\
+		&\leq \abs{\langle x_n, y_n -v_n \rangle_V} + \abs{\langle x_n-u_n, y_m \rangle_V}\\
+		&\leq \norm{x_n}_V\norm{y_n-v_n}_V + \norm{v_n}_V\norm{x_n - u_n}_V .
+		\end{align*}
+		Again, $\{v_i\}$ and $\{x_i\}$ are bounded and the fact that $\lim_{i\to\infty}d(y_i,v_i) = 0 = \lim_{i\to\infty}d(x_i,u_i)$, we have
+		\begin{align*}
+		\lim_{i\to \infty}\langle x_i,y_i\rangle_V = \lim_{i\to\infty}\langle u_i,v_i \rangle_V.
+		\end{align*}
+		This says that the number $\langle X,Y\rangle_\mathcal{H}$ is unchanged when we picked different representatives for $X,Y$, i.e., the definition $\langle x,y\rangle_\mathcal{H} = \lim_{n\to\infty}\langle x_n,y_n\rangle_V$ is well-defined. 
+		
+		
+		Finally, we want to show that $\langle X,Y\rangle_{\mathcal{H}}$ defines an inner product. To this end, we once again check that $\langle \cdot,\cdot\rangle_\mathcal{H}$ satisfies the axioms for complex inner products. This is more straightforward because a lot of these properties carry over from the inner product in $V$:
+		\begin{enumerate}[(i)]
+			\item Let $\{x_n\} \in X$ and $\{y_n\} \in Y$ be given. $X,Y\in \mathcal{H}$:
+ 			\begin{align*}
+			\langle X,Y \rangle_\mathcal{H} = \lim_{n\to \infty}\langle x_n,y_n \rangle_V = \lim_{n\to \infty}\overline{\langle y_n,x_n \rangle_V} = \overline{\lim_{n\to \infty}{\langle y_n,x_n \rangle_V}} = \overline{\langle Y,X\rangle_\mathcal{H}}.
+			\end{align*}
+			
+			\item Let $\{x_n\} \in X$, $\{y_n\} \in Y$, and $\{z_n\} \in Z$ be given. $X,Y,Z\in \mathcal{H}$:
+			\begin{align*}
+			\langle X+Y,Z \rangle_\mathcal{H} &= \lim_{n\to\infty}\langle x_n+y_n,z_n \rangle_V \\
+			&= \lim_{n\to\infty}\left(\langle x_n,z_n \rangle_V + \langle x_n,y_n\rangle_V\right) \\
+			&= \lim_{n\to\infty}\langle x_n,z_n \rangle_V + \lim_{n\to\infty}\langle x_n,y_n\rangle_V\\
+			&= \langle X,Z \rangle_\mathcal{H} + \langle X,Y\rangle_\mathcal{H} 
+			\end{align*}
+			which follows from the fact that $\lim_{n\to\infty}\langle x_n,y_n \rangle_V$ exists for all Cauchy sequences $\{x_n\}, \{y_n\}$ in $V$.
+			
+			\item Similarly,
+			\begin{align*}
+			\langle X,Y+Z\rangle_\mathcal{H} = \langle X,Y\rangle_\mathcal{H} + \langle X,Z\rangle_\mathcal{H}.
+			\end{align*}
+			
+			\item Let a constant $c\in \mathbb{C}$ be given
+			\begin{align*}
+			\langle cX,Y\rangle_\mathcal{H} = \lim_{n\to\infty}\langle cx_n,y_n\rangle_V = c \lim_{n\to\infty}\langle x_n,y_n\rangle_V = c\langle X,Y\rangle_\mathcal{H}.
+			\end{align*}
+
+			
+			
+			\item Let a constant $c\in \mathbb{C}$ be given
+			\begin{align*}
+			\langle X,cY\rangle_\mathcal{H} = \lim_{n\to\infty}\langle x_n,cy_n\rangle_V = \overline{c} \lim_{n\to\infty}\langle x_n,y_n\rangle_V = \overline{c}\langle X,Y\rangle_\mathcal{H}.
+			\end{align*}
+			
+			
+			\item 
+			\begin{align*}
+			\langle X,X\rangle_\mathcal{H} = \lim_{n\to \infty}\langle x_n,x_n\rangle_V = \lim_{n\to\infty}\norm{x_n}^2.
+			\end{align*}
+			Since $\{x_n\}$ is Cauchy (hence bounded), the limit exists and is a nonnegative real number. So, $\langle X,X\rangle_\mathcal{H}$ is a nonnegative real number. 
+			
+			
+			If $X = 0$, then 
+			\begin{align*}
+			\langle X,X\rangle_{\mathcal{H}} = \lim_{n\to\infty}\langle x_n,x_n \rangle_V = \langle 0,0\rangle_V = 0.
+			\end{align*}
+			If $\langle X,X\rangle_\mathcal{H} = 0$ then 
+			\begin{align*}
+			\langle X,X\rangle_\mathcal{H} =\lim_{n\to\infty}\langle x_n,x_n\rangle_V = \lim_{n\to\infty} (d(x_n,0))^2 =  0,
+			\end{align*}
+			which implies 
+			\begin{align*}
+			\lim_{n\to\infty}d(x_n,0) = 0,
+			\end{align*}
+			so $\{x_n\} \to 0$. Thus, $X = 0$.
+		\end{enumerate}		
+	\hfill$\square$
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	\end{itemize}
 \end{enumerate}
 
@@ -523,20 +744,44 @@ $\,$\\
 	\end{align*}
 	with $m=1$ or $m=-1$.
 	
+	\noindent \textit{\underline{Proof}:}
+	
+	
+	
+	
+	
+	
+	
 	\item Prove that there does not exist a function $f: \mathbb{R}^2 \to \mathbb{R}$ that satisfies $\abs{f(x) - f(y)} = \norm{x-y}$ for all $x,y\in \mathbb{R}^2$.
+	
+	
+	
+	\noindent \textit{\underline{Proof}:}
 	
 	
 	\item Prove that if $f: \mathbb{R}^n \to \mathbb{R}^n$ satisfies $\norm{f(x) - f(y)} = \norm{x-y}$ for all $x,y\in \mathbb{R}^n$ then $f$ is onto.
 	
 	
-	
+	\noindent \textit{\underline{Proof}:}
 	
 	\item Let $\mathcal{H}$ denote an infinite dimensional (real or complex) Hilbert space. Given an example of a function $f: \mathcal{H} \to \mathcal{H}$ that satisfies 
 	\begin{align*}
 	\norm{f(x) - f(y)} = \norm{x-y}
 	\end{align*} 
 	for all $x,y\in \mathcal{H}$ but $f$ is \textit{not} onto. 
+	
+	
+	
+	
+	\noindent \textit{\underline{Solution}:}
+	
+	
+	
+	
+	
+	
 \end{enumerate}
+
 
 
 
