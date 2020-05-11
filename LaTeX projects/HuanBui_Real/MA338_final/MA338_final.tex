@@ -744,7 +744,15 @@ $\,$\\
 	\end{align*}
 	with $m=1$ or $m=-1$.
 	
-	\noindent \textit{\underline{Proof}:}
+	\noindent \textit{\underline{Proof}:} For any $\epsilon > 0$, there exists $\delta = \epsilon$ such that whenever $\abs{x-y} < \delta$, $\abs{f(x) - f(y)} < \epsilon$. So $f$ is continuous at all $x\in \mathbb{R}$. Further, for any $x\neq y$
+	\begin{align*}
+	\f{\abs{f(x) - f(y)}}{\abs{x-y}} = 1
+	\end{align*}
+	which implies 
+	\begin{align*}
+	\lim_{x\to y}\f{f(x) - f(y)}{x-y} = \pm 1.
+	\end{align*}
+	So, $f$ is differentiable at all $x\in \mathbb{R}$, with $f'(x) = \pm 1$. If $f'(x) = 1$ then $f(x) = x+b$ for some constant $b\in \mathbb{R}$. If $f'(x) = -1$ then $f(x) = -x+b$ for some constant $b\in \mathbb{R}$. So, $f(x) = mx+b$ with $m=1$ or $m=-1$.\hfill$\square$
 	
 	
 	
@@ -756,13 +764,85 @@ $\,$\\
 	
 	
 	
-	\noindent \textit{\underline{Proof}:}
+	\noindent \textit{\underline{Proof}:} Suppose such a function $f$ exists. Consider 3 distinct points $x,y,z\in \mathbb{R}^2$ such that $\norm{x-y} = \norm{y-z} = \norm{z-x} = 1$. Our assumption about $f$ tells us that 
+	\begin{align*}
+	\abs{f(x)-f(y)} = \abs{f(y) - f(z)} = \abs{f(z) - f(x)}=1.
+	\end{align*} 
+	Now, because $f(x),f(y),f(z)$ are three points in $\mathbb{R}$, this cannot happen: if $\abs{f(x) - f(y)} = \abs{f(y) -f(z)} = 1$, we must have that $f(z) = f(x)$ or $f(z) = f(x) \pm 2$. In either case $\abs{f(x) - f(z)}\neq 1$. So, no such function $f$ exists. \hfill$\square$ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	\item Prove that if $f: \mathbb{R}^n \to \mathbb{R}^n$ satisfies $\norm{f(x) - f(y)} = \norm{x-y}$ for all $x,y\in \mathbb{R}^n$ then $f$ is onto.
 	
 	
-	\noindent \textit{\underline{Proof}:}
+	\noindent \textit{\underline{Proof}:} Without loss of generality, let us assume that $f(0) = 0$. So that $\norm{f(x)} = \norm{x}$ for all $x\in \mathbb{R}^n$. We will prove that $f$, in this case, is \textit{linear}, using the usual Euclidean inner product $\langle \cdot, \cdot \rangle$ defined by
+	\begin{align*}
+	\langle x,y\rangle = \sum^n_{i=1}x_iy_i
+	\end{align*}
+	for $x = (x_1,x_2,\dots,x_n)^\top \in \mathbb{R}^n$ and $y = (y_1,y_2,\dots,y_n)\in \mathbb{R}^n$. From this definition we have that for $x\in \mathbb{R}^n$,
+	\begin{align*}
+	\norm{x}^2 = \langle x,x\rangle.
+	\end{align*}
+	The inner product satisfies the axioms for real inner product. Further, the function $f$ preserves this inner product. We can show this via the polarization identity:
+	\begin{align*}
+	\langle x,y\rangle = \f{1}{4}\left( \norm{x+y}^2 - \norm{x-y}^2  \right).
+	\end{align*}
+	Because $\norm{f(x)-f(y)} =\norm{x-y}$, we have
+	\begin{align*}
+	\langle f(x),f(y)\rangle &= \f{1}{4}\left( \norm{f(x)+f(y)}^2 - \norm{f(x)-f(y)}^2  \right)\\
+	&= \f{1}{4}\left( \norm{x+y}^2 - \norm{x-y}^2  \right)\\
+	&= \langle x,y\rangle.
+	\end{align*}
+	With this, we are ready to show $f$ is linear. To this end, we want to show:
+	\begin{itemize}
+		\item $f(u+v) = f(u) + f(v)$.
+		\item $f(\alpha u) = \alpha f(u)$, $\alpha \in \mathbb{R}$. 
+	\end{itemize}
+	
+	First, we will show $f(u+v) = f(u) + f(v)$:
+	\begin{align*}
+	\norm{ f(u+v) - f(u) - f(v)}^2 
+	&= \langle f(u+v) - f(u) - f(v), f(u+v) - f(u) - f(v)\rangle\\
+	&= \norm{f(u+v)}^2 + \norm{f(u)}^2 + \norm{f(v)}^2 \\
+	&\qquad- 2\langle f(u+v),f(u)\rangle -2\langle f(u+v),f(v)\rangle +2\langle f(u),f(v) \rangle\\
+	&= \norm{u+v}^2 + \norm{u}^2 + \norm{v}^2 -2\langle u+v,u+v\rangle +2\langle u,v\rangle\\
+	&=\langle u+v -u-v, u+v-u-v\rangle\\
+	&= \norm{(u+v) - u- v}^2\\
+	&= 0.
+  	\end{align*}   
+	This holds if and only if $f(u+v) = f(u) + f(v)$.
+	
+	
+	Next, we want to show $f(\alpha u) = \alpha f(u)$ for $\alpha \in \mathbb{R}$:
+	\begin{align*}
+	\norm{\alpha f(u) - f(\alpha u)}^2 &= \langle \alpha f(u) - f(\alpha u), \alpha f(u) - f(\alpha u)  \rangle\\
+	&= \norm{\alpha f(u)}^2 + \norm{f(\alpha u)}^2 -2\langle \alpha f(u),f(\alpha u) \rangle  \\
+	&= \norm{\alpha u}^2 + \norm{\alpha u}^2 -2 \alpha\langle  f(u),f(\alpha u) \rangle \\
+	&= \norm{\alpha u}^2 + \norm{\alpha u}^2 -2 \alpha\langle  u,\alpha u \rangle \\
+	&= \norm{\alpha u}^2 + \norm{\alpha u}^2 -2 \langle \alpha u,\alpha u \rangle \\
+	&= \norm{\alpha u}^2 + \norm{\alpha u}^2 -2\norm{\alpha u}^2 \\
+	&= 0.
+	\end{align*}
+	This holds if and only if $\alpha f(u) = f(\alpha u)$. 
+	
+	
+	Thus, we have shown that if $f(0) = 0$ and $f$ is an isometry, then $f$ is linear. Now, $f: \mathbb{R}^n \to \mathbb{R}^n$ is injective because whenever $x\neq y$, $\norm{f(x) - f(y)} = \norm{x-y} \neq 0$ which implies $f(x)\neq f(y)$. So, $\ker{f} = \{0\}$. By the rank-nullity theorem, $\dim\left( \Im(f)\right) = n$, or $f(\mathbb{R}^n) = \mathbb{R}^n$, i.e., $f$ is surjective. Thus, any isometry $f: \mathbb{R}^n \to \mathbb{R}^n$ can be written as bijective linear map followed by a shift. Since a shift is surjective, $f$ is surjective. \hfill$\square$ 
+	
+	
+	
+	
 	
 	\item Let $\mathcal{H}$ denote an infinite dimensional (real or complex) Hilbert space. Given an example of a function $f: \mathcal{H} \to \mathcal{H}$ that satisfies 
 	\begin{align*}
@@ -773,8 +853,19 @@ $\,$\\
 	
 	
 	
-	\noindent \textit{\underline{Solution}:}
-	
+	\noindent \textit{\underline{Solution}:} Consider the Hilbert space $\ell^2 = \{x = (x_1,x_2,\dots): x_i \in \mathbb{C} \mbox{ and } \sum^\infty_{n=1}\abs{x_i}^2 < \infty  \} $ with the norm
+	\begin{align*}
+	\norm{x} = \sqrt{\sum^\infty_{i=1}\abs{x_i}^2}.
+	\end{align*} 
+	Let $f: \ell^2 \to \ell^2$ be defined by
+	\begin{align*}
+	f[(x_1,x_2,x_3,\dots)] = (0,x_1,x_2,x_3,\dots).
+	\end{align*}
+	We see that for $x,y\in \mathcal{H}$, 
+	\begin{align*}
+	\norm{f(x)-f(y)} = \sqrt{\sum^\infty_{i=1}\abs{x_i - y_i}^2} = \norm{x-y},
+	\end{align*}
+	so $f$ is an isometry. However, $f$ is not onto, because $f$ does not map any sequence to $\ell^2$ to any sequence that don't start with $0$ in $\ell^2$, such as $(1,1/2,1/4,1/8,\dots) \in \ell^2$. \hfill $\square$ 
 	
 	
 	
