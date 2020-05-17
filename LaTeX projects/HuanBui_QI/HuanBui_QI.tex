@@ -1255,9 +1255,9 @@ This means
 \U_f \ket{x}_n\f{1}{\sqrt{2}}\lp \ket{0} - \ket{1} \rp = (-1)^{f(x)}\ket{x}_n \f{1}{\sqrt{2}}\lp \ket{0} - \ket{1} \rp.
 \end{align}
 We see that by taking the state of the 1-Qbit output register to be $(1/\sqrt{2})(\ket{0} - \ket{1})$, we convert a bit flip to an overall change of sign. This is the first trick. The second trick is not exactly a trick, but a fact that we will see in the homework:
-\begin{align*}
+\begin{align}
 \had^{\otimes n}\ket{x}_n = \f{1}{\sqrt{2^n}} \sum_{0\leq y < 2^n}(-1)^{x\cdot y}\ket{y}.
-\end{align*}
+\end{align}
 With this, if we start with the $n$-Qbit input register in the standard initial state $\had^{\otimes n}\ket{0}$, put the 1-Qbit output register into $\had\ket{1}$, apply $\U_f$, and then again apply $\had^{\otimes n}$ to the input register we will get
 \begin{align}
 (\had^{\otimes n} \otimes \Id)\U_f(\had^{\otimes n} \otimes \had)\ket{0}_n\ket{1}_1 = \f{1}{2^n}\sum_{0\leq x,y< 2^n}(-1)^{f(x)+x\cdot y}\ket{y}\f{1}{\sqrt{2}}\lp \ket{0} - \ket{1} \rp.
@@ -1615,7 +1615,8 @@ where
 \begin{align}
 \ket{\psi_3} = \f{1}{\sqrt{m}} \sum^{m-1}_{k=0}\ket{x_0 + kr}_n \ket{f_0}_{n_0}.
 \end{align}
-If we could just clone the output state, we could measure the state multiple times and determine a set of values separated by multiples of $r$ (and therefore $r$), but the no-cloning theorem says we're out of luck with that approach!\\
+If we could just clone the output state, we could measure the state multiple times and determine a set of values separated by multiples of $r$ (and therefore $r$), but the no-cloning theorem says we're out of luck with that approach!
+\\
 
 
 
@@ -1648,6 +1649,312 @@ f(x+r) = f(x) = b^x \mod N.
 \end{align}
 The quantum state, after measurement of the output register, is
 a state which is periodic in $r$. Goal: Explain the approach needed to solve the problem!
+
+
+\subsection{Fourier Transforms}
+
+Fourier transforms are transformation in the \textit{representation} of a function. 
+
+\subsubsection{Continuous Fourier Transforms}
+
+As originally conceived the Fourier transform allows the representation of a
+function as \textit{either} a function in time or a function of frequency. 
+\begin{align}
+H(f) = \int_\mathbb{R} h(t) e^{2\pi i t f}\,dt\nn\\
+h(t) = \int_\mathbb{R} H(f) e^{- 2\pi i  t f}\,df .
+\end{align}
+In this definition, both $h(t)$ and $H(f)$ are both complex functions. If $h(t)$ is real then 
+\begin{align}
+H(-f) = H^*(f).
+\end{align}
+An important feature of the Fourier transform is ``time shifting'' or ``frequency shifting''
+\begin{align}
+h(t - t_0) \iff H(f)e^{2\pi i ft_0}\nn\\
+h(t)e^{-2\pi i f_0 t} \iff H(f - f_0).
+\end{align}
+
+
+In physics we often consider the same state vector as a function of
+position or of momentum. The state vector is $\ket{\psi}$. It is represented in the position basis as $\braket{x}{\psi} = \psi(x)$, and in momentum basis as $\braket{p}{\psi} = \phi(p)$. 
+\begin{align}
+\phi(p) = \braket{p}{\psi} = \f{1}{\sqrt{2\hbar \pi}}\int_\mathbb{R} \braket{x}{\psi}e^{-ipx/\hbar}\,dx\nn\\
+\psi(x) = \braket{x}{\phi} = \f{1}{\sqrt{2\hbar \pi}}\int_\mathbb{R} \braket{p}{\psi}e^{+ipx/\hbar}\,dp. 
+\end{align} 
+This version of the equation is explicit in pointing out that the Fourier
+transform is simply a (unitary) basis transformation of the same state. 
+
+\subsubsection{Discrete Fourier Transform}
+
+
+Often data is discretized into a time-series
+\begin{align}
+h(t_k) = h(k\Delta ), \quad k = 0,1,2,\dots, N-1.
+\end{align}
+where $\Delta$ is the time interval between samples (called the ``sampling rate''). The \textit{sampling theorem} says that if a continuous function contains no frequencies greater than the \textit{Nyquist} frequency 
+\begin{align}
+f_c \equiv \f{1}{2\Delta}
+\end{align}
+then the continuous function is fully defined by samples taken at interval $\Delta$. The
+Fourier transform of a discrete finite set of data is defined at a set of frequencies
+\begin{align}
+f_j = \f{j}{N\Delta}.
+\end{align}
+For discretized data we can approximate the Fourier integral by a discrete sum. 
+\begin{align}
+H_j = \sum^{N-1}_{k=0} h_k e^{2\pi i jk/N}\nn\\
+h_k = \f{1}{N}\sum^{N-1}_{j=0} H_j e^{-2\pi ijk /N} .
+\end{align}
+With this definition the discrete Fourier transform does not depend on the time
+scale $\Delta$ or the frequency scale $1/(2\Delta)$. \\
+
+
+An equally valid way of writing the DFT is:
+\begin{align}
+H_j = \f{1}{\sqrt{N}}\sum^{N-1}_{k=0} h_k \lp e^{2\pi i/N} \rp^{kj} = \f{1}{\sqrt{N}}\sum^{N-1}_{k=0}h_k \omega^{kj}\nn\\
+h_k = \f{1}{\sqrt{N}}\sum^{N-1}_{j=0} H_j \lp e^{2\pi i/N} \rp^{jk} = \f{1}{\sqrt{N}}\sum^{N-1}_{k=0}H_j {\omega*}^{kj}.
+\end{align}
+where  $\omega = e^{2\pi i /N}$. \\
+
+To put this in the context of quantum mechanics it's useful to think of $h$
+and $H$ as vectors. The transformation between the two vectors is a \textit{unitary} matrix:
+\begin{align}
+\vec{H} = \f{1}{\sqrt{N}}\begin{pmatrix}
+1 & 1 & 1 & \dots & 1\\
+1 & \omega & \omega^2 &\dots & \omega^{N-1}\\
+1 & \omega^2 & \omega^4 &\dots & \omega^{2(N-1)}\\
+\vdots & \vdots & \vdots & \dots  & \vdots\\
+1 & \omega^{N-2} & \omega^{2(N-2)} & \dots & \omega^{(N-2)(N-1)}\\
+1 & \omega^{N-1}& \omega^{2(N-1)} & \dots & \omega^{(N-1)^2}
+\end{pmatrix}\vec{h}
+\end{align} 
+
+Notice that this is an $N \times N$ matrix multiply! In this form the DFT requires $N^2$ multiplications. For an $n$-bit number $N$, this is ${(2^n)}^2$, which is exponential in $n$.
+
+
+\subsubsection{The Fast Fourier Transform (FFT)}
+
+
+An algorithm for a ``fast'' way to evaluate the DFT was made widely known in the mid-1960s by IBM researchers James Cooley and John Tukey. In an FFT the DFT can be evaluated in $N\log N$ steps.
+
+The approach is a recursive application of splitting the problem into two parts:
+\begin{align}
+H_j &= \sum^{N/2-1}_{k=0} h_{2k} (\omega)^{(2k)j} + \sum^{N/2-1}_{k=0}h_{2k + 1}(\omega)^{(2k+1)j}\nn\\
+&=\sum^{N/2-1}_{k=0} h_{2k} (\omega^2)^{k} + \omega^k\sum^{N/2-1}_{k=0}h_{2k + 1}(\omega^2)^{kj}\nn\\
+\end{align}
+
+A DFT using this equation would take $2(N/2)^2$ operations. Using the approach
+recursively until each individual transform is of length 1 requires $\log_2 N$ divisions.
+Doing $N$ transformations gives a total operation count of $\mathcal{O}(N\log_2 N)$.\\
+
+While a huge advantage in practice for computing DFTs, $N\log N$ is STILL exponential in the number of bits, requiring operations. 
+
+
+\subsubsection{The Quantum Fourier Transform (QFT)}
+
+The $n$-Qbit Quantum Fourier Transform is a unitary basis transformation defined in exactly the same way as the DFT. It acts on the basis states $\ket{x}$. 
+\begin{align}
+\U_{FT} \ket{x} = \f{1}{\sqrt{2^n}}\sum_{0 \leq y < 2^n}\lp e^{2\pi i /2^n}\rp^{xy}\ket{y} = \f{1}{\sqrt{2^n}}\sum_{0 \leq y < 2^n} \omega^{xy}\ket{y}
+\end{align}
+where $x$ and $y$ are $n$-bit integers, and $xy$ represents ordinary integer
+multiplication. Since the operation is linear, it acts on a general
+superposition of states 
+\begin{align}
+\ket{\psi} = \sum_{0 \leq x < 2^n} \gamma(x)\ket{x}
+\end{align}
+to give
+\begin{align}
+\U_{FT}\ket{\psi} = \sum_{0 \leq x < 2^n} \ket(x)\U_{FT}\ket{x} = \sum_{0 \leq x < 2^n} \gamma(x)\f{1}{\sqrt{2^n}} \sum_{0 \leq y < 2^n}\omega^{xy}\ket{y}
+\end{align}
+If we reverse the order of the summations:
+\begin{align}
+\U_{FT}\ket{\psi} = \sum_{0 \leq y < 2^n} \underbrace{\f{1}{\sqrt{2^n}}\sum_{0 \leq x < 2^n} \gamma(x)\omega^{xy}}_{\tilde{\gamma}(y)}\ket{y}. 
+\end{align}
+Giving:
+\begin{align}
+\U_{FT}\ket{\psi} =  \sum_{0 \leq y < 2^n}\tilde{\gamma}(y)\ket{y}.
+\end{align}
+The coefficients of the transformed state are just the Fourier transformed
+coefficients of the original state:
+\begin{align}
+\tilde{\gamma}(y) = \f{1}{\sqrt{2^n}}\sum_{0 \leq x < 2^n}\gamma(x)\omega^{xy}.
+\end{align}
+The $n$-Qbit Quantum Fourier Transform is a unitary basis transformation
+between two states, which have $N = 2n$ components:
+\begin{align}
+\vec{\tilde{\gamma}} = \f{1}{\sqrt{2^n}}\begin{pmatrix}
+1 & 1 & 1 & \dots & 1\\
+1 & \omega & \omega^2 &\dots & \omega^{2^n-1}\\
+1 & \omega^2 & \omega^4 &\dots & \omega^{2(2^n-1)}\\
+\vdots & \vdots & \vdots & \dots  & \vdots\\
+1 & \omega^{2^n-2} & \omega^{2(2^n-2)} & \dots & \omega^{(2^n-2)(2^n-1)}\\
+1 & \omega^{2^n-1}& \omega^{2(2^n-1)} & \dots & \omega^{(2^n-1)^2}
+\end{pmatrix}\vec{\gamma}
+\end{align}
+where $\omega = e^{2\pi i /2^n}$. Again, this is an $N \times N$ matrix multiply! In this form the QFT requires $N^2$
+multiplications. For an $n$-bit number $N$, this is $(2^n)^2$, which is exponential in $n$
+and therefore is not efficient. 
+
+
+
+\subsection{Quantum Fourier Transform and Period Finding}
+
+There are two things left to show. First, what does a QFT do to a state like
+\begin{align}
+\ket{\psi}_n = \f{1}{\sqrt{m}}\sum^{m-1}_{k=0}\ket{x_0 + kr}_n
+\end{align}
+and how can we use it to determine the period $r$?\\
+
+Second, can (really, how can) a QFT be evaluated efficiently (in a number of operations that is polynomial in the number of Qbits – not exponential? \\
+
+
+Well, using an “oracle query” approach to find the period of a function:
+\begin{align}
+f(x + r) = f(x) = b^x \mod N
+\end{align} 
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{shor6}
+\end{figure}
+
+\begin{align}
+\ket{\psi_3} = \f{1}{\sqrt{m}}\sum^{m-1}_{k=0}\ket{x_0 + kr}_n \ket{f_0}_{n_0}.
+\end{align}
+After measurement of the output register the input register is a
+state which is periodic in $r$. Using the Quantum Fourier Transform on the input register:
+\begin{align}
+\ket{\psi_4} = \f{1}{\sqrt{2^n}}\sum^{2^n-1}_{y=0}\f{1}{\sqrt{m}}\sum^{m-1}_{k=0}e^{2\pi i (x_0 + kr)y/2^n}\ket{y}_n\ket{f_0}_{n_0}.
+\end{align} 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{shor7}
+\end{figure}
+
+Our first goal is to show how to efficiently evaluate the QFT. Given the definition of the QFT:
+\begin{align}
+\U_{FT}\ket{x}_n =  \f{1}{\sqrt{2^n}} \sum_{0 \leq y < 2^n} \lp e^{2\pi i /2^n} \rp^{xy} \ket{y}_n,
+\end{align}
+we can think about how to break this up into operators on each Qbit by
+writing the states explicitly as
+\begin{align}
+\ket{x}_n = \ket{x_{n-1}}\ket{x_{n-2}} \dots \ket{x_0}\nn\\
+\ket{y}_n = \ket{y_{n-1}}\ket{y_{n-2}} \dots \ket{y_0}
+\end{align}
+and thinking about the sum as a sequence nested sums over each binary digit.
+\begin{align}
+\U_{FT}\ket{x}_n = \f{1}{\sqrt{2}}\sum_{0 \leq y_{n-1} < 2}\f{1}{\sqrt{2}}\sum_{0 \leq y_{n-2} < 2}\dots \f{1}{\sqrt{2}}\sum_{0 \leq y_{1} < 2}\f{1}{\sqrt{2}}\sum_{0 \leq y_{0} < 2} \lp e^{2\pi i /2^n} \rp^{xy}\ket{y}_n
+\end{align}
+and write the product out as a function of those binary digits, too:
+\begin{align}
+xy = (2^{n-1}x_{n-1} + 2^{n-2}x_{n-2} + \dots + 2x_1 + x_0)  \times (2^{n-1}y_{n-1} + 2^{n-2}y_{n-2} + \dots + 2y_1 + y_0) .
+\end{align}
+
+
+\begin{exmp}
+	Trivially, for a 1-Qbit state, the $\U_{FT}$ is just the Hadamard.
+\end{exmp}
+
+\begin{exmp}
+	For a 2-Qbit state:
+	\begin{align}
+	xy = (2x_1 + x_0)2y_1 + (2x_1 + x_0)y_0
+	\end{align}
+	\begin{align}
+	\U_{FT}\ket{x_1}\ket{x_0} &= \f{1}{\sqrt{2}}\sum_{0 \leq y_1 < 2}\lp e^{2\pi i } \rp^{x_1y_1}\lp e^{i\pi } \rp^{x_0 y_1}\ket{y_1} \times \f{1}{\sqrt{2}}\sum_{0 \leq y_0 < 2}\lp e^{2\pi i } \rp^{x_0y_0}\lp e^{i\pi/2 } \rp^{y_0 x_1}\ket{y_0}\nn\\
+	&= \f{1}{\sqrt{2}}\sum_{0 \leq y_1 < 2}(-1)^{x_0 y_1}\ket{y_1} \times \f{1}{\sqrt{2}}\sum_{0 \leq y_0 < 2} (-1)^{y_0 x_1}\lp e^{i\pi/2} \rp^{x_0 y_0} \ket{y_0}.
+	\end{align}
+	The first sum looks like a Hadamard of $\ket{x_0}$ but in the $\ket{y_1}$ Qbit. The second sum looks like a Hadamard of $\ket{x_1}$ but in the $\ket{y_0}$ Qbit and with an additional $\pi/2$ phase shift controlled by $\ket{x_0}$. \\
+	
+	Model implementation:
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{qft1}
+	\end{figure}
+	with
+	\begin{align}
+	\bm{R}_d = \bm{\tilde{n}} + e^{2\pi i /2^d}\bm{n} = \begin{pmatrix}
+	1 & 0 \\ 0 & e^{2\pi i /2^d}
+	\end{pmatrix}
+	\end{align}
+	\begin{align}
+	\lp (\bm{cR}))_d \rp_{01}\ket{x_1}\ket{x_0} = \lp e^{2\pi i/2^d} \rp^{x_0 x_1}\ket{x_1}\ket{x_0}
+	\end{align}
+	Let's follow the state through the circuit:
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{qft2}
+	\end{figure}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{qft3}
+	\end{figure}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{qft4}
+	\end{figure}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{qft5}
+	\end{figure}
+\end{exmp}
+\newpage
+
+
+\begin{exmp}
+	For 3-Qbit state: 
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{qft6}
+	\end{figure}
+
+
+
+
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{qft7}
+	\end{figure}
+
+
+
+	Apply a SWAP gate to correct:
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{qft8}
+	\end{figure}
+\end{exmp}
+
+
+
+\begin{exmp}
+	For 4-Qbit gate:
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{qft9}
+	\end{figure} 
+\end{exmp}
+
+
+There's a clear pattern, and each additional Qbit $k$ will require $k+1$ gates. The total gate count (not including $[n/2]$ swap gates) is therefore
+\begin{align}
+\boxed{G = \sum^n_{k=0} (k+1) = \f{n(n+1)}{2} = \mathcal{O}(n^2)   }
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  
@@ -1953,11 +2260,11 @@ have a physical meaning. The first two of these operators are the ``projection o
 	\item Show, using their matrix form, that as Mermin states on the top of page 12, the two
 	matrices have eigenvalues of 0 and +1. Determine eigenvectors of each matrix assuming
 	that they are in the form of probabilistic CBits
-	\begin{align*}
+	\begin{align}
 	\ket{a} = \begin{pmatrix}
 	a_0 \\ a_1
 	\end{pmatrix}
-	\end{align*}
+	\end{align}
 	where the convention of probability requires $a_0 + a_1 = 1$. 
 	
 	\item Show, using the definitions, that the properties of Eq. 1.33 and 1.34 are correct.
@@ -3421,12 +3728,12 @@ Tabulated they are:\\
 
 \begin{enumerate}[(a)]
 	\item Show that the output of the operator $\mathbf{U}_f$ is, as written in Eq. F.2-F.5 in Mermin
-	\begin{align*}
+	\begin{align}
 	\ket{\psi_0} &= \ket{+}\ket{0}\nn\\
 	\ket{\psi_1} &= \ket{+}\ket{1}\nn\\
 	\ket{\psi_b} &= \f{1}{\sqrt{2}}\lp \ket{0}\ket{0} + \ket{1}\ket{1} \rp = \ket{\psi_{00}}\nn\\
 	\ket{\psi_i} &= \f{1}{\sqrt{2}}\lp \ket{0}\ket{1} + \ket{1}\ket{0} \rp = \ket{\psi_{01}}
-	\end{align*}
+	\end{align}
 	The states due to the constant functions are product states, and the output states due to the balanced functions are two of the entangled Bell states. Deutsch’s idea was to show that you could manipulate the output state in such a way that a measurement of the output could distinguish between constant and balanced functions half the time, but that half the time you would make a measurement that gave no information at all.
 	
 	\item Think about measuring the states of Qbits 0 and 1 for the four different states above. What does it allow you to distinguish about the states?
