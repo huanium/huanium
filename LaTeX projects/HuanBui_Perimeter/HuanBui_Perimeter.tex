@@ -128,7 +128,8 @@
 \begin{document}
 \begin{titlepage}\centering
  \clearpage
- \title{{\textsc{\textbf{Some Topics in Theoretical Physics}}}\\ \smallskip - A Quick Guide - \\}
+ \title{{\textsc{\textbf{PHYSICS at PERIMETER:\\  Topics in Theoretical Physics \\ 
+ 				\&\\ Quantum Simulation Research}}}\\ \smallskip - A Quick Guide - \\}
  \author{\bigskip Huan Q. Bui}
   \affil{Colby College\\$\,$\\ PHYSICS \& MATHEMATICS\\ Statistics \\$\,$\\Class of 2021\\}
  \date{\today}
@@ -326,6 +327,175 @@ The aim of this course is to  explore some of the many ways in which symmetries 
 \section{Lecture 4: Symmetries in quantum mechanics}
 \newpage
 \section{Representation theory}
+
+
+
+\newpage
+
+
+
+\chapter{Research Project: Quantum Simulation}
+
+\textbf{Quantum many-body physics on quantum hardware}\\
+
+
+\underline{Project description:} Recently, there have been significant advances in several quantum computing platforms, including superconducting qubits and trapped ions. At this point, nontrivial quantum operations can be implemented
+on tens of qubits, and the frontier continues to expand. This project will explore how these emerging
+technologies can assist the realization and understanding of complex many-body quantum systems,
+regarding both static aspects such as ground state properties and dynamical aspects such as quantum chaos
+and thermalization. What new physics can we learn from near-term quantum computers? The ideal
+outcome is an interesting and realistic proposal that can be carried out in one of the quantum platforms (see
+for example the interplay between theoretical proposals and experiment).
+
+
+
+\newpage
+
+
+\section{Review: The density operator}
+
+
+We often use the language of state vectors in quantum mechanics. An alternative language is that of \textit{density matrices/density operators}. We will use this language extensively in quantum information/quantum computation. First, we will introduce the formulation. Second, we look at some properties of the density operator. Finally, we look at an application where the density operator really shines -- as a tool for describing \textit{individual subsystems} of a composite quantum system.  
+
+
+\subsection{Ensembles of Quantum States}
+
+The density operator language provides a convenient means for describing quantum systems whose state is not completely known. Suppose a quantum system is in one of the states $\ket{\psi_i}$ where $i$ is an index, with respective probabilities $p_i$. We call $\{p_i, \ket{\psi_i}\}$ an \textit{ensemble of pure states}. \\
+
+\begin{defn}[Density Operator]
+	\begin{align}
+	\boxed{\rho \equiv \sum_i p_i \ket{\psi_i}\bra{\psi_i}}
+	\end{align}
+\end{defn}
+
+
+
+Suppose we let a unitary $\U$ act on a closed system. If the system was initially in the state $\ket{\psi_i}$ with probability $p_i$ then we get $\U \ket{\psi_i}$ with probability $p_i$. The density operator evolves as
+\begin{align}
+\rho = \sum_i p_i \ket{\psi_i}\bra{\psi_i} \stackrel{\U}{\rightarrow} \sum_i p_i \U \ket{\psi_i}\bra{\psi_i}\U^\dagger = \U \rho \U^\dagger.
+\end{align}
+
+
+Suppose we have a measurement gate $\M_m$. If the intial state is $\ket{\psi_i}$ then the probability of getting result $m$ is 
+\begin{align}
+p(m\vert i) = \bra{\psi_i} \M_m^\dagger \M_m \ket{\psi_i} = \tr\lp \M_m^\dagger \M_m \braket{\psi_i} \rp
+\end{align}
+where we have used the identity:
+\begin{align}
+\tr(A\ket{\psi}\bra{\psi}) = \sum_i \bra{i}A \ket{\psi}\bra{\psi}\ket{i} = \bra{\psi}A\ket{\psi}.
+\end{align}
+With this, the total probability of measuring $m$ is 
+\begin{align}
+p(m) = \sum_i p(m|i)p_i = \sum_i p_i \tr\lp \M_m^\dagger \M_m \ket{\psi_i}\bra{\psi_i} \rp = \tr\lp \M_m^\dagger \M_m \rho \rp.
+\end{align}
+
+The state after the measurement is thus
+\begin{align}
+\ket{\psi_i^m} = \f{\M_m \ket{\psi_i}}{\sqrt{\bra{\psi_i}\M_m^\dagger \M_m \ket{\psi_i}}}.
+\end{align}
+The corresponding density operator for this state is thus
+\begin{align}
+\rho_m = \sum_i p(i|m)\ket{\psi_i^m}\bra{\psi_i^m} = \sum_i p(i|m)\f{\M_m \ket{\psi_i}\bra{\psi_i}\M_m^\dagger}{\bra{\psi_i}\M_m^\dagger \M_m \ket{\psi_i}}.
+\end{align}
+From probability theory we have $p(i|m) = p(m|i)p_i/p(m)$, so:
+\begin{align}
+\rho_m = \sum_i p_i \f{\M_m \ket{\psi_i}\bra{\psi_i}\M_m^\dagger}{\tr\lp \M^\dagger_m \M_m \rho \rp} = \f{\M_m \rho \M_m^\dagger}{\tr\lp \M_m^\dagger \M_m \rho \rp}.
+\end{align}
+
+
+
+
+Finally, suppose we have a quantum system in state $\rho_i$ with probability $p_i$. The system might be described by the density matrix
+\begin{align}
+\rho = \sum_i p_i \rho_i.
+\end{align}
+Here's why:
+\begin{align}
+\rho = \sum_{i,j}p_i p_{ij}\ket{\psi_{ij}}\bra{\psi_{ij}} = \sum_i p_i \rho_i
+\end{align}
+where we have used the definition
+\begin{align}
+\rho_i = \sum_{j}p_{ij}\ket{\psi_{ij}}\bra{\psi_{ij}}.
+\end{align}
+
+We call $\rho$ the \textit{mixture} of the states $\rho_i$ with probabilities $p_i$. This concept of mixture comes up up repeatedly in the analysis of problems like quantum noise, where the effect of the noise is to introduce ignorance into our knowledge of the quantum state. A simple example is provided by the measurement scenario. Imagine that for some reason out record of the result $m$ of the measurement was lost. We would have a quantum system in the state $\rho_m$ with probability $p(m)$, but would no longer know the actual value of $m$. The state of such a quantum system would therefore by described by the density operator
+\begin{align}
+\rho = \sum_m p(m)\rho_m = \sum_m \tr\lp \M_m^\dagger \M_m \rho \rp\f{\M_m \rho \M_m^\dagger}{\tr\lp \M_m^\dagger \M_m \rho \rp} = \sum_m \M_m \rho \M_m^\dagger.
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\subsection{General Properties of the Density Operator}
+
+
+
+\begin{thm}[Characterization of density operators] 
+	An operator $\rho$ is the density operator to some ensemble $\{p_i, \ket{\psi_i} \}$ if and only if it statisfies the conditions
+	\begin{itemize}
+		\item \textbf{Trace condition:} $\tr(\rho) = 1$.
+		\item \textbf{Positivity:} $\rho$ is a positive operator, i.e., $\bra{\varphi}\rho\ket{\varphi} \geq 0 \forall \varphi$.
+	\end{itemize}
+\end{thm}
+
+
+With this definition we can reformulate the postulates of quantum mechanics in the language of density operators as 
+\begin{itemize}
+	\item \textbf{Postulate 1:}
+	
+	\item \textbf{Postulate 2:}
+	
+	
+	\item \textbf{Postulate 3:}
+	
+	
+	\item \textbf{Postulate 4:}
+\end{itemize}
+
+
+\newpage
+
+
+\subsection{The Reduced Density Operator}
+
+
+\newpage
+
+
+
+
+
+
+
+
+
 
 
 
