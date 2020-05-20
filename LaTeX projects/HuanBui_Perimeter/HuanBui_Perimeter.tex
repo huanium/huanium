@@ -568,12 +568,166 @@ where $\ket{a_1}, \ket{a_2}$ are any two vectors in the state space of $A$, and 
 
 \section{Quantum Simulation: A Primer}
 
+Here's what Feynman said in 1982:\\
+
+\textit{``Can physics be simulated by a universal computer? [...] the physical world is quantum mechanical, and therefore the proper problem is the simulation of quantum physics [...] the full description of quantum mechanics for a large system with $R$ particles [...] has too many variables, it cannot be simulated
+with a normal computer with a number of elements proportional to $R$ [ ... but it can be simulated with ] quantum computer elements. [...] Can a quantum system be probabilistically simulated by a classical (probabilistic, I'd assume) universal computer? [...] If you take the computer to be the classical kind I've described so far [..] the answer is certainly, No!''}
+
 
 \subsection{Simulation in action}
+
+The heart of simulation is the solution of differential equations which capture the physical
+laws governing the dynamical behavior of a system. The goal is generally: given an initial state of the system, what is the state at some other time and/or position? Solutions are usually obtained by \textit{approximating} the state with a digital representation, then \textit{discretizing} the differential
+equation in space and time such that an iterative application of a procedure carries the state from the initial to the final conditions.\\
+
+The error in this procedure is \textit{bounded}, and known not to grow faster than some small power of the number of iterations. Furthermore, not all dynamical systems can be simulated efficiently: generally, only those systems which can be described efficiently can be simulated efficiently.\\
+
+Simulating quantum systems using classical computers is usually inefficient. The dynamical behavior of many simple quantum systems is governed the SE:
+\begin{align}
+i\hbar \p_t \ket{\psi} = \had \ket{\psi}.
+\end{align}
+We will set $\hbar =1$.  For real particles in space, we often have
+\begin{align}
+i\p_t \psi(x) = \lb -\f{1}{2m}\p_x^2 + V(x) \rb \psi(x).
+\end{align}
+
+The key challenge in simulating quantum systems is the \textit{exponential} number of differential equations which must be solved. For 1 qubit evolving according to the
+SE, a system of 2 differential equations must be solved; for 2
+qubits, 4 equations; and for $n$ qubits, $2^n$ equations. Sometimes, insightful approximations can be made which reduce the effective number of equations involved, but there are many physically interesting quantum systems for which no such approximations are known.\\
+
+There are many important quantum systems for which classical simulation is intractable. For example:
+\begin{align}
+\mbox{Hubbard model: } \had = \sum^n_{k=1}V_0 n_{k^\uparrow}n_{k\downarrow} + \sum_{k,j\mbox{ neighbors,}\sigma} t_0 c_{k\sigma}^* c_{j\sigma}.
+\end{align}
+\begin{align}
+\mbox{Ising mode: } \had = \sum_{k=1}^n \vec{\sigma_k}\cdot \vec{\sigma}_{k+1} .
+\end{align}
+Quantum computers can efficiently simulate quantum systems for which there is no known efficient classical simulation.
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{The quantum simulation algorithm}
+
+The quantum simulation is concerned with the solution of $i \p_t \ket{\psi} = \had \ket{\psi}$, which, for a time-independent $\had$, is just
+\begin{align}
+\ket{\psi(t)} = e^{-i\had t}\ket{\psi(0)}.
+\end{align}
+$\had$ is in general difficult to exponentiate, but a good beginning is the first order solution 
+\begin{align}
+\ket{(\psi(t+\Delta t))} \approx (\Id - i\had \Delta t)\ket{\psi(t)}.
+\end{align}
+This is tractable, but often is not very satisfactory. \\
+
+Efficient approximations to higher oder is possible for many \textit{classes} of Hamiltonians. For example, in most physical systems, the Hamiltonian can be written as a sum over many \textit{local} interactions. For a system of $n$ particles:
+\begin{align}
+\had = \sum^L_{k=1}\had_k \sim \bigoplus^L_{k=1}\had_k
+\end{align} 
+where each $\had_k$ acts on at most a constant $c$ number of systems, and $L$ is a polynomial in $n$. For instance, the terms $\had_k$ are often just 2-body interactions such as $X_i X_j$ and 1-boy Hamiltonians such as $X_i$. Note that both the Hubbard and Ising models have Hamiltonians of this form. There are sometimes additional global symmetry constraints such as particle statistics.\\
+
+Note that although $e^{-i\had t}$ is difficult to compute, $e^{-i\had_k t}$ acts on a much smaller subsystem, and is straightforward to approximate using quantum circuits. However, because $[\had_j, \had_k] \neq 0$ in general (obviously, they don't commute in general), $e^{-i\had t} \neq \prod_k e^{-i \had_k t}$. So, we might want to ask how $e^{-i\had_k t}$ be useful in constructing $e^{-i\had t}$. \\
+
+\textbf{Remarks:}
+\begin{itemize}
+	\item If the $\had_i$'s commute, then we do have $e^{-i \had t} = \prod_k e^{-i \had_k t}$. 
+	
+	\item The restriction of $\had_k$ to involve at most $c$ particles \textit{implies} that in the sum of the Hamiltonians, $L$ is upper bounded by a polynomial in $n$. 
+\end{itemize}
+
+
+
+The heart of quantum simulation algorithms is the following asymptotic approximation theorem:
+\begin{thm}[Trotter formula]
+	Let $A$ and $B$ be Hermitian operators. Then for any real $t$, 
+	\begin{align}
+	\lim_{n\to \infty}\lp e^{-iAt/n}e^{iBt/n} \rp = e^{i(A+B)t}.
+	\end{align}\qed
+\end{thm}
+
+Of course, the theorem holds even if $A$ and $B$ don't commute. For now, we only consider the cases where $A,B$ are Hermitian. But $A,B$ can actually be generators of certain kinds of semigroups, which correspond to general quantum operations.\\
+
+Using the theorem (and the proof of the theorem, which I won't show here), we can get
+\begin{align}
+e^{i(A+B)\Delta t} = e^{iA \Delta t}e^{i B\Delta t} + \mathcal{O}(\Delta t^2).
+\end{align}
+Similarly, 
+\begin{align}
+e^{i(A+B)\Delta t} = e^{iA\Delta t/2}e^{iB \Delta t}e^{iA \Delta t/2} + \mathcal{O}(\Delta t^3). 
+\end{align}
+
+
+
+
+\subsection{The algorithm}
+
+\begin{itemize}
+	\item \textbf{Inputs:} (1) A Hamiltonian $\had = \sum_k \had_k$ acting on an $N$-dimensional system, where each $\had_k$ acts on a small subsystem of size independent of $N$, (2) an initial state $\ket{\psi_0}$, of the system at $t=0$, (3) a positive, non-zero accuracy $\delta$, and (3) a time $t_f$ at which the evolved state is desired. 
+	
+	
+	\item A state $\ket{\tilde{\psi}(t_f)}$ such that
+	\begin{align}
+	\abs{\bra{\tilde\psi (t_f)} e^{-i \had t_f} \ket{\psi_0}}^2 \geq 1 - \delta.
+	\end{align}
+	
+	
+	\item Choose a representation such that the state $\ket{\tilde\psi}$ of $n = \mbox{poly}(\log N)$ qubits approximates the system and the operators $e^{- \had_k \Delta t}$ have efficient quantum circuit approximations. Selection an approximation method and $\Delta t$ such that the expected error is acceptable, construct the corresponding quantum circuit $\U_{\Delta t}$ fo the iterative step, and do the following:
+	\begin{itemize}
+		\item Initialize state: $\ket{\tilde \psi_0} \leftarrow \ket{\psi_0}; j = 0.$ 
+		\item Iterative update: $\to \ket{\tilde \psi_{j+1}} = \U_{\Delta t}\ket{\tilde \psi_j}$.
+		\item Loop: $\to j = j+1;$ go to the second step until $j\Delta t \geq t_f$.
+		
+		\item Final result: $\to \ket{\tilde \psi(t_f)} = \ket{\tilde \psi}$.
+	\end{itemize}
+\end{itemize}
+
+
+\begin{thm}[Baker-Campbell-Hausdorf formula]
+	\begin{align}
+	e^{(A+B)\Delta t} = e^{A \Delta t}e^{B \Delta t}e^{-(1/2)[A,B]\Delta t^2} + \mathcal{O}(\Delta t^3). 
+	\end{align}
+\end{thm}
+
+
+
+
+
 \subsection{An illustrative example}
+
+
+
+
+
+
+
+
+
 \subsection{Perspectives on quantum simulation}
 
+
+
+\newpage
+
+
+\section{Problems in Quantum Simulations and Quantum Algorithms}
+
+
+
+\newpage
+
+
+\section{Some Models in Quantum Statistical \& Condensed-Matter Physics}
+
+\subsection{The Hubbard Model}
+
+\subsection{The Ising Model}
 
 
 \newpage
@@ -782,14 +936,38 @@ In this and the following section we will be looking at two quantum algorithms t
 
 \newpage
 
+\section{Quantum Variational Factorization (QVF)}
+
+\newpage
+
+
+
+\section{Variational Thermal Quantum Simulation via Thermofield Double States}
+
+
+
+\subsection{Thermofield Double States (TFD)}
+
+
+\newpage
+
+
+
+\section{Generation of TFD and Critical Ground States with a Quantum Computer }
+
+
+
+\newpage
+
+
+
+\section{Efficient variational simulation of non-trivial quantum states}
 
 
 
 
 
-
-
-
+\newpage
 
 
 
