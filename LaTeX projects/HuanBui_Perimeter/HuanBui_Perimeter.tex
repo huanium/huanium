@@ -46,7 +46,7 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\lag}{\mathcal{L}}
 \newcommand{\nn}{\nonumber}
-\newcommand{\ham}{\mathcal{H}}
+\newcommand{\had}{\mathcal{H}}
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\I}{\mathcal{I}}
 \newcommand{\K}{\mathcal{K}}
@@ -128,7 +128,7 @@
 \begin{document}
 \begin{titlepage}\centering
  \clearpage
- \title{{\textsc{\textbf{PHYSICS at PERIMETER:\\  Topics in Theoretical Physics \\ 
+ \title{{\textsc{\textbf{Physics at the Perimeter Institute:\\  Topics in Theoretical Physics \\ 
  				\&\\ Quantum Simulation Research}}}\\ \smallskip - A Quick Guide - \\}
  \author{\bigskip Huan Q. Bui}
   \affil{Colby College\\$\,$\\ PHYSICS \& MATHEMATICS\\ Statistics \\$\,$\\Class of 2021\\}
@@ -560,6 +560,228 @@ where $\ket{a_1}, \ket{a_2}$ are any two vectors in the state space of $A$, and 
 
 
 \newpage
+
+
+
+
+
+
+\section{Quantum Simulation: A Primer}
+
+
+\subsection{Simulation in action}
+\subsection{The quantum simulation algorithm}
+\subsection{An illustrative example}
+\subsection{Perspectives on quantum simulation}
+
+
+
+\newpage
+
+
+
+\section{Quantum Phase Estimation (QPE)}
+
+One of the most important applications of the Quantum Fourier Transform is the Quantum Phase Estimation. Phase estimation is the key for many quantum algorithms. Suppose a unitary operator $\U$ has an eigenvector $\ket{u}$ with eigenvalue $2^{2\pi i \varphi}$, where the value of $\varphi$ is unknown. The goal of the phase estimation algorithm is to estimate $0 \leq \varphi \leq 1$ with high probability within additive error $\epsilon$. The algorithm uses $\mathcal{O}(\log (1/\epsilon))$ qubits and $\mathcal{O}(1/\epsilon)$ controlled-$\U$ operations. \\
+
+To perform the estimation we assume that we have available \textit{oracles} capable of preparing the state $\ket{u}$ (the eigenstate) and performing the controlled-$\U^{2j}$ operation, for suitable nonnegative integers $j$. Since preparing eigenstates is not necessarily easy, the phase estimation algorithm is not a complete algorithm by itself. Rather, we should view it as a ``subroutine'' or a ``module.''\\
+
+
+
+The QPE uses two registers. The first register contains $t$ qubits initially in $\ket{0}$. The choice of $t$ depends on two things: the number of digits of accuracy we wish to have in our estimate of $\varphi$, and with what probability we wish the phase estimation procedure to be successful. The second register begins in the eigenstate $\ket{u}$, and contains as many qubits as necessary to store $\ket{u}$. \\
+
+QPE occurs in two main stages. First, the circuit applies  an $\had$ to each of the $t$ qubits. Then, the circuit applies controlled-$\U$ operators on the second register, with $\U$ raised to successive powers of two. This stage looks like the following:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{qpe1}
+	\caption{Source: Mike and Ike}
+\end{figure} 
+Recall that immediately after $\had^{\otimes t}$ the state of the upper register looks like
+\begin{align}
+\had \ket{0} = \f{1}{2^{1/2}}\lp \ket{0} + \ket{1} \rp
+\end{align}
+The controlled-$\U$ acts on $\ket{u}$ only if the control qubit is in $\ket{1}$. With this, we see that the final state of the first register is given by
+\begin{align}
+&\f{1}{2^{t/2}}\lp \ket{0} + e^{2\pi i 2^{t-1}\varphi}\ket{1} \rp\otimes
+\lp \ket{0} + e^{2\pi i 2^{t-2}\varphi}\ket{1} \rp \otimes \dots \otimes \lp \ket{0} + e^{2\pi i 2^{0}\varphi}\ket{1} \rp\nn\\
+&\quad = \dots \nn\\
+&\quad = \f{1}{2^{t/2}}\sum_{0\leq k < 2^{t}} e^{2\pi i \varphi k}\ket{k}_t.
+\end{align}
+
+\begin{exmp}
+For $t =2$, we have
+\begin{align}
+&\f{1}{2}\lp \ket{0} + e^{4\pi i \varphi } \ket{1} \rp\otimes \lp \ket{0} + e^{2\pi i\varphi }\ket{1} \rp \nn\\
+&\quad= \f{1}{2}\lp \ket{0}_2 + e^{1\cdot 2\pi i\varphi }\ket{1}_2 + e^{2\cdot 2\pi i\varphi}\ket{2}_2 + e^{3\cdot 2\pi i\varphi }\ket{3}_2  \rp\nn\\
+&\quad = \f{1}{2^{2/2}}\sum_{0 \leq k < 2^{2}}e^{2\pi i \varphi \cdot 2}\ket{k}_2
+\end{align}\qed
+\end{exmp}
+
+Note that we're leaving out the qubits carrying the  $\ket{u}$ state because we don't do anything to it (because $\ket{u}$ is an eigenstate of $\U$). We should also note that the effect of the sequence of controlled-$\U$ operations is to take $\ket{j}\ket{u}$ to $\ket{j}\U^j \ket{u}$. We should also note that this does not depend on the fact that $\ket{u}$ is an eigenstate of $\U$. \\
+
+
+In the second state, the algorithm applies the inverse quantum Fourier transform on the first register (which is just the QFT, applied in reverse order of operations). This can be done efficiently in $\mathcal{O}(t^2)$ steps, as we have seen the Quantum Information \href{https://huanqbui.com/LaTeX 20projects/HuanBui_QI/HuanBui_QI.pdf}{\underline{notes}}. Since the input in this case is the maximal superposition in the $t$-vector space, the output of the inverse QFT is going to be a single state: $\ket{\tilde{\varphi}}$, which we hope is approximately $\ket{\varphi}$. We will see how close $\ket{\tilde\varphi}$ can get to $\ket{\varphi}$.\\
+
+The third and final stage of the algorithm is to read out the state of the first register by doing a measurement in the computational basis. \\
+
+
+\begin{exmp}
+	To make sure we see what is going on, suppose $\varphi$ is expressed exactly in $t$ qubits, as $\varphi = 0,\varphi_1\varphi-2\dots\varphi_t$ (note that $\varphi \in [0,1]$). Then the state of the input register after the first stage is given by
+	\begin{align}
+	\f{1}{2^{t/2}}\lp \ket{0} + e^{2\pi i 0.\varphi_t} \ket{1} \rp \otimes \lp \ket{0} + e^{2\pi i 0.\varphi_{t-1}\varphi_t}\ket{1} \rp \otimes \dots  \otimes \lp \ket{0} + e^{2\pi i 0.\varphi_1\varphi_2\dots\varphi_t}\ket{1} \rp.
+	\end{align}
+	Applying the inverse QFT to this, we see that output state from the second state is the product state $\ket{\varphi_1\dots \varphi_t}$. A measurement in the computational basis gives $\varphi$ exactly. \qed
+\end{exmp}
+
+Schematically, the algorithm for QPE looks like the following:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{qpe2}
+	\caption{Source: Mike and Ike}
+\end{figure}
+
+In summary, what we basically did was using the inverse QFT to get
+\begin{align}
+\f{1}{2^{t/2}}\sum_{0 \leq k < 2^{t}} e^{2\pi i \varphi j }\ket{j}\ket{u} \to \ket{\tilde{\varphi}}\ket{u}
+\end{align}
+where $\ket{\tilde\varphi}$ is a good estimator for $\varphi$ when measured. 
+
+ 
+
+
+
+
+
+\subsection{Performance and Requirements}
+What happens when $\varphi$ cannot be written exactly with a $t$-bit expansion? We will now show that the procedure we described will produce a good approximation to $\varphi$ with high probability. \\
+
+Let $b \in [0,2^t-1]$ an integer be given such that $b/2^t = 0.b_1b_2\dotsb_t$ is the best $t$ bit approximation to $\varphi$ which is less than $\varphi$, i.e., 
+\begin{align}
+0 \leq \delta \equiv \varphi - b/2^t \leq 2^{-t}.
+\end{align}
+(This is getting pretty close to an analysis proof -- because it \textit{is} an analysis proof.) Applying the inverse QFT to the state immediately after the first stage gives
+\begin{align}
+\mathcal{F}^{-1}\lb\f{1}{2^{t/2}}\sum_{0 \leq k < 2^t}e^{2\pi i \varphi k}\ket{k} \rb &= \f{1}{2^{t}} \sum_{0 \leq k,l < 2^t} e^{\f{-2\pi i kl}{2^t}}e^{2\pi i \varphi k}\ket{l}\nn\\
+& = \f{1}{2^t}\sum_{0 \leq k,l < 2^t}\lp e^{2\pi i(\varphi- l/2^t)} \rp^k \ket{l}
+\end{align}
+by definition. Note that when $\varphi$ can be expressed using exactly $t$ bits we are reduced to the simpler version of the problem described above. \\
+
+Let $\al_l$ be the amplitude of $\ket{(b+l) \mod 2^t}$, i.e., 
+\begin{align}
+\alpha_l \equiv \f{1}{2^t}\sum_{0 \leq k < 2^t} \lp e^{2\pi i (\varphi - (b+l)/2^t)} \rp^k.
+\end{align}
+This is a partial sum of a geometric series. It is straightforward to show that
+\begin{align}
+\alpha_l = \f{1}{2^t}\lp \f{1 - e^{2\pi i (2^t \varphi - (b+l))}}{1 - e^{2\pi i (\varphi - (b+l)/2^t)}} \rp = \f{1}{2^t}\lp \f{1 - e^{2\pi i (2^t \delta - l)}}{1 - e^{2\pi i (\delta - l/2^t)}} \rp.
+\end{align}
+Suppose the outcome of the final measurement is $m$. We want to bound the probability that $\abs{m-b} > \epsilon$ (where $\epsilon$ is the tolerance), i.e., we don't want the probably that $m$ is far from $b$ to be large. Well, the probability of observing such an $m$ is given by
+\begin{align}
+P(\abs{m-b} > \epsilon) = \sum_{-2^{t-1} < l \leq -(\epsilon+1)} \abs{\al_l}^2 + \sum_{e+1 \leq l \leq 2^{t-1}}\abs{\al_l}^2.
+\end{align}
+For any real $\theta$, we have $\abs{1 - \exp(i\theta)} \leq 2$, so 
+\begin{align}
+\abs{\al_l} \leq \f{2}{2^t \abs{1 - e^{2\pi i (\delta - l/2^)}}}.
+\end{align}
+Further, provided $-\pi \leq \theta \leq \pi$, we have $\abs{1 - \exp(i\theta)} \geq 2\abs{\theta}/\pi$. Also, when $-2^{t-1} < l \leq 2^{t-1}$ we have $-\pi \leq 2\pi (\delta - l/2^t) \leq \pi$, so we have
+\begin{align}
+\abs{\al_l} \leq \f{1}{2^{t+1}(\delta - l/2^t)}.
+\end{align}
+With this we have
+\begin{align}
+p(\abs{m-b} > \epsilon) &\leq \f{1}{4}\lp \sum_{l = -2^{t-1}+1}^{-(\epsilon+1)} \f{1}{(l - 2^t \delta)^2} + \sum^{2^{t-1}}_{l = \epsilon+1} \f{1}{(l - 2^t \delta)^2}  \rp\nn\\
+&\leq \f{1}{4}\lp \sum_{l = -2^{t-1}+1}^{-(\epsilon+1)} \f{1}{(l - 1)^2} + \sum^{2^{t-1}}_{l = \epsilon+1} \f{1}{(l - 1)^2}   \rp, \quad 0 \leq 2^t\delta < 1\nn\\
+&\leq \f{1}{2}\sum^{2^{t-1}-1}_{l=\epsilon} \f{1}{l^2}\nn\\
+&\leq \f{1}{2}\int^{2^{t-1}-1}_{\epsilon-1} \f{1}{l^2}\,dl\nn\\
+&= \f{1}{2(\epsilon-1)}.
+\end{align}
+Suppose we wish to approximate $\varphi$ to an accuracy $2^{-n}$, i.e., we choose $\epsilon = 2^{t-n}-1$. By using $t =n+p$ qubits, we see that the probability of obtaining an approximation correct to this accuracy is at least 
+\begin{align}
+1-\f{1}{2(\epsilon-1)} = 1 - \f{1}{2(2^p - 2)}.
+\end{align}
+So, to successfully obtain $\varphi$ accurate to $n$ bits with probability of success at least $1-\epsilon$ we choose 
+\begin{align}
+t = n + \left\lceil \log \lp 2 + \f{1}{2\epsilon} \rp \right\rceil.
+\end{align}
+
+Now here's a catch: to use QPE, we need the eigenstate $\ket{u}$. What if we don't know how to prepare such a state? Suppose that we prepare some other state $\ket{\psi}$ in place of $\ket{u}$. We can write
+\begin{align}
+\ket{\psi} = \sum_u c_u \ket{u}
+\end{align}
+where $\ket{u}$ are the eigenstates of $U$. Suppose the eigenstate $\ket{u}$ has the eigenvalue $e^{2\pi i \varphi_u}$. Running the QPE on $\ket{\psi}$ will give
+\begin{align}
+\ket{\psi} \stackrel{\mbox{QPE}}{\to} \sum_u c_u \ket{\tilde{\varphi_u}}\ket{u},
+\end{align}
+where $\tilde{\varphi_u}$ is an estimation for $\varphi_u$. Reading out the first register gives us a good approximation for $\varphi_u$, where $u$ is chosen at random with probability $\abs{c_n}^2$. This procedure allows us to avoid preparing a possibly unknown eigenstate, but at the cost of introducing some additional randomness into the algorithm. It turns out that if $t$ is chosen according to the minimization procedure above, then the probability for measuring $\varphi_u$ accurate to $n$ bits at the conclusion of the phase estimation algorithm is at least $\abs{c_u}^2(1-\epsilon)$.
+
+
+
+
+
+
+
+\subsection{The algorithm}
+QPE solves a problem which is both non-trivial and interesting from a physical point of view. It allows us to estimate the eigenvalue associated to a given eigenvector of a unitary operator. It turns our that other interesting problems can be reduced to phase estimation, which makes QPE particularly useful.\\
+
+\underline{Here's the algorithm:}
+\begin{itemize}
+	\item \textbf{Inputs:} (1) An oracle which performs a controlled-$\U^j$ operation, (2) an eigenstate $\ket{u}$ of $\U$ with eigenvalue $e^{2\pi i \varphi_u}$, and (3) $t = n + \left\lceil \log \lp 2 + 1/2\epsilon \rp \right \rceil$ qubits initialized to $\ket{0}$.
+	
+	
+	\item \textbf{Outputs:} An $n$-bit approximation $\tilde\varphi_u$ of $\varphi_u$. 
+	
+	\item \textbf{Runtime:} $\mathcal{O}(t^2)$ operations (due to th inverse QFT) and one call to controlled-$\U^j$ oracle. Succeeds with probability at least $1-\epsilon$. 
+	
+	\item \textbf{Procedure:} 
+	\begin{itemize}
+		\item  Initial state: $\ket{0}\ket{u}$
+		
+		\item Create superposition: $\to (1/2^{t/2})\sum_{0 \leq j < 2^t}\ket{j}\ket{u}$.
+		
+		
+		\item Apply the oracle:\\ $\to(1/2^{t/2})\sum_{0 \leq j < 2^t}\ket{j}\U^j\ket{u} = (1/2^{t/2})\sum_{0 \leq j < 2^t}e^{2\pi i j\varphi_u}\ket{j}\ket{u}$
+		
+		
+		\item Apply inverse QFT: $\to \ket{\tilde\varphi_u}\ket{u}$. 
+		
+		\item Measure the first register: $\to \tilde \varphi_u$.
+	\end{itemize}
+\end{itemize}
+
+
+The algorithm has a wide range of applications, including order-finding and factorization. 
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+\section{Quantum Expectation Estimation (QEE)}
+
+
+In this and the following section we will be looking at two quantum algorithms that are alternatives/improvements to QPE. 
+
+
+\newpage
+
+
+\section{Quantum Variational Eigensolver (QVE)}
+
+
+\newpage
+
+
+\section{Quantum Approximate Optimization Algorithm (QAOA)}
+
+\newpage
+
 
 
 
