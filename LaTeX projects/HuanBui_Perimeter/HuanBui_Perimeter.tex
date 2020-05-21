@@ -552,6 +552,57 @@ where $\ket{a_1}, \ket{a_2}$ are any two vectors in the state space of $A$, and 
 
 
 
+\newpage
+
+
+
+
+
+
+
+
+\section{Quantum Computational Complexity: An Introduction}
+
+In this section we look at quantum computational complexity, as introduced in this \href{https://arxiv.org/pdf/0804.3401v1.pdf}{\underline{paper}} by John Watrous at the IQC, the University of Waterloo.
+
+\subsection{Introduction}
+
+\begin{itemize}
+	\item \textbf{P}
+	
+	\item \textbf{NP}
+	
+	
+	\item \textbf{BPP}
+	
+	\item \textbf{PP}
+	
+	\item \textbf{MA}
+	
+	
+	\item \textbf{AM}
+	
+	\item \textbf{SZK}
+	
+	\item \textbf{PSPACE}
+	
+	\item \textbf{EXP}
+	
+	\item \textbf{NEXP}
+	
+	
+	\item  \textbf{PL}
+	
+	\item \textbf{NC}
+\end{itemize}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{complexity}
+\end{figure}
+
+
+
 
 
 
@@ -701,7 +752,27 @@ e^{i(A+B)\Delta t} = e^{iA\Delta t/2}e^{iB \Delta t}e^{iA \Delta t/2} + \mathcal
 
 \subsection{An illustrative example}
 
+We have seen the case where the Hamiltonian is a sum of local interactions. However, this is not a fundamental requirement. Efficient quantum simulations are possible even for Hamiltonians which act non-trivially on all or nearly all parts of a large system. \\
 
+Consider the Hamiltonian
+\begin{align}
+\had = Z_1 \otimes Z_2 \otimes \dots \otimes Z_n
+\end{align}
+which acts on an $n$ qubit system. This can be simulated efficiently. What we desire is a simple quantum circuit which implements $e^{-i \had \Delta t}$, for arbitrary values of $\Delta t$. A circuit that does this is given by
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{qs1}
+\end{figure}
+
+Even though the Hamiltonian involves all the qubits in the system, it does so in a \textit{classical} manner: the phase shift applied to the system is $e^{-i\Delta t}$ if the \textit{parity} of the $n$ qubits in the computational basis is even. else the phase shift would be $e^{i\Delta t}$. Thus, a simple simulation of $\had$ is possible by first classical computing the parity, then applying the appropriate phase shift conditioned on the parity, then uncomputing the parity. \\
+
+Extending the same procedure allows us to simulate more complicate extended Hamiltonians. Specifically, we can efficiently simulate any Hamiltonian of the form
+\begin{align}
+\had = \bigotimes^n_{k=1}\sigma^k_{c(k)}
+\end{align}
+where $\sigma^k_{c(k)}$ is a Pauli matrix (or identity) acting on the $k$th qubit, with $c(k) \in \{0,1,2,3\}$ specifying one of $\{I,X,Y,Z\}$. The qubits upon which the identity acts can be disregarded, and $X$ or $Y$ terms can be transformed by single qubit gates to $Z$ operations. This leaves a Hamiltonian of the form given above, which can be efficiently simulated. \\
+
+Using this procedure allows us to simulate a wide class of Hamiltonians containing terms which are not local. It is possible to simulate a Hamiltonian of the form $\had = \sum^L_{k=1} \had_k$ where we only require that the individual $\had_k$ have a tensor product structure, and that $L$ is polynomial in the total number of particles $n$. 
 
 
 
@@ -711,12 +782,107 @@ e^{i(A+B)\Delta t} = e^{iA\Delta t/2}e^{iB \Delta t}e^{iA \Delta t/2} + \mathcal
 
 \subsection{Perspectives on quantum simulation}
 
+ 
+Quantum simulation is similar to classical methods, but differs fundamentally in many aspects. Each iteration of the quantum algorithm must completely replace the old state with a new one and there is no way to obtain any nontrivial information from an intermediate step without changing the algorithm (due to the no-cloning theorem). Furthermore, the final measurement must be chosen to provide the desired result because it collapses the entire state. \\
+
+Another difficult problem is the simulation of equilibration processes. A system with Hamiltonian $\had$ in contact with an environment at temperate $T$ will come to thermal equilibrium in a state known as the \textit{Gibbs} state,
+\begin{align}
+\rho_{\text{therm}} = \f{e^{-\had/k_BT}}{\mathcal{Z}} \equiv \f{e^{-\had/k_BT}}{\tr\lp e^{-\had/k_BT} \rp}
+\end{align}
+where of course $\mathcal{Z}$ is the partition function. We can check that $\tr(\rho) = 1$. For now, we don't know how a quantum computer can simulate this. \\
+
+Indistinguishability of particles also places a constraint on the state vector of a system which manifests itself in two ways: bosons and fermions. The state vector of a system of bosons remains unchanged under permutation of any two constituents. System of fermions experience a sign change in their state vector under interchange of any two constituents. Both kinds of systems can be simulate efficiently on a quantum computer. 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage
 
 
 \section{Problems in Quantum Simulations and Quantum Algorithms}
+
+In this section, we will be looking at the following \href{https://arxiv.org/pdf/2001.03685.pdf}{\underline{review}} on quantum algorithms for quantum chemistry and materials science. 
+
+\subsection{Quantum Simulation: An Overview}
+
+\subsubsection{Introduction}
+
+The interest in quantum computing for quantum simulations of molecules and materials stems from the fact that in many cases, the chemistry and physics of molecules and materials is best described using quantum mechanics. In the worst case, quantum simulation is exponentially hard on classical computers. Quantum computers have advantages over classical computers, but these advantages are problem-specific. \\
+
+
+As we have seen before, the natural problem to solve on a quantum computer is the time evolution of a quantum system given some initial state:
+\begin{align}
+i\p_t \ket{\psi(t)} = \had \ket{\psi(t)}.
+\end{align}
+This problem, as we have pointed out, is of polynomial cost on a quantum computer, which can offer exponential speedup over classical computers. However, it is necessary to prepare the initial state, which may be difficult. In particular, preparing a low-energy state may be challenging, which naturally leas to considering other important problems:
+\begin{align}
+&\mbox{Ground state:} \quad \had\ket{\psi_0} = E_0 \ket{\psi_0}; \quad E_0 = \min_{\ket{\psi}}\bra{\psi}\had\ket{\psi}\\
+&\mbox{Thermal averages:} \quad \langle \mathcal{A} \rangle = \f{\tr\lp \mathcal{A}e^{-\beta\had} \rp}{\tr\lp e^{-\beta\had} \rp}
+\end{align} 
+Ground state determination lies in complexity class QMA, a class of problems \textit{not known to be efficiently solvable in general on a quantum computer}. This means that thermal averages cannot in general be computed efficiently on a quantum computer, since in the limit of zero temperature, this problem reduces to ground-state determination. \\
+
+To understand quantum advantage in chemistry, condensed matter physics, and quantum materials science, we must be guided by actual empirical data in the form of numerical and theoretical experiments with quantum algorithms and quantum devices on simulation problems of interest. This requires progress, of course. 
+
+
+
+\subsubsection{Current quantum architectures}
+
+
+
+
+\newpage
+
+
+
+
+\subsection{Simulation challenges in molecular and materials science }
+
+\subsubsection{Quantum chemistry}
+\subsubsection{Quantum molecular spectroscopy}
+\subsubsection{Chemical quantum dynamics}
+\subsubsection{Correlated electronic structure in materials}
+\subsubsection{Dynamical quantum effects in materials}
+
+\newpage
+
+
+\subsection{Challenges for quantum algorithms in quantum simulation}
+
+\subsubsection{Overview of algorithms}
+\subsubsection{Qubit representation of many-body systems}
+\subsubsection{Quantum algorithms for ground and excited states}
+\subsubsection{Preparing ground states along a prescribed path}
+\subsubsection{Variational state preparation and variational quantum eigensolver}
+\subsubsection{Excited states}
+\subsubsection{Phase estimation}
+\subsubsection{Quantum algorithms for time evolution}
+%\subsubsection{Algorithmic tools}
+%\subsubsection{Open problems}
+%\subsubsection{Finite-temperature algorithms}
+%\subsubsection{Hybrid quantum-classical methods}
+
+
+\newpage
+
+
+\subsection{Reading out results}
+
+\subsubsection{Equal-time measurements}
+\subsubsection{Dynamical properties and Green's functions}
+
+
+
 
 
 
