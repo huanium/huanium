@@ -837,7 +837,21 @@ To understand quantum advantage in chemistry, condensed matter physics, and quan
 
 
 \subsubsection{Current quantum architectures}
+There's \textit{analog quantum computation} and there's \textit{digital quantum computation}. Analog quantum computation was proposed by Feynman. The idea of analog quantum computation is to build a lattice of spins with tunable interactions and let it simulate physical systems. The limitation, however, is that this is quite limited because it can only simulate a certain set of physical systems. Furthermore, its accuracy is limited. \\
 
+Digital quantum computation is more general. Digital quantum computation involves qubits and gates. One can show that with a finite set of gates, one can in principle generate arbitrary quantum evolutions to arbitrary precision. Every problem in the complexity class BQP can be mapped into a quantum program. \\
+
+
+The third model of quantum computation is \textit{adiabatic quantum computation}. This model is considered equivalent to the digital version, but is less practical. We won't worry about this. 
+
+
+
+\subsubsection{Building a circuit-based digital quantum computer}
+
+The natural enemy of quantum computation is decoherence -- the tendency of quantum systems to decay into their classical states. We are current in the \textit{noisy intermediate-scale quantum} (NISQ) era, where qubit technologies (superconducting qubits, ion traps, etc) have reached the point where small devices of a few dozen qubits can be sufficiently isolated from decoherence to execute non-trivial quantum algorithms of a few tens to hundreds of gates. With these devices, an artificial but well-defined problem that is intractable classically is solved on a quantum computer. However, these problems are often not practical. The more important question is when a more relevant problem can be solved on a quantum computer. \\
+
+
+To address large-scale problems, \textit{quantum error-correction} (QEC) is necessary. QEC leads to a distinction between \textit{logical} and \textit{physical} qubits. The former are error-corrected and encoded in the state of many physical qubits. Quantum algorithms are performed on the logical qubits, and the error-correction scheme translates the operations on logical qubits into physical operations. 
 
 
 
@@ -848,11 +862,75 @@ To understand quantum advantage in chemistry, condensed matter physics, and quan
 
 \subsection{Simulation challenges in molecular and materials science }
 
+In this section we look at some scientific problems of relevance to quantum simulation.
+
 \subsubsection{Quantum chemistry}
+
+Quantum chemistry is concerned with determining the low-lying eigenstates of the electronic Hamiltonian of a molecule. he eigenstates are determined for fixed sets of nuclear positions within the Born-Oppenheimer approximation. Determining the electronic energy as a function of nuclear position is key to understanding chemical reactivity, product distribution, and reaction rates.\\
+
+Some examples of problems in quantum chemistry include
+\begin{itemize}
+	\item The chemistry of enzyme active sites
+	\item Transition metal nanocatalysts an surface catalysts
+	\item Light harvesting and the vision process
+\end{itemize}
+
+The basic metric is whether ground-states or low-energy eigenstate quantum algorithms yield more accurate energies than the best classical algorithms, for the problem sizes of interest. 
+
 \subsubsection{Quantum molecular spectroscopy}
+
+
+The theoretical goal is to compute the eigenstates of the nuclear SE. There are challenges, of course. First, the nuclear Hamiltonian is often not known, because interactions are mediated by electrons. Second, nuclear rotational and vibrational motion is often far from harmonic and not well approximate by simple mean-field theories. Third, even when the nuclear SE has been properly formulated, one faces the challenge of representing th eigenstates. \\
+
+Some famous examples include:
+\begin{itemize}
+	\item Spectra of floppy molecules
+	\item Hydrogen bonded clusters
+\end{itemize}
+
+There are similarities with the quantum chemistry problems, but the differences are more significant. The Hamiltonian is often more complicated because interactions are now many-body. Also, the number of states is often orders-of-magnitude greater. 
+
+
 \subsubsection{Chemical quantum dynamics}
+
+Chemical quantum dynamics if concerned with modeling time-dependent electronic and nuclear quantum effects in molecules. Some problems include:
+\begin{itemize}
+	\item Proton coupled electron transfer
+	\item Vibrational dynamics in complex environments
+	\item Plasmonic chemistry
+\end{itemize}
+
+
+There are multiple practical challenges. Some of this may be viewed as an issue of representation. In addition, the dynamical quantum state involves near continuum degrees of freedom, which makes discretizing the Hilbert space a challenging problem. 
+
+
 \subsubsection{Correlated electronic structure in materials}
-\subsubsection{Dynamical quantum effects in materials}
+
+The goal here is to determine low-energy properties of materials such as Mott insulators. Some famous problems include:
+\begin{itemize}
+	\item High-temperature superconductivity
+	\item Non-Fermi liquid behavior in heavy fermion compounds and fermionic systems near criticality
+	\item Quantum fluctuations in two-dimensional systems
+	\item Frustrated spin systems
+\end{itemize}
+
+
+
+
+
+
+%\subsubsection{Dynamical quantum effects in materials}
+
+
+
+
+
+
+
+
+
+
+
 
 \newpage
 
@@ -860,9 +938,113 @@ To understand quantum advantage in chemistry, condensed matter physics, and quan
 \subsection{Challenges for quantum algorithms in quantum simulation}
 
 \subsubsection{Overview of algorithms}
+
+In this section, we look at the current status and theoretical and practical challenges to implement quantum algorithms for quantum problems. \\
+
+
+The first step in a quantum simulation is to choose a \textit{representation} for the Hamiltonian and the states. We will examine the possibilities for different qubit representations, and open questions.\\
+
+Quantum ground-state algorithms fall into different classes. QPE is a direct route to nearly exact eigenstate determination, but has been challenging to implement in the near-term era. On the other hand, \textit{variational quantum algorithms} provide the possibility to introduce approximations with adjustable circuit depth, which are determine via optimization, usually implemented in a hybrid-quantum classical loop. \\
+
+While polynomial time algorithms for \textit{quantum time evolution} have been known for some time, algorithms with optimal asymptotic complexity as well as favorable scaling with error and low prefactors, remain an area of active research.
+
+
+
+
 \subsubsection{Qubit representation of many-body systems}
+
+To simulate many-body systems on a digital computer (either quantum or classical), the infinite-dimensional Hilbert space of a many-body system has to be truncated. The most direct route then is to define a finite set of \textit{basis functions} and then try to project the exact many-body Hamiltonian onto the chosen basis. The resulting discretized system is then expressed in terms of qubits. A choice of a good representation is important as it may affect the simulation cost dramatically. 
+
+
+\begin{enumerate}
+	\item \textit{Ab initio electronic structure qubit representations:}\\
+	
+	This concerns with the electronic structure. Consider the Hamiltonian that appears regularly in chemistry and physics
+	\begin{align}
+	\had = \sum^K_{i=1}-\f{1}{2}\laplacian + V(r_i) + \sum_{1\leq i<j\leq K}\f{1}{\abs{r_i - r_j}}
+	\end{align}
+	where $K$ is the number of electrons, $V$ is the potential created by atomic nuclei at a point $r$, and the last term represents the Coulomb interaction. Each electronic has $r_i \in \mathbb{R}^3$ and spin $\omega_i \in \{\uparrow, \downarrow\}$. So, the total wavefunction (for $K$ electrons) has the form $\psi = \psi(\vec{x}_1,\dots,\vec{x}_K)$ where $\vec{x}_i = (r_i,\omega_i)$. From Fermi statistic, we require that $\psi$ is anti-symmetric under a position swap.\\
+	
+	The first step is to approximate the electronic Hamiltonian with a simpler simulator Hamiltonian. This is usually achieved by truncate the Hilbert space of a single electron to a finite set of basis functions $\psi_1,\dots,\psi_N$. \\
+	
+	Electronic structure simulation algorithms are based on the \textit{first quantization method} (\href{https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.79.2586}{\underline{link}}). We won't worry about this too much.\\
+	
+	The \textit{second quantization method} often results in simpler simulator Hamiltonian and requires few qubits. This methods is particularly well suited for quantum simulation algorithms and has been experimentally demonstrated for small molecules. Given a set of $N$ basis functions $\psi_1,\dots,\psi_N$, the second quantized simulator Hamiltonian is given by
+	\begin{align}
+	\had = \sum^N_{p,q=1} t_{pq}\hat{c}_p^\dagger \hat{c}_q + \f{1}{2}\sum^N_{p,q,r,s=1}u_{pqrs}\hat{c}^\dagger_p\hat{c}_q^\dagger \hat{c}_r \hat{c}_s.
+	\end{align}
+	Again, we're not going to worry too much about these. 
+	
+	
+	
+	
+	
+	
+	
+	\item \textit{Electronic basis functions:}\\
+	
+	The discretization of the electronic Hilbert space for a quantum simulation requires balancing two concerns. We need to represent the state with the smallest number of qubits, but also retain maximal Hamiltonian sparsity. \\
+	
+	There are two families of basis functions in wide use in quantum chemistry and quantum materials science: atomic orbital \textit{Gaussian bases} and \textit{Plane waves}. Gaussian bases are commonly used in molecular simulations due to their compactness, while plane waves are used in crystalline materials simulations. \\
+	
+	In Gaussian bases, linear combinations of Gaussian functions are placed at the nuclear positions. When they are place where the ground-state electron density is highest, they give a compact representation of the wavefunction for bound states. However, the Hamiltonian is not sparse, which leads to high gate counts. \\
+	
+	Plane waves offer greater simplicity as the accuracy of the basis is controlled by a single parameter, namely the kinetic energy cutoff. The number of plane waves needed to reach a desired accuracy is larger than th number of Gaussian states, but the Hamiltonian contains fewer terms ue to momentum conservation. \\
+	
+	The need to expose more sparsity in the Hamiltonian while retaining a reasonable compact wavefunction is an active area of research in both classical and quantum algorithms.  
+	
+	
+	\item \textit{Fermions-to-qubit mappings:}\\
+	
+	Since the basic units of a quantum computer are qubits rather than fermions, any quantum simulation algorithm of fermions emplyos a suitable encoding of fermionic degrees of freedom into qubits. The standard \textit{Jordan-Wigner} mapping identifies each Fermi mode with a qubit such that the empty and the occupied states are mapped to the qubit basis states $\ket{0}$ and $\ket{1}$ respectively. The Jordan-Wigner mapping/transformation is a transformation that maps spin operators onto fermionic creation and annihilation operators. 
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{jw}
+	\end{figure}
+	A natural question is whether the number of qubits required to express a Fermi system can be reduced by exploiting symmetries such as the particle number conservation or
+	the point group symmetries of molecules. For example, zero
+	temperature simulations often target only one symmetry sector containing the ground state. This motivates the study
+	of \textit{symmetry-adapted fermion-to-qubit mappings}.
+\end{enumerate} 
+
+
+
 \subsubsection{Quantum algorithms for ground and excited states}
+
+There are many approaches to obtaining ground states or
+excited states on a quantum computer. State preparation
+procedures attempt to construct a circuit to prepare a state
+with as large as possible overlap with the desired eigenstate. One set of such procedures, which includes adiabatic state preparation and quantum imaginary time evolution, uses a prescribe evolution path. An alternative strategy is based on \textit{variational methods}, which are often called variational quantum eigensolvers. Here, the preparation circuit itself is defined via the optimization of the energy with respect to parameters of the circuit. \\
+
+
+Given some state with sufficiently large overlap with the desired state, one can perform \textit{quantum phase estimation} (QPE) which simultaneously projects the state onto an eigenstate of the Hamiltonian and obtains an estimate for the energy of this eigenstate. The error, as we have seen, is inversely proportional to the simulation time. The probability of successfully projecting onto the desired state is given by the square overlap of the input state and
+the desired state, and it is thus necessary to use some other
+method (such as the state preparation procedures above) to
+prepare an input state with sufficient overlap with the desired
+state.\\
+
+
+There are weaknesses to this, of course. While phase estimation allows the deviation of the final state from an exact eigenstate to be systematically reduced, it can require deep circuits with many controlled gates that are challenging for devices with limited coherence and without error correction. Variational methods replace such circuits b a large number of potentially short simulations. However, if one des not measure the energy by phase estimation, but instead by expressing the Hamiltonian as a sum of multi-qubit Pauli operators and measuring the terms individually, the state preparation and measurements must be repeated many times, with the error converging only as the square root of the number of repetitions. Variational methods are also limited by the variational form and ability to solve the associated optimization
+problem, which may by itself represent a difficult classical
+optimization.
+
+
 \subsubsection{Preparing ground states along a prescribed path}
+
+\begin{enumerate}
+	\item \textit{Adiabatic state preparation:} 
+	
+	
+	\item \textit{Quantum imaginary-time evolution:}
+\end{enumerate}
+
+
+
+
+
+
+
+
 \subsubsection{Variational state preparation and variational quantum eigensolver}
 \subsubsection{Excited states}
 \subsubsection{Phase estimation}
