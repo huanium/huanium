@@ -1474,11 +1474,11 @@ Just as in QPE, we only consider Hamiltonians that can be written as a  polynomi
 \begin{align}
 e^{-i\had t} = \prod e^{-i \had_m \delta t}
 \end{align}
-where $t =N \delta t$. Now, what do we mean by ``sparse?'' Sparse means that there are at most $d$ nonzero entries per row, $d = \text{poly}(\log N)$. In any given row, the location of the $j$th nonzero entry and its value can be compute efficiently (or is given by a black box). Sparse Hamiltonians are different from ``Local'' Hamiltonians, where $\had = \sum_j \had_j$ where each $\had_j$ acts on $\mathcal{O}(1)$ qubits. \qed
+where $t =N \delta t$. Now, what do we mean by ``sparse?'' Sparse means that there are at most $d$ nonzero entries per row, $d = \text{poly}(\log N)$. In any given row, the location of the $j$th nonzero entry and its value can be compute efficiently (or is given by a black box). Sparse Hamiltonians are different from ``Local'' Hamiltonians, where $\had = \sum_j \had_j$ where each $\had_j$ acts on $\mathcal{O}(1)$ qubits. \qed\\
 
 
 
-In any case, I digress again. The evaluation of $\langle \had \rangle $ reduces to the sum sum of a polynomial number of expectation values of simple Pauli operators for a quantum state $\ket{\psi}$,  multiplied by some real constants. A quantum device can efficiently evaluate the expectation value of a tensor product of arbitrary number of simple Pauli operators. Therefore, with an $n$-qubit state we can efficient evaluate the expectation value of this $2^n \times 2^n$ Hamiltonian.\\
+In any case, I digress again. The evaluation of $\langle \had \rangle $ reduces to the sum of a polynomial number of expectation values of simple Pauli operators for a quantum state $\ket{\psi}$,  multiplied by some real constants. A quantum device can efficiently evaluate the expectation value of a tensor product of arbitrary number of simple Pauli operators. Therefore, with an $n$-qubit state we can efficient evaluate the expectation value of this $2^n \times 2^n$ Hamiltonian.\\
 
 This is possible with a classical computer, but it suffers from the $N$-representability problem. The power of the quantum approach derives from the fact that quantum hardware can store a global quantum state with exponentially fewer resources than required by classical hardware, and as a result the $N$-representability problem does not arise. \\
 
@@ -1504,10 +1504,69 @@ with respect to QPE.
 
 \subsection{Quantum Variational Eigensolver (QVE)}
 
+The procedure outlined above
+replaces the long coherent evolution required by QPE by many
+short coherent evolutions. In both QPE and QEE we require a
+good approximation to the ground-state wavefunction to compute the ground-state eigenvalue, and we now consider this
+problem. The quantum variational eigensolver (QVE) algorithm
+is a variational method to prepare the eigenstate and, by
+exploiting QEE, requires short coherent evolution. 
 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.2]{qvei}
+\end{figure}
 
+It is well known that the eigenvalue problem for an observable
+represented by an operator H can be restated as a variational
+problem on the Rayleigh–Ritz quotient such that the eigenvector $\ket{\psi}$ corresponding to the lowest eigenvalue is the one hat minimizes
+\begin{align}
+\f{\bra{\psi} \had \ket{\psi}}{\braket{\psi}}
+\end{align}
+By varying the experimental parameters in the preparation of $\ket{\psi}$ and computing the Rayleigh–Ritz quotient using QEE as
+a subroutine in a classical minimization, one may prepare
+unknown eigenvectors. At the termination of the algorithm, a
+simple prescription for the reconstruction of the eigenvector is
+stored in the final set of experimental parameters that define $\ket{\psi}$. \\
 
+Note that if a quantum state is characterized by an exponentially large
+number of parameters, it cannot be prepared with a polynomial
+number of operations. The set of efficiently preparable states are
+therefore characterized by polynomially many parameters, and
+we choose a particular set of ansatz states of this type.  Under
+these conditions, a classical search algorithm on the experimental
+parameters that define $\ket{\psi}$ needs only explore a polynomial
+number of dimensions -- requirement for the search to be
+efficient.\\
 
+One example of a quantum state parameterized by a
+polynomial number of parameters for which there is no known
+efficient classical implementation is the unitary coupled cluster
+ansatz
+\begin{align}
+\ket{\Psi} = e^{T - T^\dagger}\ket{\Phi}_\text{ref}
+\end{align}
+where $\ket{\Phi}_\text{ref}$ is some reference state, usually the Hartree Fock ground state, and $T$ is the cluster operator for an $N$ electron system, defined by
+\begin{align}
+T =T_1 + T_2 + \dots + T_N,
+\end{align}
+where
+\begin{align}
+T_1 = \sum_{pr}t^r_p \hat{a}_p^\dagger\hat{a}_r, \quad T_2 = \sum_{pqrs}t^{rs}_{pq}\hat{a}_p^\dagger \hat{a}_q^\dagger\hat{a}_r \hat{a}_s,\quad \dots
+\end{align}
+By construction, $(T - T^\dagger)$ is anti-Hermitian, and exponentiation maps it to a unitary operator $e^(T - T^\dagger)$. \\
+
+For any fixed excitation level $k$, the reduced cluster operator is written as
+\begin{align}
+T^{(k)} = \sum^k_{i=1}T_i.
+\end{align}
+This state may be prepared efficiently on a quantum
+device. The reduced anti-hermitian cluster operator  $(T^{(k)} - T^{(k)\dagger})$ is the sum of a polynomial number of terms—namely, it contains
+a number of terms $\mathcal{O}(N^k(M-N)^k)$, where $M$ is the number of
+single-particle orbitals. By defining an effective Hermitian
+Hamiltonian $\had = i(T^{(k)} - T^{(k)\dagger})$ and performing the Jordan–
+Wigner transformation to reach a Hamiltonian that acts on the
+space of qubits $\hat{\had}$, we are left with a Hamiltonian that is a sum of polynomially many products of Pauli operators. The problem then reduces to the quantum simulation of this effective Hamiltonian, $\hat{\had}$ which can be one in polynomial time using known procedures. 
 
 
 
