@@ -144,6 +144,8 @@ Greetings,\\
 
 This guide is my notes from Perimeter Institute of Theoretical Physics Summer School, 2020. Topics include quantum information, thermodynamics, numerical methods, condensed matter physics, path integrals, and symmetries.\\
 
+The text also includes reading notes for my research project at Perimeter on quantum simulation. \\
+
 Enjoy!  
 
 
@@ -198,54 +200,70 @@ Once this background is established, we will study the method of exact diagonali
 
 \newpage
 
-\section{Lecture 1}
-\subsection{Introduction to many-particle states and operators}
+
+\section{L1: Introduction to many-particle states and operators}
 \newpage
-\subsection{Introduction to Ising and XXZ models}
+\subsection{L1: Introduction to Ising and XXZ models}
 \newpage
-\subsection{Programming basics}
+\subsection{L1: Programming basics}
 \newpage
-\subsection{Finding expectation values}
+\subsection{L1 : Finding expectation values}
 \newpage
 
-\section{Lecture 2: Exact diagonalization part 1}
-\subsection{Representing models}
+\section{L2: Exact diagonalization part 1}
 \newpage
-\subsection{Finding eigenstates}
+\section{L2: Representing models}
 \newpage
-\subsection{Energy gaps}
+\section{L2: Finding eigenstates}
 \newpage
-\subsection{Phase transitions}
+\section{L2: Energy gaps}
 \newpage
-
-
-
-
-\section{Lecture 3: Exact diagonalization part 2}
-\subsection{Limitations of the method}
-\newpage
-\subsection{Using symmetries}
-\newpage
-\subsection{Dynamics}
+\section{L2: Phase transitions}
 \newpage
 
 
 
 
-\section{Lecture 4: Matrix product states part 1}
-\subsection{Entanglement and the singular value decomposition}
-\newpage
-\subsection{What is a matrix product state and why is it useful}
+\section{L3: Exact diagonalization part 2}
 \newpage
 
-
-\section{Lecture 5: Matrix product states part 2}
-\subsection{Algorithms for finding ground states using matrix product states: iTEBD }
-
+\section{L3: Limitations of the method}
+\newpage
+\section{L3: Using symmetries}
+\newpage
+\section{L3: Dynamics}
 \newpage
 
 
-\subsection{Algorithms for finding ground states using matrix product states: DMRG }
+
+
+\section{L4: Matrix product states part 1}
+\newpage
+
+
+
+\section{L4: Entanglement and the singular value decomposition}
+\newpage
+
+
+\section{L4: What is a matrix product state and why is it useful}
+\newpage
+
+
+
+
+
+\section{L5: Matrix product states part 2}
+
+
+\newpage
+
+\section{L5: Algorithms for finding ground states using matrix product states: iTEBD }
+
+\newpage
+
+
+\section{L5: Algorithms for finding ground states using matrix product states: DMRG}
 
 \newpage
 
@@ -296,37 +314,157 @@ The goal of this course is to introduce the path integral formulation of quantum
 
 
 
-The aim of this course is to  explore some of the many ways in which symmetries play a role in physics. We’ll start with an overview of the concept of symmetries and their description in the language of  group theory. We will then discuss continuous symmetries and infinitesimal symmetries, their fundamental role in Noether's theorem, and their formalization in terms of Lie groups and Lie algebras. In the last part of the course we will focus on symmetries in quantum theory and introduce representations of (Lie) groups and Lie algebras.
+The aim of this course is to  explore some of the many ways in which symmetries play a role in physics. We'll start with an overview of the concept of symmetries and their description in the language of  group theory. We will then discuss continuous symmetries and infinitesimal symmetries, their fundamental role in Noether's theorem, and their formalization in terms of Lie groups and Lie algebras. In the last part of the course we will focus on symmetries in quantum theory and introduce representations of (Lie) groups and Lie algebras.
 
 
 \newpage
 
-\section{Lecture 1: Overview}
-\subsection{Definition of symmetry}
-\newpage
-\subsection{Elements of group theory}
-\newpage
-\subsection{Examples }
+
+\section{Review: Equivalence Classes}
+
+
+\subsection{Equivalence relations}
+
+
+An equivalence relation is a special kind of binary relation. A
+(homogeneous) binary relation on a set $X$ is a way of encoding a relationship between two elements of $X$. Given a relation $R$ we use the notation $xRy$ to mean ``$x$ is related to $y$.'' \\
+
+Examples of relations are $=,<,>, \leq, \geq$ on $\mathbb{R}$. \\
+
+\begin{defn}[Homogeneous binary relation]
+	A homogeneous binary relation on a set $X$ is a set $R \subset X \times X$ of pairs of
+	elements of $X$. When $(x,y) \in R$ we say that $x$ is relate to $y$, which we also indicate with the less cumbersome notation $xRy$.  
+\end{defn}
+
+We can now define equivalence relations.
+
+
+
+\begin{defn}[Equivalence relation]
+	An equivalence relation on a set $X$ is homogeneous binary relation $R$ that satisfies the following properties:
+	\begin{itemize}
+		\item Reflexive: $xRx \forall x\in X$.
+		\item Symmetric: $xRy \implies yRx$.
+		\item Transitive: $xRy, yRz \implies xRz$
+	\end{itemize}
+	These properties are chosen as they encode the fundamental features of the notion of
+	things being ``equivalent.''
+\end{defn}
+
+Equivalence relations are often denoted by the symbol $\sim$. In this case we read $x\sim y$ as ``$x$ is equivalent to $y$.'' 
+
+
+
+
+
+\subsection{Equivalence Classes}
+
+Now that we know what an equivalence relation is, we can define the extremely useful concept of equivalence class.
+
+
+\begin{defn}
+	Let $\sim$ be an equivalence relation on $X$. The equivalance class of $x \in X$ is the set 
+	\begin{align}
+	[x]_\sim = \{ y\in X \vert y\sim x   \}
+	\end{align}
+	of all the elements in $X$ equivalent to $x$. We often drop the subscript and just write $[x]$ if there is no risk of confusion. Note that
+	\begin{align}
+	[x]_\sim = [y]_\sim, \quad \forall y \in [x]_\sim,
+	\end{align}
+	that is we can label the equivalence class using any of its elements. The element that we
+	choose as the label is called the representative of the equivalence class.
+\end{defn}
+
+
+
+Equivalence classes are essentially buckets in which we put elements of X that are equivalent
+to each other. Inequivalent elements end up in different equivalence classes. One way of
+thinking about this is that an equivalence class is a way to encode as a single object the
+properties common to its elements, which are otherwise indistinguishable.
+
+
+\begin{exmp}
+	An example of equivalence relation appears in modular arithmetic. Let's consider the simplest case of the integers modulo 2. We define an equivalence relation $\sim$ on $\mathbb{Z}$ by
+	\begin{align}
+	x\ sim y \implies x-y = 2k, k\in \mathbb{Z},
+	\end{align}
+	that is $x,y$ are equivalent if they differ by a multiple of two. If you want, you can check that this is indeed an equivalence relation as an exercise. There are only two distinct equivalence classes, which are the respectively the sets of even and odd integers. The sets of integers modulo 2 is
+	defined as
+	\begin{align}
+	\mathbb{Z}_2 = \{ [0], [1]  \}.
+	\end{align}
+	Although this is a set of sets, we really want to pretend that it's a set of numbers. To do
+	that, we define a way to add elements in $\mathbb{Z}_2$. The obvious choice is
+	\begin{align}
+	[a] + [b] = [a+b],
+	\end{align}
+	but at this stage this expression is purely formal: since we are specifying this operation
+	through the sum of the representatives of each class, we need to make sure that the definition
+	is actually independent of the choice of representatives (since they should be equivalent).
+	This happens all the time when dealing with equivalence classes! In this case we are fine, because of the rules of adding odd and even numbers. 
+\end{exmp}
+
+
+
+\begin{exmp}
+	Here’s an example from quantum physics. Let $\had$ be the Hilbert space of a quantum theory. While extremely useful, the states $\ket{\psi} \in \had$ are not \textit{physical}, where physical is meant as something that can be measured. The physical quantities in a quantum theory are the expectation values of the observables in a given state, that is 
+	\begin{align}
+	\langle A \rangle_\psi = \f{\bra{\psi}A\ket{\psi}}{\braket{\psi}}.
+	\end{align}
+	Now consider another state $\ket{\phi} = \lambda{\psi}$, with $\lambda \in \mathbb{C}\setminus \{0\}$. For any observable $A$ we have
+	\begin{align}
+	\langle A \rangle_\phi = \f{\abs{\lambda}^2}{\abs{\lambda}^2}\f{\bra{\psi}A\ket{\psi}}{\braket{\psi}} = \langle A \rangle_\psi.
+	\end{align}
+	This means that the states $\ket{\psi}$ and $\ket{\phi}$ are physically indistinguishable. It is then natural to consider them equivalent, and define the equivalence relation 
+	\begin{align}
+	\ket{\psi} \sim \ket{\phi} \iff \ket{\phi} = \lambda\ket{\psi}, \quad \lambda \in \mathbb{C}\setminus \{0\}.
+	\end{align}
+	
+	The set 
+	\begin{align}
+	P(\had) = \{ [\ket{\psi}] \vert \ket{\psi} \in \had\setminus\{0   \}
+	\end{align}
+	is called th \textit{projective Hilbert space} associated to $\had$, and can be interpreted as the set of all distinguishable quantum states. The zero vector was removed as it does not describe any physical state (expectation values don't make sense for the zero vector). \\
+	
+	In a sense $P(\had)$ is the true set of states of a quantum theory. The reason why we work with $\had$ instead is that the latter is a vector space, which comes with a ot of nice properties and allows for an easy description of the superposition principle. 
+	
+	
+	
+\end{exmp}
+
+
+
+
 \newpage
 
 
 
-\section{Lecture 2}
-\subsection{Continuous and discrete symmetries}
+
+\section{L1: Definition of symmetry}
 \newpage
-\subsection{Infinitesimal symmetries}
+\section{L1: Elements of group theory}
 \newpage
-\subsection{Noether's theorem}
+\section{L1: Examples: Symmetry \& Group Theory }
+\newpage
+
+
+
+
+\section{L2; Continuous and discrete symmetries}
+\newpage
+\section{L2: Infinitesimal symmetries}
+\newpage
+\section{L2: Noether's theorem}
 
 
 \newpage
 
-\section{Lecture 3: Lie groups and Lie algebras}
+\section{L3: Lie groups and Lie algebras}
 \newpage
 
-\section{Lecture 4: Symmetries in quantum mechanics}
+\section{L4: Symmetries in quantum mechanics}
 \newpage
-\section{Representation theory}
+\section{L5: Representation theory}
 
 
 
