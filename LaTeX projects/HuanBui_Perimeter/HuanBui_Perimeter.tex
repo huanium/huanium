@@ -389,7 +389,8 @@ properties common to its elements, which are otherwise indistinguishable.
 	x\ sim y \implies x-y = 2k, k\in \mathbb{Z},
 	\end{align}
 	that is $x,y$ are equivalent if they differ by a multiple of two. If you want, you can check that this is indeed an equivalence relation as an exercise. There are only two distinct equivalence classes, which are the respectively the sets of even and odd integers. The sets of integers modulo 2 is
-	defined as
+	defined as
+
 	\begin{align}
 	\mathbb{Z}_2 = \{ [0], [1]  \}.
 	\end{align}
@@ -782,7 +783,8 @@ i\p_t \psi(x) = \lb -\f{1}{2m}\p_x^2 + V(x) \rb \psi(x).
 
 The key challenge in simulating quantum systems is the \textit{exponential} number of differential equations which must be solved. For 1 qubit evolving according to the
 SE, a system of 2 differential equations must be solved; for 2
-qubits, 4 equations; and for $n$ qubits, $2^n$ equations. Sometimes, insightful approximations can be made which reduce the effective number of equations involved, but there are many physically interesting quantum systems for which no such approximations are known.\\
+qubits, 4 equations; and for $n$ qubits, $2^n$ equations. Sometimes, insightful approximations can be made which reduce the effective number of equations involved, but there are many physically interesting quantum systems for which no such approximations are known.
+\\
 
 There are many important quantum systems for which classical simulation is intractable. For example:
 \begin{align}
@@ -1380,14 +1382,7 @@ list some open problems that are being actively investigated:
 \newpage
 
 
-\section{Some Models in Quantum Statistical \& Condensed-Matter Physics}
 
-\subsection{The Hubbard Model}
-
-\subsection{The Ising Model}
-
-
-\newpage
 
 
 
@@ -1717,6 +1712,55 @@ space of qubits $\hat{\had}$, we are left with a Hamiltonian that is a sum of po
 
 
 
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+\section{Some Models in Quantum Statistical \& Condensed-Matter Physics}
+
+\subsection{The Hubbard Model}
+
+\subsection{The Ising Model}
+
+
+
+
+\subsection{Transverse-field Ising model (quantum Ising model)}
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+\section{Locality in Quantum Systems}
+
+From this \href{https://arxiv.org/pdf/1008.5137.pdf}{\underline{paper}}.
+
+
+
+
+
+
 \newpage
 
 
@@ -1749,7 +1793,162 @@ space of qubits $\hat{\had}$, we are left with a Hamiltonian that is a sum of po
 
 
 
+
+
+
+
+
+
 \section{Efficient variational simulation of non-trivial quantum states}
+
+
+In this section we look at this \href{https://arxiv.org/pdf/1803.00026.pdf}{\underline{paper}}, with title '' Efficient variational simulation of non-trivial quantum states.'' The idea is the following. The paper provides an efficient and general route for preparing \textit{non-trivial quantum states} (defined later) that are NOT adiabatically connected to unentangled product states. This approach will be a hybrid of quantum and classical variational protocols that incorporates a feedback loop between a quantum simulator and a classical computer. This turns out to be realizable on near-term quantum devices of synthetic quantum systems. \\
+
+The paper provides explicit protocols which prepare with \textit{perfect fidelities} the following non-trivial quantum states: GHZ, quantum critical state, and topologically ordered state, with $L=2p$ variational parameters and physical runtimes $T \sim L$. \\
+
+The paper also conjectures and numerically support (so, not analytically support) that the protocol can prepare with perfect fidelity and similar operational costs the ground state of every point in the 1D transverse field Ising model phase diagram (we will define this later). 
+
+
+
+
+\subsection{Introduction}
+
+
+
+The paper demonstrates the efficient preparation of certain non-trivial states using a variational hybrid quantum-classical simulation, which utilizes resources of a quantum simulator and a classical computer in a feedback loop. Given Hamiltonians realizable on a quantum simulator, a quantum state $\ket{\psi}(\bm{\gamma}, \bm{\beta})$ is produced with $(\bm{\gamma}, \bm\beta) \equiv (\gamma_1,\dots,\gamma_p, \beta_1,\dots,\beta_p)$ parameterizing a finite set of $2p$ variational angles (or times) that the Hamiltonians are run for. \\
+
+A cost function, usually taken to be the energy of some target Hamiltonian, is then evaluated within the resulting state and optimized for in a classical computer, which yields a new set of $2p$ angles to be implemented to be fed back into the quantum simulator. \\
+
+The entire process is iterated to convergence. \\
+
+
+An example of an approach like this is the Quantum Approximate Optimization Algorithm (QAOA). There are a number of properties which make the variational quantum simulation appealing: it can be run on any quantum device (digital/tunable analog). The feedback loop of the protocol allows one to mitigate systematic errors that might be present in the experiment setups. \\
+
+This variational quantum-classical simulations on local, uniform Hamiltonians can target GHZ state, the critical state of the 1D transverse field Ising model (TFIM), and the ground state of the 2d Toric code, all with \textit{perfect fidelity}. \\
+
+Later, we will see that the entire ground state phase diagram of the TFIM can be produced with perfect fidelities and similar operational costs. This is only conjectured and numerically supported. \\
+
+Finally, we will look at the preparation of the ground states of the antiferromagnetic (AFM) Heisenberg chains. We will see that the protocol is able to achieve them efficiently and with \textit{very good} fidelities (so, not perfect, but very good).
+
+
+
+\subsection{Non-trivial quantum states}
+
+
+In any case, let's look at some non-trivial quantum states. What are non-trivial quantum states? Consider a target state $\ket{\psi_t}$ and an untangled product state $\ket{\psi_u}$, both defined on a system with linear dimension $L$. $\ket{\psi_t}$ is said to be \textit{non-trivial} if there does not exist a \textit{local} unitary circuit $\U$ of finite depth that connects the two: $\ket{\psi_t} = \U \ket{\psi_u}$. Instead, the depth of a local unitary circuit connecting the two must be at least $\mathcal{O}(L^\al)$. \\
+
+Intuitively, non-trivial states have entanglement patterns fundamentally different from product states, i.e., these are states that are very ``far'' from being product states. \\
+
+From the perspective of local Hamiltonians and gaps, such states are separated from product states by a gap-closing phase transition in the thermodynamic limit, and thus preparing them with the quantum adiabatic algorithm is hard.\\
+
+
+\begin{exmp}[GHZ states are non-trivial.] 
+	Let us look at why the GHZ states are non-trivial. Consider the GHZ state:
+	\begin{align}
+	\ket{\text{GHZ}} = \f{1}{\sqrt{2}}\lp \bigotimes \ket{Z=1} + \bigotimes \ket{Z=-1} \rp.
+	\end{align}
+	Suppose there exists a local, finite-depth unitary $\U$ that takes the completely polarized product state $\ket{+} \equiv \bigotimes \ket{X=1}$ to $\ket{\text{GHZ}}$. Then due to locality, there exists a Lieb-Robinson bound which limits the spread of information and entanglement under this evolution, implying that $\U$ can  only generate a finite correlation length $\xi$ for the final state.  Measuring a long-range spin-spin correlator gives
+	\begin{align}
+	\bra{\text{GHZ}} Z_i Z_j \ket{\text{GHZ}} = 1,
+	\end{align}
+	while on the other hand the same quantity can be expressed as
+	\begin{align}
+	1 = \bra{+}\U^\dagger Z_i \U \U^\dagger Z_j \U \ket{+} ,
+	\end{align}
+	which in the limit $\abs{i-j} \gg \xi$ decomposes as
+	\begin{align}
+	\bra{+}\U^\dagger Z_i \U \ket{+} \bra{+} \U^\dagger Z_j \U \ket{+} = \bra{\text{GHZ}} Z_i \ket{\text{GHZ}} \bra{\text{GHZ}} Z_j \ket{\text{GHZ}} = 0\neq 1
+	\end{align}
+	which is a contradiction.
+\end{exmp} 
+
+
+Similar arguments apply to critical states which have polar-law correlations, and topologically ordered states which have long-range correlations in loop operators and non-zero topological entanglement entropy. 
+
+
+
+
+
+ 
+
+\subsection{Variational Quantum-Classical Simulation (VQCS)}
+
+
+Now, we define the variational quantum-classical simulation (VQCS). This is motivated by the QAOA and the VQE. \\
+
+
+The protocol is envisioned to be run on a quantum simulator that can realize certain interactions between qubits and single qubit rotations, which we denote schematically by $H_1 , H_2$. The aim is to produce a good approximation to the ground state of a target many-body Hamiltonian $H_T$, which we will assume to be a linear combination of $H_1$ and $H_2$. \\
+
+The VQCS begins with the ground state of $H_1$, denoted $\ket{\psi_1}$, and evolves it with the following sequence alternating between $H_1, H_2$:
+\begin{align}
+\ket{\psi(\bm\gamma, \bm\beta)}_p = e^{-i\beta_p H_1}e^{-i\gamma_p H_2}\dots e^{-i \beta_1 H_1}e^{-i \gamma_1 H_2}\ket{\psi_1}.
+\end{align}
+
+For a fixed integer $p$, there are $2p$ variational agles 
+\begin{align}
+(\bm\gamma, \bm\beta) \equiv (\gamma_1,\dots,\gamma_p, \beta_1,\dots, \beta_p).
+\end{align}
+
+A cost function, such as the energy expectation value of the target Hamiltonian
+\begin{align}
+F_p(\bm\gamma, \bm\beta) = _p\bra{ \psi(\bm\gamma,\bm\beta)} H_T \ket{\psi(\bm\gamma,\bm\beta)}_p,
+\end{align}
+is then evaluated. A classical computer then performs an optimization to produce a new set of angles (or times) $(\bm\gamma, \bm\beta)$ which are then fed back into the quantum simulator and the process is repeated until the cost function is desirably minimized. The state corresponding to these optimal angles is therefore the optimal state that can be prepared by the protocol given this cost function. \\
+
+
+As the VQCS is envisioned to be run on near-term quantum simulators which are inherently noisy (NISQ), the physical runtimes $t = \sum^{p=L/2}_i (\gamma_i + \beta_i)$ of the VQCS constitute an important measure of the feasible of the protocol -- in general, shorter runtimes lead to less noise encountered and a better implementation.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Using VQCS to prepare nontrivial quantum states}
+
+In this section we look at how the VQCS generates some non-trivial quantum states.
+
+
+\subsubsection{GHZ state}
+
+(mention cat state here)
+
+\subsubsection{Critical State}
+
+\subsubsection{Ground states of the TFIM at generic points in the phase diagram}
+
+\subsubsection{Ground state of the Toric code}
+
+\subsubsection{Ground state of AFM Heisenberg chain}
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Conclusions}
+
+
+\subsection{Appendix}
+
+\subsubsection{Optimal angles for preparing GHZ state at $p=L/2$}
+\subsubsection{Explicit nonuniform unitary circuit for preparing the GHZ state}
+\subsubsection{Energy optimization plot and optimal angles for preparing critical state at $p=L/2$}
+\subsubsection{A Conjecture and Numerical Support}
+\subsubsection{Numerical verification of preparation of Toric code ground state}
+\subsubsection{Effect of errors on VQCS state preparation}
+
 
 
 
@@ -1759,10 +1958,20 @@ space of qubits $\hat{\had}$, we are left with a Hamiltonian that is a sum of po
 
 
 
+\section{Measurement-based quantum computing: Briegel et al}
+
+\href{https://www.nature.com/articles/nphys1157.pdf}{\underline{paper}}.
+
+
+\newpage
+
+
+\section{Mesurement-based quantum computing: Jozsa}
 
 
 
 
+\href{https://arxiv.org/pdf/quant-ph/0508124.pdf}{\underline{paper}}
 
 
 
