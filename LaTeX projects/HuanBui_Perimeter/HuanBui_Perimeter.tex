@@ -839,9 +839,11 @@ The heart of quantum simulation algorithms is the following asymptotic approxima
 \begin{thm}[Trotter formula]
 	Let $A$ and $B$ be Hermitian operators. Then for any real $t$, 
 	\begin{align}
-	\lim_{n\to \infty}\lp e^{-iAt/n}e^{iBt/n} \rp = e^{i(A+B)t}.
+	\lim_{n\to \infty}\lp e^{-iAt/n}e^{iBt/n} \rp^n = e^{i(A+B)t}.
 	\end{align}\qed
 \end{thm}
+
+
 
 Of course, the theorem holds even if $A$ and $B$ don't commute. For now, we only consider the cases where $A,B$ are Hermitian. But $A,B$ can actually be generators of certain kinds of semigroups, which correspond to general quantum operations.\\
 
@@ -853,6 +855,58 @@ Similarly,
 \begin{align}
 e^{i(A+B)\Delta t} = e^{iA\Delta t/2}e^{iB \Delta t}e^{iA \Delta t/2} + \mathcal{O}(\Delta t^3). 
 \end{align}
+
+
+
+
+
+
+
+\begin{exmp}[Hamiltonian simulation \& Trotterization, taken from \href{https://vtomole.com/blog/2019/04/07/trotter}{\underline{here}} ]
+	
+	The evolution of quantum system is governed by the SE $i \p_t \ket{\psi} = \had \ket{\psi}$. The solution to the SE:
+	\begin{align}
+	\ket{\psi(t)} = e^{-i \had t}\ket{0}
+	\end{align}
+	is a description on what state a system will be in after a Hamiltonian has been applied to it for a certain period of time. The problem of Hamiltonian simulation is thus states as: given a Hamiltonian $\had$ and an evolution time $t$, \textbf{output a sequence of computational gates} that implement $\U = e^{-i \had t}$.\\
+	
+	Hamiltonians are Hermitian operators that are usually a sum of a large number of individual Hamiltonians $\had_j$. For example, $\had = H_1 + H_2$. This sum of 2 Hamiltonians (which don't necessarily commute) can be described by the Trotter formula or the Lie product formula:
+	\begin{align}
+	e^{-i(H_1 + H_2)t} = \lim_{N\to \infty}\lp e^{-i H_1 t/N}e^{-iH_2 t/N} \rp^N.
+	\end{align}
+	Since the limit of this formula is infinite, we have to truncate the series when implementing this formula on a quantum compute. The truncation introduces error in the simulation that we can bound by $\epsilon$ such that $\norm{e^{-i \had t} - \U} \leq \epsilon$, where $\norm{\cdot}$ is some operator norm. This truncation is known as \textbf{Trotterization} and it's widely used to simulate non-commuting Hamiltonians on quantum computers. The \textbf{Trotterization formula} is then
+	\begin{align}
+	e^{-i \had t} = \lp e^{-iH_0 t/r}e^{-i H_1 t/r} \dots e^{-iH_{d-1}t/r}  \rp^r + \mathcal{O}(\text{polynomial factors}).
+	\end{align} 
+	Consider for example the Hamiltonian
+	\begin{align}
+	\had = X_0 + Y_1 + Z_2
+	\end{align}
+	where $X,Y,Z$ are Pauli matrices and the subscripts label  the qubits that the Hamiltonians act on. We can't simulate each Hamiltonian separately because they don't commute. This is why we use Trotterization where we evolve the entire Hamiltonian via repeatedly switching between evolving $X_0, Y_1, Z_2$ each for a small period of time.\\
+	
+	The first step in deriving the circuit that will simulate this Hamiltonian is finding the quantum gates that implement each of its individual term (so that we can make $\ket{\psi(t)}= e^{-i\had t}\ket{0}$ from $\ket{0}$ -- in a sense we want to find the correct form for $e^{f(X_0)}$). It turns out that this is easy since the quantum gates
+	\begin{align}
+	R_x(\theta) = e^{-i\theta X/2}, \quad R_y(\theta) = e^{-i\theta Y/2}, \quad R_z(\theta) = e^{-i\theta Z/2}
+	\end{align} 
+	will implies the individual terms perfectly. $\theta$ here denotes an \textbf{angle}, but we can also think of it as \textbf{time} because $\theta$ specifies the angle by which to rotate the state in a specified axis, which is synonymous with time in the sense that it specifies how ``long'' the rotation is applied on the state. \\
+	
+	
+	Since we don't care too much about the simulation error in this example we will use  $r=2, t=1$ in the Trotter formula to get
+	\begin{align}
+	e^{-i(X_0 + Y_1 + Z_2)} = \lp e^{-iX_0/2}e^{-iY_1/2}e^{-iZ_2/2}\rp\lp e^{-iX_0/2}e^{-iY_1/2}e^{-iZ_2/2}  \rp
+	\end{align}
+\end{exmp}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -886,6 +940,10 @@ e^{i(A+B)\Delta t} = e^{iA\Delta t/2}e^{iB \Delta t}e^{iA \Delta t/2} + \mathcal
 	\end{align}
 \end{thm}
 
+
+\begin{proof}
+	The proof is quite easy. Just, by definition, expand things out in power series. \qed
+\end{proof}
 
 
 
@@ -1754,7 +1812,16 @@ space of qubits $\hat{\had}$, we are left with a Hamiltonian that is a sum of po
 
 \section{Locality in Quantum Systems}
 
-From this \href{https://arxiv.org/pdf/1008.5137.pdf}{\underline{paper}}.
+In this section we will look at this \href{https://arxiv.org/pdf/1008.5137.pdf}{\underline{paper}} by Matthew Hastings. This is actually a compilation of lecture notes focusing on the application of ideas of locality, in particular Lieb-Robinson bounds, to quantum many-body systems. For our purposes, we will only look at a few topics included. 
+\begin{itemize}
+	\item We want to understand ``locality'' in the context of quantum simulation. What, precisely, does it mean for a Hamiltonian to be ''local''? 
+	
+	\item What are the Lieb-Robinson bounds? 
+	
+	\item What is the Lieb-Schulz-Mattis theorem?
+	
+	\item What are topologically ordered states? 
+\end{itemize}
 
 
 
@@ -1790,9 +1857,6 @@ From this \href{https://arxiv.org/pdf/1008.5137.pdf}{\underline{paper}}.
 
 
 \newpage
-
-
-
 
 
 
@@ -1843,6 +1907,25 @@ From the perspective of local Hamiltonians and gaps, such states are separated f
 
 
 \begin{exmp}[GHZ states are non-trivial.] 
+	Let's first look at what GHZ states are. GHZ stands for Greenberger-Horne-Zeilinger. GHZ is a certain type of entangled quantum state that involved at least three subsystems. Extremely non-classical properties of the state have been observed. \\
+	
+	\begin{defn}
+		The GHZ state is an entangled quantum state of $M>2$ subsystems. If each system has dimension $d$, i.e., the local Hilbert space is isomorphic to $\mathbb{C}^d$, then th total Hilbert space of $M$ partite system is $\had_\text{tot} = (\mathbb{C}^d)^{\otimes M}$. This GHZ state is also named as $M$-partite qubit GHZ state, which reads
+		\begin{align}
+		\ket{\text{GHZ}} = \f{1}{\sqrt{d}}\sum^{d-1}_{i=0}\bigotimes \ket{i}.
+		\end{align}
+		In the case of each of the subsystems being two-dimensional, that is for qubits, it reads
+		\begin{align}
+		\ket{\text{GHZ}} = \f{\ket{0}^{\otimes M} + \ket{1}^{\otimes M}}{\sqrt{2}}.
+		\end{align}
+		The GHZ state is a quantum superposition of all qubits being in 0 with all being in 1. The GHZ state is a maximally entangled quantum state. The simplest being $\ket{\text{GHZ}} = (\ket{000} + \ket{111})/2$.\\
+		
+		GHZ states are in contrast to the so-called ``cat states,'' which are quantum superpositions of two macroscopically distinct states. Note that a cat state, unlike GHZ states, are not necessarily an entangled state because a cat state could be of one or more modes or particles. 
+	\end{defn}
+	
+	
+	
+	
 	Let us look at why the GHZ states are non-trivial. Consider the GHZ state:
 	\begin{align}
 	\ket{\text{GHZ}} = \f{1}{\sqrt{2}}\lp \bigotimes \ket{Z=1} + \bigotimes \ket{Z=-1} \rp.
