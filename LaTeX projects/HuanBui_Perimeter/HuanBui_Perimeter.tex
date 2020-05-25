@@ -160,6 +160,8 @@ Enjoy!
 
 \chapter{Quantum Information \& Thermodynamics} 
 
+\textbf{Instructor:} Alioscia Hamma\\
+
 The aim of this course is to understand the thermodynamics of quantum systems and in the process to learn some fundamental tools in Quantum Information. We will focus on the topics of foundations of quantum statistical mechanics, resource theories, entanglement, fluctuation theorems, and quantum machines. 
 
 \newpage
@@ -188,6 +190,8 @@ The aim of this course is to understand the thermodynamics of quantum systems an
 
 \newpage
 \chapter{Numerical Methods \& Condensed Matter Physics}
+
+\textbf{Instructor:} Aaron Szasz\\
 
 This course has two main goals: (1) to introduce some key models from condensed matter physics; and (2) to introduce some numerical approaches to studying these (and other) models.  As a precursor to these objectives, we will carefully understand many-body states and operators from the perspective of condensed matter theory.  (However, I will cover only spin models.  We will not discuss or use second quantization.)\\
 
@@ -279,12 +283,109 @@ Once this background is established, we will study the method of exact diagonali
 
 \chapter{Path Integrals}
 
+\textbf{Instructor:} Dan Wohns\\
+
 The goal of this course is to introduce the path integral formulation of quantum mechanics and a few of its applications. We will begin by motivating the path integral formulation and explaining its connections to other formulations of quantum mechanics and its relation to classical mechanics. We will then explore some applications of path integrals.
 
 
 \newpage
 
 \section{Introduction to path integrals and the semi-classical limit}
+
+Path integrals is a different yet equivalent formulation of quantum mechanics. The path integral formulation of quantum mechanics does make a connection between classical and quantum physics more clear. It also has a number of advantages, some which we will touch on later. In essence, path integrals can allow for perturbation approaches to solving problems in quantum mechanics. Path integrals also generalize quantum field theory. Solving SE is much more difficult in higher dimensions. Using a differential-equation approach to QFT is often hard. Path integrals allow for easier approaches to the same problems in QFT. \\
+
+
+\subsection{Motivation \& Definition}
+
+Consider the double slit experiment. 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.8]{double-slit}
+	\caption{From Feynman's lectures of Physics}
+\end{figure}
+
+We know that the amplitude/propagator $K = A_1 + A_2$ leads to interference. \\
+
+The basic idea behind the path integral comes from considering what happens when there are many many many more slits. This suggests that the propagator should be the sum over all paths of some functional $A[\gamma]$ that is the amplitude associated with each path:
+\begin{align}
+K =\sum_\gamma A[\gamma]
+\end{align}
+where 
+\begin{align}
+\boxed{K(q_f,t_f, q_i,t_i) = \bra{q_f} e^{i\had (t_f - t_f)/\hbar} \ket{q_i}}
+\end{align}
+is the propagator. \\
+
+
+When there are infinitely many holds of infinitesimal size, the particle can be anywhere (since there's essentially no more holes), so we have the picture
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{time}
+	\caption{From PI lecture by Dan Wohns}
+\end{figure}
+In this case, the sum over paths becomes an integral
+\begin{align}
+\sum_\gamma \to \lim_{N\to \infty}\int d q_1dq_2\dots dq_{N-1}
+\end{align}
+
+
+\subsection{Some properties}
+
+\begin{prop}[Composition]
+	Consider the path $\gamma_{12}$ composed of the path $\gamma_1$ followed by the path $\gamma_2$. Then
+\begin{align}
+A[\gamma_{12}] = A[\gamma_1] A[\gamma_2].
+\end{align}
+This implies (as we will see in the exercises) that
+\begin{align}
+K(q_f,t_f,q_i,t_i) = \int dy\,K(q_f, t_f,y,t_{int})K(y,t_{int},q_i,t_i).
+\end{align}
+\end{prop}
+
+
+\begin{prop}[Classical Limit]
+	When $\hbar \to 0$ and the action  $S \gg \hbar$, then the classical path becomes most important. 
+\end{prop}
+
+
+For most of the course, we will be consider actions that look like
+\begin{align}
+S = \int^{t_f}_{t_i} dt\, \f{1}{2}m\dot{p}^2(t) - V(q(t)).
+\end{align}
+The classical path satisfies the Euler-Lagrange equation: 
+\begin{align}
+\f{\delta S}{\delta q(t)} = 0.
+\end{align}
+This turns out to be 
+\begin{align}
+m\ddot{q} + V'(q) =0 
+\end{align}
+which is just Newton's second law of motion. \\
+
+
+With these, we have 
+\begin{align}
+\int \mathfrak{D}q(t) e^{iS[q(t)]/\hbar}.
+\end{align}
+The composition property suggests that we should have an exponential, so that we can convert multiplication to summation. This says that all paths contribution with equal weight. So, the classical path is as important as the quantum path in the action. However, only paths such that $\delta S = 0$ contribute more to the propagator. \\
+
+Consider the paths $q(t)$ and $q'(t) = q(t) + \eta (t)$ where $\eta(t)$ is some small perturbation, then 
+\begin{align}
+S[q'(t)] = S[q(t)] + \int dt\, \eta(t) \f{\delta S[q]}{\delta q(t)} + \mathcal{O}(\eta^2).
+\end{align}
+
+What happens in the general case is that 
+\begin{align}
+e^{iS[q]/\hbar} + e^{iS[q']/\hbar} \approx  e^{iS[q]/\hbar}\lp 1 + \exp\lb \f{i}{\hbar} \int dt\, \eta(t) \f{\delta S[t]}{\delta q(t)} \rb \rp
+\end{align}
+So, when $\hbar \to 0$, we get destructive interference. But if $\delta S/\delta q = 0$, we get constructive interference. So, even though all paths are equally important, it's also true that the classical path are ``more important'' than quantum paths, because they interference constructively. 
+
+
+
+
+
+
+
 
 \newpage
 \section{Propagator in real and imaginary time}
@@ -310,9 +411,167 @@ The goal of this course is to introduce the path integral formulation of quantum
 
 
 
+
+\section{Exercises}
+
+
+
+\noindent \textbf{1. Composition.} 
+\begin{enumerate}
+	\item In lecture we argued that the propagator $K$ can be written as a sum (or an integral) over paths $\gamma$ of a functional $A[\gamma]$. 
+	\begin{align}
+	K = \sum_\gamma A[\gamma].
+	\end{align}
+	Show that the propagator obeys the composition property
+	\begin{align}
+	K(q_f, t_f, q_i, t_i) = \int dy\, K(q_f,t_f,y,t_{int})K(y,t_{int},q_i ,t_i)
+	\end{align}
+	of $A$ has the factorization property
+	\begin{align}
+	A[\gamma_{12}] = A[\gamma_1]A[\gamma_2].
+	\end{align}
+	
+	
+	
+	\begin{proof}
+		Let $A$ satisfy the factorization property. Then, 
+		\begin{align}
+		K = \sum_{\gamma_1,\gamma_2}A[\gamma_1]A[\gamma_2] = \int \,dy \,\sum_{\gamma_1} A[\gamma_1] \sum_{\gamma_2} A[\gamma_2]
+		\end{align}
+		where the path $\gamma_1$ ends at $y$ and $\gamma_2$ starts at $y$. With this, it's straightforward:
+		\begin{align}
+		K &= \int \,dy \bra{q_f}e^{-i\had (t_f - t_{int})/\hbar}\ket{y}\bra{y} e^{-i \had (t_{int} - t_i)/\hbar} \ket{q_i}\nn\\
+		&= \bra{q_f}e^{-i\had(t_f - t_{int} + t_{int} - t_i)/\hbar}\ket{q_i}   \nn\\
+		&= K(q_f,t_f,q_i,t_i).
+		\end{align}
+		So, we're done, because from the first line we conclude
+		\begin{align}
+		K(q_f, t_f, q_i, t_i) = \int dy\, K(q_f,t_f,y,t_{int})K(y,t_{int},q_i ,t_i).
+		\end{align}
+	\end{proof}
+	
+	
+	
+	
+	\item Explain why the factorization property
+	\begin{align}
+	A[\gamma_{12}] = A[\gamma_1]A[\gamma_2]
+	\end{align}
+	holds if $A[\gamma] = e^{iS[\gamma]/\hbar}$ where $S[\gamma]$ is the classical action of the trajectory $\gamma$.
+	
+	\begin{proof}
+		We note that $S[\gamma_{12}] = S[\gamma_1] + S[\gamma_2]$ if $\gamma_{12}$ is composed of  $\gamma_1,\gamma_2$. So this factorization property follows.
+	\end{proof}
+	
+	
+	
+	\item Suppose $A[\gamma] = C_1 e^{C_2 S[\gamma]}$ for some constants $C_1,C_2$. Which values of $C_1,C_2$ give rise to a composition property? 
+	
+	\begin{proof}
+		$C_1$ must be constantly 1, so that the composition property is satisfied. $C_2$ can be any real or complex number. 
+	\end{proof}
+	
+
+\end{enumerate}
+
+
+
+
+\noindent \textbf{2. Classical Limit}
+\begin{enumerate}
+	\item Suppose $f(x)$ is a real function. Which values of $x$ provide the most important contribution to 
+	\begin{itemize}
+		\item $\int e^{-f(x)}\,dx$? Why? (Optional: what conditions should be placed on $f(x)$?)
+		
+		
+		\begin{proof}
+			The most important contribution to this integral is when $f$ is small, so $x$'s where $f(x)$ is small. 
+		\end{proof}
+	
+	
+		\item $\int e^{if(x)}\,dx$? Why? (Optional: what conditions should be placed on $f(x)$?)
+		
+		
+		\begin{proof}
+			The most important contribution to this integral is when $f$ changes slowly, so most comes from $x$ where $f'(x)$ small. 
+		\end{proof}
+	\end{itemize}
+
+
+
+	\item The classical equation of motion for a particle with classical action $S$ is that the first-order variation vanishes:
+	\begin{align}
+	\delta S = 0.
+	\end{align}
+	A trajectory with $\delta S = 0$ is a classical trajectory. No extra conditions on the second-order variation of the action is required. Why does $A[\gamma] = e^{iS[\gamma]/\hbar}$ give the correct classical limit? 
+	
+	\begin{proof}
+		Recall that $\delta S = 0$. So this sort of shows why $A[\gamma] = e^{iS[\gamma]/\hbar}$ works. We won't worry too much about the details here.
+		
+	\end{proof}
+	
+	\item What other choices $A[\gamma]$ give rise to the correct classical limit? Do they have a composition property? 
+	
+	\item Do any of the other possibilities you identified in 1(c) have the correct classical limit? 
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \chapter{Symmetries}
 
-
+\textbf{Instructor:} Giuseppe Sellaroli\\
 
 The aim of this course is to  explore some of the many ways in which symmetries play a role in physics. We'll start with an overview of the concept of symmetries and their description in the language of  group theory. We will then discuss continuous symmetries and infinitesimal symmetries, their fundamental role in Noether's theorem, and their formalization in terms of Lie groups and Lie algebras. In the last part of the course we will focus on symmetries in quantum theory and introduce representations of (Lie) groups and Lie algebras.
 
@@ -436,36 +695,287 @@ properties common to its elements, which are otherwise indistinguishable.
 
 
 
-\newpage
 
 
 
 
 \section{L1: Definition of symmetry}
-\newpage
+
+We can't really give a mathematical definition of symmetry, because it depends on the context. But in any case we can define ``symmetry'' like this.
+
+\begin{defn}[Symmetries]
+	Loosely speaking, a symmetry is a transformation of $A$ that leaves $B$ invariant. 
+\end{defn}
+
+The idea is that $A$ and $B$ are not necessarily the same thing. 
+
+\begin{exmp}
+	If $B$ is the golden spiral and $A = \mathbb{R}^2$. When $A$ is scaled, $B$ remains invariant. 
+\end{exmp} 
+
+\begin{exmp}
+	Consider a Lagrangian,
+	\begin{align}
+	S = \int d^4x\,\lag
+	\end{align}
+	and $B = S$  and $A$ is time, which we translate. We can see that $S$ is invariant under time translation. 
+\end{exmp}
+
+
+Some properties:
+\begin{itemize}
+	\item (Identity) ``Doing nothing'' is a symmetry. It is trivial, but is a symmetry nonetheless. This is also called the ``identity'' transformation.
+	
+	\item (Inverses) Symmetries are invertible. 
+	
+	\item (Composition) Compositions of symmetries are also symmetries. 
+\end{itemize}
+
+
+
 \section{L1: Elements of group theory}
-\newpage
+
+
+\begin{defn}
+	A group is a set $G$ together with an operation $* : G\times G \to G$ satisfying the following properties:
+	\begin{itemize}
+		\item There is an identity element: $g*e = e*g = g, \forall g\in G$
+		
+		\item Each element of $G$ has an inverse, i.e., $\forall g\in G, \exists g^{-1}\in G$ s.t. $g^{-1}* g = g * g^{-1} = e \in G$.
+		
+		
+		\item The operation $*$ is associative, that is  $a*(b*c) = (a*b)*c, \forall a,b,c\in G$.
+	\end{itemize}
+
+	Additionally, we say that the group $G$ is abelian/commutative if $a*b = b*a, \forall a,b\in G$. 
+\end{defn}
+
+
+
+\begin{defn}[Subgroups]
+	Let $G$ be a group with operation $*$. A subgroup of  $G$ is a subset $H \subset G$ that contains the identity element and is closed under the operation $*$ and under inversion, that is 
+	\begin{itemize}
+		\item $e\in H$
+		\item $a*b \in H \,\forall a,b\in H$
+		\item $a\in H \implies a^{-1}\in H$.
+	\end{itemize}
+	The notation $H \leq G$ is commonly used to indicate that $H$ is a subgroup of $G$. 
+\end{defn}
+
+
+\begin{defn}[Group homomorphism]
+	A group homomorphism is a map $\varphi: G \to H$ between two groups $G$ and $H$ such that 
+	\begin{align}
+	\varphi(a*_G b) = \varphi(a)*_H \varphi(b), \forall a,b \in G.
+	\end{align}
+\end{defn}
+
+
+
+
+
+\begin{defn}[Kernel of a group homomorphism]
+	The kernel of a group homomorphism $\varphi: G\to H$ is the set 
+	\begin{align}
+	\ker\varphi = \{ g\in G \vert \varphi(g) = e_H   \}
+	\end{align}
+	of all the elements of $G$ that are sent to the identity in $H$. 
+\end{defn}
+
+\begin{prop}
+	A group homomorphism $\varphi: G\to H$ is injective if and only if the kernel is trivial: $\ker \varphi = \{ e_G\}$.
+\end{prop}
+
+\begin{proof}
+	$\,$\\
+	\begin{itemize}
+	\item $(\rightarrow)$, if $\varphi$ is injective, then at most one thing can be sent to $e_H$. This means that $\ker\varphi = \{ e_G \}$.
+	
+	\item $(\leftarrow)$ Let $a,b\in G$ such that $\varphi(a) = \varphi(b) \implies e_H = \varphi(a)^{-1}\varphi(b) = \varphi(a^{-1})\varphi(b) = \varphi(a^{-1}b) $. But this means $a^{-1}b \in \ker{\varphi} \implies a^{-1}b = e_G \implies a=b$. So $\varphi$ is injective. 
+	
+	\end{itemize}
+\end{proof}
+
+
+
+
+
+\begin{defn}[Isomorphisms]
+	Two groups $G$ and $H$ are isomorphic (denoted by by $G\sim H$) if there exists an invertible group homomorphism $\varphi: G \to H$. Such a map is called an isomorphism between $G$ and $H$. 
+\end{defn}
+
+
+
 \section{L1: Examples: Symmetry \& Group Theory }
-\newpage
+
+\begin{exmp}
+	$(\mathbb{Z},+), (\mathbb{R},+), (\mathbb{C},+), \dots$ are abelian groups. 
+\end{exmp}
+
+\begin{exmp}
+	$(\mathbb{R} \setminus \{0\}, \times)$ 
+\end{exmp}
+
+\begin{exmp}
+	Invertible $n\times n$ matrices, $GL(n,\mathbb{R})$ under usual matrix multiplication. 
+\end{exmp}
+
+\begin{exmp}
+	Circle group $S = \{(x,y) \in \mathbb{R}^2  \vert x^2 + y^2 = 1    \}$. Identity $(x,y) \in S$ with a complex number $z = x+iy$. Then use complex number multiplication. This works because $\abs{z} = 1 \implies z= e^{i\theta}$.
+\end{exmp}
+
+
+
+
+\begin{exmp}[Isomorphism]
+	Consider the two groups $(\mathbb{R},+)$ and $(\mathbb{R}^+\setminus\{0\}, \times)$. The exponential map: $x\in R \mapsto e^x$. This map is obviously invertible. It is also a group homomorphism because it relates multiplication in the target group to addition in the reals. So, the two groups are isomorphic. \\
+	
+	This is particularly useful when we want to move from additive groups to multiplicative groups. \\
+	
+	This map is related to Lie groups, etc which we will see later.  
+\end{exmp}
+
+
+
+
 
 
 
 
 \section{L2; Continuous and discrete symmetries}
-\newpage
+
 \section{L2: Infinitesimal symmetries}
-\newpage
+
 \section{L2: Noether's theorem}
 
-
-\newpage
-
 \section{L3: Lie groups and Lie algebras}
-\newpage
 
 \section{L4: Symmetries in quantum mechanics}
-\newpage
+
 \section{L5: Representation theory}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\section{Exercises}
+\noindent \textbf{1.} Prove the following consequences of the definition of a group:
+\begin{enumerate}
+	\item the identity element is unique (if two elements satisfy the identity property, they are
+	necessarily equal).
+	
+	\begin{proof}
+		If $e,e'$ are identities of $G$, then $e = e'e = e'e = e'$. 
+	\end{proof}
+	
+	\item For each $g \in G$ the inverse $g^{-1}$ is unique.
+	
+	\begin{proof}
+		Multiplying both sides on the right by any inverse to to get $g^{-1}*g = g'^{-1}*g = e \implies g^{-1} = g'^{-1}$.
+	\end{proof}
+	
+	\item $(g^{-1})^{-1} = g$.
+	
+	\begin{proof}
+		$g^{-1}* (g^{-1})^{-1} = e = g^{-1}*g \implies g=(g^{-1})^{-1}$, by multiplying by $g^{-1}$ on the right on both sides. 
+	\end{proof}
+	
+	\item $(gh)^{-1} = h^{-1}g^{-1}$.
+	
+	\begin{proof}
+		Multiplying both sides by $gh$ we get $(gh)(gh)^{-1} = e = ghh^{-1}g^{-1}$, so we're done, by the previous items.
+	\end{proof}
+
+
+\end{enumerate}
+
+
+\noindent \textbf{2.} Prove that if $\varphi : G \to H$ is a group homomorphism then 
+\begin{enumerate}
+	\item $\varphi(e_G) = e_H$. (Hint: look at $\varphi(e_G e_G)$).
+	
+	\begin{proof}
+		$\varphi(e_G) = \varphi(e_G e_G) = \varphi(e_G)\varphi(e_G) \implies \varphi(e_G) =e_H$ (we just showed that $\varphi(e_G)$ is an identity element in $H$). 
+	\end{proof}
+	
+	\item $\varphi(g^{-1}) = \varphi(g)^{-1}, \forall g\in G$.
+	\begin{proof}
+		$\varphi(e_G) = \varphi(g^{-1}g)= \varphi(g)\varphi(g^{-1}) = \varphi(g)\varphi(g)^{-1}$, so we have that $\varphi(g^{-1}) = \varphi(g)^{-1}$.
+	\end{proof}
+\end{enumerate}
+
+
+\noindent \textbf{3.} Prove that $\mathbb{Z}_2$ is isomorphic to the subgroup $\{-\mathbb{I}_n, \mathbb{I}_n \} \leq GL(n,\mathbb{C})$. While you are at it, prove that the latter is indeed a subgroup.
+
+\begin{proof}
+	Showing the latter set is s subgroup is easy so I won't do it. Consider the group homomorphism $\varphi: \mathbb{Z}_2 \to \{ -\mathbb{I}_n, \mathbb{I}_n \}$ defined by $\varphi(0) = \mathbb{I}_n$, and $\varphi(1) = -\mathbb{I}_n$. The map is bijective by definition. By inspection, the map is also a group homomorphism. So, the map is an isomorphism. This means the two groups are isomorphic to each other. 
+\end{proof}
+
+
+\noindent \textbf{4.} I'll do you one better: prove that any group with only two elements is isomorphic to $\mathbb{Z}_2$.
+
+\begin{proof}
+	Call the two-element group $G = \{ g,g^{-1} \}$. Create a map just like that in the previous exercise and we're done. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1827,6 +2337,43 @@ In this section we will look at this \href{https://arxiv.org/pdf/1008.5137.pdf}{
 
 
 
+\subsection{Introduction \& Notation}
+
+The basic problem studied in quantum many-body theory is to find the properties of the ground state of a given
+Hamiltonian. Expressed mathematically, the Hamiltonian $\had$ is a Hermitian matrix, and the ground state, which we write $\psi_0$, is an eigenvector of this matrix with the lowest eigenvalue.  The properties we are interested in studying
+are expectation values of various observables: given a Hermitian matrix $O$, we would like to compute the expectation value $\langle \psi_0 , O \psi_0\rangle \equiv \langle O \rangle$. \\
+
+While the method of ``exact diagonalization'' on a computer is an important technique in studying
+quantum systems, it is only a small part of how physical problems are studied. The feature that distinguishes the study of quantum many-body systems is \textit{locality} of interactions. Consider a typical Hamiltonian, such as the one-dimensional transverse field Ising model TFIM):
+\begin{align}
+\had = -J \sum^{N-1}_{i=1}S^z_i S^z_{i+1} + B \sum^{N}_{i=1}S_i^x.
+\end{align}
+The very notation implicitly assumes local interactions. To be precise, throughout this section, we only consider quantum systems on a finite size lattice. We associate a $D$ dimensional Hilbert space with each lattice site, and the Hilbert space of the whole system is tensor product of these spaces. We use $N$ to represent the number of lattice sites, so that the Hilbert space on which a Hamiltonian such as the one above is defined in $D^N$ dimensions. A term such as $S^z_i S^z_{i+1}$ is short hand for $I_1 \otimes I_2 \otimes \dots \otimes S_i^z \otimes S^z_{i+1} \otimes I_{i+2} \otimes \dots \otimes I_N$, where $I_j$ is the identity operator on site $j$.\\
+
+We let $i,j,k,\dots$ denote the lattice site, and $X,Y,Z$ to denote sets of lattice sites. We se $\Lambda$ to denote the set of all lattice sites. We use $\abs{X}$ to denote the cardinality of a set $X$. \\
+
+An operator $O$ is supported on a set $A$ if we can write $O$ as a tensor product of two operators $O = I_{\Lambda\setminus A} \otimes P$, where $I_{\Lambda \setminus A}$ is the identity operator on the sites not in $A$ and $P$ is some operator defined on the $D^{\abs{A}}$ dimensional Hilbert space on the set $A$. For example, $S^z_i \otimes S^z_{i+1}$ is supported on the set $\{ i, i+1\}$. \\
+
+We let $\norm{O}$ denote the ``operator norm'' for $O$. If $O$ is Hermitian, the operator norm is the equal to the absolute value of the largest eigenvalue of $O$. For arbitrary operators $O$, the operator norm is given by
+\begin{align}
+\norm{O} = \max_{\psi, \abs{\psi} = 1}  \abs{O \psi},
+\end{align}
+which one might have seen in real/functional analysis. \\
+
+Using 2 simple assumptions: that the Hamiltonian has local interactions and that the Hamiltonian has a spectral gap, we will be able to prove a wide variety of results about the ground state of the Hamiltonian. We will consider two cases of a spectral gap: one where $E_1  - E_0 \geq \Delta E$, where $\Delta E$ is called the ``spectral gap.'' In the other case, we consider a Hamiltonian with several degenerate or approximately degenerate low energy states. \\
+
+We will begin by considering properties of correlations in these systems, and prove an exponential decay of correlation functions. We then consider how the ground state of the system changes under a change in the Hamiltonian, and use this to prove a non-relativistic variant of Goldstone's Theorem. Finally, we apply these techniques to more interesting systems with topological order, beginning with the Lieb-Schultz-Mattis theorem However, before we can do any of this, we need to more precisely define the locality properties of the Hamiltonian and to prove a set of bounds on te propagation of information through the system called the Lieb-Robinson bounds. 
+
+
+
+\subsection{Locality \& The Lieb-Robinson bounds}
+
+
+
+
+
+
+
 
 \newpage
 
@@ -2000,7 +2547,27 @@ In this section we look at how the VQCS generates some non-trivial quantum state
 
 \subsubsection{GHZ state}
 
-(mention cat state here)
+Recall the GHZ state looks like
+\begin{align}
+\ket{\text{GHZ}} = \f{1}{\sqrt{2}}\lp \bigotimes \ket{Z=1} + \bigotimes \ket{Z = -1} \rp.
+\end{align} 
+So it is a superposition of two possible ways that the system is completely aligned. The GHZ state can be taken to be the ground state of the following Hamiltonian
+\begin{align}
+\had_T = \sum^L_{i=1}Z_i Z_{i+1},
+\end{align}
+in the symmetry sector $S = \prod^L_{i}X_i =1$. Just to clarify the notation, $Z_i$ gives $+1$ when the state is ``up'', i.e., if the state is $\ket{\uparrow}$. This means the Hamiltonian ``favors'' (i.e., achieve lowest energy) when everybody is aligned. Further, for simplicity we assume periodic boundary conditions.\\
+
+We choose in this case $H_1 = -\sum_i X_i$ with the product ground state $\ket{\psi_1} = \ket{+} = \bigotimes^L_{i}\ket{+}_i$. Recall that on the Bloch sphere, the $\ket{+}$ and $\ket{-}$ states lie in the horizontal plane, and are eigenstates of the $X$ operator, i.e., $X\ket{\pm} = \pm 1 \ket{\pm}$. We also know that $H_1$ has a straightforward implementation in both the analog and digital settings. \\
+
+Next, choose $H_2 = \had_T$. On a digital quantum simulator, this can be achieved using elementary two-site gates $Z_i Z_{i+1}$: 
+\begin{align}
+e^{-i\gamma H_2} = \prod^{L/2}_{i=1} e^{-i\gamma Z_{2i}Z_{2i+1}}   \prod^{L/2}_{i=1} e^{-i\gamma Z_{2i-1}Z_{2i}}
+\end{align}
+such that...
+
+
+
+ 
 
 \subsubsection{Critical State}
 
