@@ -164,9 +164,275 @@ Enjoy!
 
 The aim of this course is to understand the thermodynamics of quantum systems and in the process to learn some fundamental tools in Quantum Information. We will focus on the topics of foundations of quantum statistical mechanics, resource theories, entanglement, fluctuation theorems, and quantum machines. 
 
+
+
+
 \newpage
 
-\section{Foundations of Quantum Statistical Mechanics - Entanglement}
+\section{Introduction}
+
+
+Let's unpack the following three terms: Thermodynamics, Information, and Quantum. \\
+
+\noindent \textbf{Thermodynamics:} Thermodynamics is not concerned so much with how I make a more efficient engine as the most important question: ``What is possible?'' Any theory (relativity, string, quantum field, etc) must be thermodynamically valid. This way of think makes thermodynamics appear quite fundamental -- which indeed it is. \\
+
+\noindent \textbf{Information:} Information theory was so abstract that it was viewed as a mathematical subfield for the longest time. But because of the information revolution, information theory becomes physical. Physics tells us what kind of information theory is allowed. Information theory becomes a new way to understand Thermodynamics and what's possible. \\
+
+\noindent \textbf{Quantum information theory} provides even newer insights. \\
+
+
+
+
+Now, quantum theory as it is has unanswered questions. Consider the Schrodinger cat, which is in a superposition of begin dead and alive. We know that for spins, $(\ket{0} + \ket{1})/\sqrt{2}$ exists (coherently), but we don't see cat states. We believe that cat states are possible to make, but we also believe it's hard to create. However, we don't know for sure that such a Schrodinger cat state is possible.  \\
+
+With this, let us start. 
+
+\newpage
+
+
+\section{Basic facts of Quantum Mechanics}
+
+
+Some mathematical basics: 
+\begin{defn}[f.d. Hilbert spaces]
+	Consider finite-dimensional Hilbert spaces $\had \sim \mathbb{C}^d$. This is just a vector space over the complex numbers. We can also write $\had = \text{span}\{ \ket{1},\dots, \ket{d}   \}$. We can also call this a $d$-level system. We will use the Dirac notation $\ket{\psi}$ to denote elements of this Hilbert space. 
+\end{defn}
+
+\begin{defn}[Linear Operators]
+	Linear operators are mappings linear $A : \had \to \had$ defined by
+	\begin{align}
+	A = \sum_{ij}A_{ij}\ket{i}\bra{j}
+	\end{align}
+	where the set $\{ \ket{i} \}$ form the basis of the Hilbert space, and $A_{ij}$'s are the matrix elements of $A$. 
+\end{defn}
+
+
+\begin{defn}[Positive Operators]
+	An operator $A$ is positive if  $\bra{\psi}A \ket{\psi} \geq 0$ for all $\ket{\psi} \in \had$.
+\end{defn}
+
+
+\begin{defn}[Hermitian Operators]
+	$A$ is Hermitian if $A^\dagger = A$.
+\end{defn}
+
+\begin{thm}[Spectral Theorem]
+	A Hermitian operator $A$ has a spectral resolution $\ket{A_i}$ which forms an orthonormal basis of $\had$, with which we can write
+	\begin{align}
+	A = \sum_i a_i \ket{A_i} \bra{A_i} = \sum_i a_i P_i^A
+	\end{align}
+	Objects such as $\ket{A_i}\bra{A_i}$ are projectors.
+\end{thm}
+
+
+
+
+\begin{defn}[Schatten $p$-norm]
+	The $p$-norm of an operator $A$ is defined to be
+	\begin{align}
+	\norm{A}_p \equiv \lp \tr\lb \lc A^\dagger A \rc^{p/2} \rb \rp^{1/p}.
+	\end{align}
+\end{defn}
+
+
+\begin{exmp}
+	For $p=1$, we get the trace norm: 
+	\begin{align}
+	\norm{A}_1 = \tr\sqrt{A^\dagger A}.
+	\end{align}
+	
+	For $p=2$, we get the usual Frobenius norm:
+	\begin{align}
+	\norm{A}_2 = \sqrt{\tr(A^\dagger A)}.
+	\end{align}
+	
+	For $p = \infty$, we get the operator norm:
+	\begin{align}
+	\norm{A}_\infty = \sup_{\ket{\psi}}\f{\norm{A \ket{\psi}}}{\norm{\psi}}.
+	\end{align}	
+	In fact, there are multiple equivalent definitions of the operator norms. (Consider functional analysis for more details).
+\end{exmp}
+
+
+
+In quantum mechanics, we have states and observables. States are Hermitian positive operators: $\psi \geq 0$ such that $\tr(\psi) = 1$, i.e., $\psi \in \mathcal{B}(\had)$ with unity trace ($\mathcal{B}(\had)$ denotes the set of bounded operators). Note that in this formulation, states are operators, not vectors, and these represent physical systems. To look at measurements, consider the spectral resolution of an operator $A$:
+\begin{align}
+A = \sum_i a_i P_i^A.
+\end{align}
+The eigenvalues of $A$ are the possible outcomes of the measurement. We note that this is just the density operator/density matrix formulation of quantum mechanics. There's nothing really fancy going on here.\\
+
+QM is a probabilistic theory
+\begin{align}
+	\Pr(a_i) = \tr\lp \psi P_i^A \rp= p_i.
+\end{align}
+With this,
+\begin{align}
+E[A] = \langle A \rangle = \sum a_i p_i, \quad \langle A^2 \rangle = \sum a_i^2 p_i, \quad \dots
+\end{align}
+
+Recall that 
+\begin{align}
+\text{Var}{A} = E[A^2] - E[A]^2\geq 0.
+\end{align}
+
+Consider a state $\psi$, which is positive Hermitian operator with unity trace, i.e., $\psi \in \mathcal{B}(\had)$. By the spectral theorem, we can write
+\begin{align}
+{\psi} = \sum_i p_i \ket{\psi_i}\bra{\psi_i}.
+\end{align}
+Since $\psi \geq 0$, we have that $p_i \geq 0$. To show this, suppose we want to compute $p_l$:
+\begin{align}
+p_l= \bra{\psi_l}\psi \ket{\psi_l} \geq 0,
+\end{align}
+so we're done. \\
+
+
+Next, we also said that the trace of $\psi$ is 1: 
+\begin{align}
+\tr(\psi) = 1 \implies \sum_i p_i = 1. 
+\end{align}
+In other words, we have a probability distribution.\\
+
+Are we're used to the fact that states are normalized vectors: $\braket{\psi} = 1$, and that $p_1 = \abs{\bra{\psi}\ket{A_i}}^2$, and that $E[A] = \bra{\psi }A \ket{\psi}$. Another thing, image that we're given some a set of orthonormal states $\ket{\psi_l}$ with some probability $q_l$. Now we're asked $E[A]$ with $\{ \ket{\psi_l}, p_l  \}$. Well,
+\begin{align}
+E[A] = \sum_l  q_l \bra{\psi_l} A \ket{\psi_l}.
+\end{align}
+
+
+
+This is what we're used to. Now, if we look at states as spectral resolutions (as operators):
+\begin{align}
+\psi = \sum_l q_l \ket{\psi_l}\bra{\psi_l}.
+\end{align}
+Then we will show as an exercise that
+\begin{align}
+E[A] = \Tr (\psi \ket{A_l}\bra{A_l}) = \sum_l q_l \bra{\psi_l} A \ket{\psi_l}.
+\end{align}
+So the operator formulation gives the same answer. \\
+
+
+Next, consider the states $\ket{\psi_l}$ which give a probability distribution $q_l$. This produces a state/operator $\psi = \sum q_l \ket{\psi_l}\bra{\psi_l}$. If this probability distribution is extremal, i.e., $q_l = (1,0,\dots,0)$, then 
+\begin{align}
+\psi = \ket{\psi_l}\bra{\psi_l}.
+\end{align}
+This is what we call a \textbf{pure state}. Whenever we don't have an extremal probability distribution, we don't have a pure state. Suppose $\had = \text{span}\{ \ket{0}, \ket{1} \}$. Then $\psi = (\ket{0}\bra{0} + \ket{1}\bra{0})/\sqrt{2}$ is not a pure state. \\
+
+\textbf{Question:} Is there a way to quantify whether a state is pure (or not)?  Consider
+\begin{align}
+\psi = \sum_i p_i \ket{\psi_i}\bra{\psi_i}.
+\end{align}
+We know that $\sum p_i = 1$. So, $\sum_i p_i^\al \leq 1$ with $\al\geq 1$. Equality occurs iff the state is pure. We call 
+\begin{align}
+\f{1}{d} \leq \sum_i p_i^2 \leq 1
+\end{align}
+the \textbf{purity} of the state (when $\al = 2$). \\
+
+\begin{defn}[Composite Systems]
+	Consider two copies of $\text{span}\{ \ket{0}, \ket{1} \} = \mathbb{C}^2$. The ``total'' vector space of this composite system is given by $\had = \mathbb{C}^{\otimes 2}$. \\
+	
+	In general, the composite vector space is just the tensor product of the vector spaces of the subsystems. 
+\end{defn}
+
+
+
+
+\newpage
+
+\section{Foundations of Quantum Statistical Mechanics -- Entanglement}
+
+
+
+The next question is Entropy. Consider this thought experiment by Von Neumann. Consider $N$ particles in $\mathbb{C}^{d_i} = \had_i$. Then $\had = \bigotimes^N \had_i$. For simplicity, we can just look at a system of $N$ 2-level systems/qubits. Consider the state of each of these particles: 
+\begin{align}
+\ket{\psi_i} = \sum_k w_k^i \ket{e_k} \in \had_i
+\end{align}
+Think of these particles in a box. Let's put them in a box, all of them in the same state. For example, let's assume that $\ket{\psi_i} = (1/\sqrt{2})(\ket{+} + \ket{-})$. Then 
+\begin{align}
+\ket{\psi} = \bigotimes_i \ket{\psi_i}.
+\end{align}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{entropy}
+	\caption{From Alioscia Hamma's lecture}
+\end{figure}
+
+
+I call that  $ S(\ket{\psi}) = 0$. We call this a quantum gas of non-interacting particles with zero entropy. We want to measure whether the state is in $\ket{+}\bra{+}$ or $\ket{-}\bra{-}$. Well, some of them will be $+$, some will be $-$. well, 
+\begin{align}
+n_+ = N\abs{w_+}^2 = \f{N}{2} = n_-.
+\end{align}
+After the measurement, the state will be 
+\begin{align}
+{\psi} = \abs{w_{+}} P_+ + \abs{w_-}P_- = \abs{w_{+}}\ket{+}\bra{+} + \abs{w_-} \ket{-}\bra{-}.
+\end{align}
+\textbf{How did the entropy change because of the measurement?} Suppose we have a box like the picture on the right. 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.2]{entropy1}
+	\includegraphics[scale=0.35]{entropy2}
+	\caption{From Alioscia Hamma's lecture}
+\end{figure}
+It has a movable wall on the left and a fixed but semi-transparent wall in the middle. We also have another wall in the middle that can be moved. What Von Neumann thought was that what if we moved both the movable walls so that the volume containing the particles. With the semi-transparent wall, we are left with the picture on the left.\\
+
+Note that nothing happened to the gas, so $Q,W =0$, and everything is reversible. At this point, we have separated the gases, but have not communicated with the environment yet. Now, we do a \textit{isothermal compression}. This is the environment is interacting with our gas. Now, the $+$ gas will be compressed $V \mapsto V'_+ = \abs{w_+}^2 V$, and the $-: V \mapsto \abs{w_-}^2V$. In this compression, the gases exchange work and heat with the environment. What is the entropy exchanged?
+\begin{align}
+\Delta S^\text{env} = \Delta S_+^\text{env} + \Delta S_-^\text{env}  = -n_+ k \log \f{V'_+}{V} - n_- k \log \f{V'_-}{V}.
+\end{align}
+Now remember that $n_\pm = \abs{w_\pm}^2N$ and $V_\pm = \abs{w_\pm}^2V$, so 
+\begin{align}
+\Delta S^\text{env} = -Nk \abs{w_+}^2 \log \abs{w_+}^2-Nk \abs{w_-}^2 \log \abs{w_-}^2.
+\end{align}
+Now, I do a unitary rotation, $\ket{+}\bra{+} \mapsto w_+\ket{+} + w_-\ket{-}$. This is reversible. Once we've done it for all particles, we're exactly in the initial state. Now, because everything we've done so far is reversible, we have that
+\begin{align}
+\Delta S^\text{env} + \Delta S^\text{gas} = 0 \implies \Delta S^\text{env} =  - \Delta S^\text{gas} = -(S_1 - S_2) = -S_2.
+\end{align}
+So, 
+\begin{align}
+S_2 = Nk \abs{w_+}^2 \log \abs{w_+}^2 + Nk \abs{w_-}^2 \log \abs{w_-}^2.
+\end{align}
+
+
+\begin{defn}[Von Neumann Entropy]
+	The entropy of a state $\psi$ is given by
+	\begin{align}
+	\boxed{S(\psi) = -Nk \sum_i \abs{w_i}^2 \log \abs{w_i}^2}
+	\end{align}
+\end{defn}
+
+\begin{prop}
+	\begin{align}
+	S(\bm{1}/d) = \log d
+	\end{align}
+	\begin{align}
+	S_\al = \f{1}{1-\al}\log \Tr(\psi^\al).
+	\end{align}
+\end{prop}
+
+
+
+Let's look at a different definition of Von Neumann entropy, given in Mike and Ike:
+\begin{defn}[Von Neumann Entropy]
+	The entropy of a quantum state $\rho$ is given by the formula
+	\begin{align}
+	S(\rho) = -\tr\lp \rho \log \rho \rp.
+	\end{align}
+	In this formula, the logarithm is take to base two. If $\lambda_x$ are the eigenvalues of $\rho$ then Von Neumann's entropy definition can be re-written as
+	\begin{align}
+	S(\rho) = -\sum_x \lambda_x \log \lambda_x,
+	\end{align}
+	where we define $0 \log 0 = 0$. For calculations, it is usually this formula that is most useful. 
+\end{defn}
+
+
+For example, the completely mixed density operator in a $d$-dimensional space, $\bm{1}/d$, has entropy $\log d$, like above. 
+
+
+
+
+
+
+
+
+
 \newpage
 
 \section{Resource Theories and Quantum Information}
@@ -182,6 +448,31 @@ The aim of this course is to understand the thermodynamics of quantum systems an
 
 \newpage
 \section{Quantum Thermal Machines}
+
+
+
+
+\newpage
+
+
+\section{Exercises}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -206,22 +497,23 @@ Once this background is established, we will study the method of exact diagonali
 
 
 \section{L1: Introduction to many-particle states and operators}
-\newpage
-\subsection{L1: Introduction to Ising and XXZ models}
-\newpage
-\subsection{L1: Programming basics}
-\newpage
-\subsection{L1 : Finding expectation values}
+
+\section{L1: Introduction to Ising and XXZ models}
+
+\section{L1: Programming basics}
+
+\section{L1 : Finding expectation values}
+
 \newpage
 
 \section{L2: Exact diagonalization part 1}
-\newpage
+
 \section{L2: Representing models}
-\newpage
+
 \section{L2: Finding eigenstates}
-\newpage
+
 \section{L2: Energy gaps}
-\newpage
+
 \section{L2: Phase transitions}
 \newpage
 
@@ -229,25 +521,25 @@ Once this background is established, we will study the method of exact diagonali
 
 
 \section{L3: Exact diagonalization part 2}
-\newpage
+
 
 \section{L3: Limitations of the method}
-\newpage
+
 \section{L3: Using symmetries}
-\newpage
+
 \section{L3: Dynamics}
+
+
 \newpage
-
-
 
 
 \section{L4: Matrix product states part 1}
-\newpage
+
 
 
 
 \section{L4: Entanglement and the singular value decomposition}
-\newpage
+
 
 
 \section{L4: What is a matrix product state and why is it useful}
@@ -260,11 +552,11 @@ Once this background is established, we will study the method of exact diagonali
 \section{L5: Matrix product states part 2}
 
 
-\newpage
+
 
 \section{L5: Algorithms for finding ground states using matrix product states: iTEBD }
 
-\newpage
+
 
 
 \section{L5: Algorithms for finding ground states using matrix product states: DMRG}
@@ -695,7 +987,7 @@ properties common to its elements, which are otherwise indistinguishable.
 
 
 
-
+\newpage
 
 
 
@@ -838,7 +1130,7 @@ Some properties:
 
 
 
-
+\newpage
 
 
 
@@ -848,17 +1140,17 @@ Some properties:
 
 \section{L2: Noether's theorem}
 
+\newpage
+
 \section{L3: Lie groups and Lie algebras}
+
+\newpage
 
 \section{L4: Symmetries in quantum mechanics}
 
+\newpage
+
 \section{L5: Representation theory}
-
-
-
-
-
-
 
 
 
