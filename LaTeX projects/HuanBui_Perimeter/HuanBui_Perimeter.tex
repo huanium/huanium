@@ -2855,41 +2855,113 @@ Next, choose $H_2 = \had_T$. On a digital quantum simulator, this can be achieve
 \begin{align}
 e^{-i\gamma H_2} = \prod^{L/2}_{i=1} e^{-i\gamma Z_{2i}Z_{2i+1}}   \prod^{L/2}_{i=1} e^{-i\gamma Z_{2i-1}Z_{2i}}
 \end{align}
-such that...
+such that each unitary $e^{-i\gamma H_2}$ in the VQCS protocol can be considered as a depth-2 quantum circuit, so that overall the VQCS$_p$ can be realized as a quantum circuit with depth at most $3p$. 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{vqcs}
+\end{figure}
+If we start in $\ket{+}$ then since the VQCS respects this symmetry, optimization of $F_p(\bm\gamma,\bm\beta)$ as $p\to \infty$ yields the GHZ state, with $\lim_{p\to \infty} F_p(\bm\gamma,\bm\beta) = -1$. \\
 
+
+Let's see how this performs numerically. To do this, we implement the VQCS, finding numerically the optimal angles $(\bm\gamma_* \bm\beta_*)$ that minimizes $F(\bm\gamma, \bm\beta)$ (which, remember, is the energy of the system) via a search by gradient descent of the parameter space $\gamma_i, \beta_i \in [0, \pi/2)$, for system sizes $L \leq L_1 = 18$ and for $p \leq L_1/2$. Note that the for fixed $L$, a brute force search of this parameter space takes an exponentially long time $t\sim \mathcal{O}(\mathcal{M}^{2p})$ in $p$. So, we have to ensure that the total number of runs performed is large enough o ensure convergence of the search algorithm to the global minimum.  Here's the result given in the paper:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{ghz}
+\end{figure}
+
+The figure is quite self-explanatory so I won't go into much detail there.  We will just note that the preparation achieves perfect fidelityto machine precision. \\
+
+
+
+Let's also note that various quantum circuits are known to also exactly prepare the GHZ state (using Hadamard and CNOT, and so on). Furthermore, experimentally, GHZ states of various sizes have been prepared with high fidelity using the Molmer-Sorensen technique in trapped ions. The VQCS is complementary in that it provides a uniform circuit that achieves the same result. 
 
 
  
 
 \subsubsection{Critical State}
 
+Consider the preparation of the critical state. namely the ground state of the critical 1d transverse field Ising model (TFIM) on a ring:
+\begin{align}
+\had_T = -\sum^L_{i=1}Z_i Z_{i+1} - \sum^L_{i=1}X_i.
+\end{align}
+As before, we assume the same operators $H_1 = -\sum^L_{i=1}X_i$ and $H_2 = -\sum^L_{i=1} Z_i Z_{i+1}$ as before, though now we want to minimize the new cost function $F(\bm\gamma, \bm\beta)$ using this $H_T$. In this case, we benchmark the simulation by computing the overlap $\abs{\braket{\psi_p}{\psi_t}}^2$ where the ground state of the system $\ket{\psi_t}$ is obtained (theoretically) by exact diagonalization. \\
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{critical}
+\end{figure}
+
+Once again we observe that perfect fidelity can be obtained. 
+
+
+
+
+
 \subsubsection{Ground states of the TFIM at generic points in the phase diagram}
 
+
+The perfect fidelities achieved for both the GHZ and critical cases using the VQCS for $p = L/2$ suggest that other points $g$ in the phase diagram of the TFIM 
+\begin{align}
+H_{\text{TFIM}} = -\sum^L Z_i Z_{i+1} - g\sum^L X_i
+\end{align}
+might be similarly targeted. The paper conjectures that for a 1d system of even $L$ spin-1/2s with period boundary conditions, any state produced by VQCS for arbitrary $p$ using the $H_2, H_1$ above can also be achieved perfectly by the same procedure. This would imply that it is possible to achieve the ground state of $H_{\text{TFIM}}$ at any point $g$ in the phase diagram, which in particular would cover the GHZ and critical cases.   \\
+
+Let's note that while perfect fidelities achieved (to numerical precision) suggest that an analytic understanding may be possible. However, while the model and unitary gates can be mapped to free fermions, the minimization of the VQCS cost function maps to a nonlinear optimization problem involving an extensive number of variables, which is highly nontrivial. s
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsubsection{Ground state of the Toric code}
+
+This is complicated, so we'll come back to this later. The upshot is that the VQCS procedure also works well here (perfect fidelity and so on) with runtime increasing linearly with $L$, which something we also saw before. 
 
 \subsubsection{Ground state of AFM Heisenberg chain}
 
 
+Here we consider targeting the ground state of the AFM spin-1/2 Heisenberg chains with open boundary conditions,
+\begin{align}
+\had_T = \sum^{L-1}_{i=1}\bm{S}_i \cdot \bm{S}_{i+1}.
+\end{align}
+Heres we use
+\begin{align}
+H_1 = \sum^{L/2-1}_{i=1} \bm{S}_{2i} \cdot \bm{S}_{2i+1}, \quad H_2 = \sum^{L/2}_{i=1} \bm{S}_{2i-1} \cdot \bm{S}_{2i}, 
+\end{align}
+whilst evaluating the energy as the cost function. Note that the initial state is now the product state of Bell pairs $\bigotimes_i (1/\sqrt{2})\lp \ket{\uparrow\downarrow} + \ket{\downarrow\uparrow} \rp_{2i-1,2i}$, and that angles can be restricted to $\gamma,\beta \in [0,2\pi)$.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{afm}
+\end{figure}
+
+In this case, while the preparation of the ground states is generically not perfect for any finite $p$, the many-body fidelities are already very good for very low $p$'s, at least for small system sizes (small $L$). This illustrates the utility and generality of VQCS in preparing non-trivial quantum states. 
 
 
 
 
 
-
-
-
-
-\subsection{Conclusions}
-
-
-\subsection{Appendix}
-
-\subsubsection{Optimal angles for preparing GHZ state at $p=L/2$}
-\subsubsection{Explicit nonuniform unitary circuit for preparing the GHZ state}
-\subsubsection{Energy optimization plot and optimal angles for preparing critical state at $p=L/2$}
-\subsubsection{A Conjecture and Numerical Support}
-\subsubsection{Numerical verification of preparation of Toric code ground state}
-\subsubsection{Effect of errors on VQCS state preparation}
+%\subsection{Conclusions}
+%
+%
+%\subsection{Appendix}
+%
+%\subsubsection{Optimal angles for preparing GHZ state at $p=L/2$}
+%\subsubsection{Explicit nonuniform unitary circuit for preparing the GHZ state}
+%\subsubsection{Energy optimization plot and optimal angles for preparing critical state at $p=L/2$}
+%\subsubsection{A Conjecture and Numerical Support}
+%\subsubsection{Numerical verification of preparation of Toric code ground state}
+%\subsubsection{Effect of errors on VQCS state preparation}
 
 
 
