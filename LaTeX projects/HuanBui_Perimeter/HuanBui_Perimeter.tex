@@ -457,8 +457,97 @@ For example, the completely mixed density operator in a $d$-dimensional space, $
 
 \section{Exercises}
 
+\noindent \textbf{1. Density Operators} Show that given the distribution of states $(q_j, \ket{\psi_j})$ the probability of getting an outcome $a_i$ when measuring $A = \sum_i a_i \ket{a_i}\bra{a_i} \equiv \sum_i a_i P_i$ is given by
+\begin{align}
+\Pr(a_i) = \tr(\psi P_i)
+\end{align} 
+where we have define the density matrix of the system as
+\begin{align}
+\psi = \sum_j q_j \ket{\psi_j}\bra{\psi_j}
+\end{align}
 
 
+\begin{proof}
+	This is not very hard: 
+	\begin{align}
+	\tr(\psi P_i) = \tr\lb \sum_j q_j \ket{\psi_j}\bra{\psi_j} \ket{a_i}\bra{a_i}  \rb
+	\end{align}
+\end{proof}
+
+
+
+
+\noindent \textbf{2. Partial Trace} Mixed states appear naturally also when considering subsystems of a composite
+quantum system. Consider
+\begin{align}
+A = \tilde{A}_S \otimes I_{\bar{S}}
+\end{align}
+in a Hilbert space with tensor product structure $\had = \had_S \otimes \had_{\bar{S}}$. It is a natural question to ask what is the state $\rho_S \in \mathcal{B}(\had_S)$ onto the subsystem $\had_S$ that can return all the right expectation values when performing any measurement of operators with that support, namely, the $\tilde{A}_S$. We ask that 
+\begin{align}
+\tr(A\rho) = \tr_S(\tilde{A}_S \rho_S).
+\end{align}
+Show that the solution of this equation is 
+\begin{align}
+\rho_S = \tr_{\bar{S}}(\rho)
+\end{align}
+where the operation of partial trace is defined by
+\begin{align}
+\tr_{\bar{S}}X = \tr_{\bar{S}}\sum_{i_S i_{\bar{S}} j_S j_{\bar{S}}}  X_{i_S i_{\bar{S}} j_S j_{\bar{S}}} \ket{i_S i_{\bar{S}}}\bra{j_S j_{\bar{S}}} = \sum_{i_S  j_S} X_{i_S j_S} \ket{i_S}\bra{j_S}.
+\end{align}
+
+
+\begin{proof}
+	
+\end{proof}
+
+
+\noindent \textbf{3. R\'enyl Entropy} The R\'enyi entropy for R\'enyi index $q$ is defined as
+\begin{align}
+\boxed{S_q(\rho) = \f{1}{1-q}\log \Tr \rho^q = \f{1}{1-q} \log \lp \sum_i \lambda_i^q \rp}
+\end{align} 
+where the logarithm is again taken to be base two and $\lambda_i$ are the eigenvalues of $\rho$.
+
+\begin{enumerate}
+	\item Show that for the completely mixed density operator $\rho = I/d$ in $d$-dimensional Hilbert space,the von Neumann entropy is given by
+	\begin{align}
+	S(I/d) = \log d.
+	\end{align}
+	
+	\item Show that 
+	\begin{align}
+	S_0(\rho) =\lim_{q\to 0+} S_q(\rho) =\log (\rank \rho)
+	\end{align}
+	where $\rank \rho$ is the rank of the density matrix $\rho$.
+	
+	
+	\item Show that 
+	\begin{align}
+	\lim_{q\to 1} S_q(\rho) = S_1(\rho)
+	\end{align}
+	where $S_1(\rho)$ is the von Neumann entropy. 
+	
+	
+	
+	
+	\item Consider the R\'enyi entropy for the case where the R\'enyi index is an integer $n$ with $n \geq 2$. If $\rho$ corresponds to a pure state, calculate $S_n(\rho)$. Show that if $\rho_\text{pure}$ corresponds to a pure state, then
+	\begin{align}
+	S_n(\rho_\text{pure}) = 0.
+	\end{align}
+\end{enumerate}
+
+
+\begin{proof}
+	
+\end{proof}
+
+
+\noindent \textbf{4. Von Neumann Entropy}
+Compute the von Neumann entropy of the Gibbs state.
+
+
+\begin{proof}
+	
+\end{proof}
 
 
 
@@ -491,14 +580,124 @@ This course has two main goals: (1) to introduce some key models from condensed 
 Once this background is established, we will study the method of exact diagonalization and write simple python programs to find ground states, correlation functions, energy gaps, and other properties of the transverse-field Ising model and XXZ model.  We will also discuss the computational limitations of exact diagonalization.  Finally, I will introduce the concept of matrix product states, and we will see how these can be used with algorithms such as the density matrix renormalization group (DMRG) to study ground state properties for much larger systems than can be studied with exact diagonalization.
 
 
+\section{Introduction}
+
+What is \textit{condensed matter}? This is the study of many particles interacting with each other. This could be studying crystals, liquid, etc. These are all condensed matter. We will be studying this using computer programs. \\
+
+The goals of this course are
+\begin{itemize}
+	\item Learn some numerical methods.
+	\item To learn important models in condensed-matter physics.  
+\end{itemize}
+
+In particular, we will be studying the quantum Ising model, or equivalently the transverse field Ising model (TFIM) given by the Hamiltonian
+\begin{align}
+\had = -J \sum_i S^z_i S^z_{i+1} - h \sum_i S^x_i
+\end{align}
+
+We will first cover some background material required for the rest of the course. Then, we will look at \textbf{exact diagonalization} and use it to solve the Ising model. On the third lecture, we will continue with \textit{exact diagonalization}, and depending on how much time we have we will study the $XXZ$ model. On the fourth lecture, we will look at \textbf{matrix product states (MPS)}. On the fifth day, we will use MPS to solve the Ising and XXZ models more efficiently than using exact diagonalization.
 
 
 \newpage
+   
 
+%\section{L1: Introduction to many-particle states and operators}
+
+
+
+
+\section{L1: The Ising model: Motivation}
+
+The Ising model is important because it models magnetism and features quantum phase transition, which is an important topic we will cover later.\\
+
+Consider a one-dimensional chain of $N$ atoms. Each atom has one electron, and that the electrons cannot move due to Coulomb repulsion. So, we have 1 fixed electron per site. For each atom, we solve a local SE and get some set of orbitals. \\
+
+We will assume that each electron is in the $p^z$ orbital and forget about it. \\
+
+We note that this description allows for only one degree of freedom, which is the spin of our electron. Two neighboring electrons can have the same or opposite spins. Our model is given by the Hamiltonian
+\begin{align}
+\had = -J \sum_i S_i^z S_{i+1}^z
+\end{align}
+the product $S_iS_{i+1}$ is 1 if the electrons are parallel, and $-1$ if antiparallel. When $J > 0$, the model favors all electrons pointing in the same direction. Now, if the model only has an external field
+\begin{align}
+-h \sum_i S_i^x
+\end{align}
+which favors all electrons point in the direction of the external field $+x$. \\
+
+The goal is, given the Hamiltonian:
+\begin{align}
+\had = -J \sum_i S^z_i S^z_{i+1} - h \sum_i S^x_i
+\end{align}
+What is the most favorable configuration of the electron?
 
 \section{L1: Introduction to many-particle states and operators}
 
-\section{L1: Introduction to Ising and XXZ models}
+\subsection{Spin 1/2 Systems} 
+
+This appears in many introductory quantum mechanics courses, but we'll review this anyway. \\
+
+In general, a state of a spin-1/2 system  can be written as a linear superposition of two spin states
+\begin{align}
+\ket{\psi} = a\ket{\uparrow} + b\ket{\downarrow}
+\end{align}
+where $\ket{\psi}$ is normalized and $\ket{\uparrow},\ket{\downarrow}$ form an ONB. This means that $\braket{\uparrow\downarrow} = 1$ and $\braket{\uparrow}{\downarrow} = 0$. 
+
+\subsection{Operators on Spin-1/2 Systems}
+An $\mathcal{O}$ is specified by its action on the basis state: 
+\begin{align}
+\mathcal{O}\ket{\uparrow} = \mathcal{O}_{11}\ket{\uparrow} + \mathcal{O}_{12}\ket{\downarrow},\quad \mathcal{O}\ket{\downarrow} = \mathcal{O}_{21}\ket{\uparrow} + \mathcal{O}_{22}\ket{\downarrow}.
+\end{align}
+To write in a matrix representation, we will assign $\ket{\uparrow} = (1,0)^\top$ and $\ket{\downarrow} = (0,1)^\top$. With this, we can find operators as well as other states in this basis.\\
+
+An aside: Consider a $2\times 2$ matrix $\mathcal{O} = [O_{ij}]$. Note that $\mathcal{O}(1,0)^\top$ returns the first column of $\mathcal{O}$, and so on. This means any matrix $\mathcal{O}$ can be written as the output of $\mathcal{O}$ when fed the standard basis states. \\
+
+Suppose we want to find the first column of $\mathcal{O}$. From the definition above, we can easily see that
+\begin{align}
+\mathcal{O} = \begin{bmatrix}
+\mathcal{O}_{11} & \mathcal{O}_{12} \\ \mathcal{O}_{21} & \mathcal{O}_{22}
+\end{bmatrix}
+\end{align}
+
+
+We care a lot about Hermitian operators: $\mathcal{O} = \mathcal{O}^\dagger$. For $2\times 2$ matrices, any Hermitian operator can be written as 
+\begin{align}
+\mathcal{O} = a\Id + b\sigma^z + c\sigma^x + d\sigma^y
+\end{align}
+where $\sigma^i$ are the Pauli matrices. Now, we want to write this in the language of states and operators. Recall that 
+\begin{align}
+\sigma^z\ket{\uparrow} = \ket{\uparrow}, \quad \sigma^z\ket{\downarrow} = -\ket{\downarrow}
+\end{align}
+and so on: $\sigma^x$ flips the arrow, and $\sigma^y$ flips and multiplies $\ket{\uparrow}$ by $i$ and $\ket{\downarrow}$ by $-i$. \\
+
+Now, matrices can appear different under different bases. Consider the basis given by
+\begin{align}
+\ket{+} = \f{1}{\sqrt{2}}\lp \ket{\uparrow} + \ket{\downarrow} \rp = (1,0)^\top, \quad
+\ket{-} = \f{1}{\sqrt{2}}\lp \ket{\uparrow} - \ket{\downarrow} \rp = (0,1)^\top
+\end{align}
+This is an new ONB, by inspection. \\
+ 
+What do the Pauli matrices become under this change of basis? Well, the first column of the new $\sigma^z$ is given by
+\begin{align}
+\sigma^z\begin{bmatrix}
+1\\0
+\end{bmatrix}_* = \f{1}{\sqrt{2}} \sigma^z \lp \ket{\uparrow} +  \ket{\downarrow} \rp = \f{1}{\sqrt{2}}\lp \ket{\uparrow} - \ket{\downarrow} \rp  =\ket{-} = \begin{bmatrix}
+0\\1
+\end{bmatrix}_*
+\end{align}
+Similarly, we can show that $\sigma^z\ket{\pm} = \ket{\mp}$. In this new basis, $\sigma^z_{new} = \sigma^x$. We can also find the form for the other matrices, but let's not worry about that. The gist is that $\ket{\uparrow\downarrow}$ are the $z$-eigenstates, and $\ket{\leftarrow\rightarrow}$ are the $x$-eigenstates. \\
+
+How the matrices change can be found via the usual change of basis that we all have seen in linear algebra.
+
+
+
+
+
+
+
+
+
+
+\section{L1: The XXZ model}
 
 \section{L1: Programming basics}
 
@@ -1304,7 +1503,7 @@ for example the interplay between theoretical proposals and experiment).
 \newpage
 
 
-\section{Review: The density operator}
+\section{Review: The density operator}   
 
 
 We often use the language of state vectors in quantum mechanics. An alternative language is that of \textit{density matrices/density operators}. We will use this language extensively in quantum information/quantum computation. First, we will introduce the formulation. Second, we look at some properties of the density operator. Finally, we look at an application where the density operator really shines -- as a tool for describing \textit{individual subsystems} of a composite quantum system.  
@@ -1473,7 +1672,7 @@ Suppose we have physical systems $A$ and $B$ whose state is described by the den
 \begin{align}
 \rho^A = \tr_B\lp \rho^{AB} \rp
 \end{align}
-where $\tr_B$ is the \textit{partial trace} over system $B$, defined by
+where $\tr_B$ is the \textit{partial trace} over system $B$, defined by    
 \begin{align}
 \tr_B\lp \ket{a_1}\bra{a_2} \otimes \ket{b_1}\bra{b_2} \rp \equiv \ket{a_1}\bra{a_2}\tr\lp \ket{b_1}\bra{b_2} \rp = \ket{a_1}\bra{a_2}\braket{b_2}{b_1}
 \end{align}
@@ -2588,14 +2787,139 @@ space of qubits $\hat{\had}$, we are left with a Hamiltonian that is a sum of po
 
 \section{Some Models in Quantum Statistical \& Condensed-Matter Physics}
 
-\subsection{The Hubbard Model}
+In this section we will be looking at some of the most well-known and most studied models in statistical and quantum many-body mechanics. I'll be sourcing the material from various places, so I'll try my best to cite all the sources. 
+
 
 \subsection{The Ising Model}
+In this section we'll look at the Ising model from the mathematical physics perspective. I'll try to add connections to physics to the best of my ability. \\
+
+Anyway, the Ising model is the simplest and most famous spin system model to study phase transition. It was introduced in 1925 by Ernst Ising in his PhD thesis. He completely solved the model in one dimension, but mistakenly inferred behaviors in higher dimensions. \\
+
+\subsubsection{Basic definitions}
+
+Let a graph $G = (V,E)$ be given, with state space $\Omega = \{ -1,+1 \}^V$ and elements $\sigma = \{ \sigma_x \}_{x\in V}$. The variable $\sigma_x \in \{ -1,+1\}$ is called the spin at vertex $x$. This is thus a spin system. Under some re-definitions we can think of this as a lattice gas model, but let's not worry about that. \\
+
+The energy functional, or the Hamiltonian, of the system is given by
+\begin{align}
+\had(\sigma) = -J \sum_{(x,y)\in E} \sigma_x \sigma_y
+\end{align}
+where $J$ is a real constant, called the interaction strength. In this formulation, $\had$ is built up from the local energy terms $-J \sigma_x \sigma_y$, i.e., the model is defined in terms of nearest-neighbor interactions. Next, we introduce the inverse temperature parameter $\beta \sim 1/T$ and consider the probability measure on $\Omega$:
+\begin{align}
+\mu(\sigma) = \f{e^{-\beta \had(\sigma)}}{\sum_{\sigma \in \Omega} e^{-\beta\had}} \equiv \f{e^{-\beta \had(\sigma)}}{Z_\beta}
+\end{align}
+where of course $\Z_\beta$ is called the partition function, which contains all information about the system. $\mu = \mu_\beta$ is called the Gibbs measure. \\
+
+When $J> 0$, we have the ferromagnetic case in which the minimum of $\had(\sigma)$ and so the maximum of $\mu(\sigma)$ are attained at $\sigma \equiv \text{const}$. More generally, spins like to agree along edges, and for $\beta \to \infty$ the measure concentrates on the two constant configurations.s \\
+
+When $J < 0$, we have antiferromagnetism where neighboring spins like to differ. This case is hard, and we're not going to worry about it. \\
+
+For any function $f: \Omega \to \mathbb{R}$, we have the expectation and variance:
+\begin{align}
+\mu(f) = \langle f \rangle = \sum_{\sigma\in \Omega} \mu(\sigma) f(\sigma), \quad \text{Var}(f) = \mu[f^2] - \mu[f]^2.
+\end{align}
+So in our case, ``$\mu$'' is like $E[\cdot]$, denoting the expectation value. 
+
+
+\subsubsection{Thermodynamic objects}
+
+Recall the following definitions
+\begin{defn}[Free Energy]
+	The free energy of a system with inverse temperature $\beta$ and partition function $Z_\beta$ is given by
+	\begin{align}
+	F(\beta) = -\f{1}{\beta}\log Z_\beta.
+	\end{align}
+\end{defn}
+
+We note that 
+\begin{align}
+Z_\beta = e^{-\beta F(\beta)}
+\end{align}
+and
+\begin{align}
+\p_\beta F(\beta) = \mu(\had) = \langle \had \rangle.
+\end{align}
+
+\begin{defn}[Specific Heat]
+	\begin{align}
+	C(\beta) = \f{d}{d(1/\beta)} \mu(\had) = -\beta^2 \f{d}{d\beta^2}F(\beta).
+	\end{align}
+\end{defn}
+We can show that the specific heat is related to the fluctuation of the system via
+\begin{align}
+C(\beta) = \beta^2 \text{Var}(\had).
+\end{align}
+
+
+
+Next we modify the Hamiltonian by introducing an external magnetic field:
+\begin{align}
+\had(\sigma, h) = -J \sum_{(x,y)\in E} \sigma_x \sigma_y - \sum \sum_{x\in V} h_x \sigma_x.
+\end{align}
+Here $h_x$ are real numbers and sometimes $h_x$ is identically constant. If $h> 0$, $\had$ has a unique minimum at $\sigma = +1$. A very difficult famous problem is the case when the $h_x$'s are iid r.v. \\
+
+Now, 
+\begin{align}
+F(\beta,h) = -\f{1}{\beta} \log Z(\beta,h).
+\end{align}
+This is a nice smooth function for any finite graph $G$. With this we consider the magnetization. 
+
+\begin{defn}[Magnetization]
+	\begin{align}
+	M(\beta, h) = \f{1}{\abs{V}} \sum_{x\in V}\mu(\sigma_x) = -\f{1}{\abs{V}} \p_h F(\beta,h).
+	\end{align}
+\end{defn}
+
+
+
+\subsubsection{Properties}
 
 
 
 
-\subsection{Transverse-field Ising model (quantum Ising model)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Transverse-field Ising model}
+
+
+
+\subsection{The Hubbard Model}
+
+
+
+\subsection{The Kitaev's Toric model}
 
 
 
@@ -2661,7 +2985,26 @@ We will begin by considering properties of correlations in these systems, and pr
 \subsection{Locality \& The Lieb-Robinson bounds}
 
 
+To define locality, we need a notion of distance, so we introduce a metric on the lattice $d(i,j)$. One may consider the Manhattan or Euclidean metric. It's natural to consider the metric 
+\begin{align}
+d(i,j) = \min_n \abs{i-j + nN}
+\end{align}
+for a one-dimensional system with periodic boundary conditions and $N$ sites. Next, we define the distance between two sets $A,B$ to be
+\begin{align}
+d(A,B) = \min_{a\in A, b\in B}d(a,b).
+\end{align}
+The diameter of a set $A$ is given by
+\begin{align}
+\text{diam}(A) = \max_{i,j\in A}d(i,j).
+\end{align}
+Next we consider Hamiltonians
+\begin{align}
+\had = \sum_Z H_Z
+\end{align}
+where each $H_Z$ is support on $Z$. We are interested in studying problems in which $\abs{H_Z}$ decays rapidly with $\text{diam}(Z)$. \\
 
+
+(\textit{to be continued})
 
 
 
