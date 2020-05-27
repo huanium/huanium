@@ -951,6 +951,122 @@ So, when $\hbar \to 0$, we get destructive interference. But if $\delta S/\delta
 \section{Propagator in real and imaginary time}
 
 
+Last time, we guessed the form of the propagator. This time, we will derive in some detail the propagator in real and imaginary time. \\
+
+
+What we're trying to compute is the propagator:
+\begin{align}
+K(q_f, t_f,q_i ,t_i) =  \int \prod_j^{N-1}   dq_j K (q_{j+1},t_{j+1}, q_j , t_j) \equiv  \int \prod_j^{N-1}   dq_j K_{q_{j+1},q_j}.
+\end{align}
+using the composition property that we discussed last time. Now this is starting to look like a path integral. \\
+
+Now, we know that
+\begin{align}
+K_{q_{j+1},q_j} &= \bra{q_{j+1}}  e^{i\had \delta t/\hbar}  \ket{q_j}\nn\\
+&\approx \braket{q_{j+1}}{q_j}   +  \bra{q_{j+1}}  \f{i\delta t \had}{\hbar} \ket{q_j} + \dots\nn\\
+&= \delta(q_{j+1} - q_j) + \text{ Computed in Exercise } \nn\\
+&= \int \f{dp_j}{2\pi \hbar} e^{ip_j(q_{j+1} - q_j)/\hbar} +  \text{ Computed in Exercises}
+\end{align}
+
+Putting everything together we get
+\begin{align}
+K_{q_{j+1},q_j} = \int \f{dp_j}{2\pi \hbar} e^{p_j(q_{j+1} - q_j)/\hbar}\lp 1 - \f{i\delta t \had}{\hbar} + \dots \rp
+\end{align}
+The term on the right hand side looks like a Taylor expansion for $e^{-i\delta \had t /\hbar}$. So, if we assume that $\had =  p_j^2 / 2m + V(q_j)$ then this integral becomes a Gaussian integral
+\begin{align}
+K_{q_{j+1},q_j} &= \int \f{dp_j}{2\pi \hbar} e^{i\delta t/\hbar (p_j\dot{q}_j  - p_j^2/2m - V(q_j) )  } \nn\\
+&= \sqrt{\f{m}{2\pi i \delta t \hbar}} e^{(i\delta t /\hbar) ( mq_j^2/2 - V(q_j) )}.
+\end{align}
+Gaussian integrals are important in the study of path integrals, because they're among the integrals that we can evaluate exactly. \\
+
+Staring at this for a bit, we notice that the exponential looks like part of the action. So, by multiplying together all these infinitesimal propagators, we get the entire action:
+\begin{align}
+K = \lp \f{m}{2\pi i \hbar \Delta t} \rp^{N/2} \int \prod^{N-1}_{j=1} dq_j \exp\lb \f{i \Delta t}{\hbar} \sum^{N-1}_{j=0} \lp \f{m\dot(q)_j^2}{2} - V(q_j) \rp \rb.
+\end{align}
+In the $N\to \infty$ limit, 
+\begin{align}
+K = \int \mathfrak{D}[q(t)] e^{iS(t)/\hbar}
+\end{align}
+
+
+
+Now we want to make the connection to imaginary time and statistical physics. Recall that
+\begin{align}
+K = \int \mathfrak{D}q(t) \exp\lb iS[q(t)]/\hbar \rb.
+\end{align}
+Now, the $i$ leads to oscillations in the integrand, which leads to questions about convergence of the integral. So, it would be much more convenient if $i$ wasn't there. This means we want to consider \textbf{imaginary time}. Why do we want to do this? Mathematically, it's generally easier. More important, if we make the exponential real, we can make connections to statistical physics. So we shall see a connection between quantum mechanics in imaginary time and statistical physics. Thirdly, in quantum mechanics we're interested in the ground states energy of Hamiltonians. Sometimes, it is possible to compute ground state energies using quantum mechanics in imaginary time. \\
+
+
+To this end, consider $T = -i T_E$ where $E$ stands for Euclidean. Once we do that, we can computer the Euclidean propagator:
+\begin{align}
+K_E = \bra{q_f}  e^{-T_E \had /\hbar} \ket{q_i}
+\end{align}
+with $t \to -i \tau$. If we do that, then 
+\begin{align}
+iS[q(t)] = i\int^T_0 dt \lp \f{m}{2}\dot(q)^2  - V(q)\rp \mapsto -\int^{T_E}_0 d\tau \lp \f{m}{2}\dot(q)^2 + V(q) \rp
+\end{align}
+where the time derivative becomes derivative over $\tau$, so the relative sign between the kinetic and potential energy changes. With this, we have the Euclidean action:
+\begin{align}
+iS[q(t)] = -S_E[q(\tau)].
+\end{align}
+After this replacement, we can compute the Euclidean propagator:
+\begin{align}
+K_E = \int \mathfrak{D}[q(t)] e^{-S_E[q(\tau)] /\hbar}.
+\end{align}
+
+With this we can compare this to the expression for the partition function:
+\begin{align}
+\mathcal{Z}[\beta] = \sum_j e^{-\beta E_j}
+\end{align}
+by identifying $\beta = T_E/\hbar = 1/k_BT$ where now $T$ is temperature. It turns out that (which we will verify in the exercises)
+\begin{align}
+\mathcal{Z} = \int dq K_E(q,0,q,\beta\hbar).
+\end{align}
+Note that the ground state energy $E_0$ can be found this way:
+\begin{align}
+E_0 = \lim_{\beta \to \infty} \f{1}{\beta} \log \mathcal{Z}.
+\end{align}
+We can relate the propagator to the ground state energy, which is an observable of interest. \\
+
+
+
+\subsection{Free Path Integrals}
+
+Free path integrals are some of the path integrals we can compute exactly. These come from quadratic action $S$ in the variable $q$. For example,
+\begin{align}
+K_E = \bra{q_f}  e^{-\beta \had}  \ket{q_i}, \quad \had = p^2/2m.
+\end{align}
+This integral is easy (compared to oscillatory integrals) to compute, because the integral is just Gaussian. It turns out that
+\begin{align}
+K_E = \sqrt{\f{m}{2\pi \beta}} e^{-S[q_c]/\hbar} 
+\end{align}
+where $q_c$ is the classical trajectory. The way to derive this is via Gaussian integration techniques. \\
+
+
+The key idea here is that in this case $K_E$ turns out to have the form with $N$-coupled Gaussian integrals. To understand this, we only need to understand a single integral. In any case, we can learn a lot of about path integrals by just looking at the case $N=1$. When $N=1$, we can actually can go through a lot of the details. When $N$ is larger, we don't gain much more knowledge. We will discuss, of course, what happens when $N \to \infty$. \\
+
+
+Next, we will look at perturbation theory, where the action is no longer quadratic. Again, we will look at the case where $N=1$. We will also see where the path integral and perturbation theory fails. We will, of course, look at how we can address these failures. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 
 \section{Perturbation theory}
@@ -1079,9 +1195,108 @@ So, when $\hbar \to 0$, we get destructive interference. But if $\delta S/\delta
 
 
 
+\noindent \textbf{3. First-Order Term.} By inserting the resolution of identity
+\begin{align}
+\bm{1} = \int\f{dp}{2\pi \hbar} \ket{p}\bra{p}
+\end{align}
+and using
+\begin{align}
+\braket{q}{p} = e^{ipq/\hbar}
+\end{align}
+show that the first-order term can be expressed as
+\begin{align}
+-i\f{\Delta t}{\hbar} \bra{q_{j+1}} \had\ket{q_j} = -i \f{\Delta t}{ \hbar} \int \f{dp_j}{2\pi \hbar} e^{ip_j(q_{j+1} - q_j)/\hbar} \lp \f{p_j^2}{2m} + V(q_j) \rp.
+\end{align}
+What changes at second order?
+
+
+\begin{proof}
+	This looks hard, but isn't hard at all. I won't show the full solution here, but I'll just sketch things out here. By inserting the resolution of identity we get
+	\begin{align}
+	&\,\,\,\bra{q_{j+1}} \int \f{d_i}{2\pi \hbar} \lp \f{p_i^2}{2m} + V(q_i) \ket{p_i} \bra{p_i} \rp \ket{q_j} \nn\\
+	&= \int\f{dp_i}{2\pi \hbar} e^{ip_j(q_{j+1} - q_j)/\hbar}\lp \f{p_i^2}{2m} + V(q_i) \rp.
+	\end{align}
+	With this we're essentially done. 
+\end{proof}
 
 
 
+
+\noindent \textbf{4. Statistical Physics and Imaginary Time.} Show that the partition function 
+\begin{align}
+\mathcal{Z}[\beta] = \sum_j e^{-\beta E_j}
+\end{align}
+can be expressed as a sum over imaginary time propagators
+\begin{align}
+\mathcal{Z}[\beta] = \int dq\, K_E (q,\beta \hbar, q,0).
+\end{align}
+
+
+\begin{proof}
+	Again, the resolution of identity is helpful here. Consider the energy eigenbasis, then we have
+	\begin{align}
+	\bm{1} = \sum_j  \ket{e_i}\bra{e_i}.
+	\end{align}
+	With this, and by identifying $-T_E\had/\hbar \equiv \beta\had$ we have
+	\begin{align}
+	\int dq K_E(q,0,q,\beta\had) &= \int dq \bra{q} e^{\beta \had} \ket{q} \nn\\
+	&= \sum_i \int dq \bra{q}\ket{e_i} e^{\beta \had} \ket{q}\bra{e_i} \nn\\
+	&= \int dq \sum_i \braket{e_i}{q} \bra{q}e^{-\beta\had}\ket{e_i}\nn\\
+	&= \sum_i \bra{e_i} e^{-\beta \had} \ket{e_i}\nn\\
+	&= \tr\lp e^{-\beta\had} \rp\nn\\
+	&= \sum_n e^{-\beta E_i}.
+	\end{align}
+	where we have used the completion relation in the position space: 
+	$$\int dq \ket{q}\bra{q} = \bm{1}.$$
+	Of course, we can also go the other way from $\mathcal{Z}$ and use the completion relation in the energy eigenbasis. Either way, the solutions are equivalent.  
+\end{proof}
+
+
+
+
+\noindent \textbf{5. Path Integral Derivation of the Propagator.} In the path integral formalism the propagator in imaginary time is 
+\begin{align}
+K_E(q,\beta \hbar, q,0) = \lim_{N\to \infty} \lp \f{m}{2\pi \Delta \tau \hbar} \rp^{N/2}\int dq_1\dots dq_{N-1}\exp\lb -\tau \hbar \sum^N_{j=1} \f{m}{2} \lp \f{q_j - q_{j-1}}{\Delta \tau \hbar} \rp^2 \rb
+\end{align}
+
+\begin{enumerate}
+	\item Show that the propagator can be rewritten as
+	\begin{align}
+	K_E(q,\beta\hbar, q,0) = &\lim_{N\to \infty} \lp \f{m}{2\pi \Delta \tau \hbar} \rp^{N/2} \lp \f{2\Delta \tau \hbar}{m } \rp^{\f{N-1}{2}}\nn\\&\times  
+	\int dy_1\dots dy_{N-1}\exp\lb -\sum^N_{j=1}(y_j - y_{j-1})^2 \rb
+	\end{align}
+	
+	\begin{proof}
+		This is just change of variables, so I won't do that here. 
+	\end{proof}
+	
+	
+	\item Use induction to show that 
+	\begin{align}
+	\int dy_1,\dots dy_{N-1}\exp\lb -\sum^N_{j=1}(y_j - y_{j-1})^2 \rb = \lp \f{\pi^{N-1}}{N} \rp^{1/2} e^{-(y_N - y_0)^2/N}.
+	\end{align}
+	
+	\begin{proof}
+		Just use induction and crank. At one point we will have to evaluate a 1-dimensional Gaussian integral, but this shouldn't be a challenge. This one-dimensional Gaussian integral will introduce some factor $\pi^\al$ with other constants such that we get to the right hand side at iteration $N-1+1 = N$. In any case, this problem also looks hard but is quite easy. 
+	\end{proof}
+	
+	
+	\item Take the continuum limit $N\to \infty$ to recover the result from lecture:
+	\begin{align}
+	K_E(q,\beta \hbar, q,0) = \sqrt{\f{m}{2\pi \beta }} \exp\lb -\f{m(q_f - q_i)^2}{2\beta} \rb.
+	\end{align}
+	\begin{proof}
+		Combining things in the previous parts, we get that in the $N\to \infty$ limit, we have
+		\begin{align}
+		K_E &= \lim_{N\to \infty}  \lp \f{m}{2\pi \Delta \tau \hbar} \rp^{N/2} \lp \f{2\Delta \tau \hbar}{m } \rp^{\f{N-1}{2}}\lp \f{\pi^{N-1}}{N} \rp^{1/2} e^{-(y_N - y_0)^2/N}\nn\\
+		&= \sqrt{\f{m}{\beta\hbar}}
+		\end{align}
+		
+		
+		hmmm... something wrong here? 
+	\end{proof}
+	
+\end{enumerate}
 
 
 
@@ -1365,6 +1580,59 @@ Some properties:
 \end{defn}
 
 
+\begin{defn}[Normal Subgroup]
+	Let $G$ be a group. A subgroup $N\leq G$ is called \textit{normal} if 
+	\begin{align}
+	g n g^{-1} \in N, \forall g\in G, \forall n \in N.
+	\end{align}
+	The notation $N \trianglelefteq G$ is commonly used to indicated that $N$ is a normal subgroup of $G$. 
+\end{defn}
+
+
+\begin{defn}[Quotient Group]
+	Let $N \trianglelefteq G$. We can define an equivalence relation on $G$ as
+	\begin{align}
+	g \sim h \iff h^{-1}g \in N
+	\end{align} 
+	with equivalence classes
+	\begin{align}
+	[g] = \{  h\in G \vert h^{-1}g \in N  \}.
+	\end{align}
+	The quotient group $G/N \equiv G \mod N$ is the set of equivalence classes
+	\begin{align}
+	G/N = \{ [g] \vert g\in G  \}
+	\end{align}
+	which is made into a group by defining
+	\begin{align}
+	[g][h] = [gh], \quad [g]^{-1} = [g^{-1}], \quad e_{G/N} = [e_G].
+	\end{align}
+\end{defn}
+
+
+We note that the equivalence class does not require $N$ be normal. However, to turn the equivalence classes into a group, we require that $N$ is normal. 
+
+
+
+
+
+
+
+\begin{thm}[First Isomorphism Theorem]
+	Let $\varphi: G \to H$ be a group homomorphism. Then:
+	\begin{itemize}
+		\item $\Im \varphi$ is a subgroup of $H$.
+		\item $\ker\varphi$ is a normal subgroup of $G$.
+		\item $\Im \varphi$ is isomorphism to the quotient group $G / \ker\varphi$.
+	\end{itemize}
+\end{thm}
+
+
+The notion that $\Im \varphi \sim G/\ker\varphi$ is important. This will appear again when we see Lie groups. 
+
+
+
+
+
 
 \section{L1: Examples: Symmetry \& Group Theory }
 
@@ -1398,26 +1666,140 @@ Some properties:
 
 
 
+
+
+
+
+
 \newpage
 
 
 
-\section{L2; Continuous and discrete symmetries}
+\section{L2: Continuous and discrete symmetries}
+
+We will be quite vague with these definitions. 
+
+
+
+\subsection{Discrete Symmetries}
+
+
+Think of rotating polygons. Rotations that leave the polygon invariant are in integer steps. This is a prototype example of what a discrete symmetry is. 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{polys}
+\end{figure}
+
+We can also easily define equivalence classes etc and see how the first isomorphism comes up, but we won't worry about that. \\
+
+The idea of discrete symmetries is this: there is a discrete parameter for the group elements. 
+
+
+
+
+
+
+\subsection{Continuous Symmetries}
+
+In view of the previous example, we can consider rotating a circle. 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{circ}
+\end{figure}
+
+
+Obviously we can rotate by any angle and keep the circle invariant. \\
+
+
+The idea of continuous symmetries is this: there is a continuous parameter for the group elements. Consider $\epsilon \in \mathbb{R}^+$ and take $\epsilon \mapsto \psi(\epsilon) = g_\epsilon \in G$. $\psi$ is a group homomorphism. Now, if there is a \textbf{topology} on $G$ such that $\psi$ is continuous, then we say $\{ g_\epsilon \vert \epsilon \in \mathbb{R}^+  \} = \Im(\psi)$ is continuous. This is quite vague, but is essentially the idea. \\
+
+
+The group $\{ g_\epsilon \vert \epsilon \in \mathbb{R}^+   \}$ is called a \textbf{one-parameter subgroup}. One-parameter subgroups satisfy the following properties:
+\begin{itemize}
+	\item $g_0 = e_G$
+	\item $g_{-\epsilon} = g_\epsilon^{-1}$
+	\item $g_{\epsilon + \epsilon'} = g_\epsilon g_{\epsilon'}$. This means the the one-parameter subgroup is abelian.
+\end{itemize}
+
+For example consider $g_\theta$ define by $2\times 2$ rotation matrix $R_\theta$. We can check that $g_\theta$ satisfies all of the properties above.  
+
+
+
+
 
 \section{L2: Infinitesimal symmetries}
 
+Rotations are a particular example of infinitesimal symmetry. Just like calculus, we want to talk about ``derivatives.'' Assume that that $\epsilon \in \mathbb{R} \mapsto g_\epsilon \in G$ is a ``smooth'' map. Here, ``smooth'' means infinitely differentiable, or ``as nice as we want.'' This only makes sense if we have a ``differentiable structure'' on $G$. \\
+
+Now, if the map above is smooth, we can linearize it. (Now we're doing things in the physicist's way). To linearize:
+\begin{align}
+g_\epsilon = g_0 + \epsilon \f{d}{d\epsilon}g_\epsilon\bigg\vert_{\epsilon = 0} + \mathcal{O}(\epsilon^2).
+\end{align}
+The infinitesimal symmetry is then 
+\begin{align}
+g_\epsilon = g_0 + \epsilon \f{d}{d\epsilon}g_\epsilon\bigg\vert_{\epsilon = 0}.
+\end{align}
+where $g_0$ is the identity.\\
+
+More formally, infinitesimal symmetry has the form $e + \epsilon X$ where 
+\begin{align}
+X = \f{d}{d\epsilon}\bigg\vert_{\epsilon = 0} g_\epsilon.
+\end{align}
+
+
+\begin{exmp}
+	Consider 
+	\begin{align}
+	R_\theta = \begin{bmatrix}
+	\cos\theta & \sin\theta \\ -\sin\theta & \cos\theta
+	\end{bmatrix}
+	\end{align}
+	With this,
+	\begin{align}
+	\f{d}{d\theta}\bigg\vert_{\theta = 0} R_\theta = \begin{bmatrix}
+	0 & 1 \\ -1 & 0
+	\end{bmatrix}
+	\end{align}
+	This means that the Taylor expansion of $R_\theta$ around 0 is given by
+	\begin{align}
+	R_\theta = \begin{bmatrix}
+	1 & 0 \\ 0 & 1 
+	\end{bmatrix} + \theta \begin{bmatrix}
+	0 & 1 \\ -1 & 0
+	\end{bmatrix} + \mathcal{O}(\theta^2)
+	\end{align}
+	The infinitesimal rotation is thus 
+	\begin{align}
+	\begin{bmatrix}
+	1 & 0 \\ 0 & 1 
+	\end{bmatrix} + \theta \begin{bmatrix}
+	0 & 1 \\ -1 & 0
+	\end{bmatrix}
+	\end{align}
+	Note that because of the group structure, we can actually reconstruct $R_\theta$ from the linearization, unlike in calculus where we don't necessarily have the function back knowing its derivative. 
+ 	
+\end{exmp}
+
+
+
+
+
 \section{L2: Noether's theorem}
 
-\newpage
 
+
+\newpage
 \section{L3: Lie groups and Lie algebras}
 
-\newpage
 
+
+\newpage
 \section{L4: Symmetries in quantum mechanics}
 
-\newpage
 
+
+\newpage
 \section{L5: Representation theory}
 
 
@@ -1497,15 +1879,35 @@ Some properties:
 
 
 
+\noindent \textbf{5.} Show that $2\mathbb{Z} = \{ 2n \vert n \in \mathbb{Z} \}$ is a normal subgroup of $(\mathbb{Z},+)$ and that $\mathbb{Z}_2 = \mathbb{Z} / 2\mathbb{Z}$.
+
+
+\begin{proof}
+	This follows almost directly from the definitions. 
+\end{proof}
 
 
 
 
 
+\noindent \textbf{6.} Prove the first isomorphism theorem.
+
+\begin{proof}
+	Refer to the Abstract Algebra \href{https://huanqbui.com/archives/MA333.pdf}{\underline{notes}} for the proof. The first two items are easy. The last item is also easy but requires a trick. $\ker\varphi$ is normal, so 
+	\begin{align}
+	h^{-1}g \in \ker\varphi \iff \varphi(h^{-1}g) = \varphi(h)^{-1}\varphi(g)  = e_H \implies \varphi(g) = \varphi(h).
+	\end{align}
+	This means that 
+	\begin{align}
+	[g] = \{ h\in G \vert \varphi(h) = \varphi(g)   \}. 
+	\end{align}
+	With these we can prove the third item. 
+\end{proof}
 
 
 
 
+\noindent \textbf{7.} 
 
 
 
@@ -2334,13 +2736,21 @@ optimization.
 	\begin{align}
 	\had = \sum _m \hat{h}_m
 	\end{align}
-	and a state $\ket{\psi}$ with finite correlation length $C$, the action $e^{-\Delta \tau \hat{h}_i}$ can be generated by a unitary $\U = e^{i\hat{A}}$ acting on $\mathcal{O}(C)$ qubits surrounding those acted on by $\hat{h}_i$, i.e.,
+	and a state $\ket{\psi}$ with finite \textbf{correlation length} $C$, the action $e^{-\Delta \tau \hat{h}_i}$ can be generated by a unitary $\U = e^{i\hat{A}}$ acting on $\mathcal{O}(C)$ qubits surrounding those acted on by $\hat{h}_i$, i.e.,
 	\begin{align}
 	\f{e^{-\beta \had} \ket{\psi}}{\norm{e^{-\beta \had} \psi}} = \U \ket{\psi}= e^{i\hat{A}}\ket{\psi}
 	\end{align}	
 	where the coefficients of the Pauli strings in $\hat{A}$ can be determined from local measurements of the quits around $\hat{h}_i$.\\
 	
+	
 	Quantum imaginary time evolution becomes inefficient in terms of the number of measurements an complexity of the operator $\hat{A}$ if the domain $C$ grows to be large along the imaginary time evolution path. 
+	
+	
+	\textbf{Remark:} Correlation length is the distance beyond which the correlation $\bra{\psi}\mathcal{O}_i \mathcal{O}_j\ket{\psi}$ decays beyond some $\epsilon$. We note that every gapped Hamiltonian has an exponentially decaying correlation length. Gapped Hamiltonians are those with a nontrivial $\Delta E = E_1 - E_0$ even in the thermodynamic limit. \\
+	
+	
+	
+
 	
 	
 	
@@ -3116,7 +3526,7 @@ where each $H_Z$ is support on $Z$. We are interested in studying problems in wh
 
 \section{Efficient variational simulation of non-trivial quantum states}
 
-
+   
 In this section we look at this \href{https://arxiv.org/pdf/1803.00026.pdf}{\underline{paper}}, with title '' Efficient variational simulation of non-trivial quantum states.'' The idea is the following. The paper provides an efficient and general route for preparing \textit{non-trivial quantum states} (defined later) that are NOT adiabatically connected to unentangled product states. This approach will be a hybrid of quantum and classical variational protocols that incorporates a feedback loop between a quantum simulator and a classical computer. This turns out to be realizable on near-term quantum devices of synthetic quantum systems. \\
 
 The paper provides explicit protocols which prepare with \textit{perfect fidelities} the following non-trivial quantum states: GHZ, quantum critical state, and topologically ordered state, with $L=2p$ variational parameters and physical runtimes $T \sim L$. \\
@@ -3217,6 +3627,22 @@ The VQCS begins with the ground state of $H_1$, denoted $\ket{\psi_1}$, and evol
 \begin{align}
 \ket{\psi(\bm\gamma, \bm\beta)}_p = e^{-i\beta_p H_1}e^{-i\gamma_p H_2}\dots e^{-i \beta_1 H_1}e^{-i \gamma_1 H_2}\ket{\psi_1}.
 \end{align}
+This is motivated by the quantum adiabatic algorithm, which works because of the adiabatic theorem. Basically the idea is that we are starting out in a ground state of some Hamiltonian $H_1$. The goal is to evolve the Hamiltonian $H_1$ slowly so that it turns into the target Hamiltonian $H_2$. The ground state of $H_1$ as a result will turn into  the ground state of $H_2$ as well. Now, the way we slowly vary from one to another is by letting the ground state of $H_1$ evolve slowly under sequential linear combinations of $H_1$ and $H_2$. This means the initial ground state is going to by evolved by
+\begin{align}
+e^{i(H_1 + \epsilon H_2)}.
+\end{align} 
+Now, we don't want to do this. Rather, we want to use Trotterization to factor out and turn the above operator into 
+\begin{align}
+\sim e^{iH_1}e^{iH_2}
+\end{align}
+Of course, we want to do this sequentially, so the result is that we have alternating evolution operator as above. \\
+
+Of course, there are many ways to get to the $\ket{\psi(\bm\gamma, \bm\beta)}$ state. But this just happens to be a pretty common way to do that.\\
+
+
+
+
+
 
 For a fixed integer $p$, there are $2p$ variational agles 
 \begin{align}
@@ -3272,7 +3698,7 @@ such that each unitary $e^{-i\gamma H_2}$ in the VQCS protocol can be considered
 	\centering
 	\includegraphics[scale=0.3]{vqcs}
 \end{figure}
-If we start in $\ket{+}$ then since the VQCS respects this symmetry, optimization of $F_p(\bm\gamma,\bm\beta)$ as $p\to \infty$ yields the GHZ state, with $\lim_{p\to \infty} F_p(\bm\gamma,\bm\beta) = -1$. \\
+If we start in $\ket{+}$ then since the VQCS respects this symmetry, optimization of $F_p(\bm\gamma,\bm\beta)$ as $p\to \infty$ yields the GHZ state, with $\lim_{p\to \infty} F_p(\bm\gamma,\bm\beta)/L = -1$. \\
 
 
 Let's see how this performs numerically. To do this, we implement the VQCS, finding numerically the optimal angles $(\bm\gamma_* \bm\beta_*)$ that minimizes $F(\bm\gamma, \bm\beta)$ (which, remember, is the energy of the system) via a search by gradient descent of the parameter space $\gamma_i, \beta_i \in [0, \pi/2)$, for system sizes $L \leq L_1 = 18$ and for $p \leq L_1/2$. Note that the for fixed $L$, a brute force search of this parameter space takes an exponentially long time $t\sim \mathcal{O}(\mathcal{M}^{2p})$ in $p$. So, we have to ensure that the total number of runs performed is large enough o ensure convergence of the search algorithm to the global minimum.  Here's the result given in the paper:
@@ -3338,7 +3764,13 @@ Let's note that while perfect fidelities achieved (to numerical precision) sugge
 
 \subsubsection{Ground state of the Toric code}
 
-This is complicated, so we'll come back to this later. The upshot is that the VQCS procedure also works well here (perfect fidelity and so on) with runtime increasing linearly with $L$, which something we also saw before. 
+This is complicated, so we'll come back to this later. The upshot is that the VQCS procedure also works well here (perfect fidelity and so on) with runtime increasing linearly with $L$, which something we also saw before.\\
+
+One thing to note here is just that Toric code are those with Hamiltonians with four interacting neighboring qubits.  For example, the Hamiltonian looks like 
+\begin{align}
+\had = -\sum^L_i \sum^L_j \sigma^x_{i,j+1}\sigma^y_{i+1,j+1}\sigma^x_{i=1,j}\sigma^y_{i,j}.
+\end{align}
+The Toric code is an example of topologically-ordered quantum state. Toric codes can describe really exotic behaviors that are too advanced for our guide here. For more detail, consult Wikipedia. 
 
 \subsubsection{Ground state of AFM Heisenberg chain}
 
