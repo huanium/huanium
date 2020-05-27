@@ -423,7 +423,10 @@ Let's look at a different definition of Von Neumann entropy, given in Mike and I
 \end{defn}
 
 
-For example, the completely mixed density operator in a $d$-dimensional space, $\bm{1}/d$, has entropy $\log d$, like above. 
+For example, the completely mixed density operator in a $d$-dimensional space, $\bm{1}/d$, has entropy $\log d$, like above. \\
+
+
+Just for clarity, let's look at the definition of pure states. Pure states are states of the form $\rho = \ket{\psi}\bra{\psi}$. \textbf{Statistical mixtures of pure states form mixed states} of the form $\sum q_j \ket{\psi_j}\bra{\psi_j}$. By definition, pure states are projectors, and thus they are idempotents, i.e., $\rho = \rho^2 = \rho^n$ for any $n\geq 2$. 
 
 
 
@@ -470,7 +473,10 @@ where we have define the density matrix of the system as
 \begin{proof}
 	This is not very hard: 
 	\begin{align}
-	\tr(\psi P_i) = \tr\lb \sum_j q_j \ket{\psi_j}\bra{\psi_j} \ket{a_i}\bra{a_i}  \rb
+	\Pr(a_i) &= \bra{a_i} \psi \ket{a_i}\nn\\
+	&= \sum_j \bra{a_i} q_j \ket{\psi_j}\bra{\psi_j}\ket{a_i}\nn\\
+	&= \sum q_j \ket{\psi_j}\bra{\psi_j}\ket{a_i}\bra{a_i}\nn\\
+	&= \tr(\psi P_i).
 	\end{align}
 \end{proof}
 
@@ -496,7 +502,26 @@ where the operation of partial trace is defined by
 \end{align}
 
 
-\begin{proof}
+\begin{proof}     
+	The definition of partial trace above is not very useful due to bad notation. So we will consider an equivalent definition:
+	\begin{align}
+	\tr_{\bar{S}}(\rho) = \sum_{i_{\bar{S}}} \bra{i_{\bar{S}}}\rho\ket{i_{\bar{S}}}. 
+	\end{align}
+	Note that this is an operator, not a number.  We want to show
+	\begin{align}
+	\tr(A\rho) = \tr_S(\tilde{A}_S \tr_{\bar{S}}(\rho)).
+	\end{align}
+	Well, by the definition of the trace in terms of the inner product:
+	\begin{align}
+	\tr(A\rho) &= \tr(\rho A) \nn\\
+	&= \tr(\rho(\tilde{A}_S \otimes I_{\bar{S}}) )\nn\\
+	&\equiv \tr(\rho (\tilde{A} \otimes I))\nn\\
+	&=  \sum_{i_{S}} \sum_{i_{\bar{S}}}\bra{i_{S} i_{\bar{S}}} \rho (\tilde{A}_S \otimes I_{\bar{S}})   \ket{i_{S} i_{\bar{S}}}\nn\\
+	&= \sum_{i_{S}} \sum_{i_{\bar{S}}}\bra{i_{S} i_{\bar{S}}} \rho \ket{\tilde{A}_S i_S \otimes  i_{\bar{S}}}\nn\\
+	&= \sum_{i_{\bar{S}}}\sum_{i_{S}}  \bra{i_{{S}}}  \bra{i_{\bar{S}}} \rho \ket{i_{\bar{S}}}  \ket{\tilde{A}_S i_S} \nn\\
+	&= \tr\lp \tilde{A}_S \tr_{\bar{S}} (\rho) \rp\nn\\
+	&= \tr\lp \tilde{A}_S \rho_S \rp.
+	\end{align}
 	
 \end{proof}
 
@@ -508,16 +533,30 @@ where the operation of partial trace is defined by
 where the logarithm is again taken to be base two and $\lambda_i$ are the eigenvalues of $\rho$.
 
 \begin{enumerate}
-	\item Show that for the completely mixed density operator $\rho = I/d$ in $d$-dimensional Hilbert space,the von Neumann entropy is given by
+	\item Show that for the completely mixed density operator $\rho = I/d$ in $d$-dimensional Hilbert space, the von Neumann entropy is given by
 	\begin{align}
 	S(I/d) = \log d.
 	\end{align}
+	
+	\begin{proof}
+		This is very easy. The eigenvalues of $I/d$ are $1/d$. The von Neumann entropy is given as 
+		\begin{align}
+		S_{vn} = -\sum \lambda_x \log \lambda_x = -\sum \f{1}{d}\log \f{1}{d} = \log d.
+		\end{align}
+	\end{proof}
 	
 	\item Show that 
 	\begin{align}
 	S_0(\rho) =\lim_{q\to 0+} S_q(\rho) =\log (\rank \rho)
 	\end{align}
 	where $\rank \rho$ is the rank of the density matrix $\rho$.
+	
+	\begin{proof}
+		This is also quite easy. When $q \to 0+$, the definition says the leading factor becomes $+1$. Inside the logarithm, we just get a sum of $\lambda_i^0$. Now, of course these values only approach 1 if they're not zero. So, the sum is exactly the rank of the matrix $\rho$. Thus, 
+		\begin{align}
+		S_0(\rho) = \log \rank \rho.
+		\end{align} 
+	\end{proof}
 	
 	
 	\item Show that 
@@ -526,6 +565,10 @@ where the logarithm is again taken to be base two and $\lambda_i$ are the eigenv
 	\end{align}
 	where $S_1(\rho)$ is the von Neumann entropy. 
 	
+	\begin{proof}
+		This is hard. Like, this is \textbf{really really really hard}. The proof is contained in this \href{https://arxiv.org/pdf/1306.3142.pdf}{\underline{paper}} by Muller-Lennert in 2013. See how recent that result is?
+	\end{proof}
+	
 	
 	
 	
@@ -533,12 +576,19 @@ where the logarithm is again taken to be base two and $\lambda_i$ are the eigenv
 	\begin{align}
 	S_n(\rho_\text{pure}) = 0.
 	\end{align}
+	
+	\begin{proof}
+		By definition, pure states are idempotents. This means $\tr(\rho) = \tr(\rho^n) = 1$ always, by normalization. Now, diagonalize $\rho, \rho^2, \dots, \rho^n$ we see that the condition $\tr(\rho^n) = 1$ implies $\sum \lambda_\rho^n = 1$. So, by the definition of the Renyi entropy, we have that 
+		\begin{align}
+		S_n(\rho_\text{pure}) = 0.
+		s\end{align}
+	\end{proof}
+	
+	
+	
 \end{enumerate}
 
 
-\begin{proof}
-	
-\end{proof}
 
 
 \noindent \textbf{4. Von Neumann Entropy}
@@ -546,6 +596,25 @@ Compute the von Neumann entropy of the Gibbs state.
 
 
 \begin{proof}
+	The Gibbs state is given by
+	\begin{align}
+	\rho = \f{e^{-\beta \had}}{ \tr\lp  e^{-\beta \had} \rp }
+	\end{align}
+	The von Neumann entropy of $\rho$ is given by
+	\begin{align}
+	S_{vn}(\rho) = -\sum \lambda_x \log \lambda_x
+	\end{align}
+	where $\lambda_x$ are the eigenvalues of $\rho$. Suppose the Hamiltonian $\had$ has the spectrum $\{ \sigma_i \}$, then by the spectral mapping theorem we have that the spectrum of $e^{-\beta \had} = \{ e^{-\beta \sigma_i} \}$, and so it follows that
+	\begin{align}
+	\tr\lp e^{-\beta \had} \rp = \sum e^{-\beta \sigma_i} = \mathcal{Z}
+	\end{align}
+	where of course $\mathcal{Z}$ is the partition function. With these, the von Neumann entropy is given by
+	\begin{align}
+	S_{vn} 
+	&= -\f{1}{\mathcal{Z}}\sum {e^{-\beta \sigma_i}}\log \f{e^{-\beta \sigma_i}}{\mathcal{Z}}.
+	\end{align}
+	Where do we go from here?
+	
 	
 \end{proof}
 
@@ -1503,9 +1572,9 @@ for example the interplay between theoretical proposals and experiment).
 \newpage
 
 
-\section{Review: The density operator}   
+\section{Review: The density operator}        
 
-
+  
 We often use the language of state vectors in quantum mechanics. An alternative language is that of \textit{density matrices/density operators}. We will use this language extensively in quantum information/quantum computation. First, we will introduce the formulation. Second, we look at some properties of the density operator. Finally, we look at an application where the density operator really shines -- as a tool for describing \textit{individual subsystems} of a composite quantum system.  
 
 
