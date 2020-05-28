@@ -337,8 +337,10 @@ the \textbf{purity} of the state (when $\al = 2$). \\
 
 \newpage
 
-\section{Foundations of Quantum Statistical Mechanics -- Entanglement}
+\section{Foundations of Quantum Statistical Mechanics -- Entanglement -- Time Evolution}
 
+
+\subsection{Quantum StatMech in the density matrix formulation}
 
 
 The next question is Entropy. Consider this thought experiment by Von Neumann. Consider $N$ particles in $\mathbb{C}^{d_i} = \had_i$. Then $\had = \bigotimes^N \had_i$. For simplicity, we can just look at a system of $N$ 2-level systems/qubits. Consider the state of each of these particles: 
@@ -426,7 +428,178 @@ Let's look at a different definition of Von Neumann entropy, given in Mike and I
 For example, the completely mixed density operator in a $d$-dimensional space, $\bm{1}/d$, has entropy $\log d$, like above. \\
 
 
-Just for clarity, let's look at the definition of pure states. Pure states are states of the form $\rho = \ket{\psi}\bra{\psi}$. \textbf{Statistical mixtures of pure states form mixed states} of the form $\sum q_j \ket{\psi_j}\bra{\psi_j}$. By definition, pure states are projectors, and thus they are idempotents, i.e., $\rho = \rho^2 = \rho^n$ for any $n\geq 2$. 
+Just for clarity, let's look at the definition of pure states. Pure states are states of the form $\rho = \ket{\psi}\bra{\psi}$. \textbf{Statistical mixtures of pure states form mixed states} of the form $\sum q_j \ket{\psi_j}\bra{\psi_j}$. By definition, pure states are projectors, and thus they are idempotents, i.e., $\rho = \rho^2 = \rho^n$ for any $n\geq 2$. \\
+
+
+So, just the recap, we know that quantum mechanics  (under the density operator formulation) has \textbf{states}, which are $\psi \geq 0, \tr\psi = 1$, and observables $A = \sum_{ij}A_{ij}\ket{i}\bra{j}$. Next, all Hermitians $\had$ are diagonalizable and the spectral theorem says $\had = \sum_k h_k \ket{\had_k}\bra{\had_k}$ where $\ket{\had_k}\bra{\had_k}$ is a projector and $h_k$'s are the eigenvalues, which are also the possible outcomes. Further, $\psi = \sum_{ij}\psi_{ij}\ket{i}\bra{j} = \sum_k p_k \ket{e_k}\bra{e_k}$. The $p_k$'s here are the eigenvalues of $\psi$. And notice that because $\tr\psi = \sum_k p_k\braket{e_k} = 1$. Thus we have a probability distribution. \\
+
+\begin{defn}[Pure states]
+	A state $\psi$ is pure if and only if the probability distribution $p_k$ is extremal, i.e., $(0,0,1,\dots,0)$, i.e., if and only if $\psi = \ket{\psi}\bra{\psi}$ is a rank-1 projector. This is true if and only if $\sum p_k^2 = 1$. The quantity $\sum p_i^2 = \tr(\psi^2)$ is called the \textbf{purity} of the state $\psi$. 
+\end{defn}  
+
+
+
+The connection with experiments is that, given an operator $A$:
+\begin{align}
+\Pr(a_i) = \tr\lp \psi \ket{A_i}\bra{A_i} \rp.
+\end{align}
+Then 
+\begin{align}
+E[A] = \sum_i \Pr(a_i) a_i = \tr\lp \psi A \rp.
+\end{align}
+If $\psi$ is pure, then $E[A] = \bra{\psi} A \ket{\psi}$.\\
+
+What happens after measurements? What we learned in QM is that $a_i \mapsto \ket{A_i}$ following a measurement. But what does it mean to say ``if we get $a_i$ we get $A_i$.'' What this really means is that if we measure $a_i$ with probability $\Pr(a_i)$ then we are in $\ket{A_i}$ with probability $\Pr(a_i)$.\\
+
+The act of measurement changes the purity of the state. Suppose we have a pure state $\ket{\psi}$. After measurement, suppose we have $\psi' = \sum_k \Pr(a_i)\ket{A_k}\bra{A_k} = \sum_k \Tr[\psi P_k]P_k$. The state changes -- sometimes called the collapse of the wavefunction. This is due to the fact that $\psi$, before measurement, gives some amplitudes about what potentially can happen. Note that the new state $\psi'$ is a statistical ensemble of pure states $P_k$.\\
+
+So, measurements change the purity of the state. We can ask something like, given a basis $\{ \ket{i}  \}$, what is the operation $D$ that for $X$ nondiagonal, $DX$ is diagonal. This process is called \textbf{dephasing}. What can also ask changes the purity? We can answer the second question: \textbf{entanglement}. 
+
+
+\subsection{Entanglement}
+
+\textbf{Note:} There is no ``action at a distance.''\\
+
+Now, to define entanglement, we need the notions of ``here'' and ``there.'' Consider a system made up of two parts. The mathematical description is through the tensor product:
+\begin{align}
+\had = \had_A \otimes \had_B.
+\end{align}
+
+Let $A \in \mathcal{B}(\had_A)$ -- $A$ is a bounded operator in $\had(A)$. Suppose $\had_{A} = \text{span}\{ \ket{0},\ket{1}  \}$, and $A = \sum_{i,j\in \{0,1\}}A_{ij}\ket{i}\bra{j}$. Suppose $\had_B = \text{span}\{ \ket{0}_B,\ket{1}_B \}$. Then
+\begin{align}
+\had = \had_A \times \had_B = \text{span}\{ \ket{00}, \ket{01}, \ket{10}, \ket{11}   \}.
+\end{align}
+Now, $A \i \mathcal{B}(\had_A)$. Since the original space is $\had = \had_A \otimes \had_B$. To generalize this $A$ so that it acts on the whole of $\had$, we generalize by
+\begin{align}
+A = \tilde{A} \otimes \Id_B.
+\end{align}
+With this, with $\psi \in \had$ and $\psi_A \in \had_A$
+\begin{align}
+E[A] = \tr\lp A \psi \rp = \Tr\lp \tilde{A} \psi_A \rp.
+\end{align}
+What is $\psi_A$? It turns out that
+\begin{align}
+\psi_A = \tr_B \psi.
+\end{align}
+Suppose 
+\begin{align}
+\ket{\psi} = \lp \f{\ket{0} + \ket{1}}{\sqrt{2}} \rp \otimes \ket{1}.
+\end{align}
+Then 
+\begin{align}
+\psi_A &= \Tr_B\psi \nn\\
+&= \Tr_B \lb  \lp \f{\ket{0} + \ket{1}}{\sqrt{2}} \rp  \lp \f{\ket{0} + \ket{1}}{\sqrt{2}} \rp^\dagger   \otimes \ket{1}\bra{1} \rb \nn\\
+&= \lp \f{\ket{0} + \ket{1}}{\sqrt{2}} \rp    \lp  \f{\bra{0} + \bra{1}}{\sqrt{2}} \rp\nn\\
+&= \ket{+}\bra{+}.
+\end{align}
+Is this a pure state? To check, we compute the purity:
+\begin{align}
+\psi^2= \ket{+}\bra{+}\ket{+}\bra{+} = \braket{+} = 1,
+\end{align}
+so $\psi$ is pure. \\
+
+As an exercise we can show that with any \textbf{pure separable state} $\ket{\psi} = \ket{\psi_A}\otimes \ket{\psi_B}$, $\tr_B\psi$ is also a pure state. \\
+
+
+Next, consider again  $\ket{\psi} = (\ket{01} + \ket{10})/\sqrt{2}$. Is this state pure? The answer is YES because it's already given to us as a ket, i.e., the state is NOT a statistical ensemble of pure states. To show this explicitly, the density matrix is given by
+\begin{align}
+\psi = \f{1}{2}\lb \ket{01}\bra{01} + \ket{01}\bra{10} + \ket{10}\bra{01} + \ket{10}\bra{10} \rb
+\end{align}
+then 
+\begin{align}
+\tr_B\lp \psi \rp = \dots = \f{1}{2}\lb \ket{0}\bra{0}_A + \ket{1}\bra{1}_A \rb.
+\end{align}
+The purity of this is 
+\begin{align}
+\tr(\psi^2) = \sum_i p_i^2 = \f{1}{4} + \f{1}{4} \neq 1.
+\end{align}
+So $\tr_B\psi$ is no longer pure. Thus, \textbf{tracing out sometimes changes the purity}. 
+
+\begin{defn}[Purity and Entanglement]
+	We say that if the reduced/marginal state is pure then the original state is also pure. If the reduced/marginal state is not pure then the original state is entangled. 
+\end{defn}
+
+This is the essence of entanglement. There is no action at a distance. Rather, this is just an update in our probability distribution. \\
+
+
+
+
+Now, something is still missing here. In physics, we're usually given interactions, not just states and operators. The next thing to learn is time evolution. Let's do that
+
+\subsection{Time evolution}
+
+Let a Hermitian $H \in \mathcal{B}(\had)$ be given. Then the time evolution of $\psi$ is given by
+\begin{align}
+\psi \mapsto e^{-iH t}\psi e^{iH t}.
+\end{align}
+For operators, we let the operators evolve, by definition,
+\begin{align}
+X \mapsto X = e^{iHt}X e^{-iHt}.
+\end{align}
+Mathematically, this works (the check for why this has to be the case is easy to check). When we compute the expectation value 
+\begin{align}
+E_t[A] = \Tr\lp A\psi(t) \rp = \Tr\lp A(t)\psi \rb
+\end{align}
+The term in the middle is the Schrodinger representation, and the term of the RHS is the Heisenberg representation. Next, recall that any unitary can be written as $U = e^{-iHt}$ where $H$ is some Hermitian. This means we can just look at unitaries. With this, the time evolution of $X$ is given by
+\begin{align}
+U(X) = U^\dagger X U.
+\end{align}
+This is called the \textit{adjoint action}. Now, a very important property of unitary evolution is that it is \textbf{norm-preserving}, i.e.,
+\begin{align}
+\norm{U(X)} = \norm{X}.
+\end{align}
+Recall \textbf{entanglement/ R\'enyi entropy}:
+\begin{align}
+S_\al = \f{1}{1-\al}\log \Tr(\psi^\al).
+\end{align}
+Note that the argument of the logarithm looks like the \textbf{purity} of something. Usually, we look at a pure state $\psi$ and look at $\psi_A$. If $\psi_A$ is mixed then $S_\al(\psi_A) \geq 0$. \\
+
+\begin{prop}
+	\begin{align}
+	S(\psi) = S(\mathcal{U}(\psi)) = S(\mathcal{U}^\dagger \psi \mathcal{U}),
+	\end{align}
+	i.e., entropy is conserved under unitary evolution. 
+\end{prop}
+
+Now, there arises some trouble. We know for a fact that in time, entropy increases by the second law of thermodynamics. But we just claimed that $\mathcal{U}$ preserves entropy. In classical mechanics, we actually have a similar theorem called the \textbf{Liouville Theorem}. This is the problem in statistical mechanics. The rest of this course is targeting this problem.\\
+
+
+
+Another interesting thing is ``Chaos.'' In classical mechanics, we have the butterfly effect. In quantum mechanics, consider $\ket{\psi_1}$ and $\ket{\psi_2}$ very close to each other: $\abs{\braket{\psi_1}{\psi_2}} = 1-\epsilon$. Now, 
+\begin{align}
+\mathcal{U}\ket{\psi_1} = \psi_1(t), \quad \mathcal{U}\ket{\psi_2} = \ket{\psi_2(t)}
+\end{align}
+It's easy to see that 
+\begin{align}
+\abs{\bra{\psi_1(t)}\ket{\psi_2}} = 1-\epsilon.
+\end{align}
+So, there is immunity to small changes in initial condition. \\
+
+
+Finally, there is a trick to compute purity. Suppose $\psi \in \had$. We want to compute $\Tr \psi^2$. Now, consider the following: Suppose we make a replica, $\psi \mapsto \psi\otimes \psi \i n\had\otimes \had$. Consider the operator $T^{(2)}$ -- a permutation operator of order 2. Let $\{ \ket{i} \}, \{ \ket{j} \}$ be bases of $\had$. Then $\{ \ket{ij} \}$ is a basis for $\had$. $T^{(2)}$ is defined by $\ket{ij} \mapsto \ket{ji}$. Then we can show in the exercise that
+\begin{align}
+\Tr\psi^2 = \Tr\lb T^{(2)} \psi \otimes \psi \rb.
+\end{align}
+
+Next, suppose $\psi$ is pure but $\psi_A$ isn't. What is the purity of $\psi_A$? Well, we want some operator $\mathcal{O}$ such that
+\begin{align}
+\Tr \psi_A^2 = \Tr\lb \mathcal{O} \psi^{\otimes 2}  \rb?
+\end{align}
+Again, this will be addressed in the exercises. \\
+
+
+After these, we will look at how unitary operations make entropies grow. 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -478,9 +651,14 @@ where we have define the density matrix of the system as
 	&= \sum q_j \ket{\psi_j}\bra{\psi_j}\ket{a_i}\bra{a_i}\nn\\
 	&= \tr(\psi P_i).
 	\end{align}
+
+
+Alternatively, we can do this like the following: Since the trace is linear, the probability of getting the outcome $a_i$ is 
+\begin{align}
+\Pr(a_i) = \tr\lb \sum_j q_j \psi_j P_i \rb = \tr\lb \psi P_i \rb.
+\end{align}
+This is perhaps a better way to do the problem than the previous approach. In any case they're equivalent. 
 \end{proof}
-
-
 
 
 \noindent \textbf{2. Partial Trace} Mixed states appear naturally also when considering subsystems of a composite
@@ -490,7 +668,7 @@ A = \tilde{A}_S \otimes I_{\bar{S}}
 \end{align}
 in a Hilbert space with tensor product structure $\had = \had_S \otimes \had_{\bar{S}}$. It is a natural question to ask what is the state $\rho_S \in \mathcal{B}(\had_S)$ onto the subsystem $\had_S$ that can return all the right expectation values when performing any measurement of operators with that support, namely, the $\tilde{A}_S$. We ask that 
 \begin{align}
-\tr(A\rho) = \tr_S(\tilde{A}_S \rho_S).
+\tr(A\rho) = \tr(\tilde{A}_S \rho_S).
 \end{align}
 Show that the solution of this equation is 
 \begin{align}
@@ -509,7 +687,7 @@ where the operation of partial trace is defined by
 	\end{align}
 	Note that this is an operator, not a number.  We want to show
 	\begin{align}
-	\tr(A\rho) = \tr_S(\tilde{A}_S \tr_{\bar{S}}(\rho)).
+	\tr(A\rho) = \tr(\tilde{A}_S \tr_{\bar{S}}(\rho)).
 	\end{align}
 	Well, by the definition of the trace in terms of the inner product:
 	\begin{align}
@@ -566,7 +744,17 @@ where the logarithm is again taken to be base two and $\lambda_i$ are the eigenv
 	where $S_1(\rho)$ is the von Neumann entropy. 
 	
 	\begin{proof}
-		This is hard. Like, this is \textbf{really really really hard}. The proof is contained in this \href{https://arxiv.org/pdf/1306.3142.pdf}{\underline{paper}} by Muller-Lennert in 2013. See how recent that result is?
+		This is quite hard. The proof is contained in this \href{https://arxiv.org/pdf/1306.3142.pdf}{\underline{paper}} by Muller-Lennert in 2013. \\
+		
+		But we can also do this using l'Hopital's rule:
+		\begin{align}
+		\lim_{q\to 1}S_q(\rho) &= \f{1}{\ln 2}\lim_{q\to 1} \lb \f{\log \lp\sum_i \lambda_i^q\rp}{1-q} \rb\nn\\
+		&= \f{1}{\ln 2}\lim_{q\to 1} \lb \f{ \f{1}{\sum_i \lambda_i^q} \sum_i \f{d}{dq} \lambda_i^q}{-1} \rb\nn\\
+		&= \f{1}{\ln 2}\lim_{q\to 1}\lb   -\f{\sum_i \lambda_i^q} \sum_i  \lambda_i^q \ln \lambda_i\rb\nn\\
+		&= -\f{1}{\sum_i\lambda_i}\sum_i \f{\ln \lambda_i}{\ln 2}\nn\\
+		&= -\sum_i \lambda_i \log \lambda_i\nn\\
+		&= S_{vn}(\rho).
+		\end{align}
 	\end{proof}
 	
 	
@@ -581,7 +769,7 @@ where the logarithm is again taken to be base two and $\lambda_i$ are the eigenv
 		By definition, pure states are idempotents. This means $\tr(\rho) = \tr(\rho^n) = 1$ always, by normalization. Now, diagonalize $\rho, \rho^2, \dots, \rho^n$ we see that the condition $\tr(\rho^n) = 1$ implies $\sum \lambda_\rho^n = 1$. So, by the definition of the Renyi entropy, we have that 
 		\begin{align}
 		S_n(\rho_\text{pure}) = 0.
-		s\end{align}
+		\end{align}
 	\end{proof}
 	
 	
@@ -611,15 +799,103 @@ Compute the von Neumann entropy of the Gibbs state.
 	where of course $\mathcal{Z}$ is the partition function. With these, the von Neumann entropy is given by
 	\begin{align}
 	S_{vn} 
-	&= -\f{1}{\mathcal{Z}}\sum {e^{-\beta \sigma_i}}\log \f{e^{-\beta \sigma_i}}{\mathcal{Z}}.
+	&= -\f{1}{\mathcal{Z}}\sum {e^{-\beta \sigma_i}}\log \f{e^{-\beta \sigma_i}}{\mathcal{Z}} = \log \mathcal{Z} + \beta\langle E \rangle
 	\end{align}
-	Where do we go from here?
+
 	
 	
 \end{proof}
 
 
 
+
+
+\noindent \textbf{5. Swap Operator.} One of the problems of the entanglement entropies is that to know them one has
+to know all the eigenvalues of the reduced density operator, which amounts to
+knowing the wave-function. In other words, entanglement is not the expectation
+value of an observable. Define the swap operator as the operator on two copies of
+the original Hilbert space, namely $T^{(2)} \in \had \otimes \had$. This operator is defined from the action on the basis states as
+\begin{align}
+T^{(2)} \ket{\phi_i \phi_j} = \ket{\phi_j \phi_i}.
+\end{align}
+\begin{enumerate}
+	\item \textbf{Purity as expectation value.} Given a state $\sigma \in \mathcal{B}(\had)$, show that 
+	\begin{align}
+	\tr\sigma^2 = \tr\lp T^{(2)} \sigma^{\otimes 2} \rp.
+	\end{align}
+	
+	\begin{proof}
+		content...
+	\end{proof}
+	
+	\item \textbf{Trace of $T^{(2)}$.} Compute the trace of $T^{(2)}$.
+	\begin{proof}
+		content...
+	\end{proof}
+	
+	\item \textbf{Frobenius norm.} Show that for any linear operator $X$, the Frobenius norm reads 
+	\begin{align}
+	\norm{X}_2 = \tr\lp T^{(2)} X \otimes X^\dagger \rp.
+	\end{align}
+	\begin{proof}
+		content...
+	\end{proof}
+
+\end{enumerate}
+
+
+
+
+
+
+\noindent \textbf{6. Unitary Evolution}
+\begin{enumerate}
+	\item \textbf{Norm invariance.} Show that the Frobenius norm and the Operator norm are preserved by unitary operations.
+	\begin{proof}
+		content...
+	\end{proof}
+	
+	\item \textbf{Entropy invariance.} Show that all Entropies are preserved by unitary evolution.
+	\begin{proof}
+		content...
+	\end{proof}
+
+\end{enumerate}
+
+
+
+\noindent \textbf{7. Entanglement and partial trace.} Show that, if a state $\sigma(t)$ is evolving in time, the purity of the marginal state $\sigma_A(t)$ is given by 
+\begin{align}
+\tr \sigma^2_A(t) = \tr \lb T^{(2)} \otimes I_B^{\otimes 2} U^{\otimes 2} \sigma^{\otimes 2} U^{\dagger \otimes 2} \rb
+\end{align}
+where $U$ is the unitary evolution operator.
+\begin{proof}
+	content...
+\end{proof}
+
+
+
+\noindent \textbf{8. Time evolution by Hamiltonian.} Be $\mathcal{U}(X) = e^{iHt} X e^{-iHT} \equiv X_t$ the time evolution generated by a non-degenerate Hamiltonian $H = \sum_n E_n P_n$.
+\begin{enumerate}
+	\item \textbf{Time averaged operator}
+	Define the time average as $\bar{X} = \lim_{T\to \infty} \f{1}{T} \int^T_0 X_t\,dt$. Show that
+	\begin{align}
+	\bar{X} = \sum_n P_n X P_n.
+	\end{align}
+\end{enumerate}
+\begin{proof}
+	content...
+\end{proof}
+
+
+
+\noindent \textbf{9. Quantum Measurement.} Show that, after measuring on the state $\sigma$ some observable $\Omega = \sum_i o_i \ket{i}\bra{i} \equiv \sum_i o_i \omega_i$, the resulting state is 
+\begin{align}
+\sigma' = \sum_i \omega_i o_i \omega_i.
+\end{align}
+\begin{proof}
+	content...
+\end{proof}
 
 
 
@@ -1293,7 +1569,7 @@ K_E(q,\beta \hbar, q,0) = \lim_{N\to \infty} \lp \f{m}{2\pi \Delta \tau \hbar} \
 		\end{align}
 		
 		
-		hmmm... something wrong here? 
+		hmmm... There might be something wrong here... or might not. In any case, this is just a case of taking the limit correctly and using some change of variables. I won't go into the details.
 	\end{proof}
 	
 \end{enumerate}
