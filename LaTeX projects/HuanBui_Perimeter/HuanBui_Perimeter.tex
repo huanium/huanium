@@ -56,10 +56,13 @@
 \newcommand{\al}{\alpha}
 \newcommand{\be}{\beta}
 \newcommand{\x}{\xi}
+\newcommand{\ep}{\epsilon}
 
 \newcommand{\G}{\mathcal{G}}
 
 \newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\td}[1]{\tilde{#1}}
+
 
 \newcommand{\ift}{\infty}
 
@@ -810,6 +813,18 @@ Compute the von Neumann entropy of the Gibbs state.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 \noindent \textbf{5. Swap Operator.} One of the problems of the entanglement entropies is that to know them one has
 to know all the eigenvalues of the reduced density operator, which amounts to
 knowing the wave-function. In other words, entanglement is not the expectation
@@ -825,20 +840,35 @@ T^{(2)} \ket{\phi_i \phi_j} = \ket{\phi_j \phi_i}.
 	\end{align}
 	
 	\begin{proof}
-		content...
+		\begin{align}
+		\tr\lp T^{(2)}\sigma^{\otimes 2} \rp &= \sum_{i,j} \bra{ij} T^{(2)}\sigma^{\otimes 2} \ket{ij}\nn\\
+		&= \sum_{i,j} \bra{ij} T^{(2)} (\sigma \ket{i} \otimes \sigma\ket{j})\nn\\
+		&= \sum_{i,j} \bra{ij} T^{(2)} (\sigma \ket{j} \otimes \sigma\ket{i})\nn\\
+		&= \sum_{i,j} \bra{ij} \sigma^2 \ket{ji} \nn\\
+		&= \sum_i \bra{i}\sigma^2 \ket{i}\nn\\
+		&= \tr\lp \sigma^2 \rp.
+		\end{align}
 	\end{proof}
 	
 	\item \textbf{Trace of $T^{(2)}$.} Compute the trace of $T^{(2)}$.
 	\begin{proof}
-		content...
+		Just use $\sigma = \Id$. Then the $\tr(T^{(2)})$ is just the dimension of the space.  
 	\end{proof}
 	
 	\item \textbf{Frobenius norm.} Show that for any linear operator $X$, the Frobenius norm reads 
 	\begin{align}
-	\norm{X}_2 = \tr\lp T^{(2)} X \otimes X^\dagger \rp.
+	\norm{X}_2^2 = \tr\lp T^{(2)} X \otimes X^\dagger \rp.
 	\end{align}
 	\begin{proof}
-		content...
+		This one is similar to part 1:
+		\begin{align}
+		\norm{X}_2^2 &= \sqrt{\tr(X^\dagger X)} \nn\\
+		&= {\sum_i \bra{i} X^\dagger X \ket{i}}\nn\\
+		&= {\sum_{i,j} \bra{i}X^\dagger \ket{i}\bra{j} X\ket{i}   }\nn\\
+		&= \sum_{i,j} (\ket{i} \otimes \ket{j})(X^\dagger\ket{j} \otimes X\ket{i})\nn\\
+		&= \sum_{i,j} \bra{ij}T^{(2)}( X\ket{i} \otimes X^\dagger\ket{j} )\nn\\
+		&= \tr\lp T^{(2)} X \otimes X^\dagger \rp.
+		\end{align}
 	\end{proof}
 
 \end{enumerate}
@@ -852,12 +882,12 @@ T^{(2)} \ket{\phi_i \phi_j} = \ket{\phi_j \phi_i}.
 \begin{enumerate}
 	\item \textbf{Norm invariance.} Show that the Frobenius norm and the Operator norm are preserved by unitary operations.
 	\begin{proof}
-		content...
+		This is one easy. For the Frobenius norm, we just use the fact that $\tr(AB) = \tr(BA)$. Everything else follows. In general, things follow from the fact that unitaries preserve the inner product.  
 	\end{proof}
 	
 	\item \textbf{Entropy invariance.} Show that all Entropies are preserved by unitary evolution.
 	\begin{proof}
-		content...
+		Entropies depend on something that looks like $\tr \psi^\al$ for some $\al$ and the state $\psi$. Again, because $\tr(BA) = \tr(AB)$, it's an easy argument to show the trace remains invariant.
 	\end{proof}
 
 \end{enumerate}
@@ -870,7 +900,7 @@ T^{(2)} \ket{\phi_i \phi_j} = \ket{\phi_j \phi_i}.
 \end{align}
 where $U$ is the unitary evolution operator.
 \begin{proof}
-	content...
+	
 \end{proof}
 
 
@@ -884,7 +914,17 @@ where $U$ is the unitary evolution operator.
 	\end{align}
 \end{enumerate}
 \begin{proof}
-	content...
+	This needs quite a lot of manipulations. The key is to expand $X$ in the energy eigenbasis:
+	\begin{align}
+	\bar{X} &= \f{1}{T}\lim_{T\to \infty}\int_0^T e^{iHt} X e^{-iHT}\,dt\nn\\
+	&= \lim_{T\to \infty}\f{1}{T}\int_0^T e^{iE_nt} \sum_{n,m} X_{nm} \ket{n}\bra{m} e^{-iE_mt}\,dt, \quad X_{nm} = \bra{n} X \ket{m}  \nn\\
+	&= \lim_{T\to \infty}\f{1}{T}\int_0^T e^{i(E_n-E_m)t} \sum_{n,m} X_{nm} \ket{n}\bra{m}\,dt\nn\\
+	&= \braket{n}{m}\sum_{n,m} \ket{n}X_{nm}\bra{m}\nn\\
+	&= \braket{n}{m}\sum_{n,m} \ket{n}\bra{n} X \ket{m}\bra{m}\nn\\
+	&= \sum_n \ket{n} \bra{n} X \ket{n}\bra{n}\nn\\
+	&= \sum_n P_n X P_n.
+	\end{align}
+	So we're done. 
 \end{proof}
 
 
@@ -894,7 +934,16 @@ where $U$ is the unitary evolution operator.
 \sigma' = \sum_i \omega_i o_i \omega_i.
 \end{align}
 \begin{proof}
-	content...
+	Well, measurement is basically a projection:
+	\begin{align}
+	\sigma' &= \sum_i \ket{i}\bra{i}\sigma \nn\\
+	&= \sum_i \ket{i}\bra{i}\sum_j \sigma_j \ket{i}\bra{j}\nn\\
+	&= \sum_{i,j}\ket{i}\bra{i} \ket{j} \sigma_j \bra{j}\nn\\
+	&= \sum_i \ket{i} \sigma_i \bra{i}\nn\\
+	&= \sum_i \ket{i} \bra{i} \sigma \ket{i}\bra{i}\nn\\
+	&= \sum_i \omega_i \sigma \omega_i
+	\end{align}
+	where we have used the fact that the matrix element $\sigma_i = \sigma_{ii} = \bra{i}\sigma\ket{i}$.
 \end{proof}
 
 
@@ -951,7 +1000,7 @@ We will first cover some background material required for the rest of the course
 
 
 
-\section{L1: The Ising model: Motivation}
+\section{The Ising model: Motivation}
 
 The Ising model is important because it models magnetism and features quantum phase transition, which is an important topic we will cover later.\\
 
@@ -975,7 +1024,24 @@ The goal is, given the Hamiltonian:
 \end{align}
 What is the most favorable configuration of the electron?
 
-\section{L1: Introduction to many-particle states and operators}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Introduction to many-particle states and operators}
 
 \subsection{Spin 1/2 Systems} 
 
@@ -1031,7 +1097,211 @@ What do the Pauli matrices become under this change of basis? Well, the first co
 \end{align}
 Similarly, we can show that $\sigma^z\ket{\pm} = \ket{\mp}$. In this new basis, $\sigma^z_{new} = \sigma^x$. We can also find the form for the other matrices, but let's not worry about that. The gist is that $\ket{\uparrow\downarrow}$ are the $z$-eigenstates, and $\ket{\leftarrow\rightarrow}$ are the $x$-eigenstates. \\
 
-How the matrices change can be found via the usual change of basis that we all have seen in linear algebra.
+How the matrices change can be found via the usual change of basis that we all have seen in linear algebra.\\
+
+
+
+\section{Tensor Product Spaces}
+
+Suppose there are two space of spin-1/2 particles. The question we want to answer is: What are the allowed states of the 2-spin system? The answer is this: any state in the ``tensor product space,'' which is the vector space whose basis is the following four vectors: $\{ \ket{\uparrow\uparrow}, \ket{\uparrow\downarrow}, \ket{\downarrow\uparrow}, \ket{\downarrow\downarrow}\}$. Each basis vector is an ordered pair, the first being a basis vector in $A$, the second in $B$. \\
+
+
+So, a general state in the tensor product space is just some superposition of these vectors. What is the inner product in this new space? Suppose we have
+\begin{align}
+\ket{\psi_A} \otimes \ket{\psi_B}, \quad \ket{\phi_A} \otimes \ket{\phi_B}.
+\end{align}
+Then the inner product between these is defined as 
+\begin{align}
+(\bra{\psi_A} \otimes \bra{\psi_B}) (\ket{\phi_A} \otimes \ket{\phi_B}) = \braket{\psi_A}{\phi_A} \cdot \braket{\psi_B}{\phi_B}.
+\end{align}
+
+
+One important consequence is that if the $A$ part is orthogonal or the $B$ part is orthogonal then the inner product in the tensor space is also zero (so, also orthogonal). This is quite easy to see. \\
+
+Finally, we want to know how to apply operators. And operator on the tensor product space looks like
+\begin{align}
+\mathcal{O} = \sum_i \mathcal{O}^A_i \otimes \mathcal{O}^B_i.
+\end{align}
+The way each component of $\mathcal{O}$ acts is the following:
+\begin{align}
+(\mathcal{O}^A \otimes \mathcal{O}^B) (\ket{\psi_A} \otimes \ket{\psi_B}) = (\mathcal{A} \ket{\psi_A}) \otimes (\mathcal{A} \ket{\psi_B}).
+\end{align}
+By linearity, we can work out how $\mathcal{O}$ acts in general.\\
+
+From this definition, we can see some useful facts. Suppose we want to multiply two operators: 
+\begin{align}
+(\mathcal{A} \otimes \mathcal{O}^B)(\tilde{\mathcal{O}}^A \otimes \tilde{\mathcal{O}}^B )(\ket{\psi_A} \otimes \ket{\psi_B}) = \dots = (\mathcal{O}^A\tilde{\mathcal{O}}^A \otimes \mathcal{O}^B\tilde{\mathcal{O}}^B)(\psi_A\psi_B).
+\end{align}
+So, we have
+\begin{align}
+(O^A \otimes O^B)(H^A \otimes H^B)= O^A H^A \otimes O^B H^B. 
+\end{align}
+
+Next, suppose we have $O^A \otimes \Id^B$ and $\Id^A \otimes O^B$. By looking at the commutation, we can easily check that these commute. This fact on be summarized as the following: ``Operators on different sites commute.'' \\
+
+
+\subsection{Born Rule for Probabilities}
+
+Now we want to look at how to get probabilities. Suppose
+\begin{align}
+\ket{\psi} = a\ket{00} + b\ket{01} + c\ket{10} + d\ket{00}.
+\end{align}
+Then $P(00) = \abs{a}^2$, $P(01) = \abs{b}^2$. Then $P(0_A) = \abs{a}^2 + \abs{b}^2$. Finally, suppose we want to find expectation value:
+\begin{align}
+\langle \sigma^z_A \rangle = \langle \sigma^z_A \otimes \Id_B \rangle = 1\cdot P(0_A) + (-1)P(1_A) = \abs{a}^2 + \abs{b}^2 - \abs{c}^2 - \abs{d}^2.
+\end{align}
+With this, in the state $\ket{\psi}$, we're going to calculate $\langle \sigma^z_A \otimes \Id_B\rangle $ directly:
+\begin{align}
+\bra{\dots} \sigma^z_A \otimes \Id_B\ket{\dots} = \dots =  \abs{a}^2 + \abs{b}^2 - \abs{c}^2 - \abs{d}^2
+\end{align}
+as expected.
+
+
+
+subsection{Expectation Values}
+
+Another useful way to compute expectation values is to use matrix representations. First, we assign basis vectors. Then find matrix for $\sigma_A^z \otimes \Id_B$. Then find matrix/vector representation of $\ket{\psi}$. Finally, multiply out. \\
+
+At this point, we will frequently use the short hand $\ket{\psi_A}\ket{\phi_B} = \ket{\psi\phi}$. With this, we introduce the representation:
+\begin{align}
+&\ket{\uparrow\uparrow} = (1,0,0,0), \quad \ket{\downarrow\uparrow} = (0,0,1,0)\nn\\
+&\ket{\uparrow\downarrow} = (0,1,0,0), \quad \ket{\downarrow\downarrow} = (0,0,0,1)
+\end{align}
+We want to find the matrix for $\sigma^z_A \otimes  \Id_B$. To do this, we find column-by-column by letting it act on the standard basis vectors. After this is done, we find that 
+\begin{align}
+(\sigma_A^z \otimes \Id_B) = \begin{bmatrix}
+1 &&&\\
+& 1 && \\
+&&-1&\\
+&&&-1
+\end{bmatrix}
+\end{align}
+Finally, we can verify that
+\begin{align}
+\bra{\psi} \sigma^z_A \otimes \Id_B \ket{\psi} = \abs{a}^2 + \abs{b}^2 - \abs{c}^2 - \abs{d}^2.
+\end{align}
+
+
+\begin{exmp}
+	We will look at the $4\times 4$ matrices in this basis for the following operators:
+	\begin{align}
+	\sigma_A^y \otimes \sigma_B^z = \begin{bmatrix}
+	&&-i&\\
+	&&&i\\
+	i&&&\\
+	&-i&&
+	\end{bmatrix}
+	\end{align}
+	
+	\begin{align}
+	\sigma^z_A \otimes \sigma^y_B = \begin{bmatrix}
+	&-i&& \\
+	i&&&\\
+	&&&i\\
+	&&-i&
+	\end{bmatrix}
+	\end{align}
+\end{exmp}
+
+A shortcut to do these calculations is of course the Kronecker product:
+\begin{align}
+\sigma_A^y \otimes \sigma_B^z = 
+\begin{bmatrix}
+0 & -i \\ i & 0
+\end{bmatrix} \otimes \begin{bmatrix}
+1 & 0 \\ 0 & -1
+\end{bmatrix}
+=\begin{bmatrix}
+&&-i&\\
+&&&i\\
+i&&&\\
+&-i&&
+\end{bmatrix}
+\end{align}
+
+\begin{align}
+\sigma^z_A \otimes \sigma^y_B = 
+\begin{bmatrix}
+1 & 0 \\ 0 & -1
+\end{bmatrix} \otimes \begin{bmatrix}
+0 & -i \\ i & 0
+\end{bmatrix}  
+=\begin{bmatrix}
+&-i&& \\
+i&&&\\
+&&&i\\
+&&-i&
+\end{bmatrix}
+\end{align}
+In general, 
+\begin{align}
+A \otimes B = \begin{bmatrix}
+a_{11}B & a_{12}B \\ a_{21}B & a_{22}B
+\end{bmatrix}.
+\end{align}
+This is always true if the choice of basis is correct. They are correct in the sense that we can construct the tensor product basis by taking Kronecker products of the basis vectors of the factor space. \\
+
+
+The moral of the story is this. The matrix for $\mathcal{O}_A \otimes \mathcal{O}_B$ is the Kronecker product of matrices for $\mathcal{O}_A$ and $\mathcal{O}_B$. 
+
+
+
+
+\section{The Two-site Ising Model}
+
+Recall the Hamiltonian for the model:
+\begin{align}
+\had = -J \sum_i S_i^z S_{i+1}^z - h \sum_i S_i^x.
+\end{align}
+where
+\begin{align}
+S_i^z = \f{\hbar}{2}\sigma_i^z.
+\end{align}
+We can rewrite the model as
+\begin{align}
+\had = -J \lp \f{\hbar}{2} \rp^2 \sim_i \sigma_i^z \sigma_{i+1}^z - h \f{\hbar}{2}\sum_i \sigma^x_i
+\end{align}
+Let the constants absorb $\hbar/2, \hbar^2/4$ respectively, then the model becomes
+\begin{align}
+\had = -J \sum_i \sigma_i^z\sigma_{i+1}^z - h\sum_i \sigma_i^x.
+\end{align}
+Next, we want to make this precise in the sense of tensor products. For the two-site model, we have precisely
+\begin{align}
+\had = -J \sigma_0^z \otimes \sigma_1^z - h (\sigma_0^x \otimes \Id_1 + \Id_0\otimes\sigma_1^x).
+\end{align} 
+We can now convert this into a $4\times 4$ matrix, in the programming exercises. \\
+
+Before any programming though, let's do this by hand. First, let us find the matrix for $\sigma_0^z \otimes \sigma_1^z$. Once we do that, we will find the eigenstates and the eigenvalues of $H$ when $h=0$. Furthermore, we will show that in each of the eigenstate, $\langle \sigma_0^x\otimes \Id_1 + \Id_0 \otimes \sigma_1^x \rangle = 0$. Next, we will do the opposite find the matrix for $\sigma_0^x\otimes \Id_1 + \Id_0 \otimes \sigma_1^x$. Find the eigenvalues and eigenvectors when $J =0$. Then, we will show that in each of these states, $\langle \sigma_0^z \otimes \sigma_1^z \rangle = 0$. Then, we will find the $4\times 4$ matrix for $\had$. \\
+
+Well,
+\begin{align}
+\sigma^z \otimes \sigma^z = \text{diag}(1,-1,-1,1).
+\end{align} 
+Obviously the eigenstates are exactly the vectors in the $ZZ$ basis: $\{ \ket{00}, \ket{01}, \ket{10}, \ket{11}\}$ with eigenvalues $1,-1,-1,1$ respectively. The corresponding eigenvalues in the Hamiltonian are $-J,J,J,-J$. \\
+
+Next, to see that $\langle \sigma_0^x\otimes \Id_1 + \Id_0 \otimes \sigma_1^x \rangle = 0$ for each eigenvector, just use the fact that $\sigma^z\ket{\uparrow} = \ket{\downarrow}$ and $\sigma^x\ket{\downarrow} = \ket{\uparrow}$ and that the inner product $\braket{\uparrow}{\downarrow} = 0$. This part is easy.\\
+
+Next, 
+\begin{align}
+\sigma_0^x\otimes \Id_1 + \Id_0 \otimes \sigma_1^x = \begin{bmatrix}
+\sigma^x & \Id \\ \Id & \sigma^xs
+\end{bmatrix}.
+\end{align}
+
+The eigenvectors in this case will be $\{ \ket{++}, \ket{-+}, \ket{+-}, \ket{--}  \}$. The eigenvalues are $\{1,0,0,-1\}$ respectively. These correspond with th eigenvalues $-2h,0,0,2h$ in the Hamiltonian. Verifying the expectation is easy, so again I won't do that.\\
+
+Finally, the $4\times 4$ matrix for $H$ is given by
+\begin{align}
+\had = -J\begin{bmatrix}
+1&&&\\&-1&&\\&&-1&\\&&&1
+\end{bmatrix} - h\begin{bmatrix}
+&1&1&\\1&&&1\\1&&&1\\&1&1&
+\end{bmatrix} = \begin{bmatrix}
+-J&-h&-h&\\-h&J&&-h\\-h&&J&-h\\&-h&-h&-J
+\end{bmatrix}
+\end{align}
+
+We will solve this and $n$-site Ising models next. 
 
 
 
@@ -1042,68 +1312,83 @@ How the matrices change can be found via the usual change of basis that we all h
 
 
 
-\section{L1: The XXZ model}
 
-\section{L1: Programming basics}
 
-\section{L1 : Finding expectation values}
+
+
+
+
+
+
+
+
+
+
+
+%
+%
+%\section{L1: The XXZ model}
+%
+%\section{L1: Programming basics}
+%
+%\section{L1 : Finding expectation values}
 
 \newpage
 
-\section{L2: Exact diagonalization part 1}
+\section{Exact diagonalization part 1}
 
-\section{L2: Representing models}
+\section{Representing models}
 
-\section{L2: Finding eigenstates}
+\section{Finding eigenstates}
 
-\section{L2: Energy gaps}
+\section{Energy gaps}
 
-\section{L2: Phase transitions}
+\section{Phase transitions}
 \newpage
 
 
 
 
-\section{L3: Exact diagonalization part 2}
+\section{Exact diagonalization part 2}
 
 
-\section{L3: Limitations of the method}
+\section{Limitations of the method}
 
-\section{L3: Using symmetries}
+\section{Using symmetries}
 
-\section{L3: Dynamics}
+\section{Dynamics}
 
 
 \newpage
 
 
-\section{L4: Matrix product states part 1}
+\section{Matrix product states part 1}
 
 
 
 
-\section{L4: Entanglement and the singular value decomposition}
+\section{Entanglement and the singular value decomposition}
 
 
 
-\section{L4: What is a matrix product state and why is it useful}
+\section{What is a matrix product state and why is it useful}
 \newpage
 
 
 
 
 
-\section{L5: Matrix product states part 2}
+\section{Matrix product states part 2}
 
 
 
 
-\section{L5: Algorithms for finding ground states using matrix product states: iTEBD }
+\section{Algorithms for finding ground states using matrix product states: iTEBD }
 
 
 
 
-\section{L5: Algorithms for finding ground states using matrix product states: DMRG}
+\section{Algorithms for finding ground states using matrix product states: DMRG}
 
 \newpage
 
@@ -1750,7 +2035,7 @@ properties common to its elements, which are otherwise indistinguishable.
 
 
 
-\section{L1: Definition of symmetry}
+\section{Definition of symmetry}
 
 We can't really give a mathematical definition of symmetry, because it depends on the context. But in any case we can define ``symmetry'' like this.
 
@@ -1784,7 +2069,7 @@ Some properties:
 
 
 
-\section{L1: Elements of group theory}
+\section{Elements of group theory}
 
 
 \begin{defn}
@@ -1910,7 +2195,7 @@ The notion that $\Im \varphi \sim G/\ker\varphi$ is important. This will appear 
 
 
 
-\section{L1: Examples: Symmetry \& Group Theory }
+\section{Examples: Symmetry \& Group Theory }
 
 \begin{exmp}
 	$(\mathbb{Z},+), (\mathbb{R},+), (\mathbb{C},+), \dots$ are abelian groups. 
@@ -1951,7 +2236,7 @@ The notion that $\Im \varphi \sim G/\ker\varphi$ is important. This will appear 
 
 
 
-\section{L2: Continuous and discrete symmetries}
+\section{Continuous and discrete symmetries}
 
 We will be quite vague with these definitions. 
 
@@ -2004,7 +2289,28 @@ For example consider $g_\theta$ define by $2\times 2$ rotation matrix $R_\theta$
 
 
 
-\section{L2: Infinitesimal symmetries}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Infinitesimal symmetries}
 
 Rotations are a particular example of infinitesimal symmetry. Just like calculus, we want to talk about ``derivatives.'' Assume that that $\epsilon \in \mathbb{R} \mapsto g_\epsilon \in G$ is a ``smooth'' map. Here, ``smooth'' means infinitely differentiable, or ``as nice as we want.'' This only makes sense if we have a ``differentiable structure'' on $G$. \\
 
@@ -2053,7 +2359,7 @@ X = \f{d}{d\epsilon}\bigg\vert_{\epsilon = 0} g_\epsilon.
 	0 & 1 \\ -1 & 0
 	\end{bmatrix}
 	\end{align}
-	Note that because of the group structure, we can actually reconstruct $R_\theta$ from the linearization, unlike in calculus where we don't necessarily have the function back knowing its derivative. 
+	Note that because of the group structure, we can actually reconstruct $R_\theta$ from the linearization, unlike in calculus where we don't necessarily have the function back knowing its derivative.  
  	
 \end{exmp}
 
@@ -2061,22 +2367,275 @@ X = \f{d}{d\epsilon}\bigg\vert_{\epsilon = 0} g_\epsilon.
 
 
 
-\section{L2: Noether's theorem}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Noether's theorem}
+
+\begin{defn}[Noether's Theorem]
+	Every differentiable symmetry of the action of a physical system has a corresponding conservation law. 
+\end{defn}
+
+\begin{proof}
+	Consider $\tilde{t} = T_\epsilon(t)$ and $\tilde{q}(\tilde{t}) = Q_\epsilon(q(t)) = Q_\epsilon (q(T_{-\epsilon} (\tilde{t})))$ with $T_\epsilon, Q_\epsilon$ smooth one-parameter subgroups $(T_0 = \Id, T_{-\epsilon} = T_\epsilon^{-1}, T_{\epsilon+ \epsilon'} = T_\epsilon \circ T^{-1}_\epsilon)$, i.e., $(d/d\epsilon)_{\epsilon=0} T_\epsilon$ makes sense. Consider the action
+	\begin{align}
+	S[q] = \int^b_a \lag(q(t), \dot{q}(t),t).
+	\end{align}
+	Under the transformation, we get
+	\begin{align}
+	\tilde{S}[\tilde{q}] = \int^{T_\epsilon(b)}_{T_\epsilon(a)} \lag(\td{q}(\td{t}), \dot{\td{q}}(\td{t}) , \td{t})\,d\td{t} = \int^b_a \f{dT_\epsilon}{dt}\lag(\td{q}(T_\epsilon(t)) , \dot{\td{q}}(T_\epsilon(t)), T_\epsilon(t) )\,dt.
+	\end{align}
+	Suppose that $\tilde{S}[\td{q}] = S[q]$ for all paths (even those that are not solutions of the Euler-Lagrange equations) and for all choices of $a,b$. Then 
+	\begin{align}
+	\delta S \equiv \f{d}{d\epsilon}\bigg\vert_{\epsilon = 0}\td{S}[\td{q}] = 0.
+	\end{align}
+	Some notation:
+	\begin{align}
+	&\delta t = \f{d}{d\epsilon}\bigg\vert_{\epsilon=0}T_\epsilon\nn\\
+	&\delta q = \f{d}{d\epsilon}\bigg\vert_{\epsilon=0}Q_\epsilon
+	\end{align}
+	These are generators of $T_\epsilon$ and $Q_\epsilon$, respectively (see Lie algebras).\\
+	
+	Let's apply $D \coloneq (d/d\epsilon)\big\vert_{\epsilon=0}$ everywhere we can, then 
+	\begin{align}
+	&D\f{dT_\epsilon}{dt} = \f{d}{dt}DT_\epsilon = \f{d}{dt}\delta t\nn\\
+	&D\td{q}(\td{t}) = DQ_\epsilon (q(t)) = \delta q(q(t))\nn\\
+	&\f{d\td{q}}{d\td{t}}(\td{t}) = \f{d}{d\td{t}}Q_\epsilon(q(t)) = \f{\p Q_\epsilon}{\p q}(q(t))\dot{q}(t) \f{dt}{d\td{t}}(\td{t})\nn\\
+	&\implies \f{d}{d\ep}\bigg\vert_{\ep=0} \dot{\td{q}}(\td{t}) = \f{\p}{\p q}DQ_\epsilon (q(t)) \dot{q(t)}\underbrace{\f{1}{\f{dT_0}{dt}}}_{1} + \f{\p}{\p q}Q_0(q(t))\dot{q}(t)\underbrace{D\f{1}{\f{dT_\epsilon}{dt}}}_{-(d/dt)\delta t}\nn\\
+	&\implies D\dot{\td{q}}(\td{t}) = \f{\p}{\p q}\delta q \dot{q}(t) - \dot{q}(t) \f{d}{dt}\delta t = \f{d}{dt}\delta q - \dot{q}(t)\f{d}{dt}\delta t.
+	\end{align}
+	Now suppose that $q$ satisfies the Euler-Lagrange equation:
+	\begin{align}
+	\f{\p \lag}{\p q} - \f{d}{dt}\f{\p \lag}{\p \dot{q}} = 0.
+	\end{align}
+	Then because
+	\begin{align}
+	D\td{S}[\td{q}] = 0, \quad \td{S}[\td{q}] = S[q]
+	\end{align}
+	which we should check without using the Euler-Lagrange equations, we have that	
+	\begin{align}
+	0 = D\td{S}[\td{q}] &= \int^b_a D\lb \f{dT_\ep}{dt}\lag(\td{q}(\td{t}),\dot{\td{q}}(\td{t}) , \td{t}) \rb\nn\\
+	&= \int^b_a dt\lc \f{d\delta t}{dt} \lag(q,\dot{q},t) + \underbrace{\f{dT_0}{dt}}_{1}D\lag(\td{q}(\td{t}),\dot{\td{q}}(\td{t}) , \td{t}) \rc.
+	\end{align}
+	Now, what is the term on the RHS of the integral? Well,
+	\begin{align}
+	D\lag(\td{q}(\td{t}),\dot{\td{q}}(\td{t}) , \td{t})
+	&= \f{\p \lag}{\p t}D\td{t} + \f{\p \lag}{\p q}D\td{q}(\td{t}) + \f{\p \lag}{\p \dot{q}} D\dot{\td{q}}(\dot{\td{t}})\nn\\
+	&= \f{\p \lag}{\p t}\delta t + \f{\p \lag}{\p q}\delta q + \f{\p \lag}{\p \dot{q}}\lp \f{d}{dt}\delta q - \dot{q} \f{d}{dt}\delta t \rp\nn\\
+	&= \f{\p \lag}{\p t}\delta t + \f{\p \lag}{\p q}\delta q + \f{d}{dt}\lp \f{\p \lag}{\p \dot{q}}\delta q \rp - \delta q\f{d}{dt}\f{\p \lag}{\p \dot{q}} - \f{d}{dt}\lp \f{\p \lag}{\p \dot{q}}\dot{q}\delta t \rp + \delta t\f{d}{dt}\lp  \f{\p \lag}{\p \dot{q}}\dot{q} \rp\nn\\
+	&= \f{d}{dt}\lb \f{\p \lag}{\p \dot{q}} (\delta q - \dot{q}\delta t) \rb + \f{\p \lag}{\p t}\delta t + \delta t \lp \f{d}{dt}\f{\p \lag}{\p \dot{q}} \rp\dot{q} + \delta t \f{\p \lag}{\p \dot{q}}\ddot{q}\nn\\
+	&= \f{d}{dt}\lb \f{\p \lag}{\p \dot{q}} (\delta q - \dot{q}\delta t) \rb + \delta t\lb \f{\p \lag}{\p t} + \f{\p \lag}{\p q}\dot{q} + \f{\p \lag}{\p \dot{q}} \ddot{q} \rb\nn\\
+	&=  \f{d}{dt}\lb \f{\p \lag}{\p \dot{q}} (\delta q - \dot{q}\delta t) \rb + \delta t \f{d}{dt}\lag(q(t),\dot{q}(t),t).
+	\end{align}
+	From here we have that
+	\begin{align}
+	0 &= \int^b_a dt\lc \lag(q,\dot{q},t)\f{d}{dt}\delta t + \delta t \f{d}{dt}\lag(q,\dot{q},t) + \f{d}{dt}\lb \f{\lag \lag}{\p \dot{q}}(\delta q - \dot{q}\delta t) \rb \rc\nn\\
+	&= \int^b_a dt \f{d}{dt}\lb \lag \delta t + \f{\p \lag}{\p \dot{q}}\lb \rb \delta q - \dot{q}\delta t  \rb\nn\\
+	&\implies \boxed{\lag \delta t + \f{\p \lag}{\p \dot{q}}(\delta q - \dot{q}\delta t) \text{ is conserved!}}
+	\end{align}
+	
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 \newpage
-\section{L3: Lie groups and Lie algebras}
+\section{Lie groups and Lie algebras}
+
+
+
+
+\subsection{Matrix Exponential}
+
+
+Let's review of facts about matrix exponential:
+\begin{itemize}
+	\item The matrix exponential is the map $\exp: M_n(\C) \to GL(n,\C)$ defined by $X \mapsto \sum^\infty_{k=0} X^k/k!$. 
+	
+	\item The map $\exp$ is surjective.
+	
+	\item $e^{AXA^{-1}} = A e^X A^{-1}$, for $A\in GL(n,\C)$.
+	
+	\item $\det(e^E) = e^{\tr X}$.
+	
+	\item $e^O = \Id$.
+	
+	\item $(e^X)^* = e^{X^*}$.
+	
+	\item $(e^X)^\top = e^{X^\top}$
+	
+	
+	\item $(e^X)^{-1} = e^{-X}$. 
+	
+	\item $e^{(\al+\be )X} = e^{\al X} e^{\be X}$.
+	
+	\item If $XY=YX$ then $e^{X+Y} = e^X e^Y = e^Y e^X$.
+	
+	\item In general, we have the Lie product formula:  $e^{(X+Y)} = \lim_{k\to \infty}\lp e^{ X/k}e^{ Y/k} \rp^{k}$.
+	
+	
+	\item $\f{d}{d\ep}e^{\ep X} = X e^{\ep X} = e^{\ep X} X, \ep \in \R$.
+	
+	\item $\f{d}{d\ep}\bigg\vert_{\ep =0}e^{\ep X} = X$.
+	
+	\item $e^{\ep X} = e^{\ep Y} \forall \ep \in \R \iff X=Y$.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Matrix Lie groups and associated Lie algebras}
+
+\begin{defn}[Matrix Lie Groups]
+	A matrix Lie group is a closed subgroup  $G \leq GL(n,\mathbb{C})$ for some $n\in \mathbb{N}$ (closed wrt the topology induced from $M_n(\mathbb{C})$) using the  operator norm. 
+\end{defn}
+
+Recall the $GL(n,\C)$ is the group of  $n\times n$ invertible matrices over $\C$. Let's look at some examples:
+
+\begin{exmp}
+	$\,$
+	\begin{itemize}
+		\item $GL(n,\mathbb{C})$, the general linear group over $\mathbb{C}$.
+		
+		\item $SL(n,\mathbb{C}) = \{ A \in GL(n,\mathbb{C}) \vert \det{A} = 1 \}$, special linear group over $\C$. 
+		
+		\item $GL(n,\R) = \{ A\in GL(n,\C) \vert \bar{A} - A = 0 \}$, general linear group over $\R$. 
+		
+		\item $SL(n,\mathbb{R}) = \{ A \in GL(n,\mathbb{R}) \vert \det{A} = 1 \}$, special linear group over $\R$. 
+		
+		\item $O(n) = \{ A\in GL(n,\R) \vert A^\top A = \Id \}$, the orthogonal group.
+		
+		\item $SO(n) = \{ A\in O(n) \vert \det{A} = 1 \}$, the special orthogonal group.
+		
+		\item $U(n) = \{ A\in GL(n,\C) \vert A^\dagger A = \Id\}$, the unitary group.
+		
+		\item $SU(n) = \{ A \in U(n)\vert  \det{A} = 1   \}$, the special unitary group.  
+	\end{itemize}
+
+	Note that the last two groups are real Lie groups despite having complex matrices. 
+\end{exmp}
+
+
+
+
+\begin{defn}[Lie Algebra]
+	A real or complex Lie algebra is a vector space $V$ over $\R$ or $\C$ with an operation $[\cdot,\cdot]: V\times V \to V$ (Lie bracket) satisfying
+	\begin{itemize}
+		\item $[\al x + \be y, z] = \al[x,z] + \be[y,z]$.
+		\item $[z,\al x + \be y] = \al[z,x] + \be[z,y]$.
+		\item $[y,x] = -[x,y]$.
+		\item $[x,[y,z]] + [y,[z,x]] + [z,[x,y]] = 0$.
+	\end{itemize}
+\end{defn}
+
+
+
+
+\begin{defn}[Associated Lie algebra of MLG]
+	Let $G \leq GL(n,\C)$ be a matrix Lie group. The associated Lie algebra is the set $\text{Lie}(G) = \{  x\in M_n(\C) \vert e^{\epsilon X} \in G \forall \epsilon \in \R   \}$ with Lie bracket $[x,y] = xy-yx$.
+\end{defn}
+
+\textbf{Note:} $\text{Lie}(G)$ is usually denoted $\mathfrak{g}$.\\
+
+We need to prove that $\text{Lie}(G)$ is really a Lie algebra:
+\begin{proof}
+	We need to show Lie$(G)$ satisfies all the defining characteristics of a Lie algebra:
+	\begin{itemize}
+		\item $[\cdot,\cdot]$ is anti-commutative, bilinear, and satisfies Jacobi identity: this is not hard to show.
+		
+		\item The zero matrix belongs to Lie$(G)$ since $e^{\epsilon O} = \Id$, for all $\ep\in \R$. 
+		
+		\item If $X \in \text{Lie}(G)$ and $\al\i \R$ then $e^{\ep \al X} \in G,\\forall \ep \in \R$ since $\ep\al \in \R$. This means $al X \in \text{Lie}(G)$.
+		
+		\item If $X,Y \in \text{Lie}(G)$ then $e^{\ep(X+Y)} = \lim_{k\to \infty}\lp e^{\ep X/k}e^{\ep Y/k} \rp^{k}$ which is a limit of products of elements of $G$. Since $G$ is closed, the limit converges to something in $G$. This means $X+Y\in \text{Lie}(G)$.
+		
+		\item This means that $\text{Lie}(G)$ is a subspace of $M_n(\C)$ (as a real vector space). Thus Lie$(G)$ is a Lie algebra. 
+		
+	\end{itemize}
+\end{proof} 
+
+
+
+
+
+
+
+
+
 
 
 
 \newpage
-\section{L4: Symmetries in quantum mechanics}
+\section{Symmetries in quantum mechanics}
 
 
 
 \newpage
-\section{L5: Representation theory}
+\section{Representation theory}
 
 
 
