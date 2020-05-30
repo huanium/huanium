@@ -972,7 +972,17 @@ where $U$ is the unitary evolution operator.
 	and compute its purity. 
 	
 	\begin{proof}
-		
+		 Well, we have already shown that $\bar{\phi} = \sum_n P_n \phi P_n$ earlier. So we only need to verify the subsequent equalities:
+		 \begin{align}
+		 \bar\phi &= \sum_n P_n \phi P_n \nn\\
+		 &= \sum_n \ket{n}\bra{n}\phi P_n\nn\\
+		 &= \sum_n \ket{n} \bra{n}\sum_m a_m^\dagger a_m \ket{m}\bra{m} P_n\nn\\
+		 &=  \sum_n  \sum_m a_m^\dagger a_m \ket{n} \braket{n}{m}\bra{m} P_n\nn\\
+		 &= \sum_n  \sum_m a_m^\dagger a_m \ket{m} \bra{m} P_n\nn\\
+		 &= \sum_n \tr(\phi P_n)P_n\nn\\
+		 &= \sum_n p_n P_n.
+		 \end{align}
+		 Now note that $P_m P_n = P_n \delta_{mn}$, so we get $=\sum_n \abs{a_n}^2P_n$ for free. With this we're done. The equality with $D_H \phi$ can readily be checked using its definition. 
 	\end{proof}
 	
 	
@@ -981,7 +991,16 @@ where $U$ is the unitary evolution operator.
 	
 	
 	\begin{proof}
-		
+		Well, just crank:
+		\begin{align}
+		\overline{\lag_t} &= \lim_{T\to \infty}\f{1}{T}\int^T_0 \braket{\phi}{\phi_t}\braket{\phi_t}{\phi}\,dt\nn\\
+		&= \lim_{T\to \infty}\f{1}{T}\int^T_0 dt\, \lb \sum_n a_n^\dagger \braket{E_n}{e^{-iHt}\phi e^{iHt}}  \rb \times \text{c.c.}\nn\\
+		&= \lim_{T\to \infty}\f{1}{T}\int^T_0 dt\, \lb \sum_n \sum_m a_n^\dagger a_m \braket{E_n}{E_m} e^{-i(E_n - E_m)t}  \rb \times \text{c.c.}\nn\\
+		&= \sum_{n,m} a^\dagger_n a_n a_m^\dagger a_m\nn\\
+		&= \tr  \lp \sum_n a_n^\dagger a_n \ket{n}\bra{n} \sum_m a_m^\dagger a_m\ket{m}\bra{m} \rp \nn\\
+		&= \tr \lp \lb \sum_n \abs{a_n}^2 P_n \rb^2  \rp   \nn\\
+		&= \tr(\bar{\phi}^2).
+		\end{align}
 	\end{proof}
 	
 	
@@ -992,7 +1011,7 @@ where $U$ is the unitary evolution operator.
 	
 	
 	\begin{proof}
-		
+		We'll wait until the next lecture to do this. For now we don't know what the subscript $S$ stands for. 
 	\end{proof}
 	
 	
@@ -1015,7 +1034,7 @@ where $U$ is the unitary evolution operator.
 	
 	
 	\begin{proof}
-		
+		to be continued...
 	\end{proof}
 	
 	
@@ -1026,7 +1045,7 @@ where $U$ is the unitary evolution operator.
 	
 	
 	\begin{proof}
-		
+		to be continued...
 	\end{proof}
 	
 	\item \textbf{Haar-average purity.} Show that
@@ -1036,7 +1055,7 @@ where $U$ is the unitary evolution operator.
 	
 	
 	\begin{proof}
-		
+		to be continued...
 	\end{proof}
 
 
@@ -1046,7 +1065,7 @@ where $U$ is the unitary evolution operator.
 	\end{align}
 	
 	\begin{proof}
-		
+		to be continued... 
 	\end{proof}
 \end{itemize}
 
@@ -2025,7 +2044,13 @@ K_E(q,\beta \hbar, q,0) = \lim_{N\to \infty} \lp \f{m}{2\pi \Delta \tau \hbar} \
 		\begin{align}
 		e^{a+bx^2+ cx^3} = e^{a+bx^2}\lp 1 + cx^3 + \dots \rp.
 		\end{align}		
-		With this, we can write out the approximation as in the problem.  
+		With this, we can write out the approximation as in the problem.  With these, we have
+		\begin{align}
+		I &\approx \sum_{x_c}\int_\R e^{-f(x_c)/\hbar} e^{\f{-f''(x_c)(x-x_c)^2}{2\hbar}}\lp 1+ \f{f'''(x_c)(x-x_c)^3}{6\hbar} + \dots \rp \nn\\
+		&\quad \times \lp 1 + \f{f^{(4)} (x_c)(x-x_c)^4}{24\hbar}+\dots \rp \,dx\nn\\
+		&= \sum_{x_c}\sqrt{\f{2\pi \hbar}{f''(x_c)}}e^{-f(x_c)/\hbar}\lp 1 +   \mathcal{O}(\hbar^a)\rp.
+		\end{align}
+		
 	\end{proof}
 
 
@@ -2036,13 +2061,20 @@ K_E(q,\beta \hbar, q,0) = \lim_{N\to \infty} \lp \f{m}{2\pi \Delta \tau \hbar} \
 	\end{align}
 	where $C_1,C_2$ are constants.
 	\begin{proof}
-		Note that when $n$ is odd, the corrections vanish. So, we only pay attention to the even $n$, the smallest of which is $n=4$.
+		Note that when $n$ is odd, the corrections vanish. So, we only pay attention to the even $n$, the smallest of which is $n=4$. So the largest correction is 
+		\begin{align}
+		\int_\R \f{f^{(4)}(x_c)(x-x_c)^4}{24\hbar} e^{\f{-f''(x_c)(x-x_c)^2}{2\hbar}}\,dx.
+		\end{align}
 	\end{proof}
 	
 	
 	\item Determine the value of $a$ in equation (2) by making a change of variables.
 	\begin{proof}
-		Now, making the substitution $y = (x- x_c)/\sqrt{\hbar}$. with this, we get $a=1$. 
+		Now, making the substitution $y = (x- x_c)/\sqrt{\hbar}$. with this, we get $a=1$. Without loss of generality, let us set $x_c = 0$. This makes things a bit easier. Then $dx = \sqrt{\hbar}dy$ and the correction integral becomes
+		\begin{align}
+		\int_\R dy \sqrt{h}\hbar^2 \f{C_1}{\hbar} e^{-C_2 y^2} \sim \mathcal{\mathcal{O}(\hbar^{3/2})}.
+		\end{align}
+		Now because we have a leading factor of $\sim \sqrt{h}$ for the overall integral, the correction as written in the problem follows $\mathcal{O}(\hbar^1)$.
 	\end{proof}
 \end{enumerate}
 
@@ -2059,7 +2091,7 @@ K_E(q,\beta \hbar, q,0) = \lim_{N\to \infty} \lp \f{m}{2\pi \Delta \tau \hbar} \
 	\end{align}
 	Path integrals with interactions can be computed by taking derivatives of free path integrals with a source $J$ using generalizations of this formula. 
 	\begin{proof}
-			
+			This is actually not hard. One questionable step we have to make is the interchanging of the sum and the integral. However, if we assume that the integral of a sum is equal to the sum of integrals then we can Taylor expand the leading factor in monomials of the operator $d/dJ$ and let it act on the integrand. Once this is done, we can rewrite the sum in the integrand as $e^{-\lambda x^4}$, as we should be able to do. I won't write out the math here, because it's already been done in my \href{https://huanqbui.com/LaTeX 20projects/HuanBui_QM/HuanBui_QM.pdf}{\underline{Q-CFT notes}}. 
 	\end{proof}
 	
 	
@@ -2069,7 +2101,7 @@ K_E(q,\beta \hbar, q,0) = \lim_{N\to \infty} \lp \f{m}{2\pi \Delta \tau \hbar} \
 	\end{align}
 	where $(2n-1)!! = (2n-1)(2n-3)\dots 5\cdot 3\cdot 1$. Hint: differentiate with respect to $a$. 
 	\begin{proof}
-		
+		This boils down to doing induction correctly. This requires evaluating a quite simple Gaussian integral. Most of this will be algebra, so I won't write a solution here.
 	\end{proof}
 
 
@@ -2078,14 +2110,19 @@ K_E(q,\beta \hbar, q,0) = \lim_{N\to \infty} \lp \f{m}{2\pi \Delta \tau \hbar} \
 	\int_\R dx\,\exp\lb -x^2 - \lambda x^4 \rb = \sqrt{\pi}\sum^\infty_{j=0}\f{(-\lambda)^j (4j-1)!!}{2^{2j}j!}
 	\end{align}
 	\begin{proof}
-		
+		The key is to expand the factor $e^{-\lambda x^4}$ into a power series. This power series will contain powers of $x$:
+		\begin{align}
+		\int_\R dx\,\exp\lb -x^2 - \lambda x^4 \rb &= \sum_{j=0}^\infty \int_\R \f{(-\lambda)^j x^{4j}}{j!}e^{-x^2}\nn\\
+		&= \sqrt{\pi}\sum^\infty_{j=0}\f{(-\lambda)^j (2\times 2j - 1)!!}{2^{2j}j!}\nn\\
+		&= \sqrt{\pi}\sum^\infty_{j=0}\f{(-\lambda)^j (4j-1)!!}{2^{2j}j!}
+		\end{align}
 	\end{proof}
 	
 	
 	
 	\item Show that the series in part (c) diverges.
 	\begin{proof}
-		
+		The series diverges because of the factorial terms -- they don't die out quickly enough, or not at all! 
 	\end{proof}
 	
 	
