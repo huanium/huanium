@@ -340,10 +340,10 @@ the \textbf{purity} of the state (when $\al = 2$). \\
 
 \newpage
 
-\section{Foundations of Quantum Statistical Mechanics -- Entanglement -- Time Evolution}
+\section{Foundations of Quantum StatMech: Density Operator Formulation}
 
 
-\subsection{Quantum StatMech in the density matrix formulation}
+
 
 
 The next question is Entropy. Consider this thought experiment by Von Neumann. Consider $N$ particles in $\mathbb{C}^{d_i} = \had_i$. Then $\had = \bigotimes^N \had_i$. For simplicity, we can just look at a system of $N$ 2-level systems/qubits. Consider the state of each of these particles: 
@@ -459,7 +459,15 @@ The act of measurement changes the purity of the state. Suppose we have a pure s
 So, measurements change the purity of the state. We can ask something like, given a basis $\{ \ket{i}  \}$, what is the operation $D$ that for $X$ nondiagonal, $DX$ is diagonal. This process is called \textbf{dephasing}. What can also ask changes the purity? We can answer the second question: \textbf{entanglement}. 
 
 
-\subsection{Entanglement}
+
+
+
+
+
+
+\newpage
+
+\section{Entanglement}
 
 \textbf{Note:} There is no ``action at a distance.''\\
 
@@ -529,7 +537,11 @@ This is the essence of entanglement. There is no action at a distance. Rather, t
 
 Now, something is still missing here. In physics, we're usually given interactions, not just states and operators. The next thing to learn is time evolution. Let's do that
 
-\subsection{Time evolution}
+
+
+\newpage
+
+\section{Time evolution}
 
 Let a Hermitian $H \in \mathcal{B}(\had)$ be given. Then the time evolution of $\psi$ is given by
 \begin{align}
@@ -596,6 +608,9 @@ After these, we will look at how unitary operations make entropies grow.
 
 
 
+   
+   
+   
 
 
 
@@ -606,7 +621,114 @@ After these, we will look at how unitary operations make entropies grow.
 
 
 
+\newpage
 
+
+\section{Quantum Equilibration and Thermalization}
+
+Microscopic laws are time-reversal, but equilibration isn't. So, how are these possible? How can we find the real laws of physics transition from microscopic to macroscopic? We know that unitary microscopic evolution is time-reversal. How do we get non-time-reversal laws in the macroscopic scale? \\
+
+Consider a non-degenerate Hamiltonian $\had = \sum_n E_n P_n = \sum_n E_n \ket{n}\bra{n}$. Why do we make this assumption? Well, why does a Hamiltonian have a degeneracy in the first place? The answer is Noether's theorem. A degeneracy arises when when we evolve the system, some aspects of the system is conserved. An example will be a Hamiltonian with zeros everywhere except for a block on the diagonal. \\
+
+Now, why do we make the assumption that $\had$ is non-degenerate? First, we first note that this assumption is quite strict, because the set of non-degenerate Hamiltonians actually has measure zero! Almost all Hamiltonians are degenerate in some way. We can also have Hamiltonians with degenerate gaps! This is also not very typical of a Hamiltonian. \\
+
+But in any case, we make the non-degenerate assumption to simplify our problems. Okay, so consider the Hamiltonian above. Then recall that $\phi_t = e^{-i\had t}\phi e^{i\had t}$ and $A_t = e^{i\had t}A e^{-i\had t}$. We define
+\begin{align}
+A_t = \sum_n p_n \bra{n}A \ket{n}  =\Tr\lb A \phi_t \rb = \Tr \lb A_t \phi \rb.
+\end{align}
+We have the second equality because of the commuting nature of the trace. This is also the relationship between the Schroedinger picture and Heisenberg picture. 
+
+\subsection{Equilibration}
+
+\begin{defn}[Equilibration]
+	\begin{align}
+	\lim_{t\to \infty}\U_t \phi = \lim_{t\to \infty} e^{-i\had t} \phi e^{i\had t} = \phi_{eq}
+	\end{align}
+	if equilibration happens. 
+\end{defn}
+
+$\phi_{eq}$ is called the steady state, a state that is the fixed point of our unitary evolution:
+\begin{align}
+\U \phi = \phi.
+\end{align}
+This means $\phi$ is firstly an eigenstate. So, if $\phi$ is $\ket{E_n}$ then it is an eigenstate. In fact, a steady state need not be an eigenstate. It turns out that $\phi_{eq}$ can, for example, be a Gibbs state:
+\begin{align}
+\phi = \f{e^{-\beta \had}}{\mathcal{Z}}.
+\end{align}
+This state does not change in time if \textbf{it commutes with the Hamiltonian}:
+\begin{align}
+\dot{\phi} = \f{d}{dt}\phi_t  =\dots =-i[\phi,\had] = 0.
+\end{align}
+So, \textbf{steady states are functions of the Hamiltonian}, or, more generally, a probability distribution over the eigenstates. \\
+
+Now, we want to answer the question whether equilibration is possible? The short answer is NO, because of time reversal. In other words, consider a pure state $\ket{\psi}$. Suppose it evolves to the Gibbs state. This state is no longer pure because the probability distribution is no longer extremal. This means equilibration via unitary evolution is not possible in general. \\
+
+How do we show this rigorously? Consider the distance: 
+\begin{align}
+\lim_{t\to \infty}\norm{\phi_t - \phi_{eq}} =0
+\end{align}
+if equilibration is possible. Now, by definition, 
+\begin{align}
+\lim_{t\to \infty}\norm{\U_t\phi - \U_t\phi_{eq}} =0,
+\end{align}
+since $\U_t \phi_{eq} = \phi_{eq}$. So, 
+\begin{align}
+\lim_{t\to \infty}\norm{\U_t\phi - \U_t\phi_{eq}} = \norm{\phi - \phi_{eq}} =0.
+\end{align}
+This happens if and only if $\phi = \phi_{eq}$ to begin with. This shows that equilibration in quantum mechanics is not possible. But equilibration DOES happen! So how does equilibration happen? \\
+
+What we're forgetting when looking at time evolution of quantum systems so far isn't the full Hamiltonian! We're forgetting the environment, which has its own Hamiltonian. Consider the following: $\phi = \phi_{env}\otimes \phi_{sys}$ obeying the Hamiltonian $\had = \had_{env} + \had_{sys} + \had_{int}$ where $\had_{int}$ is the interaction Hamiltonian. Then 
+\begin{align}
+\psi_{sys}(t) = \tr_{env}\psi(t) = \tr_{env}\lp \U_t \phi_{sys} \otimes \psi_{env} \rp
+\end{align}
+Note that $\psi$ is not entangled, but $\psi_{sys}(t)$ can be an entangled state. Now since tracing out is not purity-non-preserving operation, this corresponds to a evolution that is not unitary!  
+
+
+\subsection{Thermalization: Turtles All The Way Down!}
+
+A small system thermalizes in some bath, which thermalizes in a larger bath, and so on. So, to avoid problems, we will restrict ourselves to unitary time evolution and closed systems. What do we do to get unstuck? We want just the small system to equilibrate. But we also know that $\phi_t$ never equilibrates! What are we missing?\\
+
+The way out is to change our way of thinking. We should not think of $\phi$ are a ``thing'' that equilibrates. Rather, we should look at how expectations $\langle A_t\rangle = \tr[A \phi]$ equilibrate! We should always think about observables, because these are things we can observe! So now, the question becomes whether $\langle A_t\rangle$ can equilibrate.  
+
+\begin{thm}[Von Neumann]
+	$\langle A_t\rangle$ is quasi-periodic, and so $\lim_{t\to\infty} A_t$ does not exist.  
+\end{thm}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{quasi}
+\end{figure}
+
+Almost always we're very close to the ``equilibrium'' value, even though $\langle A_t\rangle$ (red) is quasi-periodic. So, consider 
+\begin{align}
+\Pr[\abs{A_t - A_{eq}} > \epsilon] \ll 1.
+\end{align} 
+This is called equilibration in probability, or that $A_t$ has typical values $\sim A_{eq}$. Now, what is $A_{eq}$? How do we compute the typical values of $A_t$? 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{typical}
+\end{figure}
+
+Intuitively, it makes sense to define $A_{eq}$ as the time average: 
+\begin{align}
+A_{eq} = \bar{A} = \lim_{T\to \infty}\f{1}{T}\int^T_0 A_t \,dt.
+\end{align}
+It turns out that
+\begin{align}
+A_{eq} = \bar{A} = \tr\lp A \bar{\phi} \rp.
+\end{align}
+This means the \textbf{typical} value of $A_t$ depends on $\bar{\phi}$.\\
+
+Okay, but notice that $A_t$ is quasi-periodic, which means it has to go back to its initial value at some point:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{quasi2}
+\end{figure}
+Right, but we want, also, that the probability that $A_t$ returns to its initial value is small. This, of course, depends on the probability that $\phi_t$ returns to $\phi$, which is 
+\begin{align}
+\overline{\abs{\braket{\phi}{\phi_t}}}
+\end{align} 
+This is called the \textbf{return probability}, or the \textbf{Loschmidt echo}. 
 
 
 
@@ -619,6 +741,10 @@ After these, we will look at how unitary operations make entropies grow.
 
 \newpage
 \section{Quantum Thermal Operations}
+
+
+
+
 
 
 \newpage
