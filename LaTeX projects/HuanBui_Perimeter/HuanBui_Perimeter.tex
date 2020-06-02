@@ -75,6 +75,9 @@
 \newcommand{\lc}{\left\{}
 \newcommand{\rc}{\right\}}
 
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+
 
 \newcommand{\V}{\mathbf{V}}
 \newcommand{\U}{\mathcal{U}}
@@ -728,7 +731,7 @@ Right, but we want, also, that the probability that $A_t$ returns to its initial
 \begin{align}
 \overline{\abs{\braket{\phi}{\phi_t}}}
 \end{align} 
-This is called the \textbf{return probability}, or the \textbf{Loschmidt echo}. 
+This is called the \textbf{return probability}, or the \textbf{Loschmidt echo}.    
 
 
 
@@ -1105,10 +1108,18 @@ where $U$ is the unitary evolution operator.
 		 &= \sum_n \ket{n} \bra{n}\sum_m a_m^\dagger a_m \ket{m}\bra{m} P_n\nn\\
 		 &=  \sum_n  \sum_m a_m^\dagger a_m \ket{n} \braket{n}{m}\bra{m} P_n\nn\\
 		 &= \sum_n  \sum_m a_m^\dagger a_m \ket{m} \bra{m} P_n\nn\\
-		 &= \sum_n \tr(\phi P_n)P_n\nn\\
-		 &= \sum_n p_n P_n.
+		 &= \sum_n  \sum_m a_m^\dagger a_m P_m P_n.
+%		 &= \sum_n \tr(\phi P_n)P_n\nn\\
+%		 &= \sum_n p_n P_n.
 		 \end{align}
-		 Now note that $P_m P_n = P_n \delta_{mn}$, so we get $=\sum_n \abs{a_n}^2P_n$ for free. With this we're done. The equality with $D_H \phi$ can readily be checked using its definition. 
+		 Now note that $P_m P_n = P_n \delta_{mn}$, so we get $=\sum_n \abs{a_n}^2P_n$ for free. With this we're done. The equality with $D_H \phi$ can readily be checked using its definition. Finally,
+		 \begin{align}
+		 \tr(\phi P_n) = \tr\lp \sum_n \abs{a_m}^2 P_m  P_n \rp =  \abs{a_n}^2.
+		 \end{align}
+		 So we're done. The purity in this case is 
+		 \begin{align}
+		 \tr\lp \bar{\phi}^2 \rp = \sum_n \abs{p_n}^2.
+		 \end{align}
 	\end{proof}
 	
 	
@@ -1127,6 +1138,11 @@ where $U$ is the unitary evolution operator.
 		&= \tr \lp \lb \sum_n \abs{a_n}^2 P_n \rb^2  \rp   \nn\\
 		&= \tr(\bar{\phi}^2).
 		\end{align}
+		In the case of mixed states, we can define the Loschmidt echo as
+		\begin{align}
+		\Tr(\phi^\dagger \phi_t)
+		\end{align}
+		where $\phi$ and $\phi_t$ are now operators. 
 	\end{proof}
 	
 	
@@ -1404,7 +1420,7 @@ as expected.
 
 
 
-subsection{Expectation Values}
+\subsection{Expectation Values}
 
 Another useful way to compute expectation values is to use matrix representations. First, we assign basis vectors. Then find matrix for $\sigma_A^z \otimes \Id_B$. Then find matrix/vector representation of $\ket{\psi}$. Finally, multiply out. \\
 
@@ -1493,6 +1509,8 @@ The moral of the story is this. The matrix for $\mathcal{O}_A \otimes \mathcal{O
 
 
 
+
+
 \section{The Two-site Ising Model}
 
 Recall the Hamiltonian for the model:
@@ -1530,7 +1548,7 @@ Next, to see that $\langle \sigma_0^x\otimes \Id_1 + \Id_0 \otimes \sigma_1^x \r
 Next, 
 \begin{align}
 \sigma_0^x\otimes \Id_1 + \Id_0 \otimes \sigma_1^x = \begin{bmatrix}
-\sigma^x & \Id \\ \Id & \sigma^xs
+\sigma^x & \Id \\ \Id & \sigma^x
 \end{bmatrix}.
 \end{align}
 
@@ -1547,7 +1565,27 @@ Finally, the $4\times 4$ matrix for $H$ is given by
 \end{bmatrix}
 \end{align}
 
-We will solve this and $n$-site Ising models next. 
+We will solve this and $n$-site Ising models next. First, we want to find the eigenstate energies for any $J,h$ and some properties of the ground state (GS). To do this, we use programming. To find properties of the ground states, we want to find expectation values. For example, we want to find $\langle \sigma^z_0 + \sigma_1^z \rangle $, which is the tendency of spins to point along $z$ in a particular direction. We can also look at $\langle \sigma_0^z \otimes \sigma_1^z \rangle$ which is the tendency of the two spins to point parallel along $z$. 
+
+\begin{defn}[Correlation Function]
+	The quantity $\langle \mathcal{O}_A \mathcal{B}\rangle$ is called a correlation function. 
+\end{defn}
+
+Before we start, we note that $\had$ has two parameters $J$ and $h$. But by the form of $\had$ we can scale things to that it only has one parameter $g = h/J$, which is the relative strength factor. This is nice if we want to solve the model for every parameter point. Varying one parameter is much better than two. With this, we will solve
+\begin{align}
+\had = -\sigma^z_0 \otimes \sigma_1^z  - g\lp \sigma_0^x\otimes \Id_1 + \Id_0 \otimes \sigma_1^x \rp.
+\end{align}
+
+Here's what we get:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.5]{ising1}
+	\includegraphics[scale=0.5]{ising2}
+\end{figure}
+
+We see jumps in $\langle Z \rangle = \langle \sigma^z_0 + \sigma^z_1\rangle/2$ and $\langle \sigma^x\otimes \sigma^x\rangle$. Why is that? Let's start with the first one. We ask two questions: why is it zero and why does it jump from 1 to 0? When $g=0$, there are two possible ground states $\uparrow\uparrow$ and $\downarrow\downarrow$. This means the ground state looks like $\ket{\psi} = a\ket{\uparrow\uparrow} + b\ket{\downarrow\downarrow}$. The expectation value $\langle \sigma_0^z + \sigma_1^z \rangle/2$ in this case will be $(\abs{a}^2 - \abs{b}^2)$. This means we'll get a random answer at $g=0$. Python randomly picks $a,b$ when it does the numerical calculation for the eigenvalues. This means the $g=0$ value is meaningless. Now, when $g\neq 0$, then because the eigenstates respect the symmetries of the Hamiltonian, when we flip all spins, the Hamiltonian doesn't change. This means the ground state has $\ket{\uparrow}$ and $\ket{\downarrow}$ parts that are equal. In comparison, $\langle \sigma^z \otimes \sigma^z$ is a better measure of the tendency of spins to point along $z$. \\
+
+The case with $x$ occurs for the same reason. $\sigma^x\otimes \sigma^x$ has $z-y$ symmetry where we get a degeneracy in the eigenvalues. But we also note that $\langle \sigma^x \otimes \sigma^x\rangle$ is constant, which means $[\had,\sigma^x \otimes \sigma^x ]=0$, which says that $\sigma^x \otimes \sigma^x$ is a conserved quantity.  
 
 
 
@@ -1555,6 +1593,48 @@ We will solve this and $n$-site Ising models next.
 
 
 
+
+
+\section{The $N$-site Ising Model:}
+
+The Hamiltonian is given by
+\begin{align}
+\had/J =-\sum_i \sigma_i^z \sigma_{i+1}^z - g \sum_i \sigma_i^x. 
+\end{align}
+
+We want to solve this model. To do this, we need to write the matrix for the Hamiltonian. We follow the steps below:
+\begin{itemize}
+	\item Find a basis. 
+	\item Find a matrix for $\had$
+	\item Find the ground state
+	\item Calculate expectation values, especially $\langle ]sigma_0^z \otimes \sigma_{N-1}^z$.
+\end{itemize}
+
+With $N$ sites, we have $2^N$ basis states. Let's pick the standard basis states as the basis for the space, where $(1,0,\dots,0)^\top = \ket{\uparrow\dots\uparrow} = \ket{0}_{2^N-1}$ and so on. Now, we need a function to turn the index (0,1,2,...) into the list of spins. Suppose that $N=3$. Then we can use binary arithmetics to get back the list of spins. \\
+
+Now how do we find the matrix $\had$? There are a few methods to do this:
+\begin{itemize}
+	\item \textbf{Kronecker product:} Suppose we want to do the following $\sigma_0^x \otimes \sigma_1^z \otimes \sigma_2^x$. Then this looks like
+	\begin{align}
+	\begin{bmatrix}
+	0 & \sigma^x \\ \sigma^x & 0  
+	\end{bmatrix}\otimes \sigma_2^x = \begin{bmatrix}
+	0 &  \dots  \\ \dots  & 0
+	\end{bmatrix}
+	\end{align}
+	which is an $8\times 8$. In practice, we start out by making a list of operators the looks like
+	\begin{align}
+	[\sigma^z\sigma^z, \Id, \Id,\dots \Id] = [\sigma^z,\sigma^z] + [\Id]*(N-2)
+	\end{align}
+	The second step will be repeated Kronecker product. We initiate a matrix as the first element in the list of operators. Then for each operator in the list, the new matrix is the old matrix Kronecker-ing the next one. 
+	
+	
+	
+	\item \textbf{Column-by-Column approach:} In this method, we take the index of the basis states and turn it into a spin list, apply some operation on it to get a spin list with some coefficient, then get back the vector representation. 
+	
+	
+	\item \textbf{Use the fact that the $ZZ$ term is diagonal.} This will be the fastest way to get the Hamiltonian. 
+\end{itemize}   
 
 
 
@@ -4464,7 +4544,7 @@ The algorithm has a wide range of applications, including order-finding and fact
 \newpage
 
 
-\section{Quantum Variational Eigensolver (QVE)}
+\section{Quantum Variational Eigensolver (QVE)}      
 
 In this section we're looking this \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4124861/pdf/ncomms5213.pdf}{\underline{paper}} on the quantum variational eigensolver (QVE). \\
 
@@ -4583,7 +4663,7 @@ where
 \begin{align}
 T_1 = \sum_{pr}t^r_p \hat{a}_p^\dagger\hat{a}_r, \quad T_2 = \sum_{pqrs}t^{rs}_{pq}\hat{a}_p^\dagger \hat{a}_q^\dagger\hat{a}_r \hat{a}_s,\quad \dots
 \end{align}
-By construction, $(T - T^\dagger)$ is anti-Hermitian, and exponentiation maps it to a unitary operator $e^(T - T^\dagger)$. \\
+By construction, $(T - T^\dagger)$ is anti-Hermitian, and exponentiation maps it to a unitary operator $e^{(T - T^\dagger)}$. \\
 
 For any fixed excitation level $k$, the reduced cluster operator is written as
 \begin{align}
@@ -4708,7 +4788,78 @@ This is a nice smooth function for any finite graph $G$. With this we consider t
 
 
 
-\subsubsection{Properties}
+Both the magnetization and energy will grow as $\abs{V}$ as $V$ grows to infinity, and we would like to take the limit $L\to \infty$ of quantities like magnetization or any expectation value $\langle f(\sigma) \rangle_L$ where $f$ is any function of finitely many spins. These limits are called the ``thermodynamic limit.'' \\
+
+Another quantity of physical interest is the correlation strength. A natural question is how much the spins $\sigma_i$ and $\sigma_j$ at two sites are correlated, especially if the spins are far apart. The simplest measurement of this is
+\begin{align}
+\langle \sigma_i \sigma_j \rangle - \la \sigma_i \ra \la \sigma_j \ra. 
+\end{align}
+This quantity is zero if the spins are independent. What typically happens is that this quantity \textbf{decays} exponentially as $\abs{i-j}\to \infty$ for all values of $\beta$ but one. So, 
+\begin{align}
+\la \sigma_i \sigma_j \ra \equiv \langle \sigma_i \sigma_j \rangle - \la \sigma_i \ra \la \sigma_j \ra \sim e^{-\abs{i-j}/\xi}
+\end{align}
+as $\abs{i-j}\to \infty$ where $\xi$ is a length scale which is called the \textbf{correlation length}. The correlation length is to some extent a measure of how interesting the system is. A short correlation length means that distant spins are very weakly correlated.\\
+
+Now if there is an external magnetic field then the Hamiltonian becomes
+\begin{align}
+\had = -\sum_{\la i,j \ra} \sigma_i \sigma_j - h\sum_i \sigma_i 
+\end{align}
+where $h$ is the magnetic field external parameter. The free energy is defined by
+\begin{align}
+\exp\lb -\beta F \rb = \mathcal{Z} = \sum_\sigma \exp\lb -\beta \had \rb
+\end{align}
+where $F$ is a function of the two parameters $\beta$ and $h$ and the choice of the finite volume (so that the Hamiltonian makes sense). The free energy per site $f$ is then given by $F$ divided by the number of sites. Then the magnetization is given by
+\begin{align}
+m = -\p_h f
+\end{align}
+
+
+
+
+When we defined th magnetization before there was no magnetic field term in $\had$. To obtain this magnetization we should set $h=0$ after taking the derivative. However, we can talk about the magnetization of the system with an external field present, $h\neq 0$. The magnetization is then a function of $\beta,h$. The derivative of the magnetization wrt $h$ is called th magnetic susceptibility:
+\begin{align}
+\chi = \p_h m = -\p^2_h f.
+\end{align}
+By taking the derivative of $\beta f$ wrt $\beta$ one obtains the energy per site. The second derivative of $f$ wrt $\beta$ is known as the specific heat and denoted
+\begin{align}
+C = \p_\beta^2 f.
+\end{align}
+
+
+\subsubsection{Phase transition - the role of the boundary conditions}
+
+We will start by asking whether the boundary conditions make a difference in the infinite volume limit. In a finite volume we might guess that $+$ boundary conditions would make the spin at the origin a little more likely to be $+1$ than $-1$. What happens when $L \to \infty$? It turns out that the answer depends on $\beta$. \\
+
+In this section, I will just list some theorems/lemmas without showing proofs. We will just focus on the results for now. 
+
+\begin{thm}
+	If the number of dimensions is at least two, then there is a positive number $\beta_c$ such that for $\beta < \beta_c$ the limit $\lim_{L\to \infty} \la \sigma_0 \ra_L^+$ exists and is zero while for $\beta > \beta_c$ the limit exists and is strictly greater than zero. 
+\end{thm}
+
+The notation $\la \cdot \ra^+$ denotes the positive boundary condition. This just means that all of the outside spins are $+1$ initially. The intuition is that when $\beta$ is small, the spins should only be weakly correlated. The influence of the boundary condition will decay rapidly as we move in from the boundary. 
+
+
+
+\begin{thm}
+	In any number of dimensions there is a positive number $\beta_1$ such that for $\beta < \beta_1$ the limits $\lim_{L\to \infty}\la \sigma_o \ra^+_L$ and $\lim_{L\to \infty} \la \sigma_0 \ra^-_L$ are both zero. 
+\end{thm}
+
+
+
+
+\begin{thm}
+	In two or more dimensions there is a positive number $\beta_2$ such that for $\beta > \beta_2$ the limit $\lim \inf_{L\to \infty} \la \sigma_0 \ra^+_L$ s strictly greater than zero for $+$ boundary conditions. 
+\end{thm}
+
+
+\subsubsection{Phase transitions and critical phenomena}
+
+
+Crudely speaking a phase transition is when an abrupt change occurs in the infinite volume system at some values of the parameters like temperature and magnetic field. Th values of the parameters where this happens are called a \textit{critical point}. \\
+
+What typically happens is that when $T \to T_c$ some physical quantities diverge while other converge to zero. The way in which they do so, though, is interesting. Correlation length goes to zero as $T\to \infty$ and $T\to 0$. At $T_c$, the correlation length goes to $\infty$. We can think of phase transition as the correlation length diverging. \\
+
+As $T\to T_c$ the specific heat  and magnetic susceptibility also diverge to $\infty$. As $T\to T_c^-$ the magnetization $m$ will converge to zero. 
 
 
 
@@ -4743,20 +4894,31 @@ This is a nice smooth function for any finite graph $G$. With this we consider t
 
 
 
-
-
-
-
-
-\subsection{Transverse-field Ising model}
 
 
 
 \subsection{The Hubbard Model}
 
+In this section we will look at this \href{https://www.cond-mat.de/events/correl16/manuscripts/scalettar.pdf}{\underline{document}} on the Hubbard Hamiltonian. In some sense the HH is quite similar to the Ising model, except that it is written in terms of fermionic creation and annihilation operators. \\
+
+I'm not sure we have time to cover this partially (or even at all!), but here's the layout: 
+\begin{itemize}
+	\item Introduction
+	\item Creation and Annihilation operators
+	\item The Hubbard Hamiltonian
+	\item Particle-hole symmetry
+	\item The single-site limit
+	\item The non-interacting Hubbard Hamiltonian
+	\item Exact diagonalization: two-site HH
+	\item Green functions: Mott gap and spectral function
+	\item A peek at magnetism
+	\item $\dot$
+	\item Conclusions
+\end{itemize}
 
 
-\subsection{The Kitaev's Toric model}
+
+
 
 
 
