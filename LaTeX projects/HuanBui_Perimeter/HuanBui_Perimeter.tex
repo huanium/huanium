@@ -731,11 +731,100 @@ Right, but we want, also, that the probability that $A_t$ returns to its initial
 \begin{align}
 \overline{\abs{\braket{\phi}{\phi_t}}}
 \end{align} 
-This is called the \textbf{return probability}, or the \textbf{Loschmidt echo}.    
+This is called the \textbf{return probability}, or the \textbf{Loschmidt echo}.       \\
+
+Now, just to summarize. So far,  we have seen that if our quantum system is open then time evolution is unitary. And if the time evolution is unitary then the quantum system does not reach an equilibrium state. And so the only thing that is compatible with QM is that time average-expectation values equilibrate in probability. In other words, $A_t \to \bar{A}$ in probability, i.e., 
+\begin{align}
+\Pr(\abs{A_t - \bar{A}} > \ep) \ll 1.
+\end{align}
+If we can ensure this can happen then it is enough. Now,
+\begin{align}
+\bar{A} = \Tr[A \bar{\phi}]
+\end{align}
+with
+\begin{align}
+\bar{\phi} = \sum_n P_n \phi P_n
+\end{align}
+where $\had = \sum_n E_n P_n$. We call $\bar{\phi}$ the \textbf{dephasing} in the basis of $\had$:
+\begin{align}
+D_\had \phi = \bar{\phi}.
+\end{align}
+$D_\had$ basically erases all the off-diagonal elements of $\phi$. The resulting quantity has matrix elements $\phi_{kk} = p_k = \abs{\braket{\phi}{E_n}}^2$. \\
+
+Now, recall the Loschmidt echo:
+\begin{align}
+\lag_t = \abs{\braket{\phi}{\phi_t}}^2.
+\end{align}
+In the exercise, we show that 
+\begin{align}
+\overline{\lag_t} = \tr \bar{\phi}^2 = \tr\lb\lp D_\had \phi \rp^2 \rb.
+\end{align}
+which is the purity of $D_\had \phi$. If $\phi$ is pure then $\tr \phi^2 = 1$. Then $\Tr \bar{\phi}^2 = \sum_k p_k^2 \neq 1$. So, $D_\had \phi$ is no longer pure. Is something fishy going on? From $\phi \to \phi_t$ are use a unitary operator, so the purity remains the same. The change is purity is due to the time average, which is not a unitary evolution.\\
+
+$\bar{\phi}$ is NOT an actual state.  So why are we using this state at all? The point of using this fictitious state is so that we get a correct answer: $A_t = \tr[A \phi_t] \to \tr[A\bar{\phi}]$. So, now we would like to understand what makes the fluctuation $\tr[A \phi_t] \approx \tr[A\bar{\phi}]$ small. \\
+
+Since, for pure $\phi$, we have
+\begin{align}
+\overline{\lag_t} =  \overline{\abs{\braket{\phi}{\phi_t}}^2} = \Tr[\bar{\phi}^2] = p_n^2
+\end{align}
+which is the probability of going back to $\tr\phi$. Does this probability depend on the initial state $\phi$ or not? The answer is YES, of course. \\
+
+Now, if $\phi$ is not pure then we want to look at the inner product of operators:
+\begin{align}
+\braket{A}{B} = \Tr[A^\dagger B].
+\end{align}
+which is just the HS inner product. In this case, the Loschmidt echo becomes
+\begin{align}
+\lag_t = \abs{\braket{\phi}{\phi_t}}^2 = \Tr[\phi^\dagger \phi_t]. 
+\end{align} 
+
+In any case, we showed that, $\bar{\lag_t} = \sum_n p_n^2$ which is just the purity $D_\had \phi$, which depends on $\phi$. 
+
+\begin{exmp}
+	Consider $\ket{\phi} = (1/\sqrt{2})(\ket{E_0} + \ket{E_1})$, corresponding to the Hamiltonian $\had = \sum_n E_n \ket{E_n}\bra{E_n}$. Then 
+	\begin{align}
+	\ket{\phi_t} = \f{1}{\sqrt{2}}\lb e^{-iE_0t}\ket{E_0} + e^{-iE_2t}\ket{E_1} \rb.
+	\end{align}
+	Then 
+	\begin{align}
+	\braket{\phi}{\phi_t} = \f{1}{2}\lb e^{-iE_0 t}  + e^{-iE_1t}\rb
+	\end{align}
+	And so the time average is $1/2$. So this is something with low probability of return, on average.  
+\end{exmp}
 
 
+One can show that if the original state is very spread out in the basis states of the Hamiltonian, then the return probability is very small, which means equilibration occurs very quickly. Now, how likely is it for $\sum_n p_n^2$ to be very small, i.e., $\phi$ is extremely spread out in the basis states of the Hamiltonian? NOT VERY LIKELY! Let's show this mathematically. \\
 
+Consider a random state $\phi$, then we have $\tr((D_h\phi)^2)=  \tr \bar{\phi}^2 = \sum_n p_n^2$.  What is the average of this over all the $\phi$'s what do we get? Well, this is given by
+\begin{align}
+\boxed{  \la \tr\lb (D_\had \phi)\rb^2  \ra_\phi \equiv \int \tr\lb (D_\had \phi)^2 \rb \,d\phi} 
+\end{align}
+where of course we require normalization $\int d\phi = 1$. Taking this integral requires knowing the Haar-measure. One can easily prove that
+\begin{align}
+\la \phi \ra_\phi = \f{\Id}{d}
+\end{align} 
+which is the microcanonical ensemble. Now to the harder problem. Call $\omega = D_h \phi$. What we want to compute now is 
+\begin{align}
+\la \tr \omega^2 \ra_\phi.
+\end{align}
+Now, recall from the exercise to get
+\begin{align}
+\tr \omega^2 = \tr\lp T^{(2)} \omega^{\otimes 2} \rp.
+\end{align}
+With this and by linearity we can proceed:
+\begin{align}
+\la tr\omega^2 \ra &= \la \tr(T^{(2)} \omega^{\otimes 2}) \ra\nn\\
+&= \tr \lb T^{(2)} \la \omega^{\otimes 2} \ra \rb\nn\\
+&= \tr\lb T^{(2)} \la (D_\had \phi)^{\otimes 2} \ra \rb\nn\\
+&= \tr\lb T^{(2)} D_\had^{\otimes 2} \la \phi^{\otimes 2} \ra \rb.
+\end{align}
+Now, group theory says that
+\begin{align}
+\la \phi^{\otimes 2}  \ra = \f{\Id_{\had^{\otimes 2}} + T^{(2)}}{d(d+1)}.
+\end{align}
+Plugging this back into the exercise, we get (in the exercise) $2/(d+1)$. So, the purity of the state after we erase the diagonal elements, on average, is $2/(d+1)$. \\
 
+This means that if the Hilbert space is very large, then the purity is very close to zero. 
 
 \newpage
 
@@ -1176,7 +1265,34 @@ where $U$ is the unitary evolution operator.
 	
 	
 	\begin{proof}
-		to be continued...
+		Well in lecture we have shown that
+		\begin{align}
+		\la \bar{\lag}_t \ra_\phi 
+		&= \tr\lb T^{(2)} D_\had^{(2)} \f{\Id^{\otimes 2} + T^{(2)} }{d(d+1)} \rb \nn\\
+		&= \f{1}{d(d+1)}\lb \tr\lb T^{(2)} \lb D_\had^{\otimes 2} \Id^{\otimes 2} + \D_\had^{\otimes 2} T^{(2)}  \rb \rb \rb.
+		\end{align}
+		Now, 
+		\begin{align}
+		D_\had^{\otimes 2} \Id^{\otimes 2} = \sum_{k}P_k \Id P_k = \sum_k P_kP_k = \sum_k P_k = \Id^{\otimes 2}. 
+		\end{align}
+		And,
+		\begin{align}
+		D_\had^{\otimes 2}T^{(2)} &= \sum_{n,m} \ket{nm}\bra{nm} T^{(2)} \ket{nm}\bra{nm}\nn\\
+		&= \sum_{n,m} \ket{nm}\braket{nm}{mn}\bra{nm}\nn\\
+		&= \sum_{n} \ket{nn}\bra{nn}\nn\\
+		&= \Id^{\otimes 2}. 
+		\end{align}
+		With these, we can continue:
+		\begin{align}
+		\la \bar{\lag}_t \ra_\phi 
+		&= \tr\lb T^{(2)} D_\had^{(2)} \f{\Id^{\otimes 2} + T^{(2)} }{d(d+1)} \rb \nn\\
+		&= \f{1}{d(d+1)}\lb \tr\lb T^{(2)} \lb D_\had^{\otimes 2} \Id^{\otimes 2} + \D_\had^{\otimes 2} T^{(2)}  \rb \rb \rb\nn\\
+		&= \f{1}{d(d+1)}\lb \tr\lb T^{(2)} \lb 2\Id^{\otimes 2}  \rb \rb \rb\nn\\
+		&= \f{2}{d(d+1)}\tr\lb T^{\otimes 2} \rb\nn\\
+		&= \f{2}{d(d+1)}d \nn\\
+		&= \f{2}{d+1}
+		\end{align}
+		where we have used the fact that the original Hilbert space is $d$-dimensional. The swap operator $T^{(2)}$ by definition must be in $2d$ dimensions. But because it is a swap operator, it necessarily have $\tr T^{(2)} = 2d/2 =d$. So we're done. 
 	\end{proof}
 	
 	
@@ -1197,7 +1313,7 @@ where $U$ is the unitary evolution operator.
 	
 	
 	\begin{proof}
-		to be continued...
+		This is a generalization of the first item. 
 	\end{proof}
 
 
@@ -2004,7 +2120,66 @@ In general, this technique works when we evaluate path integrals. With this tech
 \newpage
 
 \section{Non-perturbative physics and quantum tunneling}
+Recall that terms like $e^{-A/\lambda}$ are invisible to perturbation theory. In this section, we look at how we fix this problem in non-perturbative physics. In particular, we can look at phenomena like quantum tunneling. In this case, we are interested in the transmission coefficient:
+\begin{align}
+T \propto e^{-2/\hbar \sqrt{2m(V-E)}\,dx}
+\end{align}
+This is invisible to perturbation theory. Another example is meta-stable potential. Another example is a potential with two classically degenerate ground states. In this case, the transmission coefficient also has a similar form. \\
 
+Recall the propagator amplitude:
+\begin{align}
+K_E = \int \mathfrak{D}[q(\tau)]  e^{-S_E[q(\tau)]/\hbar}
+\end{align}
+with 
+\begin{align}
+E_0 = -\lim_{\beta \to 0}\f{1}{\beta}\log K_E(q_0 ,\be\hbar/2, q_0 -\beta\hbar/2)
+\end{align}
+where we have shifted the time, which doesn't change the expression, of course. \\
+
+What we're interested in is the decay rate for the following metastable potential (with no ground state):
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{metastable}
+\end{figure}
+While there's no notion of a ground state energy, we still have \textbf{resonant states} which are those with quantized complex energies. \\
+
+The decay rate is given by
+\begin{align}
+\Gamma = 2\abs{\Im E_0}
+\end{align}
+which is why the decay rate is related to this setup. We want to compute $K_E$ using path integrals. To do this, we think about the example
+\begin{align}
+I = \int_\R e^{-f(x)/\hbar}\,dx.
+\end{align}
+Last time we looked at perturbation theory, which says that $f(x)$ has a global minimum at zero, then we get an expansion. Now, we can think about a slightly more general case where $f$ has several minima. Then expansions around all of the minima are roughly equally important. In this case, we have that 
+\begin{align}
+I &\approx \sum_{x_i} \int dx\, \exp\lb -\f{1}{\hbar}\lp f(x_i) + (1/2)f''(x_i) (x-x_i)^2 \rp \rb \times\lb 1+ \dots \rb \nn\\
+&\approx \sum_{x_i}e^{-f(x_i)/\hbar}(1+ \mathcal{O}(\hbar^\al))\nn\\
+&\approx \sum_{x_i}e^{-f(x_i)/\hbar}N[\bar{x}]\nn\\
+\end{align}
+as we have seen in the exercises. Now let's go back to the path integral. There might be multiple good trajectories, so we should sum over all of them:
+\begin{align}
+K_E = \sum_{\bar{q} = q_c} e^{-S_E[q(\tau)]/\hbar} N[\bar{q}] .
+\end{align}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{meta}
+\end{figure}
+The decay rate is given by
+\begin{align}
+\f{\Gamma}{2} = \abs{\Im E_0}.
+\end{align}
+Then 
+\begin{align}
+E_0 = -\lim_{\beta \to 0}\f{1}{\beta}\log K_E(q_0 ,\be\hbar/2, q_0 -\beta\hbar/2)
+\end{align}
+The equation of motion is 
+\begin{align}
+-m d_\tau^2 \bar{q}(\tau) + V'(\bar{q}) = 0
+\end{align}
+with the boundary conditions $\bar{q}(\pm T_E/2) = q_0$ with $T_e = \beta\hbar$. We want to look at the limit where $\beta \to \infty$.\\
+
+One other thing we care about is that the action should be finite. If the action is infinite than these trajectories don't contribute at all to the propagator.  
 
 \newpage
 
@@ -2351,7 +2526,93 @@ K_E(q,\beta \hbar, q,0) = \lim_{N\to \infty} \lp \f{m}{2\pi \Delta \tau \hbar} \
 
 
 
-\noindent \textbf{8.}
+\noindent \textbf{8. Instantons} 
+\begin{enumerate}
+	\item We want to solve the equation 
+	\begin{align}
+	-\f{d^2\bar{q}}{d\tau^2}
+	\end{align}
+	with boundary conditions $\bar{q}(\pm T_E/2) = q_0$. These equations are the equations of motion of a particle with mass $m = 1$ moving in
+	a potential. Make the analogy with a particle moving in a potential explicit, paying attention to the signs.
+	
+	\begin{proof}
+		The EOM is the same as the EOM for a particle moving in an inverted potential. 
+	\end{proof}
+	
+	
+	\item There is a trivial solution to equations of motion and boundary conditions. What
+	is it? What is the action of this trivial solution?
+	
+	\begin{proof}
+		The trivial solution is that the particle stays at $q_0$ at all times. Non trivial solutions look like 
+		\begin{figure}[!htb]
+			\centering
+			\includegraphics[scale=0.2]{bound}
+		\end{figure}
+	
+	This solution has finite action:
+	\begin{align}
+	S_0 = S_E = \int d\tau \lp \f{1}{2}\lp \f{d\bar{q}}{d\tau} \rp^2 + V(\bar{q}) \rp
+	\end{align}
+	This is not the only solution, however. Another solution is where the particle bounces back and worth between $q_0, q_*$. The action in this case is just going to be $nS_0$ where $n$ is the number of times the particles bounces back and forth. In this case,
+	\begin{align}
+	K_E = \sum_{n=0}^\infty \f{T_E^n}{n!} e^{-n S_0/\hbar} = \exp\lb cT_E e^{-S_0/\hbar} \rb.
+	\end{align}
+	 
+	
+	\end{proof}
+	
+	
+
+	
+	\item Using conservation of energy, show that a solution to the equation of motion with
+	zero energy has
+	\begin{align}
+	\bar{q}(\tau) -q_0 \approx e^{-\omega \abs{\tau}}
+	\end{align}
+	for large $\abs{\tau}$ (that is $\abs{\tau} \approx T_E/2$). 
+	
+	\begin{proof}
+		Differentiate the differential equation, we will get $V'' = \omega^2$. Then integrate again. This is very hand-wavy, so it is understandable to be extremely confused.  
+	\end{proof}
+	
+	
+	
+	
+	\item We are interested in the $T_E \to \infty$ limit. Is the action of the solution you found finite
+	and non-zero in this limit?
+	
+	\begin{proof}
+		This is more or less straightforward. 
+	\end{proof}
+	
+	
+	\item Change integration variables and use conservation of energy to show that the action
+	\begin{align}
+	S_0 = \lim_{T_E\to \infty} \int^{T_E/2}_{-T_E/2} d\tau \lp \f{1}{2}\lp \f{d\bar{q}}{d\tau} \rp^2 + V(\bar{q}) \rp
+	\end{align}
+	of the solution you found can be expressed as
+	\begin{align}
+	S_0 = 2\int^{q_*}_{q_0}d\bar{q}\, \sqrt{2V(\bar{q})}
+	\end{align}
+	where $q_*$ is the other point where the potential vanishes $V (q_*) = 0$. 
+	
+	\begin{proof}
+		
+	\end{proof}
+	
+	\item Are there any solutions with non-zero energy with finite action in the $T_E \to \infty$ limit? 
+	
+	\begin{proof}
+		
+	\end{proof}
+	
+	\item Are there any other solutions with zero energy and finite action?
+	
+	\begin{proof}
+		
+	\end{proof}
+\end{enumerate}
 
 
 
@@ -3005,6 +3266,10 @@ Now, $S$ is invariant under the transformations above if $S[q] = \td{S}[\td{q}]$
 
 
    
+\subsection{Noether's Theorem for fields in flat space (quais-symmetry)}
+
+
+\subsection{Noether's Theorem: Fields in Flat Space}
 
 
 
@@ -3096,7 +3361,7 @@ Let's review of facts about matrix exponential:
 
 \subsection{Matrix Lie groups and associated Lie algebras}
 
-\begin{defn}[Matrix Lie Groups]
+\begin{defn}[\textbf{Matrix Lie Groups}]
 	A matrix Lie group is a closed subgroup  $G \leq GL(n,\mathbb{C})$ for some $n\in \mathbb{N}$ (closed wrt the topology induced from $M_n(\mathbb{C})$) using the  operator norm. 
 \end{defn}
 
@@ -3125,10 +3390,23 @@ Recall the $GL(n,\C)$ is the group of  $n\times n$ invertible matrices over $\C$
 	Note that the last two groups are real Lie groups despite having complex matrices. 
 \end{exmp}
 
+\begin{exmp}
+	Some familiar examples. First we have the circle group:
+	\begin{align}
+	U(1) = \{  z\in \C\setminus\{ 0 \} \vert \abs{z}^2 = 1   \}
+	\end{align}
+	Second we have the 2D rotational group:
+	\begin{align}
+	SO(2) = \{ \begin{bmatrix}
+	\cos\theta & \sin\theta \\ -\sin\theta & \cos\theta
+	\end{bmatrix} \bigg\vert \theta \in [ 0,2\pi) \}.
+	\end{align}
+\end{exmp}
 
 
 
-\begin{defn}[Lie Algebra]
+
+\begin{defn}[\textbf{Lie Algebra}]
 	A real or complex Lie algebra is a vector space $V$ over $\R$ or $\C$ with an operation $[\cdot,\cdot]: V\times V \to V$ (Lie bracket) satisfying
 	\begin{itemize}
 		\item $[\al x + \be y, z] = \al[x,z] + \be[y,z]$.
@@ -3141,8 +3419,8 @@ Recall the $GL(n,\C)$ is the group of  $n\times n$ invertible matrices over $\C$
 
 
 
-\begin{defn}[Associated Lie algebra of MLG]
-	Let $G \leq GL(n,\C)$ be a matrix Lie group. The associated Lie algebra is the set $\text{Lie}(G) = \{  x\in M_n(\C) \vert e^{\epsilon X} \in G \forall \epsilon \in \R   \}$ with Lie bracket $[x,y] = xy-yx$.
+\begin{defn}[\textbf{Associated Lie algebra of MLG}]
+	Let $G \leq GL(n,\C)$ be a matrix Lie group. The associated Lie algebra is the set $\text{Lie}(G) = \{  X\in M_n(\C) \vert e^{\epsilon X} \in G \,\forall \epsilon \in \R   \}$ with Lie bracket $[x,y] = xy-yx$.
 \end{defn}
 
 \textbf{Note:} $\text{Lie}(G)$ is usually denoted $\mathfrak{g}$.\\
@@ -3155,7 +3433,7 @@ We need to prove that $\text{Lie}(G)$ is really a Lie algebra:
 		
 		\item The zero matrix belongs to Lie$(G)$ since $e^{\epsilon O} = \Id$, for all $\ep\in \R$. 
 		
-		\item If $X \in \text{Lie}(G)$ and $\al\i \R$ then $e^{\ep \al X} \in G,\\forall \ep \in \R$ since $\ep\al \in \R$. This means $al X \in \text{Lie}(G)$.
+		\item If $X \in \text{Lie}(G)$ and $\al\i \R$ then $e^{\ep \al X} \in G,\forall \ep \in \R$ since $\ep\al \in \R$. This means $al X \in \text{Lie}(G)$.
 		
 		\item If $X,Y \in \text{Lie}(G)$ then $e^{\ep(X+Y)} = \lim_{k\to \infty}\lp e^{\ep X/k}e^{\ep Y/k} \rp^{k}$ which is a limit of products of elements of $G$. Since $G$ is closed, the limit converges to something in $G$. This means $X+Y\in \text{Lie}(G)$.
 		
@@ -3170,6 +3448,36 @@ We need to prove that $\text{Lie}(G)$ is really a Lie algebra:
 
 
 
+\begin{defn}[\textbf{Some more notions about MLGs}]
+	$\,$
+	\begin{itemize}
+		\item $G \leq GL(n,\C)$ is called compact if it is closed and bounded with respect to $M_n(\C)$. This means $O(n),SO(n), U(n), SU(n)$ are compact.  
+		\item $G$ is connected if for every $g\in G$ there is a continuous path connecting it to the identity $\gamma: [0,1] \to G$ with $\gamma(0) = e, \gamma(1) = g$. Note that $O(n)$ is not connected because there's no way to connect something to determinant $-1$ to the identity which has determinant 1.  
+		\item $G$ is simply connected if it is connected and every loop can be shrunk to a single point (no holes). Example: $U(1)$ is not simply connected.
+		\item If $X\in$ Lie($G$) then $\{ e^{\ep X} \vert \ep \in \R\}$ is a one-parameter subgroup of $G$. In fact, every (smooth) one-parameter subgroup of $G$ is of this form. We say that $X$ generates the subgroup $\{ e^{\ep X}\vert \ep \in \R \}$. 
+		\item If $G$ is connected, every group element $g\in G$ can be written as $g = e^{X_1}\dots e^{X_n}$ with $X_i \in G$. We say that $G$ is generated by Lie$(G)$. 
+	
+		
+	\end{itemize}
+\end{defn}
+
+
+
+
+\begin{defn}[MLG homomorphism]
+	A MLG homomorphism is a continuous group homomorphism $\phi : G \to H$. 
+\end{defn}
+
+\begin{defn}[MLG isomorphism]
+	A MLG isomorphism is an invertible continuous homomorphism. 
+\end{defn}
+
+\begin{exmp}
+	$\phi : z \in U(1) \mapsto \begin{bmatrix}
+	\Re(z) & \Im(z) \\ -\Im(z) & \Re(z)	\end{bmatrix}\in SO(2)$ is an isomorphism. 
+\end{exmp}
+
+
 
 
 
@@ -3182,6 +3490,58 @@ We need to prove that $\text{Lie}(G)$ is really a Lie algebra:
 
 \newpage
 \section{Representation theory}
+
+
+\begin{defn}[Representations]
+	Let $G$ be a MLG. A complex vector space $V$ is a $G$-module if there is a continuous action of $G$ on $V$, i.e., there exists a map $G\times V  \to V$ that is continuous, such that
+	\begin{itemize}
+		\item $g(\al\ket{\psi} + \beta\ket{\phi}) =  \al g\ket{\phi} + \beta g\ket{\phi}$.
+		
+		
+		\item $g(h\ket{\psi}) = (gh)\ket{\psi}$. 
+	\end{itemize}
+\end{defn}
+
+
+\begin{exmp}
+	Let $V = \text{span}\{ \ket{h} \}$ with the action of $U(1)$. Then $e^{i\theta} \triangleleft \ket{n} = e^{in\theta}\ket{n}, n\in \mathbb{N} $.  
+\end{exmp}
+
+
+
+\begin{defn}[Unitarity]
+	A $G$-module $V$ is unitary if it has an inner product and $\overline{\bra{\phi}g \ket{\phi}} = \bra{\phi}g^{-1}\ket{\phi}$.  
+\end{defn}
+
+
+\begin{defn}[Irreducibility]
+	$V$ is irreducible if the only invariant subspaces ($W\subseteq V$ closed such that $g\ket{\psi} \in W, \forall g\in G, \forall \ket{\psi} \in W$) are $V$ and $\{0\}$.  
+\end{defn}
+
+
+
+\begin{defn}[Lie algebras]
+	Let $\mathfrak{g}$ be a Lie algebra. A complex vector space $V$ is a $\mathfrak{g}$-module if there is an action of $\mathfrak{g}$ on $V$ such that
+	\begin{itemize}
+		\item  $X(\al\ket{\psi} + \beta\ket{\psi}) =\al X\ket{\psi} + \beta X\ket{\psi}$.
+		
+		\item $(\al X + \beta Y)\ket{\psi} = \al X\ket{\psi} + \beta Y\ket{\psi}$
+		
+		\item $[X,Y]\ket{\psi} = X(Y\ket{\psi}) - Y(X\ket{\psi})$.
+	\end{itemize}
+\end{defn}
+
+In this case, $V$ is unitary if $\overline{\bra{\psi} X\ket{\phi}} = -\bra{\phi} X \ket{\psi}$.\\
+
+If $V$ is a $G$-module, we can make it into a Lie$(G)$-module by defining $X\ket{\psi} = (d/d\ep) e^{\ep X} \ket{\psi}\big\vert_{\ep=0}$. 
+
+\begin{exmp}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.4]{lie4}
+		\caption{Giuseppe's notes}
+	\end{figure}
+\end{exmp}
 
 
 
@@ -3347,6 +3707,50 @@ with the transformations
 \end{itemize}
 
 
+\noindent \textbf{8.} Find out the explicit form and dimension of the Lie algebras of the following groups: $GL(n,\R), SL(n,\R), SL(n,\C), O(n), SO(n), SU(n)$. 
+
+\begin{proof}
+	For example, $U(n) = \{ A\in GL(n,\C)  \vert A^\dagger A = 1\}$. Then $\mathfrak{U}(n) = \{ X\in M_n(\C) \vert e^{\ep X}\in U(n) \forall \ep \in \R   \}$. Using properties of matrix exponentials, we find that $\mathfrak{U}(n) = \{ X\in M_n(\C) \vert X^\dagger = -X   \}$. 
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{lie1}
+		\caption{From Giuseppe's Notes}
+	\end{figure}
+	
+	As a real vector space, Let $X = A + iB$, then $X^\dagger = -X$ if and only if $A^\top = -A, B^\top = B$. This means the dimension is $n(n+1)/2 + n(n-1)/2 = n^2$. With this we can proceed to the other examples. It's useful to remember the following facts in the figure.
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.4]{lie2}
+		\caption{From Giuseppe's notes}
+	\end{figure}
+
+\end{proof}
+
+
+
+\noindent \textbf{9.} Do the same thing for 
+\begin{itemize}
+	\item The complex special orthogonal group: $SO(n,\C)$.
+	\item Indefinite special orthogonal group: $SO(p,q)$. 
+	\item Real symplectic group: $Sp(2n,\R)$.
+	\item Complex symplectic group: $Sp(2n,\C)$.
+	\item Compact symplectic group: $Sp(n) = Sp(2n,\C)\cap U(2n)$.
+\end{itemize}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.4]{lie3}
+	\caption{From Giuseppe's notes}
+\end{figure}
+
+
+\begin{proof}
+	For example,
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.4]{lie}
+		\caption{From Giuseppe's notes}
+	\end{figure}
+\end{proof}
 
 
 
