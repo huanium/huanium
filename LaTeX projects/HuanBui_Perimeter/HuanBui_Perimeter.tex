@@ -1118,7 +1118,11 @@ T^{(2)} \ket{\phi_i \phi_j} = \ket{\phi_j \phi_i}.
 \end{align}
 where $U$ is the unitary evolution operator.
 \begin{proof}
-	
+	To do this we use the identity 
+	\begin{align}
+	\tr(X_A \rho_A) = \tr\lp X \otimes I_B\rho  \rp
+	\end{align}
+	then recall that $\sigma(t) = U \sigma U^\dagger$ and take the tensor power two.
 \end{proof}
 
 
@@ -1279,20 +1283,20 @@ where $U$ is the unitary evolution operator.
 		\begin{align}
 		D_\had^{\otimes 2}T^{(2)} &= \sum_{n,m} \ket{nm}\bra{nm} T^{(2)} \ket{nm}\bra{nm}\nn\\
 		&= \sum_{n,m} \ket{nm}\braket{nm}{mn}\bra{nm}\nn\\
-		&= \sum_{n} \ket{nn}\bra{nn}\nn\\
-		&= \Id^{\otimes 2}. 
+		&= \sum_{n} \ket{nn}\bra{nn} \nn\\
+		&\implies \tr (D_\had^{\otimes 2} T^{(2)}) = d. 
 		\end{align}
 		With these, we can continue:
 		\begin{align}
 		\la \bar{\lag}_t \ra_\phi 
 		&= \tr\lb T^{(2)} D_\had^{(2)} \f{\Id^{\otimes 2} + T^{(2)} }{d(d+1)} \rb \nn\\
 		&= \f{1}{d(d+1)}\lb \tr\lb T^{(2)} \lb D_\had^{\otimes 2} \Id^{\otimes 2} + \D_\had^{\otimes 2} T^{(2)}  \rb \rb \rb\nn\\
-		&= \f{1}{d(d+1)}\lb \tr\lb T^{(2)} \lb 2\Id^{\otimes 2}  \rb \rb \rb\nn\\
-		&= \f{2}{d(d+1)}\tr\lb T^{\otimes 2} \rb\nn\\
+		&= \f{1}{d(d+1)}\lb \tr\lb T^{( 2)} \rb + d \rb\nn\\
+%		&= \f{2}{d(d+1)}\tr\lb T^{\otimes 2} \rb\nn\\
 		&= \f{2}{d(d+1)}d \nn\\
 		&= \f{2}{d+1}
 		\end{align}
-		where we have used the fact that the original Hilbert space is $d$-dimensional. The swap operator $T^{(2)}$ by definition must be in $2d$ dimensions. But because it is a swap operator, it necessarily have $\tr T^{(2)} = 2d/2 =d$. So we're done. 
+		where we have used the fact that the original Hilbert space is $d$-dimensional. Using an identity we saw earlier, we can show that $\tr(T^{(2)}) = d$. With this we're done. 
 	\end{proof}
 	
 	
@@ -1747,10 +1751,20 @@ Now how do we find the matrix $\had$? There are a few methods to do this:
 	
 	
 	\item \textbf{Column-by-Column approach:} In this method, we take the index of the basis states and turn it into a spin list, apply some operation on it to get a spin list with some coefficient, then get back the vector representation. 
+	\begin{itemize}
+		\item The first column of  the matrix is the operators applied to the first basis state. To do this, we convert the basis vector into a list of spins. Let the operator act on this list of spins to get a new list of spins. Then convert the list of spins to numbers again. 
+	\end{itemize}
 	
 	
-	\item \textbf{Use the fact that the $ZZ$ term is diagonal.} This will be the fastest way to get the Hamiltonian. 
+	\item \textbf{Use some knowledge specific to operators.} This will be the fastest way to get the Hamiltonian. In particular we know that the $ZZ$ term is diagonal, which the diagonal elements being the expectation values of  $\la \sum_i \sigma_i^z \sigma_{i+1}^z  \ra$ in each basis state. To construct the matrix, we convert the column index to a list of spins, and calculate and put the expectations on the diagonal.
 \end{itemize}   
+
+
+
+
+
+
+
 
 
 
@@ -1775,62 +1789,62 @@ Now how do we find the matrix $\had$? There are a few methods to do this:
 %
 %\section{L1 : Finding expectation values}
 
-\newpage
-
-\section{Exact diagonalization part 1}
-
-\section{Representing models}
-
-\section{Finding eigenstates}
-
-\section{Energy gaps}
-
-\section{Phase transitions}
-\newpage
-
-
-
-
-\section{Exact diagonalization part 2}
-
-
-\section{Limitations of the method}
-
-\section{Using symmetries}
-
-\section{Dynamics}
-
-
-\newpage
-
-
-\section{Matrix product states part 1}
-
-
-
-
-\section{Entanglement and the singular value decomposition}
-
-
-
-\section{What is a matrix product state and why is it useful}
-\newpage
-
-
-
-
-
-\section{Matrix product states part 2}
-
-
-
-
-\section{Algorithms for finding ground states using matrix product states: iTEBD }
-
-
-
-
-\section{Algorithms for finding ground states using matrix product states: DMRG}
+%\newpage
+%
+%\section{Exact diagonalization part 1}
+%
+%\section{Representing models}
+%
+%\section{Finding eigenstates}
+%
+%\section{Energy gaps}
+%
+%\section{Phase transitions}
+%\newpage
+%
+%
+%
+%
+%\section{Exact diagonalization part 2}
+%
+%
+%\section{Limitations of the method}
+%
+%\section{Using symmetries}
+%
+%\section{Dynamics}
+%
+%
+%\newpage
+%
+%
+%\section{Matrix product states part 1}
+%
+%
+%
+%
+%\section{Entanglement and the singular value decomposition}
+%
+%
+%
+%\section{What is a matrix product state and why is it useful}
+%\newpage
+%
+%
+%
+%
+%
+%\section{Matrix product states part 2}
+%
+%
+%
+%
+%\section{Algorithms for finding ground states using matrix product states: iTEBD }
+%
+%
+%
+%
+%\section{Algorithms for finding ground states using matrix product states: DMRG}
 
 \newpage
 
@@ -3502,16 +3516,36 @@ We need to prove that $\text{Lie}(G)$ is really a Lie algebra:
 	\end{itemize}
 \end{defn}
 
+\textbf{Notes:}
+\begin{itemize}
+	\item If $V$ is infinite dimensional we have to be careful about its topology.
+	
+	\item The action of $G$ on $V$ is also called a representation of $G$ on $V$ (same thing,different point of view).
+\end{itemize}
+
+
+
 
 \begin{exmp}
 	Let $V = \text{span}\{ \ket{h} \}$ with the action of $U(1)$. Then $e^{i\theta} \triangleleft \ket{n} = e^{in\theta}\ket{n}, n\in \mathbb{N} $.  
 \end{exmp}
 
+The action is extended to the other vectors by linearity. 
+
+
 
 
 \begin{defn}[Unitarity]
-	A $G$-module $V$ is unitary if it has an inner product and $\overline{\bra{\phi}g \ket{\phi}} = \bra{\phi}g^{-1}\ket{\phi}$.  
+	A $G$-module $V$ is unitary if it has an inner product and $\overline{\bra{\phi}g \triangleleft \ket{\phi}} = \bra{\phi}g^{-1} \triangleleft\ket{\phi}$.  
 \end{defn}
+
+\begin{exmp}
+	Define an inner product on $V_n$ as $\braket{n} = 1$. For the action of $U(1)$ we get $\overline{\bra{n} e^{i\theta}\triangleleft \ket{n}} = \overline{\bra{n} e^{in\theta}\ket{n}} = e^{-in\theta}$ and  ${\bra{n} (e^{i\theta})^{-1}\triangleleft \ket{n}} = e^{-in\theta}$ so $V_n$ is unitary. 
+\end{exmp}
+
+\begin{exmp}
+	For the action of $GL(1,\C)$ we get $\bra{n}z^{-1}\triangleleft \ket{n} = z^{-n}$, but $\overline{\bra{n} z\triangleleft\ket{n}} = \bar{z}^n \neq z^{-n}$ in general. So $V_n$ here is not unitary.
+\end{exmp}
 
 
 \begin{defn}[Irreducibility]
@@ -3523,15 +3557,15 @@ We need to prove that $\text{Lie}(G)$ is really a Lie algebra:
 \begin{defn}[Lie algebras]
 	Let $\mathfrak{g}$ be a Lie algebra. A complex vector space $V$ is a $\mathfrak{g}$-module if there is an action of $\mathfrak{g}$ on $V$ such that
 	\begin{itemize}
-		\item  $X(\al\ket{\psi} + \beta\ket{\psi}) =\al X\ket{\psi} + \beta X\ket{\psi}$.
+		\item  $X\triangleleft(\al\ket{\psi} + \beta\ket{\psi}) =\al X\triangleleft\ket{\psi} + \beta X\triangleleft\ket{\psi}$.
 		
-		\item $(\al X + \beta Y)\ket{\psi} = \al X\ket{\psi} + \beta Y\ket{\psi}$
+		\item $(\al X + \beta Y)\triangleleft\ket{\psi} = \al X\triangleleft\ket{\psi} + \beta Y\triangleleft\ket{\psi}$
 		
-		\item $[X,Y]\ket{\psi} = X(Y\ket{\psi}) - Y(X\ket{\psi})$.
+		\item $[X,Y]\triangleleft\ket{\psi} = X\triangleleft(Y\triangleleft\ket{\psi}) - Y\triangleleft(X\triangleleft\ket{\psi})$.
 	\end{itemize}
 \end{defn}
 
-In this case, $V$ is unitary if $\overline{\bra{\psi} X\ket{\phi}} = -\bra{\phi} X \ket{\psi}$.\\
+In this case, $V$ is unitary if $\overline{\bra{\psi} X\triangleleft\ket{\phi}} = -\bra{\phi} X \triangleleft \ket{\psi}$.\\
 
 If $V$ is a $G$-module, we can make it into a Lie$(G)$-module by defining $X\ket{\psi} = (d/d\ep) e^{\ep X} \ket{\psi}\big\vert_{\ep=0}$. 
 
@@ -3539,6 +3573,16 @@ If $V$ is a $G$-module, we can make it into a Lie$(G)$-module by defining $X\ket
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[scale=0.4]{lie4}
+		\caption{Giuseppe's notes}
+	\end{figure}
+\end{exmp}
+
+
+
+\begin{exmp}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{lie5}
 		\caption{Giuseppe's notes}
 	\end{figure}
 \end{exmp}
@@ -4626,6 +4670,7 @@ is important for the classical optimization over the variational
 parameters to be well-behaved, so as to be able to find low-energy minima. 
 
 
+
 \begin{enumerate}
 	\item \textit{Unitary coupled cluster:} \\
 	
@@ -5418,9 +5463,14 @@ where each $H_Z$ is support on $Z$. We are interested in studying problems in wh
 
 \section{Quantum Approximate Optimization Algorithm (QAOA)}
 
+\textit{Let's not worry about this now.}
+
+
 \newpage
 
 \section{Quantum Variational Factorization (QVF)}
+
+\textit{Let's not worry about this now.}
 
 \newpage
 
@@ -5428,7 +5478,7 @@ where each $H_Z$ is support on $Z$. We are interested in studying problems in wh
 
 \section{Variational Thermal Quantum Simulation via Thermofield Double States}
 
-
+\textit{Let's not worry about this now.}
 
 \subsection{Thermofield Double States (TFD)}
 
@@ -5736,26 +5786,39 @@ In this case, while the preparation of the ground states is generically not perf
 
 
 
+
+\newpage
+
+
+\section{Cluster States \& Measurement-based QC}
+
+
+
+
+
+
+
+
+
 \newpage
 
 
 
 \section{Measurement-based quantum computing: Briegel et al}
+\href{https://www.nature.com/articles/nphys1157.pdf}{\underline{paper}}.\\
 
-\href{https://www.nature.com/articles/nphys1157.pdf}{\underline{paper}}.
-
-
+We want to read this paper with a focus on \textit{cluster states}.
 \newpage
 
 
 \section{Mesurement-based quantum computing: Jozsa}
+\href{https://arxiv.org/pdf/quant-ph/0508124.pdf}{\underline{paper}}\\
+
+We want to read this paper with a focus on \textit{cluster states}.
 
 
 
-
-\href{https://arxiv.org/pdf/quant-ph/0508124.pdf}{\underline{paper}}
-
-
+\newpage
 
 
 
