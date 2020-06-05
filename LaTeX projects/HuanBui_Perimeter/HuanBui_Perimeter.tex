@@ -822,9 +822,187 @@ Now, group theory says that
 \begin{align}
 \la \phi^{\otimes 2}  \ra = \f{\Id_{\had^{\otimes 2}} + T^{(2)}}{d(d+1)}.
 \end{align}
-Plugging this back into the exercise, we get (in the exercise) $2/(d+1)$. So, the purity of the state after we erase the diagonal elements, on average, is $2/(d+1)$. \\
+Plugging this back into the exercise, we get (in the exercise) $2/(d+1)$. So, the purity of the state after we erase the diagonal elements, on average, is $2/(d+1)$. This means that if the Hilbert space is very large, then the purity is very close to zero. \\
 
-This means that if the Hilbert space is very large, then the purity is very close to zero. 
+
+Now, knowing the average of something does not mean much. It might not be the typical case. So is this typical, or does this have a lot of fluctuations, i.e., is the variance of $\bar{\lag}_t$ small or large? What can we say about $\text{Var}(\bar{\lag}_t)$. First, $\bar{\lag}$ is nonnegative. Second, its average is very small. So its variance must also be small. This comes from the \textbf{Markov Inequality}:
+\begin{align}
+X\geq 0, \Pr(X \geq a) \leq E[X]/a.
+\end{align}
+We can make $a=1/\sqrt{d}$, so that $\Pr(X \geq 1/\sqrt{d}) \leq 1/\sqrt{d}$. \\
+
+Now, let's consider entanglement. Consider $\had = \had_A \otimes \had_B$ and $\phi$ pure in $\had$. If $\phi$ is entangled then $\tr \phi_A^2 < 1$. Next, recall that $S_2 =  -\log \tr \phi_A^2 $. Now, we ask what $\la -\log \tr \phi_A^2 \ra_\phi$ is, to see how typical entanglement is. Now, 
+\begin{align}
+\la -\log \tr \phi_A^2 \ra_\phi &\geq -\log \la \tr \phi_A^2 \ra_\phi \nn\\
+ &= -\log \la \tr \phi_A^{\otimes 2}  T^{(2)}_A\ra_\phi \nn\\
+ &= -\log \tr[T_A^{(2)} \la \phi_A^{\otimes 2} \ra].
+\end{align}
+In the exercise, we show that 
+\begin{align}
+\la -\log \tr \phi_A^2 \ra_\phi = \log \f{d_A + d_B}{d_Ad_B+1}.
+\end{align}
+Now, call the purity $p = \tr \phi_A^2$. Then we show that
+\begin{align}
+\la p \ra_\phi = \la \tr \phi_A^2 \ra_\phi \f{d_A + d_B}{d_Ad_B+1}.
+\end{align} 
+Now, if $A$ is our system of interest, then $d_B \gg d_A$ since $B$ is the ``universe'' in this case. But $d_A$ is also quite large by itself, so we have the typical thermodynamic situation: $d_B \gg d_A \gg 1$. With this, 
+\begin{align}
+\la p \ra_\phi  \approx \f{1}{d_A} = \f{1}{2^{N_A}}.
+\end{align}
+And so
+\begin{align}
+\log_2 d_A \geq S_2 \geq \log_2 d_A
+\end{align} 
+And so, we have that \textbf{almost all states are maximally entangled}.
+
+\newpage
+
+\section{Equilibration}
+
+We introduce the notion of distance between states. 
+\begin{align}
+d(\rho,\sigma) &= \max_P \abs{\tr P_\rho - \tr P_\sigma} \nn\\
+&= \f{1}{2}\norm{\rho - \sigma}_1 \nn\\
+&= \f{1}{2}\tr \lb \sqrt{(\rho-\sigma)^\dagger(\rho-\sigma)} \rb.
+\end{align}
+
+Consider a map $\Phi$ that is  trace-preserving and maps a state to a state. For example, $\U_t, D_H, \tr_B$ are examples. 
+
+\begin{thm}
+	Let a trace-preserving map $\Phi$ be given, then 
+	\begin{align}
+	d(\Phi(\rho) , \Phi(\sigma)) \leq d(\rho,\sigma).
+	\end{align}
+\end{thm} 
+
+
+\begin{thm}
+	\begin{align}
+	d(\rho_A ,\sigma_A) \leq d(\rho,\sigma).
+	\end{align}
+\end{thm}
+
+\begin{thm}
+	\begin{align}
+	\norm{\rho - \sigma}_1 \leq \sqrt{d}\norm{\rho - \sigma}_2 = \sqrt{d \tr (\rho - \sigma)^2}
+	\end{align}
+\end{thm}
+
+
+\subsection{Equilibration}
+
+Let $\omega = D_H \phi = \bar{\phi}$ be given and $\omega_S = \tr_B \omega$, with $\had = \had_S \otimes \had_B$. Remember that $A_t \sim \bar{A}$ and $\tr (A\phi_t) \sim \tr A \omega$, and thus we want to show
+\begin{align}
+\overline{\tr[A \phi_{St}]} \sim \overline{\tr [A \omega_S]}
+\end{align}
+This means that we want $\overline{d(\phi_{St}, \omega_S)}$ small.
+
+\begin{thm}
+	\begin{align}
+	\overline{d(\phi_{St},\omega_S)} \leq \f{1}{2}\sqrt{d_S^2 \tr \omega^2}
+	\end{align}
+	where $\omega = D_H \phi$.
+\end{thm} 
+
+\begin{proof}
+	We had lemma that says 
+	\begin{align}
+	d(\rho, \sigma) = \f{1}{2}\tr \sqrt{(\rho - \sigma)^2} \leq \f{1}{2}\sqrt{d\tr (\rho - \sigma)^2}
+	\end{align}
+	Because $\sqrt{\cdot}$ is concave, we can bring the average inside. So,
+	\begin{align}
+	\overline{d(\phi_{St}, \omega_S)} \leq \f{1}{2}\sqrt{d_S \overline{\tr(\phi_{St} - \omega_S)^2} }.
+	\end{align}
+	Now, 
+	\begin{align}
+	\phi_{St} - \omega_S =  \sum_{k\neq l} c_k c_l^\dagger e^{-i(E_k - E_l)t} \tr_B\ket{E_k}\bra{E_l}.
+	\end{align}
+	Thus,
+	\begin{align}
+	\overline{\tr (\phi_{St} - \omega_S)^2} = \sum_{k\neq l, m\neq n}\overline{\tau_{klmn}} \tr \lp \tr_B \ket{E_k}\bra{E_l} \cdot \tr_B \ket{E_m}\bra{E_n}\rp.
+	\end{align}
+	Explicitly, 
+	\begin{align}
+	T_{klmn} = c_k c_l^\dagger c_m c_n^\dagger e^{\overline{-i(E_k - E_l + E_m - E_n)t}}. 
+	\end{align}
+	Now, since we have non-degenerate Hamiltonians, so
+	\begin{align}
+	\overline{e^{-i()t}} = \delta_{kn}\delta_{lm}.
+	\end{align}
+	Plug this in to get
+	\begin{align}
+	\overline{\tr(\dots)^2} &= \sum_{k\neq l} \abs{c_k}^2\abs{c_l}^2 \cdot \tr\lb \tr_B \ket{E_k}\bra{E_l} \cdot \tr_B \ket{E_l} \bra{E_k} \rb \nn\\
+	&= \sum_{k\neq l} \tr_B \lp \tr \abs{c_k}^2 P_k  \cdot \tr \abs{c_l}^2 P_l \rp.
+	\end{align}
+	Now add the $k=l$ terms and subtract them. Recall that
+	\begin{align}
+	\sum_k \abs{c_k}^2 P_k = \omega
+	\end{align}
+	so that 
+	\begin{align}
+	\overline{\tr(\dots)^2} &= \tr_B \omega_B^2 - \sum_k \abs{c_k}^4 \tr \lb \tr_B P_k \rb^2.
+	\end{align}
+	The term on the right is upper bounded by one. So,
+	\begin{align}
+	\overline{\tr(\dots)^2} \leq \tr_B \omega_B^2 \leq d_S \tr \omega^2.
+	\end{align}
+	Plugging everything back in we get
+	\begin{align}
+	\overline{d(\phi_{St}, \omega_S)} \leq \f{1}{2}\sqrt{d_S^2 \tr \omega^2}
+	\end{align}
+	so we're done. 
+	
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Typically, $\tr \omega^2 \sim 1/d = 1/(d_Sd_B)$, and so typically, 
+\begin{align}
+\overline{d(\phi_{St}, \omega_S)} \leq \f{1}{2}\sqrt{d_S/d_B} \ll 1
+\end{align}  
+because $d_S/d_B \ll 1$. Here ``typically'' is in the sense of the Haar-average. To prove this theorem, we want to compute
+\begin{align}
+\la \tr\omega^2 \ra_\phi &= \la \tr (D_H \phi)^2 \ra_\phi \nn\\
+&= \tr \la (D_H \phi)^{\otimes 2} T^{(2)} \ra_\phi\nn\\
+&= \tr  D_H^{\otimes 2} \la  \phi^{\otimes 2}\ra_\phi T^{(2)}  \nn\\
+&\sim \f{1}{d}.
+\end{align}
+So we have that
+\begin{align}
+\la \overline{d(\phi_{St}, \omega_S)} \ra_\phi \leq \f{1}{2}\sqrt{d_S^2\la \tr \omega^2 \ra}.
+\end{align}
+From here, we see that $\phi_{St}\sim \omega_S$ almost always. But what is $\omega_S = \tr_B D_H \phi$, typically? We need a new canonical state that doesn't depend on $\phi$ and establish the distance between $\omega_S$ and that state which we will call $\Omega_S$. 
+
+\begin{thm}
+	\begin{align}
+	\la d(\omega_S, \Omega_S) \ra_\phi \ll 1 
+	\end{align}
+	where $\omega_S = \tr_B D_H \phi$ and $\Omega_S = \Id_S/d_S$ is the canonical state. 
+\end{thm}
+
+
+
+
+
+
+
+
+
 
 \newpage
 
@@ -835,7 +1013,7 @@ This means that if the Hilbert space is very large, then the purity is very clos
 \section{Quantum Thermal Operations}
 
 
-
+    
 
 
 
@@ -1168,7 +1346,7 @@ where $U$ is the unitary evolution operator.
 	where we have used the fact that the matrix element $\sigma_i = \sigma_{ii} = \bra{i}\sigma\ket{i}$.
 \end{proof}
 
-
+  
 
 
 
@@ -1317,7 +1495,18 @@ where $U$ is the unitary evolution operator.
 	
 	
 	\begin{proof}
-		This is a generalization of the first item. 
+		This is a generalization of the first item. To avoid running into trouble with $\tr^{\otimes 2}$, we use the identity
+		\begin{align}
+		\phi_A^2 = \tr_A (T^{(2)} \phi_A^{\otimes 2}) =  \tr   T^{(2)} \otimes \Id_B  \phi^{\otimes 2}.
+		\end{align}
+		With this, 
+		\begin{align}
+		\la \tr \tr T^{(2)} \otimes \Id_B  \phi^{\otimes 2}  \ra_\phi &= \tr \tr \la T^{(2)} \otimes \Id_B \phi^{\otimes 2} \ra_\phi \nn\\
+		&= \tr \tr  T^{(2)} \otimes \Id_B \la \phi^{\otimes 2} \ra_\phi \nn\\
+		&= \tr \tr T^{(2)} \otimes \Id_B \f{\Id_{A\otimes B} + T^{(2)}}{d_A d_B(d_A d_B + 1)} \nn\\
+		&= \f{d_A d_B(d_A + d_B)}{d_Ad_B(d_A d_B  + 1)}\nn\\
+		&= \f{d_A + d_B}{d_A d_B + 1}.
+		\end{align}
 	\end{proof}
 
 
@@ -1327,7 +1516,10 @@ where $U$ is the unitary evolution operator.
 	\end{align}
 	
 	\begin{proof}
-		\textit{to be continued...}
+		Well we have that $\omega = \bar{\phi} = D_H \phi$. As we have seen, $\tr \omega^2 = \tr \bar{\phi}^2 = \bar{\lag}_t$ with the property
+		\begin{align}
+		\la \bar{\lag}_t \ra_\phi = \f{2}{d+1} < \f{2}{d}. 
+		\end{align}
 	\end{proof}
 
 
@@ -1363,7 +1555,7 @@ where $U$ is the unitary evolution operator.
 
 
 
-
+    
 
 
 
@@ -1798,7 +1990,7 @@ Now how do we find the matrix $\had$? There are a few methods to do this:
 
 
 
-
+\newpage
 
 
 
@@ -1848,7 +2040,28 @@ Now how do we find the matrix $\had$? There are a few methods to do this:
 %\newpage
 %
 %
-%\section{Matrix product states part 1}
+\section{Matrix product states}
+
+Not all quantum states are product states, i.e., not all states can be written as a tensor product of two states. These states are called entangled states. \\
+
+Product states are useful.  Consider a model with $N$ sites. $\ket{\psi} = \bigotimes \ket{\psi}$. Then 
+\begin{align}
+\la \sigma^z_i \ra &= \bra{\psi_0}\Id \ket{\psi_0} \cdot \dots \bra{\phi_i}\sigma^z_i\ket{\phi_i}\cdot \dots \bra{\psi_{N-1}}\Id \ket{\psi_{N-1}}\nn\\
+&= \bra{\psi_i}\sigma^z_i \ket{\phi_i}.
+\end{align}
+We just reduced the problem from $2^N$ coefficients to $2$ coefficients. \\
+
+The idea of matrix product states is to write entangled states in a way that lets us do these same efficient calculations. For example, when $N=2$, 
+\begin{align}
+(a_0 \ket{0} + b_0 \ket{1})\otimes (a_1\ket{0} + b_1\ket{1}) = (A_0 \ket{0} + B_0 \ket{1})\otimes (A_1\ket{0} + B_1\ket{1})
+\end{align}
+where now the ``coefficients'' are not matrices. With this formulation, any state can be written as matrix product state. Note that these matrices aren't necessarily squares. They can be row/column matrices. 
+
+
+
+
+
+
 %
 %
 %
