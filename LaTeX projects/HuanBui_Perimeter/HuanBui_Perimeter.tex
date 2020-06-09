@@ -78,6 +78,12 @@
 \newcommand{\la}{\langle}
 \newcommand{\ra}{\rangle}
 
+\newcommand{\fig}[2]{
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=#1]{#2}
+	\end{figure}}
+
 
 \newcommand{\V}{\mathbf{V}}
 \newcommand{\U}{\mathcal{U}}
@@ -6332,6 +6338,290 @@ In this case, while the preparation of the ground states is generically not perf
 \section{Cluster States \& Measurement-based QC}
 
 
+In this section we look at concepts such as \textit{cluster states} and \textit{measurement-based quantum computation} as introduced in this \href{https://arxiv.org/pdf/quant-ph/0504097.pdf}{\underline{paper}} by M. Nielsen. I will assume familiarity with the basics of the quantum circuit model and go straight to the cluster state model.
+
+We will explain the cluster state model of quantum computation, and explain how cluster states can e used to efficiently simuate quantum circuits. 
+
+\subsection{How it works}
+
+
+A cluster-state computation begins with the preparation of a special entangled many-qubit quantum state, known as the \textit{cluster state}, followed by an adaptive sequence of single-qubit measurements, which process the cluster, and finally read-out of the computation's result from the remaining qubits. \\
+
+The term \textit{cluster state} refers not to a single quantum state, but rather a class of quantum states. To any graph $G$ on $n$ vertices we can define an associated $n$-qubit cluster state, by first associating to each vertex a corresponding qubit, and then applying a graph-dependent preparation procedure to the quits. For example, this graph represents a six-qubit cluster state:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.3]{cluster1}
+\end{figure}
+The cluster state associated to the graph may be defined as the result of applying the following preparation procedure:
+\begin{itemize}
+	\item Prepare each of the $n$ qubits in the state $\ket{+} = (\ket{0} + \ket{1})/\sqrt{2}$.
+	
+	\item Applying the controlled-PHASE gates between qubits whose corresponding graph vertices are connected. Recall that the controlled-PHASE looks like
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.5]{cphase}
+	\end{figure}
+	and remember that in the first case the $Z$ gate is applied to the second qubit if the first qubit is 1. In the second case, the $Z$ gate is applied to the first qubit if the second qubit is 1. Note that if the ``dot'' in the circuit is a circle then $Z$ is applied when the controlled qubit is 0.
+\end{itemize}
+
+Because the controlled-PHASE (or controlled-$Z$) gates commute with each other, we don't worry about the order in which these gates are applied. Also, although we have described the preparation of the cluster in terms of applying quantum gates, later in the paper we briefly describe how to prepare clusters using measurement gates, and so the cluster-state model may be regarded as a truly measurement-only model of quantum computation. \\
+
+In the original paper by Briegel, the term \textit{graph state} is used instead of \textit{cluster states}. The term \textit{cluster state} was introduced to refer to the case where the graph $G$ is a two-dimensional square lattice. This is the class of states which could be used as a substrate for quantum computations. The term \textit{graph state} refers to states associated with more general graphs $G$. In any case, we will stay with the term \textit{cluster state} for now, for consistency. \\
+
+
+Once the cluster state is prepared, (note that the cluster state has two components: the vertices of qubits and edges of operators) the next step in the computation is to perform a sequence of \textit{processing measurements} on the state. These measurement satisfy:
+\begin{itemize}
+	\item They are single-qubit measurements
+	\item The choice of measurement basis may depend on the outcomes or earlier measurements, i.e., feedforward of classical measurement results is allowed
+	\item Measurement results may be processed by a classical computer to assist in the feedforward, so that choice of the basis my be a complicated function of earlier measurement results. 
+\end{itemize}
+
+Note that for the cluster state computation to be efficient we must constrain the classical computation to be of polynomial size. \\
+
+
+There are two ways to define the output of the cluster-state computation:
+\begin{itemize}
+	\item We can define the output in terms of the \textit{quantum state} resulting from the computation. This is the quantum state of the qubits which remain when the sequence of processing measurements has terminated. 
+	
+	\item We can also define in terms of the the set of \textit{read-out measurements}, a sequence of single-qubit measurements applied to the qubits which remain when the processing measurements are complete. In this case the output of the computation is a classical bit string. 
+\end{itemize}
+
+\begin{exmp}
+	We will consider an example of a cluster-state computation to see how it might work explicitly.  
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{cluster2}
+	\end{figure}
+	In this example, labels indicate qubits on which processing measurements occur, while unlabeled qubits are those which remain as the output of the computation when the processing measurements are complete. The labeled qubits are labeled with (1) a positive integer $n$ and (2) a single-qubit unitary, which we refer to as a generic unitary $U$. Here, $U = HZ_{\pm \al_{j}}, HZ_{\pm \be_j}$. \\
+	
+	The positive number $n$ indicates the time-ordering of the processing measurements. Qubits of the same $n$ can be measured in either order or simultaneously. The time-ordering is important, because it determines which measurement results can be fed forward to control later measurement bases. \\
+	
+	The unitary label $U$ indicates the basis in which the qubits is measured, denoting a rotation by the unitary $U$, following by a computational basis measurement.  In other words, a single-qubit measurement in the basis $\{  U^\dagger \ket{0} , U^\dagger\ket{1} \} $ is performed. The notation $\pm$ denotes the fact that the choice of sign depends on the outcomes of earlier measurements, in some specified manner. We will look at an explicit example later. 
+\end{exmp}
+
+
+
+
+
+
+
+ 
+
+
+
+
+\subsection{Simulating quantum circuits in the cluster-state model}
+
+In this part we look at how cluster-state computation can simulate quantum circuits. The key idea underlying this example is the one-bit teleportation: 
+
+\fig{0.5}{tele}
+
+Here $m$ is the outcome of the computational basis measurement on the first qubit. Let's verify this. Suppose we start out with $\ket{\psi} = \al\ket{0} + \be\ket{1}$ and $\ket{+} = (1/\sqrt{2})(\ket{0} + \ket{1})$. Then the composite quantum state is given by
+\begin{align}
+\ket{\psi +} = \al\ket{00} + \beta\ket{11} + \al\ket{01} + \be\ket{10}.
+\end{align}
+A controlled-$Z$, followed by a Hadamard on the first qubit gives
+\begin{align}
+(\had \otimes \Id) C_Z\ket{\psi +} &= \al\ket{+0} - \be\ket{-1} + \al\ket{+1} + \be\ket{-0} \nn\\
+&= \al\ket{++} + \be\ket{--}.
+\end{align}
+This state can be re-written as 
+\begin{align}
+(\had \otimes \Id) C_Z\ket{\psi +} &= \f{1}{\sqrt{2}}(\ket{0} \otimes \had \ket{\psi} + \ket{1}\otimes X \had\ket{\psi})\nn\\
+&= \f{1}{\sqrt{2}}(\ket{0} \otimes X^0 \had \ket{\psi} + \ket{1}\otimes X^1 \had\ket{\psi}).
+\end{align}
+So the result follow. However, we can general this a bit further to get the following teleportation circuit:
+
+\fig{0.4}{tele1}
+
+The proof is similar. We note that $Z_\theta$ commutes with the controlled-$Z$, so the output of the circuit is the same as would have been output from the previous circuit had $Z_\theta\ket{\psi}$ been input instead of $\ket{\psi}$.  \\
+
+What do learn from this? We see that even though the first qubit is measured, no quantum information is lost, for no matter what measurement outcome, the posterior state of the second qubit is related by a known unitary transformation to the original input $\ket{\psi}$: $\ket{\psi}$ vs. $X^m \had Z_\theta$. \\
+
+This might seem unsurprising. However, notice that by varying the basis in which the first qubit is measured, i.e., by varying $\theta$, we can vary the unitary transformation acting on the second qubit without destroying any quantum information. 
+
+\subsubsection{Single-qubit case}
+
+Now, we will use this example to explain how the cluster-state computation can simulate quantum circuits. Let us explain how to simulate a single-qubit circuit of the form
+
+\fig{0.5}{cluster3}
+
+This looks trivial, but is very important. Here we are assuming that the qubit starts at $\ket{+}$ and single-qubit gates are of the form $\had Z_\al$ for convenience. The associated cluster-state computation used to simulate the given circuit is 
+
+\fig{0.4}{cluster4}
+
+Note that in order to simulate this one-qubit quantum circuit, we require 03 qubits in the cluster-state model. This will be a recurring theme in the cluster-state computation: the complexity in the quantum circuit is prepackaged into the initial quantum state, so that the complexity of the measurements is reduced. By construction, this cluster-state model is equivalent to the following quantum circuit:
+
+\fig{0.4}{cluster5}
+
+where we have assumed all qubits are starting out in the $\ket{+}$ state. Further, we can also equivalently delay the controlled-$Z$ between the second and third qubits to after $\had Z_{\al_1}$ to split the circuit into two parts like this:
+
+\fig{0.4}{cluster6}
+
+It can be readily checked that these circuits are equivalent. This can be done by thinking of the ``arrow of time'' in the cluster-state model as pointing out of the page. \\
+
+By splitting the circuit like this, we can see that the two highlighted boxes are of the form  of the one-bit teleportation circuit that we just discussed. This means that two teleportations occur in this circuit. The first teleportation send $\ket{\psi} = \ket{+}$ to the second qubit, which has the form:
+\begin{align}
+\text{After 1st teleportation: } \ket{\psi_1}=   X^{m_1} \had Z_{\al_1}\ket{+}
+\end{align}
+as shown earlier. \\
+
+The second teleportation sends this $\ket{\psi_1}$ to the third qubit, which has the form
+\begin{align}
+\text{After 2nd teleportation: } \ket{\psi_2}=  X^{m_2}  \had Z_{\pm \al_2} X^{m_1} \had Z_{\al_1}\ket{+}
+\end{align}
+as shown earlier. Of course, $m_1 ,m_2$ are the outputs of the measurements on the first and second qubits, respectively.\\
+
+Observe further that feedforward can be used to choose the sign of $\pm \al_2$ so that $Z_{\pm  \al_2} X^{m_1} = X^{m_1}Z_{\al_2}$. Also, it is well-known that $\had X^{m_1} = Z^{m_1}\had$, so we can write the output as
+\begin{align}
+X^{m_2} \had Z_{\pm \al_2} X^{m_1} \had Z_{\al_1}\ket{+} &\to X^{m_2} Z^{m_1}\had Z_{\al_2}\had Z_{\al_1} \ket{+}\nn\\
+&= X^{m_2} Z^{m_1} (\had Z_{\al_2} \had Z_{\al_1} \ket{+}) .
+\end{align}
+We see that, up to known Pauli matrices $X^{m_2}, Z^{m_1}$, the output is identical to the output of the circuit
+
+\fig{0.5}{cluster3}
+
+which we introduced earlier. \\
+
+
+\noindent \textbf{Remark:} We can (easily) generalize this example to larger single-qubit circuits containing gates of the form $\had Z_{\al_j}$. Here's the general proof:
+\begin{itemize}
+	\item Rewrite the cluster-state computation in terms of an equivalent quantum circuit. 
+	\item Reinterpret the quantum circuit as a sequence of circuits of the \textit{teleportation form}, i.e., move the controlled-$Z$'s around to make the highlighted boxes. 
+	\item In the resulting expression for the output state, commute operators of the form $X^m$ all the way to the left, using feedforward to choose signs on the terms of the form $Z_{\pm \al}$ to ensure that after commutation they are of the form $Z_\al$.
+	\item The result is a state which, up to known factors of Pauli matrices, is equivalent to the output of the single-qubit quantum circuit. 
+\end{itemize}
+
+
+\subsubsection{Multi-qubit case}
+These ideas generalize to multi-qubit quantum circuits. For example, consider the quantum circuit:
+
+\fig{0.55}{cluster7}
+
+I claim that this quantum circuit can be simulated using the cluster-state computation
+
+\fig{0.45}{cluster2}
+
+We notice a (weak) pattern here. The number of qubits necessary for the cluster to simulate a 2-qubit quantum circuit is now 6. (last time it was 3 qubits to simulate a 1-qubit circuit). In any case, the proof of this equivalence follows exactly the same lines as in the single-qubit case, and is notationally more complicated. It suffices to prove this diagrammatically. To do this, we first label the qubits like so:
+
+\fig{0.35}{cluster8}
+
+By definition, the cluster state computation has the following associated quantum circuit:
+
+\fig{0.35}{cluster9}
+
+Since the controlled-PHASE/controlled-$Z$ can be moved around (as we have argued before), this circuit is equivalent to
+
+\fig{0.35}{cluster10}
+
+Based on the highlighted boxes, we can see that this quantum circuit is equivalent to 
+
+\fig{0.35}{cluster11}
+
+With this we're done. \\
+
+So, summing p, we have shown how the cluster-state model of computation can be used to efficiently simulate any quantum circuit whose inputs are all $\ket{+}$ states, and whose gates are either controlled-PHASE gates, or gates of the form $\had Z_\al$. This set of resources is \textit{universal} for quantum computation, and thus the cluster-state model is capable of efficiently simulating any quantum circuit. \\
+
+Conversely, it is straightforward to see that any cluster-state model can be efficiently modeled by a quantum circuit model, and thus the two models are computationally equivalent. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Properties}
+
+Now we discuss some properties of the cluster-state model of computation. We address two simple but fundamental questions about cluster states, and present some progress on answering these questions:
+
+\begin{itemize}
+	\item Can cluster states arise as ground states of some naturally occurring Hamiltonian? 
+	
+	\item What general properties of a quantum state enable it to serve as a substrate for quantum computation, in a manner similar to the cluster state? 
+\end{itemize}
+
+
+
+
+\subsubsection{Cluster states and ground states of many-body quantum systems}
+
+
+We won't focus too much on the details in this section. I will just focus on the fact that cluster states are in general not ground states of naturally/realistic Hamiltonians. However, this does not mean we can't prepare them in a lab or on a digital quantum computer. In particular, clusters arising in simulations of non-trivial multi-qubit quantum circuits cannot be non-degenerate ground states. \\
+
+The question of obtaining a general classification of which clusters satisfy these conditions is still open. It would be of great interest to develop a general understanding of which clusters can and cannot arise as ground states of physically reasonable Hamiltonians.  
+
+
+\subsubsection{Linearly assembled quantum states can be efficiently simulated on a quantum computer}
+
+
+Now we look at what makes cluster states useful substrates for quantum computation. We will show that spatial dimension plays a role, proving that quantum states which can be linearly prepared in one dimension can always be simulated efficiently on a classical computer, and thus are \textbf{not} useful for quantum computation. 
+
+\begin{defn}[Linearly preparable]
+	A linearly preparable quantum state $\ket{\psi}$ can be prepared using a circuit of the form of cascading sequence of two-quit quantum gates applied to some product starting state like so:
+	
+	\fig{0.35}{linear}
+	
+	We note that the two-dimensional cluster states we have been using are not linearly preparable:
+	
+	\fig{0.45}{cluster1}
+	
+\end{defn}
+	
+Now, suppose we perform a sequence of quantum measurements on a linearly assembled quantum state, e.g.,
+	
+\fig{0.3}{linear1}
+	
+where earlier measurement results may be used to control later measurement bases. Note that the measurement gates above may be in any single-qubit basis, not just the
+computational basis. This is equivalent to the following circuit
+	
+\fig{0.3}{linear2}
+	
+We claim that we can use a classical computer to simulate such a circuit.
+\begin{itemize}
+	\item First, we consider the result of applying $U_{12}$ to $\ket{00}$ and compute the probabilities fo the measurement on qubit 1.
+		
+	\item We then sample from this distribution to produce a posterior state for qubit 2, which is used as an input for $U_{23}$. 
+		
+	\item Then, repeat this cycle of computing probabilities, sampling, and computing posterior states.
+		
+	\item To make the overall result accurate, it suffices to carry out computations to $\mathcal{O}(\log (1/n))$ bits of precision, and thus the entire computation can be carried out using $\mathcal{O}(n \log^c(1/n))$ operations, where $c$ is some constant arising from the need to multiply floating point numbers. 
+\end{itemize}
+
+The point here is that efficient classical simulation of such a computation can be performed.\\
+
+An elaboration of this argument takes care of the case where we measure the qubits in some other order, for example: 
+
+\fig{0.3}{linear3}
+
+I won't go into the details here. \\
+
+
+This efficient classical simulation procedur can easily be generalized to a sequence of measurements performed in any order on the qubits including adaptive orderings. It is also straightforward to extend these resuts to some simple variants on the linear topology, including rings, and a small number of interlinking rings. \\
+
+
+It remains an interesting open problem to determine what class of states can be used as
+a substrate for quantum computation. The examples in this subsection indicate that the
+geometry underlying the preparation procedure plays a key role.
+	
+
+
+
+	
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6340,6 +6630,209 @@ In this case, while the preparation of the ground states is generically not perf
 
 
 \newpage
+
+\section{Mesurement-based quantum computing: Jozsa}
+
+This \href{https://arxiv.org/pdf/quant-ph/0508124.pdf}{\underline{paper}} by Richard Jozsa introduces two schemes of measurement-based quantum computation: the oe-way quantum computer (1WQC) (or equivalently the cluster state model) and the teleportation quantum computation (TQC).  The former was formulated by Briegel et al while the latter by Gottesman, Chuang, Nielsen, and Leung. While I want to discuss both models, we will want to read this paper with a focus on \textit{cluster state computation}. It turns out that there's a close relationship between these models, so it's useful to know both.\\
+
+Remember that in the formalism of measurement based quantum computation we start with a given fixed entangled state of many qubits and perform single-qubit measurements to designed qubits in designated bases. The choice of basis for later
+measurements may depend on earlier measurement outcomes and the final result of the computation is determined from the classical data of all the measurement outcomes. This is in contrast to the more familiar gate array model in which computational steps are unitary operations.\\
+
+In contrast to unitary evolution, measurements are irreversibly destructive, involving much loss of potential information about a quantum state’s identity. Thus it is interesting, and at first sight surprising, that we can perform universal quantum computation using only measurements
+as computational steps. These ``measurement based'' models are especially interesting for fundamental issues: they have no evident classical analogues and they offer a new perspective on the role of entanglement in quantum computation. 
+
+
+\subsection{Review}
+
+It's never a bad time to review the ubiquitous gates used in this QC. First, the Pauli matrices:
+\begin{align}
+I = \Id, \quad X = \begin{bmatrix}
+0 & 1 \\ 1 & 0
+\end{bmatrix},\quad Z = \begin{bmatrix}
+1 & 0 \\ 0 & -1
+\end{bmatrix},\quad iY = ZX = \begin{bmatrix}
+0 & 1 \\ -1 & 0
+\end{bmatrix}.
+\end{align}
+$\oplus$ denotes addition mod 2. The controlled-$NOT$ gate is given by 
+\begin{align}
+CX\ket{i}\ket{j} = \ket{i}\ket{i\oplus j}.
+\end{align}
+The controlled-PHASE is given by
+\begin{align}
+CZ\ket{i}\ket{j} = (-1)^{ij}\ket{i}\ket{j}.
+\end{align}
+Note that in contrast to the $CX$ gate, $CZ$ is symmetrical in two qubits. The Hadamard is given by
+\begin{align}
+\had = \f{1}{\sqrt{2}}\begin{bmatrix}
+1 & 1 \\ 1 & -1
+\end{bmatrix}
+\end{align}
+with the basis states $\ket{\pm}$. The Bell basis states are
+\begin{align}
+&\ket{B_{00}} = \f{1}{\sqrt{2}}(\ket{00} + \ket{11}) = I\otimes I \ket{B_{00}}\nn\\
+&\ket{B_{01}} = \f{1}{\sqrt{2}}(\ket{01} + \ket{10}) = X\otimes I \ket{B_{00}}\nn\\
+&\ket{B_{10}} = \f{1}{\sqrt{2}}(\ket{00} - \ket{11}) = Z\otimes I \ket{B_{00}}\nn\\
+&\ket{B_{11}} = \f{1}{\sqrt{2}}(\ket{10} - \ket{10}) = iY\otimes I \ket{B_{00}}\nn\\
+\end{align}
+Succinctly, we have
+\begin{align}
+\ket{B_{cd}} =Z^c X^d \otimes I \ket{B_{00}}.
+\end{align}
+The maximally entangled states is given by
+\begin{align}
+\ket{\had} = \f{1}{\sqrt{2}}(\ket{0+} + \ket{1-}) = \f{1}{\sqrt{2}}(\ket{+0} + \ket{-1}) = CZ\ket{++}.
+\end{align}
+
+
+
+
+
+\subsection{Adaptive Measurements}
+
+In this section we introduce some identities that are useful for us when we perform adaptive measurements. Our goal is to elaborate on how one makes \textit{adaptive measurements}, i.e., make measurements on some basis such that the state acquired by the subsequent qubit is ``nice.'' Here, ``nice'' means that we can use known rules of Pauli propagation (e.g. $HXH = Z$) or commute things around, and so on.\\ 
+
+
+Here's the idea. Suppose we wish to perform arbitrary sequences of gates from a universal set by measurements. For simplicity, consider 1-qubit gates: to perform $\dots U_3 U_2 U_1\ket{\psi}$ we successively teleport the three gates but instead of the described result we get something like $\dots P_3 U_3 P_2 U_2 P_1U_1\ket{\psi}$ where $P_i$ are the Pauli operators depending on the measurement outcomes To deal with this awkwardness we introduce \textit{adaptive choices} of measurements. This was introduced in the previous section as ``feeding forward the result of the last measurement into the next measurement.'' \\
+
+Let us assume that all 1-qubit operations are $x$ or $z$ rotations. The following Pauli propagation relations are easily verified:
+\begin{align}
+R_x(\theta)X = XR_x(\theta), \quad R_x(\theta)Z = ZR_x(-\theta), \quad R_Z(\theta)X=XR_z(-\theta), \quad R_z(\theta)Z = ZR_z(\theta).
+\end{align}
+These make sense: rotating in the same axis commutes. Rotating in the different axes don't commute. To swap the order of rotation, we also have to flip the direction of the rotation, so that it undoes the parity change. \\
+
+We also have
+\begin{align}
+W(\theta)X = ZW(-\theta), \quad W(\theta)Z = XW(\theta)
+\end{align}
+where
+\begin{align}
+W(\theta) = HP(\theta) = \f{1}{\sqrt{2}}\begin{bmatrix}
+1 & 1 \\  1 & -1
+\end{bmatrix}\begin{bmatrix}
+1 & 0 \\ 0 & e^{i\theta}
+\end{bmatrix} = \f{1}{\sqrt{2}}\begin{bmatrix}
+1 & e^{i\theta} \\ 1& e^{-i\theta}
+\end{bmatrix}.
+\end{align}
+
+Now, suppose we want to do $R_z(\be)R_x(\al)\ket{\psi}$. Now, there's a lot of short-hand notation here, but the important thing we have to keep in mind is that $\ket{\psi}$ is actually initially adjoined by $\ket{B_{00}} = (1/\sqrt{2})(\ket{00} + \ket{11})$. With this, it makes sense to make a Bell measurement on the qubit pair and get teleportation (in the Jozsa sense). Consider the object we want to evaluate:
+
+\fig{0.3}{bell-measure}
+
+After the first unitary, the state of interest becomes $R_x(\al)\ket{\psi}$. A Bell measurement gives outcomes $a,b$ and returns the teleported state $Z^a X^b R_x(\al)\ket{\psi}$ where $a,b\in \{0,1\}$. The proof of this are everywhere (and quite easy), so let's not worry about the details. \\
+
+Now we notice that commuting $Z^a X^b$ to the left through $R_z(\be)$ causes $\beta$ to change to $(-1)^b \beta$. So, if instead of $R_z(\beta)$ we next applied the Bell measurement for $R_z((-1)^b \beta)$ then 
+\begin{align}
+blah
+\end{align}
+
+
+
+
+
+
+\subsection{Cluster-state computation/1WQC}
+
+We just looked at this model in the previous section. However, in this section we will go into a little more detail. Remember that this model was introduced by Raussendorf and Briegel. The model starts with a 2D grid of $\ket{+}$ states, followed by applications of $CZ$ to each nearest neighbor pair in vertical and horizontal directions. The $CZ$'s commute so they can be applied in parallel, as a process of constant quantum depth. The resulting state is an entangled states of many qubits, called a \textit{cluster state}.
+
+\fig{0.3}{jozsa1}
+
+As we have seen, any quantum gate array can be implemented as a pattern of 1-qubit measurements on a sufficiently large 2D cluster state. The only measurements used are in the bases $M_z = \{\ket{0}, \ket{1}\}$ and $M_\theta = \{ \ket{0} \pm e^{i\theta}\ket{1} \}$ for some $\theta$. $\theta = 0$ corresponds to the $X$ basis measurements $\{ \ket{+}, \ket{-}   \}$. Measurement outcomes are always labeled 0 or 1 and they are always uniformly random.  \\
+
+Also, as we have seen before, quantum gates are implemented only up to known Pauli correction matrices $X^a Z^b$ where $a,b$ depend on the measurement outcomes. Recall that this is due to teleportation. In the 1WQC literature, these are called the \textit{bi-product Pauli operators}. Of course, the quantum computation is ``one way'' in the sense that the initial resource of the pure cluster state is irreversibly degraded as the computation proceeds in its layers of measurement. 
+
+\begin{exmp}
+	This first example is take from this \href{https://arxiv.org/pdf/quant-ph/0301052.pdf}{\underline{paper}} by Briegel et al. For this example, we look at measurement patterns for 1-qubit gate (where a 1-dimensional cluster state suffices, as we have seen). \\
+	
+	We know that any 1-qubit unitary $U$ can be expressed as a three alternating rotations:
+	\begin{align}
+	U = R_x (\zeta)R_z(\eta)R_x(\xi),
+	\end{align}
+	for some $\zeta, \eta, \xi$ where of course 
+	\begin{align}
+	R_x(\theta) = e^{-i\theta X}, \quad R_y(\theta) = e^{-i\theta Y}, \quad R_z(\theta) = e^{-i\theta Z}
+	\end{align}
+	are rotation matrices (in the Bloch sphere). This is quite intuitive, so I won't explain why this is the case. Now, to apply $U$ to $\ket{\psi}$ by the 1WQC we start with $\ket{\psi}$ in a line with $04$ $\ket{+}$ qubits like this:
+	
+	\fig{0.3}{rotate}
+	
+	Remember that because there are 3 total rotations, we will need four $\ket{+}$ ``ancillary'' qubits. Next, entangle all neighboring pairs with $CZ$ gates and subsequently measure qubits $1,2,3,4$ adaptively in the bases shown in the figure. It may be shown that qubit 5 acquires the state $X^{s_2 + s_4} Z^{s_1 + s_3} U\ket{\psi}$, where $s_i$ is the outcome of the measurement on qubit $i$. \\
+	
+	We won't worry about the details of this example now, for we will return to this paper by Briegel et al later. But the idea is this. Recall that in the teleportation circuit we have something like
+	
+	\fig{0.3}{tele}
+	
+	where a rotation by $Z_\al$ gives a state of the form $X^m \ket{\phi}$. By a similar argument, because $HXH = Z$, we can argue that a rotation by $X_\al$ gives a state of of the form $Z^m$. This means that after the first measurement in the $X$ basis, the resulting state is going to be $Z^{s_1}$. Next, we have a rotation by $R_z$, so the next factor, roughly speaking, is going to be $X^{s_2}$, and so on. Of course, the reality is that commutation rules also dictate which power goes where in the bi-product operator. So, a careful check is necessary. In any case, we'll come back to this in the Briegel's paper, which is a more mathematically rigorous approach to all of this. 
+\end{exmp}
+
+
+\begin{exmp}
+	In this example we consider a simpler pattern:
+	
+	\fig{0.3}{fig6}
+	
+	This is more familiar to us at this point. Again, by exchanging the role of $Z$ and $X$ between our previous examples and this one, we can see that qubit 3 acquires the state $Z^{s_1}X^{s_2}\ket{\psi}$ (remember, this is just teleportation). The two $X$ measurements may be done in parallel but we can also consider this process as a sequence of two identical steps as we have seen: given a state $\ket{\psi}$, adjoint this to $\ket{+}$, entangle them with $CZ$ and then $X$-measure the first qubit, giving an outcome $s \in \{0,1\}$. Qubit 2 is then left in the state $X^s \had \ket{\psi}$. This means the two step chain ends up in the state
+	\begin{align}
+	(X^{s_2}\had )(X^{s_1}\had)\ket{\psi} = X^{s_2}Z_{s_1}\ket{\psi}.
+	\end{align} 
+	where we have used the fact that $\had X \had  = Z$. 
+\end{exmp}
+
+
+
+\begin{exmp}
+	Here we look at a single step operation for the general measurement basis $M(\theta)$.
+	
+	\fig{0.3}{fig7}
+	
+	The state $\ket{\psi}$ and $\ket{+}$ are entangled by the $CZ$. Measuring the first qubit in the basis $M(\theta) = \{ \ket{0} \pm e^{i\theta}\ket{1} \}$ leaves qubit 2 in the state $X^{s_1}W(-\theta)\ket{\psi}$. Here,
+	\begin{align}
+	W(\theta) = HP(\theta) = \f{1}{\sqrt{2}}\begin{bmatrix}
+	1 & 1 \\  1 & -1
+	\end{bmatrix}\begin{bmatrix}
+	1 & 0 \\ 0 & e^{i\theta}
+	\end{bmatrix} = \f{1}{\sqrt{2}}\begin{bmatrix}
+	1 & e^{i\theta} \\ 1& e^{-i\theta}
+	\end{bmatrix}.
+	\end{align}
+\end{exmp}
+
+
+\subsection{Teleportation-based quantum computing}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6350,14 +6843,10 @@ We want to read this paper with a focus on \textit{cluster states}.
 \newpage
 
 
-\section{Mesurement-based quantum computing: Jozsa}
-\href{https://arxiv.org/pdf/quant-ph/0508124.pdf}{\underline{paper}}\\
-
-We want to read this paper with a focus on \textit{cluster states}.
 
 
 
-\newpage
+
 
 
 
