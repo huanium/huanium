@@ -6633,7 +6633,7 @@ geometry underlying the preparation procedure plays a key role.
 
 \section{Mesurement-based quantum computing: Jozsa}
 
-This \href{https://arxiv.org/pdf/quant-ph/0508124.pdf}{\underline{paper}} by Richard Jozsa introduces two schemes of measurement-based quantum computation: the oe-way quantum computer (1WQC) (or equivalently the cluster state model) and the teleportation quantum computation (TQC).  The former was formulated by Briegel et al while the latter by Gottesman, Chuang, Nielsen, and Leung. While I want to discuss both models, we will want to read this paper with a focus on \textit{cluster state computation}. It turns out that there's a close relationship between these models, so it's useful to know both.\\
+This \href{https://arxiv.org/pdf/quant-ph/0508124.pdf}{\underline{paper}} by Richard Jozsa introduces two schemes of measurement-based quantum computation: the oe-way quantum computer (1WQC) (or equivalently the cluster state model) and the teleportation quantum computation (TQC).  The former was formulated by Briegel et al while the latter by Gottesman, Chuang, Nielsen, and Leung. While I want to discuss both models, we will want to read this paper with a focus on \textit{cluster state computation}. It turns out that there's a close relationship between these models, so it's probably useful to know both. But we'll see how much we want to understand teleportation-based QC. \\
 
 Remember that in the formalism of measurement based quantum computation we start with a given fixed entangled state of many qubits and perform single-qubit measurements to designed qubits in designated bases. The choice of basis for later
 measurements may depend on earlier measurement outcomes and the final result of the computation is determined from the classical data of all the measurement outcomes. This is in contrast to the more familiar gate array model in which computational steps are unitary operations.\\
@@ -6724,9 +6724,21 @@ After the first unitary, the state of interest becomes $R_x(\al)\ket{\psi}$. A B
 
 Now we notice that commuting $Z^a X^b$ to the left through $R_z(\be)$ causes $\beta$ to change to $(-1)^b \beta$. So, if instead of $R_z(\beta)$ we next applied the Bell measurement for $R_z((-1)^b \beta)$ then 
 \begin{align}
-blah
+R_Z((-1)^b \beta) Z^a X^b R_x(\al)\ket{\psi} = Z^a R_z((-1)^b\beta)X^b R_x(\al)\ket{\psi}= Z^a X^b R_z(\beta)R_x(\al)\ket{\psi}
 \end{align}
+as wanted. Suppose this second measurement with basis adapted to measurement outcome $b$ has an outcome $c,d$ say, and the state is now $Z^{a+c} X^{b+d} R_z(\beta) R_x(\al) \ket{\psi}$. Continuing in this way, adapting measurement bases to earlier measurement results we get
+\begin{align}
+\dots X_2^{m_2}Z_2^{n_2}X_1^{m_1}Z_1^{n_1} \text{(the correct wanted U)} \ket{\psi}.
+\end{align}
+Here $\ket{\psi}$ is a state of many qubits and $X_i, Z_i$ are Pauli operators on the $i$th qubit. The indices $m_i,n_i$ are accumulations (sum mod 2) of measurement outcomes. \\
 
+The same idea applies to the 2-qubit gate $CZ$ too where the situation is even better. We have the propagation relations:
+\begin{align}
+CZ(Z\otimes I) = (Z\otimes I)CZ,\quad CZ(X\otimes I) = (X\otimes Z) CZ.
+\end{align}
+Thus we can propagate Pauli operators through $CZ$ while keeping $CZ$ the same, so no basis adaption is required.\\
+
+If $U$ is a total unitary effect of a gate array on a multi-qubit state $\ket{\psi}$ then using the above methods we are able to generate a state of the form $\dots X_2^{m_2}Z_2^{n_2}X_1^{m_1}Z_1^{n_1} U \ket{\psi}$. In a quantum computation we finally measure at least some qubits of $U\ket{\psi}$ in the $Z_i$ bases $\{ \ket{0}, \ket{1} \}$. Now, notice that $Z_i^{n_i}$ has no effect on the measurement outcomes (only phases are shifted) and $X_i^{m_i}$ requires only some simple re-interpretation of the output results (since all $X$ does is flipping bits). This means we simple need to reinterpret measurement outcome $k_i \in \{0,1\}$ as $k_i \oplus m_i$ where $m_i \in \{0,1\}$ is the exponent of the corresponding $X$ Pauli matrix. 
 
 
 
@@ -6793,16 +6805,121 @@ Also, as we have seen before, quantum gates are implemented only up to known Pau
 	\end{bmatrix}\begin{bmatrix}
 	1 & 0 \\ 0 & e^{i\theta}
 	\end{bmatrix} = \f{1}{\sqrt{2}}\begin{bmatrix}
-	1 & e^{i\theta} \\ 1& e^{-i\theta}
+	1 & e^{i\theta} \\ 1& -e^{i\theta}
 	\end{bmatrix}.
+	\end{align}
+	Let's check this to make sure we're still on track. According to the circuit, we first have a $CZ$ between $\ket{\psi} = \al\ket{0} + \be\ket{1}$ and $\ket{+}$. This gives a new state
+	\begin{align}
+	CZ\ket{\psi+} &= CZ\f{1}{\sqrt{2}}\lb \al\ket{00} + \al\ket{01} + \be\ket{10} + \be\ket{11} \rb\nn\\
+	&= \f{1}{\sqrt{2}}\lb \al\ket{00} + \al\ket{01} + \be\ket{10} - \be\ket{11} \rb.
+	\end{align}
+	To check that after measuring in the basis $M(\theta) = \{\ket{0} \pm e^{i\theta}\ket{1} \}$ we get $X^{s_1}W(-\theta)\ket{\psi}$ it suffices to check that 
+	\begin{align}
+	CZ\ket{\psi+} = (\ket{0} + e^{i\theta}\ket{1})X^0W(-\theta)\ket{\psi} + (\ket{0} - e^{i\theta}\ket{1})X^1 W(-\theta)\ket{\psi}.
+	\end{align}
+	This is not hard to check, so I'll leave this to the reader. The point is to show that qubit 2 acquires the state $X^{s_1}W(-\theta)\ket{\psi}$. \\
+	
+	The point of this example is to show that if we are not concerned with issues of parallelizability then any 1D measurement pattern may be viewed as a sequential application of the process this example, measurements in the $M(\theta)$ basis, applied repeatedly. \\
+	
+	This shows that the unitary operation $W(\theta)$ plays a fundamental role in 1WQC/cluster state computation. For instance, in the previous example, 
+	
+	\fig{0.3}{rotate}
+	
+	we can reorder all operations as follows: (entangle 12, measure 1), (entangle 23, measure 2), and so on. This is because the 12-entangling operation and first measurement both commute with all subsequent entangling operations and measurements. Of course, the basis $M(\theta)$ is identically $X$ if $\theta = 0$.
+\end{exmp}
+
+
+From there examples, we can concatenate gates. Suppose we wish to apply $U_1$ then $U_2$ to some input $\ket{\psi}$. Now, measurement pattern 1 for $U_1$ gives an output that is the input for $U_2$. But all measurements in pattern 1 commute with all entangling operations of pattern 2 (recall we can move things the entangling and measurement 1 around in the previous section). So, we can apply all entangling operations for both patterns first, to get a longer single cluster state and then apply the measurements.\\
+
+
+Finally, we can eliminate the input state $\ket{\psi}$ altogether, to get a formalism based entirely on a starting state that is a fully standard cluster state (or slightly longer length). This is because we can implement any 1-qubit unitary $U$, we can take out input starting state to be $\ket{+}$ and prefix the desired process with an initial measurement pattern for a unitary operation that takes $\ket{+}$ to $\ket{\psi}$.\\
+
+This 1D formalism may be generalized using 2D cluster grids to incorporate 2-qubit gates. For universal computation it suffices to be able to implement just the $CZ$gate in addition to 1-qubit gates. For example:
+
+\fig{0.3}{fig8}
+
+The dots denote the $\ket{+}$ states and connecting lines denote $CZ$ applications between the dots. If the measurement pattern shown on the right is applied at the sites, the only the unmeasured sites are of interest and contain $(P_1 \otimes P_2)CZ\ket{\psi_{in}}$ where $P_1 \otimes P_2$ is a Pauli operation that depends on the measurement outcomes. 
+
+
+\subsubsection{The Role of $Z$ measurements}
+
+Measurement patterns for general gate arrays, which are implemented on a sufficiently large 2D cluster, will general have extraneous sites not used in the measurement patterns. $Z$-measurements are used to delete such extraneous sites. To see how this works, we consider two examples. 
+
+\begin{exmp}
+Consider the following cluster:
+
+\fig{0.45}{fig9}
+
+This has quite an irregular shape. Suppose we only want to use sites $1,2,3$, i.e., we want to delete site $A$. Consider $Z_A$, a $Z$ measurement at site $A$, with outcome $k_A$. To see its effect we need to write down what the state resulting from figure 9 is. Now, measurement $Z_A$ commutes with $CZ_{12}$ and $CZ_{23}$. However, 
+\begin{align}
+CZ_{A2}\ket{++} = \ket{0+} + \ket{1-}.
+\end{align}
+So, after the $Z_A$ measurement (with outcome $k_A$) the sites $1,2,3$ contain $\ket{+}\ket{(-1)^{k_A}} \ket{+}$, where $\ket{(-1)^{k_A}}$ is one of the two Hadamard basis states:
+\begin{align}
+\sim \begin{bmatrix}
+1\mp \sqrt{2} & 1
+\end{bmatrix}^\top
+\end{align}
+This means that the effect of the $Z_A$ measurement is to have used the Hadamard basis state $\ket{\pm} = \ket{(-1)^{k_A}}$ at site $2$ instead of the standard $\ket{+}$ and then entangle as usual. \\
+
+So, to summarize, by applying the measurement $Z_A$, we end up with the total state $\ket{+(-1)^{k_A}+}$ at $1,2,3$, and get no more entanglement with $A$. 
+
+
+
+\end{exmp}
+
+
+
+\begin{exmp}
+	Consider the following figure again:
+	
+	\fig{0.4}{fig7bis}
+	
+	Suppose we start with $\ket{\psi -}$ instead of with $\ket{\psi +}$ as before. Applying $CZ$, then measure $M(\theta)$ at qubit 1 for output at qubit 2. The reader can check that this is the same as (i) start with $\ket{\psi +}$, (ii) apply $CZ$, (iii) measure $M(\theta)$ on qubit 1, (iv) applying the unitary $I\otimes Z_2$. Now, since $Z_2$ commutes with $CZ$ and $M(\theta)$, we can apply $I \otimes Z_2$ before applying $CZ$ and note that
+	\begin{align}
+	I \otimes Z_2 \ket{\psi +} = \ket{\psi -}. 
 	\end{align}
 \end{exmp}
 
 
-\subsection{Teleportation-based quantum computing}
+
+In summary, we see that the measurement $Z_A$ at site $A$ with outcome $k_A$ adds in an extra $Z^{k_A}$  Pauli correction at all neighboring sites of $A$, in addition to the usual Pauli operations arising from measurement patterns in a standard cluster state that had site $A$ absent from the start. 
 
 
 
+\subsubsection{Summary}
+
+To summarize the cluster state/1WQC model, we have seen that
+\begin{itemize}
+	\item Any quantum gate array can be translated into a pattern of 1-qubit measurements on a sufficiently large 2D cluster state.
+	
+	\item Choices of measurement bases are generally adaptive: possibly depending on previous measurement outcomes.
+\end{itemize}
+
+
+\subsection{Selected extra features: Cluster state model}
+
+\begin{thm}
+	1WQC/Cluster state model with 2D cluster states is universal for quantum computation. 
+\end{thm}
+
+\fig{0.3}{1D}
+
+However, as we have discussed, any 1WQC/cluster state process based on only 1D cluster states can be simulated classically efficiently (in polynomial time in the number of qubits). Thus, the universality of any such model would imply that quantum computation is no more powerful than classical computation. 
+
+
+
+
+
+
+
+\subsection{Teleportation-based QC (TQC)}
+As expected, I'm not going to worry about this. 
+
+
+\subsection{Relationships between TQC and Cluster State models}
+
+... or this either. 
 
 
 
@@ -6825,6 +6942,22 @@ Also, as we have seen before, quantum gates are implemented only up to known Pau
 
 
 
+\section{More overview: Cluster State QC}
+
+In this section we will read the following \href{https://www.cs.umd.edu/class/spring2018/cmsc457/report/Cluster_State_Quantum_Computing.pdf}{\underline{review}} by Reddy and Schmidt, just to solidify our understanding of this model of quantum computation. \\
+
+
+
+
+
+
+\newpage
+
+
+
+
+\section{Measurement-based quantum computing on cluster states: Briegel et al}
+In this section we will study this \href{https://arxiv.org/pdf/quant-ph/0301052.pdf}{\underline{paper}} from the originations themselves. \\
 
 
 
@@ -6836,10 +6969,8 @@ Also, as we have seen before, quantum gates are implemented only up to known Pau
 
 
 
-\section{Measurement-based quantum computing: Briegel et al}
-\href{https://www.nature.com/articles/nphys1157.pdf}{\underline{paper}}.\\
 
-We want to read this paper with a focus on \textit{cluster states}.
+
 \newpage
 
 
