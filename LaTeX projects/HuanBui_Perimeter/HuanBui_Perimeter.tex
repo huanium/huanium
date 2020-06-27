@@ -6927,19 +6927,25 @@ In this section, we demonstrate that it is possible to explicitly translate the 
 
 \subsection{Universal gates with CC}
 
+\textit{to be updated soon}
+
 \subsubsection{Rotation in $X$}
+
+\textit{to be updated soon}
 
 \subsubsection{Rotation in $Z$}
 
+\textit{to be updated soon}
+
 \subsubsection{CNOT}
 
-
+\textit{to be updated soon}
 
 
 \subsection{Cluster States for TFIM state preparation}
 
 
-
+\textit{to be updated soon}
 
 
 
@@ -6968,9 +6974,42 @@ Recent developments of quantum computers and simulators has motivated variationa
 Motivated by this, the paper proposes VITA which involves sequentially evolving with different Hamiltonians in imaginary time. As proof of concept, the paper demonstrate the efficiency of the ansatz in representing the ground state of the TFIM at criticality. 
 
 
+\subsection{The Ansatz}
+
+Many Hamiltonians are naturally a linear combination of two components
+\begin{align}
+H = H_a + g H_B
+\end{align}
+where $H_A, H_B$ are individually tractable to analyze. The TFIM Hamiltonian is one example of such Hamiltonians. Motivated by the QAOA procedure, we consider the following variational imaginary time ansatz (VITA) for the ground state of $H$:
+\begin{align}
+\ket{\psi_p(\bm \al, \bm \beta)} = \mathcal{N} e^{-\be_P H_B}e^{-\al_P H_A}\dots e^{-\be_1H_B}e^{-\al_1 H_A} \ket{\psi_0}
+\end{align}
+where $P$ is the number of pairs of variational parameters $\bm \al = (\al_1, \dots, \al_P), \bm \beta = (\be_1,\dots, \be_P)$, $\ket{\psi_0}$ is an initial state, and $\mathcal{N}$ is a normalization factor. The total imaginary time is defined as
+\begin{align}
+\tau = \f{1}{2}\sum_{p=1}^P (\al_p + \be_p).
+\end{align}
+
+The standard projector method for attaining the ground state of $H$ involves evaluating $e^{-\tau H}$ for $\tau \sim 1/\Delta $ where $\Delta$ is the many-body spectral gap. This can be decomposed via Trotterization into a sequence of the VITA form with parameters $\al_p = \be_p = \tau/2P$ for large $P$, which guarantees that VITA can exactly represent the ground state in the $P\to \infty$ limit. However, this method is expensive for critical systems where $\Delta \sim 1/L$ and hence $\tau$ scales polynomially with $L$. \\
+
+Thus, one can consider the VITA form as a nonuniform Trotterization with large and variable time steps. It turns out the remarkably high fidelities can be attained even with $\tau$ that is exponentially smaller compared to the aforementioned estimate from the standard projector method. 
 
 
+\subsection{VITA on TFIM}
 
+
+Consider the TFIM Hamiltonian:
+\begin{align}
+H = H_{ZZ} + h H_X = -\sum^N_{i=1}Z_i Z_{i+1} - h \sum^N_{i=1}X_i
+\end{align}
+with periodic boundary conditions on a system with $N$ spins. We start in the ground state of $H_X$, $\bigotimes \ket{+}$, and alternate between $H_{ZZ}$ and $H_X$. For a fixed $P$, optimization involves finding the minima of the energy cost function 
+\begin{align}
+E_p(\bm \al, \bm \be) = \bra{\psi_p(\bm \al,\bm\be)}H \ket{\psi_p (\bm\al,\bm\be)}.
+\end{align}
+We can also compute the error in fidelity:
+\begin{align}
+1-f = 1- \abs{\bra{\psi_{\text{exact}}}{\phi_p(\bm\al,\bm\be)}}^2.
+\end{align}
+It turns out the efficiency is remarkable. For $L=64, P=2$ is already sufficient to approximate the critical state to within around $10^{-4}$ in relative energy and $10^{-2}$ in fidelity.  Recall that the error in fidelity provides an upper bound for the error in any observable.
 
 
 
