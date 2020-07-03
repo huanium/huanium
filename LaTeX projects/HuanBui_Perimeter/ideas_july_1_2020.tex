@@ -1,0 +1,206 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{
+	letterpaper,
+	left=20mm,
+	right=20mm,
+	top=10mm,
+	bottom=20mm
+}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\had}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+\newcommand{\ep}{\epsilon}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\td}[1]{\tilde{#1}}
+
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+
+\newcommand{\fig}[2]{
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=#1]{#2}
+	\end{figure}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+\begin{document}
+	\begin{center}
+		\huge{Protocol Idea \& Questions}
+	\end{center}	
+	\begin{center}
+		Huan Bui \\ \today
+	\end{center}
+
+
+\section{Protocol Idea }
+
+After our meeting, I spent some more time thinking about the idea of using measurements and local unitaries to ``shrink'' and turn the ansatz (of large system size) to the ground state (a smaller system). Now, I want to run it through you again to see if it makes sense do this. \\
+
+ 
+\noindent Suppose we want to prepare a $k$-qubit TFIM critical ground state. What I'm thinking is perhaps we can start with a ring-like cluster state of $k\times2^n$ qubits in for some $n$. The goal is to achieve the $k$-qubit critical state after $\sim n$ measurement layers, where $n \sim \log(k)$. \\
+
+
+\noindent Here's the protocol I'm thinking of:
+\begin{itemize}
+	\item To start, we measure every other qubit on the ring in the $X$-basis, leaving the unmeasured $k\times2^{(n-1)}$ qubits in the highly entangled GHZ state (up to some bit flips). The effective system size is halved.
+	
+	\item Apply a set of non-uniform local unitaries $\{\mathcal{U}_i\}_{i=1}^p$ across the unmeasured qubits. The set of these unitaries will be parameterized by $p>2$ parameters (where 2 is what a single layer of QAOA has).
+	
+	\item Compute the cost function to find a new parameters for the next set of unitaries for the next layer of measurements (which shrinks the effective system size down further).(*)
+	
+
+	\item Repeat until convergence. 
+\end{itemize}
+
+
+  
+\noindent \textbf{(*):} There's one detail regarding computing the cost function, though, because now we have not only the full system size ( $L_{\text{full}}=k\times 2^n$ qubits) but also an effective system size  which approaches $k$ as we go through the layers of measurements ($L_{\text{eff}} \downarrow k$). \\
+ 
+\noindent Unlike in QAOA where $L_{\text{full}} = L_{\text{eff}}$ (since the number of effective qubits doesn't change), here $L_{\text{eff}} \downarrow k$ following each layer of measurements. As a result, we don't have a trial $\ket{\psi_{\text{trial}}}$ in the same Hilbert space as $\ket{\psi_{\text{target}}}$  to compute the cost function
+\begin{equation*}
+\bra{\psi_{\text{target}}} \had \ket{\psi_{\text{trial}}}
+\end{equation*}
+as in QAOA. To circumvent this issue, I think we can embed $\ket{\psi_{\text{target}}}$ into a larger Hilbert space by adjoining it with ancilla qubits $\bigotimes \ket{+}$ so that $\ket{\psi_{\text{target}}}\ket{\bigotimes+}$ and $\ket{\psi_{\text{trial}}}$ are in the same Hilbert space. With this, we can compute the cost function:
+\begin{equation*}
+\bra{\psi_{\text{target}}} \bra{\bigotimes +} (\had \otimes \Id) \ket{\psi_{\text{trial}}}.
+\end{equation*}
+\noindent I believe that by minimizing this new quantity at each layer, we will still be on the right track to minimizing the original cost function  $\bra{\psi_{\text{target}}} \had \ket{\psi_{\text{trial}}}$. The intuition here being that the ancilla qubits and the identity operator don't affect the optimization.\\
+
+
+\noindent If this protocol works and if $n$ scales as $\log(k)$ then we have a protocol whose depth scales as $\log(k)$. Not only that, the number of qubits required also doesn't scale too fast ($\sim k^{\al}$ where $1 < \al < 2$).
+
+
+\section{Questions} 
+
+I want to give this idea a test, but I want to run it through you before perhaps trying to implement it. 
+
+\begin{itemize}
+	\item Am I explaining the protocol clearly enough? Does the protocol make sense?  
+	\item Is there a limitation or potential problem here that you can foresee? 
+	\item Do you see a potential issue with having too many qubits in the beginning (the full system size in this protocol scales as $\sim k^\al$ where $1 < \al < 2$)? If that's the case, we can also choose not to measure half the remaining qubits at each layer.
+\end{itemize}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{document}
