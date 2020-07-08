@@ -5097,7 +5097,7 @@ To simulate many-body systems on a digital computer (either quantum or classical
 	
 	\item \textit{Fermions-to-qubit mappings:}\\
 	
-	Since the basic units of a quantum computer are qubits rather than fermions, any quantum simulation algorithm of fermions emplyos a suitable encoding of fermionic degrees of freedom into qubits. The standard \textit{Jordan-Wigner} mapping identifies each Fermi mode with a qubit such that the empty and the occupied states are mapped to the qubit basis states $\ket{0}$ and $\ket{1}$ respectively. The Jordan-Wigner mapping/transformation is a transformation that maps spin operators onto fermionic creation and annihilation operators. 
+	Since the basic units of a quantum computer are qubits rather than fermions, any quantum simulation algorithm of fermions employs a suitable encoding of fermionic degrees of freedom into qubits. The standard \textit{Jordan-Wigner} mapping identifies each Fermi mode with a qubit such that the empty and the occupied states are mapped to the qubit basis states $\ket{0}$ and $\ket{1}$ respectively. The Jordan-Wigner mapping/transformation is a transformation that maps spin operators onto fermionic creation and annihilation operators. 
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[scale=0.3]{jw}
@@ -7023,10 +7023,513 @@ It turns out the efficiency is remarkable. For $L=64, P=2$ is already sufficient
 \section{The Jordan-Wigner Transformation}
 
 
-In this section we study the Jordan-Wigner transformation, which is an important tool for analyzing the TFIM. 
+In this section we study the Jordan-Wigner transformation, which is an important tool for analyzing the TFIM with nearest-neighbor interactions. This is interesting because by being able to map a system of qubits to a system of Fermions, anything we understand about one type of system can be immediately applied to learn something about the other type of system. \\
+
+First, we will consider the motivation for the transformation and learn about the basics of the Jordan-Wigner transformation from this \href{http://michaelnielsen.org/blog/archive/notes/fermions_and_jordan_wigner.pdf}{\underline{notes}} by Michael Nielsen. \\
+
+Then, we will look at how the Jordan-Wigner transformation is often written in the literature, based on materials from various sources. \\
+
+After that, we might explore what the Jordan-Wigner transformation is applied in context of QAOA and perhaps measurement-based quantum computation.
+
+
+\subsection{Fermonic canonical commutation relations}
+
+\subsubsection{Introduction}
+
+Suppose we have a set of operators $a_1,\dots,a_n$ acting on some Hilbert space $V$. We say that these operations satisfy the \textit{canonical commutation relations (CCRs) for Fermions} if
+\begin{equation}
+\boxed{\{ a_j , a_k^\dagger \} = \delta_{jk} I; \quad \{ a_j ,a_k \} = 0}
+\end{equation} 
+where
+\begin{equation}
+\{ A,B \} = AB + BA
+\end{equation}
+is the anti-commutator. Note that when we take the conjugate of the second of these relations we find 
+\begin{equation}
+\{ a_j^\dagger, a_k^\dagger \} = 0
+\end{equation}
+which is sometimes also referred to as one of the CCRs. It is also frequently useful to set $j=k$, giving $a_J^2 = (a_j^\dagger)^2 =0$. This is also the statement of the Pauli exclusion principle.  \\
+
+
+One way of thinking about the CCRs is in an axiomatic mathematical sense. We may think of these conditions as mathematical conditions that can be imposed on a set of matrices: for a given set of matrices, we can simple check and verify whether those matrices satisfy the CCRs. \\
+
+For instance, when the state space $V$ is that of a single qubit, we can easily verify that the operator $a =\ket{0}\bra{1}$ satisfies the Fermionic CCRs. Now, the question is what consequences about the structure of $V$ and the operators $a_j$ can be deduced from the fact that the CCRs hold. \\
+
+Of course, there's also a representation-theoretic way of understanding things, but let's not go there. \\
+
+Finally, the physical way to understanding the CCRs is the following. When we want to describe a system of Fermions, one way to begin is to start by writing down a set of operators satisfying the CCRs, and then try to guess what sort of Hamiltonian involving those operators could describe the interactions observed in the system. \\
+
+We shall approach the Fermionic CCRs from a purely mathematical point of view, asking the question ``What can we deduce from the fact that a set of operators satisfying the CCRs exists?'' It turns out that we can deduce quite a lot about the structure of $V$ and $a_j$ simple from the fact that the $a_j$'s satisfy the CCRs.
+
+
+\subsubsection{Consequences of the Fermionic CCRs}
+
+Assume that $V$ is finite dimensional, and that there are $n$ operators $a_1,\dots,a_n$ on $V$ satisfying the Fermionic CCRs. We will do the following things:
+\begin{itemize}
+	\item Start by showing that the operators $a^\dagger_j a_j$ are positive Hermitian operators with eigenvalues $0,1$.
+	
+	\begin{proof}
+		Observe that the $a_j^\dagger a_j$ are positive matrices. Now, since $(a_j^\dagger a_j)^2 = a_j^\dagger a_j$:
+		\begin{equation}
+		(a_j^\dagger a_j)^2 = a_j^\dagger a_j a_j^\dagger a_j = a_j^\dagger(1-a_j^\dagger a_j)a_j = -(a_j^\dagger)^2 a_j^2+ a_j^\dagger a_j = a_j^\dagger a_j
+		\end{equation}
+		where we have used the CCRs $\{ a_j^\dagger,a_j \} = 1$ and $\{ a_j,a_j \}=0$.
+		Thus, the eigenvalues of $a_j^\dagger a_j$ are 0 and 1. 
+	\end{proof}
+	
+	
+	\item $a_j$ acts as a \textit{lowering operator} for $a^\dagger_j a_j$, in the sense that if $\ket{\psi}$ is a normalized eigenstate of $a_j^\dagger a_j$ with eigenvalue $1$ then $a_j \ket{\psi}$ is a normalized eigenstate of $a^\dagger_j a_j$ with eigenvalue $0$. If $\ket{\psi}$ is normalized eigenstate of $a^\dagger_j a_j$ with eigenvalue $0$, then $a_j \ket{\psi}$ vanishes. 
+	
+	\begin{proof}
+		Let a normalized $\ket{\psi}$ be given, and $a_j^\dagger a_j\ket{\psi} = \ket{\psi}$, that is $\ket{\psi}$ is the 1-eigenstate of $a_j^\dagger a_j$. Then 
+		\begin{equation}
+		\bra{\psi} a_j^\dagger a_j \ket{\psi} = \braket{\psi} = 1
+		\end{equation}
+		so $a_j\ket{\psi}$ is normalized. Now, note that because $\{a_j,a_j \}=0$, we have
+		\begin{equation}
+		(a_j^\dagger a_j)a_j\ket{\psi} = 0.
+		\end{equation} 
+		Finally, suppose $a_j^\dagger a_j \ket{\psi} = 0$, then 
+		\begin{equation}
+		a_j\ket{\psi} = a_j \{ a_j^\dagger,a_j \}\ket{\psi} = 0.
+		\end{equation}
+	\end{proof}
+	
+	
+	\item Similarly, $a_j^\dagger$ acts as a \textit{raising operator} for $a^\dagger_j a_j$, in the sense that if $\ket{\psi}$ is a normalized eigenstate of $a_j^\dagger a_j$ with eigenvalue $0$ then $a^\dagger_j  \ket{\psi}$ is a normalized eigenstate of $a^\dagger_j a_j$ with eigenvalue $1$. If $\ket{\psi}$ is normalized eigenstate of $a^\dagger_j a_j$ with eigenvalue $1$, then $a_j^\dagger \ket{\psi}$ vanishes. 
+	
+	\begin{proof}
+		The proofs are not too hard (when in doubt, use the CCRs), so I  will leave them to the reader.
+	\end{proof}
+	
+	
+	\item Prove that the operators $a^\dagger_j a_j$ form a mutually commuting set of Hermitian matrices, and thus there exists a state $\ket{\psi}$ which is a simultaneous eigenstate of $a^\dagger_j a_j$ for all values of $j$.
+	
+	
+	\begin{proof}
+		We first want to show that the $a_j^\dagger a_j$ form a mutually commuting set of observables. To see this, let $j\neq k$, an apply the CCRs repeated to obtain
+		\begin{equation}
+		a_j^\dagger a_j a_k^\dagger a_k = a_k^\dagger a_k a_j^\dagger a_j
+		\end{equation}
+		which is the desired commutativity. From linear algebra, we know that a family of commuting matrices is simultaneously diagonalizable, so we're done. Basically, we simply use the fact that there exists a normalized state $\ket{\psi}$ which is a simultaneous eigenstate of all the $a_j^\dagger a_j$ operators. In particular for all $j$ we have
+		\begin{equation}
+		a_j^\dagger a_j \ket{\psi} = \al_j \ket{\psi}
+		\end{equation}
+		where for each $j$, $\al_j \in \{ 0,1 \}$. It will be convenient to assume that $ \al_j  = 0$ for all $j$. This assumption can be made without loss of generality, by applying the lowering operators to the $\ket{\psi}$ for each $j$ such that $\al_1$, resulting in a normalized state $\ket{\text{vac}}$ such that 
+		\begin{equation}
+		a_j^\dagger a_j \ket{\text{vac}} = 0 
+		\end{equation}
+		for all $j$. 
+	\end{proof}
+	
+	
+	\item By raising and lowering the state $\ket{\psi}$ in all possible combinations, we'll construct a set of $2^n$ orthonormal states which are simultaneous eigenstates of the $a_j^\dagger a_j$. The corresponding vector of eigenvalues uniquely labels each state in this orthonormal basis. 
+	
+	\begin{proof}
+		Here we want to define an orthonormal basis. For any vector $\al = (\al_1,\dots,\al_n)$ where each $\al_j = 0$ or $1$, define a corresponding state
+		\begin{equation}
+		\ket{\al} = (a_1^\dagger)^{\al_1}\dots (a_n^\dagger)^{\al_n}\ket{\text{vac}}
+		\end{equation}
+		It is clear that there are $2^n$ such states $\ket{\al}$, and that they form an orthonormal set spanning a subspace of $V$ that we call $W$. 
+	\end{proof}
+	
+	\item Suppose the vector space spanned by these $2^n$ simultaneous eigenstates is $W$. At this point, we know that $a_j ,a_j^\dagger$ map $W\to W$, and indeed, we know everything about the action $a_j, a_j^\dagger$ have on $W$. 
+	
+	
+	\begin{proof}
+		Here we want to describe the action of $a_j,a_j^\dagger$ on $W$. Applying the CCRs and the definitions of the states $\ket{\al}$ it is easy to check that the action of $a_j$ is as follows:
+		\begin{itemize}
+			\item If $\al_j = 0$, then $a_j \ket{\al} = 0$ -- $a_j$ makes the existing lower state vanish.
+			
+			\item If $\al_j = 1$, then let $\al'$ be that vector which results when the $j$th entry of $\al$ is changed to 0. Then 
+			\begin{equation}
+			a_j \ket{\al} = -(-1)^{s_\al^j} \ket{\al'}
+			\end{equation}
+			where
+			\begin{equation}
+			s_\al^j = \sum^{j-1}_{k=1}\al_k
+			\end{equation}
+		\end{itemize}
+	For example, if $\ket{\al} = \ket{111}$, i.e., 
+	\begin{equation}
+	\ket{\al}= (a_1^\dagger)^1 (a_2^\dagger)^1 (a_3^\dagger)^1\ket{\text{vac}}
+	\end{equation}
+	then 
+	\begin{equation}
+	a_2\ket{111} = -(-1)^{1} (a_1^\dagger)^1(a_2^\dagger)^0 (a_3^\dagger)^1 \ket{\text{vac}}
+	\end{equation}
+	which one can verify via the applying the CCR on $a_2a_1^\dagger$.\\
+	
+	
+	In any case, the action of $a_j^\dagger$ on $W$ similar, but quite opposite:
+	\begin{itemize}
+		\item If $\al_j = 0$, then let $\al'$ be that vector which results when the $j$th entry of $\al$ is changed to 1. Then 
+		\begin{equation}
+		a_j^\dagger \ket{\al} = -(-1)^{s_\al^j} \ket{\al'}
+		\end{equation}
+		where again
+		\begin{equation}
+		s_\al^j = \sum^{j-1}_{k=1} \al_k.
+		\end{equation}
+		
+		\item Suppose $\al_j=1$. Then $a_j^\dagger\ket{\al} =0$. 
+	\end{itemize} 
+	\end{proof}
+	
+	
+	\item Suppose we define $W_\perp$ to be the orthocomplement of $W$ in $V$ (that is, $V = W \oplus W_\perp$). Then we'll show that the $a_j,a_j^\dagger$ map $W_\perp \to W_\perp$, and their restrictions to $W_\perp$ satisfy the Fermionic CCRs.  Repeating the procedure above, and we'll be able to identify a $2^n$-dimensional subspace of $W_\perp$ on which we know the action of the $a_j,a_j^\dagger$ exactly.
+	
+	\begin{proof}
+		Here we want to look at the action of $a_j,a_j^\dagger$ on $W_\perp$. We first want to show that they actually map $W_\perp$ to itself. To see this, let $\ket{\psi}\in W_\perp$ and consider $a_j\ket{\psi}$. To show that $a_j\ket{\psi}\in W_\perp$, we want to show that $\forall \ket{\phi}\in W$, $\bra{\phi}a_j\ket{\psi} =0$. Well, observe that
+		\begin{equation}
+		\bra{\psi}a_j^\dagger \ket{\phi} = \overline{\bra{\phi}a_j\ket{\psi}} =0
+		\end{equation}
+		because $\ket{\psi}\in W_\perp$ and $a_j^\dagger \ket{\phi}\in W$ since $\ket{\phi}\in W$. The proof for $a_j^\dagger$ is similar. So, $a_j,a_j^\dagger$ map $W_\perp$ to itself. 
+	\end{proof}
+	
+	
+	
+	\item Iterate this procedure until $W_\perp$ is the trivial vector space, at which point it is no longer possible to continue. At this point we have established an orthonormal basis for the whole of $V$ wrt which we can explicitly write down the action of both $a_j,a_j^\dagger$.
+	
+	\begin{proof}
+		Now, we see that once we restrict these operators to acting only on $W_\perp$, so long as $W_\perp$ is nontrivial, we can repeat the argument and show that $W_\perp$ can be decomposed further into $U\oplus U)\perp$ and so on. Since $V$ is finite dimensional, the process will terminate. At the point of termination we will have broken up $V$ as a direct sum of some finite number $d$ of orthonormal $2^n$-dimensional vector spaces, $W_1,\dots,W_d$ and on each each vector space we will have an orthonormal basis with respect to which the action of $a_j,a_j^\dagger$ is known precisely.\\
+		
+		In other words, we can introduce an ONB $\ket{\al,k}$ for $V$ where $\al$ runs over all $n$0bit vectors and $k=1,\dots,d$ and such that the action of the $a_j$ and $a_j^\dagger$ is to leave $k$ invariant, and to act on $\ket{\al}$ as described above. In this representation it is clear that $V$ can be regarded as a tensor product $C^{2^n}\otimes C^d$ with the action of $a_j,a_j^\dagger$ trivial on the $C^d$ component. We will call this the \textbf{occupation number representation} for the Fermi algebra $a_j$. 
+	\end{proof} 
+\end{itemize}
+
+
+\subsubsection{Diagonalizing a Fermi quadratic Hamiltonian}
+
+
+Suppose $a_1,\dots,a_n$ satisfy the Fermionic CCRs, and we have a system with Hamiltonian
+\begin{equation}
+H_{\text{free}} = \sum_j \al_j a_j^\dagger a_j,
+\end{equation}
+where $\al_j \geq 0$ for each value of $j$. In physical terms this is the Hamiltonian used to describe a system of free, i.e., non-interacting Fermions. \\
+
+The positivity of $a_j^\dagger a_j$ implies that
+\begin{equation}
+\bra{\psi}H_\text{free}\ket{\psi} \geq 0, \forall \ket{\psi}
+\end{equation}
+But we also know that there is at least one $\ket{\text{vac}}$ for which $a_j^\dagger a_j \ket{\text{vec}} = 0$ for all $j$, so the ground state energy of this Hamiltonian is exactly 0, with $\ket{\text{vac}}$ being the corresponding ground state.   \\
+
+When $\al_j$ have arbitrary signs, then we just take the ground state energy of this Hamiltonian to be $\sum_j \min\{ \al_j , 0 \}$, and the ground state $\ket{\psi}$ is obtained from $\ket{\text{vac}}$ by applying $a_j^\dagger$ for all $j$ with $\al_j < 0$. More generally, the allowed energies of the excited states of this system correspond to syms over subsets of the $\al_j$. \\
+
+
+Now, let us generalize this result to the spectrum of a more general interacting Hamiltonian:
+\begin{equation}
+\boxed{H = \sum_{j,k} \al_{jk} a_j^\dagger a_k}
+\end{equation} 
+For $H$ to be Hermitian, $\al_{jk} = \al^*_{jk}$, which means they are necessarily real. So, the matrix $\al$ whose entries are the $\al_{jk}$ is itself Hermitian. \\
+
+Suppose we introduce new operators $b_1,\dots,b_n$ defined by 
+\begin{equation}
+\boxed{b_j  =\sum^n_{k=1} \beta_{jk}a_k}
+\end{equation}
+where $\be_{jk}$ are complex numbers. We are going to try to choose the $\be_{jk}$ so that 
+\begin{itemize}
+	\item The operators $b_j$ satisfy the Fermionic CCRs.\\
+	
+	To this end, we look for conditions on the complex number $\be_{jk}$ such that the $b_j$ operators satisfy the Fermionic CCRs. Observe that
+	\begin{equation}
+	\boxed{\{ b_j , b_k^\dagger \} = \sum_{lm} \be_{jl} \be^*_{km} \{a_l, a_m^\dagger \} = \sum_{lm} \be_{jl} \be^*_{km} \delta_{lm}I = (\be\be^\dagger)_{jk}I}
+	\end{equation}
+	where $\be\be^\dagger$ denotes the matrix produce of the matrix $\be$ with entries $\be_{jl}$ and its adjoint $\be^\dagger$.\\
+	
+	To  $\{ b_j ,b_k\}$ we use the linearity of the anti-commutator bracket in each term to express $\{ b_j ,b_k \}$ as a sum over terms of the form $\{ a_l,a_m \}$, each of which is 0, by the CCRs. As a result, we have
+	\begin{equation}
+	\boxed{ \{b_j ,b_k\} = 0}
+	\end{equation} 
+	Thus, provided that $\be\be^\dagger = I$, i.e., provided that $\be$ is unitary, the operators $b_j$ will satisfy the CCRs. 
+	
+	
+	
+	\item When expressed in terms of the $b_j$, this Hamiltonian will take the form as $H_\text{free}$ and thus can be diagonalized. \\
+	
+	To this end, let us assume that $\be$ is indeed unitary, and change our notation, writing $u_{jk} \beta_{jk}$ in order to emphasize the unitarity of this matrix. We now have 
+	\begin{equation}
+	b_j = \sum_k u_{jk}a_k
+	\end{equation}
+	By the unitarity of $u$ we can invert this equation to get
+	\begin{equation}
+	a_j = \sum_k u^\dagger_{jk} b_k.
+	\end{equation}
+	Substituting this expression and its adjoint into $H$ and doing some simplifications gives us 
+	\begin{equation}
+	H = \sum_{lm} (u\al u^\dagger)_{lm}b_l^\dagger b_m
+	\end{equation}
+	Now notice that that $\al$ is Hermitian, we can choose $u$ so that $u\al u^\dagger$ is diagonal, with entries $\lambda_j$ being the eigenvalues of $\al$, giving us 
+	\begin{equation}
+	\boxed{H = \sum_j \lambda_j b_j^\dagger b_j}
+	\end{equation}
+	This is the same form as $H_{\text{free}}$, an thus the ground state energy and excitation energies may be computed in the same way as we described earlier. 
+\end{itemize}
+
+
+What about the ground state of $H$? Assuming that all the $\lambda_j$ are non-negative, it turns that that a state $\ket{\psi}$ satisfies $a_j^\dagger a_j \ket{\psi} = 0$ for all $j$ \textbf{if and only if} $b_j^\dagger b_j \ket{\psi} = 0$ for all $j$. So the ground state for the two sets of Fermi operators is the same. This comes from the fact that $a^\dagger_j a_j \ket{\psi} = 0 \iff a_j\ket{\psi} =0$: If $a_j^\dagger a_j \ket{\psi} = 0$ for all $j$, then $a_j\ket{\psi} = 0$ for all $j$, thus $b_j\ket{\psi} = 0$ since $b_j$ is just a linear combination of $a_j$'s, from which it follows that $b_j^\dagger b_j \ket{\psi} = 0$. \\
+
+So, the ground state for the two sets of Fermi operators $a_j$ and $b_j$ is in fact the same. \\
+
+
+Now it turns out that we can generalize even further. The Hamiltonian $H = \sum_{jk}\al_{jk}a_j^\dagger a_k$ can be generalized to any Hamiltonian which is quadratic in Fermi operators, by which we mean it may contain terms of the form 
+\begin{equation}
+a_j^\dagger a_k, \quad a_j a_K^\dagger, \quad a_ja_k, \quad a_j^\dagger a_k^\dagger.
+\end{equation}
+Note that we will not allow linear terms of the form $a_j + a_j^\dagger$. Additive constants such as $\gamma I $ are easily incorporated, so we won't worry about those. \\
+
+There are many ways to write such Hamiltonians, but the following form turns out to be especially convenient:
+\begin{equation}
+\boxed{ H = \sum_{jk} \lp \al_{jk} a_j^\dagger a_k - \al_{jk}^* a_j a_k^\dagger + \be_{jk} a_j a_k - \be^*_{jk} a_j^\dagger a_k^\dagger \rp    }
+\end{equation}
+where this is written up to an additive constant $\gamma I$, and with $\al$ Hermitian, and $\be$ antisymmetric. \\
+
+The following is the procedure with which we will diagonalize this matrix:
+\begin{itemize}
+	\item First, we define operators $b_1,\dots, b_n$:
+	\begin{equation}
+	\boxed{b_j = \sum_k \lp \gamma_{jk} a_k + \mu_{jk}a_k^\dagger \rp}
+	\end{equation}
+	Once again, we want the $b_j$'s to satisfy the Fermionic CCRs, and when expressed in terms of the $b_j$, $H$ has the same form as $H_\text{free}$ so tat it can be diagonalized. \\
+	
+	\item A calculation shows that 
+	\begin{equation}
+	\boxed{\{ b_j, b_k^\dagger \} = \delta_{jk} I \iff \gamma\gamma^\dagger + \mu\mu^\dagger = I}
+	\end{equation}
+	while the condition
+	\begin{equation}
+	\boxed{\{ b_j ,b_k \} = 0 \iff \gamma \mu^\top + \mu \gamma^\top = 0}
+	\end{equation}
+	Upon writing out explicitly what the $\mu,\gamma$ matrices do, these two conditions are equivalent to the statement that the matrix 
+	\begin{equation}
+	\boxed{T = \begin{bmatrix}
+	\gamma & \mu \\ \mu^* & \gamma^*
+	\end{bmatrix}}
+	\end{equation}
+	is unitary. With this, we can check (via writing everything out explicitly) that
+	\begin{equation}\label{Tdagger}
+	\begin{bmatrix}
+	a_1 \\ \vdots \\ a_n \\ a_1^\dagger \\ \vdots \\ a_n^\dagger
+	\end{bmatrix}
+	= T^\dagger 
+	\begin{bmatrix}
+	b_1 \\ \vdots \\ b_n \\ b_1^\dagger \\ \vdots \\ b_n^\dagger
+	\end{bmatrix}
+	\end{equation}
+	
+	
+	\item The next step is to rewrite the Hamiltonian in terms of the $b_j$ operators. To do this, observe that the expression for $H$ can be written out explicitly as the following
+	\begin{equation}
+	H = \begin{bmatrix}
+	a_1^\dagger& \dots & a_n^\dagger& a_1&\dots&a_n 
+	\end{bmatrix}
+	\begin{bmatrix}
+	\al & -\beta^* \\ \beta & -\al^*
+	\end{bmatrix}
+	\begin{bmatrix}
+	a_1 \\ \vdots \\ a_n \\ a_1^\dagger \\ \vdots \\ a_n^\dagger
+	\end{bmatrix}
+	\end{equation}
+	From Eq. \ref{Tdagger} we see that
+	\begin{equation}
+	\begin{bmatrix}
+	a_1^\dagger& \dots & a_n^\dagger& a_1&\dots&a_n 
+	\end{bmatrix} = \begin{bmatrix}
+	b_1^\dagger& \dots & b_n^\dagger& b_1&\dots&b_n 
+	\end{bmatrix}T.
+	\end{equation}
+	This allows us to write 
+	\begin{equation}
+	H = \begin{bmatrix}
+	b_1^\dagger& \dots & b_n^\dagger& b_1&\dots&b_n 
+	\end{bmatrix}T M T^\dagger \begin{bmatrix}
+	b_1 \\ \vdots \\ b_n \\ b_1^\dagger \\ \vdots \\ b_n^\dagger
+	\end{bmatrix}
+	\end{equation}
+	where 
+	\begin{equation}
+	M = \begin{bmatrix}
+	\al & -\be^* \\ \beta & -\al^* 
+	\end{bmatrix},
+	\end{equation}
+ 	Of course, to save space, we can let 
+ 	\begin{equation}
+ 	\begin{bmatrix}
+ 	b^\dagger & b 
+ 	\end{bmatrix} = \begin{bmatrix}
+ 	b_1^\dagger& \dots & b_n^\dagger& b_1&\dots&b_n 
+ 	\end{bmatrix}
+ 	\end{equation}
+ 	from which $H$ can be expressed more succinctly as 
+ 	\begin{equation}
+ 	\boxed{H = \begin{bmatrix} b^\dagger & b\end{bmatrix}
+ 	TMT^\dagger 
+ 	\begin{bmatrix}
+ 	b\\b^\dagger
+ 	\end{bmatrix}}
+ 	\end{equation}
+ 	
+ 	
+ 	\item Suppose we can choose $T$ such that $TMT^\dagger$ is diagonal, we see that the Hamiltonian can be expressed in the form of $H_\text{free}$, and the energy spectrum found, following our earlier methods. 
+ 	
+ 	
+ 	\item Since $\al$ is Hermitian and $\be$ is anti-symmetric it follows that $M$ is also Hermitian, and so can be diagonalized for some choice of a unitary $T$. However, the fact the the $b_j$'s must satisfy the CCRs constrains the class of $T$'s available to us. It remains to show that there always \textbf{exists} such a $T$ that can used to do the diagonalization. It turns out that there is a proof out there for this involving the CS-decomposition for unitary matrices. However, we won't about that. 
+\end{itemize}
 
 
 
+
+
+
+\subsection{Jordan-Wigner transformation}
+In this section we describe the Jordan-Wigner transform, explaining how it can be used to map a system of qubits (spin-1/2 systems) to a system of Fermions, and vice versa. To illustrate the utility of the transformation, we will look at how we can solve a one-dimensional quantum spin system using the J-W transformation. \\
+
+Let an $n$-qubit system be given with the usual state space $C^{2^n}$ and Pauli operators $X_j, Y_j, Z_j$ acting on qubit $j$. We are going to use these operators to define a set of $a_j$ operators acting on $C^{2^n}$ which satisfy the Fermionic CCRs. \\
+
+For the sake of argument, suppose we have found such a set of operators. Then from our earlier discussion the action of the $a_j$ operators in the occupation number representation
+\begin{equation}
+\ket{\al} = \ket{\al_1,\dots,\al_n}
+\end{equation}
+must be as follows:
+\begin{itemize}
+	\item Suppose $\al_j = 0$ then $a_j \ket{\al} = 0$.
+	\item Suppose $\al_j = 1$. Let $\al'$ be that vector which results when the $j$th entry of $\al$ is changed to $0$. Then 
+	\begin{equation}
+	a_j \ket{\al} = -(-1)^{s^j_\al} \ket{\al'}
+	\end{equation}
+	where once again
+	\begin{equation}
+	s^j_\al = \sum^{j-1}_{k=1}\al_k.
+	\end{equation}
+\end{itemize}
+
+If we identify the occupation number state $\ket{\al}$ with the corresponding computational basis state $\ket{\al}$, then this suggests taking as our \textit{definition}:
+\begin{equation}
+\boxed{a_j \equiv -\lp \bigotimes^{j-1}_{k=1} Z_k \rp \otimes \sigma_j}
+\end{equation}
+where $\sigma_j$ denotes the matrix $\sigma \equiv \ket{0}\bra{1}$ acting on the $j$th qubit. In some sense, this is the ``lowering operator'' on the single-qubit computational basis state. \\
+
+It is easy to very that these operators satisfy the Fermionic CCRs. This definition of the $a_j$ is known as the \textbf{Jordan-Wigner transform}. It allows ys to define a set of operators $a_j$ satisfying the Fermionic CCR in terms of the usual operators we use to describe qubits, or spin-1/2 systems. \\
+
+
+
+
+The J-W transformation can be inverted, allowing us to express the Pauli operators in terms of the Fermionic operators $a_1,\dots,a_n$. In particular, we have
+\begin{equation}
+\boxed{Z_j = a_j a^\dagger_j - a_j^\dagger a_j}
+\end{equation}
+Indeed, it is easy to check that the expression above keeps $\ket{0}$ constant and turns $\ket{1}$ to $-\ket{1}$.\\
+
+Next, observe that 
+\begin{equation}
+X_j = \sigma_j + \sigma_j^\dagger = \ket{0}\bra{1} + \ket{1}\bra{0}. 
+\end{equation}
+So, it follows that
+\begin{equation}
+\boxed{X_j = -(Z_1\dots Z_{j-1}) (a_j + a_j^\dagger). }
+\end{equation}
+By substituting in the expressions for $Z_1,\dots,Z_{j-1}$ in terms of the Fermionic operators. Similarly, we have 
+\begin{equation}
+\boxed{Y_j = i(Z_1\dots Z_{j-1})(a_j^\dagger - a_j) ,}
+\end{equation}
+which together with the expression for the $Z_j$ operators, enables us to write $Y_j$ solely in terms of the Fermionic operators.\\
+
+Now, obviously the expressions for $X_j,Y_j$ are rather inconvenient as they involve products of large numbers of Fermi operators. Remarkably, however, for certain simple \textit{products} of Pauli operators it is possible to obtain simple expressions in terms of the Fermi operators. In fact, one can check with algebra that
+\begin{equation}
+\boxed{Z_j = a_j a^\dagger_j - a_j^\dagger a_j}
+\end{equation}
+\begin{equation}
+\boxed{ X_j X_{j+1}  = (a_j^\dagger - a_j )(a_{j+1} + a_{j+1}^\dagger) }
+\end{equation}
+\begin{equation}
+\boxed{X_jY_{j+1} = i(a_j^\dagger - a_j)(a_{j+1}^\dagger - a_{j+1})}
+\end{equation}
+\begin{equation}
+\boxed{ Y_j Y_{j+1} = -(a_j^\dagger + a_j)(a_{j+1}^\dagger - a_{j+1}) }
+\end{equation}
+\begin{equation}
+\boxed{ Y_j X_{j+1} = i(a_j^\dagger + a_j)(a_{j+1}^\dagger + a_{j+1}) }
+\end{equation}
+Suppose now that we have an $n$-qubit Hamiltonian $H$ that can be expressed as a sum over operators from the set $Z_j, X_j X_{j+1},Y_jY_{j+1}, X_j Y_{j+1}, Y_jX_{j+1}$. An example of such a Hamiltonian is the transverse field Ising model,
+\begin{equation}
+H = \al\sum_j Z_j + \be \sum_j X_i X_{i+1}
+\end{equation}
+which describes a system of magnetic spins with nearest neighbor couplings of strength $\beta$ along their $\hat{x}$ axes, and in an external magnetic field of strength $\al$ along the $\hat{z}$ axis. \\
+
+For any such Hamiltonian, we see that it is possible to re-express the Hamiltonian as a Fermi quadratic Hamiltonian. As we saw in an earlier section , determining the energy levels is then a simple matter of finding the eigenvalues of a $2n \times  2n$ matrix, which can be done very
+quickly. In particular, finding the ground state energy is simply a matter of finding the smallest eigenvalue of that matrix, which is often particularly easy. In the case of models like the transverse Ising model, it is even possible
+to do this diagonalization analytically, giving rise to exact expressions for the energy spectrum. Details can be found in the paper by Lieb, Schulz and Mattis mentioned earlier, or books such as the well-known book by Sachdev on quantum phase transitions.
+
+
+
+
+
+
+
+
+
+\subsection{Summary: The Jordan-Wigner Transformation}
+
+The following presentation of the Jordan-Wigner transformation is perhaps more standard than Nielsen's introduction, so I think it's a good idea to have it here. \\
+
+Remember that we have the operators $\sigma_j^+,\sigma_j^-,\sigma^z_j$ acting on site $j$. We find that $\{ \sigma_j^+, \sigma_j^- \} = 1$ as would be expected from fermionic creation and annihilation operators. So, we might be tempted to set
+\begin{align}
+\sigma_j^+ &= \frac{1}{2}(\sigma_j^x + i\sigma^y_j) = f_j^\dagger\\
+\sigma_j^- &= \frac{1}{2}(\sigma_j^x - i\sigma^y_j) = f_j\\
+\sigma_j^z &= 2f_j^\dagger f_j - 1.
+\end{align}
+Now, remember that the CCRs are the following:
+\begin{equation}
+\boxed{\{ a_j , a_k^\dagger \} = \delta_{jk} I; \quad \{ a_j ,a_k \} = 0; \{ a_j^\dagger, a_k^\dagger \} = 0}
+\end{equation} 
+Notice that we now have $\{ f_j^\dagger,f_j\} =I$ as the desired same-site relation, but $[ f_j^\dagger,f_k] = 0$ where $j\neq k$. And so spins on different sites commute unlike fermions which anti-commute. We must fix this problem to get the correct analogy.\\
+
+A transformation which recovers the true fermion commutation relations from spin-operators was done in 1928 by Jordan and Wigner. \\
+
+Take a chain of fermions, an define a new set of operators:
+\begin{equation}
+\boxed{a_j^\dagger = e^{+i\pi \sum^{j-1}_{k=1} f_k^\dagger f_k} \cdot f_k^\dagger }
+\end{equation}
+\begin{equation}
+\boxed{a_j = e^{-i\pi \sum^{j-1}_{k=1} f_k^\dagger f_k} \cdot f_k }
+\end{equation}
+\begin{equation}
+\boxed{a_j^\dagger a_j =  f_j^\dagger f_j}
+\end{equation}
+Recall that $f_j^\dagger f_j$ is the \textit{number} operator and $f_j^\dagger f_j \in \{ 0,1\}$, so the quantity 
+\begin{equation}
+\sum^{j-1}_{k=1} f_k^\dagger f_k
+\end{equation}
+is the occupation number in modes $k=1,\dots,j-1$ of the field. The phase is equal to \textbf{ONE} if the occupied modes is \textbf{EVEN}, and \textbf{MINUS ONE} if the occupied modes is \textbf{ODD}. \\
+
+This phase is often expressed, using the relation $\{ f_k^\dagger,f_k\} = I$ and that $\sigma^z_k - 2f_k^\dagger f_k - 1$, as
+\begin{equation}
+\exp\lp \pm i\pi \sum_{k=1}^{j-1} f_k^\dagger f_k \rp = \prod^{j-1}_{k=1} e^{\pm i\pi f_k^\dagger f_k } = \prod^{j-1}_{k=1} (1-2f_k^\dagger f_k) = \prod^{j-1}_{k=1}(-\sigma^z_k)
+\end{equation}
+where the second equality makes use of the fact that $f_k^\dagger f_k \in \{ 0,1 \}$. \\
+
+With these, the transformed spin operators now have the appropriate fermionic commutation relations:
+\begin{equation}
+\boxed{\{ a_j^\dagger, a_j\} = \delta_{i,j}, \quad \{a_j^\dagger,a_j \} =0,\quad \{ a_i,a_j \} = 0}
+\end{equation}
+The inverse transformation is given by
+\begin{equation}
+\boxed{\sigma_j^+ = e^{-i\pi \sum^{j-1}_{k=1} a_k^\dagger a_k} \cdot a_j^\dagger}
+\end{equation}
+\begin{equation}
+\boxed{\sigma_j^- = e^{+i\pi \sum^{j-1}_{k=1} a_k^\dagger a_k} \cdot a_j}
+\end{equation}
+\begin{equation}
+\boxed{\sigma_j^z = 2a_j^\dagger a_j -1}
+\end{equation}
+Note that the definition of the fermionic operators is nonlocal with respect to the bosonic operators because we have to deal with an entire chain of operators to the left of the site the fermionic operators are defined with respect to. This is also true the other way around. 
+
+
+\subsection{Jordan-Wigner transformation in QAOA}
+
+
+
+ 
 
  
  
