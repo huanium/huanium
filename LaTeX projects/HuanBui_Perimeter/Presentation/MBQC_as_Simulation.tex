@@ -10,17 +10,24 @@
 \usepackage{tikz,tikz-cd}
 
 \usepackage{physics}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{esint}
-\usepackage{bbold}
+\usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
-\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
 \usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
 \usepackage{amsthm}
-\usepackage{bbm}
-\usepackage{amssymb}
+
+
 \theoremstyle{definition}
 \newtheorem{defn}{Definition}[section]
 \newtheorem{prop}{Properties}[section]
@@ -212,7 +219,29 @@ Universality: Quantum circuit model $\equiv$ Cluster state formulation
 \begin{frame}
 \frametitle{Variational simulation of non-trivial quantum states}
 
-QAOA:
+QAOA \cite{QAOA}: Quantum approximate optimization algorithm
+
+
+\begin{itemize}
+	\item Principle: Quantum adiabatic theorem on $H = H_2 + H_1$
+
+	
+	\item Variational ansatz:
+	\begin{equation*}
+	\boxed{\ket{\psi(\bm{\gamma}, \bm{\beta})} = \underbrace{ \strut {e^{-i\gamma_p H_1}e^{-i\beta_p H_2}} \dots {e^{-i\gamma_2 H_1}e^{-i\beta_2 H_2}} {e^{-i\gamma_1 H_1}e^{-i\beta_1 H_2}}}_{ p \mbox{ layers}} \ket{\psi_1}}
+	\end{equation*}
+	\begin{itemize}
+		\item $(\bm\gamma,\bm\beta) = (\gamma_p,\dots, \gamma_1,\beta_p,\dots, \beta_1)$
+		
+		\item $\ket{\psi_1} = $ ground state of $H_1$ (easy to prepare)
+	\end{itemize}
+	
+	\item Cost function:
+	\begin{equation*}
+	\text{Overlap: } \abs{\braket{\psi_0}{\psi(\bm\gamma,\bm\beta)}}^2 ,\quad \text{or} \quad \text{Energy:} \bra{\psi(\bm\gamma,\bm\beta)}H\ket{\psi(\gamma,\beta)}.
+	\end{equation*}
+\end{itemize}
+
 
 \end{frame}
 
@@ -220,7 +249,91 @@ QAOA:
 
 
 \begin{frame}
-\frametitle{Measurement-based QAOA}
+\frametitle{Variational simulation of non-trivial quantum states}
+
+\underline{Example}: GHZ state $\sim \ket{0}^{\otimes L} + \ket{1}^{\otimes L} $ 
+\begin{equation*}
+H_{GHZ} = -\sum^T_{i=1}Z_i Z_{i+1} = \underbrace{-\sum^T_{i=1}Z_i Z_{i+1}}_{H_2} - 0\underbrace{\sum^L_{i=1}X_i}_{H_1}, \qquad \ket{GS_{H_1}} = \bigotimes^L_{i=1} \ket{+}
+\end{equation*}
+
+$\implies$ Perfect fidelity, $p \sim L/2$.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{ghz1}
+	\caption{GHZ state simulation. Fidelity \& $p$ vs. $L$, \cite{VQCS}}
+\end{figure}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}
+\frametitle{Variational simulation of TFIM ground state}
+
+\underline{Example}: Transverse field Ising model
+\begin{equation*}
+H \coloneqq H_2 + H_1 =  - \sum_{i=1}^L Z_i Z_{i+1} - g\sum^L_{i=i}X_i
+\end{equation*}
+
+$\implies$ Perfect fidelity, $p\sim L/2$
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.25]{tfim}
+	\caption{TFIM state simulation. Fidelity \& $p$ vs. $L$, \cite{VQCS}}
+\end{figure}
+
+
+
+
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+\frametitle{Variational simulation of TFIM ground state}
+
+
+Limitation of protocol in \cite{VQCS}: 
+\begin{itemize}
+	\item  $p \sim L$
+	
+	\item Requires non-local unitaries. 
+	
+	\item MERA construction \cite{MERA}: $p\sim \log(L)$, but non-local unitaries required.
+\end{itemize}
+
+$\implies$ Is there a way out?
+
+
+
+
+
+
+\end{frame}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{frame}
+\frametitle{Measurement-based QAOA for TFIM}
+
+QAOA ansatz:
+\begin{equation*}
+\ket{(\bm\gamma,\bm\beta)} = 
+\end{equation*}
+
+
+
 
 
 
