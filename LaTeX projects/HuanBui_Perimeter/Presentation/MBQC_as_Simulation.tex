@@ -8,15 +8,12 @@
 \usepackage[qm]{qcircuit}
 \usepackage{bibentry}
 \usepackage{tikz,tikz-cd}
-
 \usepackage{physics}
-\usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{amsmath}
 \usepackage{bm}
 \usepackage{framed}
-\usepackage{authblk}
 \usepackage{empheq}
 \usepackage{amsfonts}
 \usepackage{esint}
@@ -29,7 +26,7 @@
 
 
 \theoremstyle{definition}
-\newtheorem{defn}{Definition}[section]
+\newtheorem{conjecture}{Conjecture}[section]
 \newtheorem{prop}{Properties}[section]
 \newtheorem{rmk}{Remark}[section]
 \newtheorem{exmp}{Example}[section]
@@ -89,7 +86,9 @@
 \newcommand{\bigzero}{\mbox{\normalfont\Large\bfseries 0}}
 \newcommand{\rvline}{\hspace*{-\arraycolsep}\vline\hspace*{-\arraycolsep}}
 
+
 \title{Measurement-based Quantum Computing \\ \& Efficient variational simulation of non-trivial quantum states}
+
 \author[Huan Q. Bui] % (optional)
 {Huan Q. Bui}
 
@@ -238,7 +237,7 @@ QAOA \cite{QAOA}: Quantum approximate optimization algorithm
 	
 	\item Cost function:
 	\begin{equation*}
-	\text{Overlap: } \abs{\braket{\psi_0}{\psi(\bm\gamma,\bm\beta)}}^2 ,\quad \text{or} \quad \text{Energy:} \bra{\psi(\bm\gamma,\bm\beta)}H\ket{\psi(\gamma,\beta)}.
+	\text{Overlap: } \abs{\braket{\psi_0}{\psi(\bm\gamma,\bm\beta)}}^2 ,\quad \text{or} \quad \text{Energy:} \bra{\psi(\bm\gamma,\bm\beta)}H\ket{\psi(\bm\gamma,\bm\beta)}.
 	\end{equation*}
 \end{itemize}
 
@@ -304,10 +303,13 @@ Limitation of protocol in \cite{VQCS}:
 	
 	\item Requires non-local unitaries. 
 	
-	\item MERA construction \cite{MERA}: $p\sim \log(L)$, but non-local unitaries required.
+	\item MERA construction \cite{MERA}: $p\sim \log(L)$, \\
+	$\quad\quad\quad\quad\quad\quad\qquad\qquad$ but non-local unitaries required.
 \end{itemize}
 
-$\implies$ Is there a way out?
+$\,$\\
+
+$\implies$ Is a measurement-based QAOA scheme a solution?
 
 
 
@@ -327,12 +329,26 @@ $\implies$ Is there a way out?
 \begin{frame}
 \frametitle{Measurement-based QAOA for TFIM}
 
-QAOA ansatz:
+Hamiltonian
 \begin{equation*}
-\ket{(\bm\gamma,\bm\beta)} = 
+H \coloneqq H_2 + H_1 =  - \sum_{i=1}^L Z_i Z_{i+1} - g\sum^L_{i=i}X_i
 \end{equation*}
 
 
+QAOA ansatz:
+\begin{equation*}
+\ket{\psi(\bm{\gamma}, \bm{\beta})} =  \strut {e^{-i\gamma_p H_1}e^{-i\beta_p H_2}} \dots {e^{-i\gamma_2 H_1}e^{-i\beta_2 H_2}} {e^{-i\gamma_1 H_1}e^{-i\beta_1 H_2}} \ket{\psi_1}
+\end{equation*}
+
+MBQC is universal $\implies$ Measurement-based QAOA ansatz is possible. \\
+
+$\,$\\
+
+Ingredients: $Z,X$-rotations, \& $CNOT$. \\
+
+$\quad$ $\clubsuit$ Scheme can be simplified by changing measurement pattern.  
+
+
 
 
 
@@ -344,26 +360,160 @@ QAOA ansatz:
 
 
 \begin{frame}
-\frametitle{Can we do better?}
+\frametitle{But...}
+Limitations: 
+\begin{itemize}
+	\item $p \sim L$, where $p$ is the number of layers of measurements. 
+	\item Non-local unitaries still required
+\end{itemize}
+
+
+
+
+$\,$\\
+
+$\downarrow\downarrow\downarrow$\\
+
+$\,$\\
+
+Two possibilities:
+\begin{itemize}
+	\item QAOA is insufficient; need a completely new algorithm.
+	\item QAOA is sufficient, but need better MBQC implementation. \pause $\impliedby$
+\end{itemize} 
+
+
 
 \end{frame}
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
-\frametitle{How robust is QAOA?}
+\frametitle{2nd possibility: How robust is QAOA?}
 
-Consider the TFIM without translation invariance:
+Test QAOA with TFIM without translation invariance:
 
 \begin{equation*}
 \mathcal{H} = \sum_{j} Z_j Z_{j+1} + \sum_j g_j  X_j
 \end{equation*}
 
+Modified ansatz:
+\begin{itemize}
+	\item $p$ layers
+	\item Each layer is parameterized by $(\bm\gamma,\bm\beta) = (\gamma_{1},\dots,\gamma_{L},\beta_{1},\dots,\beta_{L} )$.
+\end{itemize}
+
+\begin{conjecture}
+	This modified QAOA can target the critical ground state with perfect fidelity with $p = L/2$. In which case, the total number of parameters is $L^2$.  
+\end{conjecture}
+
 
 
 
 \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}
+\frametitle{2nd possibility: How robust is QAOA?}
+
+
+
+Conjecture holds for small $N = 4, 6, 8, 10$, even at lower $p$:
+
+
+
+\begin{figure}[!htb]
+	\centering
+	\begin{subfigure}{0.5 \textwidth}
+		\centering
+		\includegraphics[scale=0.35]{N_6_p_3.PNG}
+		\caption{$N=6$, $p=3$}
+	\end{subfigure}%
+	\begin{subfigure}{0.5 \textwidth}
+		\centering
+		\includegraphics[scale=0.46]{N_6_p_3_out}
+		\caption{99.9\% fidelity at low iteration count.}
+	\end{subfigure}
+\end{figure}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+\frametitle{2nd possibility: How robust is QAOA?}
+
+
+(Using the overlap as the cost function in this case)
+
+
+
+\begin{figure}[!htb]
+	\centering
+	\begin{subfigure}{0.5 \textwidth}
+		\centering
+		\includegraphics[scale=0.35]{N_8_p_4.PNG}
+		\caption{$N=8$, $p=4$}
+	\end{subfigure}%
+	\begin{subfigure}{0.5 \textwidth}
+		\centering
+		\includegraphics[scale=0.46]{N_8_p_4_out}
+		\caption{99.4\% fidelity at low iteration count.}
+	\end{subfigure}
+\end{figure}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}
+\frametitle{2nd possibility: How robust is QAOA?}
+
+
+
+
+
+\begin{figure}[!htb]
+	\centering
+	\begin{subfigure}{0.5 \textwidth}
+		\centering
+		\includegraphics[scale=0.30]{N_10_p_2.PNG}
+		\caption{$N=10$, $p=2$ only}
+	\end{subfigure}%
+	\begin{subfigure}{0.5 \textwidth}
+		\centering
+		\includegraphics[scale=0.47]{N_10_p_2_out}
+		\caption{96\% fidelity, not bad for $p=2$.}
+	\end{subfigure}
+\end{figure}
+
+
+
+$\implies$ Small $N$ due to large parameter space ($\sim L^2$) and limitations in computing power and algorithm efficiency.
+
+
+
+
+
+
+
+
+
+
+
+\end{frame}
+
 
 
 
@@ -374,6 +524,17 @@ Consider the TFIM without translation invariance:
 \frametitle{Summary}
 
 
+\begin{itemize}
+	\item MBQC
+	\item Variational non-trivial state simulation \& QAOA
+	\item Measurement-based QAOA
+	\item Robustness of QAOA, tested on TFIM with non-constant $g_i$.
+	
+	\pause
+	
+	\item \textbf{Next?} Jordan-Wigner transform $\implies$ Reduce problem size 
+\end{itemize}
+
 
 \end{frame}
 
@@ -381,7 +542,7 @@ Consider the TFIM without translation invariance:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\begin{frame}
+\begin{frame}[allowframebreaks]
 \frametitle{References}
 
 
