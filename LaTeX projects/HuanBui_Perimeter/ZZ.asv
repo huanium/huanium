@@ -1,10 +1,11 @@
-%% This section produces the ZZ Hamiltonian piece in terms of 
+% This section produces the ZZ Hamiltonian piece in terms of 
 % the parameter vectors beta
 
 % function [ZZ_beta] = ZZ( N, beta )
 % Sz = [1 0 ; 0 -1];
 % Id = [1 0 ; 0  1];
-% ZZ_beta = zeros(2^N);
+% ZZ_beta = sparse(2^N,2^N);
+% term = sparse(2,2);
 % for k = 0:N-2
 %     operators = horzcat( horzcat( repmat({Id},1,k)  ,horzcat({beta(k+1)*Sz}, {Sz})), repmat({Id}, 1 , N-2-k));
 %     term = operators{1};
@@ -22,18 +23,18 @@
 
 
 
-function [ZZ_beta] = ZZ(N ,beta)
-ZZ_diag = zeros(2^N, 1);
-b = zeros(N,1);
-for col=0:2^N-1
-    b =  dec2bin( col,N );
-    val = 0;
-    for k = 1:N-1
-        val = val + (-1)^( str2double(b(k)) + str2double(b(k+1)))*beta(k);
-    end
-    val = val + 
-    ZZ_diag(col+1) = val;
-end
-ZZ_beta = diag(ZZ_diag);
-
+% function [ZZ_diag] = ZZ(N ,beta)
+% % returns only the diagonal!
+% ZZ_diag = zeros(2^N, 1);
+% b = zeros(N,1);
+% parfor col=0:2^N-1
+%     b =  dec2bin( col,N );
+%     val = 0;
+%     for k = 1:N-1
+%         val = val + (-1)^( str2double(b(k)) + str2double(b(k+1)))*beta(k);
+%     end
+%     val = val + (-1)^( str2double(b(1)) + str2double(b(end)))*beta(end);
+%     ZZ_diag(col+1) = val;
+% end
+% ZZ_diag = diag(ZZ_diag);
 

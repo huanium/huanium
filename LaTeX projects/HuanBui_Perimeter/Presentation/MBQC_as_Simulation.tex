@@ -119,10 +119,10 @@
 
 \begin{itemize}
 	\item Measurement-based quantum computing (MBQC)
-	
+	\pause
 	\item Variational simulation of non-trivial quantum state
-	
-	\item \underline{Research question}: MBQC as an efficient simulation?
+	\pause
+	\item \underline{Research question}: MBQC as an efficient/better simulation?
 \end{itemize}
 
 \end{frame}
@@ -141,7 +141,7 @@ Conventional quantum circuit models:
 	\includegraphics[scale=0.25]{circuit}
 \end{figure}
 
-%\pause
+\pause
 Cluster state: \cite{jozsa}
 
 \begin{figure}[!htb]
@@ -170,7 +170,7 @@ Quantum teleportation = Entanglement + Measurement
 	
 \end{center}
 
-%\pause
+\pause
 
 \begin{figure}[!htb]
 	\includegraphics[scale=0.25]{cluster6}
@@ -184,14 +184,16 @@ Quantum teleportation = Entanglement + Measurement
 \begin{frame}
 \frametitle{MBQC: One-way quantum computer}
 
-Universality: Quantum circuit model $\equiv$ Cluster state formulation
+Universality: Quantum circuit model $\equiv$ Cluster state formulation. \pause How? \pause
 
 \begin{itemize}
 	\item Transfer of information by teleportation
+	\pause
 	\item Any qubit rotation can be done on a chain of qubits
+	\pause
 	\item The CNOT gate can be implemented in a ``T'' configuration
 \end{itemize}
-
+\pause
 \begin{figure}[!htb]
 	\begin{subfigure}{.5\textwidth}
 		\centering
@@ -220,20 +222,24 @@ Universality: Quantum circuit model $\equiv$ Cluster state formulation
 
 QAOA \cite{QAOA}: Quantum approximate optimization algorithm
 
+\pause
 
 \begin{itemize}
 	\item Principle: Quantum adiabatic theorem on $H = H_2 + H_1$
 
+	\pause
 	
-	\item Variational ansatz:
-	\begin{equation*}
+	\item Variational ansatz (modified in (\ref{eq:QAOAmod}))
+	\begin{equation}\label{eq:QAOA}
 	\boxed{\ket{\psi(\bm{\gamma}, \bm{\beta})} = \underbrace{ \strut {e^{-i\gamma_p H_1}e^{-i\beta_p H_2}} \dots {e^{-i\gamma_2 H_1}e^{-i\beta_2 H_2}} {e^{-i\gamma_1 H_1}e^{-i\beta_1 H_2}}}_{ p \mbox{ layers}} \ket{\psi_1}}
-	\end{equation*}
+	\end{equation}
 	\begin{itemize}
 		\item $(\bm\gamma,\bm\beta) = (\gamma_p,\dots, \gamma_1,\beta_p,\dots, \beta_1)$
 		
 		\item $\ket{\psi_1} = $ ground state of $H_1$ (easy to prepare)
 	\end{itemize}
+
+    \pause
 	
 	\item Cost function:
 	\begin{equation*}
@@ -252,8 +258,10 @@ QAOA \cite{QAOA}: Quantum approximate optimization algorithm
 
 \underline{Example}: GHZ state $\sim \ket{0}^{\otimes L} + \ket{1}^{\otimes L} $ 
 \begin{equation*}
-H_{GHZ} = -\sum^T_{i=1}Z_i Z_{i+1} = \underbrace{-\sum^T_{i=1}Z_i Z_{i+1}}_{H_2} - 0\underbrace{\sum^L_{i=1}X_i}_{H_1}, \qquad \ket{GS_{H_1}} = \bigotimes^L_{i=1} \ket{+}
+H_{GHZ} = -\sum^L_{i=1}Z_i Z_{i+1} = \underbrace{-\sum^L_{i=1}Z_i Z_{i+1}}_{H_2} - 0\underbrace{\sum^L_{i=1}X_i}_{H_1}, \qquad \ket{GS_{H_1}} = \bigotimes^L_{i=1} \ket{+}
 \end{equation*}
+
+\pause
 
 $\implies$ Perfect fidelity, $p \sim L/2$.
 
@@ -277,6 +285,8 @@ $\implies$ Perfect fidelity, $p \sim L/2$.
 H \coloneqq H_2 + H_1 =  - \sum_{i=1}^L Z_i Z_{i+1} - g\sum^L_{i=i}X_i
 \end{equation*}
 
+\pause
+
 $\implies$ Perfect fidelity, $p\sim L/2$
 \begin{figure}[!htb]
 	\centering
@@ -297,17 +307,20 @@ $\implies$ Perfect fidelity, $p\sim L/2$
 \frametitle{Variational simulation of TFIM ground state}
 
 
-Limitation of protocol in \cite{VQCS}: 
+Limitations of protocol in \cite{VQCS}: 
 \begin{itemize}
-	\item  $p \sim L$
 	
 	\item Requires non-local unitaries. 
+	
+	\item  $p \sim L$.
 	
 	\item MERA construction \cite{MERA}: $p\sim \log(L)$, \\
 	$\quad\quad\quad\quad\quad\quad\qquad\qquad$ but non-local unitaries required.
 \end{itemize}
 
 $\,$\\
+
+\pause
 
 $\implies$ Is a measurement-based QAOA scheme a solution?
 
@@ -371,7 +384,7 @@ Limitations:
 
 
 $\,$\\
-
+\pause
 $\downarrow\downarrow\downarrow$\\
 
 $\,$\\
@@ -397,18 +410,22 @@ Two possibilities:
 
 Test QAOA with TFIM without translation invariance:
 
-\begin{equation*}
+\begin{equation}\label{eq:QAOAmod}
 \mathcal{H} = \sum_{j} Z_j Z_{j+1} + \sum_j g_j  X_j
-\end{equation*}
+\end{equation}
 
-Modified ansatz:
+\pause
+
+Modified QAOA ansatz (reference (\ref{eq:QAOA}))
 \begin{itemize}
 	\item $p$ layers
-	\item Each layer is parameterized by $(\bm\gamma,\bm\beta) = (\gamma_{1},\dots,\gamma_{L},\beta_{1},\dots,\beta_{L} )$.
+	\item Each layer is parameterized by $(\bm\gamma,\bm\beta)_k = (\gamma_{1},\dots,\gamma_{L},\beta_{1},\dots,\beta_{L} )_k$.
 \end{itemize}
 
+\pause
+
 \begin{conjecture}
-	This modified QAOA can target the critical ground state with perfect fidelity with $p = L/2$. In which case, the total number of parameters is $L^2$.  
+	This modified QAOA can target the critical ground state with perfect fidelity for $p = L/2$. In which case, the total number of parameters is $L^2$.  
 \end{conjecture}
 
 
@@ -498,7 +515,7 @@ Conjecture holds for small $N = 4, 6, 8, 10$, even at lower $p$:
 	\end{subfigure}
 \end{figure}
 
-
+\pause
 
 $\implies$ Small $N$ due to large parameter space ($\sim L^2$) and limitations in computing power and algorithm efficiency.
 
@@ -527,7 +544,7 @@ $\implies$ Small $N$ due to large parameter space ($\sim L^2$) and limitations i
 \begin{itemize}
 	\item MBQC
 	\item Variational non-trivial state simulation \& QAOA
-	\item Measurement-based QAOA
+	\item Measurement-based QAOA. It is a good idea?
 	\item Robustness of QAOA, tested on TFIM with non-constant $g_i$.
 	
 	\pause

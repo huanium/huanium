@@ -23,18 +23,19 @@ ZZ_beta = ZZ_beta + term;
 
 
 
-% function [ZZ_diag] = ZZ(N ,beta)
-% % returns only the diagonal!
-% ZZ_diag = zeros(2^N, 1);
-% b = zeros(N,1);
-% parfor col=0:2^N-1
-%     b =  dec2bin( col,N );
-%     val = 0;
-%     for k = 1:N-1
-%         val = val + (-1)^( str2double(b(k)) + str2double(b(k+1)))*beta(k);
-%     end
-%     val = val + (-1)^( str2double(b(1)) + str2double(b(end)))*beta(end);
-%     ZZ_diag(col+1) = val;
-% end
-% ZZ_diag = diag(ZZ_diag);
+%function [ZZ_diag] = ZZ(N ,beta)
+%% returns only the diagonal!
+%ZZ_diag = zeros(2^N, 1);
+%b = zeros(N,1);
+%for col=0:2^N-1
+%    b =  dec2bin( col,N );
+%    val = 0;
+%    for k = 1:N-1
+%        val = val + (-1)^( str2double(b(k)) + str2double(b(k+1)))*beta(k);
+%    end
+%    val = val + (-1)^( str2double(b(1)) + str2double(b(end)))*beta(end);
+%    ZZ_diag(col+1) = val;
+%end
+%ZZ_diag = diag(ZZ_diag);
+
 

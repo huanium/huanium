@@ -18,4 +18,3 @@ for k = 0:N-1
 end
 %X_gamma = sparse(X_gamma);
 %disp(toc)
-
