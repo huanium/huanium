@@ -11,12 +11,12 @@ for k = 0:N-2
     for o = 2:N 
         term = kron(term, operators{o});
     end
-    state = expv(-1i, term, state, 1e-4, 10); 
+    state = expv(-1i, sparse(term), state, 1e-4, 10); 
 end
 operators = horzcat(horzcat( Sz, repmat({Id}, 1, N-2) ), beta(end)*Sz );
 term = operators{1};
 for o = 2:N 
     term = kron(term, operators{o});
 end
-state = expv(-1i, term, state, 1e-4, 10); 
+state = expv(-1i, sparse(term), state, 1e-4, 10); 
 

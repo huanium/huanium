@@ -14,7 +14,7 @@ for k = 0:N-1
     for o = 2:N 
         term = kron(term, operators{o});
     end
-    stateZZ = expv(-1i, term, stateZZ, 1e-4, 10);
+    stateZZ = expv(-1i, sparse(term), stateZZ, 1e-4, 10);
 end
 %X_gamma = sparse(X_gamma);
 %disp(toc)
