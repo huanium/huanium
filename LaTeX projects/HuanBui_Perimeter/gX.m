@@ -12,9 +12,9 @@ for k = 0:N-1
     operators = horzcat( horzcat( repmat({Id},1,k), {gamma(k+1)*g(k+1)*Sx}), repmat({Id}, 1 , N-1-k));
     term = operators{1};
     for o = 2:N 
-        term = kron(term, operators{o});
+        term = sparse(kron(term, operators{o}));
     end
-    X_gamma = X_gamma + term;
+    X_gamma = sparse(X_gamma + term);
 end
 %X_gamma = sparse(X_gamma);
 %disp(toc)

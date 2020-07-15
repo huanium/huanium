@@ -12,7 +12,7 @@ for k = 0:N-1
     operators = horzcat( horzcat( repmat({Id},1,k), {gamma(k+1)*g(k+1)*Sx}), repmat({Id}, 1 , N-1-k));
     term = operators{1};
     for o = 2:N 
-        term = kron(term, operators{o});
+        term = sparse(kron(term, operators{o}));
     end
     stateZZ = expv(-1i, sparse(term), stateZZ, 1e-4, 10);
 end

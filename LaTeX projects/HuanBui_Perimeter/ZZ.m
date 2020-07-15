@@ -10,16 +10,16 @@ for k = 0:N-2
     operators = horzcat( horzcat( repmat({Id},1,k)  ,horzcat({beta(k+1)*Sz}, {Sz})), repmat({Id}, 1 , N-2-k));
     term = operators{1};
     for o = 2:N 
-        term = kron(term, operators{o});
+        term = sparse(kron(term, operators{o}));
     end
     ZZ_beta = ZZ_beta + term;
 end
 operators = horzcat(horzcat( Sz, repmat({Id}, 1, N-2) ), beta(end)*Sz );
 term = operators{1};
 for o = 2:N 
-    term = kron(term, operators{o});
+    term = sparse(kron(term, operators{o}));
 end
-ZZ_beta = ZZ_beta + term;
+ZZ_beta = sparse(ZZ_beta + term);
 
 
 
