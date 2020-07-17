@@ -1,6 +1,6 @@
 % computes the overlap
 
-function [Overlap] = overlap(params,g,N,p,state0, cell_gX, cell_ZZ)
+function [Overlap] = overlap(params,N,p,state0, cell_gX, cell_ZZ)
 
 params = reshape(params, [2*p,N]);
 Overlap = 0;

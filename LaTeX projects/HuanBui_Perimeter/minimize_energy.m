@@ -1,11 +1,12 @@
-N    = 8;
+N    = 4;
 p    = N/2;
 x = zeros(2*p*N,1);
 fval = 0;
 g    = 2*rand(N,1);
+J    = 2*rand(N,1);
 state0 = zeros(2^N,1);
 A   = eye(2*p*N);
-ub  = (pi)*ones(2*p*N,1);
+ub  = (pi/2)*ones(2*p*N,1);
 lb  = zeros(2*p*N,1);
 eigv = 0;
 
@@ -25,28 +26,28 @@ for k = 0:N-1
 end
 % generate the ZZ cell array of the Hamiltonia:
 Sz = [1 0 ; 0 -1];
-cell_ZZ = cell(N,1);
+cell_JZZ = cell(N,1);
 term = sparse(2,2);
 operators = cell(N,1);
 for k = 0:N-2
-    operators = horzcat( horzcat( repmat({Id},1,k)  ,horzcat({Sz}, {Sz})), repmat({Id}, 1 , N-2-k));
+    operators = horzcat( horzcat( repmat({Id},1,k)  ,horzcat({J(k+1)*Sz}, {Sz})), repmat({Id}, 1 , N-2-k));
     term = operators{1};
     for o = 2:N 
         term = sparse(kron(term, operators{o}));
     end
-    cell_ZZ{k+1} = term;
+    cell_JZZ{k+1} = term;
 end
-operators = horzcat(horzcat( Sz, repmat({Id}, 1, N-2) ), Sz );
+operators = horzcat(horzcat( {Sz}, repmat({Id}, 1, N-2) ), {J(N)*Sz} );
 term = operators{1};
 for o = 2:N 
     term = sparse(kron(term, operators{o}));
 end
-cell_ZZ{N} = term;
+cell_JZZ{N} = term;
 
 % generates Hamiltonian
 Hamiltonian = sparse(2^N,2^N);
 for i = 1:N
-    Hamiltonian = Hamiltonian - cell_ZZ{i} - cell_gX{i};
+    Hamiltonian = Hamiltonian - cell_JZZ{i} - cell_gX{i};
 end
 [state0, eigv] = eigs(Hamiltonian, 1, 'SA');
 
@@ -67,7 +68,7 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-[x , fval] = fmincon(@(params) overlap(params,g,N,p, state0, cell_gX, cell_ZZ), 0.5*ones(2*p*N,1), [], [], [], [], lb, ub, [],  options);
+[x , fval] = fmincon(@(params) overlap(params, N, p, state0, cell_gX, cell_JZZ), 0.5*ones(2*p*N,1), [], [], [], [], lb, ub, [],  options);
 disp('Ground state energy')
 disp(eigv)
 disp('Optimal angles')
