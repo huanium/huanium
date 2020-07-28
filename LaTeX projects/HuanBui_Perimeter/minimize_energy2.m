@@ -1,15 +1,11 @@
 N    = 4;
-p    = round(log2(N));
-x = zeros(2*p*2*N,1);
+p    = round(sqrt(N));
+x = zeros(2*p*2*1,1);
 fval = 0;
-% since g=J=1 in critical case, no need to consider them!
-%g    = ones(2*N,1);
-%J    = ones(2*N,1);
-
 state0 = zeros(2^N,1);
-A   = eye(2*p*2*N);
-ub  = (pi/2)*ones(2*p*2*N,1);
-lb  = zeros(2*p*2*N,1);
+A   = eye(2*p*2*1);
+ub  = (pi/2)*ones(2*p*2*1,1);
+lb  = zeros(2*p*2*1,1);
 eigv = 0;
 
 %% this section computes the Hamiltonian and GS of N-qubit system
@@ -105,11 +101,11 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-[x , fval] = fmincon(@(params) overlap2(params, N, p, state0, cell_gX, cell_JZZ), ones(2*p*2*N,1), [], [], [], [], lb, ub, [],  options);
+[x , fval] = fmincon(@(params) overlap2(params, N, p, state0, cell_gX, cell_JZZ), ones(2*p*2*1,1), [], [], [], [], lb, ub, [],  options);
 disp('Ground state energy')
 disp(eigv)
 disp('Optimal angles')
-disp(reshape(x,[2*p,2*N]));
+disp(reshape(x,[2*p,2*1]));
 disp(['Fidelity by Overlap: ' num2str(-fval*100) '%']);
 
 %%%%%%%%%%%%%%%%%%%
