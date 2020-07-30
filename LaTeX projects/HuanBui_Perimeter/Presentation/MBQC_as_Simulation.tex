@@ -23,6 +23,8 @@
 \usepackage{mathtools}
 \usepackage{bigints}
 \usepackage{amsthm}
+\usepackage{fontawesome}
+%\newcommand*{\eye}{{\fontspec{symbola.ttf}\symbol{"1F441}}}
 
 
 \theoremstyle{definition}
@@ -123,7 +125,7 @@
 	\item Motivation
 	\item Measurement-based quantum computing (MBQC)
 	%\pause
-	\item Variational simulation of non-trivial quantum state
+	\item Variational simulation of non-trivial quantum states
 	%\pause
 	\item \underline{Research question}: Measurement-assisted QAOA as an efficient/better simulation?
 \end{itemize}
@@ -141,7 +143,7 @@
 
 
 \begin{itemize}
-	\item Efficient variational simulation of nontrivial quantum states with QAOA \cite{VQCS} requires $\mathcal{O}(L)$ circuit depth\\
+	\item Variational simulation of nontrivial quantum states with QAOA \cite{VQCS} requires $\mathcal{O}(L)$ circuit depth\\
 	$\,$\\
 	$\boxed{\text{Why?}}$ $\implies$ local unitaries spread correlations slowly, making nontrivial states expensive to prepare \\
 	$\,$	
@@ -174,7 +176,7 @@ Conventional quantum circuit models:
 \end{figure}
 
 %\pause
-Cluster state: \cite{jozsa}
+Cluster state: \cite{jozsa} using quantum teleportation
 
 \begin{figure}[!htb]
 	%\includegraphics[scale=0.2]{jozsa1}
@@ -182,48 +184,43 @@ Cluster state: \cite{jozsa}
 \end{figure}
 
 
-
-
-
-
-
 \end{frame}
 
 
-\begin{frame}[fragile]
-\frametitle{MBQC: One-way quantum computer}
-Quantum teleportation = Entanglement + Measurement
-
-\begin{center}
-	$\,$\Qcircuit @C=.7em @R=1.4em  {
-		\lstick{\ket{\psi}} & \qw & \ctrl{1} & \gate{HZ_\theta} & \meter &  \\
-		\lstick{\ket{+}}    & \qw & \ctrl{0} & \qw & \qw &\rstick{X^m H Z_\theta \ket{\psi}} 
-	}
-	
-\end{center}
-
-%\pause
-
-\begin{figure}[!htb]
-	\includegraphics[scale=0.25]{cluster6}
-	\caption{From \cite{nielsen}}
-\end{figure}
-
-
-\end{frame}
+%\begin{frame}[fragile]
+%\frametitle{MBQC: One-way quantum computer}
+%Quantum teleportation = Entanglement + Measurement
+%
+%\begin{center}
+%	$\,$\Qcircuit @C=.7em @R=1.4em  {
+%		\lstick{\ket{\psi}} & \qw & \ctrl{1} & \gate{HZ_\theta} & \meter &  \\
+%		\lstick{\ket{+}}    & \qw & \ctrl{0} & \qw & \qw &\rstick{X^m H Z_\theta \ket{\psi}} 
+%	}
+%	
+%\end{center}
+%
+%%\pause
+%
+%\begin{figure}[!htb]
+%	\includegraphics[scale=0.25]{cluster6}
+%	\caption{Teleportation through a chain, from \cite{nielsen}}
+%\end{figure}
+%
+%
+%\end{frame}
 
 
 \begin{frame}
 \frametitle{MBQC: One-way quantum computer}
 
 Universality: Quantum circuit model $\equiv$ Cluster state formulation. %\pause 
-How? 
+%How? 
 %\pause
 
 \begin{itemize}
 	\item Transfer of information by teleportation
 	%\pause
-	\item Any qubit rotation can be done on a chain of qubits
+	\item Any single-qubit unitary can be done on a chain of qubits
 	%\pause
 	\item The CNOT gate can be implemented in a ``T'' configuration
 \end{itemize}
@@ -438,8 +435,9 @@ $\,$\\
 Two possibilities:
 \begin{itemize}
 	\item QAOA is insufficient; need a completely new algorithm.
-	\item QAOA is sufficient, but need better MBQC implementation. %\pause 
-	$\impliedby$
+	\item QAOA is sufficient, but need better MBQC implementation. 	$\impliedby$ %\pause 
+
+
 \end{itemize} 
 
 
@@ -453,7 +451,7 @@ Two possibilities:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
-\frametitle{2nd possibility: How robust is QAOA?}
+\frametitle{2nd possibility: How far can QAOA go?}
 
 Test QAOA with TFIM without translation invariance:
 
@@ -485,27 +483,29 @@ Modified QAOA ansatz (reference (\ref{eq:QAOA}))
 
 
 \begin{frame}
-\frametitle{2nd possibility: How robust is QAOA?}
+\frametitle{2nd possibility: How far can QAOA go?}
 
 
 
-Conjecture holds for $L = 2,4,\dots, 14$, even at lower $p$:
-
+Conjecture seems to hold:
 
 
 \begin{figure}[!htb]
 	\centering
 	\begin{subfigure}{0.5 \textwidth}
 		\centering
-		\includegraphics[scale=0.35]{N_6_p_3.PNG}
-		\caption{$N=6$, $p=3$}
+		\includegraphics[scale=0.4]{N8p4.PNG}
+		\caption{$L=8$, $p=4$}
 	\end{subfigure}%
 	\begin{subfigure}{0.5 \textwidth}
 		\centering
-		\includegraphics[scale=0.46]{N_6_p_3_out}
-		\caption{99.9\% fidelity at low iteration count.}
+		\includegraphics[scale=0.46]{N8p4_out}
+		\caption{99.5\% fidelity}
 	\end{subfigure}
+
 \end{figure}
+
+\underline{Note}: Fidelity here is limited by precision setting.
 
 \end{frame}
 
@@ -513,68 +513,77 @@ Conjecture holds for $L = 2,4,\dots, 14$, even at lower $p$:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
-\frametitle{2nd possibility: How robust is QAOA?}
-
-
-(Using the overlap as the cost function in this case)
+\frametitle{2nd possibility: How far can QAOA go?}
 
 
 
-\begin{figure}[!htb]
+
+
+\begin{figure}
 	\centering
-	\begin{subfigure}{0.5 \textwidth}
-		\centering
-		\includegraphics[scale=0.35]{N_8_p_4.PNG}
-		\caption{$N=8$, $p=4$}
-	\end{subfigure}%
-	\begin{subfigure}{0.5 \textwidth}
-		\centering
-		\includegraphics[scale=0.46]{N_8_p_4_out}
-		\caption{99.4\% fidelity at low iteration count.}
-	\end{subfigure}
+	\includegraphics[scale=0.55]{N10p5_out}
+	\caption{$L=10$, $p=5$, 99.9\% fidelity.}
 \end{figure}
 
+\# Parameters $\sim L^2 \implies$ need more computing power to test $L > 16$. 
 \end{frame}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 \begin{frame}
-\frametitle{2nd possibility: How robust is QAOA?}
+\frametitle{2nd possibility: How far can QAOA go?}
+
+$\clubsuit$ Can simulate excited states \underline{with the same symmetry}.\\
+
+$\,$\\
 
 
-
-
-
+\underline{Example}: $6$th excited state for $L=8$ 
 \begin{figure}[!htb]
 	\centering
 	\begin{subfigure}{0.5 \textwidth}
 		\centering
-		\includegraphics[scale=0.30]{N_10_p_2.PNG}
-		\caption{$N=10$, $p=2$ only}
+		\includegraphics[scale=0.45]{N8p4_6th}
+		\caption{$L=8$, $p=4$, 6th excited state}
 	\end{subfigure}%
 	\begin{subfigure}{0.5 \textwidth}
 		\centering
-		\includegraphics[scale=0.47]{N_10_p_2_out}
-		\caption{96\% fidelity, not bad for $p=2$.}
+		\includegraphics[scale=0.52]{N8p4_6th_out}
+		\caption{99.9\% fidelity.}
 	\end{subfigure}
 \end{figure}
 
 %\pause
 
-$\implies$ Can't get to higher $L$'s due to large parameter space ($\sim L^2$) and limitations in computing power and algorithm efficiency.
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
 
+\begin{frame}
+\frametitle{Measurement-assisted QAOA?}
 
 
+Consider the following algorithm:
+\begin{itemize}
+	\item Make a random QAOA state from $\bigotimes \ket{+}$ on $2L$ qubits with:
+	\begin{itemize}
+		\item Low-depth (sublinear?)
+		\item Randomly generated parameters
+	\end{itemize}
 
-
-
-
+	\item Measure every other qubit $\implies$ get a $L$-qubit subsystem.
+	
+	\item Apply the QAOA optimization on this subsystem. 
+\end{itemize}
+$\,$\\
+\underline{Intuition}: Steps 1 and 2 generate a state with high entanglement, so that QAOA can drive it to the target state more quickly.\\
+$\,$\\
+$\boxed{?}:$ Quicker? How much quicker? 
 
 \end{frame}
 
@@ -587,26 +596,41 @@ $\implies$ Can't get to higher $L$'s due to large parameter space ($\sim L^2$) a
 \begin{frame}
 \frametitle{Summary \& Questions}
 
-
+Summary
 \begin{itemize}
-	\item MBQC
-	\item Variational non-trivial state simulation \& QAOA
-	\item Measurement-based QAOA. It is a good idea?
-	\item Robustness of QAOA, tested on TFIM with non-constant $g_i$.
+	\item MBQC \& simulating the GHZ state
+	\item QAOA \& its ``range''
+	\item Possible measurement-assisted QAOA algorithm
 	
-	%\pause 
-	
-	\item Is it possible, in principle, to get speedup with MBQC + QAOA?
-	
-	%\pause
-	
-	\item In particular, can we target the critical ground state $(g\equiv 1)$ with sublinear circuit depth?
 	
 \end{itemize}
 
+Questions:
+
+\begin{itemize}
+	\item Is it possible, in principle, to get speedup with MBQC + QAOA?
+	
+	\item Target the critical ground state $(g\equiv 1)$ with sublinear circuit depth?
+\end{itemize}
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+\frametitle{Acknowledgments}
+
+
+\begin{itemize}
+	\item Timothy Hsieh, advisor (Perimeter)
+	
+	\item Wen Wei Ho, MATLAB code tips (Harvard)
+	
+	\item Colby College Natural Science Computing Cluster
+	
+\end{itemize}
+
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
