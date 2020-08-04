@@ -1,6 +1,6 @@
-N    = 10;
+N    = 6;
 M = 1;
-p    = round(log(N))+1;
+p    = round(log(N));
 x = zeros(2*p*2*1,1);
 fval = 0;
 state0 = zeros(2^N,1);
@@ -87,7 +87,7 @@ for o = 2:2*N
 end
 cell_JZZ{2*N} = term;
 
-% generates projection to ALL PLUS
+% generates projection
 Had  = sparse([1 1 ; 1 -1]);
 P_0  = sparse([1 1 ; 0  0]);
 P_1  = sparse([0 0 ; 1 -1]);
@@ -95,7 +95,8 @@ HP_0 = sparse(Had*P_0);
 HP_1 = sparse(Had*P_1);
 Random_Proj_Had = cell(2,1);
 Random_Proj_Had{1} = HP_0;
-Random_Proj_Had{2} = HP_1;
+% Random_Proj_Had{2} = HP_1;
+Random_Proj_Had{2} = HP_0;    % in which case everything is |+>
 term = sparse(2,2);
 operators = cell(2*N,1);
 cell_H = cell(N,1);
@@ -118,10 +119,12 @@ end
 params = (pi/2)*rand(2*p*2*M,1);
 params = reshape(params, [2*p,2*M]);
 Overlap = 0;
-QAOA_state = ones(2^(2*N),1)/norm(ones(2^(2*N),1)); % |+> product state
-% create GHZ state
-%QAOA_state(1)   = 1/sqrt(2);
-%QAOA_state(end) = 1/sqrt(2);
+% |+> product state
+% QAOA_state = ones(2^(2*N),1)/norm(ones(2^(2*N),1)); 
+%create GHZ state
+QAOA_state = zeros(2^(2*N),1);
+QAOA_state(1)   = 1/sqrt(2);
+QAOA_state(end) = 1/sqrt(2);
 param_layer = zeros(2, 2*1); 
 beta  = zeros(2*1, 1); 
 gamma = zeros(2*1, 1); 
