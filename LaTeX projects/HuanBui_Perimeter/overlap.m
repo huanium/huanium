@@ -1,12 +1,12 @@
 % computes the overlap
 
-function [Overlap] = overlap(params, N, p, state0, cell_gX, cell_ZZ)
+function [Overlap] = overlap(params, N, p, state0, QAOA_state, cell_gX, cell_ZZ)
 
 M=N;
 %M = 1;
 params = reshape(params, [2*p,M]);
 Overlap = 0;
-QAOA_state = zeros(2^N,1);
+%QAOA_state = zeros(2^N,1);
 QAOA_state = ones(2^N,1)/norm(ones(2^N,1)); % |+> product state
 % create GHZ state
 %QAOA_state(1)   = 1/sqrt(2);
