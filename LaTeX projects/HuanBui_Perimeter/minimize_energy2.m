@@ -95,12 +95,12 @@ HP_0 = sparse(Had*P_0);
 HP_1 = sparse(Had*P_1);
 Random_Proj_Had = cell(2,1);
 Random_Proj_Had{1} = HP_0;
-% Random_Proj_Had{2} = HP_1;
+%Random_Proj_Had{2} = HP_1;
 Random_Proj_Had{2} = HP_0;    % in which case everything is |+>
 term = sparse(2,2);
 operators = cell(2*N,1);
-cell_H = cell(N,1);
 HP = zeros(2,2);
+proj_H = speye(2^(2*N),2^(2*N));
 for k = 1:2:2*N
     % Random_Proj_Had can either be HP_0 or HP_1. 
     % if HP_0 then get |+> all the time
@@ -112,17 +112,20 @@ for k = 1:2:2*N
     for o = 2:2*N 
         term = sparse(kron(term, operators{o}));
     end
-    cell_H{(k-1)/2+1} = term;
+    proj_H = proj_H*term;
 end
+
 
 % generate guess state
 params = (pi/2)*rand(2*p*2*M,1);
+% to generate a product |+> state or GHZ, set params to zero
+% params = zeros(2*p*2*M,1);  % note: when guess state is GHZ/|+>, no perfect fidelity
 params = reshape(params, [2*p,2*M]);
 Overlap = 0;
 % |+> product state
 % QAOA_state = ones(2^(2*N),1)/norm(ones(2^(2*N),1)); 
-%create GHZ state
-QAOA_state = zeros(2^(2*N),1);
+% create GHZ state
+QAOA_state =    zeros(2^(2*N),1);
 QAOA_state(1)   = 1/sqrt(2);
 QAOA_state(end) = 1/sqrt(2);
 param_layer = zeros(2, 2*1); 
@@ -147,15 +150,15 @@ end
 %% This section runs the optimization
 
 %parpool('local', 48);
-%if max(size(gcp)) == 0 % parallel pool needed
-%    parpool('local',2); % create the parallel pool
-%end
+if max(size(gcp)) == 0 % parallel pool needed
+    parpool('local',2); % create the parallel pool
+end
 
 % constrained
 % 'Display','iter', 'PlotFcn', 'optimplotfval', 'Algorithm', 'sqp'
 options = optimoptions('fmincon','UseParallel',true, 'Algorithm','interior-point', 'Display','final-detailed' ,...
     'ConstraintTolerance', 1e-5,'MaxFunctionEvaluations', 20000, 'MaxIterations', 2000,...
-    'OptimalityTolerance', 1e-5, 'StepTolerance', 1e-5, 'PlotFcn', 'optimplotfval');
+    'OptimalityTolerance', 1e-5, 'StepTolerance', 1e-5,'PlotFcn', 'optimplotfval');
 
 %%%%%%%%%%%%%%%%%%%
 % clock starts
@@ -163,7 +166,12 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 CZ_circuit_2N = CZ_circuit(2*N);
-[x , fval] = fmincon(@(params) overlap2(params, N, p, state0, QAOA_state, CZ_circuit_2N, cell_gX, cell_JZZ, cell_H), ones(2*p*2*M,1), [], [], [], [], lb, ub, [],  options);
+vec2 = zeros(N,1);
+for k = 1:N
+   vec2(N+1-k) = 2^(2*k-1);
+end
+[x , fval] = fmincon(@(params) overlap2(params, N, p, state0, QAOA_state, CZ_circuit_2N, cell_gX, cell_JZZ, proj_H, vec2),...
+                                                                   ones(2*p*2*M,1), [], [], [], [], lb, ub, [],  options);
 disp(['Energy of state: ' num2str(Ex)] )
 disp(eigv);
 disp(['System size:      ' num2str(N)]);
