@@ -1,13 +1,19 @@
-N    = 10;
-p    = N/2;
-x = zeros(2*p*N,1);
+N    = 12;
+%p    = round(log2(N));
+p = N/2;
+%p = round(log2(N));
+M=N;
+%M=1;
+x = zeros(2*p*M,1);
 fval = 0;
 g    = 2*rand(N,1);
+%g    = ones(N,1);
 J    = 2*rand(N,1);
+%J    = ones(N,1);
 state0 = zeros(2^N,1);
-A   = eye(2*p*N);
-ub  = (pi/2)*ones(2*p*N,1);
-lb  = zeros(2*p*N,1);
+A   = eye(2*p*M);
+ub  = (pi/2)*ones(2*p*M,1);
+lb  = zeros(2*p*M,1);
 eigv = 0;
 
 % generate the gXX cell array of the Hamiltonian:
@@ -30,7 +36,7 @@ cell_JZZ = cell(N,1);
 term = sparse(2,2);
 operators = cell(N,1);
 for k = 0:N-2
-    operators = horzcat( horzcat( repmat({Id},1,k)  , horzcat({J(k+1)*Sz}, {Sz})), repmat({Id}, 1 , N-2-k));
+    operators = horzcat( horzcat( repmat({Id},1,k)  ,horzcat({J(k+1)*Sz}, {Sz})), repmat({Id}, 1 , N-2-k));
     term = operators{1};
     for o = 2:N 
         term = sparse(kron(term, operators{o}));
@@ -49,33 +55,50 @@ Hamiltonian = sparse(2^N,2^N);
 for i = 1:N
     Hamiltonian = Hamiltonian - cell_JZZ{i} - cell_gX{i};
 end
-[state0, eigv] = eigs(Hamiltonian, 1, 'SA');
+%ground state
+%[state0, eigv] = eigs(Hamiltonian, 1, 'SA');
+%first excited state
 
-if max(size(gcp)) == 0 % parallel pool needed
-    parpool('local', 48) % create the parallel pool
-end
+Ex = 6; % excited state number
+[state0, eigv] = eigs(Hamiltonian, Ex, 'SA');
+state0 = state0(:,end); % take last eigenstate
+eigv = eigv(end); % take last eigenvalue
+%disp(state0);
+%disp(eigv);
 
-
+%if max(size(gcp)) == 0 % parallel pool needed
+%    parpool % create the parallel pool
+%end
 
 % constrained
 % 'Display','iter', 'PlotFcn', 'optimplotfval', 'Algorithm', 'sqp'
 options = optimoptions('fmincon','UseParallel',true, 'Algorithm','interior-point', 'Display','iter' ,...
-    'ConstraintTolerance', 1e-3,'MaxFunctionEvaluations', 10000, 'MaxIterations', 1000,...
-    'OptimalityTolerance', 1e-3, 'StepTolerance', 1e-4);
-
+    'ConstraintTolerance', 1e-5,'MaxFunctionEvaluations', 40000, 'MaxIterations', 1000,...
+    'OptimalityTolerance', 5e-5, 'StepTolerance', 1e-4);
 %%%%%%%%%%%%%%%%%%%
 % clock starts
 tic 
 % clock starts
 %%%%%%%%%%%%%%%%%%%
-
-[x , fval] = fmincon(@(params) overlap(params, N, p, state0, cell_gX, cell_JZZ), 0.5*ones(2*p*N,1), [], [], [], [], lb, ub, [],  options);
-disp('Ground state energy')
+[x , fval] = fmincon(@(params) overlap(params, N, p, state0, cell_gX, cell_JZZ), 0.5*ones(2*p*M,1), [], [], [], [], lb, ub, [],  options);
+disp(['Energy of state: ' num2str(Ex)] )
 disp(eigv)
-disp('Optimal angles')
-disp(reshape(x,[2*p,N]));
-%disp(['Fidelity by Energy: ' num2str(fval*100/GE) '%']);
-disp(['Fidelity by Overlap: ' num2str(fval^2*100) '%']);
+disp('First Optimal angles')
+disp(reshape(x,[2*p,M]));
+disp(['First Fidelity by Overlap: ' num2str(-fval*100) '%']);
+
+% apply CZ to this QAOA state:
+%CZ_circuit(N)*QAOA_state(x, N, p, cell_gX, cell_Z);
+%disp(QAOA_state(x, N, p, cell_gX, cell_JZZ));
+% make measurement. 
+
+% then QAOA on this
+%[y , fval2] = fmincon(@(params) overlap2(params, x, N, p, state0, cell_gX, cell_JZZ), zeros(2*p*N,1), [], [], [], [], lb, ub, [],  options);
+%disp('Second Optimal angles')
+%disp(reshape(y,[2*p,N]));
+%disp(['Second Fidelity by Overlap: ' num2str(fval2^2*100) '%']);
+
+
 %%%%%%%%%%%%%%%%%%%
 % clock ends
 Duration = seconds(round(toc));
