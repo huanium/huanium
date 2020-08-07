@@ -8,8 +8,8 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-X = -30:0.5:30;
-Y = -30:0.5:30;
+X = -40:0.5:40;
+Y = -40:0.5:40;
 
 [II,JJ] = meshgrid(X,Y);
 H = zeros(length(II),length(JJ));
@@ -40,7 +40,7 @@ xmin = -10;
 xmax = -xmin;
 ymin = xmin;
 ymax = xmax;
-fun = @(x,y) cos( (-II.*x./(100^(1/2)) - JJ.*y./(100^(1/4))) - y.^4/96 + x.*y.^2/96 - x.^2/24);
+fun = @(x,y) cos( (-II.*x./(1000^(1/2)) - JJ.*y./(1000^(1/4))) - y.^4/96 + x.*y.^2/96 - x.^2/24);
 Hxy = integral2(fun, xmin,xmax, ymin, ymax, 'AbsTol',1e-4, 'RelTol',1e-4);
 end
 
