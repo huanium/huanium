@@ -1,3 +1,8 @@
+%% Author: Huan Q. Bui
+%% Colby College '21
+%% Date: Aug 07, 2020
+%%
+
 %%%%%%%%%%%%%%%%%%%
 % clock starts
 tic 

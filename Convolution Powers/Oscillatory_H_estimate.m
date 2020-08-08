@@ -1,3 +1,8 @@
+%% Author: Huan Q. Bui
+%% Colby College '21
+%% Date: Aug 07, 2020
+%%
+
 if max(size(gcp)) == 0 % parallel pool needed
    parpool('local',2); % create the parallel pool
 end
@@ -8,8 +13,8 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-X = -40:0.5:40;
-Y = -40:0.5:40;
+X = -80:1:80;
+Y = -80:1:80;
 
 [II,JJ] = meshgrid(X,Y);
 H = zeros(length(II),length(JJ));
@@ -36,7 +41,7 @@ disp(' ');
 % -- Integration --
 
 function Hxy = Hxy(II,JJ)
-xmin = -10;
+xmin = -11;
 xmax = -xmin;
 ymin = xmin;
 ymax = xmax;
