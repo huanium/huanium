@@ -13,8 +13,8 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-X = -80:1:80;
-Y = -80:1:80;
+X = -10:1:10;
+Y = -10:1:10;
 
 [II,JJ] = meshgrid(X,Y);
 H = zeros(length(II),length(JJ));
@@ -24,6 +24,9 @@ for r = 1:length(II)
    end
 end
 surfc(II,JJ,H);
+xlabel('X', 'FontSize',16);
+ylabel('Y', 'FontSize',16);
+title('Re(H)', 'FontSize', 16 );
 colorbar;
 
 %%%%%%%%%%%%%%%%%%%

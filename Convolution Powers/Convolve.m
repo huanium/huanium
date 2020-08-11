@@ -19,6 +19,10 @@ x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
 y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
 [X, Y] = meshgrid(x, y);
 s = surfc(X, Y, data, 'LineWidth',0.1,'edgecolor','black','FaceAlpha',0.6);
+xlabel('X', 'FontSize',16);
+ylabel('Y', 'FontSize',16);
+title('Re(Phi^{(n)})', 'FontSize', 16 );
+colorbar;
 %s = meshc(X, Y, data);
 
 %%%%%%%%%%%%%%%%%%%
