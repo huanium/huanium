@@ -13,8 +13,8 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-I = -40:1:40;
-J = -40:1:40;
+I = -4:1:4;
+J = -4:1:4;
 
 [II,JJ] = meshgrid(I,J);
 AbsSigmaHat = zeros(length(II),length(JJ));

@@ -1,11 +1,4 @@
-%% Author: Huan Q. Bui
-%% Colby College '21
-%% Date: Aug 08, 2020
-%%
-
-if max(size(gcp)) == 0 % parallel pool needed
-   parpool('local',2); % create the parallel pool
-end
+parpool('local', 48);
 
 %%%%%%%%%%%%%%%%%%%
 % clock starts
@@ -13,19 +6,16 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-Z = 10:10:1000;
+Z = 1:1:5;
 AbsSigmaHatX = zeros(length(Z),1);
 AbsSigmaHatY = zeros(length(Z),1);
-EstimateX = zeros(length(Z),1);
-EstimateY = zeros(length(Z),1);
 
-alpha = 1/8; 
-beta  = 3/4;
+alpha0 = 1/4; 
+beta0  = 1/4;
 
-EstimateX = 1./((abs(Z.^(2))).^((alpha)/2));
-EstimateY = 1./((abs(Z.^(2))).^( (beta)/2));
+EstimateX = 1./((abs(Z.^(1))).^(alpha0));
+EstimateY = 1./((abs(Z.^(1))).^(beta0 ));
 
-figure; hold on
 for r = 1:length(Z)
     [Sx,Sy] = SigHat(Z(r));
     AbsSigmaHatX(r) = abs(Sx);
@@ -33,27 +23,10 @@ for r = 1:length(Z)
     disp(['Evaluations: ' num2str(r) ' out of ' num2str(length(Z))]);
 end
 
-% plotting
-tiledlayout(1,2)
-nexttile
-plot(Z,AbsSigmaHatX);
-xlabel('X', 'FontSize',16);
-ylabel('Amplitude of SigmaHat along X axis', 'FontSize', 16 );
-hold on
-plot(Z,EstimateX);
-title(['versus 1/|X|^{' num2str(alpha)'}'], 'FontSize', 16)
-hold off
-nexttile
-plot(Z,AbsSigmaHatY);
-xlabel('Y', 'FontSize',16);
-ylabel('Amplitude of SigmaHat along Y axis', 'FontSize', 16 );
-hold on
-plot(Z,EstimateY);
-title('versus 1/|Y|^{1/4}', 'FontSize', 16)
-hold off
+% no plotting here,
 
-
-
+filename = 'C:\Users\buiqu\Documents\GitHub\huanium\Convolution Powers\FT_Sigma_Estimate_1D_ver3.mat';
+save(filename)
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -71,7 +44,7 @@ disp(' ');
 % -- Integration --
 
 function [SigHatX,SigHatY] = SigHat(Z)
-xmin = -9;
+xmin = -10;
 xmax = -xmin;
 ymin = xmin;
 ymax = xmax;
@@ -86,9 +59,10 @@ indicator1 = @(x,y) x.^2 + y.^4 > 0; % P(x,y) greater than zero
 indicator2 = @(x,y) x.^2 + y.^4 < 1; % P(x,y) less than one
 funX = @(x,y) indicator1(x,y).*indicator2(x,y).*exp(-1i*(Z.*x.*(x.^2 + y.^4).^(-E(1,1))));
 funY = @(x,y) indicator1(x,y).*indicator2(x,y).*exp(-1i*(Z.*y.*(x.^2 + y.^4).^(-E(2,2))));
-SigHatX = trE*integral2(funX, xmin, xmax, ymin, ymax, 'AbsTol',1e-3, 'RelTol', 1e-3);
-SigHatY = trE*integral2(funY, xmin, xmax, ymin, ymax, 'AbsTol',1e-3, 'RelTol', 1e-3);
+SigHatX = trE*integral2(funX, xmin, xmax, ymin, ymax, 'AbsTol',1e-4, 'RelTol', 1e-4);
+SigHatY = trE*integral2(funY, xmin, xmax, ymin, ymax, 'AbsTol',1e-4, 'RelTol', 1e-4);
 end
+
 
 
 
