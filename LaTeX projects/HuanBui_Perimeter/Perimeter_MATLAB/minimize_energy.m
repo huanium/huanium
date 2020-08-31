@@ -59,7 +59,7 @@ end
 %[state0, eigv] = eigs(Hamiltonian, 1, 'SA');
 %first excited state
 
-Ex = 6; % excited state number
+Ex = 1; % excited state number
 [state0, eigv] = eigs(Hamiltonian, Ex, 'SA');
 state0 = state0(:,end); % take last eigenstate
 eigv = eigv(end); % take last eigenvalue

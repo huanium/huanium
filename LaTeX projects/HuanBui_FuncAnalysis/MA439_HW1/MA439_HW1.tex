@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+%\usepackage{newpxtext,newpxmath}
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+\usepackage{graphicx, amsmath, amsthm, latexsym, amssymb, color,cite,enumerate, physics, framed}
+\usepackage{caption,subcaption, empheq}
+\usepackage{mathtools}
+\pagenumbering{arabic}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newcommand*{\myproofname}{Proof}
+\newenvironment{subproof}[1][\myproofname]{\begin{proof}[#1]\renewcommand*{\qedsymbol}{$\mathbin{/\mkern-6mu/}$}}{\end{proof}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+\newcommand{\p}{\partial}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+
+
+
+\begin{document}
+\begin{center}
+\begin{framed}
+{\Large  MA439: Functional Analysis\\
+	 Tychonoff Spaces:  Exercises 2.1 - 2.6, Ben Mathes}\\
+$\,$\\
+{\Large \bf  Huan Q. Bui\\}
+$\,$\\
+{\Large Due: Wed, Sep 2, 2020}
+\end{framed}
+\end{center}
+
+\begin{exercise}[2.1]
+	Let $d$ denote the Euclidean metric on $\mathbb{R}^3$. Prove that $d$ actually is a metric.
+	
+	\begin{proof}
+		Let $u,v\in \R^3$ be given. 
+		\begin{equation*}
+		d(u,v) = \sqrt{\sum^3_{i=1}(u_i - v_i)^2}.
+		\end{equation*}
+		It is clear that $d(u,v) \geq 0$ and $d(u,v) = 0$ if and only if  $u_i = v_i$ for $i=1,2,3$, i.e., $u=v$. Next, because $(u_i - v_i)^2 = (v_i - u_i)^2$ for any pair of numbers $u_i,v_i$, $d(u,v) = d(v,u)$. Finally, consider $w\in \R^3$:
+			\begin{align*}
+			(d(u,v) + d(v,w))^2 &= 
+			\lp \sqrt{\sum^3_{i=1}(u_i - v_i)^2} + 
+			\sqrt{\sum^3_{i=1}(v_i - w_i)^2} \rp^2 \\
+			&= \sum^3_{i=1}(u_i - v_i)^2 + 2 \sqrt{ \sum^3_{i=1}(u_i - v_i)^2 \cdot  \sum^3_{i=1}(u_i - v_i)^2}  + \sum^3_{i=1}(v_i - w_i)^2 \\
+			&\geq  \sum^3_{i=1}\lb (u_i - v_i)^2 + 2 (u_i-v_i)(v_i - w_i) + (v_i - w_i)^2 \rb, \quad \mbox{C-S inequality}  \\
+			&= \sum^3_{i=1}(u_i - w_i)^2 \\
+			&= (d(u,w))^2.
+			\end{align*}
+		Since $d(u,v) \geq 0$ for all $u,v$, we can take the square root on both sides and obtain the desired triangle inequality. Thus, $d$ is a bona-fide metric on $\R^3$.
+	\end{proof}
+
+\end{exercise}
+
+
+
+\begin{exercise}[2.2]
+	Let $\mathcal{X} = \{a,b,c \}$, and suppose $d$ is a symmetric function with $d(a,b)=1$, $d(b,c) = 1$, $d(a,c) = \sqrt{2}$, and $d(a,a) = d(b,b) = d(c,c) = 0$. Show that $d$ is a metric, and find a subset of $\mathcal{B}(\mathcal{X})$ that is isometric to $(\mathcal{X},d)$. 
+	
+	\begin{proof}
+	By definition, $d(u,v) \geq 0$ for all $u,v\in \mathcal{X}$ and $d(u,v) = 0 \iff u=v$. Next, since $d$ is a symmetric function, $d(u,v) = d(v,u)$ for any $u,v\in \mathcal{X}$. Finally, consider $u,v,w\in \mathcal{X}$. If $u=v=w$ then $d(u,v) + d(v,w) = d(v,w) = 0$. Else, assume $u\neq v$, then $d(u,v) + d(v,w) \geq \sqrt{2} = \max\{ d(u,v) : u,v\in \mathcal{X} \}$. Thus, the triangle inequality property is satisfied. Therefore, $d$ is a metric on $\mathcal{X}$. Now, consider the set $\mathcal{F} = \{f_a, f_b, f_c\}$ where 
+	\begin{equation*}
+	f_a(x) = d(x,a) - d(x,a), \quad f_b(x) = d(x,b) - d(x,a) ,\quad f_c(x) = d(x,c) - d(x,a) 
+	\end{equation*}
+	We want to show that $\mathcal{F}$ is isometrically isomorphic to $(\mathcal{X},d)$. Since $d(x,y) < \infty$ for all $x,y\in \mathcal{X}$, we have that $\norm{f_x}_\infty = \sup_{x'}\abs{f_x(x')} = \sup_{x'}\abs{d(x',x) - d(x',a)}< \infty$ for all $x\in \mathcal{X}$, i.e., $f_x$ is bounded for all $x\in \mathcal{X}$. So, $\mathcal{F} \subseteq \mathcal{B}(\mathcal{X})$. Further, the map $x\mapsto f_x$ is (clearly) bijective and is distance-preserving:
+	\begin{align*}
+	\norm{f_{x_1} - f_{x_2}}_\infty 
+	&= \sup_{x'} \abs{(d(x',x_1) - d(x',a)) - (d(x',x_2) - d(x',a))} \\
+	&= \sup_{x'} \abs{d(x',x_1) - d(x',x_2)}\\
+	&= d(x_1,x_2)
+	\end{align*}
+	because 
+	\begin{align*}
+	\sup_{x'} \abs{d(x',a) - d(x',b)} &= 1 = d(a,b) \\
+ 	\sup_{x'} \abs{d(x',b) - d(x',c)} &= 1 = d(b,c)\\
+	\sup_{x'} \abs{d(x',c) - d(x',a)} &= \sqrt{2} = d(c,a). 
+	\end{align*}
+	Thus, $\mathcal{F}$ is isometrically isomorphic to $(\mathcal{X},d)$. 
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[2.3]
+	If $d$ is obtained from a norm via $d(s,t) = \norm{s-t}$, prove that $d$ is a metric.
+	
+	\begin{proof}
+		Let $s,t,u$ be given. First, $d(s,t) = \norm{s-t} \geq 0$, and $d(s,t) = \norm{s,t} = 0$ if and only if $s=t$. Next, $d(s,t) = \norm{s-t} = \norm{t-s} = d(t,s)$. Finally, $d(s,t) + d(t,u) = \norm{s-t} + \norm{t-u} \geq \norm{s-u} = d(s,u)$. Thus, $d$ is a metric.
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[2.4]
+	On $\mathbb{R}^2$ define a function $\norm{\cdot}_3 : \R^3 \to \R$ by $\norm{(x,y)}_3 = (\abs{x}^3 + \abs{y}^3)^{1/3}$. Prove this is a norm.
+	
+	\begin{proof}
+		Before showing $\norm{\cdot}_3$ is a norm, we treat some special cases of known inequalities\footnote{Stein \& Shakarchi, \textit{Functional Analysis, Princeton Lectures in Analysis IV}, Princeton University Press 2011.}:
+		\begin{lemma}[Young's Inequality]
+			For positive numbers $p,q$ such that $1/p + 1/q = 1$ and $a,b \geq 0$:
+			\begin{equation*}
+			ab \leq \f{a^p}{p} + \f{b^q}{q}.
+			\end{equation*}
+			
+			\begin{subproof}
+				If $a=0$ or $b=0$ then the result is clear. Thus, assume that $a,b\neq 0$, we have
+				\begin{align*}
+				ab &= \exp\lp\ln a + \ln b\rp \\ 
+				&= \exp\lp\f{1}{p} \ln a^p + \f{1}{q} \ln b^q\rp\\
+				&\leq \f{1}{p}e^{\ln a^p} + \f{1}{q}e^{ln b^q} \\
+				&= \f{a^p}{p} + \f{b^q}{q} 
+				\end{align*}
+				where the last inequality follows because the exponential function is convex and $1/q + 1/p = 1$.
+			\end{subproof}
+		\end{lemma}
+		
+		\begin{lemma}[H\"{o}lder's Inequality]
+			For positive numbers $p,q$ such that $1/p + 1/q = 1$, and $\mathbf{a},\mathbf{b} \in \R^n$
+			\begin{equation*}
+			\abs{\bf{a}\cdot \bf{b}} = \sum^n_{k=1} \abs{a_k b_k} \leq \lp \sum^n_{k=1}\abs{a_k}^p \rp^{1/p} \lp \sum^n_{k=0} \abs{b_k}^q \rp^{1/q} = \norm{\bf{a}}_p \norm{\bf{b}}_q.
+			\end{equation*}
+			
+			\begin{subproof}
+				If $\mathbf{a} = 0$ or $\mathbf{b} = 0$ then the result follows directly. Thus, assume that $\mathbf{a} \neq 0, \mathbf{b} \neq 0$. Let $\mathbf{u} = \mathbf{a}/\norm{\mathbf{a}}_p$ and $\mathbf{v} = \mathbf{b}/\norm{\mathbf{b}}_q$, so that $\norm{\mathbf{u}}_p = \norm{\mathbf{v}}_q = 1$.  It follows from Young's inequality that for all $n\in \mathbb{N}_+$, 
+				\begin{equation*}
+				\abs{u_n v_n} \leq \f{\abs{u_n}^p}{p} + \f{\abs{v_n}^q}{q}.
+				\end{equation*}
+				Thus, from the triangle inequality we have
+				\begin{equation*}
+				\abs{\bf{u}\cdot \bf{v}} \leq \f{1}{p}\sum^n_{k=1}\abs{u_k}^p + \f{1}{q}\sum^n_{k=1}\abs{v_k}^q = \f{1}{p}\norm{\mathbf{u}}_p + \f{1}{q}\norm{\mathbf{v}}_p = \f{1}{p} + \f{1}{q} = 1.
+				\end{equation*}
+				Thus, 
+				\begin{equation*}
+				\abs{\mathbf{a}\cdot \mathbf{b}} \leq \norm{\bf{a}}_p \norm{\bf{b}}_q
+				\end{equation*}
+				as desired. 
+			\end{subproof}
+		\end{lemma}
+	
+		\begin{lemma}[Minkowski's Inequality for sums]
+			Let $p>1$ and $\mathbf{a}, \mathbf{b} \in \R^n$,
+			\begin{equation*}
+			\norm{\mathbf{a} + \mathbf{b}}_p \leq \norm{\mathbf{a}}_p + \norm{\mathbf{b}}_p
+			\end{equation*}
+			
+			\begin{subproof}
+				If $\mathbf{a} + \mathbf{b} = 0$ then the result follows directly. Thus, assume that $\mathbf{a} + \mathbf{b} \neq 0$. Let $q = p/(p-1)$ so that $1/p + 1/q = 1$. Then,
+				\begin{align*}
+				(\norm{\mathbf{a} + \mathbf{b}}_p)^p
+				&= \sum^n_{k=1}\abs{a_k + b_k}^p = \sum^n_{k=1}\abs{a_k + b_k}\abs{a_k + b_k}^{p-1} \\
+				&\leq  \sum^n_{k=1}(\abs{a_k} + \abs{b_k})\abs{a_k + b_k}^{p-1} \\
+				&=  \sum^n_{k=1}\abs{a_k}\abs{a_k + b_k}^{p-1} + \sum^n_{k=1}\abs{b_k}\abs{a_k + b_k}^{p-1} \\
+				\mbox{(H\"{o}lder's ineq.) } &\leq \lp \sum^n_{k=1}\abs{a_k}^p \rp^{1/p}\lp \sum^n_{k=1}\abs{a_k + b_k}^{q(p-1)} \rp^{1/q} + \lp \sum^n_{k=1}\abs{b_k}^p \rp^{1/p}\lp \sum^n_{k=1}\abs{a_k + b_k}^{q(p-1)} \rp^{1/q} \\
+				&=  \lp \sum^n_{k=1}\abs{a_k + b_k}^{p} \rp^{1/q} 
+				\lp \norm{\mathbf{a}}_p + \norm{\mathbf{b}}_p \rp \\
+				&= (\norm{\mathbf{a} + \mathbf{b}}_p)^{p/q}\lp \norm{\mathbf{a}}_p + \norm{\mathbf{b}}_p \rp.
+				\end{align*}
+				Since $p - p/q = p(1-1/q) = p/p = 1$, we have
+				\begin{equation*}
+				\norm{\mathbf{a} + \mathbf{b}}_p \leq \norm{\mathbf{a}}_p + \norm{\mathbf{b}}_p .
+				\end{equation*}
+				as desired.
+			\end{subproof}
+		\end{lemma}
+		
+		
+		
+		Now are ready to prove the statement of Exercise 2.4. Let $(x_1,x_2) \in \R^2$ be given. Since $\abs{x} \geq 0$ for all $x \in \R$ with equality occurring if and only if $x=0$, $\norm{(x_1,x_2)}_3 = (\abs{x_1}^3 + \abs{x_2}^3)^{1/3} \geq 0$ for all $x_1,x_2\in \R$ and $\norm{(x_1,x_2)}_3 = 0$ if and only if $(s,t) = 0$. Next, let $\alpha\in \R$. We have $\norm{(x_1,x_2)}_3 = (\abs{\alpha x_1}^3 + \abs{\alpha x_2}^3)^{1/3} = \abs{\alpha}(\abs{x_1}^3 + \abs{x_2}^3)^{1/3} = \abs{\alpha}\norm{(x_1,x_2)}_3$. Finally, let $x,y\in R^2$. By Minkowski's inequality for sums, 
+			\begin{align*}
+			\norm{x+y}_3 \leq \norm{x}_3 + \norm{y}_3
+			\end{align*}
+		Thus, $\norm{\cdot}_3$ is a norm.
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[2.5]
+	Provide the details in the proof of Theorem 2:
+	\begin{theorem}
+		Every metric space $(\mathcal{X},d)$ is isometrically isomorphic to a subset of $\mathcal{B}(\mathcal{X})$.
+	\end{theorem}
+
+	\begin{proof}
+		Fix an element $x_0 \in \mathcal{X}$ and for each $x\in \mathcal{X}$ define a real valued function $f_x$ by 
+		\begin{equation*}
+		f_x(x') = d(x',x) - d(x',x_0).
+		\end{equation*}
+		Let $\mathcal{F}$ denote the collection $ \{ f_x : x\in \mathcal{X} \}$. We first verify that $\mathcal{F} \subseteq \mathcal{B}(\mathcal{X})$. To this end, we verify that $f_x$ is bounded:
+		\begin{align*}
+		\norm{f_x}_\infty &= \sup_{x'}\abs{f_x(x')} \\
+		&= \sup_{x'}\abs{d(x',x) - d(x',x_0)} \\
+		&\leq \sup_{x'}  \abs{d(x,x_0)},  \quad \mbox{triangle inequality, since $d$ is a metric} \\
+		&= d(x,x_0)\\
+		&< \infty.
+		\end{align*}
+		Thus, $\mathcal{F} \subseteq \mathcal{B}(\mathcal{X})$. Next, we verify that the map $x \mapsto f_x$ is a distance-preserving bijection. It is clear that the map is a bijection. Let $x_1, x_2 \in \mathcal{X}$ be given, by the previous argument, we find
+		\begin{align*}
+		\norm{f_{x_1} - f_{x_2}}_\infty 
+		&= \sup_{x'} \abs{(d(x',x_1) - d(x',x_0)) - (d(x',x_2) - d(x',x_0))} \\
+		&= \sup_{x'}\abs{d(x',x_1) - d(x',x_2)} \\
+		&= d(x_1,x_2) 
+		\end{align*} 
+		which implies that the map $x\mapsto f_x$ is distance-preserving, as desired. Therefore, $\mathcal{F}$ is isomorphically isometric to $(\mathcal{X},d)$. 
+	\end{proof}
+\end{exercise}
+
+
+\begin{exercise}[2.6]
+	Assume that $\rho : \mathcal{X} \times \mathcal{X} \to \R$ satisfies the first two conditions for a metric, but does not satisfy the triangle inequality. Define a function $d : \mathcal{X} \times \mathcal{X} \to \R$ by 
+	\begin{equation*}
+	d(x,y) = \inf \lc \sum^n_{i=1} \rho(x_i, x_{i-1})  : \{  x_0, x_1,\dots, x_n\} \subset \mathcal{X}, x_0 = x, x_n = y\rc.
+	\end{equation*}
+	Show that $d$ is a metric. 
+	
+	\begin{proof}
+		Since $\rho(x,y)$ is a symmetric function, $d(x,y)$ is also a symmetric function, by construction. Next, since $\rho(x,y) \geq 0$ for all $x,y\in \mathcal{X}$, $d(x,y) \geq 0$ for all $x,y\in \mathcal{X}$. Now, suppose $x=y=0$, because $\rho$ is nonnegative, we have 
+		\begin{equation*}
+		d(0,0) = \inf\lc \sum^n_{i=1} \rho(x_i, x_{i-1}) : \{ 0, x_1,\dots, x_{n-1},0 \} \subset \mathcal{X}\rc = 0
+		\end{equation*}
+		occurring when $x_0 = x_1 = \dots = x_n = x= y=  0$. Conversely, if $d(x,y)= 0$ then because $\rho$ is nonnegative and $\rho(x_i, x_{i-1}) = 0$ if and only if $x_i = x_{i-1}$, we must have that $x_0 = x_1 = \dots = x_n = 0$, or $x=y=0$. Finally, to verify that $d$ satisfies the triangle inequality, let $x,y,z\in \mathcal{X}$ be given. Fix $\{ x,x_1',x_2',\dots, x_{n-1}',y \} \subset \mathcal{X}$ and $\{  y, y_1',y_2', \dots, y_{n-1}', z\} \subset \mathcal{X}$. Because $\rho(a,b) \geq 0$ for all $a,b\in \mathcal{X}$, we have that 
+		\begin{align*}
+		d(x,y)  + d(y,z) &= \inf \lc \sum^n_{i=1} \rho(x_i, x_{i-1})  : \{  x_0,\dots, x_n\} \subset \mathcal{X}, x_0 = x, x_n = y\rc \\
+		&\quad + \inf \lc \sum^n_{i=1} \rho(x_i, x_{i-1})  : \{  x_0,\dots, x_n\} \subset \mathcal{X}, x_0 = y, x_n = z\rc\\
+		&\geq \lb \rho(x,x_1') + \rho(x_1',x_2') + \dots + \rho(x_{n-1}',y) \rb + \lb \rho(y,y_1') + \rho(y_1',y_2') + \dots + \rho(y_{n-1}',z)  \rb \\
+		&\geq \rho(x,x_1') + \rho(x_1',x_2') + \dots + \rho(x_{n-2}',x_{n-1}') + \rho(y_{n-1}', z) \\
+		&\geq \inf \lc \sum^n_{i=1} \rho(x_i, x_{i-1}) : \{ x_0,x_1,\dots,x_n \} \subset \mathcal{X}, x_0 = x, x_n = z \rc \\
+		&= d(x,z).
+		\end{align*}
+		So, $d$ satisfies the triangle inequality as desired. Therefore, $d$ is a bona-fide metric on $\mathcal{X}$.  
+	\end{proof}
+\end{exercise}
+
+  
+\end{document}
+
+
+
+
