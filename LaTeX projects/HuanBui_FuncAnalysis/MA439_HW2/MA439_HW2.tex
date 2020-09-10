@@ -1,0 +1,154 @@
+\documentclass[11pt]{article}
+%\usepackage{newpxtext,newpxmath}
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+\usepackage{graphicx, amsmath, amsthm, latexsym, amssymb, color,cite,enumerate, physics, framed}
+\usepackage{caption,subcaption, empheq}
+\usepackage{mathtools}
+\pagenumbering{arabic}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newcommand*{\myproofname}{Proof}
+\newenvironment{subproof}[1][\myproofname]{\begin{proof}[#1]\renewcommand*{\qedsymbol}{$\mathbin{/\mkern-6mu/}$}}{\end{proof}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+\newcommand{\p}{\partial}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+
+
+
+\begin{document}
+\begin{center}
+\begin{framed}
+{\Large  MA439: Functional Analysis\\
+	 Tychonoff Spaces:  Exercises 9, 10 on p.8 \\
+	 \&   5,6,7,9,10,13,14,15 on p.19, Ben Mathes}\\
+$\,$\\
+{\Large \bf  Huan Q. Bui\\}
+$\,$\\
+{\Large Due: Wed, Sep 9, 2020}
+\end{framed}
+\end{center}
+
+\begin{exercise}[Ex 9 p.8]
+	Assume $\mathcal{F}$ is a filter in $\mathcal{X}$ and $E \subset \mathcal{X}$. Prove that $\mathcal{F} \cup \{E\}$ is contained in a filter if and only if $E \cap F \neq \varnothing$ for every $F \in \mathcal{F}$. 
+	\begin{proof}
+		Let $\mathcal{F}$ be a filter in $\mathcal{X}$ and $E \subset \mathcal{X}$. Suppose that $\mathcal{F}\cup \{ E \}$ is contained in a filter $\mathcal{G}$. Then by definition, $G\cap E \neq \varnothing$ for all $G\in \mathcal{G}$, and in particular $F\cap E \neq \varnothing$ for all $F\in \mathcal{F}$. Conversely, if $F \cap E \neq \varnothing$ for all $F \in \mathcal{F}$, then $\cap_\mathcal{F} F \subseteq E$. Now, since $\cap_\mathcal{F} F \in \mathcal{F}$, we have $E \in \mathcal{F}$. Thus, $\mathcal{F} \cup \{ E \} = \mathcal{F}$, which is a filter. 
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[Ex 10 p.8]
+	Assume that $\mathcal{F}$ is a filter in a set $\mathcal{X}$. Prove that $\mathcal{F}$ is an ultrafilter if and only if for every subset $E \subset \mathcal{X}$ either $E \in \mathcal{F}$ or $\mathcal{X} \setminus E \in \mathcal{F}$. (We denote the \textbf{complement} of $E$ in $\mathcal{X}$ by $\mathcal{X}\setminus E$ and it is defined as the set $\mathcal{X}\setminus E \equiv \{  x\in \mathcal{X} : x\notin E \}$.)
+	\begin{proof}
+		Suppose that $\mathcal{F}$ is an ultrafilter and $E \neq \varnothing$ is a subset of $\mathcal{X}$. Suppose $E \notin \mathcal{F}$. Since $\mathcal{F}$ is maximal, the collection $\mathcal{F} \cup \{ E \}$ can neither be a filter nor be contained in a filter (in view of the previous exercise). It follows that there is an $F\in \mathcal{F}$ for which $F \cap E  = \varnothing$. This gives $F \subseteq (\mathcal{X}\setminus E)$, which implies that $\mathcal{X} \setminus E \in \mathcal{F}$. Repeating this argument starting with $\mathcal{X}\setminus E$, we obtain $E\in \mathcal{F}$. 
+		
+		Conversely, if $\mathcal{F}$ is not an ultrafilter, then there is a filter $\mathcal{G}$ properly containing $\mathcal{F}$. Let $\{E \} = \mathcal{G}\setminus \mathcal{F}$. In view of the previous exercise, we have that $E\cap F \neq \varnothing$ for all $F\in \mathcal{F}$. In particular, $\mathcal{X} \setminus E \notin \mathcal{F}$ because $E \cap (\mathcal{X}\setminus E) = \varnothing$. 
+	\end{proof}
+\end{exercise}
+
+
+\begin{exercise}[Ex 5 p.19]
+	Prove that every set $E$ gives rise to two sets $\overline{E}$ and $E^\circ$ such that $E^\circ \subseteq E   \subseteq \overline{E}$ where $\overline{E}$ is the smallest closed set containing $E$, and $E^\circ$ is the largest open set contained in $E$. Give examples to show that there might not exist a smallest open set containing $E$, and there might not exist a largest closed
+	set contained in $E$. (The set $\overline{E}$ is called the \textbf{closure} of $E$ and $E^\circ$ is called the \textbf{interior} of $E$.)
+	
+	\begin{proof}
+		Let $E^\circ = \{ x\in E : B_d(x,\epsilon) \subseteq E, \epsilon > 0 \}$ and $\overline{E} = \{ x\in \mathcal{X} : x = \lim_{n\to \infty} x_n, \mbox{ where } (x_n)\subseteq E \}$. It is clear that $E^\circ \subseteq E \subseteq \overline{E}$. 
+		
+		Here we show that $E^\circ$ is the largest open set contained in $E$. Let $x\in E^\circ$ be given. By construction, there is an $\epsilon > 0$ for which $B_d(x,\epsilon) \subseteq E$. Because $B_d(x,\epsilon)$ is open, for any $y  \subseteq B_d(x,\epsilon)$, there is a $\delta > 0$ for which $B_d(y,\delta) \subseteq B_d(x,\epsilon) \subseteq E$. Thus, $B_d(x,\epsilon) \subseteq E^\circ$, and so $E^\circ$ is open. Now, consider any open set $O \subseteq E$. For any point $x\in O$, there is an $r > 0$ for which $B_d(x,r) \subseteq O$. Thus, $x\in E^\circ$. It follows that $O\subseteq E^\circ$. So, $E^\circ$ is the largest open set contained in $E$. 
+		
+		Next, we show that $\overline{E}$ is the smallest closed set containing $E$. First, $S$ is closed because any sequence $(x_n)$ in $S$ converges within $S$. Now, let $C$ be a closed set in $\mathcal{X}$ such that $E \subseteq C$. Choose an $x\in \overline{E}$. By definition, there is a sequence $(x_n)$ in $E$ that converges to $x$. Since $C$ is closed and contains $E$, $x\in C$. Thus, $\overline{E} \subseteq C$. Thus, $\overline{E}$ is the smallest closed set containing $E$. 
+		
+		Take $E = \{0\} \subseteq \R$. Suppose an open set $O$ contains $E$. Then there is an open interval $I = (a,b)\subseteq O$ that contains $0$. It follows that there is open interval $I' = (a/2,b/2)\subseteq I$ that  contains $0$. So, there is no smallest open set containing $E$. 
+		
+		Take $E = [0,1]\subseteq \R$. Suppose that $S$ is a closed set contained in $E$. It is clear that $E\setminus S$ is a non-empty open set. Take an interval $I \subseteq E\setminus S$. Then $S\cup I$ is closed and is larger than $S$. 
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[Ex 6 p.19]
+	A point $x$ is called an \textbf{interior point} of a subset $E \subseteq X $ if there exists $\epsilon > 0$
+	so that $B(x, \epsilon) \subseteq E$. Prove that $E^\circ$
+	is exactly the set of interior points of $E$.
+	\begin{proof}
+		Let $E^\circ$ be the largest open set contained in $E$ and let $\mbox{Int}(E) = \{ x\in E : B(x,\epsilon) \subseteq E, \epsilon >0 \}$. By virtue of the previous problem, $\mbox{Int}(E) = E^\circ$. 
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[Ex 7 p.19]
+	Given any subset $E$ of a metric space, let $\mbox{Bd}(E)$ denote the set of $x$ with the
+	property that every ball containing $x$ intersects both $E$ and $\mathcal{X} \setminus E$. (This set
+	is called the \textbf{boundary} of $E$.) Prove that $E^\circ, \mbox{Bd}(E)$, and $(\mathcal{X} \setminus  E)^\circ$ form a partition of $\mathcal{X}$ . (The latter set is often called the \textbf{exterior} of $E$.)
+	\begin{proof}
+		Let $E \subseteq \mathcal{X}$ be given. Since $E^\circ \subseteq E$, $E \cap (\mathcal{X}\setminus E) = \varnothing$, and $(\mathcal{X}\setminus E)^\circ \subseteq \mathcal{X}\setminus E$, we have that $E^\circ \cap (\mathcal{X}\setminus E)^\circ = \varnothing$. It is also clear that $\mbox{Bd}(E) \cap E^\circ = \varnothing = \mbox{Bd}(E) \cap (\mathcal{X}\setminus E)$. It remains to show that $\mathcal{X} = E^\circ \cup \mbox{Bd}(E) \cup (\mathcal{X}\setminus E)^\circ$. Let $x\in \mathcal{X}$ be given. If $x\in E$, then $x \in E^\circ$ or $x\in E\setminus E^\circ$. In the latter case, for every $\epsilon >0$, $B(x,\epsilon)$ can intersect both $E$ and $(\mathcal{X}\setminus E)$. This means that $x\in \mbox{Bd}(E)$. If $x\in (\mathcal{X}\setminus E)$, then $x\in (\mathcal{X}\setminus E)^\circ$ or $x \in (\mathcal{X}\setminus E)\setminus (\mathcal{X}\setminus E)^\circ$. In the latter case, we get $x\in \mbox{Bd}(E)$ by a similar argument. Thus, $\{ E^\circ, \mbox{Bd}(E), (\mathcal{X}\setminus E)^\circ \}$ form a partition of $\mathcal{X}$.  
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[Ex 9 p.19]
+	If $E$ is a subset of a metric space $(\mathcal{X} , d)$ and $x \in \mathcal{X}$, we will say that $x$ is a
+	\textbf{limit point} of $E$ when, for every $\epsilon > 0$, the ball $B(x, \epsilon)$ contains an element
+	of $E$ other than $x$. If $x$ is a limit point of $E$, prove that the set $B(x, \epsilon) \cap E$ is infinite.
+	\begin{proof}
+		Suppose that there is an $\epsilon >0$ for which $B(x,\epsilon) \cap E$ is finite. Let $\epsilon' = \inf_{x'\in B(x,\epsilon)\cap E}d(x,x')$. Then, $B(x,\epsilon') \cap E = \varnothing$, which implies that $x$ is not a limit point of $E$. The claim follows as desired. 
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[Ex 10 p.19]
+	Let $E'$ denote the set of limit points of $E$. Prove that the closure of $E$ equals $E\cup E'$.
+	\begin{proof}
+		Let $E$ be given. Then we have $E^\circ \subseteq E \subseteq \overline{E}$. Let $x\in \overline{E}$. If $x\in E$ or $x\in \overline{E}\setminus E$. When $x\notin E$, $x\notin E^\circ$ as well. Thus, there is no $\epsilon > 0$ for which $B(x,\epsilon) \subseteq E$. Thus, for all $\epsilon > 0$, $B(x,\epsilon)\cap E \neq \varnothing$, i.e., $x\in E' $. So $\overline{E} \subseteq E \cup E'$. 
+		
+		Conversely, if $x\in E\cup E'$, then $x\in \overline{E}$ if $x\in E$. If $x\in E'$, then for every $\epsilon >0$, we have $B(x,\epsilon) \cap E \neq \varnothing$. Since $E\subseteq \overline{E}$, we have that $B(x,\epsilon)\cap \overline{E} \neq \varnothing$. So $x\in \overline{E}$ as well. Thus, $E\cup E' \subseteq \overline{E}$. 
+		
+		Thus $\overline{E} = E \cup E'$ as desired.   
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[Ex 13 p.19]
+	Assume $x\in \mathcal{X}$ and $d$ is a metric on $\mathcal{X}$. We define a family of sets $\mathcal{F}_x$ by $H \in \mathcal{F}_x$ if and only if there exists $\epsilon$ such that $B_d(x, \epsilon) \subseteq H$. Prove that $\mathcal{F}_x$ is a filter. (It is called the \textbf{neighborhood filter} of $x$.)
+	\begin{proof}
+		Let $H_1, H_2\in \mathcal{F_x}$ be given. Then there are $\epsilon_1,\epsilon_2$ for which $B(x,\epsilon_2)\subseteq H_2, B(x,\epsilon_1)\subseteq H_1$. Let $\epsilon' = \min\{\epsilon_1,\epsilon_2\}/2$. Then $B(x,\epsilon') \in H_1\cap H_2$, whence $H_1\cap H_2 \in \mathcal{F}_x$. Next, let $H\in \mathcal{F_x}$ and $G \supseteq H$ be given. It is clear that there exists an $\epsilon >0$ for which $B(x,\epsilon)\subseteq H \subseteq G$. So, $G\in \mathcal{F}_x$. Thus, $\mathcal{F}_x$ is a filter.
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[Ex 14 p.19]
+	We will write $\mathcal{F} \to x$, and say that the \textbf{filter} $\mathcal{F}$ \textbf{converges} to $x$, when $\mathcal{F}_x \subseteq \mathcal{F}$. Given a filter $\mathcal{F}$ in the domain of a function $f$, we denote by $f(\mathcal{F})$ the
+	family of sets defined as follows: $H \in f(\mathcal{F})$ if and only if $H$ contains a subset
+	of the form $f(F)$ with $F \in \mathcal{F}$ Prove that $f(\mathcal{F})$ is a filter, and a mapping $f$
+	between metric spaces is continuous if and only if filter convergence $\mathcal{F} \to x$ in the domain of $f$ implies $f(\mathcal{F}) \to f(x)$.
+	\begin{proof}
+		We first show that $f(\mathcal{F})$ is a filter. Let $H_1, H_2 \in f(\mathcal{F})$. Then there are $F_1,F_2\subseteq F$ for which $f(F_1) \subseteq H_1$ and $f(F_2)\subseteq H_2$. It is clear that $f(F_1 \cap F_2) \subseteq f(F_1) \cap f(F_2) \subseteq H_1 \cap H_2$. So, $H_1 \cap H_2 \in f(\mathcal{F})$. Next, let $H \in f(\mathcal{F})$ be given and $G \supseteq H$. It follows that there is an $F\in \mathcal{F}$ for which $f(F)\subseteq H \subseteq G$, so $G\in f(\mathcal{F})$. Thus, $f(\mathcal{F})$ is a filter. 
+		
+		\footnote{Referenced Willard's \textit{General Topology}, Theorem 12.8.} Suppose that $f$ is continuous at $x\in \mathcal{X}$. Let $V$ be any neighborhood of $f(x)$ in $\mathcal{X}'$, i.e.,  $V\in f(\mathcal{F}_x)$. Then for some neighborhood $U$ of $x$ in $\mathcal{X}$, $f(U) \subset V$ (by continuity of $f$). Since $U\in \mathcal{F}_x \subseteq \mathcal{F}$, we have that $V\in f(\mathcal{F})$.
+		
+		Conversely, suppose that $\mathcal{F} \to x$ implies $f(\mathcal{F}) \to f(x)$. Let $\mathcal{F}$ be the filter of all neighborhood of $x$ in $\mathcal{X}$. It follows that each neighborhood $V$ of $f(x)$ belongs to $f(\mathcal{F})$. Thus, for some neighborhood $U$ of $x_0$, $f(U)\subseteq V$. So, $f$ is continuous at $x$.  
+		
+		 
+	\end{proof}
+\end{exercise}
+
+\begin{exercise}[Ex 15 p.19]
+	Prove that $f(\mathcal{F})$ is an ultrafilter when $F$ is.
+	\begin{proof}
+		Suppose that $\mathcal{F}$ is an ultrafilter and let $f:\mathcal{X}\to \mathcal{Y}$ be given. Let $E\subseteq \mathcal{Y}$. In view of Theorem 12.11 in Willard's \textit{General Topology}, we have that for $f^{-1}(E)\in \mathcal{X}$, either $f^{-1}(E)\in \mathcal{F}$ or $\mathcal{X}\setminus f^{-1}(E) \in \mathcal{F}$. This implies that $E = f(f^{-1}(E)) \in f(\mathcal{F})$ or $\mathcal{Y}\setminus E = f(X\setminus f^{-1}(E)) \in f(\mathcal{F})$. In view of Theorem 12.11 in Willard's again we find that $f(\mathcal{F})$ is also an ultrafilter. 
+	\end{proof}
+\end{exercise}
+
+
+\end{document}
+
+
+
+

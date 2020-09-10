@@ -31,7 +31,7 @@ end
 
 % no plotting here, just generate the data
 
-filename = 'FT_Sigma_Estimate_1D_ver3.mat';
+filename = 'FT_Sigma_Estimate_1D_Sep_8_2020.mat';
 save(filename)
 
 %%%%%%%%%%%%%%%%%%%
