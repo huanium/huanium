@@ -1,4 +1,4 @@
-N    = 6;
+N    = 4;
 k = 2;  % number of states to be generated k \leq 2^n
 weight = 0.5;
 p = 2*round(N);
@@ -8,7 +8,6 @@ fval = 0;
 g    = rand(N,1);
 J    = rand(N,1);
 state0 = zeros(2^N,1);
-A   = eye(2*p*M);
 ub  = (pi/2)*ones(2*p*M,1);
 lb  = zeros(2*p*M,1);
 eigv = 0;
@@ -56,10 +55,6 @@ end
 %[state0, eigv] = eigs(Hamiltonian, k, 'SA');
 [state0, eigv] = eigs(Hamiltonian, 2^N, 'SA');
 
-%state_gnd = state0(:,1); % take ground eigenstate
-%state0 = state0(:,end); % take last eigenstate
-%eigv = eigv(end); % take last eigenvalue
-
 %if max(size(gcp)) == 0 % parallel pool needed
 %    parpool % create the parallel pool
 %end
@@ -67,13 +62,15 @@ end
 % constrained
 % 'Display','iter', 'PlotFcn', 'optimplotfval', 'Algorithm', 'sqp'
 options = optimoptions('fmincon','UseParallel',true, 'Algorithm','interior-point', 'Display','iter' ,...
-    'ConstraintTolerance', 1e-5,'MaxFunctionEvaluations', 40000, 'MaxIterations', 1000,...
+    'ConstraintTolerance', 1e-5,'MaxFunctionEvaluations', 1e5, 'MaxIterations', 1000,...
     'OptimalityTolerance', 5e-5, 'StepTolerance', 1e-4);
 %%%%%%%%%%%%%%%%%%%
 % clock starts
 tic 
 % clock starts
 %%%%%%%%%%%%%%%%%%%
+
+
 [angles , fval] = fmincon(@(params) excited_energy_expectation(k, params, N, p, weight, Hamiltonian, cell_gX, cell_JZZ),...
     0.5*ones(2*p*M,1), [], [], [], [], lb, ub, [],  options);
 
@@ -91,8 +88,8 @@ for n = 1:2^N
 end
 
 % print out 
-disp('Optimal angles');
-disp(reshape(angles,[2*p,M]));
+%disp('Optimal angles');
+%disp(reshape(angles,[2*p,M]));
 disp('Lowest k energies:')
 disp(diag(eigv)');
 % disp(state0);
