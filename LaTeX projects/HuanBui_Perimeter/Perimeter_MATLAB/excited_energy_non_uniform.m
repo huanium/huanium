@@ -1,5 +1,5 @@
-N    = 4;
-k = 3;  % number of states to be generated k \leq 2^n
+N    = 6;
+k = 2;  % number of states to be generated k \leq 2^n
 weight = 0.5;
 p = 2*round(N);
 M=N;
@@ -94,7 +94,7 @@ end
 disp('Optimal angles');
 disp(reshape(angles,[2*p,M]));
 disp('Lowest k energies:')
-disp(eigv);
+disp(diag(eigv)');
 % disp(state0);
 disp('How many states? k =');
 disp(k);

@@ -6,10 +6,9 @@ params = reshape(params, [2*p,N]);
 k_states = cell(1,k);
 for j=1:k
     k_states{j} = sparse(2^N,1);
-    k_states{j}(1+(j-1),1) = 1/sqrt(2);
+    k_states{j}(1  +(j-1),1) = 1/sqrt(2);
     k_states{j}(end-(j-1),1) = 1/sqrt(2);
 end
-
 
 param_layer = zeros(2, N); 
 beta  = zeros(N, 1); 
@@ -31,7 +30,6 @@ for m=1:2:2*p
         k_states{n} = expv(-1i, HgX,  expv(-1i, HZZ, k_states{n}, 5e-5, 10), 5e-5, 10);
     end
 end
-
 % now calculate the weighted energy expectation
 Energy_Expectation = weight*real(k_states{k}'*(Hamiltonian*k_states{k}));
 for n=1:k-1
