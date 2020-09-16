@@ -74,27 +74,19 @@ If $\mathcal{F}$ is a filter in a metric space $(\X , d)$, we say that $\F$ is a
 		\begin{equation*}
 		\mathcal{U}\ni U = U\cap \X = U \cap \bigcup^N_{i=1} B_d(x_i,\epsilon) = (U \cap B_d(x_1,\epsilon)) \cup \dots \cup (U \cap B_d(x_N,\epsilon)) \neq \varnothing.
 		\end{equation*}
-		This means that $B_d(x_i, \epsilon) \supseteq (U \cap B_d(x_i,\epsilon)) \neq \varnothing$ for some $i$. So, $B_d(x_i,\epsilon) \in U$. Since this holds for all $\epsilon >0$, $\mathcal{U}$ is Cauchy. 
+		This means that $B_d(x_i, \epsilon) \supseteq (U \cap B_d(x_i,\epsilon)) \neq \varnothing$ for some $i$. Since $(U\cap B_d(x_i,\epsilon)) \subseteq U \in \mathcal{U}$, we have that  $B_d(x_i,\epsilon) \in \mathcal{U}$. Since this holds for all $\epsilon >0$, $\mathcal{U}$ is Cauchy. 
 		
 		
-		$(\impliedby)$ Conversely, suppose that a filter $\F'$ is contained in a Cauchy filter $\F$. We want to show that $(\X,d)$ is totally bounded, i.e., that every sequence has a Cauchy subsequence. (\textcolor{red}{but I don't know how to do this}) 	
+		$(\impliedby)$ Assume that every filter is contained in a Cauchy filter. We want to show that $(\X,d)$ is totally bounded, i.e., that every sequence as a Cauchy subsequence\footnote{\textcolor{red}{I need a reference here. The statement can be found in various course notes online, but weirdly neither Rudin, Willard, Folland, nor Wade contains it -- It's also possible that I overlooked it.}}. Let a sequence $(x_i)$ be given. In view of Exercise 1, consider the \textbf{tail filter} $\F$ for this sequence. From our hypothesis, $\F$ is contained in a Cauchy filter $\mathcal{U}$. Thus, for any $n > 0$, there is some $x'_n$ for which $B_d(x'_n,1/n)\in \mathcal{U}$. Since $\mathcal{U}$ is a filter containing $\F$, $B_d(x'_n,1/n)$ must also contain some $x_{i_n}$ in the sequence $(x_i)$. From here, it is clear that $(x_{i_n})$ is a Cauchy, hence is a Cauchy subsequence of $(x_i)$. Thus, $(\X,d)$ is totally bounded.
 	\end{proof}
 \end{exercise}
 
 \begin{exercise}[Ex 13 p.25]
 	Prove that a metric space is complete if and only if every Cauchy filter converges.
 	\begin{proof}
-		$(\implies)$ Assuming that $\X$ is complete, then every Cauchy sequence converges. Let a Cauchy filter $\F$ be given. Then for every $i\in N_+$, there exists an $ x_i$ for which $B_d(x_i,1/i)\in \F$. We claim that the sequence $(x_i)$ is Cauchy and thus converges to some $x\in \X$ (since $\X$ is complete). It is clear that because $\F$ is a filter, $B(x_i, 1/i) \cap B(x_j,1/j) \neq \varnothing$, and so $d(x_i, x_j) \leq 2/j$ (assuming $j \geq i$). It follows that for any $\epsilon > 0$, there is a sufficiently large $N\in \N_+$ for which $d(x_i,x_j) < \epsilon$ whenever $i,j \geq N$. Thus, $(x_i)$ is Cauchy, so $x_i \to x$ for some $x\in \X$. It remains to show that $\F \to x$. To this end, we want to show that $\F_x \subset \F$, i.e., that $\F$ contains all balls centered at $x$ of all radius.  
+		$(\implies)$ Assuming that $\X$ is complete, or equivalently that every Cauchy sequence converges. Let a Cauchy filter $\F$ be given. Then for every $i\in N_+$, there exists an $ x_i$ for which $B_d(x_i,1/i)\in \F$. We claim that the sequence $(x_i)$ is Cauchy and thus converges to some $x\in \X$ (since $\X$ is complete). It is clear that because $\F$ is a filter, $B(x_i, 1/i) \cap B(x_j,1/j) \neq \varnothing$, and so $d(x_i, x_j) \leq 2/j$ (assuming $j < i$). It follows that for any $\epsilon > 0$, there is a sufficiently large $N\in \N_+$ for which $d(x_i,x_j) < \epsilon$ whenever $i,j \geq N$. Thus, $(x_i)$ is Cauchy, so $x_i \to x$ for some $x\in \X$. It remains to show that $\F \to x$. To this end, we want to show that $\F_x \subseteq \F$, i.e., that $\F$ contains all balls centered at $x$ of all radii. Since $(x_i) \to x$ for which $\F \ni B_d(x_i,1/i) \subseteq B_d(x,\delta)$. So $B_d(x,\delta)\in \F$. Therefore, $\F_x \subseteq  \F$, which implies that $\F\to x$.   	
 		
-		
-		\textcolor{red}{I think from this point this should be easy, but I need to think about the details a little bit more.}
-		
-		
-		\textcolor{blue}{Check this...} $(\impliedby)$ Conversely, suppose that every Cauchy filter converges. Let a Cauchy sequence $(x_i)$ be given. We want to show that $x_i\to x$ for some $x$. In view of Exercise 1, we consider the \textbf{tail filter} $\F$ for the sequence $(x_i)$. We claim that $\F$ is a Cauchy filter. Let $\epsilon > 0$ be given. By the Cauchyness of the sequence $(x_i)$, there exists an $i\in \N_+$ for which the ball $B_d(x_i,1/i) \in \F$ is contained in the ball $B_d(x_i,\epsilon)$. Since $\F$ is a filter, it must follow that $B_d(x_i,\epsilon) \in \F$ as well. Thus, $\F$ is a Cauchy filter. 
-		
-		By the hypothesis, $\F \to x$ for some $x\in \X$, we have that $\F_x\subseteq \F$. This implies that $\F$ contains all balls centered at $x$ of any radius. In particular, let $\delta > 0$ be given. Then $B_d(x,\delta)\cap B(x_i,1/i) \neq \varnothing$ for all $i\in \N_+$ since $\F$ is a filter. This means that $d(x_i,x) \leq \delta+ 1/i$. Since this holds for any $\delta$ and $i$, $x_i \to x$.  
-		
-		
+		$(\impliedby)$ Conversely, suppose that every Cauchy filter converges. Let a Cauchy sequence $(x_i)$ be given. We want to show that $x_i\to x$ for some $x$. In view of Exercise 1, we consider the \textbf{tail filter} $\F$ for the sequence $(x_i)$. We claim that $\F$ is a Cauchy filter. Let $\epsilon > 0$ be given. By the Cauchyness of the sequence $(x_i)$, there exists an $i\in \N_+$ for which the ball $B_d(x_i,1/i) \in \F$ is contained in the ball $B_d(x_i,\epsilon)$. Since $\F$ is a filter, it must follow that $B_d(x_i,\epsilon) \in \F$ as well. Thus, $\F$ is a Cauchy filter. By the hypothesis, $\F \to x$ for some $x\in \X$, so we have that $\F_x\subseteq \F$. This implies that $\F$ contains all balls centered at $x$ of any radii. In particular, let $\delta > 0$ be given, then $B_d(x,\delta)\cap B(x_i,1/i) \neq \varnothing$ for all $i\in \N_+$ since $\F$ is a filter. This means that there exists $0 < \delta' < \delta$ and sufficiently large $i$ for which $d(x_i,x) \leq \delta+ 1/i < \delta$. So, $x_i \to x$.  
  	\end{proof}
 \end{exercise}
 
@@ -108,11 +100,11 @@ If $\mathcal{F}$ is a filter in a metric space $(\X , d)$, we say that $\F$ is a
 		\end{equation*}
 		So, $F\cap N_{x_i} \in F$ for some $i$. But $N_{x_i} \not\in \F$, so this is a contradiction. Thus, $\F$ must converge to some $x\in \X$.
 		
-		$(\impliedby)$ Conversely, assume that $(\X,d)$ is not compact. Let $\{N_i : i\in I \}$ be a cover with no finite subcover. It follows that for a finite subset $\{ x_1,x_2,\dots, x_n\} \subset \X$, 
+		$(\impliedby)$ Conversely, assume that $(\X,d)$ is not compact. Let $\{N_i : i\in I \}$ be a cover with no finite subcover. It follows that for a finite subset $\{ x_1,x_2,\dots, x_n\} \subseteq \X$, 
 		\begin{equation*}
 		(N_{x_1} \cup N_{x_2} \cup \dots \cup N_{x_n})^c = N_{x_1}^c \cap \dots \cap N_{x_n}^c \neq \varnothing,
 		\end{equation*} 
-		Now, generate a filter $\F'$ from the collection $\{ N_{x_i}^c : i \leq n \}$. Extend $\F'$ to an ultrafilter $\F$ of $\X$. Now assume that $\F \to x$. Choose some $i\leq n$ and $x\in N_{x_i}$. Since $\F \to x$, we can find $F \in \F$ such that $\F \subseteq N_{x_i}$. This implies that $F \cap N_{x_i}^c = \varnothing$. But $N_{x_i}^c \in \F$. Thus, $F, N_{x_i}^c \in \F$ but their intersection is empty. So, this must be a contradiction. Thus, $\F$ does not converge. 
+		Now, generate a filter $\F'$ from the collection $\{ N_{x_i}^c : i \leq n \}$. Extend $\F'$ to an ultrafilter $\F$ of $\X$. Now assume that $\F \to x$. Choose some $i\leq n$ and $x\in N_{x_i}$. Since $\F \to x$, we can find $F \in \F$ such that $vF \subseteq N_{x_i}$. This implies that $F \cap N_{x_i}^c = \varnothing$. But $N_{x_i}^c \in \F$. Thus, $F, N_{x_i}^c \in \F$ but their intersection is empty. So, this must be a contradiction. Thus, $\F$ does not converge. 
 	\end{proof}
 \end{exercise}
 

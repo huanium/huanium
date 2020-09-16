@@ -55,6 +55,15 @@ end
 %[state0, eigv] = eigs(Hamiltonian, k, 'SA');
 [state0, eigv] = eigs(Hamiltonian, 2^N, 'SA');
 
+% generates the orthogonal states with \prod X = 1 symmetry
+k_states = cell(1,k);
+% trial states being states close to GHZ
+for j=1:k
+    k_states{j} = sparse(2^N,1);
+    k_states{j}(1  +(j-1),1) = 1/sqrt(2);
+    k_states{j}(end-(j-1),1) = 1/sqrt(2);
+end
+
 %if max(size(gcp)) == 0 % parallel pool needed
 %    parpool % create the parallel pool
 %end
@@ -71,7 +80,7 @@ tic
 %%%%%%%%%%%%%%%%%%%
 
 
-[angles , fval] = fmincon(@(params) excited_energy_expectation(k, params, N, p, weight, Hamiltonian, cell_gX, cell_JZZ),...
+[angles , fval] = fmincon(@(params) excited_energy_expectation(k, params, k_states, N, p, weight, Hamiltonian, cell_gX, cell_JZZ),...
     0.5*ones(2*p*M,1), [], [], [], [], lb, ub, [],  options);
 
 % compute the kth state and energy by passing the angles x through
@@ -107,7 +116,7 @@ disp(kth_energy)
 Duration = seconds(round(toc));
 Duration.Format = 'hh:mm:ss';
 disp(['Time taken : ' char(Duration)]);
-disp(['Time in sec: ' num2str(toc)]);
+% disp(['Time in sec: ' num2str(toc)]);
 disp(' ')
 % clock ends
 %%%%%%%%%%%%%%%%%%%

@@ -1,47 +1,27 @@
 % computes the energy expectation, following paper by Nakanishi et al.
 
-function [Energy_Expectation] = excited_energy_expectation(k, params, N, p, weight, Hamiltonian, cell_gX, cell_JZZ)
+function [Energy_Expectation] = excited_energy_expectation(k, params, k_states, N, p, weight, Hamiltonian, cell_gX, cell_JZZ)
+
+Energy_Expectation = 0;
 params = reshape(params, [2*p,N]);
-% generates the orthogonal states with \prod X = 1 symmetry
-k_states = cell(1,k);
-
-% trial states being states close to GHZ
-% for j=1:k
-%     k_states{j} = sparse(2^N,1);
-%     k_states{j}(1  +(j-1),1) = 1/sqrt(2);
-%     k_states{j}(end-(j-1),1) = 1/sqrt(2);
-% end
-
-% trial states being states close to product |+>
-for j=1:k
-    k_states{j} = ones(2^N,1)/sqrt(N);
-    k_states{j}(1  +(j-1),1) = -1/sqrt(N);
-    k_states{j}(end-(j-1),1) = -1/sqrt(N);
-end
-
-param_layer = zeros(2, N); 
-beta  = zeros(N, 1); 
-gamma = zeros(N, 1); 
 HgX = sparse(2^N,2^N);
 HZZ = sparse(2^N,2^N);
 for m=1:2:2*p
     % params(k,k+1) gives two rows:
-    % first row is beta; second row is gamma
-    param_layer = params(m:m+1,:);
-    beta  = param_layer(1,:);
-    gamma = param_layer(2,:);   
+    % first row is beta; second row is gamma  
     for l=1:N
-        HgX = HgX + cell_gX{l}*gamma(l);
-        HZZ = HZZ + cell_JZZ{l}*beta(l);
+        HgX = HgX + cell_gX{l}*params(m+1,l);
+        HZZ = HZZ + cell_JZZ{l}*params(m,l);
     end
-    % generate a k states, transformed by the ansatz
-    for n=1:k
-        k_states{n} = expv(-1i, HgX,  expv(-1i, HZZ, k_states{n}, 5e-5, 10), 5e-5, 10);
-    end
+    % generate a k states, transformed by the ansatz    
+    k_states = cellfun(@(state) expv(-1i, HgX,  expv(-1i, HZZ, state, 5e-5, 10), 5e-5, 10) , k_states, 'UniformOutput', false);
 end
 % now calculate the weighted energy expectation
-Energy_Expectation = weight*real(k_states{k}'*(Hamiltonian*k_states{k}));
-for n=1:k-1
+% first apply weight to the kth state:
+k_states{k} = sqrt(weight)*k_states{k};
+% then compute the expectation value
+for n=1:k
     Energy_Expectation = Energy_Expectation + real(k_states{n}'*(Hamiltonian*k_states{n}));
 end
+
 
