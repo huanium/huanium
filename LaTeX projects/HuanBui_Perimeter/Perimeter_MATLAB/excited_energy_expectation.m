@@ -4,10 +4,19 @@ function [Energy_Expectation] = excited_energy_expectation(k, params, N, p, weig
 params = reshape(params, [2*p,N]);
 % generates the orthogonal states with \prod X = 1 symmetry
 k_states = cell(1,k);
+
+% trial states being states close to GHZ
+% for j=1:k
+%     k_states{j} = sparse(2^N,1);
+%     k_states{j}(1  +(j-1),1) = 1/sqrt(2);
+%     k_states{j}(end-(j-1),1) = 1/sqrt(2);
+% end
+
+% trial states being states close to product |+>
 for j=1:k
-    k_states{j} = sparse(2^N,1);
-    k_states{j}(1  +(j-1),1) = 1/sqrt(2);
-    k_states{j}(end-(j-1),1) = 1/sqrt(2);
+    k_states{j} = ones(2^N,1)/sqrt(N);
+    k_states{j}(1  +(j-1),1) = -1/sqrt(N);
+    k_states{j}(end-(j-1),1) = -1/sqrt(N);
 end
 
 param_layer = zeros(2, N); 

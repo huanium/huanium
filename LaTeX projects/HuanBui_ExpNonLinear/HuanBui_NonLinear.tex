@@ -593,6 +593,273 @@ What did we learn today?
 \newpage
  
 
-\chapter{Next lab}
+\chapter{Turing Patterns (intro)}
+
+
+
+\section{Introduction}
+
+In 1917, D'Arcy Wentworth Thompson published \textit{On Growth and Form}, emphasizing the significance of physical and mathematical principles in pattern formation in nature. Many scientists were inspired thereafter, including Alan Turing. Turing published a paper titled ``The Chemical Basis of Morphogenesis'' exploring a system of PDEs now known as a \textit{reaction-diffusion system}. A model describing two chemical concentrations $U(x,t), V(x,t)$ has the form
+\begin{equation*}
+\begin{cases}
+\p_t U  = f(U,V)  + D_U \p_x^2 U \\ 
+\p_t V  = g(U,V)  + D_V \p_x^2 V 
+\end{cases}
+\end{equation*}   
+where $f,g$ are reaction terms. 
+
+
+For this lab, we look at this system when 
+\begin{equation*}
+f(U,V) = a - (b+1)U + U^2V \\
+g(U,V) = bU - U^2V.
+\end{equation*}
+
+We will assume that $a=2,b=3$. By setting $f(U*, V*) = g(U*,V*) =  0 $, we find the equilibrium solution:
+\begin{equation*}
+U* = a, \quad V* = \f{b}{a}.
+\end{equation*}
+
+The MATLAB code is provided by Professor McCoy. The method used to solve this problem is the finite difference method. 
+
+
+\begin{framed}
+	\begin{verbatim}
+	function [u,v,x,t] = Turing(a,b,nt)
+	
+	% Let's assume the diffusion constant in the first equation equals 1
+	% and choose the diffusion constant in the second equation to be:
+	d = 5;
+	
+	% Now assume our spatial domain has length L
+	% and subdivide it into nx steps
+	L = 2*pi*10;
+	nx = 400; dx = L/nx;
+	x = 0:dx:nx*dx;
+	
+	% Next, we need to choose a time step and how long to run the code
+	dt = 5*(dx^2);
+	t = 0:dt:nt*dt;
+	
+	% Set up results arrays, adding a phantom node on either side
+	u = zeros(nt+1,nx+3);
+	v = zeros(nt+1,nx+3);
+	
+	% The initial condition will be the steady state, plus some noise
+	u(1,2:nx+2) = a + rand(1,nx+1)*a/100;
+	v(1,2:nx+2) = b/a + rand(1,nx+1)*b/a/100;
+	
+	% Enforce boundary conditions
+	u(1,1) = u(1,2); u(1,nx+3) = u(1,nx+2);
+	v(1,1) = v(1,2); v(1,nx+3) = v(1,nx+2);
+	
+	% Create matrix that defines step k in terms of step k+1
+	ru = dt/(dx^2);
+	Lu = toeplitz([1+2*ru, -ru, zeros(1,nx-1)]);
+	Lu(1,1) = 1+ru; Lu(nx+1,nx+1) = 1+ru;
+	rv = d*dt/(dx^2);
+	Lv = toeplitz([1+2*rv, -rv, zeros(1,nx-1)]);
+	Lv(1,1) = 1+rv; Lv(nx+1,nx+1) = 1+rv;
+	
+	% Now loop
+	for j = 1:nt
+	
+	f = a - (b + 1)*u(j,2:nx+2) + (u(j,2:nx+2).^2).*v(j,2:nx+2);
+	g = b*u(j,2:nx+2) - (u(j,2:nx+2).^2).*v(j,2:nx+2);
+	
+	rhs_u = (u(j,2:nx+2) + dt*f)';
+	rhs_v = (v(j,2:nx+2) + dt*g)';
+	
+	u(j+1,2:nx+2) = linsolve(Lu,rhs_u)';
+	v(j+1,2:nx+2) = linsolve(Lv,rhs_v)';
+	
+	u(j+1,1) = u(j+1,2);
+	u(j+1,nx+3) = u(j+1,nx+2);
+	v(j+1,1) = v(j+1,2);
+	v(j+1,nx+3) = v(j+1,nx+2);
+	
+	end
+	
+	% Drop phantom nodes
+	u = u(:,2:nx+2);
+	v = v(:,2:nx+2);
+	
+	end
+	\end{verbatim}
+\end{framed}
+
+The figure belows shows how the concentration of $U$ evolves in time at a certain position. 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Turing_patterns/Turing_1.eps}
+	\caption{\textcolor{red}{$a = 2$ and $b=3$}}
+	\label{Fig:17}
+\end{figure}
+
+
+We can also see how the concentrations distribute in space 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Turing_patterns/Turing_2.eps}
+	\caption{\textcolor{red}{$a = 2$ and $b=3$}}
+	\label{Fig:18}
+\end{figure}
+
+
+Let's assume now that $a = 2$ and $b=4$ and solve the model again:
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Turing_patterns/Turing_3.eps}
+	\caption{\textcolor{red}{$a = 2$ and $b=4$}}
+	\label{Fig:19}
+\end{figure}
+
+
+We can also see how the concentrations distribute in space 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Turing_patterns/Turing_4bis.eps}
+	\caption{\textcolor{red}{$a = 2$ and $b=4$, $t$ ``small''}}
+	\label{Fig:20a}
+\end{figure}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Turing_patterns/Turing_4.eps}
+	\caption{\textcolor{red}{$a = 2$ and $b=4$, $t$ ``large''}}
+	\label{Fig:20}
+\end{figure}
+
+What changed? To find out, we explore the next section. 
+
+
+
+
+
+
+\section{Pattern-forming instabilities}
+
+
+Interesting things occur near the uniform steady states. In particular, for small departures from such states, $u = U - U*$ and $v = U - U*$, the model takes the generic linear form
+\begin{equation*}
+\p_t \begin{bmatrix}
+u \\ v
+\end{bmatrix}
+= 
+M 
+\begin{bmatrix}
+u \\ v
+\end{bmatrix} + 
+ \begin{bmatrix}
+D_U & \\ & D_V 
+\end{bmatrix}\begin{bmatrix}
+\p_x^2 u\\ \p_x^2 v
+\end{bmatrix}.
+\end{equation*}
+
+
+In the absence of diffusion, the fate of small departures from the steady state is determined entirely
+by the matrix $M$. Whenever $M$ has both negative trace and positive determinant,
+\begin{equation*}
+\tau = M_{11} + M_{22} < 0, \quad \Delta = M_{11} M_{22} - M_{12} M_{21} > 0.
+\end{equation*}
+We describe the steady state as asymptotically stable: all nearby phase trajectories converge at the
+steady state. For the particular nonlinear model introduced in the previous section, one finds:
+\begin{equation*}
+M = \begin{bmatrix}
+b-1 & a^2 \\ -b & -a^2
+\end{bmatrix}.
+\end{equation*}
+
+It is easy to see that the steady state is asymptotically stable if $b < 1+a^2$.
+
+
+Surprisingly, it turns out that diffusion can also destablize things! This occurs whenever
+\begin{equation*}
+(D_v M_{11} + D_U M_{22})^2 > 4 D_U D_V \Delta.
+\end{equation*}
+
+
+Combining this with what we have before, we find the instabilities occur when 
+\begin{equation*}
+b < b_H  = 1+a^2, \quad b > b_T = (1 + \sqrt{D_U / D_V})^2.
+\end{equation*}
+
+To see the region where this happens we look at the following plot:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Turing_patterns/Turing_5.eps}
+	\caption{\textcolor{red}{SAY SOMETHING HERE}}
+	\label{Fig:21}
+\end{figure}
+
+The region of instability is defined to be the range of $b$ that is under the blue curve and above the orange curve, for any value of $a$. Obviously, from some values of $a$, there is either no instability, or things get complicated. 
+
+
+
+We see that this explains the stark difference observed in the previous section. In the first case where $a=2,b=3$, we see no instability. When $a=2, b=4$ however, we got instability. 
+
+
+
+\section{Some strange behavior above Blue curve and below Orange curve}
+
+
+Nothing interesting occurs when $b \gg 1+ a^2$. When $a$ is small and $b$ is not too large so that $b$ is between the blue curve and the orange curve, we see that the concentrations oscillate in time, but are uniform in space, at all times.
+
+
+At all times, the concentrations are uniform in space:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Turing_patterns/Turing_7.eps}
+	\caption{\textcolor{red}{SAY SOMETHING HERE}}
+	\label{Fig:22}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Turing_patterns/Turing_8.eps}
+	\caption{\textcolor{red}{SAY SOMETHING HERE}}
+	\label{Fig:23}
+\end{figure}
+
+
+But at a fixed point in space, the concentrations oscillate:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{Turing_patterns/Turing_6.eps}
+	\caption{\textcolor{red}{SAY SOMETHING HERE}}
+	\label{Fig:24}
+\end{figure}
+
+
+
+
+\section{Wavelength from out of nowhere!}
+
+One of the more important aspects of the Turing instability mechanism is its spatial structure. Turing patterns emerge from a selection process in which spatially
+periodic perturbations with preferred wavelengths grow, while all other decay exponentially.
+
+
+It turns out that the fastest growing mode has a wavenumber $k$ given by 
+\begin{equation*}
+k^2 = \f{1}{2}\lp \f{M_{11}}{D_U} + \f{M_{22}}{D_V} \rp.
+\end{equation*}
+
+At the critical point for instability, 
+\begin{equation*}
+k_c^2 = \f{a}{\sqrt{D_U D_V}}.
+\end{equation*}
+
+
+
+Looking at Figure \ref{Fig:20} again. We find that the oscillation has a wavelength of about $2\pi\times 10/10 = 2\pi$. This corresponds to a wavenumber of $1$. Meanwhile, at the critical point for instability, $k_c = 2/\sqrt{4} = 1 = k$. So, in this case, the wave numbers match. \\
+
+However, this obviously does not always happen. For example, it is possible to have small deviations from the critical wavenumber. For each set of model parameters values $a,b,D_U, D_V$, there will be a \textit{band} of wavenumbers around the critical value which survive to the steady state. 
+
+
+
+
 
 \end{document}
