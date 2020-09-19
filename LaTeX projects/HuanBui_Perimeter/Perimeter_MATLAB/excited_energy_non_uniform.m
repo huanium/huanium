@@ -1,11 +1,13 @@
 N    = 4;
 k = 2;  % number of states to be generated k \leq 2^n
 weight = 0.5;
-p = 2*round(N);
+p = round(N)+1;
 M=N;
 x = zeros(2*p*M,1);
 fval = 0;
+rng('default');
 g    = rand(N,1);
+rng('default');
 J    = rand(N,1);
 state0 = zeros(2^N,1);
 ub  = (pi/2)*ones(2*p*M,1);
@@ -64,6 +66,8 @@ for j=1:k
     k_states{j}(end-(j-1),1) = 1/sqrt(2);
 end
 
+
+
 %if max(size(gcp)) == 0 % parallel pool needed
 %    parpool % create the parallel pool
 %end
@@ -100,14 +104,15 @@ end
 %disp('Optimal angles');
 %disp(reshape(angles,[2*p,M]));
 disp('Lowest k energies:')
-disp(diag(eigv)');
+E  = diag(eigv);
+disp(E(1:2*k+1)');
 % disp(state0);
 disp('How many states? k =');
 disp(k);
-disp('Weight?')
+disp('Symmetry of states up to k');
+disp(symmetry(1:2*k+1));
+disp('Weight used:')
 disp(weight);
-disp('Symmetry of states');
-disp(symmetry);
 disp('kth energy:')
 disp(kth_energy)
 
