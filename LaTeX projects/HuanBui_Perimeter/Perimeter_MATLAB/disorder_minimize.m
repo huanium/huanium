@@ -4,17 +4,17 @@
 % where g, j, f random
 % first we'll try this with just the gnd state of \sum Z
 
-N    = 10;
+N    = 4;
 k = 1; % indicates ground state
-p = round(N/3);
+p = round(N/2);
 M=N;
 x = zeros(3*p*M,1); % 3 since we have three groups of parameters: g,j,f
 fval = 0;
-rng('default');
+%rng('default');
 g    = rand(N,1);
-rng('default');
+%rng('default');
 J    = rand(N,1);
-rng('default');
+%rng('default');
 f    = rand(N,1);
 state0 = zeros(2^N,1);
 ub  = (pi/2)*ones(3*p*M,1);
@@ -90,8 +90,8 @@ end
 % constrained
 % 'Display','iter', 'PlotFcn', 'optimplotfval', 'Algorithm', 'sqp'
 options = optimoptions('fmincon','UseParallel',true, 'Algorithm','interior-point', 'Display','iter' ,...
-    'ConstraintTolerance', 1e-5,'MaxFunctionEvaluations', 1e5, 'MaxIterations', 1000,...
-    'OptimalityTolerance', 5e-5, 'StepTolerance', 1e-4, 'PlotFcn', 'optimplotfval');
+    'ConstraintTolerance', 1e-13,'MaxFunctionEvaluations', 1e6, 'MaxIterations', 4000,...
+    'OptimalityTolerance', 1e-13, 'StepTolerance', 1e-13, 'PlotFcn', 'optimplotfval');
 %%%%%%%%%%%%%%%%%%%
 % clock starts
 tic 
@@ -102,7 +102,7 @@ tic
     0.5*ones(3*p*M,1), [], [], [], [], lb, ub, [],  options);
 
 % printout
-disp(['System size' num2str(N)]);
+disp(['System size: ' num2str(N)]);
 disp(['Circuit depth: ' num2str(p)]);
 disp(['Ground state energy: ' num2str(eigv)]);
 disp('Optimal angles')
