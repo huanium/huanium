@@ -6,8 +6,8 @@
 
 % how does the brightness of a region depend in time?
 d = zeros(1200,1);
-for j = 1:4:length(d)
-    %M = image_load(j); % look at every 4 images
+for j = 1:1:length(d)
+    M = image_load(j); % look at every 4 images
     
     % coordinates used for BZ oscillations
     %d(j) = M(707,1069);
@@ -15,8 +15,10 @@ for j = 1:4:length(d)
     %d(j) = mean(M(382:928,556:1192),'all');
     
     % brightness at a region, in a particular time
-    %d(j) = mean(M(515:519,693:697),'all');
+    d(j) = mean(M(515:519,693:697),'all');
 end
+figure
+plot(1:length(d),d);
 
 % consider a vertical line. We want to look at how the brightness change in space,
 % over time!
