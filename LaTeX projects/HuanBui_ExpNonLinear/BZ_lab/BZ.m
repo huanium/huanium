@@ -63,6 +63,18 @@ for k = 1:length(f)
     end
 end
 
+
+%%%% slope field %%%%
+[y1,y2] = meshgrid(0.001:0.015:0.8);
+dy1 = (y1.*(1 - y1) - f*y2.*(y1 - q)./(y1 + q))/epsilon;
+dy2 = y1 - y2;
+r = ( dy1.^2 + dy2.^2 ).^0.5;
+py1 = dy1./r;
+py2 = dy2./r;
+quiver(y1,y2,py1,py2);
+
+%%%%%%%%% Back to code %%%%%%%%%%%
+
 for k = 1:length(f)
     for j = 1: length(epsilon)
         
@@ -139,6 +151,10 @@ for k = 1:length(f)
        
     end
 end
+
+
+
+
 
 
 
