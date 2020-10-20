@@ -1,31 +1,54 @@
 % %%%% LIMIT CYCLE %%%%%%%%
 
-epsilon = 1e-2;
-f = 0.65;
-q = 2e-3;
-tspan = [0 20];
-ueq = 0.5*(1-q-f) + 0.5*sqrt((1-q-f)^2 + 4*(1+f)*q);
-veq = ueq;
+% epsilon = 1e-2;
+% f = 0.65;
+% q = 2e-3;
+% tspan = [0 20];
+% ueq = 0.5*(1-q-f) + 0.5*sqrt((1-q-f)^2 + 4*(1+f)*q);
+% veq = ueq;
 
-% y1 = 0.02:0.05:0.5;
-% y2 = 0.02:0.05:0.5;
+% 
+% solve_traj(3e-3,3.6e-3, epsilon, f, q ,tspan );
+% 
+% 
+% y1 = 0:0.001:1;
+% y2 = y1.*(1-y1).*(y1+q)./(f.*(y1-q));
 % for j = 1:length(y1)
-%     solve_traj(y1(j)-0.01,y2(j), epsilon, f, q ,tspan );
+%     solve_traj(y1(j)+0.001,y2(j), epsilon, f, q ,tspan );
 % end
+% 
+% y1 = 0.01:0.002:0.175;
+% y2 = y1.*(1-y1).*(y1+q)./(f.*(y1-q));
+% for j = 1:length(y1)
+%     solve_traj(y1(j)-0.001,y2(j), epsilon, f, q ,tspan );
+% end
+% 
+% 
+% y1 = 0.01:0.0005:0.1132;
+% y2 = 0.01:0.0005:0.12;
+% for j = 1:length(y1)
+%     solve_traj(1,y2(j), epsilon, f, q ,tspan );
+% end
+
+
 % for j = 1:length(y2)
 %     solve_traj(1,y2(j), epsilon, f, q ,tspan );
 % end
-% solve_traj(0.01, 0.06, epsilon, f, q ,tspan );
-% solve_traj(0.06, 0.12, epsilon, f, q ,tspan );
-% solve_traj(0.1, 0.17, epsilon, f, q ,tspan );
-% solve_traj(0.14, 0.22, epsilon, f, q ,tspan );
-% solve_traj(0.2, 0.27, epsilon, f, q ,tspan );
-% solve_traj(0.26, 0.32, epsilon, f, q ,tspan );
-% solve_traj(0.46, 0.38, epsilon, f, q ,tspan );
 % solve_traj(ueq - 1e-6, veq - 1e-6, epsilon, f, q ,tspan );
 % solve_traj(ueq + 1e-6, veq - 1e-6, epsilon, f, q ,tspan );
 % solve_traj(ueq - 1e-6, veq + 1e-6, epsilon, f, q ,tspan );
 % solve_traj(ueq + 1e-6, veq + 1e-6, epsilon, f, q ,tspan );
+
+% figure(1)
+% % nullcline number 1
+% y1 = 0.0025:0.00001:1;
+% y2 = y1.*(1-y1).*(y1+q)./(f.*(y1-q));
+% plot(y1, y2, 'LineWidth',2, 'Color','b');
+% 
+% % nullcline number 2
+% y1 = 0:0.00001:0.14;
+% y2 = y1;
+% plot(y1, y2, 'LineWidth',2, 'Color','b');
 
 
 
@@ -82,11 +105,7 @@ veq = ueq;
 
 
 
-% f = [0.505];
-% q = 2e-3;
-% epsilon = 1e-2;
-% 
-% 
+
 % for j = 1:length(f)
 %    ueq = 0.5*(1-q-f(j)) + 0.5*sqrt((1-q-f(j))^2 + 4*(1+f(j))*q);
 %    veq = ueq;
@@ -101,17 +120,17 @@ veq = ueq;
 %    %y2 = y1;
 %    %plot(y1, y2, 'LineWidth',1, 'Color','b');
 % end
+% 
 
 
 
 
-
-% EXCITABILITY 
+%%%%%% EXCITABILITY %%%%%%%%%
 
 epsilon = 1e-2;
 q = 2e-3;
 f = 3;
-tspan = [0, 1];
+tspan = [0,20];
 ueq = 0.5*(1-q-f) + 0.5*sqrt((1-q-f)^2 + 4*(1+f)*q);
 veq = ueq;
 pert = 0:1e-4:1e-3;
@@ -131,15 +150,32 @@ xlabel('y1')
 ylabel('y2')
 figure(2)
 plot(t,y(:,1), 'Color', 'k');
+
+
+% nullcline number 1
+figure(1)
+y1 = 0.0025:0.0001:0.018;
+y2 = y1.*(1-y1).*(y1+q)./(f.*(y1-q));
+plot(y1, y2, 'LineWidth',2, 'Color','b');
+
+figure(1)
+% nullcline number 2
+y1 = 0.0025:0.0001:0.005;
+y2 = y1;
+plot(y1, y2, 'LineWidth',2, 'Color','b');
 %%%%%%%%%%%%%%%%%
 
+
+
 % create a vector containing a series of perturbation sizes
-steps = 0.179999:0.00000001:0.180001001;
+% steps = 0.1799999:0.000000001:0.1800001001;
+%steps = 0:0.000005:0.00037;
+steps = 0:0.00001:0.00037;
 % create another vector in which to store responses
 responses = zeros(1,length(steps));
 % loop over all perturbation sizes
 for j = 1: length(steps)
-    solve_traj(ueq - pert(k), veq - pert(k), epsilon, f, q ,tspan );
+    solve_traj(ueq, veq - steps(j), epsilon, f, q ,tspan );
     % pick initial values
     y0 = [ueq - steps(j), veq - steps(j)];
     % solve the equations
@@ -168,14 +204,14 @@ function solve_traj(y1,y2, epsilon, f, q, tspan)
     hold on
     figure(1)
     % phase trajectories
-    plot(y(:,1), y(:,2), 'Color', 'r');
+    plot(y(:,1), y(:,2),'Color','r');
     %plot(y(:,1), y(:,2));
     %plot_dir(y(:,1), y(:,2));
     title('V vs U')
     xlabel('U')
     ylabel('V')
     figure(2)
-    plot(t,y(:,1));
+    plot(t,y(:,1), 'Color', 'r');
 end
 
 
