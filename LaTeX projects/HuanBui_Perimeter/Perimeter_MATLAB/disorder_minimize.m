@@ -5,7 +5,7 @@
 % first we'll try this with just the gnd state of \sum Z
 
 N    = 4;
-k = 1; % indicates ground state
+k = 3; % indicates the kth state to target
 p = round(N/2);
 M=N;
 x = zeros(3*p*M,1); % 3 since we have three groups of parameters: g,j,f
@@ -80,6 +80,8 @@ end
 
 % find the ground state and E_0
 [state0, eigv] = eigs(Hamiltonian, k, 'SA');
+state0 = state0(:,k);
+eigv = eigv(k,k);
 %[state0, eigv] = eigs(Hamiltonian, 2^N, 'SA');
 
 
@@ -90,8 +92,8 @@ end
 % constrained
 % 'Display','iter', 'PlotFcn', 'optimplotfval', 'Algorithm', 'sqp'
 options = optimoptions('fmincon','UseParallel',true, 'Algorithm','interior-point', 'Display','iter' ,...
-    'ConstraintTolerance', 1e-13,'MaxFunctionEvaluations', 1e6, 'MaxIterations', 4000,...
-    'OptimalityTolerance', 1e-13, 'StepTolerance', 1e-13, 'PlotFcn', 'optimplotfval');
+    'ConstraintTolerance', 1e-7,'MaxFunctionEvaluations', 1e5, 'MaxIterations', 1000,...
+    'OptimalityTolerance', 1e-7, 'StepTolerance', 1e-7, 'PlotFcn', 'optimplotfval');
 %%%%%%%%%%%%%%%%%%%
 % clock starts
 tic 
@@ -105,8 +107,8 @@ tic
 disp(['System size: ' num2str(N)]);
 disp(['Circuit depth: ' num2str(p)]);
 disp(['Ground state energy: ' num2str(eigv)]);
-disp('Optimal angles')
-disp(reshape(angles, [3*p,N]));
+%disp('Optimal angles')
+%disp(reshape(angles, [3*p,N]));
 disp(['Fidelity: ' num2str(-fval*100) '%']);
 
 %%%%%%%%%%%%%%%%%%%
