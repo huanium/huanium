@@ -127,65 +127,97 @@
 
 %%%%%% EXCITABILITY %%%%%%%%%
 
-epsilon = 1e-2;
-q = 2e-3;
-f = 3;
-tspan = [0,20];
-ueq = 0.5*(1-q-f) + 0.5*sqrt((1-q-f)^2 + 4*(1+f)*q);
-veq = ueq;
-pert = 0:1e-4:1e-3;
-% equilibrium
-y0 = [ueq,veq];
-% use the equations you defined
-ode = @(t,y) BZ_model(t,y,epsilon,q,f);
-J = @(t,y) BZ_Jacobian(t,y,epsilon,q,f);
-% solve the equations
-options = odeset('RelTol',1e-7,'Jacobian',J);
-[t,y] = ode15s(ode,tspan,y0,options);
-hold on
+% epsilon = 1e-2;
+% q = 2e-3;
+% f = 3;
+% tspan = [0,20];
+% ueq = 0.5*(1-q-f) + 0.5*sqrt((1-q-f)^2 + 4*(1+f)*q);
+% veq = ueq;
+% pert = 0:1e-4:1e-3;
+% % equilibrium
+% y0 = [ueq,veq];
+% % use the equations you defined
+% ode = @(t,y) BZ_model(t,y,epsilon,q,f);
+% J = @(t,y) BZ_Jacobian(t,y,epsilon,q,f);
+% % solve the equations
+% options = odeset('RelTol',1e-7,'Jacobian',J);
+% [t,y] = ode15s(ode,tspan,y0,options);
+% hold on
+% figure(1)
+% plot(y(:,1), y(:,2), 'Color' ,'k');
+% title('y2 vs y1')
+% xlabel('y1')
+% ylabel('y2')
+% figure(2)
+% plot(t,y(:,1), 'Color', 'k');
+% 
+% 
+% % nullcline number 1
+% figure(1)
+% y1 = 0.0025:0.0001:0.018;
+% y2 = y1.*(1-y1).*(y1+q)./(f.*(y1-q));
+% plot(y1, y2, 'LineWidth',2, 'Color','b');
+% 
+% figure(1)
+% % nullcline number 2
+% y1 = 0.0025:0.0001:0.005;
+% y2 = y1;
+% plot(y1, y2, 'LineWidth',2, 'Color','b');
+% %%%%%%%%%%%%%%%%%
+% 
+% 
+% 
+% % create a vector containing a series of perturbation sizes
+% % steps = 0.1799999:0.000000001:0.1800001001;
+% %steps = 0:0.000005:0.00037;
+% steps = 0:0.00001:0.00037;
+% % create another vector in which to store responses
+% responses = zeros(1,length(steps));
+% % loop over all perturbation sizes
+% for j = 1: length(steps)
+%     solve_traj(ueq, veq - steps(j), epsilon, f, q ,tspan );
+%     % pick initial values
+%     y0 = [ueq - steps(j), veq - steps(j)];
+%     % solve the equations
+%     [t,y] = ode15s(ode,tspan,y0,options);
+%     % find maximum in membrane voltage response
+%     responses(j) = max(y(:,1));
+% end
+% % plot results
+% figure(3);
+% plot(steps, responses, 'o-');
+
+
+q = 0.002;
+f = 0.01:0.001:3;
+epsilon = 1e-4:0.001:1;
+t =0;
+z = zeros(length(epsilon), length(f));
+
 figure(1)
-plot(y(:,1), y(:,2), 'Color' ,'k');
-title('y2 vs y1')
-xlabel('y1')
-ylabel('y2')
-figure(2)
-plot(t,y(:,1), 'Color', 'k');
-
-
-% nullcline number 1
-figure(1)
-y1 = 0.0025:0.0001:0.018;
-y2 = y1.*(1-y1).*(y1+q)./(f.*(y1-q));
-plot(y1, y2, 'LineWidth',2, 'Color','b');
-
-figure(1)
-% nullcline number 2
-y1 = 0.0025:0.0001:0.005;
-y2 = y1;
-plot(y1, y2, 'LineWidth',2, 'Color','b');
-%%%%%%%%%%%%%%%%%
-
-
-
-% create a vector containing a series of perturbation sizes
-% steps = 0.1799999:0.000000001:0.1800001001;
-%steps = 0:0.000005:0.00037;
-steps = 0:0.00001:0.00037;
-% create another vector in which to store responses
-responses = zeros(1,length(steps));
-% loop over all perturbation sizes
-for j = 1: length(steps)
-    solve_traj(ueq, veq - steps(j), epsilon, f, q ,tspan );
-    % pick initial values
-    y0 = [ueq - steps(j), veq - steps(j)];
-    % solve the equations
-    [t,y] = ode15s(ode,tspan,y0,options);
-    % find maximum in membrane voltage response
-    responses(j) = max(y(:,1));
+for j=1:length(f)
+    for k=1:length(epsilon)
+        ueq = 0.5*(1-q-f(j)) + 0.5*sqrt((1-q-f(j))^2 + 4*(1+f(j))*q);
+        veq = ueq;
+        y = [ueq, veq];
+        M = BZ_Jacobian(t,y,epsilon(k),q,f(j));
+        tr = trace(M);
+        % detm = det(M);
+        if tr > 0
+            z(k,j) = 0;
+        end
+        
+        if tr <= 0
+            z(k,j) = 1;
+        end
+    end
 end
-% plot results
-figure(3);
-plot(steps, responses, 'o-');
+
+[F,E] = meshgrid(f,epsilon);
+mesh(F,E,z);
+colormap gray;
+
+
 
 
 
