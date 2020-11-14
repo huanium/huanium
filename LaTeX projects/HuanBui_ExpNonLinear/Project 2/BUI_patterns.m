@@ -6,10 +6,10 @@ open(writerObj);
 
 
 % oscillatory
-dU = 6;
-B= 11;
-dV = 10; % this should be fixed
-A= 3; % this should be fixed
+% dU = 6;
+% B= 11;
+% dV = 10; % this should be fixed
+% A= 3; % this should be fixed
 
 
 %spots
@@ -21,10 +21,10 @@ A= 3; % this should be fixed
 
 
 % stripes
-% dV = 10; % should be fixed
-% A = 3; % should be fixed
-% dU = 4.6;
-% B = (1+A*sqrt(dU/dV))^2*(1+0.32);
+dV = 10; % should be fixed
+A = 3; % should be fixed
+dU = 4.6;
+B = (1+A*sqrt(dU/dV))^2*(1+0.32);
 
 
 % stripes
