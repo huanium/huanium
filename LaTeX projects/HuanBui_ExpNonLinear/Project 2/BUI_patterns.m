@@ -1,107 +1,166 @@
 % courtesy of 
 % https://blogs.mathworks.com/graphics/2015/03/16/how-the-tiger-got-its-stripes/
 
-writerObj = VideoWriter('brusselator');
+clear
+ 
+writerObj = VideoWriter('brusselator', 'MPEG-4');
+%writerObj.Quality = 75;
+writerObj.FrameRate = 20;
 open(writerObj);
 
 
-% oscillatory
-% dU = 6;
-% B= 11;
-% dV = 10; % this should be fixed
-% A= 3; % this should be fixed
 
 
-%spots
-% dV = 10; % should be fixed
-% A = 3; % should be fixed
-% dU = 5;
-% B = (1+A*sqrt(dU/dV))^2*(1+0.01);
-%B = 11;
 
+%%%%%%%%%%% BRUSSELATOR PARAMETERS %%%%%%%%%%%%
+
+% scaling_factor = 10; % works great!
+scaling_factor = 8;
+% wave number ~ 1/sqrt(diffusion rate)
 
 % stripes
-dV = 10; % should be fixed
-A = 3; % should be fixed
-dU = 4.6;
-B = (1+A*sqrt(dU/dV))^2*(1+0.32);
-
-
-% stripes
-% dV = 10; % should be fixed
+% scaling_factor = 1;
+% dV = 10*scaling_factor; % should be fixed
 % A = 3; % should be fixed
-% dU = 4.7;
-% B = (1+A*sqrt(dU/dV))^2*(1+0.32);
+% dU = 4*scaling_factor;
+% B = 10.2;
+
+% honeycomb
+% dV = 10*scaling_factor; % should be fixed
+% A = 3; % should be fixed
+% dU = 5.2*scaling_factor;
+% B = 10.2;
+
+% hexa_dots
+% dV = 10*scaling_factor; % should be fixed
+% A = 3; % should be fixed
+% dU = 2*scaling_factor;
+% B = 11;
+
+% % osc_hex
+% dV = 10*scaling_factor; % should be fixed
+% A = 3; % should be fixed
+% dU = 5.6*scaling_factor;
+% B = 10.2;
+
+% test
+% dV = 10*scaling_factor; % should be fixed
+% A = 3; % should be fixed
+% dU = 6*scaling_factor;
+% B = 10.5;
+
+% oscillating stripes
+% scaling_factor = 1;
+% dV = 10*scaling_factor; % should be fixed
+% A = 3; % should be fixed
+% dU = 6.1*scaling_factor;
+% B = 10.5;
+
+% oscillating squares?
+% mind the scaling_factor... large = better
+% small means more dots get crammed 
+% dU = 6.0*scaling_factor;
+% B = 10.25;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-% Size of grid
-width = 400;
-dt = 0.005;
+%%%%%%%%%%%%%%%%%% GRAY-SCOTT PATTERNS &&&&&&&&&&&&&&
+
+% pattern type:
+scaling_factor = 0.5;
+
+% spreading_loops
+% f = 0.04; % feed
+% k = 0.06; % kill
+
+% chaotic_growth:
+% f = 0.018; % feed
+% k = 0.051; % kill
+
+% stripey_droplets
+% f = 0.055;
+% k = 0.063;
+
+% mitosis
+f=.0367; 
+k=.0649;
+
+
+
+
+dU = 1*scaling_factor;
+dV = 0.5*scaling_factor;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Size of grid for osc_patterns
+width = 128;
+% Size of grid for stable_patterns
+%width = 512;
+% Size of grid for GRAY-SCOTT
+width = 256;
+% osc_patterns dt
+dt = 0.002;
+
+% dt for GRAY-SCOTT
+A = 1; % ignore this 
+B = 1; % ignore this
+dt = 0.25;
 t=0;
-stoptime = 170;
-alpha = 0.0;
-f = 0.44;
+stoptime = 200000;
+
 
 [t, U, V] = initial_conditions(width, A, B);
-
 axes('Position',[0 0 1 1])
 axis off
 % Add a scaled-color image
 figure(1);
 hi = image(U);
-hi.CDataMapping = 'scaled';
+hi.CDataMapping = 'scaled'; % or scaled
 colormap gray
 
 % And a text object to show the current time.
 ht = text(5,width-5,'Time = 0');
 ht.Color = [.95 .2 .8];
 drawnow
-
 tic
 n_frames = 1;
-loop_count = 100;
-filename = 'patterns.gif';
-while t<stoptime
-    % can add time dependence later
-    
-    % brusselator
-    U = U + (dU*laplacian(U) + A - (B+1).*U + V.*U.^2 + alpha*cos(2*pi*t))*dt; 
-    V = V + (dV*laplacian(V) + B.*U - V.*U.^2)*dt;
+loop_count = 250;
 
-    % FitzHugh
-    % I = 0.1
-    % A = ???
-    % B = ???
-    %U = U + (U - U.^3/3 - V + 0.1)*dt;
-    %V = V + (U + A - B.*V)*dt;
+
+
+while t<stoptime
+    % brusselator
+%     U = U + (dU*laplacian(U) + A - (B+1).*U + V.*U.^2)*dt; 
+%     V = V + (dV*laplacian(V) + B.*U - V.*U.^2)*dt;
+
+    % Gray-Scott
+    U = U + (dU*laplacian(U) - U.*V.^2 + f.*(1-U))*dt;
+    V = V + (dV*laplacian(V) + U.*V.^2 - (f+k).*V)*dt;
 
     hi.CData = U;
     t = t+dt;
     ht.String = ['Time = ' num2str(t)];
-    drawnow
-    % generate GIF
-%     im = frame2im(getframe(1));
-%     [imind, cm] = rgb2ind(im,4);
-%     if n_frames == 1
-%         imwrite(imind, cm,filename,'gif','LoopCount',Inf, 'DelayTime',0.01);
-%     else
-%         imwrite(imind, cm,filename,'gif','WriteMode','append', 'DelayTime',0.01);
-%     end
-    if loop_count > 10
+    
+    if loop_count > 10000
+         drawnow;
+         loop_count = 0;
+     else
+         loop_count = loop_count + 1;
+     end
+    
+%     generate a movie
+    if loop_count > 250
         writeVideo(writerObj,getframe(1));
         loop_count = 0;
     else
         loop_count = loop_count + 1;
     end
-    
-    n_frames = n_frames+1;
-    
-    
 end
 close(writerObj);
 delta = toc;
-disp([num2str(nframes) ' frames in ' num2str(delta) ' seconds']);
 
 
 
@@ -112,19 +171,37 @@ disp([num2str(nframes) ' frames in ' num2str(delta) ' seconds']);
 
 function [t, U, V] = initial_conditions(n, A, B)
 t = 0;
-% Initialize A to random numbers between 0 and 1.
-% small, random perturbations from equilibrium solutions
-U = A + 4*rand(n);
-V = B/A + 4*rand(n);
+
+% PHOTO
+% I1=imread('C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\HuanBui_ExpNonLinear\Project 2\mccoy.jpg');
+% I2 = imresize(I1,[512 512]); 
+% In=im2double(rgb2gray(I2)); 
+% U = In/100;
+% V = In/100;
+
+
+% BRUSSELATOR
+% U = A + rand(n);
+% V = B/A + rand(n);
+
+% GRAY-SCOTT
+U = ones(n);
+% Initialize V to zero which a clump of ones
+V = zeros(n);
+V(round(n/2)-1:round(n/2)+1 ,round(n/2)-1:round(n/2)+1) = 1;
+V(round(n/2)-1+3:round(n/2)+1+3, round(n/2)-1+3:round(n/2)+1+3) = 1;
+
 end
   
 % circshift ensures periodic boundary condition
 function out = laplacian(in)
 out = -in ...
-    + .20*(circshift(in,[ 1, 0]) + circshift(in,[-1, 0])  ...
-    +      circshift(in,[ 0, 1]) + circshift(in,[ 0,-1])) ...
-    + .05*(circshift(in,[ 1, 1]) + circshift(in,[-1, 1])  ...
-    +      circshift(in,[-1,-1]) + circshift(in,[ 1,-1]));
+    + 0.25*(circshift(in,[ 1, 0]) + circshift(in,[-1, 0])  ...
+    +      circshift(in,[ 0, 1]) + circshift(in,[ 0,-1])); ...
+    
+    % this diagonal shift term introduces some weirdness... do not include
+    %- (.25/8)*(circshift(in,[ 1, 1]) + circshift(in,[-1, 1])  ...
+    %+      circshift(in,[-1,-1]) + circshift(in,[ 1,-1]));
 
 end
 
