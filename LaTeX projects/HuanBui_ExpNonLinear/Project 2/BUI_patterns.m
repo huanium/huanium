@@ -20,10 +20,10 @@ scaling_factor = 8;
 
 % stripes
 % scaling_factor = 1;
-% dV = 10*scaling_factor; % should be fixed
-% A = 3; % should be fixed
-% dU = 4*scaling_factor;
-% B = 10.2;
+dV = 10*scaling_factor; % should be fixed
+A = 3; % should be fixed
+dU = 4*scaling_factor;
+B = 10.2;
 
 % honeycomb
 % dV = 10*scaling_factor; % should be fixed
@@ -69,7 +69,7 @@ scaling_factor = 8;
 %%%%%%%%%%%%%%%%%% GRAY-SCOTT PATTERNS &&&&&&&&&&&&&&
 
 % pattern type:
-scaling_factor = 0.5;
+scaling_factor = 0.25;
 
 % spreading_loops
 % f = 0.04; % feed
@@ -79,39 +79,40 @@ scaling_factor = 0.5;
 % f = 0.018; % feed
 % k = 0.051; % kill
 
+% f = 0.02; % feed
+% k = 0.05; % kill
+
 % stripey_droplets
 % f = 0.055;
 % k = 0.063;
 
 % mitosis
-f=.0367; 
-k=.0649;
+% f=.0367; 
+% k=.0649;
+% 
 
-
-
-
-dU = 1*scaling_factor;
-dV = 0.5*scaling_factor;
+% dU = 1*scaling_factor;
+% dV = 0.5*scaling_factor;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Size of grid for osc_patterns
-width = 128;
+%width = 128;
 % Size of grid for stable_patterns
-%width = 512;
+width = 1024;
 % Size of grid for GRAY-SCOTT
-width = 256;
+% width = 256;
 % osc_patterns dt
-dt = 0.002;
+dt = 0.01;
 
 % dt for GRAY-SCOTT
-A = 1; % ignore this 
-B = 1; % ignore this
-dt = 0.25;
-t=0;
+% A = 1; % ignore this 
+% B = 1; % ignore this
+% dt = 0.25;
+% t=0;
+
+
 stoptime = 200000;
-
-
 [t, U, V] = initial_conditions(width, A, B);
 axes('Position',[0 0 1 1])
 axis off
@@ -133,18 +134,18 @@ loop_count = 250;
 
 while t<stoptime
     % brusselator
-%     U = U + (dU*laplacian(U) + A - (B+1).*U + V.*U.^2)*dt; 
-%     V = V + (dV*laplacian(V) + B.*U - V.*U.^2)*dt;
+    U = U + (dU*laplacian(U) + A - (B+1).*U + V.*U.^2)*dt; 
+    V = V + (dV*laplacian(V) + B.*U - V.*U.^2)*dt;
 
     % Gray-Scott
-    U = U + (dU*laplacian(U) - U.*V.^2 + f.*(1-U))*dt;
-    V = V + (dV*laplacian(V) + U.*V.^2 - (f+k).*V)*dt;
+%     U = U + (dU*laplacian(U) - U.*V.^2 + f.*(1-U))*dt;
+%     V = V + (dV*laplacian(V) + U.*V.^2 - (f+k).*V)*dt;
 
     hi.CData = U;
     t = t+dt;
     ht.String = ['Time = ' num2str(t)];
     
-    if loop_count > 10000
+    if loop_count > 500
          drawnow;
          loop_count = 0;
      else
@@ -152,12 +153,12 @@ while t<stoptime
      end
     
 %     generate a movie
-    if loop_count > 250
-        writeVideo(writerObj,getframe(1));
-        loop_count = 0;
-    else
-        loop_count = loop_count + 1;
-    end
+%     if loop_count > 250
+%         writeVideo(writerObj,getframe(1));
+%         loop_count = 0;
+%     else
+%         loop_count = loop_count + 1;
+%     end
 end
 close(writerObj);
 delta = toc;
@@ -181,15 +182,16 @@ t = 0;
 
 
 % BRUSSELATOR
-% U = A + rand(n);
-% V = B/A + rand(n);
+U = A + rand(n);
+V = B/A + rand(n);
 
 % GRAY-SCOTT
-U = ones(n);
-% Initialize V to zero which a clump of ones
-V = zeros(n);
-V(round(n/2)-1:round(n/2)+1 ,round(n/2)-1:round(n/2)+1) = 1;
-V(round(n/2)-1+3:round(n/2)+1+3, round(n/2)-1+3:round(n/2)+1+3) = 1;
+% U = ones(n);
+% % Initialize V to zero which a clump of ones
+% V = zeros(n);
+% V(round(n/2)-1:round(n/2)+1 ,round(n/2)-1:round(n/2)+1) = 1;
+% V(round(n/2)-1+6:round(n/2)+1+6, round(n/2)-1+6:round(n/2)+1+6) = 1;
+
 
 end
   

@@ -10,7 +10,7 @@
 %       x and t, respectively, are position and time lists.
 
 
-a = 1;
+a = 2;
 b = 4;
 
 [u,v,x,t] = Turing(a,b,4e3);
