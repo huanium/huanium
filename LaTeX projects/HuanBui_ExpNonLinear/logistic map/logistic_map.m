@@ -12,26 +12,26 @@
 
 %%%%% bifurcation diagram %%%%
 
-% a = 0:0.0005:4;
-% n = 500;
-% iter = 1000;
-% figure(1)
-% for j = 1:iter 
-%     x_end = zeros(length(a),1);
-%     for k = 1:length(a)
-%         x = logisticmap(a(k), n);
-%         x_end(k) = x(end);
-%     end
-%     plot(a,x_end, '.', 'Color', 'r', 'MarkerSize',1);
-%     hold on
-% end
-% hold off
-% set(zoom(figure(1)),'Motion','horizontal');
+a = 3.558:0.0001:3.95;
+n = 500;
+iter = 5000;
+figure(1)
+for j = 1:iter 
+    x_end = zeros(length(a),1);
+    for k = 1:length(a)
+        x = logisticmap(a(k), n);
+        x_end(k) = x(end);
+    end
+    plot(a,x_end, '.', 'Color', 'r', 'MarkerSize',1);
+    hold on
+end
+hold off
+%set(zoom(figure(1)),'Motion','horizontal');
 %a = 3.50:0.00005:3.6;
-% a = 3.564:0.000005:3.572;
-% n = 500;
-% iter = 1000;
-% figure(3)
+%a = 3.564:0.000005:3.572;
+%n = 500;
+%iter = 1000;
+%figure(3)
 % for j = 1:iter 
 %     x_end = zeros(length(a),1);
 %     for k = 1:length(a)
@@ -53,45 +53,45 @@
 
 %%%%% generate mandelbrot image %%%
 % x (real(c))
-d = 0.001; % step
-dx=d; % step
-x1=-2;
-x2=0.5;
-% y (imag(c))
-dy=d; % step
-y1=-1.5;
-y2=1.5;
-x=x1:dx:x2;
-y=y1:dy:y2;
-[X,Y] = meshgrid(x,0.75.*y); % for vectorized calculation
-c=X+1i*Y;
-R=10; % if abs(z)>R then z is considered as infinity
-n=100; % maximal number of iterations, 100 is close to infinity
-z=zeros(size(c)); % starts from zeros
-for nc=1:n
-    z=z.^2+c; % vectorized
-end
-I=abs(z)>=R; % logical image
-figure(1)
-imagesc(x,y,I);
-colormap gray;
-hold on;
-
-%%%%% generate logistic map %%%%%
-offset = 3;
-a = -2:0.002:1/4;
-n = 500;
-iter = 1000;
-figure(1)
-for j = 1:iter 
-    x_end = zeros(length(a),1);
-    for k = 1:length(a)
-        x = logis_mandelbrot(a(k), n);
-        x_end(k) = x(end)+offset;
-    end
-    plot(a,x_end, '.', 'Color', 'r', 'MarkerSize',1);
-    hold on
-end
+% d = 0.001; % step
+% dx=d; % step
+% x1=-2;
+% x2=0.5;
+% % y (imag(c))
+% dy=d; % step
+% y1=-1.5;
+% y2=1.5;
+% x=x1:dx:x2;
+% y=y1:dy:y2;
+% [X,Y] = meshgrid(x,0.75.*y); % for vectorized calculation
+% c=X+1i*Y;
+% R=10; % if abs(z)>R then z is considered as infinity
+% n=100; % maximal number of iterations, 100 is close to infinity
+% z=zeros(size(c)); % starts from zeros
+% for nc=1:n
+%     z=z.^2+c; % vectorized
+% end
+% I=abs(z)>=R; % logical image
+% figure(1)
+% imagesc(x,y,I);
+% colormap gray;
+% hold on;
+% 
+% %%%%% generate logistic map %%%%%
+% offset = 3;
+% a = -2:0.002:1/4;
+% n = 500;
+% iter = 1000;
+% figure(1)
+% for j = 1:iter 
+%     x_end = zeros(length(a),1);
+%     for k = 1:length(a)
+%         x = logis_mandelbrot(a(k), n);
+%         x_end(k) = x(end)+offset;
+%     end
+%     plot(a,x_end, '.', 'Color', 'r', 'MarkerSize',1);
+%     hold on
+% end
 
 %%%%%%% functions %%%%%%%%%%
 
