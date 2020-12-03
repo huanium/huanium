@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 %\usepackage{newpxtext,newpxmath}
-\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+\usepackage[left=1.25in,right=1.25in,top=1.25in,bottom=1.25in]{geometry}
 \usepackage{graphicx, amsmath, amsthm, latexsym, amssymb, color,cite,enumerate, physics, framed}
 \usepackage{caption,subcaption, empheq, hyperref, xcolor}
 \usepackage{mathtools}
@@ -96,7 +96,7 @@ with the axis of the linear polarizer in front of the detector, then the detecte
 
 
 
-\section{Some quantum-beat theory}
+\section{Some quantum-beat theory}\label{sec:beat_theory}
 
 Roughly speaking, quantum beats occur due to ``interference'' in the decay of a coherent superposition of closely-spaced atomic states $\{\ket{{e}}\}$ to some collection of the final states $\{ \ket{{f}}  \}$, where $\{ \ket{{e}}   \}$ is obtained by an pulsed laser with pulse duration $\Theta \ll \tau$, the mean lifetime of $\{ \ket{{e}}   \}$. The basic scheme is given by Figure \ref{fig:energies}.
 
@@ -117,7 +117,7 @@ I(t) \propto \Tr_e\{   \rho_e(t) \mathfrak{D}  \},
 \end{equation}
 where $\rho_e(t)$ is the density matrix of the excited state describing the time evolution of the excited state after the pulse, and $\mathfrak{D}$ is the detection operator given in terms of the scaled-electric-dipole operator $\mathbf{D}$ as 
 \begin{equation}\label{eq:detection}
-\mathfrak{D} = \sum_j (\mathbf{e}_d \cdot \mathbf{D}) \ket{f}\bra{f}(\mathbf{e}_d^* \cdot \mathbf{D}).
+\mathfrak{D} = \sum_f (\mathbf{e}_d \cdot \mathbf{D}) \ket{f}\bra{f}(\mathbf{e}_d^* \cdot \mathbf{D}).
 \end{equation}
 $\rho_e(t)$ is simple so long as the following conditions are satisfied:
 \begin{itemize}
@@ -130,20 +130,26 @@ Under these conditions \textcolor{blue}{(which I believe our experiment satisfie
 \bra{e} \rho_e(t) \ket{e'} = \sum_{ii'} \bra{e} \mathbf{e}_e \cdot \mathbf{D} \ket{i} \bra{i} \rho_i(-T) \ket{i'} \bra{i'} \mathbf{e}_e^* \cdot \mathbf{D} \ket{e'} \exp\lb -(i\omega_{ee'} + \Gamma_e) t \rb,
 \end{equation}
 where $\rho_i(-T)$ is the density matrix of the initial state. Here, $\Gamma_e = \tau_e^{-1}$. Putting Eq. \ref{eq:density} into Eq. \ref{eq:intensity} and Eq. \ref{eq:detection} we find
-\begin{align}
+\begin{align}\label{eq:Intensity_full}
 I(t) \propto \sum_{f,ii',ee'} &\bra{e} \mathbf{e}_e \cdot \mathbf{D} \ket{i} \bra{i} \rho_i(-T) \ket{i'} \bra{i'} \mathbf{e}_e^* \cdot \mathbf{D} \ket{e'} \nonumber \\
 &\times \bra{e'}\mathbf{e}_d \cdot \mathbf{D} \ket{f}\bra{f}\mathbf{e}_d^* \cdot \mathbf{D} \ket{e} \exp\lb -(i\omega_{ee'} + \Gamma_e) t \rb.
 \end{align}
-
+This corresponds exactly to Eq. \ref{eq:signal_full} in Appendix \ref{app:quantum_beats}. For a detailed derivation of this equation, see the rest of Appendix \ref{app:quantum_beats}, where the symbol for initial states $i$ becomes $g$. 
 
 
 
 
 
 \section{Hyperfine-structure quantum beats}
-
-
-
+Now we focus on quantum beats due to hyperfine splitting. The atoms are assumed to have a non-zero nuclear spin. \textcolor{blue}{In our case, $I_K = 3/2$.} In this case, the atomic states will be represented by 
+\begin{equation}
+\ket{a} = \ket{\al(J_a I) F_a M_a} \equiv \ket{F_a M_a}, \quad a = i,e,f.
+\end{equation}
+$J_a$ denotes the total electronic angular momentum, $I$ the nuclear spin, $F_a$ the total angular momentum and $M_a$ te quantum number corresponding to its projection on the $z$-axis. We assume that initially, the ground state is unpolarized (or \textit{totally mixed}), i.e., that $\rho_i(-T) \propto \mathbb{I}$, the identity matrix. In this case, the intensity $I(t)$ is slightly simplified:
+\begin{align}
+I(t) \propto &\sum_{F_eM_e,F'_eM'_e,F_iM_i,F_fM_f} \bra{F_eM_e} \mathbf{e}_e \cdot \mathbf{D} \ket{F_iM_i} \bra{F_iM_i}  \bra{F_i M_i} \mathbf{e}_e^* \cdot \mathbf{D} \ket{F'_eM'_e} \nonumber \\
+&\times \bra{F'_eM'_e}\mathbf{e}_d \cdot \mathbf{D} \ket{F_fM_f}\bra{F_fM_f}\mathbf{e}_d^* \cdot \mathbf{D} \ket{F_eM_e} \exp\lb -(i\omega_{ee'} + \Gamma_e) t \rb.
+\end{align}
 
 \section{Example: Linearly-polarized excitation and detection}
 
@@ -158,6 +164,146 @@ I(t) \propto \sum_{f,ii',ee'} &\bra{e} \mathbf{e}_e \cdot \mathbf{D} \ket{i} \br
 \section{Quantum Beat Theory in the Density Matrix Formalism \cite{haroche}}\label{app:quantum_beats}
 
 \textcolor{blue}{fill in the background for the ``quantum beat theory'' section here...}
+
+
+The density matrix formulation greatly simplifies many quantum-beat calculations. This is because the optical signals in a fluorescence experiment turn out to be proportional to the mean value of some atomic observable in the excited state $e$, which can be very easily expressed as a combination of components of the density matrix $\rho_e(t)$ of this state. The evolution of $\rho_e(t)$ due to the light excitation process, to the precession of the coherences
+in the atomic excited state and to spontaneous emission is adequately described by a set of linear differential equations, whose solution yields $\rho_e(t)$ and allows the explicit calculation of the atomic fluorescence signal as a function of time. Furthermore, the atomic density matrix $\rho_e(t)$ may be represented as an expansion over a set of spherical tensor operators
+among which only the scalar, dipolar and quadrupolar terms affect the fluorescence light.  
+
+Let us begin from the QED derivation of the quantum beat signal for a single-atom system. At $t=0$, we assume that the system is prepared by the light pulse in the state
+\begin{equation*}
+\ket{\psi(0)} = \sum_i \al_i \ket{e_i,0}, \quad i = 1,2,
+\end{equation*}
+where $\ket{e_i,0}$ represents the atom in substate $\ket{e_i}$ with no photon present. $\al_i$ are of course th amplitudes, which depend on the characteristics of the pulse. At time $t$, we have
+\begin{equation*}
+\ket{\psi(t)} = \sum_i \al_i e^{-i E_t/\hbar} e^{-\Gamma t/2} \ket{e_i,0} + \sum_{f,\mathbf{k\epsilon}} C_{f,\mathbf{k\epsilon}}(t)\ket{f,\mathbf{k\epsilon}}.
+\end{equation*}
+This says that the initial states $\ket{e_i,0}$ have been damped at the rate $\Gamma = 1/\tau$ of spontaneous emission ($\tau$ is a common decay rate for all of the $e_i$ substates). $C_{f,k\epsilon}(t)$ is the probability amplitude to find at time $t$ the atom in the final state $f$ with a photon of wave vector $\mathbf{k}$ and polarization $\mathbf{\epsilon}$.  From the \textcolor{red}{Wigner-Weisskopf theory of spontaneous emission,} one finds
+\begin{equation*}
+C_{f,\mathbf{k\epsilon}} = \sum_i C_{f,\mathbf{k\epsilon}}^{(i)} (t)
+\end{equation*}
+where
+\begin{equation}\label{eq:WignerWeisskopf}
+C_{f,\mathbf{k\epsilon}}^{(i)} (t) = \al_i E_\mathbf{k} \bra{f} \mathbf{\epsilon}\cdot \mathbf{D} \ket{e_i} e^{-i\mathbf{k}\cdot \mathbf{R}} \f{e^{-i(E_f + \hbar c k)t/\hbar}  -e^{-iE_i t/\hbar}e^{-\Gamma t / 2}  }{\hbar c k - (E_i - E_f) + i\hbar \Gamma/2}.
+\end{equation}
+This is obtained by plugging $\ket{\psi(t)}$ into the Schr\"{o}dinger equation and solving for $C_{f,\mathbf{k,\epsilon}}$ in a system of coupled differential equations \textcolor{blue}{(I will fill in the details shortly)}. But in any case, $E_\mathbf{k}$ is the electric field of a photon at frequency $\hbar c k$ and $\mathbf{D}$ is the electric dipole operator of the atom. When $i = \{1,2\}$, we find that $C_{f, \mathbf{k\epsilon}}$ is a sum of two terms, each corresponding to the emission from a given excited state $\ket{e_i}$. Each of these terms exhibits a resonance center around $\hbar c k = E_i - E_j$ with a width $\hbar \Gamma$. At resonance, each amplitude $C_{f,\mathbf{k\epsilon}}^{(i)} (t)$ is modulated at the Bohr frequency $E_i/\hbar$ if te corresponding excited state. 
+
+The average photon counting rate of the detector located at point $\mathbf{r}$ is equal to the expectation value at that point of the operator $E^-_\mathbf{d}(\mathbf{r}) E^+_\mathbf{d}(\mathbf{r})$, which is the product of the positive and negative frequency parts of the electric field component along the direction $\mathbf{e_d}$. So, this quantity is given by 
+\begin{equation*}
+S(\mathbf{e_d}, \mathbf{r},t) = \bra{\psi(t)} E_d^-(\mathbf{r}) E_\mathbf{d}^+(\mathbf{r}) \ket{\psi(t)}.
+\end{equation*}
+Now, writing $E_\mathbf{d}^{\pm}(\mathbf{r})$ in terms of the normal modes of the electro magnetic field (this is where QED comes it)
+\begin{align*}
+E_d^+(\mathbf{r}) &= \sum_{\mathbf{k\epsilon}} E_\mathbf{k} \epsilon_d a_{\mathbf{k\epsilon}} e^{i\mathbf{k}\cdot \mathbf{r}}. \\
+E_d^-(\mathbf{r}) &= \sum_{\mathbf{k'\epsilon'}} E_{\mathbf{k'}} \epsilon'_d a^\dagger_{\mathbf{k'\epsilon'}} e^{-i\mathbf{k'}\cdot \mathbf{r}}
+\end{align*}
+where of course $a_{\mathbf{k\epsilon}}$ and $a^\dagger_{\mathbf{k\epsilon}}$ are annihilation and creation operators in mode $\mathbf{k\epsilon}$. With this, we find an expression for the signal:
+\begin{equation*}
+S(\mathbf{e_d}, \mathbf{r},t) = \sum_{\mathbf{k,k',\epsilon,\epsilon'}}\sum_f \sum_{i,j} E_\mathbf{k} E_{\mathbf{k'}} C_{f,\mathbf{k\epsilon}}^{(i)}(t) C_{f,\mathbf{k'\epsilon'}}^{(j)*}(t) \epsilon_d \epsilon_d' e^{i(\mathbf{k-k'})\cdot \mathbf{r}}.
+\end{equation*}
+Finally, plugging Eq. \ref{eq:WignerWeisskopf} into this expression yields
+\begin{align}
+S(\mathbf{e_d}, \mathbf{r},t) 
+&= \sum_{\mathbf{k,k',\epsilon,\epsilon'}}\sum_f \sum_{i,j} 
+E_\mathbf{k} E_{\mathbf{k'}} \al_i E_\mathbf{k} \bra{f} \mathbf{\epsilon}\cdot \mathbf{D} \ket{e_i} e^{-i\mathbf{k}\cdot \mathbf{R}} \f{e^{-i(E_f + \hbar c k)t/\hbar}  -e^{-iE_i t/\hbar}e^{-\Gamma t / 2}  }{\hbar c k - (E_i - E_f) + i\hbar \Gamma/2}\nonumber\\
+&\,\,\,\times  \lb \al_j E_\mathbf{k'} \bra{f} \mathbf{\epsilon'}\cdot \mathbf{D} \ket{e_j} e^{-i\mathbf{k'}\cdot \mathbf{R}} \f{e^{-i(E_f + \hbar c k')t/\hbar}  -e^{-iE_j t/\hbar}e^{-\Gamma t / 2}  }{\hbar c k' - (E_j - E_f) + i\hbar \Gamma/2}\rb^* \epsilon_d \epsilon_d' e^{i(\mathbf{k-k'})\cdot \mathbf{r}}\nonumber\\
+&= \sum_{\mathbf{k,k',\epsilon,\epsilon'}}\sum_f \sum_{i,j} 
+E_\mathbf{k}^2 E_{\mathbf{k'}}^2  \bra{f} \mathbf{\epsilon}\cdot \mathbf{D} \ket{e_i}  \al_i\al_j^*  \bra{e_j} \mathbf{\epsilon'}\cdot \mathbf{D} \ket{f}  \epsilon_d \epsilon_d' e^{i(\mathbf{k-k'})\cdot (\mathbf{r} - \mathbf{R}  )}
+\nonumber\\
+&\,\,\,\times  
+\f{e^{-i(E_f + \hbar c k)t/\hbar}  -e^{-iE_i t/\hbar}e^{-\Gamma t / 2}  }{\hbar c k - (E_i - E_f) + i\hbar \Gamma/2}
+\f{e^{i(E_f + \hbar c k')t/\hbar}  - e^{iE_j t/\hbar}e^{-\Gamma t / 2}  }{\hbar c k' - (E_j - E_f) - i\hbar \Gamma/2}\nonumber.
+\end{align}
+For simplicity, let $r_0 = \abs{\mathbf{R}-\mathbf{r}}$ denote the distance between the atom and the detector, $k_0 = (E_e - E_f)/\hbar c$ is the average wavenumber of the detected optical transition, and $\omega_{ij} = (E_i - E_j)/\hbar$ is the Bohr frequency corresponding to the splitting between the states $e_i$ and $e_j$, and $\theta (t - r_0/c)$ is the ordinary Heaviside function, equal to $1$ if $t< r_o/c$ and to $0$ otherwise, which allows for the propagation between the emitter and the detector. After \textcolor{red}{some non-trivial summing over all angular and energy parts which I have a vague idea of how to do...}, we find 
+\begin{equation}\label{eq:signal}
+S(\mathbf{e_d}, \mathbf{r},t) = \f{1}{(4\pi\epsilon_0)^2}\f{k_0^4}{r_0^2}\sum_{f}\sum_{i,j} \bra{f}\mathbf{e_d}  \mathbf{D} \ket{e_i}\al_i \al_j^* \bra{e_j} \mathbf{e_d} \mathbf{D}\ket{f} \theta\lp t - \f{r_0}{c} \rp e^{-i \omega_{ij}\lp t-\f{r_0}{c} \rp } e^{-\Gamma\lp t-\f{r_0}{c} \rp }.
+\end{equation}
+Notice the inverse square law that arises. Now, the product of the amplitudes $\al_i \al_j^*$ are the matrix elements between the states $\ket{e_i}$ and $\ket{e_j}$ of the excited state density matrix $\rho_e(t)$ evaluated at time $t=0$, i.e., 
+\begin{equation*}
+\al_i \al_j^* = \bra{e_i} \rho_e(0) \ket{e_j}.
+\end{equation*}
+So, assuming that $r$ is fixed and that the retardation $r_0/c \approx 0$, we find that Eq. \ref{eq:signal} becomes
+\begin{equation}\label{eq:full_signal}
+S(\mathbf{e_d},t) = C\sum_{i,j}\lp e^{-i\omega_{ij}t} \bra{e_i}\rho_e(0)\ket{e_j} e^{-\Gamma t} \rp
+\sum_f \bra{e_j}\mathbf{e_d} \mathbf{D}\ket{f}\bra{f}\mathbf{e_d}^*\mathbf{D}\ket{e_i}  
+\end{equation}
+where
+\begin{equation*}
+C = \f{1}{(4\pi\epsilon_0)^2}\f{k_0^4}{r_0^2}.
+\end{equation*}
+Notice further that the first term in the expression above for $S$ is just the density matrix element of $\rho_e$ at time $t$, i.e., 
+\begin{equation}\label{eq:densityT}
+e^{-i\omega_{ij}t} \bra{e_i}\rho_e(0)\ket{e_j} e^{-\Gamma t} = \bra{e_i}\rho_e(t)\ket{e_j}.
+\end{equation}
+As a result, we find 
+\begin{equation}\label{eq:SignalTrace}
+S(\mathbf{e_d} ,t) = \sum_{i,j} \bra{e_i}\rho_e(t)\ket{e_j} \bra{e_j}\lag(\mathbf{e_d}) \ket{e_i} = \sum_i \bra{e_i} \rho_e(t)\lag(\mathbf{e_d}) \ket{e_i} = \boxed{\Tr[\rho_e(t)\lag(\mathbf{e_d})]}
+\end{equation}
+where 
+\begin{equation*}
+\lag(\mathbf{e_d}) = C\sum_f \mathbf{e_d} \mathbf{D}\ket{f}\bra{f}\mathbf{e_d}^* \mathbf{D}.
+\end{equation*}
+So, we see that the fluorescence signal is the expectation value in the atomic excited states of a ``detection'' operator $\lag(\mathbf{e_d})$, which is proportional to the component corresponding to the $e-f$ transition of the square of the atomic dipole projected along the detection polarization $\mathbf{e_d}$. Finally, to calculate explicitly the quantum beat signal, one has to know $\rho_e(t)$, which implies that one must know $\rho_e(0)$ since these are related by Eq. \ref{eq:densityT}.
+
+
+Three time parameters are important for the description of the pulse: duration $T$ (the pulse is assumed to interact with the atoms between time $t=-T$ and $t=0$), its correlation time $\tau = 1/\Delta$, and its pumping time $T_p(t)$, which is inversely proportional to the instantaneous spectral density $u(\omega_0,t)$ of the pulse at the frequency $\omega_0$ of the optical transition, and to the oscillation strength of the transition. It is defined as
+\begin{equation*}
+\f{1}{T_p(t)} = \f{\pi}{\epsilon_0 \hbar^2} u(\omega_0,t) \abs{ \bra{e} \abs{D} \ket{g}}^2
+\end{equation*}
+where $\bra{e} \abs{D} \ket{g}$ is the radial part of the electric dipole matrix element between the states $\ket{e}$ and $\ket{g}$. $T_p(t)$ is the instantaneous average time between two successive photon absorptions from the pulse. 
+
+To derive rate equations for the evolution of the atomic system, we assume the \textcolor{blue}{broadline condition} and the \textcolor{blue}{weak coupling} condition given by 
+\begin{equation*}
+\Delta \gg \f{1}{T_p(t)}. 
+\end{equation*}
+We further assume that the following three conditions are satisfied:
+\begin{align*}
+\f{1}{T} \gg \Gamma, \quad \f{1}{T} \gg \omega_{ij}, \quad \Delta \gg \omega_{ij}.
+\end{align*}
+The first says that we can ignore spontaneous emission during the pulse itself. The second says that the pulse is short enough so that the atomic coherences do not have the time to precess during the pulse excitation. The last says that the pulse bandwidth is large enough to entirely cover the structure of the studied excited state. 
+
+In addition, we assume the \textcolor{blue}{Weak Pumping Limit}, i.e., $T\ll T_p(t)$. This says that the pulse used to excited the atoms is weak enough so that it interacts linearly with the atomic system. In terms of photon processes, this means that at most one photon from the pulse is absorbed during time $T$. \textcolor{red}{I believe that this condition is met in our experiment.} In this case, the evolution of the excited state density matrix is given by
+\begin{equation*}
+\f{d}{dt} \rho_e(t) = \f{1}{T_p(t)} \f{1}{G_g} \mathbf{P}_e \mathbf{e}_0 \mathbf{D} \mathbf{P}_g \mathbf{e}_0^* \mathbf{D} \mathbf{P}_e,
+\end{equation*}
+where $\mathbf{e}_0$ is the polarization of the pulse. $\mathbf{P}_e = \sum_e \ket{e}\bra{e}, \mathbf{P}_g = \sum_g\ket{g}\bra{g}$ are the projectors into the excited and ground states, respectively. $\mathbf{G}_g$ is the degeneracy of the ground state. Integrating this equation gives
+\begin{equation}\label{eq:EvolveDensity}
+\rho_e(0) = \f{K_0}{G_g} \mathbf{P}_e \mathbf{e}_0 \mathbf{D} \mathbf{P}_g \mathbf{e}_0^* \mathbf{D} \mathbf{P}_e
+\end{equation}
+where
+\begin{equation*}
+K_0 = \int^0_{-T} \f{dt}{T_p(t)},
+\end{equation*}
+is the time-integrated pumping rate. Eq. \ref{eq:EvolveDensity} is valid when the atomic ground state is not oriented prior to the pulse excitation \textcolor{blue}{(which I believe aligns with our experimental setup)}. It says that the atomic density matrix components in the excited states are obtained as products of two amplitudes proportional to the atomic dipole matrix elements between the ground state and the relevant excited substates. Putting the expression for $\rho_e(0)$ in Eq. \ref{eq:EvolveDensity} into Eq. \ref{eq:full_signal}, we get
+\begin{equation*}
+S(\mathbf{e_d},t) = \f{CK_0}{G_g}\sum_f \sum_{i,j}\sum_g \bra{e_i} \mathbf{e}_0 \mathbf{D} \ket{g} \bra{g} \mathbf{e}_0^* \mathbf{D} \ket{e_j} \bra{e_j} \mathbf{e}_d \mathbf{D} \ket{f} \bra{f} \mathbf{e}_d^* \mathbf{D} \ket{e_i} e^{-\Gamma t}e^{-i\omega_{ij}t}.
+\end{equation*}
+More generally, it is possible that the ground state has some anisotropy before the pulse excitation. This requires us to modify Eq. \ref{eq:EvolveDensity} to account for te anisotropy of the atom in the state $g$:
+\begin{equation}\label{eq:DensityEvolveModified}
+\rho_e(0) = K_0 \mathbf{P}_e \mathbf{e}_0 \mathbf{D} \mathbf{P}_g \rho_g(-T) \mathbf{P}_g \mathbf{e}_0^* \mathbf{D} \mathbf{P}_e,
+\end{equation}
+where $\rho_g(-T)$ is the density matrix in state $g$ at time $-T$ before the pulse. To derive this, we can assume that the ground state has no time to evolve between the times $-T$ and $0$, so that $\rho_g(-T)$ can be replaced by $\rho_g(0)$. In this case, the density matrix of the excited states $\rho_e(t)$ satisfies
+\begin{align*}
+\bra{e_i} \rho_e(t) \ket{e_j} 
+&= e^{-i\omega_{ij}t} e^{-\Gamma t} \bra{e_i} \rho_e(0) \ket{e_j} \nonumber\\
+&= e^{-i\omega_{ij}t} e^{-\Gamma t} \bra{e_i} K_0 \mathbf{P}_e \mathbf{e}_0 \mathbf{D} \mathbf{P}_g \rho_g(-T) \mathbf{P}_g \mathbf{e}_0^* \mathbf{D} \mathbf{P}_e \ket{e_j} \nonumber \\
+&= e^{-i\omega_{ij}t} e^{-\Gamma t} K_0  \sum_{jj',gg'} \bra{e_i}\ket{e_j}\bra{e_j}\mathbf{e}_0 \mathbf{D} \ket{g}\bra{g} \rho_g(-T) \ket{g'}\bra{g'} \mathbf{e}_0^* \mathbf{D} \ket{e_{j'}}\bra{e_{j'}}\ket{e_j} \\
+&= e^{-i\omega_{ij}t} e^{-\Gamma t} K_0  \sum_{gg'} \bra{e_i}\mathbf{e}_0 \mathbf{D} \ket{g}\bra{g} \rho_g(-T) \ket{g'}\bra{g'} \mathbf{e}_0^* \mathbf{D} \ket{e_{j}}.
+\end{align*}
+Plugging this into Eq. \ref{eq:SignalTrace} we find 
+\begin{align}\label{eq:signal_full}
+S(\mathbf{e_d},t) &= \sum_{i,j} \bra{e_i}\rho_e(t)\ket{e_j} \bra{e_j}\lag(\mathbf{e_d}) \ket{e_i} \nonumber\\
+&\propto \sum_{i,j} e^{-i\omega_{ij}t} e^{-\Gamma t} \sum_{gg'} \bra{e_i}\mathbf{e}_0 \mathbf{D} \ket{g}\bra{g} \rho_g(-T) \ket{g'}\bra{g'} \mathbf{e}_0^* \mathbf{D} \ket{e_{j}} \bra{e_j}\lag(\mathbf{e_d}) \ket{e_i} \nonumber\\
+&\propto \sum_{i,j,f,g,g'} e^{-i\omega_{ij}t} e^{-\Gamma t}  \bra{e_i}\mathbf{e}_0 \mathbf{D} \ket{g}\bra{g} \rho_g(-T) \ket{g'}\bra{g'} \mathbf{e}_0^* \mathbf{D} \ket{e_{j}} \bra{e_j}\mathbf{e_d} \mathbf{D}\ket{f}\bra{f}\mathbf{e_d}^* \mathbf{D} \ket{e_i}.
+\end{align} 
+This corresponds exactly to Eq. \ref{eq:Intensity_full} in Section \ref{sec:beat_theory}.
+
+
+
+\section{Multipole Expansion of the Quantum Beat Signal}
+
+
+
 
 
 
