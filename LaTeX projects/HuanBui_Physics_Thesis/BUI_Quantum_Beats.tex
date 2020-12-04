@@ -4,6 +4,9 @@
 \usepackage{graphicx, amsmath, amsthm, latexsym, amssymb, color,cite,enumerate, physics, framed}
 \usepackage{caption,subcaption, empheq, hyperref, xcolor}
 \usepackage{mathtools}
+\usepackage[titletoc]{appendix}
+
+
 \pagenumbering{arabic}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -76,6 +79,15 @@ Huan Q. Bui\\
 \today
 \end{center}
 
+
+
+\tableofcontents
+
+
+\newpage
+
+
+\section{Introduction}
 This document details some theory related to quantum beats, which occur in and can affect radiative lifetime measurements. Most of the mathematical ideas are synthesized from ``\textit{Hyperfine-structure quantum beats: application of the graphical methods of angular-momentum theory to the calculation of intensity profiles}'' by Luypaert and Van Craen (1977) and Section 7.2: Quantum Beat Theory in the Density Matrix Formalism in ``\textit{Quantum Beats and Time-Resolved Fluorescence Spectroscopy}'' by S. Haroche (1976).
 
 
@@ -270,21 +282,88 @@ Z(F_e, F_e';k) = \sum_{F_f}(2F_f + 1)(-1)^{2J_e + k + F_e + F_e' + I + J_f + F_f
 \Gj{I}{F_f}{J_f}{1}{J_e}{F_e}.
 \end{equation*}
 To write $I(t)$ in terms of $Y,Z$, we must perform some permutations within the $6j$-symbols. This brings out some phase factors \textcolor{blue}{(I will skip the details here)}. After multiple simplifications we find
-\begin{align*}
+\begin{align} \label{eq:bigI}
 I(t) 
 &\propto
 \sum_{\substack{F_e, F'_e\\pp', p_0p'_0\\kq}}
 (-1)^{q - J_i + J_f}
-(2k+1)\abs{\bra{J_e} \abs{\mathbf{D}}\ket{J_i}}^2\abs{ \bra{J_e} \abs{\mathbf{D}} \ket{J_f}}^2 \exp\lb -(i\omega_{F_eF'_e} + \Gamma_e)t \rb\\
+(2k+1)
+\abs{\bra{J_e} \abs{\mathbf{D}}\ket{J_i}}^2\abs{ \bra{J_e} \abs{\mathbf{D}} \ket{J_f}}^2 
+\exp\lb -(i\omega_{F_eF'_e} + \Gamma_e)t \rb 
+(2F_e+1)\nonumber\\
 &\times 
-(2F_e+1)(2F'_e+1)
+(2F'_e+1)
 (\mathbf{e}_e)_{p_0}(\mathbf{e}^*_e)_{p_0'}(\mathbf{e}_d)_{p}(\mathbf{e}_d^*)_{p'} 
-\tj{1}{1}{k}{p_0}{p_0'}{q}\tj{1}{1}{k}{p}{p'}{-q}Y(F_e,F_e';k)Z(F_e,F_e';k).
+\tj{1}{1}{k}{p_0}{p_0'}{q}
+\tj{1}{1}{k}{p}{p'}{-q}
+Y(F_e,F_e';k)Z(F_e,F_e';k).
+\end{align}
+The next step is to calculate $Y(F_e,F_e';k)$ and $Z(F_e, F_e';k)$, again using graphical methods (see Appendix \ref{app:YZ}). Once that is done, we find 
+\begin{align*}
+Y(F_e, F_e';k) 
+=
+\Gj{k}{J_e}{J_e}{I}{F_e}{F_e'} 
+\Gj{k}{J_e}{J_e}{J_i}{1}{1}
+=
+\Gj{F_e}{F_e'}{k}{J_e}{J_e}{I} 
+\Gj{1}{1}{k}{J_e}{J_e}{J_i}
 \end{align*}
-The next step is to calculate $Y(F_e,F_e';k)$ and $Z(F_e, F_e';k)$, again using graphical methods (see Appendix \ref{app:YZ}).
+and
+\begin{align*}
+Z(F_e, F_e';k) 
+=
+\Gj{k}{J_e}{J_e}{I}{F_e}{F_e'} 
+\Gj{k}{J_e}{J_e}{J_f}{1}{1}
+=
+\Gj{F_e'}{F_e}{k}{J_e}{J_e}{I} 
+\Gj{1}{1}{k}{J_e}{J_e}{J_f}.
+\end{align*}
+Plugging these results back into Eq. \ref{eq:bigI} we get
+\begin{align}\label{eq:full_I}
+I(t) \propto (-1)^{J_i - J_f}&\abs{\bra{J_e} \abs{\mathbf{D}}\ket{J_i}}^2\abs{ \bra{J_e} \abs{\mathbf{D}} \ket{J_f}}^2 \nonumber\\
+&\times \sum_{\substack{kq\\F_eF_e'}} 
+(-1)^q E^k_q U^k_{-q}A^k(F_eF_e')B^k(F_e'F_e)\exp\lb -(i\omega_{F_eF'_e} + \Gamma_e)t \rb 
+\end{align}
+where
+\begin{align*}
+&E^k_q 
+= \sqrt{2k+1} \sum_{p_0p_0'} \tj{1}{1}{k}{p_0}{p_0'}{q}
+(\mathbf{e}_e)_{p_0}(\mathbf{e}^*_e)_{p_0'}\\
+&U^k_{-q} 
+= \sqrt{2k+1} \sum_{pp'} \tj{1}{1}{k}{p}{p'}{-q}
+(\mathbf{e}_d)_{p}(\mathbf{e}_d^*)_{p'} \\
+&A^k(F_eF_e') = \sqrt{(2F_e+1)(2F_e'+1)}
+\Gj{F_e}{F_e'}{k}{J_e}{J_e}{I} 
+\Gj{1}{1}{k}{J_e}{J_e}{J_i}\\
+&B^k(F_e'F_e) = \sqrt{(2F_e+1)(2F_e'+1)}
+\Gj{F_e'}{F_e}{k}{J_e}{J_e}{I} 
+\Gj{1}{1}{k}{J_e}{J_e}{J_f}.
+\end{align*}
+Eq. \ref{eq:full_I} has all irrelevant quantum number eliminated. All of the excitation and detection polarization characteristics are contained in the terms $E^k_q$ and $U^k_{-q}$. The terms $A^k(F_eF_e')$ and $B^k(F_e'F_e)$ depend on the atomic quantum numbers and are transition-specific. The exponential term represents quantum beats. We will see that not all transition $J_i - J_e - J_f$ will exhibit quantum beats because $A^k(F_eF_e')$ and/or $B^k(F_e'F_e)$ might vanish.
 
 
 \section{Example: Linearly-polarized excitation and detection}
+
+Now we are ready to consider the excitation/detection angle dependence in the experimental geometry given in Figure \ref{fig:scheme1}.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.7]{beats_1}
+	\caption{ Excitation-detection geometry using linear polarizers \cite{Luypaert_1977}.}
+	\label{fig:scheme1}
+\end{figure}
+Let the $z$-axis be defined by the polarization of the detection pulse $\mathbf{e}_d$. The direction of the detection polarization $\mathbf{e}_e$ is defined by the polar angles $\theta$ and $\phi$. Since we're dealing with on linearly polarized light and a linear polarizer, $p = p' = 0$. Thus, the detection-polarization dependent factor $U^k_{-q}$ takes the form
+\begin{equation*}
+U^k_{-q} = \sqrt{2k+1}\tj{1}{1}{k}{0}{0}{0}.
+\end{equation*} 
+We see that $U^k_{-q} = 0$ unless $q = 0$. So, it suffices to find what $E^k_0$ is. 
+
+
+
+
+
+
+
+
 
 
 
@@ -308,6 +387,7 @@ The next step is to calculate $Y(F_e,F_e';k)$ and $Z(F_e, F_e';k)$, again using 
 
 
 
+\newpage
 
 
 
@@ -315,7 +395,25 @@ The next step is to calculate $Y(F_e,F_e';k)$ and $Z(F_e, F_e';k)$, again using 
 
 
 
-\appendix
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{appendices}
+	
+
 
 \section{Quantum Beat Theory in the Density Matrix Formalism \cite{haroche}}\label{app:quantum_beats}
 
@@ -655,7 +753,77 @@ Z(F_e, F_e';k) = \sum_{F_f}(2F_f + 1)(-1)^{2J_e + k + F_e + F_e' + I + J_f + F_f
 \Gj{F_e}{F_f}{1}{1}{k}{F_e'}
 \Gj{I}{F_f}{J_f}{1}{J_e}{F_e}.
 \end{equation*}
-We will perform these calculations based on Example 7 of Chapter VII: Graphical Methods in Angular Momentum in \cite{angular_momentum}. It suffices to just do the $Y$ calculation. The result for $Z$ can be obtained by a simple change of variables.
+We will perform these calculations based on Example 7 of Chapter VII: Graphical Methods in Angular Momentum in \cite{angular_momentum}. It suffices to just do the $Y$ calculation. The result for $Z$ can be obtained by a simple change of variables. To start, we look at Example 7, which says that
+\begin{equation*}
+\sum_{x}(2x+1)(-1)^{a+b+c+d+e+f+g+h+i+x}
+\Gj{e}{f}{x}{b}{a}{i} 
+\Gj{a}{b}{x}{c}{d}{h} 
+\Gj{d}{c}{x}{f}{e}{g} 
+=
+\Gj{g}{h}{i}{a}{e}{d} 
+\Gj{g}{h}{i}{b}{f}{c}.
+\end{equation*}
+We want to do some permutations to the $6j$-symbols in $Y$ so that it matches the expression above. We first recognize that $F_i$ plays the role of $x$. 
+\begin{align*}
+Y(F_e, F_e';k) 
+&= 
+\sum_{F_i}(2F_i + 1)(-1)^{2J_e + k + F_e + F_e' + I + J_i + F_i}
+\Gj{F_e}{1}{F_i}{J_i}{I}{J_e}
+\Gj{I}{J_i}{F_i}{1}{F_e'}{J_e}
+\Gj{F_e'}{1}{F_i}{1}{F_e}{k}\\
+&= 
+\Gj{k}{J_e}{J_e}{I}{F_e}{F_e'} 
+\Gj{k}{J_e}{J_e}{J_i}{1}{1}.
+\end{align*}
+For $Z$, we observe that $F_e$ and $F_e'$ are exchanged, $J_i$ is replaced by $J_f$, and that $F_f$ plays the role of $x$. But since the $6j$-symbol is invariant under permutations of columns, the $F_e - F_e'$ exchange in fact has no effect. So,
+\begin{align*}
+Z(F_e, F_e';k) 
+= 
+\Gj{k}{J_e}{J_e}{I}{F_e'}{F_e} 
+\Gj{k}{J_e}{J_e}{J_f}{1}{1}
+=
+\Gj{k}{J_e}{J_e}{I}{F_e}{F_e'} 
+\Gj{k}{J_e}{J_e}{J_f}{1}{1}.
+\end{align*}
+
+To see how one might do this graphically, we observe that 
+\begin{equation*}
+\sum_{x}(2x+1)(-1)^{a+b+c+d+e+f+g+h+i+x}
+\Gj{e}{f}{x}{b}{a}{i} 
+\Gj{a}{b}{x}{c}{d}{h} 
+\Gj{d}{c}{x}{f}{e}{g} 
+\end{equation*}
+can be written as Figure \ref{fig:transf} \cite{angular_momentum}.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.7]{transformation_1}
+	\caption{}
+	\label{fig:transf}
+\end{figure}
+To obtain this result, we just write out the $6j$-symbols as the ``triangular'' graphs as before. Next, the phase factors will change some of the orientations, which convert from $+$ nodes to $-$ and move the ``inner node'' outside of the triangle, turning it into a square. That's the idea. \textcolor{blue}{I believe that this is good enough of an instruction. The rest is left to the reader.} Next, the graph in Figure \ref{fig:transf} \cite{angular_momentum} can be ``contracted'' into the graph in Figure \ref{fig:transf1}. To go from Figure \ref{fig:transf} to Figure \ref{fig:transf1}, we use the Block-Diagram Theorems and join the 3 graphs into the form in Figure \ref{fig:transf2} \cite{angular_momentum}, which can then be separated on the lines $(ghi)$ to give Figure \ref{fig:transf1}. After some change of orientations at the nodes of Figure \ref{fig:transf1} we get the desired result: 
+\begin{align*}
+\Gj{g}{h}{i}{a}{e}{d} 
+\Gj{g}{h}{i}{b}{f}{c}.
+\end{align*}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.7]{transformation_3}
+	\caption{}
+	\label{fig:transf2}
+\end{figure}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.7]{transformation_2}
+	\caption{}
+	\label{fig:transf1}
+\end{figure}
+
+
+\end{appendices}
+
+
+
+
 
 
 
