@@ -2,9 +2,9 @@
 
 % constants
 N = 4000 ;
-t = linspace(0,400*pi,N);
+t = linspace(0,100*pi,N);
 w0 = 1;
-Omega = w0*0.9;
+Omega = w0*0.1;
 % CW = 1/2;   % unit length
 % CCW = 1/2;  % unit length
 

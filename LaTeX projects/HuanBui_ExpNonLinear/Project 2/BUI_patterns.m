@@ -69,7 +69,7 @@ B = 10.2;
 %%%%%%%%%%%%%%%%%% GRAY-SCOTT PATTERNS &&&&&&&&&&&&&&
 
 % pattern type:
-scaling_factor = 0.25;
+%scaling_factor = 0.25;
 
 % spreading_loops
 % f = 0.04; % feed
@@ -173,12 +173,7 @@ delta = toc;
 function [t, U, V] = initial_conditions(n, A, B)
 t = 0;
 
-% PHOTO
-% I1=imread('C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\HuanBui_ExpNonLinear\Project 2\mccoy.jpg');
-% I2 = imresize(I1,[512 512]); 
-% In=im2double(rgb2gray(I2)); 
-% U = In/100;
-% V = In/100;
+
 
 
 % BRUSSELATOR
@@ -191,6 +186,14 @@ V = B/A + rand(n);
 % V = zeros(n);
 % V(round(n/2)-1:round(n/2)+1 ,round(n/2)-1:round(n/2)+1) = 1;
 % V(round(n/2)-1+6:round(n/2)+1+6, round(n/2)-1+6:round(n/2)+1+6) = 1;
+
+% PHOTO
+%I1=imread('C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\HuanBui_ExpNonLinear\Project 2\mccoy.jpg');
+I1=imread('C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\HuanBui_ExpNonLinear\Project 2\mit1.jpg');
+I2 = imresize(I1,[512 512]); 
+In=im2double(rgb2gray(I2)); 
+U = In/100;
+V = In/100;
 
 
 end
