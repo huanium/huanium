@@ -13,21 +13,21 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-X = -70:1:70;
-Y = -70:1:70;
+X = -100:1:100;
+Y = -100:1:100;
 
 [II,JJ] = meshgrid(X,Y);
 H = zeros(length(II),length(JJ));
 for r = 1:length(II)
    for c = 1:length(JJ)
         H(r,c) = Hxy(II(1,r), JJ(c,1) );
-        disp(['Calculated: ' num2str((r-1)*c + c) ' out of ' num2str(length(II)*length(JJ))]);
+        disp(['Calculated: ' num2str((r-1)*length(JJ) + c) ' out of ' num2str(length(II)*length(JJ))]);
    end
 end
 % add contour underneath
 %h = surfc(II,JJ,H);
 h = surf(II,JJ,H);
-set(h, 'edgealpha',0.2, 'facealpha',0.75)
+set(h, 'edgealpha',0.2, 'FaceAlpha',1)
 xlabel('X', 'FontSize',16);
 ylabel('Y', 'FontSize',16);
 title('Re(H)', 'FontSize', 16 );
@@ -54,10 +54,10 @@ ymin = xmin;
 ymax = xmax;
 t = 1000;
 d=2;
-muE = 1/2+1/4;
+muE = 1/2+1/2;
 % note: the following definitions of "fun" are equivalent under change of vars
-fun = @(x,y) cos( (-II.*x./(t^(1/2)) - JJ.*y./(t^(1/4))) - y.^4/96 + x.*y.^2/96 - x.^2/24);
-%fun = @(x,y) cos( -II.*x - JJ.*y - t*y.^4/96 + t*x.*y.^2/96 - t*x.^2/24);
-Hxy = (t^(-muE)/(2*pi)^d)*integral2(fun, xmin,xmax, ymin, ymax, 'AbsTol',1e-4, 'RelTol',1e-4);
+fun = @(x,y) cos( (-II.*x./(t^(1/2)) - JJ.*y./(t^(1/2))) - y.^2/12 - x.*y./48 - x.^2/12) ...
++ 1i*sin( (-II.*x./(t^(1/2)) - JJ.*y./(t^(1/2))) - y.^2/12 - x.*y./48 - x.^2/12);
+Hxy = abs((t^(-muE)/(2*pi)^d)*integral2(fun, xmin,xmax, ymin, ymax, 'AbsTol',1e-4, 'RelTol',1e-4));
 end
 

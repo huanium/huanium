@@ -33,8 +33,7 @@ zv = linspace(minz, maxz, N);
 D = f(X, Y, Z);
 p3 = patch(isosurface(X, Y, Z, D, 1));
 set(p3, 'FaceAlpha',.0, 'EdgeAlpha',.15)
-
-
+axis equal
 
 
 %%% DRAW F
@@ -51,7 +50,7 @@ p2 = patch(isosurface(X, Y, Z, D, 1));
 set(p2,'FaceColor','b', 'FaceAlpha',1, 'EdgeAlpha',.0);
 
 %%% DRAW smaller Fs
-for t = 0.000:0.00001:0.0002
+for t = 0.000:0.00001:0.001
     x = p2.XData;
     y = p2.YData;
     z = p2.ZData;
@@ -64,7 +63,7 @@ for t = 0.000:0.00001:0.0002
     surf(x,y,z, 'Marker', '.', 'MarkerEdgeColor','r', 'MarkerSize',0.25, 'FaceAlpha', 0, 'EdgeAlpha', 0);
     %set(p2, 'Marker','.' , 'FaceColor','r', 'FaceAlpha',.0, 'EdgeAlpha',.0);
 end
-for t = 0.000:0.0004:0.05
+for t = 0.000:0.0002:0.07
     x = p2.XData;
     y = p2.YData;
     z = p2.ZData;
@@ -77,7 +76,7 @@ for t = 0.000:0.0004:0.05
     surf(x,y,z, 'Marker', '.', 'MarkerEdgeColor','r', 'MarkerSize',0.25, 'FaceAlpha', 0, 'EdgeAlpha', 0);
     %set(p2, 'Marker','.' , 'FaceColor','r', 'FaceAlpha',.0, 'EdgeAlpha',.0);
 end
-for t = 0.001:0.0025:0.95
+for t = 0.001:0.0010:0.95
     x = p2.XData;
     y = p2.YData;
     z = p2.ZData;
@@ -112,7 +111,7 @@ t = linspace(0,1,N) ;
 x = 0.5.*t.^(1/2);
 y = 0.5.*t.^(1/4) ;
 z = 0.8612.*t.^(1/4);
-plot3(x,y,z, '-', 'Color','k', 'LineWidth',1.5)
+plot3(x,y,z, '-', 'Color','k', 'LineWidth',2)
 
 % draw second line
 N = 1000 ;
@@ -120,7 +119,7 @@ t = linspace(0,1,N) ;
 x = -0.5.*t.^(1/2);
 y = 0.5.*t.^(1/4) ;
 z = 0.9494.*t.^(1/4);
-plot3(x,y,z, '-', 'Color','k', 'LineWidth',1.5)
+plot3(x,y,z, '-', 'Color','k', 'LineWidth',2)
 
 % draw third line
 N = 1000 ;
@@ -128,7 +127,7 @@ t = linspace(0,1,N) ;
 x = -0.5.*t.^(1/2);
 y = -0.5.*t.^(1/4) ;
 z = 0.9494.*t.^(1/4);
-plot3(x,y,z, '-', 'Color','k', 'LineWidth',1.5)
+plot3(x,y,z, '-', 'Color','k', 'LineWidth',2)
 
 % draw fourth line
 N = 1000 ;
@@ -136,13 +135,13 @@ t = linspace(0,1,N) ;
 x = 0.5.*t.^(1/2);
 y = -0.5.*t.^(1/4) ;
 z = 0.8659.*t.^(1/4);
-plot3(x,y,z, '-', 'Color','k', 'LineWidth',1.5)
+plot3(x,y,z, '-', 'Color','k', 'LineWidth',2)
 
 
 %%% annotate
-text(-0.5,-0.25, 1.5,'$$F$$','FontSize',22, 'Interpreter','latex')
+text(-0.5,0, 1.5,'$$F$$','FontSize',22, 'Interpreter','latex')
 text(-1.25,0, 0.5, '$$S$$','FontSize',22, 'Interpreter','latex')
-text(-0.4,-0.8, 0.9, '$$\tilde{F} $$','FontSize',22, 'Interpreter','latex')
+text(-0.5,-0.8, 0.9, '$$\tilde{F} $$','FontSize',22, 'Interpreter','latex')
 text(-.05,-.05, -0.05, '$$ O $$','FontSize',22, 'Interpreter','latex')
 
 A = [-1.5,1,-1];

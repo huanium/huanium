@@ -1,4 +1,5 @@
 clear all 
+close all
 
 %%%%  DRAW S
 x = -5:0.01:5;
@@ -26,7 +27,7 @@ for t = 0.00001:0.0001:0.02
     zlevs = zmin:zinc:zmax;
     [X,Y] = meshgrid(x,y);
     Z = X.^2 + (3/2).*X.*Y.^2 + Y.^4;
-    contour(X,Y,Z, zlevs, 'Color','red', 'LineWidth',2)
+    contour(X,Y,Z, zlevs, 'Color',[0.6,0.8,1], 'LineWidth',2)
 end
 for t = 0.0005:0.005:1
     x = 0.25*t^(1/2):0.005:0.75*t^(1/2);
@@ -37,7 +38,7 @@ for t = 0.0005:0.005:1
     zlevs = zmin:zinc:zmax;
     [X,Y] = meshgrid(x,y);
     Z = X.^2 + (3/2).*X.*Y.^2 + Y.^4;
-    contour(X,Y,Z, zlevs, 'Color','red', 'LineWidth',2)
+    contour(X,Y,Z, zlevs, 'Color',[0.6,0.8,1]', 'LineWidth',2)
 end
 
 %%%%  DRAW F

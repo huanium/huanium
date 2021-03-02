@@ -49,14 +49,14 @@ def fast_convolve(n_times, support_bound, drift):
     #Phi = Phi/(22+2*np.sqrt(3))
     #Phi = Phi/(np.sqrt(2+np.sqrt(2)))
 
-    
+    '''
     # for the first and second examples
     Phi = np.zeros(shape=(9,9),dtype=np.complex_)
-    
     '''
+    
     # for the third example
     Phi = np.zeros(shape=(17,17),dtype=np.complex_)
-    '''
+    
     
     # Note: Phi[y][x]
 
@@ -78,7 +78,7 @@ def fast_convolve(n_times, support_bound, drift):
 
     '''
 
-    
+    '''
     # first example with cross term, E = diag(1/2,1/4)
     # new Phi, with cross terms, oscillatory
     # mono terms 
@@ -102,12 +102,12 @@ def fast_convolve(n_times, support_bound, drift):
     Phi[ 1+9//2][ 1+9//2]  = -1/192
     Phi[-1+9//2][ 1+9//2]  = -1/192
     
-
-
-
-
-
     '''
+
+
+
+
+
     # Note: Phi[y][x]
 
     # second example with cross term, E = diag(1/2,1/8)
@@ -145,8 +145,6 @@ def fast_convolve(n_times, support_bound, drift):
     Phi[ 2+17//2][ 1+17//2]  = -1/384
     
 
-
-    '''
 
     '''
     # Note: Phi[y][x]
