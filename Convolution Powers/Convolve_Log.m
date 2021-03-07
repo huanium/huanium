@@ -25,9 +25,10 @@ support_bound = 1000;
 sup = [];
 points = 14; % how many data points? ==> goes to 2^points convolutions 
 steps = 2:1:points; % start with Phi^(0) = Phi, end at Phi^(2^points-1)
-%muP = 1/2+1/4;
-muP = 1/2 + 1/8;
-%muP = 1/2 + 1/2;
+% muP = 1/2+1/4;
+% muP = 1/2 + 1/8;
+% muP = 1/2 + 1/2;
+muP = 1/2 + 1/6;
 % initialize Phi^(2)
 conv = fast_convolve(1, support_bound); % create Phi^(1) = Phi*Phi
 M = max(abs(conv) , [], 'all'); % find max;
@@ -49,10 +50,10 @@ p1 = plot(log2(n),log2(sup), '-o', 'color','blue', 'LineWidth', 1) % plot log in
 xlabel('log_2(n)', 'FontSize',16);
 ylabel('', 'FontSize', 16 );
 hold on 
-nY = n.^(-muP);
-p2 = plot(log2(n), log2(nY), 'LineWidth', 2)  % plot log instead
+nY = 1.1*n.^(-muP);
+p2 = plot(log2(n), log2(nY), 'LineWidth', 2, 'Color', 'red')  % plot log instead
 hold off
-legend('f(n) = log_2(max_{K}|\phi^{(n)}|)','log_2(n^{-\mu_\phi}) = log_2(n^{-5/8})', 'FontSize',14);
+legend('log_2 f(n)', 'log_2(2n^{-2/3})', 'FontSize',14);
 
 
 
@@ -111,44 +112,6 @@ function conv_power = fast_convolve(n_times, support_bound)
 % Phi( -1+shift, 1+shift)  = -(1/192)*1i;  
 % Phi( 1+shift, 1+shift)  = (1/192)*1i;  
 
-% EXAMPLE 3 in the paper
-Phi = zeros(17,17);
-shift = floor(17/2)+1;
-% second example with cross term, E = diag(1/2,1/8)
-% mono terms
-Phi( 0+shift, 0+shift)  = complex(26527/32768,-43/192);
-Phi( -1+shift,0+shift)  = complex(253/3072,1/48);
-Phi( 1+shift, 0+shift)  = complex(259/3072,1/48);
-Phi( 2+shift,shift)  = -1/48;
-Phi( -2+shift,shift)  = -1/48;
-Phi( shift, -1 + shift)  = complex(715/12288,7/48);
-Phi( shift, +1 + shift)  = complex(715/12288,7/48);
-Phi(shift, -2+shift)  = -complex(1001/24576,7/96);
-Phi(shift,  2+shift)  = -complex(1001/24576,7/96);
-Phi( 0+shift, -3+shift)  = complex(91/4096,1/48);
-Phi( 0+shift, 3+shift)  = complex(91/4096,1/48);
-Phi( shift,  4+shift)  = -complex(455/49152,1/384);
-Phi( shift, -4+shift)  = -complex(455/49152,1/384);
-Phi( 0+shift, 5+shift)  = 35/12288;
-Phi(-0+shift, -5+shift)  = 35/12288;
-Phi( 0+shift, 6+shift)  = -5/8192;
-Phi(-0+shift, -6+shift)  = -5/8192;
-Phi( 0+shift, 7+shift)  = 1/12288;
-Phi(-0+shift, -7+shift)  = 1/12288;
-Phi( 0+shift, 8+shift)  = -1/196608;
-Phi(-0+shift, -8+shift)  = -1/196608;
-
-% cross terms
-Phi(-1 +shift, -2+shift)  = 1/1536;
-Phi( 1 +shift, -2+shift)  = -1/1536;
-Phi(-1 +shift, +2+shift)  = 1/1536;
-Phi( 1 +shift, +2+shift)  = -1/1536;
-Phi(-1 +shift, -4+shift)  = -1/6144;
-Phi( 1 +shift, -4+shift)  = 1/6144;
-Phi(-1 +shift, +4+shift)  = -1/6144;
-Phi( 1 +shift, +4+shift)  = 1/6144;
-
-
 
 % %%%%% EXAMPLE 1 in PAPER %%%%%%%%%%%
 % Phi = zeros(9,9);
@@ -195,6 +158,74 @@ Phi( 1 +shift, +4+shift)  = 1/6144;
 % Phi(-1+shift, 1+shift)  =  1/192;
 % Phi( 1+shift, 1+shift)  = -1/192;
 % Phi( 1+shift,-1+shift)  = -1/192;
+
+% % EXAMPLE 3 in the paper
+% Phi = zeros(17,17);
+% shift = floor(17/2)+1;
+% % E = diag(1/2,1/8)
+% % mono terms
+% Phi( 0+shift, 0+shift)  = complex(26527/32768,-43/192);
+% Phi( -1+shift,0+shift)  = complex(253/3072,1/48);
+% Phi( 1+shift, 0+shift)  = complex(259/3072,1/48);
+% Phi( 2+shift,shift)  = -1/48;
+% Phi( -2+shift,shift)  = -1/48;
+% Phi( shift, -1 + shift)  = complex(715/12288,7/48);
+% Phi( shift, +1 + shift)  = complex(715/12288,7/48);
+% Phi(shift, -2+shift)  = -complex(1001/24576,7/96);
+% Phi(shift,  2+shift)  = -complex(1001/24576,7/96);
+% Phi( 0+shift, -3+shift)  = complex(91/4096,1/48);
+% Phi( 0+shift, 3+shift)  = complex(91/4096,1/48);
+% Phi( shift,  4+shift)  = -complex(455/49152,1/384);
+% Phi( shift, -4+shift)  = -complex(455/49152,1/384);
+% Phi( 0+shift, 5+shift)  = 35/12288;
+% Phi(-0+shift, -5+shift)  = 35/12288;
+% Phi( 0+shift, 6+shift)  = -5/8192;
+% Phi(-0+shift, -6+shift)  = -5/8192;
+% Phi( 0+shift, 7+shift)  = 1/12288;
+% Phi(-0+shift, -7+shift)  = 1/12288;
+% Phi( 0+shift, 8+shift)  = -1/196608;
+% Phi(-0+shift, -8+shift)  = -1/196608;
+% 
+% % cross terms
+% Phi(-1 +shift, -2+shift)  = 1/1536;
+% Phi( 1 +shift, -2+shift)  = -1/1536;
+% Phi(-1 +shift, +2+shift)  = 1/1536;
+% Phi( 1 +shift, +2+shift)  = -1/1536;
+% Phi(-1 +shift, -4+shift)  = -1/6144;
+% Phi( 1 +shift, -4+shift)  = 1/6144;
+% Phi(-1 +shift, +4+shift)  = -1/6144;
+% Phi( 1 +shift, +4+shift)  = 1/6144;
+
+
+
+
+% NEW EXAMPLE! in the paper
+Phi = zeros(21,21);
+shift = floor(21/2)+1;
+% interesting example where \Omega = {(0,0), (pi,pi)} (see paper)
+Phi(  0+shift, 0+shift)  = 346751/524288 - 341i/1024;
+Phi( -1+shift, 0+shift)  = 15/128 + 15i/128;
+Phi(  1+shift, 0+shift)  = 15/128 + 15i/128;
+Phi( -2+shift, 0+shift)  = -53361/1048576 - 19i/256;
+Phi(  2+shift, 0+shift)  = -53361/1048576 - 19i/256;
+Phi( -3+shift, 0+shift)  = 1/128 + 1i/128;
+Phi(  3+shift, 0+shift)  = 1/128 + 1i/128;
+Phi( -4+shift, 0+shift)  = 495/262144 + 7i/512;
+Phi(  4+shift, 0+shift)  = 495/262144 + 7i/512;
+Phi( -6+shift, 0+shift)  = -1045/2097152 - 1i/256;
+Phi(  6+shift, 0+shift)  = -1045/2097152 - 1i/256;
+Phi( -8+shift, 0+shift)  = 69/1048576 + 1i/2048;
+Phi(  8+shift, 0+shift)  = 69/1048576 + 1i/2048;
+Phi(-10+shift, 0+shift)  = -9/2097152;
+Phi( 10+shift, 0+shift)  = -9/2097152;
+Phi(  0+shift, 1+shift)  = 1/8 + 1i/8;
+Phi(  0+shift,-1+shift)  = 1/8 + 1i/8;
+Phi(  0+shift, 2+shift)  = -1/32 - 15i/512;
+Phi(  0+shift,-2+shift)  = -1/32 - 15i/512;
+Phi(  0+shift, 4+shift)  = 3i/256;
+Phi(  0+shift,-4+shift)  = 3i/256;
+Phi(  0+shift, 6+shift)  = -1i/512;
+Phi(  0+shift,-6+shift)  = -1i/512;
 
 conv_power = Phi;
 
