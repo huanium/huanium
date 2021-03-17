@@ -1,0 +1,390 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{cancel}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\usepackage{newpxtext,newpxmath}
+\usepackage[left=1.25in,right=1.25in,top=1.25in,bottom=1.25in]{geometry}
+\usepackage{framed}
+\usepackage{enumerate}
+\usepackage{eqnarray}
+\usepackage{caption}
+\usepackage{subcaption}
+
+%\newcommand{\fig}[1]{figure #1}
+%\newcommand{\explain}{appendix?}
+%\newcommand{\rat}{\mathbb{Q}}
+%
+%\newcommand{\mathbb{R}}{\mathbb{R}}
+%\newcommand{\nat}{\mathbb{N}}
+%\newcommand{\inte}{\mathbb{Z}}
+%\newcommand{\M}{{\cal{M}}}
+%\newcommand{\sss}{{\cal{S}}}
+%\newcommand{\rrr}{{\cal{R}}}
+%\newcommand{\uu}{2pt}
+%\newcommand{\vv}{\vec{v}}
+%\newcommand{\comp}{\mathbb{C}}
+%\newcommand{\field}{\mathbb{F}}
+%\newcommand{\f}[1]{ \hspace{.1in} (#1) }
+%\newcommand{\set}[2]{\mbox{$\left\{ \left. #1 \hspace{3pt}
+%\right| #2 \hspace{3pt} \right\}$}}
+%\newcommand{\integral}[2]{\int_{#1}^{#2}}
+%\newcommand{\ba}{\hookrightarrow}
+%\newcommand{\ep}{\varepsilon}
+%\newcommand{\limit}{\operatornamewithlimits{limit}}
+%\newcommand{\ddd}{.1in}
+%\newcommand{\ccc}{2in}
+%\newcommand{\aaa}{1.5in}
+%\newcommand{\B}{{\cal B}}
+%\newcommand{\C}{{\cal C}}
+%\newcommand{\D}{{\cal D}}
+%\newcommand{\FF}{{\cal F}}
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\p}{\partial}%
+%\usepackage{MnSymbol,wasysym}
+
+\begin{document}
+	\begin{framed}
+\begin{center}
+{\large \bf MA355: Combinators Midterm 1 (Prof. Friedmann)}\\
+{ Huan Q. Bui}\\
+Due: Mar 19 2021
+\end{center}
+\end{framed}
+
+\noindent \textbf{1.} (25 pts) 
+\begin{enumerate}[(a)]
+	\item An instructor has 13 students in her combinatorics class and wants to divide them
+	into four groups with at least three students in each group. How many ways are
+	there to do that? What if the instructor also picks a spokesperson for each group?
+	
+	\textbf{Answer:} The setup requires that there must be 3 groups of three and 1 group of four students. The assignment procedure can be described as follows. Choose 4 out of 13 students for the first group, 3 out of the remaining 9 students for the second, 3 out of the remaining 6 students for the third group, and the rest go to the fourth group. Finally, permute the four groups. The total is thus
+	\begin{equation*}
+	\boxed{\Omega_{13} = \f{1}{4!}\binom{13}{4}\binom{9}{3}\binom{6}{3}}
+	\end{equation*}
+	Of course, we don't have to first select 4 students. We can check\footnote{using a calculator or explicitly with pen and paper} that the same total is obtained by selecting the group of 4 second or last:
+	\begin{equation*}
+	\Omega_{13} = \f{1}{4!}\binom{13}{3}\binom{10}{4}\binom{6}{3} = \f{1}{4!}\binom{13}{3}\binom{10}{3}\binom{7}{4}.
+	\end{equation*}
+	
+	
+	There are $i$ ways to pick a spokesperson for a group with $i$ members, so
+	\begin{equation*}
+	\boxed{\Omega_\text{13 + pick spokesperson for each group} = \Omega_{13} \times 4\times 3 \times 3 \times 3 = \Omega_{13} \times 4\times 3^3}
+	\end{equation*} 
+	
+	
+	\item Five weeks after the beginning of the semester and right after the first midterm,
+	the instructor divides the students into a new set of four groups, again with at least
+	three students in each group. The instructor would like the new groups to be such
+	that no two students who previously were in the same group are again in the same
+	group. How many ways are there to do that?
+
+	
+	
+	\textbf{Answer:} Assume some group configuration was set for the first five weeks of the semester, say, Groups 1 to 4 where Group 4 has four students. In order to rearrange the groups as required, Group 4 must be completely separated into the four new groups. Thus, let each of these four students start a new group. This leaves us with 9 students. The procedure to send these students to new groups is as follows:
+	\begin{itemize}
+		\item Separate Group 3 into three of the four new groups ($4\times 3!$ ways).
+		
+		\item Send one student of Group 2 and one student from Group 1 into the new group that doesn't have anyone from Group 3 ($3\times 3$ ways). 
+		
+		\item Send the remaining students of Group 2 into the three new groups that don't have any from Groups 1 and 2 ($3\times 2!$ ways).
+		
+		\item Now, there is one new group with two students (the rest have three each). Send one student from the remaining two of Group 1 into this new group ($2$ ways). 
+		
+		\item The pigeon hole principle guarantees that there are still two of the new groups that don't have anyone from Group 1. This means there are 2 ways to send the last student of Group 1. 
+	\end{itemize}
+	We note that the order in which we did things (subsequently filling the new groups with students from Group 3, then 2 and 1) should not matter since the order of membership does not matter. Therefore, there is no extra symmetry factor\footnote{A more explicitly way to do this part is to consider 3 group choices for the first step, then 2 group choices for the second step, and divide the final answer by $3!$, which gives us the same answer. The reason is that the group labels are arbitrary and membership doesn't care about the order of admission.}, and the grand total is: 
+	\begin{equation*}
+	4\times 3! \times 3\times 3 \times 3\times 2! \times 2 \times 2 = \boxed{5184}
+	\end{equation*}	
+	
+	\item Answer all the above questions again, but for 12 students instead of 13.
+	
+	\textbf{Answer:} Following a similar argument (picking 3 students for each subsequent group then permute), we find that
+	\begin{equation*}
+	\boxed{\Omega_{12} = \f{1}{4!}\binom{12}{3}\binom{9}{3}\binom{6}{3}}
+	\end{equation*}
+	and 
+	\begin{equation*}
+	\boxed{\Omega_\text{12 and pick spokesperson for each group} = \Omega_{12} \times 3\times 3 \times 3 \times 3 = \Omega_{12}\times 3^4}
+	\end{equation*} 
+	Now, for the second part. Assume some group configuration was set for the first five weeks of the semester. The procedure to send these students to new groups is as follows:
+	\begin{itemize}
+		\item Choose a group (of three) and select one student from the remaining 9 to start four new groups ($4\times9$ ways). 
+		\item Call the group selected in the previous step Group 1 and the group from which the student was selected Group 2. Send the remaining two students in Group 2 into two of the three available new groups --  which are those with students from Group 1 ($3\times 2!$ ways). 
+		\item Call the two remaining original groups Groups 3 and 4 ($2$ ways to do this). Pick two students from Group 3 and send them to the two new groups where each currently has only one student ($2\times 3\times 2!$ ways).		
+		\item Pick two students from Group 3 and send them to same two new groups from the previous item ($3\times 2!$ ways).
+		\item Send the remaining two students into the remaining two new groups ($2!$ ways).
+	\end{itemize}
+	In this problem, we took a more careful approach where we have methodically considered the number of ways each subsequent original group can be picked. As a result, we have to divide everything by $1/4!$ to account for the fact that membership doesn't care about which group gets separated first: 
+	\begin{equation*}
+	\f{1}{4!}\left( 4\times 9\times 3\times 2! \times 2\times  3\times 2! \times 3\times 2!\times 2! \right) = \boxed{1296}
+	\end{equation*}
+\end{enumerate} 
+
+
+
+
+
+\newpage
+
+
+\noindent \textbf{2.} (25 pts)
+\begin{enumerate}[(a)]
+	\item Let $(a_i, b_i, c_i)$ for $1 \leq i \leq 9$ be nine vectors in $\mathbb{R}^3$ with integer coordinates. Show that two of these vectors have a sum whose coordinates are all even integers.
+	
+	\textbf{Answer:} Let us assign to each vector $v_i = (a_i,b_i,c_i)$ a corresponding \textit{configuration vector} defined by 
+	\begin{equation*}
+	C(v_i) = C((a_i,b_i,c_i)) = (a_i \text{ mod } 2, b_i \text{ mod } 2, c_i \text{ mod } 2).
+	\end{equation*} 
+	Because $(m+n) \text{ mod } 2 \equiv m \text{ mod }2 + n \text{ mod }2$ for all $m,n\in \mathbb{Z}$, it is easy to see that $v_i + v_j$ has only even integer coordinates (i.e., $C(v_i+v_j) \equiv (0,0,0)$) exactly when $C(v_i) = C(v_j)$.
+	
+	Since each of $a_i,b_i,c_i$ can only be even or odd, $C(v_i)$ can only be one of $2^3 = 8$ possible values for every $v_i$. Thus, by virtue of the pigeon hole principle, given 9 $v_i$'s, there must be at least two vectors $v_m,v_n$ ($m\neq n$) for which $C(v_m) = C(v_n)$. From the preceding paragraph, $v_n + v_m$ has only even integer values, and Part (a) is proved. 
+	
+	
+	\item Show that this result is best possible, i.e. the conclusion may fail if we have only eight vectors. 
+	
+	\textit{Answer:} Consider the following eight vectors $(a_i,b_i,c_i)^\top$ concatenated into a matrix:
+	\begin{equation*}
+	\begin{pmatrix}
+	a_1 & a_2 & \dots & a_8\\
+	b_1 & b_2 & \dots & b_8\\
+	c_1 & c_2 & \dots & c_8\\
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	0&0&0&0&1&1&1&1\\
+	0&0&1&1&0&0&1&1\\
+	0&1&0&1&0&1&0&1
+	\end{pmatrix}
+	\end{equation*}
+	The conclusion from Part (a) fails here: The sum of any two vectors contains at least one instance of the entry $0+1=1$, which is an odd integer.
+\end{enumerate}
+
+
+
+\newpage
+
+
+
+\noindent \textbf{3.} (25 pts) Chess is a game played on an 8 $\times$ 8 board with alternating light and dark squares. The rows of the board are called ``ranks'' and are numbered 1 through 8. There are two players, white and black, and each player has a set of 16 pieces: 8 pawns, 2 rooks, 2 bishops, 2 knights, 1 queen, and 1 king. Count the number of possible starting positions for this game given the following constraints:
+
+\begin{enumerate}[(a)]
+	\item All the white pieces are placed in the first and second ranks, and all the black pieces
+	are placed in the seventh and eighth ranks.
+
+	
+	\item The black starting position is a mirror image of the white starting position.
+
+	\item All the white pawns are placed in the second rank.
+	
+	\item The white king is placed on any square between the two white rooks (not necessarily
+	adjacent to either of them).
+	
+	\item The white bishops are placed on opposite-color squares.
+
+\end{enumerate}
+
+\noindent \textbf{Answer:} By (a), we don't have to worry about possible symmetry factors due to the placement of the white and dark pieces relative to the orientation of the chessboard\footnote{Unless the orientation of the board is not defined (i.e., the chessboard has only the alternating squares). In this case, there is a factor of $2$: the ``first rank'' can begin with black-white alternating squares or white-black.}. By (b), it suffices to just arrange the white pieces. By (c), we don't have to worry about arranging the pawns. By (d) and (e), we don't to worry about arranging the 2 white knights and 1 white queen either (we will arrange them at the end). This leaves us with 5 pieces: 1 white king, 2 white rooks, and 2 white bishops (all in the first rank). Let the first rank be represented by the following eight slots, numbered 1 to 8. Without missing/gaining a symmetry factor, assume a black-white pattern: 
+\begin{equation*}
+\underline{\texttt{1b}}\,
+\underline{\texttt{2w}}\,
+\underline{\texttt{3b}}\,
+\underline{\texttt{4w}}\,
+\underline{\texttt{5b}}\,
+\underline{\texttt{6w}}\,
+\underline{\texttt{7b}}\,
+\underline{\texttt{8w}}
+\end{equation*}
+By (d), the white king can only be in slots (2) through (7). By a two-fold symmetry, we will only consider the following three possible positions for the white king: (2), (3), and (4). 
+\begin{itemize}
+	\item The white king is on (2). In this case, one white rook must be on (1) to keep (d) true.
+	\begin{equation*}
+	\underline{\texttt{\textcolor{red}{R}}}\,
+	\underline{\texttt{\textcolor{red}{K}}}\,
+	\underline{\texttt{3b}}\,
+	\underline{\texttt{4w}}\,
+	\underline{\texttt{5b}}\,
+	\underline{\texttt{6w}}\,
+	\underline{\texttt{7b}}\,
+	\underline{\texttt{8w}}
+	\end{equation*}
+	The other white rook has 6 options. Once this rook is placed, the color ratio is two black to three white slots (or vice versa -- it doesn't matter), which gives $2\times 3 = 6$ arrangements for the white bishops. Without placing the white queen and white knights, we have $6\times 6 =  \boxed{36}$ configurations. 
+	
+	
+	\item The white king is on (3). There are two sub-cases:
+	\begin{itemize}
+		\item If one white rook is on (1):
+		\begin{equation*}
+		\underline{\texttt{\textcolor{red}{R}}}\,
+		\underline{\texttt{2w}}\,
+		\underline{\texttt{\textcolor{red}{K}}}\,
+		\underline{\texttt{4w}}\,
+		\underline{\texttt{5b}}\,
+		\underline{\texttt{6w}}\,
+		\underline{\texttt{7b}}\,
+		\underline{\texttt{8w}}
+		\end{equation*}
+		then there are two sub-sub-cases for the other white rook:
+		\begin{itemize}
+			\item If it is on (4), (6), or (8), then the color ratio is two black to three white slots, which gives $2\times 3 = 6$ arrangements for the white bishops.
+			
+			\item If it is on (5) or (7), then one white bishop must go into the remaining black slot, and the other white bishop has 4 (white) options. 
+		\end{itemize}
+		In summary, there are $3\times6+2\times4= 26$ arrangements in this first sub-case.
+		
+		\item Or if one white rook is on (2):
+		\begin{equation*}
+		\underline{\texttt{1b}}\,
+		\underline{\texttt{\textcolor{red}{R}}}\,
+		\underline{\texttt{\textcolor{red}{K}}}\,
+		\underline{\texttt{4w}}\,
+		\underline{\texttt{5b}}\,
+		\underline{\texttt{6w}}\,
+		\underline{\texttt{7b}}\,
+		\underline{\texttt{8w}}
+		\end{equation*}
+		then there are two sub-sub-cases for the other white rook. A nearly identical argument again gives a total of 26 possible arrangements. 
+	\end{itemize}
+	Therefore, without placing the queen and knights, there are $26+26 = \boxed{52}$ configurations if the white king is on (3).
+	
+	
+	\item The white king is on (4).  There are three sub-cases:
+	\begin{itemize}
+		\item If one white rook is on (1):
+		\begin{equation*}
+		\underline{\texttt{\textcolor{red}{R}}}\,
+		\underline{\texttt{2w}}\,
+		\underline{\texttt{3b}}\,
+		\underline{\texttt{\textcolor{red}{K}}}\,
+		\underline{\texttt{5b}}\,
+		\underline{\texttt{6w}}\,
+		\underline{\texttt{7b}}\,
+		\underline{\texttt{8w}}
+		\end{equation*}
+		
+		
+		\item Or if one white rook is on (2):
+		\begin{equation*}
+		\underline{\texttt{1b}}\,
+		\underline{\texttt{\textcolor{red}{R}}}\,
+		\underline{\texttt{3b}}\,
+		\underline{\texttt{\textcolor{red}{K}}}\,
+		\underline{\texttt{5b}}\,
+		\underline{\texttt{6w}}\,
+		\underline{\texttt{7b}}\,
+		\underline{\texttt{8w}}
+		\end{equation*}
+		
+		
+		\item Or if one white rook is on (3):
+		\begin{equation*}
+		\underline{\texttt{1b}}\,
+		\underline{\texttt{2w}}\,
+		\underline{\texttt{\textcolor{red}{R}}}\,
+		\underline{\texttt{\textcolor{red}{K}}}\,
+		\underline{\texttt{5b}}\,
+		\underline{\texttt{6w}}\,
+		\underline{\texttt{7b}}\,
+		\underline{\texttt{8w}}
+		\end{equation*}
+	\end{itemize}
+	The other white rook must be on either (5), (6), (7), or (8). In the first and third sub-cases, the color ratio after placing the second white rook is two black to three white slots or vice versa, and as a result there are $2\times 3 = 6$ ways to place the two white bishops. In the second sub-case, if the second white rook is on (5) or (7), then as before, there are 6 ways to place the bishops; else, there are only four ways to place the bishops. In total, when the white king is on (4), there are $(4\times 6) + (2\times6 + 2\times4) + (4\times 6) = \boxed{68}$ possible configurations (without placing the queen and knights).
+\end{itemize}
+
+
+In the remaining 3 slots, there are 3 ways to place the queen and two white knights. So, the grand total is:
+\begin{equation*}
+2 \times 3\times(36+52+68) = \boxed{936}
+\end{equation*}
+where the extra factor of 2 is due to the fact that we considered only half the possible slots for the white king (the other half is exactly the same, by symmetry).
+
+\newpage
+
+
+
+
+\noindent \textbf{4.} (25 pts) 
+\begin{enumerate}[(a)]
+	\item A circle of 17 friends has the property that no matter how we choose two from
+	these 17 friends, those two people correspond with each other on one of three given
+	subjects. Prove that there are three friends among the circle of these 17 friends
+	such that any two of the three of them correspond with each other on the same
+	subject.
+
+	
+	\textbf{Answer:} We pick out one friend $X$ from the group. The remaining 16 can be partitioned into Group 1, Group 2, and Group 3, where Group $i$ contains those who correspond with $X$ on Subject \#$i$. Let us consider Group 1:
+	\begin{itemize}
+		\item If there is one pair in this group who also correspond with each other on \#1, then together with $X$ they form a group of three who all correspond on \#1.
+		
+		\item Otherwise, all members of Group 1 correspond with each other only on \#2 and \#3. There are two sub-cases:
+		\begin{itemize}
+			\item There is a group of three who correspond on \#2 or \#3 (and we're done)
+ 			\item Or, there is no such group of three. Now, according to the 2-color version of the Ramsey problems we did in class (specifically 65 and 66), this holds only if Group 1 has at most 5 friends.\footnote{Reminder: If Group 1 has 6 friends who correspond only on Subjects \#2 and \#3, then we're guaranteed a group of at least three who correspond on either Subject \#2 or \#3, by Problems 65 and 66.} 
+		\end{itemize}
+	\end{itemize}
+	As a result of symmetry, we see that Group 2 and Group 3 must also have at most 5 friends to avoid a group of three who correspond on the same subject. Thus, the total size of the friend circle must be at most 
+	\begin{equation*}
+	\abs{X} + \max\abs{\text{Group 1} } + \max\abs{\text{Group 2} } + \max\abs{\text{Group 3} } = 1+5+5+5=16
+	\end{equation*}
+	in order to avoid such a group of three. Thus, with 17 friends, this is not possible.  
+	
+	
+	
+	\textit{Remark:} We recognize that this problem is a 3-color version of the (2-color) Ramsey problems in our textbook. Here, the setup of the problem translates to ``given a 3-color $K_{17}$.'' Accordingly, our goal translates to showing that there always exists a monochromatic $K_3$. This translation is useful for Part (b).
+	
+	\item Let
+	\begin{equation*}
+	n_k = k! \left( 1 + \f{1}{1!}  + \f{1}{2!} + \dots \f{1}{k!} \right) + 1.
+	\end{equation*}
+	We color all edges of $K_{n_k}$ with one of $k$ colors. Prove that there will be a triangle with monochromatic edges (i.e., edges of a single color).
+	
+	\textbf{Answer:} We prove this result by induction on $k$. For $k=1$, $n_k = n_1 = 3$, and the statement holds (trivially) because we have a monochromatic ($k=1$) triangle ($n=3$). Just for assurance, we can consider $k=2$, which gives $n_k = n_2 = 6$. The statement is true by virtue of Problems 65 and 66 in our textbook.  With these, we now assume that the statement holds up to $k$ where $k\geq 1$. We will show that it still holds for $k+1$. 
+	
+	To this end, we follow our argument in Part (a). After picking out one vertex $X$ in $K_{n_{k+1}}$, we partition the remaining $(n_{k+1}-1)$ vertices into $(k+1)$ groups\footnote{Note: $n_k$ is always bigger than the number of partition blocks $k$ just in case the reader is concerned by the possibility of having empty blocks due to having too few vertices.}, where again Group $i$ contains all vertices connected to $X$ by an edge of Color \#$i$. Consider Group 1:
+	\begin{itemize}
+		\item If there are two vertices in Group 1 that are connected by an edge of Color \#1, then together with $X$ they form a $K_3$ of Color \#1.
+		
+		\item Otherwise, all vertices in Group 1 are connected only by edges of $k$ other colors. There are two sub-cases:
+		\begin{itemize}
+			\item There is a monochromatic $K_3$ (and we're done)
+			\item Or, there is no monochromatic $K_3$. According to our $k$-color inductive hypothesis, this holds only if Group 1 has at most $(n_k-1)$ vertices.\footnote{Otherwise, there is a monochromatic $K_3$.}
+		\end{itemize}
+	\end{itemize}
+	By symmetry, we see that to avoid a monochromatic $K_3$ in $K_{n_{k+1}}$, the total number of vertices must be at most:
+	\begin{align*}
+	\underbrace{1}_{|X|}+ \underbrace{(k+1)}_{\text{\# of groups}} \times \underbrace{(n_k-1)}_{\text{max size per group}} 
+	&= 1 + (k+1) \times  k! \left(1 + \f{1}{1!} + \f{1}{2!} + \dots + \f{1}{k!} \right)\\
+	&= 1 + (k+1)!\left(1 + \f{1}{1!} + \f{1}{2!} + \dots + \f{1}{k!} \right).
+	\end{align*}
+	As a result, when there is an extra vertex, i.e., when the number of vertices is 
+	\begin{equation*}
+	2 + (k+1)!\left(1 + \f{1}{1!} + \f{1}{2!} + \dots + \f{1}{k!} \right) = 1 + (k+1)!\left(1 + \f{1}{1!} + \f{1}{2!} + \dots + \f{1}{k!} + \f{1}{(k+1)!} \right) = n_{k+1},
+	\end{equation*}
+	where we have put $1 = (k+1)!/(k+1)!$, a monochromatic $K_3$ is inevitable. Thus, we are guaranteed a monochromatic $K_3$ in $K_{n_{k+1}}$, and we are done with the proof. 
+
+	
+\end{enumerate}
+
+
+
+
+
+
+
+\end{document}
