@@ -1,0 +1,143 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{cancel}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\usepackage{newpxtext,newpxmath}
+\usepackage[left=1.25in,right=1.25in,top=1.25in,bottom=1.25in]{geometry}
+\usepackage{framed}
+\usepackage{enumerate}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+%\newcommand{\fig}[1]{figure #1}
+%\newcommand{\explain}{appendix?}
+%\newcommand{\rat}{\mathbb{Q}}
+%
+%\newcommand{\mathbb{R}}{\mathbb{R}}
+%\newcommand{\nat}{\mathbb{N}}
+%\newcommand{\inte}{\mathbb{Z}}
+%\newcommand{\M}{{\cal{M}}}
+%\newcommand{\sss}{{\cal{S}}}
+%\newcommand{\rrr}{{\cal{R}}}
+%\newcommand{\uu}{2pt}
+%\newcommand{\vv}{\vec{v}}
+%\newcommand{\comp}{\mathbb{C}}
+%\newcommand{\field}{\mathbb{F}}
+%\newcommand{\f}[1]{ \hspace{.1in} (#1) }
+%\newcommand{\set}[2]{\mbox{$\left\{ \left. #1 \hspace{3pt}
+%\right| #2 \hspace{3pt} \right\}$}}
+%\newcommand{\integral}[2]{\int_{#1}^{#2}}
+%\newcommand{\ba}{\hookrightarrow}
+%\newcommand{\ep}{\varepsilon}
+%\newcommand{\limit}{\operatornamewithlimits{limit}}
+%\newcommand{\ddd}{.1in}
+%\newcommand{\ccc}{2in}
+%\newcommand{\aaa}{1.5in}
+%\newcommand{\B}{{\cal B}}
+%\newcommand{\C}{{\cal C}}
+%\newcommand{\D}{{\cal D}}
+%\newcommand{\FF}{{\cal F}}
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\p}{\partial}%
+%\usepackage{MnSymbol,wasysym}
+
+\begin{document}
+\begin{center}
+{\large \bf PH312: Physics of Fluids (Prof. McCoy)}\\
+{ Huan Q. Bui}\\
+Mar 18 2021
+\end{center}
+
+\noindent \textbf{1.} From Leibniz's Theorem, for a scalar field $F = F(\textbf{x},t)$, the time derivative of integrals such as
+\begin{equation*}
+\f{d}{dt}\int_{V(t)} F\,dV = \int_{V(t)} \f{\p F}{\p t}\,dV + \int_{A(t)} \mathbf{dA \cdot u}_A F
+\end{equation*}
+can be put into the material derivative language by replacing the $d/dt$ by $D/Dt$, $V(t)$ by $\mathcal{V}$, and $\mathbf{u}_A$ by $\mathbf{u}$, the velocity field:
+\begin{equation*}
+\f{D}{Dt}\int_{\mathcal{V}} F(\textbf{x},t)\,d\mathcal{V} = \int_{\mathcal{V}} \f{\p F}{\p t}\,d\mathcal{V} + \int_{A} \mathbf{dA\cdot u} F.
+\end{equation*}
+Conservation of mass requires that the mass of any given volume $\mathcal{V}$ of fluid as it flows remain constant. This means that the time material derivative of the mass of $\mathcal{V}$ is zero, i.e., 
+\begin{equation*}
+0 = \f{D}{Dt}\int_{\mathcal{V}} \rho(\textbf{x},t)\,d\mathcal{V} = \int_{\mathcal{V}} \f{\p \rho}{\p t}\,d\mathcal{V} + \int_{A} \mathbf{dA\cdot u} \rho,
+\end{equation*}  
+where $F = \rho = \rho(\textbf{x},t)$ is the (scalar) density field. Apply Gauss' theorem to the RHS:
+\begin{equation*}
+0 = \int_{\mathcal{V}}\dot{\rho}\,d\mathcal{V} + \int_A \mathbf{dA \cdot u}\rho = \int_{\mathcal{V}}\dot{\rho}\,d\mathcal{V}  + \int_{\mathcal{V}} \div (\rho \textbf{u}) \,d\mathcal{V}.
+\end{equation*}
+Since the integral is linear and the material volume $\mathcal{V}$ is arbitrary, we obtain the \textit{continuity equation} as desired:
+\begin{equation*}
+\dot{\rho} + \div(\rho \mathbf{u}) = \dot{\rho} + \f{\p}{\p x_i}(\rho u_i) = 0.
+\end{equation*}
+
+
+\noindent \textbf{2.} Fixed volume derivation of momentum conservation:
+\begin{enumerate}[(a)]
+	\item The $i$th component of momentum and force on a fixed volume $V$ of fluid are given by
+	\begin{equation*}
+	M_i = \int_V \rho u_i \,dV \quad \text{and} \quad F_i = \int_V \left[\rho g_i + \f{\p}{\p x_j}\tau_{ij} \right]\,dV,
+	\end{equation*}
+	respectively. The \textit{momentum principle} states that
+	\begin{equation*}
+	F_i = \f{d}{dt}M_i + \int_A \rho u_i u_j n_j \,dA.
+	\end{equation*}
+	The second term on the RHS can be interpreted as the rate of outflux of $i$-momentum: The term $\rho (\mathbf{u\cdot dA})$ is the mass outflux rate (units: [mass]/[time]) through an area element $\mathbf{dA}$ on $\p V$. And so when we multiply this the velocity component $u_i$, we have [mass outflux rate] $\times$ [$i$-velocity] $=$ [$i$-momentum outflux rate].
+	
+	
+	
+	\item By the momentum principle we have:
+	\begin{equation*}
+	\int_V \left[\rho g_i + \f{\p}{\p x_j}\tau_{ij} \right]\,dV = \f{d}{dt}\int_V \rho u_i \,dV + \int_A \rho u_i u_j n_j \,dA.
+	\end{equation*}
+	Next, we apply Gauss' theorem to turn the surface integral on the RHS to a volume integral, then move the $t$-derivative inside the second integral (which is allowed by the fixed volume assumption). One these are done, we rearrange to find:
+	\begin{equation*}
+	\int_V \left\{ \left[\rho g_i + \f{\p}{\p x_j}\tau_{ij} \right] - \f{d}{dt}(\rho u_i) - \f{\p}{\p x_j}(\rho u_i u_j)   \right\}\,dV = 0.
+	\end{equation*}
+	Since $V$ is arbitrary, the integrand must vanish, i.e., 
+	\begin{align*}
+	\rho g_i + \f{\p}{\p x_j}\tau_{ij} 
+	&=  \f{d}{dt}(\rho u_i) + \f{\p}{\p x_j}(\rho u_i u_j) \\
+	&=  \dot{\rho}u_i + \rho \f{\p}{\p t}u_i + u_i\f{\p}{\p x_j}(\rho u_j) + \rho u_j\f{\p u_i}{\p x_j}\\
+	&= u_i \underbrace{\left[ \dot{\rho} + \f{\p}{\p x_j}(\rho u_j) \right]}_{= 0 \text{ by continuity eqn.}}  + \rho\underbrace{\left( \f{\p}{\p t}u_i  + u_j \f{\p u_i}{\p x_j} \right)}_{\equiv D u_i / Dt}\\
+	&= \rho \f{D}{Dt}u_i, 
+	\end{align*}
+	\footnote{Recall that the material derivative of a field $v$ along the flow field $\mathbf{u}$ is given by $Dv/Dt \equiv \p v/\p t + \textbf{u}\cdot \grad v $}
+	And so we have just derived Newton's law from the fixed-volume perspective:
+	\begin{equation*}
+	\rho \f{D}{Dt}u_i = \rho g_i + \f{\p}{\p x_j}\tau_{ij}.
+	\end{equation*}
+\end{enumerate}
+
+
+
+\noindent \textbf{3.} 1D Diffusion. The (heat) kernel $G(x,t)$ given by 
+\begin{equation*}
+G(x,t) = \f{1}{\sqrt{4\pi kt}} \exp\left( -\f{x^2}{4kt} \right)
+\end{equation*}
+is a Gaussian whose maximum $1/\sqrt{4\pi k t}$ is attained at $x=0$. As $t$ increases, this maximum decreases monotonically, and the ``width'' of $G(x,t)$, which is proportional to $\sqrt{t}$, increases. Thus, as $t$ increases, $G(x,t)$ decays and spreads out in space. Further, since
+\begin{equation*}
+\int_{\mathbb{R}} G(x,t)\,dx= \int_{\mathbb{R}} \f{1}{\sqrt{4\pi kt}} e^{-x^2/4kt}  \,dx = 1,
+\end{equation*}
+the area under the curve of $G(x,t)$ in space is constant, which means that the kernel ``conserves'' the total ``amount'' of heat. Since the solution to the 1D heat equation is the convolution of the initial data $\phi(x,0)$ with $G(x,t)$, as $t > 0$, $\phi(x,t)$ also decays, spreads out (hence ``diffuse''), and ``looks'' more and more like $G(x,t)$, a Gaussian.\footnote{There are precise mathematical statements to characterize our qualitative interpretations, but we won't worry about them here.}
+
+  
+\end{document}
+
+
+
+
