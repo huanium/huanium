@@ -1,12 +1,12 @@
 % Author: Huan Q. Bui
 % Colby College '21
-% Date: Aug 07, 2020
+% Date: Mar, 2021
 
 
 %%% THIS CODE IS FOR STUDYING THE POWER-LAW
 %%% DECAY OF CONVOLUTION POWER
 %%% THE ALGORITHM RELIES ON THE FACT THAT THE
-%%% CONV POWER IS ASSOCIATIVEs
+%%% CONV POWER IS ASSOCIATIVE
 
 
 clear
@@ -28,7 +28,8 @@ steps = 2:1:points; % start with Phi^(0) = Phi, end at Phi^(2^points-1)
 % muP = 1/2+1/4;
 % muP = 1/2 + 1/8;
 % muP = 1/2 + 1/2;
-muP = 1/2 + 1/6;
+% muP = 1/2 + 1/6;
+muP = 1/4 + 1/4;
 % initialize Phi^(2)
 conv = fast_convolve(1, support_bound); % create Phi^(1) = Phi*Phi
 M = max(abs(conv) , [], 'all'); % find max;
@@ -36,7 +37,8 @@ sup = [sup M]; % concatenate
 n = [1];   % first entry is Phi^(1) = Phi*Phi
 for n_times = steps
     n = [n 2^n_times-1];
-    conv = Nth_fast_convolve(conv, 1, support_bound); % take the conv square
+    %conv = Nth_fast_convolve(conv, 1, support_bound); % take the conv square
+    conv = fast_convolve(2^n_times-1, support_bound); % take the conv square
     M = max(abs(conv) , [], 'all'); % find max;
     sup = [sup M]; % concatenate
     disp(['Progress: ' num2str(n_times) ' out of ' num2str(1+length(steps)) ...
@@ -50,10 +52,12 @@ p1 = plot(log2(n),log2(sup), '-o', 'color','blue', 'LineWidth', 1) % plot log in
 xlabel('log_2(n)', 'FontSize',16);
 ylabel('', 'FontSize', 16 );
 hold on 
-nY = 1.1*n.^(-muP);
+nY = 2*n.^(-muP);
 p2 = plot(log2(n), log2(nY), 'LineWidth', 2, 'Color', 'red')  % plot log instead
 hold off
-legend('log_2 f(n)', 'log_2(2n^{-2/3})', 'FontSize',14);
+legend('log_2 f(n)', 'log_2(2n^{-1/2})', 'FontSize',14);
+
+
 
 
 
@@ -90,9 +94,46 @@ end
 
 
 
-%------- Fast Convolve ----------
+
+
+
+
+
+
+
+
+
+
+
+
+%------- Nth Fast Convolve ----------
 
 function conv_power = fast_convolve(n_times, support_bound)
+
+
+% simple Example with E = diag(1/4, 1/4).
+% no cross terms
+
+Phi = zeros(9,9);
+shift = floor(9/2)+1;
+
+Phi( 0+shift, 0+shift)  =  complex(93/128, -3/16);
+Phi( 1+shift, 0+shift)  = complex(7/64, 1/16);
+Phi(-1+shift, 0+shift)  = complex(7/64, 1/16);
+Phi( 2+shift, 0+shift)  = -complex(7/128, 1/64);
+Phi(-2+shift, 0+shift)  = -complex(7/128, 1/64);
+Phi( 3+shift, 0+shift)  = 1/64;
+Phi(-3+shift, 0+shift)  = 1/64;
+Phi( 4+shift, 0+shift)  = -1/512;
+Phi(-4+shift, 0+shift)  = -1/512;
+Phi( 0+shift, 1+shift)  = complex(7/64, 1/16);
+Phi(-0+shift,-1+shift)  = complex(7/64, 1/16);
+Phi( 0+shift, 2+shift)  = -complex(7/128, 1/64);
+Phi(-0+shift,-2+shift)  = -complex(7/128, 1/64);
+Phi( 0+shift, 3+shift)  = 1/64;
+Phi(-0+shift,-3+shift)  = 1/64;
+Phi( 0+shift, 4+shift)  = -1/512;
+Phi(-0+shift,-4+shift)  = -1/512;
 
 % % EXAMPLE 0 in the paper
 % Phi = zeros(5,5);
@@ -199,33 +240,33 @@ function conv_power = fast_convolve(n_times, support_bound)
 
 
 
-% NEW EXAMPLE! in the paper
-Phi = zeros(21,21);
-shift = floor(21/2)+1;
-% interesting example where \Omega = {(0,0), (pi,pi)} (see paper)
-Phi(  0+shift, 0+shift)  = 346751/524288 - 341i/1024;
-Phi( -1+shift, 0+shift)  = 15/128 + 15i/128;
-Phi(  1+shift, 0+shift)  = 15/128 + 15i/128;
-Phi( -2+shift, 0+shift)  = -53361/1048576 - 19i/256;
-Phi(  2+shift, 0+shift)  = -53361/1048576 - 19i/256;
-Phi( -3+shift, 0+shift)  = 1/128 + 1i/128;
-Phi(  3+shift, 0+shift)  = 1/128 + 1i/128;
-Phi( -4+shift, 0+shift)  = 495/262144 + 7i/512;
-Phi(  4+shift, 0+shift)  = 495/262144 + 7i/512;
-Phi( -6+shift, 0+shift)  = -1045/2097152 - 1i/256;
-Phi(  6+shift, 0+shift)  = -1045/2097152 - 1i/256;
-Phi( -8+shift, 0+shift)  = 69/1048576 + 1i/2048;
-Phi(  8+shift, 0+shift)  = 69/1048576 + 1i/2048;
-Phi(-10+shift, 0+shift)  = -9/2097152;
-Phi( 10+shift, 0+shift)  = -9/2097152;
-Phi(  0+shift, 1+shift)  = 1/8 + 1i/8;
-Phi(  0+shift,-1+shift)  = 1/8 + 1i/8;
-Phi(  0+shift, 2+shift)  = -1/32 - 15i/512;
-Phi(  0+shift,-2+shift)  = -1/32 - 15i/512;
-Phi(  0+shift, 4+shift)  = 3i/256;
-Phi(  0+shift,-4+shift)  = 3i/256;
-Phi(  0+shift, 6+shift)  = -1i/512;
-Phi(  0+shift,-6+shift)  = -1i/512;
+% % NEW EXAMPLE! in the paper
+% Phi = zeros(21,21);
+% shift = floor(21/2)+1;
+% % interesting example where \Omega = {(0,0), (pi,pi)} (see paper)
+% Phi(  0+shift, 0+shift)  = 346751/524288 - 341i/1024;
+% Phi( -1+shift, 0+shift)  = 15/128 + 15i/128;
+% Phi(  1+shift, 0+shift)  = 15/128 + 15i/128;
+% Phi( -2+shift, 0+shift)  = -53361/1048576 - 19i/256;
+% Phi(  2+shift, 0+shift)  = -53361/1048576 - 19i/256;
+% Phi( -3+shift, 0+shift)  = 1/128 + 1i/128;
+% Phi(  3+shift, 0+shift)  = 1/128 + 1i/128;
+% Phi( -4+shift, 0+shift)  = 495/262144 + 7i/512;
+% Phi(  4+shift, 0+shift)  = 495/262144 + 7i/512;
+% Phi( -6+shift, 0+shift)  = -1045/2097152 - 1i/256;
+% Phi(  6+shift, 0+shift)  = -1045/2097152 - 1i/256;
+% Phi( -8+shift, 0+shift)  = 69/1048576 + 1i/2048;
+% Phi(  8+shift, 0+shift)  = 69/1048576 + 1i/2048;
+% Phi(-10+shift, 0+shift)  = -9/2097152;
+% Phi( 10+shift, 0+shift)  = -9/2097152;
+% Phi(  0+shift, 1+shift)  = 1/8 + 1i/8;
+% Phi(  0+shift,-1+shift)  = 1/8 + 1i/8;
+% Phi(  0+shift, 2+shift)  = -1/32 - 15i/512;
+% Phi(  0+shift,-2+shift)  = -1/32 - 15i/512;
+% Phi(  0+shift, 4+shift)  = 3i/256;
+% Phi(  0+shift,-4+shift)  = 3i/256;
+% Phi(  0+shift, 6+shift)  = -1i/512;
+% Phi(  0+shift,-6+shift)  = -1i/512;
 
 conv_power = Phi;
 
