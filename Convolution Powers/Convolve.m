@@ -14,82 +14,83 @@ tic
 %%%%%%%%%%%%%%%%%%%
 
 
-%%%%%% max |\phi^(n) (x)| vs. n  %%%%%%%
- 
-support_bound = 700;
-n = 0:20:800;
-sup = [];
-%scaled_sup = [];
-%muP = 1/2+1/4;
-%muP = 1/2 + 1/8;
-%muP = 1/2 + 1/2;
-%muP = 1/2 + 1/6;
-muP = 1/4 + 1/4;
-for n_times = n
-    M = max(abs(fast_convolve(n_times, support_bound)) , [], 'all'); % find max;
-    sup = [sup M]; % concatenate
-    %scaled_sup = [scaled_sup (n_times^muP)*M]; % concatenate
-    disp(['Progress: ' num2str(n_times)]);
-end
-% figure for SUP
-figure(1)
-plot(n,sup, '-o', 'color','blue', 'LineWidth', 1)
-%plot(log(n),log(sup), '-o', 'color','blue', 'LineWidth', 1) % plot log instead
-%xlim([0 max(n)])
-%ylim([-0.01 0.7])
-%xlabel('log(n)', 'FontSize',16);
-xlabel('n', 'FontSize',16);
-ylabel('', 'FontSize', 16 );
-% figure for SCALED_SUP
-hold on 
-n1 = n+1;
-nY = n1.^(-muP);
-C=1;
-plot(n1, C.*nY, 'LineWidth', 2, 'Color', 'red')
-%plot(log(n), log(nY), 'LineWidth', 2)  % plot log instead
-hold off
-legend('f(n)','n^{-1/2}', 'FontSize',14);
-%legend('f(n) = log(max_{K}|\phi^{(n)}|)','log(n^{-\mu_\phi}) = log(n^{-3/4})', 'FontSize',14);
-
-% figure(2)
-% plot(n,scaled_sup, '-o', 'color','blue', 'LineWidth', 1)
-% xlim([0 max(n)])
-% ylim([0 1.8])
-% xlabel('n', 'FontSize',16);
-% legend('n^{\mu_\phi} \cdot f(n) = n^{3/4}f(n)', 'FontSize',14)
-
-
-
-
-
-% %%%%%% PLOT THE CONVOLUTION POWER %%%%%%%
-% 
+% %%%%%% max |\phi^(n) (x)| vs. n  %%%%%%%
+%  
+% support_bound = 700;
+% n = 0:20:800;
+% sup = [];
+% %scaled_sup = [];
+% %muP = 1/2+1/4;
+% %muP = 1/2 + 1/8;
+% %muP = 1/2 + 1/2;
+% %muP = 1/2 + 1/6;
+% muP = 1/4 + 1/4;
+% for n_times = n
+%     M = max(abs(fast_convolve(n_times, support_bound)) , [], 'all'); % find max;
+%     sup = [sup M]; % concatenate
+%     %scaled_sup = [scaled_sup (n_times^muP)*M]; % concatenate
+%     disp(['Progress: ' num2str(n_times)]);
+% end
+% % figure for SUP
 % figure(1)
-% n_times = 1000;
-% support_bound = 200;
-% disp('Calculating...');
-% data = real(fast_convolve(n_times, support_bound));    % plot the real part
-% % data = imag(fast_convolve(n_times, support_bound));    % plot the img part
-% % data = abs(fast_convolve(n_times, support_bound));      % plot the abs
-% dim = size(data);
-% x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
-% y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
-% [X, Y] = meshgrid(x, y);
-% s = surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
-% %s = surfc(X, Y, data, 'LineWidth',0.2,'edgecolor','black', 'EdgeAlpha', 0.25 , 'FaceAlpha',0.6);
-% xlabel('X', 'FontSize',16);
-% ylabel('Y', 'FontSize',16);
-% title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-% % colorbar;
-% % s = meshc(X, Y, data);
-% xlabel('X');
-% ylabel('Y');
-% xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-% ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+% plot(n,sup, '-o', 'color','blue', 'LineWidth', 1)
+% %plot(log(n),log(sup), '-o', 'color','blue', 'LineWidth', 1) % plot log instead
+% %xlim([0 max(n)])
+% %ylim([-0.01 0.7])
+% %xlabel('log(n)', 'FontSize',16);
+% xlabel('n', 'FontSize',16);
+% ylabel('', 'FontSize', 16 );
+% % figure for SCALED_SUP
+% hold on 
+% n1 = n+1;
+% nY = n1.^(-muP);
+% C=1;
+% plot(n1, C.*nY, 'LineWidth', 2, 'Color', 'red')
+% %plot(log(n), log(nY), 'LineWidth', 2)  % plot log instead
+% hold off
+% legend('f(n)','n^{-1/2}', 'FontSize',14);
+% %legend('f(n) = log(max_{K}|\phi^{(n)}|)','log(n^{-\mu_\phi}) = log(n^{-3/4})', 'FontSize',14);
 % 
-% % xlim([-floor(dim(1)/4)  floor(dim(2)/4)]);
-% % ylim([-floor(dim(1)/4)  floor(dim(2)/4)]);
-% box off
+% % figure(2)
+% % plot(n,scaled_sup, '-o', 'color','blue', 'LineWidth', 1)
+% % xlim([0 max(n)])
+% % ylim([0 1.8])
+% % xlabel('n', 'FontSize',16);
+% % legend('n^{\mu_\phi} \cdot f(n) = n^{3/4}f(n)', 'FontSize',14)
+
+
+
+
+
+%%%%%% PLOT THE CONVOLUTION POWER %%%%%%%
+
+figure(1)
+n_times = 400;
+support_bound = 400;
+disp('Calculating...');
+% data = real(fast_convolve(n_times, support_bound));    % plot the real part
+% data = imag(fast_convolve(n_times, support_bound));    % plot the img part
+data = abs(fast_convolve(n_times, support_bound));      % plot the abs
+dim = size(data);
+x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
+y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
+[X, Y] = meshgrid(x, y);
+s = surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
+%s = surfc(X, Y, data, 'LineWidth',0.2,'edgecolor','black', 'EdgeAlpha', 0.25 , 'FaceAlpha',0.6);
+xlabel('X', 'FontSize',16);
+ylabel('Y', 'FontSize',16);
+% title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+title(['|\phi^{(', num2str(n_times), ')}|'], 'FontSize', 16 );
+% colorbar;
+% s = meshc(X, Y, data);
+xlabel('X');
+ylabel('Y');
+xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+
+% xlim([-floor(dim(1)/4)  floor(dim(2)/4)]);
+% ylim([-floor(dim(1)/4)  floor(dim(2)/4)]);
+box off
 
 
 
@@ -112,49 +113,49 @@ function conv_power = fast_convolve(n_times, support_bound)
 % simple Example with E = diag(1/4, 1/4).
 % no cross terms
 
-Phi = zeros(9,9);
-shift = floor(9/2)+1;
-
-Phi( 0+shift, 0+shift)  =  complex(93/128, -3/16);
-Phi( 1+shift, 0+shift)  = complex(7/64, 1/16);
-Phi(-1+shift, 0+shift)  = complex(7/64, 1/16);
-Phi( 2+shift, 0+shift)  = -complex(7/128, 1/64);
-Phi(-2+shift, 0+shift)  = -complex(7/128, 1/64);
-Phi( 3+shift, 0+shift)  = 1/64;
-Phi(-3+shift, 0+shift)  = 1/64;
-Phi( 4+shift, 0+shift)  = -1/512;
-Phi(-4+shift, 0+shift)  = -1/512;
-Phi( 0+shift, 1+shift)  = complex(7/64, 1/16);
-Phi(-0+shift,-1+shift)  = complex(7/64, 1/16);
-Phi( 0+shift, 2+shift)  = -complex(7/128, 1/64);
-Phi(-0+shift,-2+shift)  = -complex(7/128, 1/64);
-Phi( 0+shift, 3+shift)  = 1/64;
-Phi(-0+shift,-3+shift)  = 1/64;
-Phi( 0+shift, 4+shift)  = -1/512;
-Phi(-0+shift,-4+shift)  = -1/512;
-
-
-
-
-
-
-% % EXAMPLE 0 in the paper
-% Phi = zeros(5,5);
-% shift = floor(5/2)+1;
+% Phi = zeros(9,9);
+% shift = floor(9/2)+1;
 % 
-% Phi( 0+shift, 0+shift)  =  (1/192)*(144 - 64i);
-% Phi( 1+shift, 0+shift)  = (1/192)*(16 + 16i);
-% Phi(-1+shift, 0+shift)  = (1/192)*(16 + 16i);
-% Phi( 2+shift, 0+shift)  = -4*(1/192) ;
-% Phi(-2+shift, 0+shift)  = -4*(1/192)  ;    
-% Phi( 0+shift, 1+shift)  = (1/192)*(16+16i);
-% Phi( 0+shift,-1+shift)  = (1/192)*(16+16i);
-% Phi( 0+shift, 2+shift)  = -4*(1/192);
-% Phi( 0+shift,-2+shift)  = -4*(1/192);
-% Phi( -1+shift, -1+shift)  = (1/192)*1i;  
-% Phi( 1+shift, -1+shift)  = -(1/192)*1i;   
-% Phi( -1+shift, 1+shift)  = -(1/192)*1i;  
-% Phi( 1+shift, 1+shift)  = (1/192)*1i;  
+% Phi( 0+shift, 0+shift)  =  complex(93/128, -3/16);
+% Phi( 1+shift, 0+shift)  = complex(7/64, 1/16);
+% Phi(-1+shift, 0+shift)  = complex(7/64, 1/16);
+% Phi( 2+shift, 0+shift)  = -complex(7/128, 1/64);
+% Phi(-2+shift, 0+shift)  = -complex(7/128, 1/64);
+% Phi( 3+shift, 0+shift)  = 1/64;
+% Phi(-3+shift, 0+shift)  = 1/64;
+% Phi( 4+shift, 0+shift)  = -1/512;
+% Phi(-4+shift, 0+shift)  = -1/512;
+% Phi( 0+shift, 1+shift)  = complex(7/64, 1/16);
+% Phi(-0+shift,-1+shift)  = complex(7/64, 1/16);
+% Phi( 0+shift, 2+shift)  = -complex(7/128, 1/64);
+% Phi(-0+shift,-2+shift)  = -complex(7/128, 1/64);
+% Phi( 0+shift, 3+shift)  = 1/64;
+% Phi(-0+shift,-3+shift)  = 1/64;
+% Phi( 0+shift, 4+shift)  = -1/512;
+% Phi(-0+shift,-4+shift)  = -1/512;
+
+
+
+
+
+
+% EXAMPLE 0 in the paper
+Phi = zeros(5,5);
+shift = floor(5/2)+1;
+
+Phi( 0+shift, 0+shift)  =  (1/192)*(144 - 64i);
+Phi( 1+shift, 0+shift)  = (1/192)*(16 + 16i);
+Phi(-1+shift, 0+shift)  = (1/192)*(16 + 16i);
+Phi( 2+shift, 0+shift)  = -4*(1/192) ;
+Phi(-2+shift, 0+shift)  = -4*(1/192)  ;    
+Phi( 0+shift, 1+shift)  = (1/192)*(16+16i);
+Phi( 0+shift,-1+shift)  = (1/192)*(16+16i);
+Phi( 0+shift, 2+shift)  = -4*(1/192);
+Phi( 0+shift,-2+shift)  = -4*(1/192);
+Phi( -1+shift, -1+shift)  = (1/192)*1i;  
+Phi( 1+shift, -1+shift)  = -(1/192)*1i;   
+Phi( -1+shift, 1+shift)  = -(1/192)*1i;  
+Phi( 1+shift, 1+shift)  = (1/192)*1i;  
 
 
 % %%%%% EXAMPLE 1 in PAPER %%%%%%%%%%%
