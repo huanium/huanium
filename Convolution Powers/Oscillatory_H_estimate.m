@@ -13,8 +13,8 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-X = -100:1:100;
-Y = -100:1:100;
+X = -100:4:100;
+Y = -100:4:100;
 
 [II,JJ] = meshgrid(X,Y);
 H = zeros(length(II),length(JJ));
@@ -48,16 +48,16 @@ disp(' ');
 % -- Integration --
 
 function Hxy = Hxy(II,JJ)
-xmin = -11;
+xmin = -9;
 xmax = -xmin;
 ymin = xmin;
 ymax = xmax;
 t = 1000;
 d=2;
-muE = 1/2+1/2;
+muE = 1/2+1/4;
 % note: the following definitions of "fun" are equivalent under change of vars
-fun = @(x,y) cos( (-II.*x./(t^(1/2)) - JJ.*y./(t^(1/2))) - y.^2/12 - x.*y./48 - x.^2/12) ...
-+ 1i*sin( (-II.*x./(t^(1/2)) - JJ.*y./(t^(1/2))) - y.^2/12 - x.*y./48 - x.^2/12);
-Hxy = abs((t^(-muE)/(2*pi)^d)*integral2(fun, xmin,xmax, ymin, ymax, 'AbsTol',1e-4, 'RelTol',1e-4));
+fun = @(x,y) cos( (-II.*x./(t^(1/2)) - JJ.*y./(t^(1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96) ...
++ 1i*sin( (-II.*x./(t^(1/2)) - JJ.*y./(t^(1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96);
+Hxy = real((t^(-muE)/(2*pi)^d)*integral2(fun, xmin,xmax, ymin, ymax, 'AbsTol',1e-4, 'RelTol',1e-4));
 end
 

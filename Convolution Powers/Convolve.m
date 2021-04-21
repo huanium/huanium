@@ -64,34 +64,98 @@ tic
 
 %%%%%% PLOT THE CONVOLUTION POWER %%%%%%%
 
-figure(1)
-n_times = 400;
-support_bound = 400;
-disp('Calculating...');
-% data = real(fast_convolve(n_times, support_bound));    % plot the real part
-% data = imag(fast_convolve(n_times, support_bound));    % plot the img part
-data = abs(fast_convolve(n_times, support_bound));      % plot the abs
-dim = size(data);
-x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
-y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
-[X, Y] = meshgrid(x, y);
-s = surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
-%s = surfc(X, Y, data, 'LineWidth',0.2,'edgecolor','black', 'EdgeAlpha', 0.25 , 'FaceAlpha',0.6);
-xlabel('X', 'FontSize',16);
-ylabel('Y', 'FontSize',16);
-% title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-title(['|\phi^{(', num2str(n_times), ')}|'], 'FontSize', 16 );
-% colorbar;
-% s = meshc(X, Y, data);
-xlabel('X');
-ylabel('Y');
-xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+h = figure(1)
+n_times = 11;
+support_bound = 50;
+%disp('Calculating...');
+%data = real(fast_convolve(n_times, support_bound));    % plot the real part
+%data = imag(fast_convolve(n_times, support_bound));    % plot the img part
+%data = abs(fast_convolve(n_times, support_bound));      % plot the abs
+%dim = size(data);
+%x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
+%y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
+%[X, Y] = meshgrid(x, y);
+%s = surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.5);
+% xlabel('X', 'FontSize',16);
+% ylabel('Y', 'FontSize',16);
+% % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+% title(['|\phi^{(', num2str(n_times), ')}|'], 'FontSize', 16 );
+% % colorbar;
+% % s = meshc(X, Y, data);
+% xlabel('X');
+% ylabel('Y');
+% xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+% ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
 
 % xlim([-floor(dim(1)/4)  floor(dim(2)/4)]);
 % ylim([-floor(dim(1)/4)  floor(dim(2)/4)]);
 box off
 
+
+% filename = 'C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\CLAS 2021 Math\convolve_1.gif';
+
+
+
+data = abs(fast_convolve(1, support_bound));    % plot the real part
+dim = size(data);
+x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
+y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
+[X, Y] = meshgrid(x, y);
+surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.5);
+%mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
+view([+60 10])
+%view(2)
+xlabel('X', 'FontSize',16);
+ylabel('Y', 'FontSize',16);
+% title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+title(['|\phi^{(', num2str(i), ')}|'], 'FontSize', 16 );
+% colorbar;
+% s = meshc(X, Y, data);
+xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+%zlim([0 0.005]);
+%pause(0.05)
+drawnow
+
+
+
+for i=1:n_times
+    data = abs(fast_convolve(i, support_bound));    % plot the real part
+    dim = size(data);
+    x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
+    y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
+    [X, Y] = meshgrid(x, y);
+    surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.5);
+    %mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
+    view([+60 10])
+    %view(2)
+    xlabel('X', 'FontSize',16);
+    ylabel('Y', 'FontSize',16);
+    % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+    title(['|\phi^{(', num2str(i-1), ')}|'], 'FontSize', 16 );
+    % colorbar;
+    % s = meshc(X, Y, data);
+    xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+    ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+    %zlim([0 1/4]);
+    %pause(0.05)
+    %zlim([0 0.005]);
+    drawnow
+    
+    
+%     % save as GIF
+%     % Capture the plot as an image
+%     frame = getframe(h);
+%     im = frame2im(frame);
+%     [imind,cm] = rgb2ind(im,256);
+%     % Write to the GIF File
+%     if i == 1
+%         imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime', 0.03);
+%     else
+%         imwrite(imind,cm,filename,'gif','WriteMode','append','DelayTime', 0.03);
+%     end
+    
+end
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -109,6 +173,16 @@ disp(' ');
 %------- Fast Convolve ----------
 
 function conv_power = fast_convolve(n_times, support_bound)
+
+
+Phi = zeros(3,3);
+shift = floor(3/2)+1;
+Phi( 0+shift, 1+shift)  =  1/4;
+Phi( 0+shift,-1+shift)  = 1/4;
+Phi( 1+shift, 0+shift)  = 1/4;
+Phi(-1+shift, 0+shift)  = 1/4;
+
+
 
 % simple Example with E = diag(1/4, 1/4).
 % no cross terms
@@ -139,23 +213,23 @@ function conv_power = fast_convolve(n_times, support_bound)
 
 
 
-% EXAMPLE 0 in the paper
-Phi = zeros(5,5);
-shift = floor(5/2)+1;
-
-Phi( 0+shift, 0+shift)  =  (1/192)*(144 - 64i);
-Phi( 1+shift, 0+shift)  = (1/192)*(16 + 16i);
-Phi(-1+shift, 0+shift)  = (1/192)*(16 + 16i);
-Phi( 2+shift, 0+shift)  = -4*(1/192) ;
-Phi(-2+shift, 0+shift)  = -4*(1/192)  ;    
-Phi( 0+shift, 1+shift)  = (1/192)*(16+16i);
-Phi( 0+shift,-1+shift)  = (1/192)*(16+16i);
-Phi( 0+shift, 2+shift)  = -4*(1/192);
-Phi( 0+shift,-2+shift)  = -4*(1/192);
-Phi( -1+shift, -1+shift)  = (1/192)*1i;  
-Phi( 1+shift, -1+shift)  = -(1/192)*1i;   
-Phi( -1+shift, 1+shift)  = -(1/192)*1i;  
-Phi( 1+shift, 1+shift)  = (1/192)*1i;  
+% % EXAMPLE 0 in the paper
+% Phi = zeros(5,5);
+% shift = floor(5/2)+1;
+% 
+% Phi( 0+shift, 0+shift)  =  (1/192)*(144 - 64i);
+% Phi( 1+shift, 0+shift)  = (1/192)*(16 + 16i);
+% Phi(-1+shift, 0+shift)  = (1/192)*(16 + 16i);
+% Phi( 2+shift, 0+shift)  = -4*(1/192) ;
+% Phi(-2+shift, 0+shift)  = -4*(1/192)  ;    
+% Phi( 0+shift, 1+shift)  = (1/192)*(16+16i);
+% Phi( 0+shift,-1+shift)  = (1/192)*(16+16i);
+% Phi( 0+shift, 2+shift)  = -4*(1/192);
+% Phi( 0+shift,-2+shift)  = -4*(1/192);
+% Phi( -1+shift, -1+shift)  = (1/192)*1i;  
+% Phi( 1+shift, -1+shift)  = -(1/192)*1i;   
+% Phi( -1+shift, 1+shift)  = -(1/192)*1i;  
+% Phi( 1+shift, 1+shift)  = (1/192)*1i;  
 
 
 % %%%%% EXAMPLE 1 in PAPER %%%%%%%%%%%
@@ -282,9 +356,12 @@ while k < n_times
     
     if dim_f(1) > support_bound || dim_f(2) > support_bound
         conv_power = cropND(conv_power, support_bound);
-
     end
 end
+
+
+
+
 end
 
 % ------ crop ND ---------
