@@ -13,8 +13,8 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-X = -100:4:100;
-Y = -100:4:100;
+X = -100:1:100;
+Y = -100:1:100;
 
 [II,JJ] = meshgrid(X,Y);
 H = zeros(length(II),length(JJ));

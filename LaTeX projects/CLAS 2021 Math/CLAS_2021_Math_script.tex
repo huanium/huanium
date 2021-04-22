@@ -1,0 +1,341 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{cancel}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\usepackage{newpxtext,newpxmath}
+\usepackage[left=1in,right=1in,top=1.25in,bottom=1.25in]{geometry}
+\usepackage{framed}
+\usepackage{enumerate}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+%\newcommand{\fig}[1]{figure #1}
+%\newcommand{\explain}{appendix?}
+%\newcommand{\rat}{\mathbb{Q}}
+%
+%\newcommand{\mathbb{R}}{\mathbb{R}}
+%\newcommand{\nat}{\mathbb{N}}
+%\newcommand{\inte}{\mathbb{Z}}
+%\newcommand{\M}{{\cal{M}}}
+%\newcommand{\sss}{{\cal{S}}}
+%\newcommand{\rrr}{{\cal{R}}}
+%\newcommand{\uu}{2pt}
+%\newcommand{\vv}{\vec{v}}
+%\newcommand{\comp}{\mathbb{C}}
+%\newcommand{\field}{\mathbb{F}}
+%\newcommand{\f}[1]{ \hspace{.1in} (#1) }
+%\newcommand{\set}[2]{\mbox{$\left\{ \left. #1 \hspace{3pt}
+%\right| #2 \hspace{3pt} \right\}$}}
+%\newcommand{\integral}[2]{\int_{#1}^{#2}}
+%\newcommand{\ba}{\hookrightarrow}
+%\newcommand{\ep}{\varepsilon}
+%\newcommand{\limit}{\operatornamewithlimits{limit}}
+%\newcommand{\ddd}{.1in}
+%\newcommand{\ccc}{2in}
+%\newcommand{\aaa}{1.5in}
+%\newcommand{\B}{{\cal B}}
+%\newcommand{\C}{{\cal C}}
+%\newcommand{\D}{{\cal D}}
+%\newcommand{\FF}{{\cal F}}
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\p}{\partial}%
+%\usepackage{MnSymbol,wasysym}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+	
+\noindent \textbf{Slide 1:}  HELLO EVERYONE, welcome to the presentation on CONVOLUTION POWERS OF COMPLEX VALUED FUNCTIONS ON $\mathbb{Z}^d$ by me Huan Bui and my advisor Professor Evan Randles.\\
+
+
+
+\noindent \textbf{Slide 2:} Before going into the details of this work, let's first look at something closely related to this project and hopefully is familiar with most people here -- the CLASSICAL LOCAL LIMIT THEOREM. (This is something you might have seen perhaps in passing in SC212 or MA381, etc.)\\
+
+
+
+What does it say? Essentially, it says that IF we take samples of size $n$ from a population that follows a nice distribution $\phi$ (e.g. $\phi$ can be normal, can be Bernoulli distribution, or binomial, exponential, etc.), then the distribution of the sample mean/sum $S_n$ will look more and more like the normal distribution when the sample size $n$ gets larger and larger. \\
+
+
+A simple but equivalent way we can think about this in terms of random walks. Suppose we have a random walker taking $n$ steps where each step follows some distribution $\phi$ and is independent of the previous ones. THEN the distribution of the final location $S_n$, which is given by the \textbf{convolution powers} of $\phi$, approaches the Gaussian.  \\
+
+
+To see why the \textbf{convolution powers} show up. Let's do a quick example on the board: Suppose the walker takes only one step. Then $S_1 = X_1 \sim \phi$. Suppose 2 steps, then $S_2 = X_1 + X_2$. What's the distribution of $S_2$? Well, $P(S_2= y) = P(X_1 + X_2 = y) = \sum_{x} P(X_1 = x \,\&\, P(X_2 = y-x) ) = \sum_{x}\phi(x)\phi(y-x) = \phi\ast \phi$. \\
+
+
+And I hope that you can convince yourself that the $S_n \sim \phi^{(n)}$. OKAY, let's look at some graphics to really show that $\phi^{(n)} \to $ Gaussian. \\
+
+
+
+\noindent \textbf{Slide 3:} Here I am showing $\phi^{(n)}$ for $n=10$ (how likely the random walker is after 10 steps) and $n=200$ (how likely the random walker is after 200 steps). As you can see, $\phi^{(n)}$ looks more and more like a Gaussian. So that's very ``local'' description. But from here, you can also see that there's a diffusion process going on, and so the maximum of $\phi^{(n)}$ decays in $n$. This is a more global description. All of this is captured but the \textbf{local limit theorem}. So, what does the LLT really say? \\
+
+
+
+
+
+\noindent \textbf{Slide 4:} Well, there are three main points: FIRST is the decay. It says that $\phi^{(n)}$ decays in a power-law fashion where it goes like $n^{-d/2}$. So, for the $d=2$ example we just saw, the maximum of $\phi^{(n)}$ decays like $1/n$. \\
+
+
+SECOND is a more local (higher resolution) description of $\phi^{(n)}$. Basically, it just says that $\phi^{(n)}$ always looks like some scaled Gaussian (the capital $\Phi_\phi$ here is a generalized Gaussian in $d$ dimensions) plus some small error. \\
+
+
+THIRD, is that $\phi^{(n)}$ has a Gaussian estimate. This means that you can always find some Gaussian that \textit{fits over} $\phi^{(n)}$. \\
+
+
+
+
+\noindent \textbf{Slide 5:} BUT ALL OF THIS IS IN PROBABILITY LAND, where $\phi$ is a nice and proper probability distribution, so $p$ is positive, $p$ is normalized, and so on. \\
+
+\textbf{What if positivity is dropped?} What if we consider $\phi$'s that are still ``normalizable'' or finitely supported, BUT we allow $\phi$ to be negative? and even COMPLEX-VALUED? And if we define the convolution powers we have before, WHAT CAN WE SAY about the asymptotic behaviors of $\phi^{(n)}$? \\
+
+Can we still ask for a global decay estimate? Can we find a local description just like in the local limit theorem? Can we will find a global estimate like the Gaussian estimate in  probability theory? \\
+
+
+Let's experiment...\\
+
+
+\noindent \textbf{Slide 6:} Here, we consider a possible $\phi: \mathbb{Z}^2 \to \mathbb{C}$. It is obvious that this $\phi$ is far from being a probability distribution. But let's just take some convolution powers and see what happens...\\
+
+
+
+\noindent \textbf{Slide 7:} Wow. A very interesting.  Pattern emerges. Obviously, since $\phi$ is complex, we can look at either the real of imaginary part of the modulus. Here, we choose to look at the real part. \\
+
+In any case, there are a few things to notice here: FIRST, we can still see a decay behavior: in the beginning, most of the mass is concentrated near the origin. After some time, (or should I say $n$ gets larger), the ``distribution'' spreads out and whatever originally at the origin decays away. \\
+
+
+SECOND, that $\phi^{(n)}$ seems to take some shape, and seems to be approaching something mysterious, non-Gaussian. \\
+
+
+So clearly, there must be answers to the questions we posed last slide, but it is clear that whatever the answers are, they are way beyond on the classical local limit theory, as the behaviors we're seeing here are very very exotic and obviously cannot happen in probability land. \\
+
+\noindent \textbf{Slide 8:} Now, I want to show you a different example to illustrate that there's even more to the story. \\
+
+Recall how LLT says that the distribution of the sample sum always approaches the Gaussian no matter what distribution $\phi$ we start with? I.e. you can start with a binomial, exponential, Bernoulli, etc. but still end up with $\phi^{(n)} \to$ Gaussian -- \textbf{which means that the Gaussian is a very special attractor} \\
+
+
+This is NOT the case when positivity is dropped. \textcolor{blue}{Go to previous slide:} Remember this shape that the previous example seems to converge to? If we change $\phi$, we actually get a different \textbf{attractor}. \\
+
+
+
+\noindent \textbf{Slide 9:} Here it is. This means that there's no longer a ``central'' attractor, and we realize that the local limit theorem is one very very very very special case of some much more general result. \\
+
+
+\noindent \textbf{Slide 10:} Here is the absolute value of $\phi$ for this example. I'm just showing this so that you can see the decay happening. As it turns out, the power-law decay in this example is also different from the decay law in the previous example. This is NOT the case in LLT, where the power-law decay is always $n^{-d/2}$ for any  $\phi$ in $d$ dimensions. \\
+
+
+
+
+\noindent \textbf{Slide 11:} So, back to our main discussion. Right now, if you haven't found this appealing enough then I'll just say that this is a completely new research problem and there are so many questions to answered (along with the three on the slide right now). \\
+
+Well OK, the focus on my project with Evan is on answering first question (the easiest one), which is essentially figuring out how to find the decay estimate (or in other words, the decay law) for the absolute value of $\phi^{(n)}$. \\
+
+
+How do we start? You guessed it: Fourier analysis.\\
+
+
+
+\noindent \textbf{Slide 12: } We start from the following identity which relates the Fourier transform with convolutions. I'm sure that those of you in MA411 will know very well that \textbf{the FT converts convolution powers into point-wise multiplication}, i.e., the FT of convolution powers is equal to the products of FT (this is not too hard to show). \\
+
+
+With this, we have to define FT for $\phi$. We do that as follows (\textcolor{blue}{show the formula}). Nothing too complicated here. From this definition, we notice that (because of Euler's formula) and that fact that we're considering $\phi$'s that are finitely supported, $\widehat{\phi}$ is just some trigonometric function with complex coefficients. \\
+
+
+
+As it turns out, the asymptotic behaviors of $\phi^{(n)}$ depends heavily on how $\widehat{\phi}$ behaves near points where it is maximized, we must also define this set of special points. We call it $\Omega$.\\
+
+
+
+
+
+\noindent \textbf{Slide 13: } So for any $\xi_0 \in \Omega$ we can look at how $\widehat{\phi}$ behaves near it, by writing $\widehat{P}(\xi + \xi_0)$ in terms of $\widehat{\phi}$ evaluated at $\xi_0$. By doing so, this function $e^{\Gamma}$ pops out. And because of how $\Gamma_{\xi_0}$ relates to $\widehat{\phi}(\xi + \xi_0)$, the structure of $\Gamma$ determines the asymptotic behavior of $\phi^{(n)}$. \\
+
+
+So, to characterize the structure of $\Gamma$, we use the old trick: Taylor expand it. Upon doing this, we find that $\Gamma$, in general, looks like this (\textcolor{blue}{show formula}). Our job now is to categorize what $\Gamma$ can look at depending on our choice of $\xi_0$. \\
+
+
+
+
+\noindent \textbf{Slide 14:} In 1D, things are simple. $\xi_0$ can be either of \textbf{pos hom type} OR \textbf{imag hom type}. I won't go into why we chose such terminologies, but the idea behind this classification is this. \\
+
+
+When we Taylor expand $\Gamma$, there will always some terms that dominate the expansion (and hence the behavior of $e^\Gamma$). These dominant terms can either real or complex. \\
+
+
+We say that $\xi_0$ is of \textbf{pos hom type} if $\Gamma$ looks like something PLUS a dominantly-real term (plus some higher order stuff). It turns out that in this case $\phi^{(n)}$ is easy to estimate, because $e^\Gamma$ is dominantly an exponential decay. \\
+
+
+On the other hand, we say that $\xi_0$ is of \textbf{img hom type} if $\Gamma$ looks like something plus a dominantly-imaginary part (plus some higher order stuff). In this case, $\phi^{(n)}$ is generally more difficult to estimate, because $e^\Gamma$ is high oscillating, and $FT(e^\Gamma)$ becomes tricky to evaluate. \\
+
+
+
+
+\noindent \textbf{Slide 15: } The 1D problem has been completely solved by Evan in his paper published in 2015. This includes answers to global decay estimate, local limit theorem, and so on. The global decay estimate is stated here. \\
+
+This basically says that $\phi^{(n)}$ decays like $n^{-1/m}$, where $m$ is whatever power that shows up in $\Gamma$ (as shown on the previous slide. \textcolor{blue}{Show 'em the expansion once again}). So, already in 1d, we see something very DIFFERENT from the the global decay estimate statement in LLT, which says that the decay always goes like $n^{-d/2}$, which is dependent \textbf{only on the dimension}. Here, $-1/m$ depends both on the dimension AND $\phi$ itself. \\
+
+
+
+
+\noindent \textbf{Slide 16:} We can look at an example here, where $\phi$ is defined like so. Plotting the $\abs{\phi^{(n)}}$ for $n=100, 1000, 10000$ gives us an idea of the decay looks like. Careful analysis shows that the decay is actually like $n^{-1/2}$. \\
+
+
+
+
+
+\noindent \textbf{Slide 17:}  In $d$ dimensions, things get complicated because now $\Gamma$ contains multiple variables. This requires us come up with some new rules to categorize $\Gamma$ like we did before. A pretty rule that found for classifying the dominant terms of $\Gamma$ is a class of functions called \textbf{positive homogeneous functions}. \\
+
+
+
+There are many equivalent ways to define this class of functions, but I'll just include the simplest one. It says that $P$ is a pos hom fn if it is continuous, positive definite (only $P(0) = 0$) and has some matrix $E$ for which this holds: $P(r^E\eta ) = rP(\eta)$ and has a compact \textbf{unital level set}. Let me show you some examples. \\
+
+
+
+\noindent \textbf{Slide 18:} In both examples here, it's not very difficult to check that $P_1, P_2$ are positive definite and are continuous.  In both (a) and (b), the matrix $E$ in the standard basis is given by $\text{diag}(1/2, 1/4)$. So, \textcolor{blue}{demo how the homogeneous condition works}. The unital level sets highlighted in blue are definitely compact. \\
+
+
+
+
+\noindent \textbf{Slide 19:} We note that $P$ doesn't have to be smooth. In (b) here, we multiple the Eulidean norm $Q$ by a Weierstrass function and make $P$ not smooth everywhere. \\
+
+
+
+
+\noindent \textbf{Slide 20:} So, similar to what we have before, we can also categorize some $\xi_0$ in the set $\Omega$ as follows.\\
+
+$\xi_0$ is of pos hom type if $\Gamma$ looks like so. Again, this is similar to what we had before. Here, the single $\beta \xi^m$ is replaced by $P$, a pos hom \textbf{polynomial}. And as you might expect, because $P$ is a positive polynomial, we get an exponential decay in $e^\Gamma$, and estimating $\phi$ becomes somewhat easy. \\
+
+On the other hand, $\xi_0$ is of imag hom type if $\Gamma$ looks like this formula here, where the dominant terms in the expansion carries a factor of $i$. This means that $e^\Gamma$ is oscillatory, and $\phi^{(n)}$ is difficult to estimate, more difficult than in $d=1$ due to the extra complexity as we go up in dimensions.\\
+
+
+
+
+
+
+
+
+\noindent \textbf{Slide 21:} Evan's paper in 2017 has partially solved the $d$-dimensional problem. In particular, we have a theorem for the global decay estimate, for only $\phi$ whose $\Gamma$ contains only $\xi_0$ of positive homogeneous type (so Type 1). \\
+
+Here, we see that the decay is like $n^{-\mu_\phi}$, where $\mu_\phi$ can be calculated. Quite straightforwardly: it is related to the trace of $E$ associated with the $P$ for each $\xi_0$. \\
+
+In this work, we extend this theorem to consider $\Omega$'s which contain both points of positive and imaginary types (and nothing else... remember, in $d$, these two types are no longer collectively exhaustive). \\
+ 
+
+\noindent \textbf{Slide 22:} Here's the main theorem/main result of this project. As you an see from the statement here, we require that each point in $\Omega$ is of pos hom or imag hom type. \\
+
+\noindent \textbf{Slide 23:} Let's look at some examples to demonstrate that this theorem works. Show here is the $\phi$ from one of the previous slides. \\
+
+\noindent \textbf{Slide 24:} Here are the real parts of $\phi$ for $n=300$ and $n=600$, as I have shown before. \\
+
+\noindent \textbf{Slide 25:} Okay first we check that the hypotheses are met. The figure shows the absolute value of the FT of $\phi$. We can check that $\sup\abs{\widehat{\phi}} = 1$, so that condition is met. Also, from the figure, we can also see that the maximum is attained at only one point $(0,0)$, so the set $\Omega$ has only one point, the origin. This means there is only one expansion for $\Gamma$, which is that. After picking out the dominant terms, we find the polynomial there, which we can check to be positive homogeneous with respect to the matrix $\text{diag}(1/2, 1/4)$. $\mu_\phi$ in this case is simply the trace of this matrix, which is $3/4$.   \\
+
+\noindent \textbf{Slide 26:} Now, to see if the decay estimate works, we pick a compact set $K$ as above $[-300,300]\times [-300,300]$, so a $600\times 600$ square centered at the origin. The next thing is to take convolution powers, look at the maximum of $\abs{\phi^{(n)}}$, and plot this as a function of $n$. Choosing $C=2$, we see that the estimate works as desired. Figure (b) shows the decay and the estimate, while Figure (a) shows everything on the log scale so that things are easier to see...\\
+
+
+
+
+\noindent \textbf{Slide 27:} Here's another example. Looks fairly complicated, but it is really the same thing, except that the set $\Omega$ now has two points.\\
+
+
+
+\noindent \textbf{Slide 28:} Here are some pictures of the real part of $\phi^{(n)}$. Once again, really exotic stuff. Just a side note: when we construct the examples, we actually start from $\widehat{\phi}$ and then Fourier-invert to find $\phi(x)$. So, we never really know what $\phi^{(n)}$ looks like, which makes these behaviors very mysterious and surprising.  \\
+
+
+\noindent \textbf{Slide 29:} To see how $\Omega$ has two points, we do as before: plot the absolute value of the FT of $\phi$. We note that because of the way the torus $\mathbb{T}$ is defined, we find 2 maxima: one at the origin and one at $(\pi,\pi)$. As a result, we have two expansions which we will call $\Gamma_{0}$ and $\Gamma_1$. By the form of them, we see that both $\xi_0$ are of imaginary homogeneous types, but the matrix $E$ associated with each of these polynomials is different. For the first one, $E = (1/6, 1/2)$ whereas $E= (1/2,1/2)$ for the second one. So, from before, we have \textbf{two traces:} 2/3 and 1. Which one we do use for the decay estimate? The rule says to pick the smaller trace. SO, $\mu_\phi = 2/3$. Let's see if the decay estimate captures the decay of $\abs{\phi^{(n)}}$. \\
+
+
+\noindent \textbf{Slide 30:} Once again, we pick a compact set $K$ and pick $C=1$. Once again, the red line shows the decay estimate, while the blue line shows the max of $\abs{\phi^{(n)}}$ for each $n$. \\
+
+So yeah... the theorem works!\\
+
+
+
+
+\noindent \textbf{Slide 31:} So... why are we doing this in particular and why are we pursuing this problem of dropping positivity? \\
+
+By trying to obtain the decay estimate, we actually learned a number of things and acquired techniques that probably will be useful later when we ultimate try to prove the a new local limit theorem.\\
+
+
+In terms of applications, studying convolution powers is appealing because convolution powers can give numerical solutions to PDEs. For those of you in MA411, you know very well that the heat equation (which is one of most canonical equations in PDE) has something called the \textbf{heat kernel}, which basically hands you the solution. From the perspective of local limit theorems, the heat kernel is the thing that $\phi^{(n)}$ is attracted towards. So, in the probability getting the heat kernel is the Gaussian. From the convolution powers context, we find that perhaps for some weird and extremely difficult PDE, we can't really solve for a heat kernel. However if we can somehow find a $\phi$ whose convolution powers approach this kernel, then we can approximate it to whatever degree we want!\\
+
+
+There are also applications in other places. In physics, especially in quantum field theory, oscillatory integrals appear almost everywhere. We believe that the techniques used here to obtain decay estimate for $\phi$'s with $\xi_0$ for imaginary homogeneous types will be useful for estimating these integrals in QFT as well. Also, there are lots of PDE in QFT, so any contribution towards PDE is also good for QFT.\\
+
+
+There are of course other practical reasons that we might not be aware of yet, but that's OK, because we're also pursuing this problem because... we can, for its own sake. \\
+
+
+When Evan and I began this project maybe 1.5 years ago, he suggested that I run some computer calculations to see what happens etc. I think that the really cool and exotic behaviors really inspired us to push for new results... 
+
+
+
+\noindent \textbf{Slide 32:} To end, I will talk about one of the ultimate goals of this research problem, and that is to obtain some local limit theorem, analogous to the classical local limit theorem.  \\
+
+Remember how we said the convolution power of probability distributions approach the Gaussian? We conjecture that a very similar thing can also happen when positivity is dropped. More specifically, we conjure that for each $\phi$, we can obtain an attractor, which we call $H$, via some formal formula. Just to give you a sneak peek, the Figure on the bottom right is the convolution power $\phi^{(n)}$ that we saw earlier in the talk. The figure on the bottom left, however, was generated from that formal formula that I mentioned, which has nothing to do with convolutions...\\
+ 
+
+I don't know about you, but I think the resemblance is really astonishing, and it is just begging to asking to be proved...\\
+
+
+So yeah, that's my project. I hope you have enjoyed seeing the cool behaviors of convolution powers as much as I have. Thanks for listening!!\\
+
+\noindent \textbf{Slide 33:} There's some extra stuff here on the proof of the main theorem if you are interested...\\
+
+
+
+
+
+
+	
+	
+\end{document}
