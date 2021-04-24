@@ -1,0 +1,744 @@
+\documentclass{article}
+\usepackage[left=1in,right=1in,top=1in, bottom=1in]{geometry}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage{bm}
+\usepackage{authblk}
+\usepackage{framed}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\newcommand*{\myproofname}{Proof}
+\newenvironment{subproof}[1][\myproofname]{\begin{proof}[#1]\renewcommand*{\qedsymbol}{$\mathbin{/\mkern-6mu/}$}}{\end{proof}}
+\renewcommand\Re{\operatorname{Re}}%%redefined Re and Im
+\renewcommand\Im{\operatorname{Im}}
+\newcommand\MdR{\mbox{M}_d(\mathbb{R})}
+\newcommand\GldR{\mbox{Gl}_d(\mathbb{R})}
+\newcommand\OdR{\mbox{O}_d(\mathbb{R})}
+\newcommand\Sym{\operatorname{Sym}}
+\newcommand\Exp{\operatorname{Exp}}
+%\newcommand\tr{\operatorname{tr}}
+\newcommand\diag{\operatorname{diag}}
+\newcommand\supp{\operatorname{Supp}}
+\newcommand\Spec{\operatorname{Spec}}
+\renewcommand\det{\operatorname{det}}
+\newcommand\Ker{\operatorname{Ker}}
+\usepackage{empheq}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
+\newcommand{\bigzero}{\mbox{\normalfont\Large\bfseries 0}}
+\newcommand{\rvline}{\hspace*{-\arraycolsep}\vline\hspace*{-\arraycolsep}}
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand*{\TakeFourierOrnament}[1]{{%
+\fontencoding{U}\fontfamily{futs}\selectfont\char#1}}
+\newcommand*{\danger}{\TakeFourierOrnament{66}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+\author{Huan Bui and Evan Randles}
+\title{Invariance Properties of the Measure $\sigma$}
+\date{\today}
+
+
+
+\begin{document}
+
+
+\maketitle
+
+This document addresses the following three questions posed at the end of \cite{RandlesBui2020}.
+
+\begin{framed}
+
+
+\begin{enumerate}
+\item \textcolor{blue}{To what extent does $\sigma$ depend on $E$? In other words, if $E,E'\in\Exp(P)$ (which necessarily have $\tr E=\tr E'$ in view of Section 2 of \cite{Randles2017}), would our construction have yielded the same measure $\sigma$ had we instead used the dilation $T_t=t^{E'}$ for everything? They should be closely related if not equal. But I'm really curious about this. For a little background reading, see the material near Proposition 2.3 of \cite{Randles2017}. }
+
+
+
+
+\item \textcolor{blue}{We discussed the fact that the surface measure on the (usual) sphere $\mathbb{S}^{d-1}$ was the unique Radon measure which was rotationally invariant and satisfied $\sigma_d(\mathbb{S}^{d-1})=d\cdot m(\mathbb{B})$. I suspect that we also have some characterization for our measure $\sigma$ on $S$ -- in fact, this is why I suspect that $\sigma$ might not depend on the choice of $E$. Here are two possible conjectures and I really don't know if they are true:}
+\begin{conjecture}{\label{conj:OF_conj}} 
+For any $O\in\Sym(P)$ and $F\in\Sigma_S$,
+\begin{equation}\label{eq:Conjec1}
+\sigma(O F)=\sigma(F).
+\end{equation} 
+\end{conjecture}
+
+
+\item \textcolor{blue}{There are many polynomials (and positive-definite continuous functions) that have $S$ as their ``unital" level set. For example: For any $\alpha>0$, $Q_{\alpha}(\xi):=(P(\xi))^\alpha$ is continuous and has
+\begin{equation*}
+S=\{\eta\in\mathbb{R}^d:Q_{\alpha}(\xi)=1\}.
+\end{equation*}
+Further, $Q_\alpha$ is positive-homogeneous\footnote{and is a polynomial precisely when $\alpha=1,2,\dots$.} and has $\Exp(Q_{\alpha})=\Exp(P)/\alpha$ in the senses that $E_\alpha\in \Exp(Q_\alpha)$ if and only if $E_\alpha=E/\alpha$ for $E\in \Exp(P)$. If you use $E_{\alpha}=E/\alpha$ to construct a measure $\sigma_\alpha$ on $S$ via the above construction, how is $\sigma_\alpha$ related to $\sigma$? I think I have an idea about this, but you should try it. Another question: Are there other polynomials (which are not powers of $P$) that have $S$ as their unital level set? }
+\end{enumerate}
+
+\end{framed}
+
+\newpage
+
+
+
+
+
+\section{Classification of $P$}
+
+
+\begin{framed}
+
+\textcolor{blue}{\danger UNDER CONSTRUCTION \danger} 
+
+\begin{definition}
+For a continuous function $P: \R^d \to \C$ an a continuous one-parameter group $\{ T_t \} < \GldR{}$, we say that $P$ is homogeneous with respect to $T_t = t^E$ if 
+\begin{equation*}
+    tP(\xi) = P(T_t \xi)
+\end{equation*}
+for all $t>0$ an $\xi\in \R^d$. In this case $E$ is a member of the exponent set of $P$, $\Exp{(P)}$. 
+
+We say that $P$ is positive homogeneous if the real part of $P, R =\Re{P}$, is positive definite (that is, $R(\xi) \geq 0$ and $R(\xi) = 0$ only when $\xi = 0$) and if $\Exp{(P)}$ contains a matrix $E\in \MdR{}$ whose spectrum is real. 
+\end{definition}
+
+Throughout this document, we concern with positive homogeneous multivariate polynomials $P : \R^d \to \R$. A given positive homogeneous polynomial $P$ need not be homogeneous with respect to a unique continuous one-parameter group $\{t^E\}$. That is, $\Exp(P)$ might not be a singleton. However, Proposition 2.3 in \cite{Randles2017} shows that $\tr E = \tr E'$ whenever $E,E'\in \Exp(P)$.
+
+
+
+\begin{remark}
+Proposition 2.2 of \cite{Randles2017} gives us the fact that any $E\in \Exp(P)$ is diagonalizable by some $A\in \GldR{}$ for which \begin{equation*}
+    (P\circ L_A)(\xi) = \sum_{\abs{\beta : \bm m} = 2} a_\beta \xi^\beta
+\end{equation*}
+for $\xi\in \R^d$, where $\bm m = \{ m_1, m_2,\dots, m_d \}\subseteq \mathbb{N}_+$. \textcolor{red}{NOTE:} While this does not account for all $P$'s we will come across in the theory (for there are non-diagonalizable $P$'s with cross terms), I believe we can safely assume that we can always chose $E\in \Exp(P)$ such that $E$ is diagonal. The following classification of $P$ will hopefully justify this assumption.
+\end{remark}
+
+
+
+\begin{definition}[Pure $P$]\label{def:PureP}
+We say that a positive homogeneous polynomial $P$ is of \textbf{pure} type if $P$ consists only of single-variable monomials. That is, $P$ is of the form
+\begin{equation*}
+    P(x_1,x_3,\dots,x_d) = x_1^{2m_1} + x_2^{2m_2} + \dots + x_d^{2m_d}
+\end{equation*}
+where $m_i\in \mathbb{N}_+$ for $i=1,2,\dots,d$ and $(x_1,\dots,x_d)^\top\in \R^d$. 
+\end{definition}
+
+
+\begin{corollary}[$E$ of a pure $P$ is ``obvious'']\label{cor:E}
+For a pure $P$ of the form 
+\begin{equation*}
+    P(x_1,x_3,\dots,x_d) = x_1^{2m_1} + x_2^{2m_2} + \dots + x_d^{2m_d},
+\end{equation*}
+the matrix
+\begin{equation*}
+    E = \diag{(1/2m_1, 1/2m_2, \dots, 1/2m_d)}
+\end{equation*}
+belongs to $\Exp(P)$.
+\end{corollary}
+
+\begin{proof}
+Let $P$ and $E$ be given as above. We want to show that for any $t>0$ and $\eta = (\eta_1,\dots,\eta_d)^\top\in \R^d$, $P(t^E\eta) = tP(\eta)$. This is fairly  straightforward to show:
+\begin{equation*}
+    t^E = t^{\diag{(1/2m_1, 1/2m_2, \dots, 1/2m_d)}} =  \diag{(t^{1/2m_1}, t^{1/2m_2}, \dots, t^{1/2m_d})}.
+\end{equation*}
+Consequently,
+\begin{equation*}
+    P(t^E \eta) = P\lp \sum^d_{i=1} t^{1/2m_i}\eta_i \rp = \sum^d_{i=1} \lp t^{1/2m_i}\eta_i \rp^{2m_i} = t\sum^d_{i=1} \eta_i^{2m_i} = tP(\eta).
+\end{equation*}
+We also notice that $\Spec{(E)}\subseteq \R_+$, so $E\in \Exp(P)$ as desired. 
+\end{proof}
+
+
+
+\begin{definition}[Mixed $P$]
+We say that a positive homogeneous polynomial $P$ contains a multivariate monomial is of \textbf{mixed} type when it is not pure. (\textcolor{red}{I know, Bananas v. Non-bananas...}) That is, $P$ is of mixed type whenever it contains a multivariate monomial. In this case, we will often write $P$ as a sum of its pure part and mixed part:
+\begin{equation*}
+    P = \mathfrak{P}(P) + \mathfrak{M}(P)
+\end{equation*}
+where $\mathfrak{P}(P)$ contains all of $P$'s single-variable monomials, and $\mathfrak{M}(P) = P - \mathfrak{P}(P)$.
+\end{definition}
+
+\textcolor{blue}{\textbf{NOTE:} I don't know how useful the next conjecture is, but I believe it is true, so I'll just leave it here and come back later. If we can prove this and understand $\Sym(P)$ for pure $P$, everything else will be easy.} 
+
+\begin{conjecture}
+For any positive homogeneous polynomial $P$, $\Exp(P)$ always contains $E\in \Exp(\mathfrak{P}(P))$. 
+\end{conjecture}
+
+
+
+\begin{conjecture}[$\Sym(P)$ is finite for ``nice'' pure $P$]\label{conj:SymPFinite}
+$\Sym(P)$ for a pure $P$ with at most one monomial of degree 2 is a finite subgroup of $\OdR{}$.
+\end{conjecture}
+
+
+\begin{remark}
+Before going to the proof, let us see why the requirement ``with at most one monomial of degree 2'' is necessary for $\Sym(P)$ to be finite. Consider the following pure $P$:
+\begin{equation*}
+    P(x,y,z,t) = x^2 + y^2 + z^4 + t^6. 
+\end{equation*}
+In view of Corollary \ref{cor:E}, we find 
+\begin{equation*}
+E = \diag{\lp \f{1}{2},\f{1}{2}, \f{1}{4},\f{1}{6} \rp} = \begin{pmatrix}
+  1/2 & 0 \\0 & 1/2
+\end{pmatrix} \oplus \begin{pmatrix}
+  1/4 & 0\\0 & 1/6
+\end{pmatrix} = \lp \f{1}{2}I_{2\times 2} \rp \oplus \begin{pmatrix}
+  1/4 & 0\\0 & 1/6
+\end{pmatrix}.
+% \begin{pmatrix}
+%   \begin{matrix}
+%   1/2 &  \\
+%       & 1/2
+%   \end{matrix}
+%   & \rvline & \bigzero \\
+% \hline
+%   \bigzero & \rvline &
+%   \begin{matrix}
+%   1/4 &  \\
+%       &  1/6
+%   \end{matrix}
+% \end{pmatrix}
+\end{equation*}
+Observe that any matrix of the form 
+\begin{equation*}
+    O(\theta) = \text{Rot}(\theta) \oplus I_{2\times 2} 
+\end{equation*}
+where $\text{Rot}(\theta)$ is the usual $2D$-rotation by $\theta \in \R$, due to the (continuous) circular symmetry in the variables $x,y$ is a member of $\Sym(P)$.
+\end{remark}
+
+\begin{remark}
+It's important that $P$ is pure. When $P$ is mixed, it is possible to have a finite $\Sym(P)$ while $P$ has more than one single-variable mononials with degree 2. For example:
+\begin{equation*}
+    P(x,y) = x^2 + y^2 + xy
+\end{equation*}
+has 
+\begin{equation*}
+    \Sym(P) = \lc I, -I, \text{Ref}(\pi/4), \text{Ref}(-\pi/4)
+    \rc,
+\end{equation*}
+where $\text{Ref}(\theta)$ the usual reflection in $2D$. 
+\end{remark}
+
+
+
+\begin{proof}[Proof of Conjecture \ref{conj:SymPFinite}]
+From Proposition 2.3 of \cite{Randles2017}, we know that $\Sym(P) < \OdR{}$ for any $P$. It remains to show $\Sym(P)$ is finite for any pure $P$ with at most one monomial of degree 2. Let such a pure $P$ be given. Then we can always find a positive, real-spectrum, diagonal matrix $E\in \Exp(P)$.  
+
+\textcolor{red}{TO BE CONTINUED}
+\end{proof}
+
+
+
+
+
+\end{framed}
+
+\newpage
+
+
+
+
+
+
+
+
+
+\section{Invariance Properties of the Measure $\sigma$}
+
+\begin{convention}
+For $O\in \Sym(P)$ and $F\subseteq S$, we define
+\begin{equation*}
+    O(F) \coloneqq \{ O \eta : \eta \in F \}.
+\end{equation*}
+\end{convention}
+
+
+
+
+
+
+
+
+\begin{lemma}[$\Exp(P)$ is invariant under conjugation by $\Sym(P)$] \label{lem:ExpP}
+\begin{equation*}
+    \Exp(P) = O^\top \Exp(P) O,\quad \text{for any } O \in \Sym{(P)} 
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+Since $\Sym(P) < \OdR{}$, if $O\in \Sym{P}$ then $O^\top = O^{-1} \in \Sym{P}$. Thus,
+\begin{equation}\label{eq:OOO}
+    P(t^E \eta) = tP(\eta) = tP(O\eta) = P(t^E O\eta) = P(O^\top t^E O \eta) = P(t^{O^\top E O }\eta)
+\end{equation}
+for all $t>0,\eta\in \R^d$. It follows that $O^\top E O \in \Exp(P)$ for every $E\in \Exp(P)$ and $O\in \Sym(P)$.  
+Now, if $E_i, E_j\in \Exp(P)$ and $E_i\neq E_j$, then $O^\top E_i O \neq O^\top E_j O$ since $O,O^\top\in \OdR{}$. Thus the conjugation map induced by $O$, $\varphi_O: \Exp{P}\to \Exp{P}$ defined by 
+\begin{equation*}
+    \varphi_O (E) = O^\top E O
+\end{equation*}
+is one-to-one. Further, for any $E\in \Exp(P)$, a similar argument as \eqref{eq:OOO} shows that $OEO^\top \in \Exp(P)$ and satisfies
+\begin{equation*}
+    \varphi_O(OEO^\top) = O^\top (OEO^\top) O = E\in \Exp{(P)}.
+\end{equation*}
+So, $\varphi_O$ is bijective, which means 
+\begin{equation*}
+    \Exp(P) = O^\top \Exp(P) O = O \Exp{(P)} O^\top, \quad \text{for all } O\in \Sym{(P)}.
+\end{equation*}
+\end{proof}
+
+
+
+\begin{lemma}[$\Sym(P)$ is invariant under quasi-conjugation by $\{t^E,t^{E'}\}$]\label{lem:SymP}
+\begin{equation*}
+    \Sym{(P)} = t^E \Sym{(P)} t^{-E'}, \quad \text{for all } t>0,E,E'\in \Exp{(P)}
+\end{equation*}
+\end{lemma}
+
+
+\begin{proof}
+Let $t>0, E,E'\in \Exp{(P)}, O\in \Sym(P)$ be given. Observe that
+\begin{equation}\label{eq:EE}
+    P(t^E O t^{-E'} \eta) = tP(Ot^{-E'}\eta) = tP(t^{-E'}\eta) = \f{t}{t}P(\eta)= P(\eta)
+\end{equation}
+for all $\eta\in \R^d$. So, $t^E O t^{-E'} \in \Sym(P)$. Now, if $O_i,O_j\in \Sym(P)$ and $O_i\neq O_j$, then $t^E O_i t^{-E'} \neq t^E O_j t^{-E'}$ since both $t^{E}, t^{-E'}$ are bijective maps. Thus, the conjugation map induced by $t,E,E'$: $\Gamma_{t,E,E'} : \Sym{P} \to \Sym{(P)}$ defined by
+\begin{equation*}
+    \Gamma_{t,E,E'}(O) = t^E O t^{-E'}
+\end{equation*}
+is one-to-one. Further, for any $O\in \Sym(P)$, a similar argument as $\eqref{eq:EE}$ shows that $t^{-E}Ot^{E'}\in \Sym(P)$ and satisfies 
+\begin{equation*}
+    \Gamma_{t,E,E'}(t^{-E}Ot^E) = t^E(t^{-E}O t^{E'})t^{-E'} = O\in \Sym{(P)}.
+\end{equation*}
+So, $\Gamma_{t,E,E'}$ is bijective, which means 
+\begin{equation*}
+    \Sym{(P)} = t^{E} \Sym{(P)} t^{-E'} = t^{E'} \Sym{(P)} t^{-E}
+\end{equation*}
+for all $t>0$ and $E,E'\in \Exp{P}$.
+\end{proof}
+
+
+\begin{lemma}\label{lem:S}
+Let $O\in \MdR{}$ be fixed, then 
+\begin{enumerate}
+    \item $O(S) = S$ for any $O\in \Sym(P)$.
+    \item $O(F)\subseteq S$ for any $O\in \Sym{(P)}, F\subseteq S$
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+To prove Item (1), let an $O\in \Sym(P)$ be fixed. By definition, we have that
+\begin{equation*}
+    O(S) = \{ O \eta : \eta \in S \}=\{ O \eta : \eta\in \R^d, P(\eta) = 1 \} = \{ O \eta \in \R^d: P(O\eta) = 1 \} = \{  \eta'\in \R^d, P(\eta') = 1 \} = S.
+\end{equation*}
+
+
+To prove Item (2), consider $F\subseteq S, O\in \Sym{(P)}$ and let $\eta' \in O(F) \subseteq \R^d$. By definition, $\eta' = O\eta$ for some $\eta\in F\subseteq S$. It follows that 
+\begin{equation*}
+    P(\eta') = P(O\eta) = P(\eta) = 1.
+\end{equation*}
+Thus, $\eta' \in S$. Therefore, $O(F)\subseteq S$ as desired. 
+
+\end{proof}
+
+
+
+
+\begin{framed}
+
+
+\textcolor{blue}{NEEDS CORRECTION}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{lemma}\label{lem:B}
+Recall the definition of $B$:
+\begin{equation*}
+    B = \{ \eta\in \R^d : P(\eta) < 1 \}
+\end{equation*}
+Let $O\in \MdR{}$ be fixed, then 
+\begin{enumerate}
+    \item $O(B) = B \iff O\in \Sym{(P)}$. %
+    \textcolor{red}{ $O(B)=B$ for any $O\in \Sym{(P)}$ }. 
+    \item $ O(\widetilde{F}) \subseteq B$ for
+    all $\widetilde{F}\subseteq B$ if  $O\in \Sym(P)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+To prove Item (1), let an $O\in \Sym{(P)}$ be fixed. By definition, we have that
+\begin{equation*}
+    O(B) = \{ O \eta : P(\eta) < 1 \} = \{ O \eta : P(O\eta) = P(\eta) < 1 \} = \{ \eta'\in \R^d : P(\eta') < 1 \} = B.
+\end{equation*}
+Now, suppose that $O(B) = B$ for some $O\in \MdR{}$. Then we have that
+\begin{equation*}
+    \{0 \} \cup \bigcup_{0<t<1} O t^E S = O(B) = B = \widetilde{S}\cup \{ 0 \} = \{ 0 \} \cup \bigcup_{0<t<1}t^E S.
+\end{equation*}
+Consider $\eta'\in B = O(B)$. If $\eta' = 0$ then there is nothing to prove since $O(0) = 0$. So, suppose $\eta'=Ot^E \xi = r^E \gamma$ for some $\xi,\gamma\in S$ and $t,r\in (0,1)$. Then we have
+\begin{equation*}
+    P(\eta') = P(Ot^E \xi) = P(r^E\gamma) = rP(\gamma)=r.
+\end{equation*}
+We notice that since $O(B)=B \subseteq \R^d$, $\abs{\det(O)}=1$. \textcolor{blue}{CORRECT THIS TO NOT INCLUDE $O^{-1}$ by Green Rudin's argument, page 50-ish --- Yes, there is!: We have
+\begin{equation*}
+m(B)=m(OB)=\int_{\mathbb{R}^d}\chi_{OB}(x)\,dx=\int_{\mathbb{R}^d}\chi_B(O^{-1}x)\,dx=\int_\mathbb{R}^d\chi_{B}|\det(O)|\,dx=|\det(O)|m(B). 
+\end{equation*}. }
+Let us write $O$ as
+\begin{equation*}
+    O = r^{E} O' t^{-E}
+\end{equation*}
+for some other $O'\in \MdR{}$ and invertible maps $r^E,t^{-E}$. It follows that 
+\begin{equation*}
+    r = rP(\gamma) =P(Ot^E \xi) = P(r^{E} O' t^{-E}t^E \xi) = P(r^E O' \xi)  = rP(O' \xi)
+\end{equation*}
+from which it follows that $P(O' \xi) = P(\xi) = 1$, and thus $O' \xi \in S$, for any $\xi\in S$. In view of the Lemma \ref{lem:S} (\textcolor{red}{NOT QUITE, LEMMA 0.6 ISN'T PROVED YET, OR APPEAL TO CLASSIFICATION OF $P$}), we have $O' \in \Sym(P)$.  Now, observe that
+\begin{equation*}
+    1 = \abs{\det{O}} = \abs{\det{r^E}}\abs{\det{O'}}\abs{\det{t^{-E}}} = \lp\f{r}{t}\rp^{\tr E} 
+\end{equation*}
+from which it follows that $r=t$. Consequently
+\begin{equation*}
+    P(O \xi) = P(r^E O' t^{-E} \xi) = \frac{r}{t} P(\xi) = P(\xi).
+\end{equation*}
+Notice that the argument holds for any level set of $P$ and any $t,r>0$. As a result, the last equality holds for any $\xi\in \R^d$. Therefore $O\in \Sym(P)$, as desired. We conclude that $O(B) = B$ if and only if $O\in \Sym(P)$.
+
+
+To prove the Item (2), let $O\in \Sym(P)$ and $\widetilde{F}\subseteq B$ be given. Consider $\eta'\in O(\widetilde{F})$, then $\eta' = O\eta$ for some $\eta = t^E \xi\in \widetilde{F}$ where $t\in (0,1)$ and $\xi\in S$. Then
+\begin{equation*}
+    P(\eta') = P(O \eta) = P(O t^E\xi) = P(t^E \xi) =  tP(\xi) = t < 1.
+\end{equation*}
+Thus, $\eta'\in B$, and so $O(\widetilde{F})\subseteq B$. 
+\end{proof}
+
+
+
+
+\end{framed}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{conjecture}[$\Sigma_S$ is closed under $\Sym(P)$]\label{prop:Sigma_closed}
+$O(F) \in \Sigma_S$ for all $F\in \Sigma_S$ and  $O\in \Sym(P)$. 
+\end{conjecture}
+
+
+\begin{proof}
+Let $F\in \Sigma_S$, and $O\in \Sym(P)$ be given. In view of Corollary 1.12 of \cite{RandlesBui2020}, we write $F = G\cup H$ where $G$ is a Borel set and $H$ is a subset of a Borel set $Z$ with $\sigma(Z) = 0$. It follows that
+\begin{equation*}
+    \widetilde{O(F)} = \bigcup_{0<t<1} t^E O(F)= \bigcup_{0<t<1} t^E O(G\cup H) 
+   = \bigcup_{0<t<1} t^E [O(G)\cup O(H)] = \lp\bigcup_{0<t<1} t^E O(G)\rp \cup \lp\bigcup_{0<t<1} t^E O(H)\rp.
+\end{equation*}
+It is fairly straightforward to check the last equality. We want to show that $O(G)\in \mathcal{B}(S)$. To this end, consider the following set:
+\begin{equation*}
+    \mathcal{A} \coloneqq \{ A \subseteq S : O(A) \in \mathcal{B}(S), O\in \Sym(P) \}
+\end{equation*}
+We will show that $\mathcal{B}(S)\subseteq \mathcal{A}$, so that if $G\in \mathcal{B}(S)$ then so is $O(G)$. By the definition of the Borel $\sigma$-algebra being the smallest $\sigma$-algebra on $S$ containing all open sets, it suffices to show that $\mathcal{A}$ is also a $\sigma$-algebra on $S$ and $\mathcal{A}$ contains all open sets. 
+\begin{subproof}[Subproof]
+\underline{Claim}: $\mathcal{A}$ is a $\sigma$-algebra on $S$. $\mathcal{A}$ is nonempty since $O(\varnothing) = \varnothing\in \mathcal{A}$. From Lemma \ref{lem:S}, we know that $O(S) = S \in \mathcal{B}(S)$ for any $O\in \Sym(P)$, so $S\in \mathcal{A}$. Now, suppose $A\in \mathcal{A}$, then by the bijectivity of $O$ we have 
+\begin{equation*}
+    O(S\setminus A) = O(S)\setminus O(A) =S\setminus O(A) \in \mathcal{B}(S).
+\end{equation*}
+thus $S\setminus A\in \mathcal{A}$. Finally, let $\{ A_n \}_{n\in \mathbb{N}}$ be a countable collection of sets in $\mathcal{A}$. Then because each $O(A_n)\in \mathcal{B}(S)$,
+\begin{equation*}
+    O\lp \bigcup_{n\in \mathbb{N}} A_n \rp = \bigcup_{n\in \mathbb{N}} O(A_n) \in \mathcal{B}(S).
+\end{equation*}
+So, $\bigcup_{n\in \mathbb{N}}\in \mathcal{A}$. Thus, we conclude that $\mathcal{A}$ is a $\sigma$-algebra. 
+\end{subproof}
+
+\begin{subproof}[Subproof]
+\underline{Claim}: $\mathcal{A}$ contains all open sets of $S$. Let $A\subseteq S$ be open and an $O\in \Sym{(P)} < \OdR{}$. Since $O$ is one-to-one, onto, continuous, and has continuous inverse, $O$ is a homeomorphism on $S$. Thus, $O(A)$ is open in $S$ and thus belongs to $\mathcal{B}(S)$. So, $A\in \mathcal{A}$ as desired.
+\end{subproof}
+
+From the subproofs, we conclude that $\mathcal{B}(S)\subseteq \mathcal{A}$. Since $G\in \mathcal{B}(S)\subseteq \mathcal{A}$, we have $O(G)\in \mathcal{B}(S)$. In view of Proposition 1.2 of \cite{RandlesBui2020}, we have
+\begin{equation*}
+    \bigcup_{0<t<} t^E O(G) = \widetilde{O(G)} \in \mathcal{M}_d.
+\end{equation*}
+Now, it remains to show that 
+\begin{equation*}
+    \bigcup_{0<t<1} t^E O(H) = \widetilde{O(H)} \in \mathcal{M}_d.
+\end{equation*}
+From the choice of $H$, we have $ H \subseteq Z \in \mathcal{B}(S)$. In view of the subproofs above and the fact that $O$ is a bijective, $O(H)\subseteq O(Z) \in \mathcal{B}(S)$. Again, by Proposition 1.2 of \cite{RandlesBui2020}, we have $\widetilde{O(H)} \subseteq \widetilde{O(Z)}\in \mathcal{M}_d$. 
+It follows that \textcolor{red}{Do we need to know that $ m(\widetilde{O(Z)})=0$?} \textcolor{blue}{ -- NO, WILL NEED CLASSIFICATION OF $P$ TO RESOLVE THIS ISSUE.}
+
+\begin{equation*}
+    \widetilde{O(F)} = \widetilde{O(G)}\cup \widetilde{O(H)} \in \mathcal{M}_d.
+\end{equation*}
+Therefore,  $O(F)\in \Sigma_S$ for any $O\in \Sym{(P)}$ as desired. We conclude that $\Sigma_S$ is closed under $\Sym(P)$. 
+
+\end{proof}
+
+
+\begin{conjecture}
+For any $O\in\Sym(P)$ and $F\in\Sigma_S$,
+\begin{equation*}\label{eq:Conjec1}
+\sigma(O (F))=\sigma(F).
+\end{equation*} 
+\end{conjecture}
+
+
+
+\begin{proof}
+Let $E\in \Exp(P)$ and $O\in \Sym(P)$ be given. In view of Lemma \ref{lem:ExpP}, we have 
+\begin{equation*}
+    E' = O^\top E O \in \Exp(P).
+\end{equation*}
+Consider the measure spaces constructed from $E$ and $E'$ respectively: $(S, \Sigma_{S,E},\sigma_E)$ and $(S,\Sigma_{S,E'},\sigma_E)$. By virtue of Proposition 1.15 in \cite{RandlesBui2020}, these measure spaces are the same, i.e., $\Sigma_{S,E} = \Sigma_{S,E'}$ and $\sigma_{E} = \sigma_{E'}$. For convenience, let us call these equivalent measure spaces the triple $(S,\Sigma_S,\sigma)$. 
+
+Let $F\in \Sigma_S$ be given. We will show that $O(F)\in \Sigma_S$. To this end, we first notice that since $O\in \Sym(P) < \GldR{}$, $OO^\top = I$. As a result, we can write
+\begin{equation*}
+    \widetilde{O(F)} = \bigcup_{0<t<1}t^E O(F) = \bigcup_{0<t<1} OO^\top t^E O(F) = \bigcup_{0<t<1}O t^{O^\top E O} F = O\lp \bigcup_{0<t<1}t^{E'} F\rp.
+\end{equation*}
+We observe that the set $\bigcup_{0<t<1} t^{E'}F$ is Lebesgue measurable since $F\in \Sigma_S = \Sigma_{S,E'}$. By the orthogonal invariance of the Lebesgue measure, $\widetilde{O(F)}$ is also Lebesgue measurable, with
+\begin{equation*}
+    m (\widetilde{O(F)} ) = m\lb O \lp \bigcup_{0<t<1}t^{E'}F \rp \rb =  m\lp \bigcup_{0<t<1}t^{E'}F \rp.
+\end{equation*}
+Therefore, $O(F)\in \Sigma_S$, with which it makes sense to ask for the measure of $O(F)$:
+\begin{equation*}
+    \sigma(O(F)) = (\tr E)m(\widetilde{O(F)}).
+\end{equation*}
+Now, in view of Proposition 1.15 in \cite{RandlesBui2020} and the fact that $\tr E = \tr E'$ for $E,E'\in \Exp(P)$, we have that
+\begin{equation*}
+    m\lp \bigcup_{0<t<1}t^{E'}F \rp = \frac{\sigma_{E'}(F)}{\tr E' }  
+    = 
+    \frac{\sigma_E(F)}{\tr E'} =  \frac{\sigma_E(F)}{\tr E}   = m\lp \bigcup_{0<t<1} t^E F  \rp.
+\end{equation*}
+From the last three equations, we conclude that 
+\begin{equation*}
+    \sigma(O(F)) = \sigma(F).
+\end{equation*}
+Therefore, the measure $\sigma$ is invariant under symmetry group $\Sym(P)$ of $P$.  
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+\begin{thebibliography}{99}
+
+\bibitem{Bogachev2007}
+V. I. Bogachev.
+\newblock {\em {Measure Theory} Vol. 1}.
+\newblock Springer-Verlag, 2007.
+
+\bibitem{Folland1984}
+Gerald Folland.
+\newblock {\em {Real Analysis: Modern Techniques and Their Applications}}, {\em Pure \& Applied Mathematics}.
+\newblock Wiley-Interscience, 1984
+
+\bibitem{Randles2017}
+Evan Randles and Laurent Saloff-Coste. 
+\newblock {\em {``Convolution powers of complex functions on $\mathbb{Z}^d$."}
+\newblock Revista Matem\'{a}tica Iberoamericana, vol. 33, no. 3, 2017, pp. 1045-1121.}
+
+
+\bibitem{Rudin1987}
+Walter Rudin.
+\newblock {\em {Real and Complex Analysis}}, {\em McGraw-Hill Series in Higher Mathematics}.
+\newblock WCB/McGraw-Hill, 1987.
+
+\bibitem{Stein2005}
+Elias Stein and Rami Shakarchi.
+\newblock {\em {Real Analysis} Measure Theorem, Integration, \& Hilbert Spaces}, {\em Princeton Lectures in Analysis III}.
+\newblock Princeton University Press, 2005.
+
+
+\bibitem{RandlesBui2020}
+Evan Randles and Huan Bui.
+\newblock {\em A generalized polar coordinate integration formula}, 2020
+
+
+
+\end{thebibliography}
+
+
+
+\end{document}

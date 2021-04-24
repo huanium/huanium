@@ -1,0 +1,158 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{cancel}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\usepackage{newpxtext,newpxmath}
+\usepackage[left=1.25in,right=1.25in,top=1.25in,bottom=1.25in]{geometry}
+\usepackage{framed}
+\usepackage{enumerate}
+\usepackage{eqnarray}
+\usepackage{caption}
+\usepackage{subcaption}
+
+%\newcommand{\fig}[1]{figure #1}
+%\newcommand{\explain}{appendix?}
+%\newcommand{\rat}{\mathbb{Q}}
+%
+%\newcommand{\mathbb{R}}{\mathbb{R}}
+%\newcommand{\nat}{\mathbb{N}}
+%\newcommand{\inte}{\mathbb{Z}}
+%\newcommand{\M}{{\cal{M}}}
+%\newcommand{\sss}{{\cal{S}}}
+%\newcommand{\rrr}{{\cal{R}}}
+%\newcommand{\uu}{2pt}
+%\newcommand{\vv}{\vec{v}}
+%\newcommand{\comp}{\mathbb{C}}
+%\newcommand{\field}{\mathbb{F}}
+%\newcommand{\f}[1]{ \hspace{.1in} (#1) }
+%\newcommand{\set}[2]{\mbox{$\left\{ \left. #1 \hspace{3pt}
+%\right| #2 \hspace{3pt} \right\}$}}
+%\newcommand{\integral}[2]{\int_{#1}^{#2}}
+%\newcommand{\ba}{\hookrightarrow}
+%\newcommand{\ep}{\varepsilon}
+%\newcommand{\limit}{\operatornamewithlimits{limit}}
+%\newcommand{\ddd}{.1in}
+%\newcommand{\ccc}{2in}
+%\newcommand{\aaa}{1.5in}
+%\newcommand{\B}{{\cal B}}
+%\newcommand{\C}{{\cal C}}
+%\newcommand{\D}{{\cal D}}
+%\newcommand{\FF}{{\cal F}}
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\p}{\partial}%
+%\usepackage{MnSymbol,wasysym}
+
+\begin{document}
+	\begin{framed}
+\begin{center}
+{\large \bf MA355: Combinatorics Midterm 2 (Prof. Friedmann)}\\
+{ Huan Q. Bui}\\
+Due: Mar 19 2021
+\end{center}
+\end{framed}
+
+
+
+
+
+
+
+\noindent \textbf{1.} \textbf{Book and Shelves}
+\begin{enumerate}[(a)]
+	\item Before shelving the books, we first line all the books on the floor and place two dividers into this line of $n+r+t$ books to make 3 groups, the first group will go to the first shelf, the second to the second shelf, and the third to the third shelf.  
+	
+	There are $n+r+t+2$ slots. We pick 2 of them for the dividers then subsequently pick $n$ slots for the combinatorics books and $r$ for the algebra books. The total number of ways is
+	\begin{equation*}
+	\boxed{{ n+r+t+2\choose{2}} { n+r+t\choose{n} }{ r+t\choose{r} }}
+	\end{equation*}
+	
+	
+	\item If the $k$ books are identical then we know from Problem 128 that the number of ways to distribute them to $n$ distinct shelves so that each shelf gets at least 3 books is 
+	\begin{equation*}
+	{ n+k-1-3n \choose{n-1}}.
+	\end{equation*}
+	But the $k$ books here are distinct, so we multiply this number by $k!$. The answer is 
+	\begin{equation*}
+	\boxed{k! { n+k-1-3n \choose{n-1}}}
+	\end{equation*}
+\end{enumerate}
+
+
+
+\noindent \textbf{2. Games of Bridge} 
+\noindent Let $B_n$ denote the number of ways to divide $4n$ people into sets of four for games of bridge. Suppose that 4 more people want to join. To re-assign the quartets, we first pick 4 players out of the new total of $4(n+1)$ to form one game, then have $B_n$ ways to form the remaining $n$ games. This means that
+\begin{equation*}
+\boxed{B_{n+1} = {4n+4 \choose 4} B_n} 
+\end{equation*} 
+where $B_0 = 1$, so that $B_1 = 1$. We can also start at $B_1=1$ -- it doesn't matter. 
+
+
+\newpage
+
+
+
+
+\noindent \textbf{3. Forest, Trees, and Roots}
+
+\begin{enumerate}[(a)]
+	\item $F$ has $n$ vertices and $k$ connected components, i.e., $k$ trees. From Problem 108, we know that for each tree the number of vertices is one bigger than the number of edges. Since there are $k$ trees and the numbers of vertices and edges over all trees sum to those of $F$, there must be $k$ vertices than edges in $F$. So, $F$ has $\boxed{n-k}$ edges.
+	
+	
+	\item 
+	\begin{enumerate}[1.]
+		\item To turn a rooted tree into a directed rooted tree we do the following. Call $r$ the root vertex and look at the collection $R_1$ of vertices connected to $r$. We assign the direction $r\to r_{1i}$ to each $r_{1i}\in R_1$. Next, we look at each $r_{1i}\in R_1$, which is connected (with direction) to $r$ and possibly (without direction) to some  collection $R_{2i}$ of vertices. Assign the direction $r_{1i}\to r_{2ij}$ for each $r_{2ij}\in R_{2i}$. For each $r_{2ij}\in R_{2i}$, we repeat the process: assign the direction $r_{2ij}\to r_{3ijk}\in R_{3ij}$, and so on until we have assigned directions to all edges and end up with a directed rooted tree. This proves \textit{existence}. 
+		
+		\indent $\quad$ Uniqueness really follows from the preceding paragraph. But we can also get uniqueness the following way. In a directed rooted tree, all directions point away from the root. So, if at least one of the edges changes direction, we no longer have a directed rooted tree. 
+		
+		\item Given a tree with $n$ vertices, there are $n$ ways to designate a root. From part 1., each rooted tree gotten by choosing a root gives exactly one directed rooted tree. So, the number of directed rooted trees with the same set of edges and vertices is the $\boxed{\text{number of vertices of the tree.}}$
+	\end{enumerate}
+
+	\item $F$ contains $F'$ as a directed graph. Since $F$ and $F'$ both have $n$ vertices, the number of edges in $F$ must be at most that in $F'$. In view of Part 1., this implies that the number of components in $F'$ must be smaller than or equal to the number of components in $F$. 
+	
+	
+	\item 
+	\begin{enumerate}[1.]
+		\item Since $F_i$ has $i$ components and $n$ vertices, $F_{i}$ has one more edge compared to $F_{i-1}$. So, to go from $F_{k}$ to $F_{k-1}$ we must add one directed edge to $F_k$. To do this, we first pick a vertex $v$ ($n$ choices). Then, we need to connect some root $r$ that is not the root of the tree containing $v$ ($k-1$ choices) to the vertex $v$. The direction of this edge must be $r\to v$ to ensure that $F_{k-1}$ is a forest. So, there are $n(k-1)$ ways to pick $F_{k-1}$. Repeating this argument, going from $F_{k-1}$ to $F_{k-2}$ and so on to $F_1$, we find that the number of ways to choose the sequence $F_1, F_2, \dots, F_k$ is 
+		\begin{equation*}
+		N^*(F_k) = n(k-1)n(k-2)n(k-3)\dots n(1) = \boxed{n^{k-1}(k-1)!}
+		\end{equation*}
+		
+		\item $N(F_k)$, the number of directed rooted trees containing $F_k$, is just the number of possible $F_1$'s (because a directed rooted forests with one component is a directed rooted tree). From the previous part, we know that if the \textit{order} in which we add the edges matters, then there are $n^{k-1}(k-1)!$ ways to get to go from $F_k$ to a directed rooted tree. Here, we only care about the number of possible trees rather than the number of ways to get those trees, so we must divide the answer from the previous part by $(k-1)!$, giving
+		\begin{equation*}
+		N(F_k) = \f{N^*(F_k)}{(k-1)!} = \boxed{n^{k-1}}
+		\end{equation*}
+		\textcolor{purple}{Alternatively, we can think about this in reverse order: As argued, there are $N(F_k)$ ways to start the refining sequence $F_1, F_2, \dots, F_k$. $F_1$ contains $(k-1)$ extra edges compared to $F_k$, so going from $F_1$ to $F_2$ requires deleting one of those $(k-1)$ edges, then $F_2$ to $F_3$ requires deleting one of the remaining $(k-2)$ edges, and so on, until there is only edge to delete going from $F_{k-1}$ to $F_k$. This gives 
+		\begin{equation*}
+		N^*(F_k) = N(F_k)(k-1)!
+		\end{equation*}
+		Rearranging gives $N(F_k)$.}
+		
+		\item From the preceding part, $N(F_n)$ is the number of directed rooted trees containing just the $n$ roots. So, $N(F_n)$ is the number of directed rooted trees with vertex set $\{1,2,\dots,n\}$. From Part (b) and the fact that for each such tree there are $n$ choices for the root, we find the number of trees with vertex set $\{1,2,\dots,n\}$ to be $N(F_n)/n = n^{n-1}/n = \boxed{n^{n-2}}$
+		
+	\end{enumerate}
+\end{enumerate}
+
+
+
+
+\noindent \textbf{4. Combinatorial sandwiches}
+
+
+
+
+\end{document}

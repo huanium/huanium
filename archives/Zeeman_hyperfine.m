@@ -11,7 +11,7 @@ J = 3/2;
 I = 3/2;
 L = 1; 
 S = 1/2;
-B = 0:0.01:1.5; % units is Gauss
+B = 0:0.0025:1.2; % units is Gauss
 Ahf = 1.973e6; % Ahf coef in Hz 
 Bhf = 0.870e6; % Bhf coef in Hz
 
@@ -52,7 +52,10 @@ for b = B % loop over field strengths
     plot(b*ones(size), energies, 'o', 'Color', 'red', 'MarkerSize',1);
 end
 hold off
-title('Hyperfine Zeeman splitting for P_{3/2}')
+dim = [0.2 0.6 0.25 0.3];
+str = {'B = 0.870 MHz, A = 1.973 MHz'};
+annotation('textbox',dim,'String',str,'FitBoxToText','on');
+title('Hyperfine Zeeman splitting for P_{3/2} of K-39 (I=3/2)')
 xlabel('Magnetic Field (G)')
 ylabel('Energy Shift (MHz)')
 

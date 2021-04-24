@@ -1,0 +1,1007 @@
+\documentclass{article}
+\usepackage[left=1in,right=1in,top=1in, bottom=1in]{geometry}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage{bm}
+\usepackage{array}    
+\usepackage{authblk}
+\usepackage{framed}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\renewcommand\Re{\operatorname{Re}}
+\renewcommand\Im{\operatorname{Im}}
+\newcommand\MdR{\mbox{M}_d(\mathbb{R})}
+\newcommand\GldR{\mbox{Gl}_d(\mathbb{R})}
+\newcommand\OdR{\mbox{O}_d(\mathbb{R})}
+\newcommand\Sym{\operatorname{Sym}}
+\newcommand\Exp{\operatorname{Exp}}
+\newcommand\diag{\operatorname{diag}}
+\newcommand\supp{\operatorname{Supp}}
+\newcommand\Spec{\operatorname{Spec}}
+\renewcommand\det{\operatorname{det}}
+\newcommand\Ker{\operatorname{Ker}}
+\usepackage{empheq}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\newcommand{\bigzero}{\mbox{\normalfont\Large\bfseries 0}}
+\newcommand{\rvline}{\hspace*{-\arraycolsep}\vline\hspace*{-\arraycolsep}}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\ift}{\infty}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\iprod}{\mathbin{\lrcorner}}
+\usepackage{subfig}
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}{Remark}
+\newcommand*{\myproofname}{Proof}
+\newenvironment{subproof}[1][\myproofname]{\begin{proof}[#1]\renewcommand*{\qedsymbol}{$\mathbin{/\mkern-6mu/}$}}{\end{proof}}
+\newcommand{\Vol}{\operatorname{Vol}}
+
+
+
+
+
+\author{Huan Bui and Evan Randles}
+\title{Riemannian Geometry on $S$}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+Our goal in this section is to write down a integration formula over $S$ from the Riemannian geometry approach. To this end, we assume that $P$ is smooth and view $S$, the unital level set of $P$, as a $(d-1)$-dimensional smooth submanifold of $\R^d$. 
+
+
+
+
+
+We will show that, in this perspective, the Riemannian volume form $d\Vol_S$ of $S$ coincides with the $(d-1)$ form on $S$:
+\begin{equation*}
+    d\Vol_S(v_1,\dots,v_{d-1}) = d\Vol_{\R^d}(\Pi, d\iota(v_1),\dots, d\iota(v_{d-1}))
+\end{equation*}
+for $v_1,\dots,v_{d-1}\in TS$ and $\Pi\in T\mathbb{R}^d$ is the canonical normal tangent vector derivation defined in the following way: given $p\in S$ and $f\in C^{\infty}(\mathbb{R}^d)$:
+\begin{equation*}
+\Pi(f) = N \cdot \grad_{\bf{u}} f \bigg\vert_{p} = \f{\grad_\mathbf{u} P}{\norm{\grad_\mathbf{u} P}}  \cdot \grad_{\bf{u}} f \bigg\vert_{p}.
+%=\frac{d}{dt}f(p+tN(p))\big\vert_{t=0}.
+\end{equation*} 
+Consequently, one can write down a formula for integration on the manifold $S$, for any given chart and coordinate system.
+
+
+\section{$S$ is a smooth manifold of codimension 1}
+
+Let a point $\xi\in \R^d$ be given. The rank of $P$ at $\xi$ is defined to be the rank of the linear map $d P_\xi: T_\xi \R^d \to T_{P(\xi)} \R $. Equivalently it is the rank of the Jacobian matrix:
+\begin{equation*}
+    J_P(\xi) = \begin{pmatrix}
+    \p_1 P(\xi) & \dots & \p_{d} P(\xi)
+    \end{pmatrix}_{ d \times d}.
+\end{equation*}
+$\text{Rank}(J_P(\xi)) = 0$ if and only if $\xi = 0$. Otherwise, $\text{Rank}(J_P(\xi)) = 1 = \dim(\R)$. Thus, $P$ does not have \textbf{constant rank}. However, $P$ need not have constant rank on the entirety of $\R^d$ for our purposes. It suffices to consider $P$ restricted to $\R\setminus \{0 \}$.  
+%Since $P$ is assumed to be smooth with $\text{Rank}(P) = 1$ everywhere except at the origin, we see that $P$ is very close to being \textbf{smooth submersion}. The reason why we want $P$ to be a smooth submersion is so we can use the Submersion Level Set Theorem:
+% \begin{theorem}[Lee, 2003, Cor 8.9]
+% Let $F: M_1 \to M_2$ be a submersion. Then each level set of $F$ is a closed embedded submanifold in $M_1$ of dimension $\dim(M_1) - \dim(M_2)$.  
+% \end{theorem}
+Under this restriction, $\text{Rank}(P) = \dim(\R) = 1$ at all points $\xi \in P^{-1}(x)$ for some $x\in \R$. Such values of $x$ are called \textbf{regular}. Since we know that $P(\xi) = 0$ if and only if $\xi = 0$, each $x\in \R_+\setminus\{ 0 \}$ is regular. Proposition 3.3.3 in \cite{absil2009optimization} establishes that $S$ is a closed embedded submanifold in $\R^d$ of codimension $1$. In other words, $S$ is a compact embedded smooth hypersurface.
+
+% \begin{theorem}[Prop 3.3.3 in \cite{absil2009optimization}]
+% Let $F : M_1 \to M_2$ be a smooth mapping and let $y\in M_2$ be a regular value. Then $F^{-1}(y)$ is a closed embedded submanifold in $M_1$ of dimension $\dim(M_1) - \dim(M_2)$.
+% \end{theorem}
+
+In what follows, we shall view $\mathbb{R}^d$ as a smooth Riemannian manifold (with the standard Riemannian metric $\eta$ having $[\eta_{\alpha\beta}]=I$ in the global Euclidean chart) with the associated oriented atlas on $\mathbb{R}^d$ which we denote by $\mathcal{A}(\mathbb{R}^d)$. The associated Riemannian volume form on $\mathbb{R}^d$ will be denoted by $d\Vol_{\mathbb{R}^d}$. 
+
+We say that a chart $(\mathcal{U},\varphi^{-1})$ on $S$ is positively oriented if 
+\begin{equation*}
+d\Vol_{\mathbb{R}^d}(\Pi,d\iota(\partial_{x^1}),d\iota(\partial_{x^2}),\dots,d\iota(\partial_{x^{d-1}}))>0
+\end{equation*}
+on $\mathcal{U}$. Equivalently, $(\mathcal{U},\varphi^{-1})$ is positively oriented if the ordered list $\{\Pi,d\iota(\partial_{x^1}),d\iota(\partial_{x^2}),\dots,d\iota(\partial_{x^{d-1}})\}\subseteq T\mathbb{R}^d$ is a positively-oriented frame. It is straightforward to see that the collection of all oriented charts on $S$ is an atlas, which we denote by $\mathcal{A}_+(S)$.
+
+
+
+\section{Riemannian Volume Form on $S$}
+
+Proposition 13.6 in \cite{lee2013smooth} and a remark that follows establish that we can always find a smooth, oriented orthonormal frame $\{ E_\mu \}_{\mu = 1}^{d-1}$ in a neighborhood of each point  $p\in S$. 
+% \begin{proposition}[Prop 13.6 in \cite{lee2013smooth}]
+% Suppose $(M,g)$ is a Riemannian manifold with or without boundary, and $\{ X_\mu \}$ is a smooth local frame for $M$ over an open subset $U\subseteq M$. Then there is a smooth orthonormal frame $\{E_\mu \}$ over $U$ such that 
+% \begin{equation*}
+%     \text{Span}(E_1\vert_p, \dots, E_j\vert_p) = \text{Span}(X_1\vert_p, \dots, X_j\vert_p) 
+% \end{equation*}
+% for each $j = 1,\dots,n$ and each $p\in U$. 
+% \end{proposition}
+
+% \begin{remark}[Oriented Orthonormal Frame]\label{rem:orthoframe}
+% Let $(M,g)$ be an oriented Riemannian manifold of positive dimension. From the proposition above, there is a smooth orthonormal frame $\{ E_\mu\}^n_{\mu = 1}$ in a neighborhood of each point of $M$. By replacing $v_\mu$ by $-v_\mu$ if necessary, we can find an \textit{oriented} orthonormal frame in a neighborhood of each point. 
+% \end{remark}
+% \begin{proposition}[Prop 15.29 in \cite{lee2013smooth}]\label{prop:Lee15.29}
+% Suppose $(M,g)$ is an oriented Riemannian $n$-manifold with or without boundary, and $n\geq 1$. There is a unique smooth orientation form $\omega_g \equiv d\Vol_M$, called the Riemannian volume form, that satisfies
+% \begin{equation*}
+%     \omega_g(e_1,\dots,e_n) = 1
+% \end{equation*}
+% for every local oriented orthonormal frame $\{e_\mu\}_{\mu = 1}^n$ for $M$.
+% \end{proposition}
+% \begin{proof} (from \cite{lee2013smooth})
+% Suppose first that such a form $\omega_g \in \dim(\Lambda^d(\R^{d*}))$ exists. If $\{ e_\mu \}_{\mu = 1}^n$ is any local oriented orthonormal frame on an open set $U\subset M$ and $\{ e^\mu \}$ is the dual coframe. By Proposition 14.18 in \cite{lee2013smooth}, $\dim(\Lambda^d(\R^{d*}))= {d \choose{d}} = 1$. Thus, we can write 
+% \begin{equation*}
+%     \omega_g = f\, e^1 \land \dots \land e^n
+% \end{equation*}
+% on $U$, for some function $f$. The condition in the hypothesis reduces to $f = 1$, so that
+% \begin{equation*}
+%     \omega_g = e^1 \land \dots \land e^n.
+% \end{equation*}
+% This shows that the form is uniquely determined. To prove existence we \textit{define} $\omega_g$ in a neighborhood of each of point by 
+% \begin{equation*}
+%     \omega_g = e^1 \land \dots \land e^n
+% \end{equation*}
+% and check that this definition is independent of the choice of the oriented orthonormal frame. If $\{ \tilde{e}_\mu \}$ is another oriented orthonormal frame, with dual coframe $\{ \tilde{e}^\mu \}$, let
+% \begin{equation*}
+%     \tilde{\omega}_g = \tilde{e}^1 \land \dots \land \tilde{e}^n.
+% \end{equation*}
+% We can write
+% \begin{equation*}
+%     \tilde{e}_\mu = A^\nu_\mu v_\nu \iff e^\nu(\tilde{e}_\mu) = A^\nu_\mu
+% \end{equation*}
+% for some matrix $A^\nu_\mu$ of smooth functions. Since both frames are orthonormal, $A^\nu_\mu(p)\in O(n)$ for each $p$, so $\det(A^\nu_\mu) = \pm 1$. But since two frames are consistently oriented, $\det(A^\nu_\mu) = 1$. With this, 
+% \begin{equation*}
+%     \omega_g(\tilde{e}_1,\dots,\tilde{e}_n) = \det(e^\nu(\tilde{e}_\mu) ) = \det(A^\nu_\mu) = 1 = \tilde{\omega}_g(\tilde{e}_1,\dots,\tilde{e}_n),
+% \end{equation*}
+% where the first equality is a property of the wedge product (Proposition 14.11 in \cite{lee2013smooth}). So, $\omega_g = \tilde{\omega}_g$. This means that defining $\omega_g$ in a neighborhood of each point by 
+% \begin{equation*}
+%     \omega_g = e^1 \land \dots \land e^n
+% \end{equation*}
+% with respect to some smooth oriented orthonormal frame yields a global $n$-form. The resulting form is smooth and satisfies the condition in the hypothesis. 
+% \end{proof}
+Consider a local chart on $S$ denoted by $(\mathcal{U}, \varphi^{-1})$, at a point $p\in S$. The chart is written in this way to suggest that $\varphi: U \subseteq \R^{d-1} \to \mathcal{U} \subseteq \R^d$ is a parameterization that sends an open set $U\subseteq \R^{d-1}$ to $\mathcal{U}\subseteq \R^d$. Let ${\bf{x_0}}\in U$ such that $\varphi({\bf{x_0}}) = p\in S$. We consider the normal field $N : \R^d \to \R^d$ to $S$ defined in the following way. For each point $p \in S$, 
+\begin{equation*}
+    N(p) = \f{\grad_{\bf{u}} P(p)}{\norm{\grad_{\bf{u}} P(p)}}
+\end{equation*}
+where $P$ is our positive homogeneous function and $\grad_{\bf{u}}$ denotes the gradient with respect to the usual Cartesian coordinates $\{u^\mu\}$. Let the Riemannian volume form $d\Vol_{\R^d}$ on $\R^d$ be given. Now, we consider the following form:
+\begin{equation*}
+d\Vol_{\mathbb{R}^d} (\Pi, d\iota(v_1),d\iota(v_2)\cdots,d\iota(v_{d-1})).
+\end{equation*}
+Here, $\{ v_\mu \}_{\mu = 1}^{d-1}$ is any collection of elements in $TS$, $\iota: S\xhookrightarrow{} \R^d$ is the inclusion map,  $d\iota : TS \to T\R^d$, and $\Pi\in T\mathbb{R}^d$ is the canonical normal tangent vector derivation defined earlier. We claim that this form on $\R^d$ coincides with the Riemannian volume form on $S$:
+\begin{equation*}
+    d\Vol_S(v_1,\dots,v_{d-1}).
+\end{equation*}
+Before proving this claim, let us consider some $f\in C^\infty(\R^d)$ and understand the structure of $\Pi(f)$ and $d\iota$ explicitly. Given $f = f(u^1,\dots,u^d)$ and a point $p\in S$, we can explicitly compute $\Pi$ at $f(p)$: 
+\begin{equation*}
+\Pi(f)\bigg\vert_p = \f{1}{\norm{\grad_{\bf{u}} P(p)}} \grad_{\bf{u}} f(p) \cdot \grad_{\bf{u}} P(p) 
+= \sum^d_{\mu = 1} \f{1}{\norm{\grad_{\bf{u}} P(p)}} \f{\p P}{\p u^\mu} \f{\p}{\p u^\mu} f \bigg\vert_{p} 
+= N^\mu\bigg\vert_{p}\cdot \f{\p}{\p u^\mu}f\bigg\vert_{p}.
+\end{equation*}
+By definition of the differential of the inclusion map, we have
+\begin{equation*}
+d\iota(v)(f)=v(f\circ\iota)
+\end{equation*}
+where every $v\in T_pS$ can be locally written as 
+$v =v^\mu \p_\mu$, which is to say that for every $h = (x^1,\dots,x^{d})\in C^\infty(S)$, 
+\begin{equation*}
+    v(h) = v^\mu \f{\p}{\p x^\mu} (h\circ \varphi)\bigg\vert_{\mathbf{x_0}} = v^\mu \f{\p}{\p x^\mu} h \bigg\vert_{p}.
+\end{equation*}
+With this, we can compute $d\iota(v)$ for $f\in C^{\infty}(\R^d)$:
+\begin{equation*}
+d\iota(v)(f) =v(f\circ\iota)=v^{\mu}\frac{\partial}{\partial x^{\mu}}(f\circ\iota\circ\varphi)\bigg\vert_{\mathbf{x_0}}
+=v^\mu\frac{\partial}{\partial x^{\mu}} f \bigg\vert_{p}.
+\end{equation*}
+In particular, for each of the standard basis elements $\p_\mu$ of $T_p\R^d$,
+\begin{equation*}
+d\iota(\partial_\mu)(f)=\frac{\partial}{\partial x^{\mu}}(f\circ\varphi)\bigg\vert_{\mathbf{x_0}} = \f{\p}{\p x^\mu} f \bigg\vert_{p}
+\end{equation*}
+Now, given that $f=f(u^1,u^2,\dots,u^d)$, we may use the chain rule to observe that
+\begin{equation*}
+\frac{\partial}{\partial x^{\mu}}(f\circ\varphi)\bigg\vert_{\mathbf{x_0}}=\grad_\mathbf{u}f\bigg\vert_{\varphi(\mathbf{x}_0)}\cdot\left(\frac{\partial\varphi_1}{\partial x^{\mu}},\frac{\partial\varphi_2}{\partial x^{\mu}},\cdots,\frac{\partial\varphi_d}{\partial x^{\mu}}\right)\bigg\vert_{\mathbf{x_0}}
+= \f{\p \varphi_\nu}{\p x^\mu}\bigg\vert_{\mathbf{x_0}} \f{\p f}{\p u^\nu}\bigg\vert_{\varphi(\mathbf{x_0}) = p}.
+\end{equation*}
+Putting the two preceding identities together yields
+\begin{equation*}
+d\iota\left(\frac{\partial}{\partial x^\mu}\right)(f) =\frac{\partial\varphi_1}{\partial x^{\mu}}\frac{\partial f}{\partial u^1}+\frac{\partial\varphi_2}{\partial x^{\mu}}\frac{\partial f}{\partial u^2}+\cdots+\frac{\partial\varphi_d}{\partial x^{\mu}}\frac{\partial f}{\partial u^d}
+\end{equation*}
+which tells us how $d\iota(\partial/\partial x^\mu)$ acts on any $f\in C^{\infty}(M)$. This gives us the canonical ($u$) coordinate expression for $d\iota(\partial/\partial x^{\mu})$:
+\begin{equation*}
+d\iota\left(\frac{\partial}{\partial x^{\mu}}\right)=\frac{\partial\varphi_\beta}{\partial x^{\mu}}\frac{\partial}{\partial u^\beta}.
+\end{equation*}
+Appealing to linearity, we find that for any $v = v^\mu \p_\mu \in T_p S$ we have
+\begin{equation*}
+d\iota(v)= v^\mu\f{\p \varphi_\nu}{\p x^\mu}\bigg\vert_{\mathbf{x_0}} \f{\p }{\p u^\nu}\bigg\vert_{\varphi(\mathbf{x_0}) = p}.
+\end{equation*}
+
+With these notions clarified, we are ready to prove the claim.
+\begin{proposition}\label{prop:dVolsCoincide}
+Let $d\Vol_{\mathbb{R}^d}$ be the canonical Riemannian volume form on $\mathbb{R}^d$. Then the form
+\begin{equation*}
+\omega(v_1,v_2,\dots,v_{d-1})=d\Vol_{\mathbb{R}^d}(\Pi,d\iota(v_1),d\iota(v_2),\dots,d\iota(v_{d-1})) \in \Lambda^{d-1}(S)
+\end{equation*}
+for $v_1,v_2,\dots,v_{d-1}\in TS$ coincides with the Riemannian volume form on $S$, i.e., $\omega=d\Vol_S$.
+\end{proposition}
+
+\begin{proof}
+Let $\{ E_\mu \}_{\mu = 1}^{d-1}\subseteq TS$ be an oriented orthonormal frame on $S$ (as guaranteed by Remark \ref{rem:orthoframe}). By definition, the induced metric on $S$ is given by 
+\begin{equation*}
+    g^S(v,w) = \eta(d\iota (v), d\iota(w))
+\end{equation*}
+whenever $v,w\in TS$. The orthonormality of $\{E_\mu\}$ implies that 
+\begin{equation*}
+    \delta_{\mu\nu} = g^S(E_\mu,E_\nu) = \eta(d\iota(E_\mu), d\iota(E_\nu)).
+\end{equation*}
+Thus, the collection $\{ d\iota(E_\mu) \}_{\mu = 1}^{d-1}\subseteq T\R^d$ is mutually orthonormal with respect to the Euclidean metric on $\mathbb{R}^d$. We claim that $\Pi$ is orthogonal to this collection. As this is a local criterion, let $p\in S\subseteq\mathbb{R}^d$ and consider $(\mathcal{U},\varphi^{-1})$ be a chart on $S$ at $p=\varphi(x^1,x^2,\dots,x^{d-1})$. Also, we take $(\mathbb{R}^d,\mbox{Id}_{\mathbb{R}^d})$ the canonical global chart on $\mathbb{R}^d$ with Cartesian coordinates $(u^1,u^2,\dots,u^d)$ and, in this coordinate system, $\eta_{\mu\nu}=\delta_{\mu\nu}$. For any $v=v^\alpha\partial_{x^{\mu}}\in T_pS$, as shown in the calculations preceding the proof,
+\begin{equation*}
+d\iota(v)=v^{\mu}\frac{\partial\varphi_\al}{\partial x^\mu}\partial_{u^{\al}}\in T_p\mathbb{R}^d.
+\end{equation*}
+Also, for our normal vector $N$, we saw that $\Pi=N^{\mu}\partial_{u^\mu}$. By normality, $\eta(\Pi,\Pi)\equiv 1$. Further,
+\begin{equation*}
+    \eta(d\iota(v) , \Pi) = \eta\lp v^\mu\f{\p \varphi_\al }{ \p x^\mu} \f{\p}{\p u^\al}, N^\nu \f{\p}{\p u^\nu} \rp =  v^\mu N^\nu \f{\p \varphi_\al }{ \p x^\mu} \eta\lp \f{\p}{\p u^\alpha}, \f{\p}{\p u^\nu} \rp
+    = v^\mu N^\nu \f{\p \varphi_\al }{ \p x^\mu} \eta_{\alpha\nu} = v^\mu N^\nu \f{\p \varphi_\nu }{ \p x^\mu} = 0,
+    %= v^\mu \f{\grad_\mathbf{u} P}{\norm{\grad_\mathbf{u} P}}\bigg\vert_{p}\cdot  \f{\p \varphi}{\p x^\mu}\bigg\vert_{\mathbf{x_0}}.
+\end{equation*}
+again by normality. Consequently,
+\begin{equation*}
+    \eta(d\iota(v), \Pi) = 0.
+\end{equation*}
+whenever $v\in TS$ and, in particular, this identity holds for all elements of our chosen orthonormal frame $\{E_\mu\}$. Thus, the collection $\{ d\iota(E_1),\dots,d\iota(E_{d-1}),\Pi\}$ is linearly independent. As a result, the $d$-tuple $\{\Pi, d\iota(E_1),\dots, d\iota(E_{d-1})\}$ is an orthonormal frame for $\mathbb{R}^d$. Now, because $d\Vol_{\R^d}$ is a Riemannian volume form, by virtue of Proposition 15.29 in \cite{lee2013smooth}, 
+\begin{equation*}
+    d\Vol_{\R^d}(\Pi,d\iota(E_1),d\iota(E_2),\dots,d\iota(E_{d-1})) = 1
+\end{equation*}
+and therefore
+\begin{eqnarray*}
+     \iota^* (\Pi  \iprod d\Vol_{\R^d})(E_1,\dots, E_{d-1})&=& (\Pi  \iprod d\Vol_{\R^d})(d\iota(E_1),\dots, d\iota(E_{d-1})) \\
+     &=& d\Vol_{\R^d}(\Pi, d\iota(E_1),\dots, d\iota(E_{d-1})) \\
+    &=& 1
+\end{eqnarray*}
+which must hold for every orthonormal frame $\{E_\mu\}$ on $S$; here, $\iprod$ denotes the \textit{interior product}.
+
+We now claim that $\iota^* (\Pi \iprod  d\Vol_{\R^d})(v_1,\dots, v_{d-1})$ is the Riemannian volume form on $S$. We already have that
+\begin{equation*}
+    \iota^* (\Pi  \iprod d\Vol_{\R^d})(E_1,\dots, E_{d-1}) = 1
+\end{equation*}
+for any for any orthonormal basis $\{ E_{\mu} \}_{\mu=1}^{d-1}$ for $T S$. Thus, $\iota^* (\Pi  \iprod d\Vol_{\R^d})$ is a non-vanishing $(d-1)$ form on $S$. It follows that $\iota^* (\Pi  \iprod d\Vol_{\R^d})$ is an \textit{orientation form} for $S$. Therefore, we conclude that 
+\begin{equation*}
+    \iota^* (\Pi  \iprod d\Vol_{\R^d})(E_1,\dots, E_{d-1}) = d\Vol_{\R^d}(\Pi, d\iota(E_1),\dots, d\iota(E_{d-1}))
+\end{equation*}
+is \textit{the} Riemannian volume form on $S$ (uniqueness guaranteed by Proposition 15.29 in \cite{lee2013smooth}, and thus it must coincide with  $d\Vol_S$, i.e.,:
+\begin{equation*}
+    d\Vol_S(v_1,\dots, v_{d-1}) = d\Vol_{\R^d}(\Pi, d\iota(v_1),\dots, d\iota(v_{d-1})).
+\end{equation*}
+for any collection $\{v_\mu\}_{\mu=1}^{d-1} \subseteq TS$. 
+\end{proof}
+
+
+% \begin{framed}
+% Here. 
+
+% Can you write down exactly which formula you don't understand.
+
+% So, given $(S,g^S)$ we can write
+% \begin{equation*}
+%     \int_S f\,d\Vol_S = \int (f\circ \varphi) \sqrt{\det(g^S)}\,dx^1\dots dx^{d-1}.
+% \end{equation*}
+% We're claiming that we can also have
+% \begin{equation*}
+%     \int_S f\,d\Vol_S = \int (f\circ \varphi) \sqrt{\det(A^\top A)}\,dx^1\dots dx^{d-1}.
+% \end{equation*}
+% where $A$ basically takes the form 
+% \begin{equation*}
+%     A = (N | D\varphi)
+% \end{equation*}
+% where $D\varphi$ is the Jacobian matrix for $\varphi$. 
+
+% So then the question is, why does
+% \begin{equation*}
+% \int (f\circ \varphi) \sqrt{\det(g^S)}\,dx^1\dots dx^{d-1}=\int (f\circ \varphi) \sqrt{\det(A^\top A)}\,dx^1\dots dx^{d-1}?
+% \end{equation*}
+
+% No, I think we already understand that: the determinants are the same. My question is, why define $A$ like that?
+
+% Obviously defining $A$ like that gives us the right thing. I was just wondering if the definition of $A$ comes from the fact that $d \Vol_S$ and $\iota^*(\Pi\iprod d\Vol_{\R^d} )$ coincide.
+
+% I believe it does. So, first thing: When the orientation of the charts on $S$ are chosen "positively", $\det(A)>0$ so $\sqrt{\det(A^\top A)}=\det A.$ Now, with this observation, we can see that the definition of $A$ simply comes from the definition of the volume form on $\mathbb{R}^d$. We have, for any (oriented) frame $E_1,E_2,\dots,E_d\in T\mathbb{R}^d$, in the standard Euclidean coordinates, we have $E_k=E_k^\alpha \partial_{u^{\alpha}}$ for $k=1,2,\dots,d$. Thus,
+% \begin{eqnarray*}
+% d\Vol_{\mathbb{R}^d}(E_1,E_2,\dots,E_d)&=&E_1^{\alpha_1}E_2^{\alpha_2}\cdots E_d^{\alpha_d}d\Vol_{\mathbb{R}^d}(\partial_{\alpha_1},\partial_{\alpha_2},\dots,\partial_{\alpha_d})\\
+% &=&\det(E_1|E_2|\cdots|E_d)
+% \end{eqnarray*}
+% where we have used the fact that $d\Vol_{\mathbb{R}^d}$ is an alternating form and is the only one equal to the determinant. Hmm, let me give a reference to this: 
+
+% Right, I was trying to find a reference for this, but I couldn't find one in Lee's. 
+
+% AH, so this is good. I finally found the point of confusion. Give me a sec. I think I have it. Consider the linear map $T:T_p(\mathbb{R}^d)\to T_p(\mathbb{R}^d)$ given by 
+% \begin{equation*}
+% T(\partial_{u^{\beta}})=E_{\beta}^{\alpha}\partial_{u^{\alpha}}
+% \end{equation*}
+% Observe that
+% \begin{equation*}
+% \det(T)=\det(E_1,E_2,\dots,E_d)
+% \end{equation*}
+% right? (here I mean the columns of the coefficients of $E_\beta$).
+
+
+% Right.
+
+% Okay, so now look at Lemma 12.6 in the first version
+
+% Yep.
+
+
+% Awesome, so does that answer it? (Also, I should note that (I think) $T$ is a ``bundle map" meaning that it is a linear map at each tangent space.)
+
+% Okay so with this we have
+% \begin{eqnarray*}
+%     d\Vol_S(\partial_{x^{1}},\partial_{x^2},\dots,\partial_{x^n})& =& d\Vol_{\R^d}(\Pi, d\iota(\p_{x^1}), d\iota(\p_{x^{2}}), \dots, d\iota(\p_{x^{d-1}}))\\
+%     &=&\det(N|\partial_{x^1}|\cdots|\partial_{x^{d-1}})d\Vol_{\mathbb{R}^d}(\partial_{u^1},\dots,\partial_{u^d}) \\
+%     &=& \det(A)\cdot 1
+% \end{eqnarray*}
+
+% Is this right? What is the convention on writing the ``Lebesgue'' piece of the volume element? 
+
+% Yep!
+
+% About Lebesgue, I don't know that I understand the question.
+
+% It's not clear to me how the $dx^1,\dots,dx^{d-1}$ ultimately appear in the integral
+% \begin{equation*}
+% \int_S f \,d \Vol_S = \int_{\varphi^{-1}\mathcal{U}} (f\circ \varphi) \abs{\det(A)}\,dx^1dx^2\cdots dx^{d-1}
+% \end{equation*}
+% Just like that.
+
+% Oh. I keep worrying about writing or erasing the wedges. 
+
+% Ah, I think at the point that you're in coordinates and everything is worked out, the convention is just to erase the wedges. I actually don't think we'll need wedges anywhere.
+
+% Anyway, Darby is asking me to cook bacon for dinner. I should go. If you have any other questions, please email me and I'll get to it after dinner.
+
+
+% Sure, thanks. I think I can finish up the corollary with this "direct" way now. THANKS!
+
+% Awesome, thank you! I'm looking forward to reading it.
+% \end{framed}
+
+
+
+\section{From Volume Form to Volume Formula}
+
+Now that we have identified $d\Vol_S$ with $\iota^*(\Pi \iprod d\Vol_{\R^d})$, the integration formula on $S$ follows directly. 
+
+
+\begin{corollary}
+For any $(\mathcal{U},\varphi^{-1})\in\mathcal{A}_+(S)$ and $f\in C^0(S)$ with $\supp{f} \subseteq \mathcal{U}$,
+\begin{equation*}
+    \int_S f\,d\Vol_S = \int_{\varphi^{-1}(\mathcal{U})} (f\circ \varphi)(x^1,\dots,x^{d-1})\, \cdot {\det{(A)}}\,dx^1\dots dx^{d-1} 
+\end{equation*}
+where, with $(x^1,\dots, x^{d-1}) \in \varphi^{-1}(\mathcal{U})$, 
+\begin{equation*}
+    A = 
+    \begin{pmatrix}
+    \uparrow &\uparrow & \uparrow &   &\uparrow \\ 
+    N \circ \varphi &\f{\p \varphi}{\p x^1}& \f{\p \varphi}{\p x^2}  &\dots&\f{\p \varphi}{\p x^{d-1}}\\
+    \downarrow  &\downarrow  & \downarrow &    &\downarrow 
+    \end{pmatrix}.
+\end{equation*}
+\end{corollary}
+
+\begin{proof}
+Fix $(\mathcal{U}, \varphi^{-1})\in\mathcal{A}_+(S)$ and write $U=\varphi^{-1}(\mathcal{U})$. In view of Proposition \ref{prop:dVolsCoincide}, we have that
+\begin{equation*}
+    d\Vol_S(v_1,\dots, v_{d-1}) = \iota^*(\Pi \iprod d\Vol_{\R^d})(v_1,\dots, v_{d-1}) = d\Vol_{\R^d}(\Pi, d\iota(v_1),\dots, d\iota(v_{d-1}))
+\end{equation*}
+for $\{v_1,v_2,\dots,v_{d-1}\} \subseteq TS$. It follows that, given $f\in C^0(S)$ (which is necessarily compactly supported) with $\supp(f)\subseteq \mathcal{U}$, we have
+\begin{eqnarray*}\label{eq:dVolS}
+\int_S f\,d\Vol_S&=&\int_U(f\circ\varphi)(x^1,x^2,\dots,x^{d-1})\,d\Vol_S(\partial_{x^1},\partial_{x^2},\dots,\partial_{x^{d-1}})dx^1dx^2\dots dx^{d-1}\\
+&=& \int_U(f\circ\varphi)(x^1,x^2,\dots,x^{d-1})\,d\Vol_{\R^d}(\Pi, d\iota(\p_{x^1}),  \dots, d\iota(\p_{x^{d-1}}) )dx^1dx^2\dots dx^{d-1}.
+\end{eqnarray*}
+For a fixed point $p\in S$ and $\mathbf{x_0}\in \R^{d-1}$ such that $\varphi(\mathbf{x_0}) = p$, we have
+\begin{equation*}
+    \Pi\bigg\vert_p = (N\circ\varphi)^\mu \f{\p}{\p u^\mu}\bigg\vert_{\mathbf{x_0}}.
+\end{equation*}
+Moreover, for each $\mu = 1,\dots, d-1$, we have
+\begin{equation*}
+    d\iota\lp \f{\p}{\p x^\mu} \rp = \f{\p \varphi^\nu}{\p x^\mu} \f{\p}{\p u^\nu}\bigg\vert_{\mathbf{x_0}}.
+\end{equation*}
+With these, we define a linear map $T: T_p \R^d \to T_p \R^d$ by 
+\begin{equation*}
+    T(\rho_\mu) = A_\mu^\nu \p_{u^\nu}
+\end{equation*}
+where $\rho_\mu$, with $\mu = 1,2,\dots,d$, is any element in the collection $\{ \Pi, d\iota(v_1), d\iota(v_2),\dots, d\iota(v_{d-1}) \}$ and $A$ given by 
+\begin{equation*}
+    A = \begin{pmatrix}
+    (N\circ\varphi)^1&\p_{x^1}\varphi^1&\dots&\p_{x^{d-1}} \varphi^{1}\\
+    (N\circ\varphi)^2&\p_{x^1}\varphi^2&\dots&\p_{x^{d-1}} \varphi^{2}\\
+    \vdots&\vdots&\ddots& \vdots \\
+    (N\circ\varphi)^d&\p_{x^1}\varphi^d&\dots&\p_{x^{d-1}} \varphi^{d}
+    \end{pmatrix} =
+    \begin{pmatrix}
+    \uparrow &\uparrow & \uparrow &   &\uparrow \\ 
+    N \circ \varphi &\f{\p \varphi}{\p x^1}& \f{\p \varphi}{\p x^2}  &\dots&\f{\p \varphi}{\p x^{d-1}}\\
+    \downarrow  &\downarrow  & \downarrow &    &\downarrow 
+    \end{pmatrix}
+\end{equation*}
+where the entries are evaluated at $\mathbf{x_0}= \varphi^{-1}(p)$. By virtue of Proposition 14.9 in \cite{lee2013smooth}, we have that
+\begin{eqnarray*}
+    d\Vol_{\R^d}(\Pi, d\iota(v_1),\dots, d\iota(v_{d-1})) &=& d\Vol_{\R^d}(T(\p_{u^1}), T(\p_{u^2}),\dots, T(\p_{u^{d}})) \\
+    &=& \det(T) \cdot d\Vol_{\R^d}(\p_{u^1}, \p_{u^2}, \dots, \p_{u^{d}}) \\ 
+    &=& \det(A) \cdot 1 \\
+    &=& \det(A)
+\end{eqnarray*}
+where we have observed that $\det(T) = \det(A)$ and, since $\{ \p_{u^\mu} \}_{\mu=1}^{d}$ is an orthonormal frame for $\R^d$, $d\Vol_{\R^d}(\partial_{u^1},\partial_{u^2},\dots,\partial_{u^d})=1$. In view of \eqref{eq:dVolS}, 
+\begin{equation*}
+\int_S f\,d\Vol_S=\int_U (f\circ \varphi)(x^1,\dots,x^{d-1}) \cdot \det(A) \, dx^1\dots dx^{d-1}
+\end{equation*}
+whenever $f\in C^0(S)$ with $\supp(f)\subseteq \mathcal{U}$.
+\end{proof}
+
+
+
+\section{The Riemannian measure $\Vol_S$ and the measure $\sigma$}
+
+In this section we compare the Riemannian measure $\Vol_S$ obtained from the volume form $d\Vol_S$ and the surface-carried measure $\sigma$ we constructed from the measure-theoretic perspective. Our goal is write down a formula for integration on $S$ in terms of the measure $\sigma$, in coordinates, and compare $\Vol_S$ and $\sigma$. In particular, we are interested in the possibility that these measures are mutually absolutely continuous. \\
+
+\noindent We recall that for a smooth positive-homogeneous function $P$ and an $E\in \Exp(P)$, we have
+\begin{equation*}
+    \grad P(\eta) \cdot E\eta = 1
+\end{equation*}
+for all $\eta\in \R^d\setminus\{0\}$. Using $E$, we define $\mathcal{E}\in T\mathbb{R}^d$ by putting
+\begin{equation*}
+\mathcal{E}(f)(p)=\frac{d}{dt}f(p+tEp)\big\vert_{t=0}= (Ep)^\mu \f{\p}{\p u^\mu} f(p)
+\end{equation*}
+whenever $f=f(u^1,u^2,\dots,u^d)\in C^{\infty}(\mathbb{R}^d)$. By an abuse of notation, we define $d\sigma\in \Lambda^{d-1}(S)$ by
+\begin{equation*}
+d\sigma(v_1,v_2,\dots,v_d)=d\Vol_{\mathbb{R}^d}(\mathcal{E},d\iota(v_1),d\iota(v_2),\dots,d\iota(v_{d-1}))
+\end{equation*}
+for $\{v_1,v_2\,\dots,v_{d-1}\}\in TS$.
+
+\begin{lemma}\label{prop:determinants}
+Let $v_1,v_2,\dots,v_n$ be linearly independent vectors in $\mathbb{R}^d$ where $d=n+1$ and suppose that $w\in\mathbb{R}^d \setminus\{0\}$ is such that $w\perp v_i$ for all $i$ and 
+\begin{equation*}
+\det(N, v_1,v_2,\dots,v_n)=\frac{1}{|w|}\det(w,v_1,v_2,\dots,v_n)>0
+\end{equation*}
+where $N\coloneqq w/|w|$. Then, for any $z\in\mathbb{R}^d$ for which $z\cdot w=1$,
+\begin{equation*}
+\det(z, v_1,v_2,\dots,v_n)=\frac{1}{|w|}\det(N,v_1,v_2,\dots,v_n).
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+Given $z\in\mathbb{R}^d$ such that $z\cdot w=1$, it follows that 
+\begin{equation*}
+z=\frac{1}{|w|}N+a_1v_1+a_2v_2+\cdots a_nv_n.
+\end{equation*}
+By the multilinearity of the determinant map, we have
+\begin{eqnarray*}
+\det(z,v_1,v_2,\dots,v_n) &=&\det\lp \frac{1}{|w|}N+a_1v_2+a_2v_2+\cdots a_n v_n,v_1,v_2,\dots,v_n\rp\\
+&=&\frac{1}{|w|}\det(N,v_1,v_2,\dots,v_n)+\det(a_1v_1+\cdots+a_n v_n, v_1,v_2,\dots,v_n)\\
+&=&\frac{1}{|w|}\det(N, v_1,v_2,\dots,v_n)+0
+\end{eqnarray*}
+where we have used the fact that the columns of the matrix $(a_1v_1+\cdots+a_n v_n, v_1,v_2,\dots,v_n)$ are linearly dependent to conclude that the final determinant is zero.
+\end{proof}
+
+\begin{theorem}
+The form $d\sigma$ corresponds to the Radon measure $\sigma$ (from earlier) in the sense that, to each $f\in C^0(S)$,
+\begin{equation*}
+\int_S f(\eta)\,\sigma(d\eta)=\int_S f(\eta)\,d\sigma(\eta)
+\end{equation*}
+where the integral on the left is the Lebesgue integral with respect to $\sigma$ and the integral on the right is defined as the integral of the $d-1$-form $f d\sigma$ on the manifold $S$. Furthermore, both of these integrals coincide with 
+\begin{equation*}
+\int_S \frac{f(\eta)}{\norm{\grad_{\mathbf{u}}P(\eta)}}\,d\Vol_S(\eta)
+\end{equation*}
+for all $f\in C^0(S)$ and the Radon measures $\sigma$ and $\Vol_S$ are mutually absolutely continuous.
+\end{theorem}
+
+% \begin{proposition}\label{prop:dSigmadSigma}
+% Given any $(\mathcal{U},\varphi^{-1})\in\mathcal{A}_+(S)$, we have
+% \begin{equation*}
+% d\sigma(\partial_{x^1},\partial_{x^2},\dots,\partial_{x^{d-1}})(p)>0
+% \end{equation*}
+% for all  $p\in\mathcal{U}$ where $\varphi^{-1}(p)=(x^1,x^2,\dots,x^{d-1})$. Moreover, for any $f\in C^0(S)$ with $\supp(f)\subseteq \mathcal{U}$,
+% \begin{equation*}
+% \int_S f(\eta)\,\sigma(d\eta)=\int_S f(\eta)\,d\sigma(\eta);
+% \end{equation*}
+% where the integral on the left is the associated Lebesgue integral with respect to the measure $\sigma$ (developed in Section \textcolor{red}{blah}) and the integral on the right is an integral of the continuous $d-1$ form $fd\sigma$.
+% \end{proposition}
+
+
+
+
+\begin{proof}[Proof of Proposition \ref{prop:dSigmadSigma}]
+Given $(\mathcal{U},\varphi^{-1})\in\mathcal{A}_+(S)$, we have
+\begin{equation*}
+d\Vol_{\mathbb{R}^d}(\Pi,d\iota (\partial_{x^1}, d\iota(\partial_{x^2}),\dots,d\iota(\partial_{x^{d-1}}))>0
+\end{equation*}
+on $\mathcal{U}$. Observe that
+\begin{eqnarray*}
+d\sigma(\partial_{x^1},\partial_{x^2},\dots,\partial_{x^{d-1}}) &=& d\Vol_{\mathbb{R}^d}(\mathcal{E},d\iota(\partial_{x^1}),d\iota(\partial_{x^2}),\dots,d\iota(\partial_{x^{d-1}})))\\ 
+&=& \det\begin{pmatrix}
+    \uparrow & \uparrow & \uparrow & & \uparrow\\
+    E \varphi & \f{\p\varphi}{\p x^1} & \f{\p\varphi}{\p x^2} & \dots & \f{\p\varphi}{\p x^{d-1}}  \\
+    \downarrow & \downarrow & \downarrow & & \downarrow\\
+    \end{pmatrix}
+\end{eqnarray*}
+where we have made use of the same circle of ideas in \textcolor{red}{Blah with $T$}. Given that,
+\begin{equation*}
+E\varphi(\mathbf{x})\cdot \grad_\mathbf{u} P(\varphi(\mathbf{x}))=1
+\end{equation*}
+for all $\mathbf{x}\in U$, by virtue of the preceding lemma, we find that
+\begin{eqnarray*}
+d\sigma(\partial_{x^1},\partial_{x^2},\dots,\partial_{x^{d-1}})&=&\frac{1}{\norm{\grad_{\mathbf{u}}P(\varphi) }}d\Vol_{\mathbb{R}^d}(\Pi,d\iota(\partial_{x^1}),d\iota(\partial_{x^2}),\dots,d\iota(\partial_{x^{d-1}})) \\
+&=&\frac{1}{\norm{\grad_{\mathbf{u}}P(\varphi) }}  d\Vol_S(\partial_{x^1},\partial_{x^2},\dots,\partial_{x^{d-1}})
+\end{eqnarray*}
+on $\mathcal{U}$. In particular, 
+
+
+\end{proof}
+
+
+
+
+% In view of our previous results in \textcolor{red}{QuasiPolar}, given a chart $(\mathcal{U}, \varphi^{-1})\in \mathcal{A}_+(S)$. If $f$ is a function such that $\supp{f} \subseteq \mathcal{U}$ then we have
+% \begin{equation*}
+%     \int_S f \,d\sigma = \int_{U} (f\circ \varphi)(x^1,\dots, x^{d-1}) \cdot \det(\Omega) \, dx^1\dots dx^{d-1}
+% \end{equation*}
+% where the matrix $\Omega$ is given by 
+% \begin{equation*}
+%     \Omega = \begin{pmatrix}
+%     \uparrow & \uparrow & \uparrow &  & \uparrow \\
+%     E\varphi & \p_{x^1} \varphi & \p_{x^{2}} & \dots & \p_{x^{d-1}} \varphi \\
+%     \downarrow & \downarrow & \downarrow& & \downarrow
+%     \end{pmatrix}.
+% \end{equation*}
+% On the other hand, from the perspective of Riemannian geometry, we have, for the same setup,
+% \begin{equation*}
+%     \int_S f\,d \Vol_S  = \int_{U} (f\circ \varphi)(x^1,\dots,x^{d-1}) \cdot {\det(A)} \,dx^1\dots dx^{d-1}
+% \end{equation*}
+% where the matrix $A$ is given by 
+% \begin{equation*}
+%     A = \begin{pmatrix}
+%     \uparrow &\uparrow & \uparrow &   &\uparrow \\ 
+%     N \circ \varphi &\f{\p \varphi}{\p x^1}& \f{\p \varphi}{\p x^2}  &\dots&\f{\p \varphi}{\p x^{d-1}}\\
+%     \downarrow  &\downarrow  & \downarrow &    &\downarrow 
+%     \end{pmatrix}.
+% \end{equation*}
+% Now, observe that for any $p =\varphi(\mathbf{x_0}) \in S$ we have 
+% \begin{equation*}
+%     (N\circ\varphi(\mathbf{x_0})) \cdot (E\varphi(\mathbf{x_0})) = \f{\grad_\mathbf{u} P(p) \cdot Ep}{\norm{\grad_{\mathbf{u}} P(p)}} = \f{1}{\norm{ \grad_\mathbf{u} P(p) }}.
+% \end{equation*}
+% In view of Proposition \ref{prop:determinants}, we have that
+% \begin{equation*}
+%     \det(\Omega) = \f{1}{\norm{\grad_\mathbf{u} P(p)}}\det(A),
+% \end{equation*}
+% from which it follows that
+% \begin{equation*}
+%     \int_S f\,d\sigma = \int_S \f{f}{\norm{\grad_\mathbf{u}P}}\, d\Vol_S. 
+% \end{equation*}
+
+
+
+\begin{lemma}\label{lem:boundsGradP}
+Let $P$ be a smooth positive homogeneous function with $E \in \Exp(P)$. There exist positive constants $C_1,C_2$ such that for all $\eta\in S$, 
+\begin{equation*}
+    C_1 \leq \norm{\grad_\mathbf{u} P(\eta)} \leq C_2.
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+We first observe that since $\grad_\mathbf{u} P(\eta) \cdot E\eta = 1$ for all $\eta\in S$, $\grad_\mathbf{u} P$ does not vanish on $S$. Thus, $\norm{\grad_\mathbf{u} P} > 0$. Further, since $P$ is smooth, $\norm{\grad_\mathbf{u} P} = \grad_\mathbf{u} P \cdot \grad_\mathbf{u} P$ is also smooth, hence continuous. By the \textit{extreme value theorem} and the fact that $S$ is compact, $\norm{\grad_{\mathbf{u}} P(S) }$ is a compact (hence closed and bounded) subset of $\R_+ = \{ x \in \R : x > 0 \}$ and that there are positive constants $C_1,C_2$ for which 
+\begin{equation*}
+    C_1 \leq \norm{\grad_\mathbf{u} P(\eta)} \leq C_2
+\end{equation*}
+where
+\begin{equation*}
+    C_1 = \inf_{\eta\in S}\norm{\grad_{\mathbf{u}} P(\eta) }, \quad C_2 = \sup_{\eta\in S}\norm{\grad_{\mathbf{u}} P(\eta) }.
+\end{equation*}
+\end{proof}
+
+With this result, we are ready to prove the following proposition which establishes mutual absolute continuity between the measures $\Vol_S$ and $\sigma$. \textcolor{blue}{I think the proof is only partially complete: I think I first have to make sure $\Vol_S$ and $\sigma$ can be defined on the same measurable space $(S,\Sigma_S)$ or $(S,\mathcal{B}(S))$}.
+
+\begin{proposition}
+Let $S$ be the unital level set of a smooth positive-homogeneous function $P$. Consider the measurable space $(S,\mathcal{B}(S))$. Let $\Vol_S$ be the Riemannian measure on $S$ (given by the volume form in the above way). If $\sigma$ denotes the unique surface carried measure on $S$, then $\Vol_S$ and $\sigma$ are mutually absolutely continuous.
+\end{proposition}
+
+\begin{proof}
+In view of Lemma \ref{lem:boundsGradP}, let $C_1,C_2$ be two positive integers such that for all $\eta\in S$, 
+\begin{equation*}
+    C_1 \leq \norm{\grad_{\mathbf{u}} P(\eta) } \leq C_2.
+\end{equation*}
+Let \textcolor{red}{a Borel set?} $F\subseteq S$ be given such that $\Vol_S(F) = 0$. Then we have that
+\begin{equation*}
+    0 = \Vol_S(F) = \int_S \chi_F \,d\Vol_S = \int_S \f{\chi_F}{\norm{\grad_{\mathbf{u}} P }} \geq \f{1}{C_2}\int_S \chi_F \,d\sigma = \f{1}{C_2}\sigma(F)
+\end{equation*}
+which holds if $\sigma(F) = 0$. Thus, $\sigma \ll \Vol_S$. On the other hand, suppose $\sigma(F) = 0$ for some \textcolor{red}{Borel set?} $F \subseteq S$. Then,
+\begin{equation*}
+    0 = \sigma(F) = \int_S \chi_F \,d\sigma= \int_S \chi_F \cdot \norm{\grad_{\mathbf{u}} P } \,d\Vol_S \geq C_1 \int_S \chi_F \,d\Vol_S = C_1 \Vol_S(F),
+\end{equation*}
+which holds if $\Vol_S(F) = 0$. Thus, $\Vol_S \ll \sigma$. We therefore conclude that $\Vol_S$ and $\sigma$ are mutually absolutely continuous.
+\end{proof}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\appendix
+\section{Volume Formula from First-Principles}
+
+Alternatively, one needs not identify $d\Vol_S$ with $\iota^* (\Pi \iprod d\Vol_{\R^d})$ to obtain the volume formula. In this section, we show that the integration formula on $S$ holds, via comparing the determinant of $g^S$, the induced metric on $S$, and $A$, the matrix given by $N$ adjoined with $D\varphi$, the Jacobian matrix of the parameterization $\varphi$. This (alternative) proof relies less on manifold theory, so we can think of it as a proof from first principles. \\
+
+
+In order to proceed with the proof, we need an expression for the Riemannian volume form in coordinates whenever we're given a smooth manifold $(S,g^S)$ and a local chart $(\mathcal{U}, \varphi^{-1})$. The following proposition gives us such an expression.
+
+% \begin{proposition}[Prop 15.31 in \cite{lee2013smooth}]\label{prop:Lee15.31}
+% Let $(M,g)$ be an oriented Riemannian $n$-manifold with or without boundary, $n \geq 1$. In any oriented smooth coordinates $\{ x^\mu \}$, the Riemannian volume form has the local coordinate expression:
+% \begin{equation*}
+%     \omega_g \equiv d\Vol_M = \sqrt{\det(g_{\mu\nu})}\,  dx^1 \land \dots \land dx^n,
+% \end{equation*}
+% where $g_{\mu\nu}$ are the components of $g$ in coordinates. 
+% \end{proposition}
+
+
+% \begin{proof}
+% Let $(U, (x^\mu))$ be an oriented smooth chart, and let $p\in M$. In these coordinates, \begin{equation*}
+%     \omega_g \equiv d\Vol_M = f \,dx^1 \land \dots \land dx^n
+% \end{equation*}
+% for some positive coefficient $f$, by virtue of Proposition 14.8 in \cite{lee2013smooth}. Consequently, we can compute $f$: Let $\{ v_\mu \}$ be any smooth oriented orthonormal frame defined on a neighborhood of $p$, and let $\{v_\mu \}$ be the dual coframe. If we write the coordinate frame $\{ \p/\p x^\mu \}$ in terms of the orthonormal frame $\{v_\mu \}$ as 
+% \begin{equation*}
+%     \f{\p}{\p x^\mu} = A^\nu_\mu v_\nu \iff e^\nu \f{\p}{\p x^\mu} = A^\nu_\mu
+% \end{equation*}
+% then we can compute
+% \begin{equation*}
+%     f = \omega_g\lp \f{\p}{\p x^1},\dots, \f{\p}{\p x^n} \rp = e^1 \land \dots \land e^n \lp  \f{\p}{\p x^1},\dots, \f{\p}{\p x^n}  \rp = \det\lp e^\nu \lp \f{\p}{\p x^\mu} \rp \rp = \det(A^\nu_\mu)
+% \end{equation*}
+% where
+% \begin{itemize}
+%     \item the first equality follows from the fact that
+%     \begin{equation*}
+%     f=f\cdot\det(I_n)=f\cdot \det(dx^\mu(\partial_{\lambda}))=(fdx^1\land dx^2\land\cdots\land dx^n)(\partial_1,\partial_2,\cdots,\partial_n).
+%     \end{equation*}
+%     \item the second equality just follows from the definition: $\omega_g = e^1\land \dots \land e^n$
+    
+%     \item the third equality is a property of the wedge product (Proposition 14.11 in \cite{lee2013smooth}).
+
+% \end{itemize}
+% On the other hand, we also observe that
+% \begin{equation*}
+%     g_{\mu\nu} = g\lp \f{\p}{\p x^\mu}, \f{\p}{\p x^\nu} \rp = g\lp A^\al_\mu e_\al, A^\be v_\nu e_\be  \rp = A^\al_\mu A^\be v_\nu g\lp e_\al, e_\be \rp = A^\al_\mu A^\be v_\nu \delta_{\al\be} = \sum_\al A^\al_\mu A^\al_\nu = (A^\top A)_{\mu\nu}.
+% \end{equation*}
+% It follows that 
+% \begin{equation*}
+%     \det(g_{\mu\nu}) = \det(A^\top A) = (\det(A))^2.
+% \end{equation*}
+% Thus, 
+% \begin{equation*}
+%     f = \det(A) = \pm \sqrt{\det(g_{\mu\nu})}.
+% \end{equation*}
+% But since both the chosen frame $\{ v_\mu \}$ and the coordinate frame $\{ \p/\p x^\mu\}$ are positively oriented, the sign of $f$ is $+$. Thus, we have
+% \begin{equation*}
+%     \omega_g = \sqrt{\det(g_{\mu\nu})} \, dx^1 \land \dots \land dx^n. 
+% \end{equation*}
+% \end{proof}
+
+
+
+\begin{corollary}[Integration formula from first principles]
+For any oriented chart $(\mathcal{U},\varphi^{-1})$ on $S$ and $f\in C^0(S)$ with $\supp{f} \subseteq \mathcal{U}$,
+\begin{equation*}
+    \int_S f\,d\Vol_S = \int_{\varphi^{-1}(\mathcal{U})} (f\circ \varphi)(x^1,\dots,x^{d-1}) \cdot {\det{(A)}}\,dx^1\dots dx^{d-1} 
+\end{equation*}
+where, with $(x^1,\dots, x^{d-1}) \in \varphi^{-1}(\mathcal{U})$, 
+\begin{equation*}
+    A(x^1,\dots, x^{d-1}) = 
+    \left(\begin{array}{c|cccc}
+     & & &  &\\
+    \uparrow &\uparrow & \uparrow &   &\uparrow \\ 
+    N \circ \varphi &\f{\p \varphi}{\p x^1}& \f{\p \varphi}{\p x^2}  &\dots&\f{\p \varphi}{\p x^{d-1}}\\
+    \downarrow  &\downarrow  & \downarrow &    &\downarrow \\ 
+    &&& & 
+    \end{array}\right)
+    % = \begin{pmatrix} 
+    % 1 & 0 & \dots & 0\\
+    % 0 & \p_1 \varphi \cdot \p_1 \varphi & \dots & \p_1 \varphi\cdot \p_{d-1}\varphi \\
+    % \vdots & \vdots & \ddots & \vdots \\
+    % 0 & \p_{d-1} \varphi \cdot\p_1 \varphi & \dots & \p_{d-1} \varphi \cdot \p_{d-1}\varphi 
+    % \end{pmatrix}.
+\end{equation*}
+\end{corollary}
+
+
+\begin{proof}
+Let $f\in C^\infty(\R^d)$ and an oriented chart $(\mathcal{U}, \varphi^{-1})$ be given. Denote $\varphi^{-1}(\mathcal{U})$ by $U$. Consider a collection $\{ v_\mu \}_{\mu = 1}^{d-1}\subseteq TS$. For each $\mu = 1,\dots,d-1$,
+\begin{equation*}
+    d\iota(v_\mu) = d\iota\lp \f{\p}{\p x^\mu} \rp = \f{\p \varphi^\nu}{\p x^\mu} \f{\p}{\p u^\nu}.
+\end{equation*}
+Let $\eta$ denote the Euclidean metric on $\R^d$. Take $(\R^d, \text{Id}_{\R^d})$, the canonical global chart on $\R^d$ with Cartesian coordinates $\{ u^\mu \}_{\mu = 1}^d$. In this coordinates, $\eta_{\mu\nu} = \delta_{\mu\nu}$. The induced metric on $S$, denoted by $g^S$, is by definition:
+\begin{equation*}
+    g^S(v_\mu, v_\mu) = \eta\lp \f{\p \varphi^\al}{\p x^\mu} \f{\p}{\p u^\al}, \f{\p \varphi^\be}{\p x^\nu} \f{\p}{\p u^\be} \rp = \f{\p \varphi^\al}{\p x^\mu}\f{\p \varphi^\be}{\p x^\nu} \eta\lp \f{\p}{\p u^\al}, \f{\p}{\p u^\be} \rp
+    %=  \f{\p \varphi^\al}{\p x^\mu}\f{\p \varphi^\be}{\p x^\nu} \eta_{\al\be} 
+    = \sum_{\be = 1}^{d-1}\f{\p \varphi^\be}{\p x^\mu}\f{\p \varphi^\be}{\p x^\nu} = (D\varphi^\top D\varphi)_{\mu\nu}
+\end{equation*}
+where $D\varphi$ is the $d\times (d-1)$ Jacobian matrix, given by
+\begin{equation*}
+    D\varphi = \begin{pmatrix}
+    \f{\p \varphi_1}{\p x^1} & \dots & \f{\p \varphi_1}{\p x^{d-1}} \\
+    \vdots &\ddots & \vdots\\
+    \f{\p \varphi_{d}}{\p x^1} & \dots & \f{\p \varphi_{d}}{\p x^{d-1}} 
+    \end{pmatrix}_{d\times (d-1)} = \begin{pmatrix}
+    \uparrow & \uparrow &   &\uparrow \\ 
+    \f{\p \varphi}{\p x^1}& \f{\p \varphi}{\p x^2}  &\dots&\f{\p \varphi}{\p x^{d-1}}\\
+    \downarrow  & \downarrow &    &\downarrow     \end{pmatrix}.
+\end{equation*}
+from which it follows that
+\begin{equation*}
+    D\varphi^\top D\varphi = \begin{pmatrix}
+     \leftarrow & \f{\p \varphi}{\p x^1} & \rightarrow \\
+     \leftarrow & \f{\p \varphi}{\p x^2} & \rightarrow \\
+     &\vdots& \\
+     \leftarrow & \f{\p \varphi}{\p x^{d-1}} & \rightarrow 
+    \end{pmatrix} \begin{pmatrix}
+    \uparrow & \uparrow &   &\uparrow \\ 
+    \f{\p \varphi}{\p x^1}& \f{\p \varphi}{\p x^2}  &\dots&\f{\p \varphi}{\p x^{d-1}}\\
+    \downarrow  & \downarrow &    &\downarrow 
+    \end{pmatrix} = \begin{pmatrix} 
+    \p_1 \varphi^\top \p_{x_1} \varphi & \dots & \p_{x_1}  \varphi^\top \p_{x_{d-1}}\varphi \\
+    \vdots & \ddots & \vdots \\
+    \p_{x_{d-1}} \varphi^\top \p_{x_1} \varphi & \dots & \p_{x_{d-1}} \varphi^\top \p_{x_{d-1}}\varphi 
+    \end{pmatrix}.
+\end{equation*}
+Now, observe that
+\begin{equation*}
+    A^\top A = \begin{pmatrix}
+    \leftarrow& N \circ \varphi & \rightarrow\\
+    \leftarrow & \f{\p \varphi}{\p x^1} &\rightarrow \\
+    &\vdots& \\
+    \leftarrow & \f{\p \varphi}{\p x^{d-1}} & \rightarrow
+    \end{pmatrix}
+    \begin{pmatrix}
+    \uparrow &\uparrow & \uparrow &   &\uparrow \\ 
+    N \circ \varphi &\f{\p \varphi}{\p x^1}& \f{\p \varphi}{\p x^2}  &\dots&\f{\p \varphi}{\p x^{d-1}}\\
+    \downarrow  &\downarrow  & \downarrow &    &\downarrow
+    \end{pmatrix} = 
+    \begin{pmatrix}
+    1 & \mathbf{0} \\ \mathbf{0}^\top & D\varphi^\top D\varphi
+    \end{pmatrix}
+\end{equation*}
+from which we have
+\begin{equation*}
+    \det(g^S) = \det(D\varphi^\top D\varphi) = \det(A^\top A) = (\det(A))^2.
+\end{equation*}
+Thus, $\abs{\det(A)} = \sqrt{\det(g^S)}$. In view of Proposition 15.31 in \cite{lee2013smooth}, we have that for $f\in C^\infty(\R^d)$,
+\begin{equation*}
+    \int_S f\,d \Vol_S = \int_{U} (f\circ \varphi) \sqrt{\det(g^S)} \,dx^1\dots dx^{d-1} = \int_{U} (f\circ \varphi) \abs{\det(A)} \,dx^1\dots dx^{d-1}.
+\end{equation*}
+Since the given chart $(\mathcal{U}, \varphi^{-1})$ can be chosen to be positively oriented, we can drop the absolute value sign from $\abs{\det(A)}$ to get 
+\begin{equation*}
+    \int_S f\,d \Vol_S  = \int_{U} (f\circ \varphi)(x^1,\dots,x^{d-1}) \cdot {\det(A)} \,dx^1\dots dx^{d-1}.
+\end{equation*}
+\end{proof}
+
+
+\section{A Vector-Calculus Approach to the Volume Formula}
+
+\begin{example}[Graph as Manifold]
+Let's consider a general case of an integral of a function of over some hypersurface that is the graph of some other (smooth) function. Let $V \subseteq \R^{d-1}$ and $p: V \to \R$ a ``nice'' function and 
+\begin{equation*}
+    M = \{ (p(v),v) : v \in V \} \subseteq \R^d.
+\end{equation*}
+Suppose we want to compute the integral of some ``nice'' function $f : M \to R$ over $M$:
+\begin{equation*}
+    I = \int_M f\,d\Vol
+\end{equation*}
+where $\Vol$ is the surface measure of $S$. Our goal is to compute $\Vol$ in terms of the parameterization: $\varphi: V \to M $ defined by $\varphi(v) = (p(v), v)$. 
+We ask what the definition of $I$ be such that 
+\begin{equation*}
+    I = \int_M f\,d\Vol = \int_V f(\varphi(v)) \sqrt{1+ \abs{\grad p}^2}\,dv. 
+\end{equation*}
+\end{example}
+
+
+
+\begin{definition}
+Let a smooth parameterization $\varphi: V \subseteq \R^{d-1} \to M \subseteq \R^d$ be given and a function $f: M\to \R$. The surface integral of $f$ over $M$ (if it exists) is defined by 
+\begin{eqnarray*}
+    \int_M f\,d\Vol &=& \int_V f\circ \varphi(v) \, \abs{ \det\left(\begin{array}{ccccc|c}
+     & & & & &\\
+    \uparrow &\uparrow & & & \uparrow &\uparrow \\ 
+    \f{\p \varphi(v)}{\p v^1}& \f{\p \varphi(v)}{\p v^2} & \dots &\dots&\f{\p \varphi(v)}{\p v^{d-1}}& N\circ \varphi(v) \\
+    \downarrow  &\downarrow  & & & \downarrow  &\downarrow \\ 
+    &&&& & 
+    \end{array}\right)
+    } \,dv
+\end{eqnarray*}
+where $N\circ \varphi(v)\in \R^d$ is the unit normal vector perpendicular to the manifold $M$ at each point $\varphi(v)\in M$. In this case, we have
+\begin{equation*}
+    d\Vol = \abs{ \det\left(\begin{array}{ccccc|c}
+     & & & & &\\
+    \uparrow &\uparrow & & & \uparrow &\uparrow \\ 
+    \f{\p \varphi(v)}{\p v^1}& \f{\p \varphi(v)}{\p v^2} & \dots &\dots&\f{\p \varphi(v)}{\p v^{d-1}}& N\circ \varphi(v) \\
+    \downarrow  &\downarrow  & & & \downarrow  &\downarrow \\ 
+    &&&& & 
+    \end{array}\right)
+    } \,dv
+\end{equation*}
+\end{definition}
+
+\begin{remark}\label{rem:ATA}
+If we let 
+\begin{equation*}
+    A = A(v) \coloneqq \left(\begin{array}{ccccc|c}
+     & & & & &\\
+    \uparrow &\uparrow & & & \uparrow &\uparrow \\ 
+    \f{\p \varphi(v)}{\p v^1}& \f{\p \varphi(v)}{\p v^2} & \dots &\dots&\f{\p \varphi(v)}{\p v^{d-1}}& N\circ \varphi(v) \\
+    \downarrow  &\downarrow  & & & \downarrow  &\downarrow \\ 
+    &&&& & 
+    \end{array}\right)
+\end{equation*}
+then notice that because $N^\top N  = 1 = N\cdot N = 1$, we have 
+\begin{eqnarray*}
+    A^\top A = \begin{pmatrix}
+    \p_1 \varphi^\top \\
+    \p_2 \varphi^\top \\
+    \vdots \\
+    \p_{d-1} \varphi^\top \\
+    (N\circ \varphi)^\top
+    \end{pmatrix}\begin{pmatrix}
+    \p_1 \varphi &
+    \p_2 \varphi &
+    \dots &
+    \p_{d-1} \varphi&
+    N\circ \varphi
+    \end{pmatrix}
+    =\begin{pmatrix}
+    G(\varphi) & 0 \\ 0 & 1
+    \end{pmatrix}
+\end{eqnarray*}
+where the block $G(\varphi)$ denotes the (Gramian) matrix
+\begin{equation*}
+    G(\varphi) \coloneqq \begin{pmatrix} 
+    \p_1 \varphi^\top \p_1 \varphi & \dots & \p_1 \varphi^\top \p_{d-1}\varphi \\
+    \vdots & \ddots & \vdots \\
+    \p_{d-1} \varphi^\top \p_1 \varphi & \dots & \p_{d-1} \varphi^\top \p_{d-1}\varphi 
+    \end{pmatrix}
+    = 
+    \begin{pmatrix} 
+    \p_1 \varphi \cdot \p_1 \varphi & \dots & \p_1 \varphi\cdot \p_{d-1}\varphi \\
+    \vdots & \ddots & \vdots \\
+    \p_{d-1} \varphi \cdot\p_1 \varphi & \dots & \p_{d-1} \varphi \cdot \p_{d-1}\varphi 
+    \end{pmatrix}
+\end{equation*}
+With these, we see that 
+\begin{equation*}
+    \abs{\det(A)} = \sqrt{\det(A^\top A)} = \sqrt{\det(G)}.
+\end{equation*}
+This means that 
+\begin{equation*}
+    \int_M f\,d\Vol = \int_V f\circ \varphi(v) \sqrt{\det[G(\varphi(v))]}\,dv.
+\end{equation*}
+Let us define
+\begin{equation*}
+    \rho^{\varphi}(v) = \sqrt{\det[G(\varphi(v))]} = \sqrt{\det( D \varphi(v)^\top D \varphi(v))},
+\end{equation*}
+which with
+\begin{equation*}
+    \int_M f\,d\Vol = \int_V f\circ \varphi(v) \rho^{\varphi}(v)\,dv.
+\end{equation*}
+\end{remark}
+
+\begin{example}
+In this example, we will show how the definition above reproduces the term $\sqrt{1 + \abs{\grad p}^2}$ in the last example in the previous section. Consider the (graph) parameterization $\varphi(v) = (v,p(v))$. Of course, $\grad p  = (\p_1 p(v),\dots,\p_{d-1} p(v))$. From here, we have the normal vector at $v$:
+\begin{equation*}
+    N(\varphi(v)) = N((v,p(v))) = \frac{1}{\sqrt{1+ \abs{\grad p(v)}^2}} (\grad p(v), -1).
+\end{equation*}
+Obviously $N(\varphi(v))$ is normalized. Further, it is perpendicular to $M$ at $\varphi(v)$, i.e., it is perpendicular to all tangents $\p_\mu\varphi(v)$: 
+\begin{equation*}
+    N(\varphi(v))\cdot \p_\mu \varphi(v) = \frac{1}{\sqrt{1+ \abs{\grad p(v)}^2}} ( \grad p(v), -1 ) \cdot ( \p_\mu v, \p_\mu p(v) ) = \frac{1}{\sqrt{1+ \abs{\grad p(v)}^2}}\lp \p_\mu p(v) - \p_\mu p(v) \rp = 0.
+\end{equation*}
+From the definition and the fact that $\p_\mu \varphi = (\p_\mu v, \p_\mu p(v))$, the surface measure is given by 
+\begin{eqnarray*}
+    d\Vol &=& \abs{\det(A(v))}\,dv \\ 
+    &=& \abs{\det
+    \begin{pmatrix}
+    \p_1\varphi & \dots \p_{d-1}\varphi & N(v)
+    \end{pmatrix}
+    } \,dv\\
+    &=& \frac{1}{\sqrt{1+ \abs{\grad p(v)}^2}} \abs{\det
+    \begin{pmatrix}
+    I_{d-1} & (\grad p(v))^\top \\
+    \grad p(v) & -1
+    \end{pmatrix}
+    }\,dv \\
+    &=& \frac{1}{\sqrt{1+ \abs{\grad p(v)}^2}} \abs{\det(I_{d-1})\det(-1 - (\grad p(v))I_{d-1}^{-1} (\grad p(v))^\top)}\,dv \\ 
+    &=& \frac{1}{\sqrt{1+ \abs{\grad p(v)}^2}} \abs{1 + \abs{\grad p(v)}^2 }\,dv \\
+    &=& \sqrt{1+ \abs{\grad p(v)}^2} \,dv.
+\end{eqnarray*}
+where the fourth equality follows from the following property of the determinant for block matrices
+\begin{equation*}
+    \det\begin{pmatrix}
+    A & B \\ C & D
+    \end{pmatrix}
+    = (D - CA^{-1}B)\det(A)
+\end{equation*}
+with $D$ being a $1\times 1$ matrix, $B$ a column vector, $C$ a row vector, and $A$ an invertible matrix. \\
+
+From here, for a nice enough $f:M\to \R$, 
+\begin{equation*}
+    \int_M f\,d\Vol = \int_V f(\varphi(v))\, \sqrt{1+ \abs{\grad p(v)}^2}\,dv.
+\end{equation*}
+\end{example}
+
+Next, we will show that $\int_M f\,d\Vol$ is independent of the parameterization $\varphi$
+
+\begin{lemma}
+Let $\Upsilon: V' \to M$ be another parameterization of $M$, then 
+\begin{equation*}
+    \int_{V} f\circ \varphi(v) \rho^\varphi(v)\,dv = \int_{V'} f\circ \Upsilon(v) \rho^{\Upsilon}(v)\,dv.
+\end{equation*}
+\end{lemma}
+
+
+\begin{proof}
+Consider $\phi \coloneqq \varphi^{-1}\circ \Upsilon : V'\to V$, so that $v = \phi(v')$. Since $\varphi, \Upsilon$ are smooth parameterizations, $\phi$ is a diffeomorphism. With this, 
+\begin{eqnarray*}
+    \int_{V'}f\circ \Upsilon(v') \rho^{\Upsilon}(v')\,dv' 
+    &=& \int_{V'}f\circ \Upsilon(v') \sqrt{\det [ D \Upsilon (v') ^\top D \Upsilon(v') ]}\,dv' \\
+    &=& \int_{V'}f\circ \varphi \circ \phi (v') \sqrt{\det [ D (\varphi \circ \phi) (v')^\top D (\varphi \circ \phi) (v') ]}\,dv' \\
+    &=& \int_{V'}f\circ \varphi \circ \phi (v') \sqrt{\det[ (D\varphi(\phi(v'))\,D \phi (v'))^\top  (D\varphi(\phi(v'))D \phi (v')) ] }\,dv' \\
+    &=& \int_{V'}f\circ \varphi \circ \phi (v') \sqrt{\det[ D\phi(v')^\top D\varphi(\phi(v'))^\top (D\varphi(\phi(v')) D \phi (v'))  ]}\,dv' \\
+    &=& \int_{V'}f\circ \varphi \circ \phi (v') \sqrt{\det[  D\varphi(\phi(v'))^\top D\varphi(\phi(v'))  ]\det[D \phi(v')^\top D \phi(v')]}\,dv' \\
+    &=& \int_{V'}f\circ \varphi \circ \phi (v') \sqrt{\det[  D\varphi(\phi(v'))^\top D\varphi(\phi(v'))  ]}\cdot   \abs{\det[D\phi(v')]}\,dv' \\
+    &=& \int_V f\circ \varphi(v)\,\sqrt{\det[D \varphi(v)^\top D \varphi(v)]} \cdot \f{\abs{\det[D\phi(v')]}}{\abs{\det[D\phi(v')]}} \,dv \\ 
+    &=& \int_V f\circ \varphi(v)\,\sqrt{\det[D \varphi(v)^\top D \varphi(v)]} \,dv\\
+    &=& \int_{V} f\circ \varphi(v) \rho^\varphi(v)\,dv.
+\end{eqnarray*}
+\end{proof}
+
+%\cite{lee2013smooth}
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+
+\end{document}

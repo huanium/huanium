@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+\usepackage[total={7in, 8in}]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath, amsthm, latexsym, amssymb, color,cite,enumerate, physics, framed}
+\usepackage{caption,subcaption,verbatim}
+\usepackage[inline]{enumitem}
+\usepackage{mathtools}
+\pagenumbering{arabic}
+%\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+%\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newcommand*{\myproofname}{Proof}
+\newenvironment{subproof}[1][\myproofname]{\begin{proof}[#1]\renewcommand*{\qedsymbol}{$\mathbin{/\mkern-6mu/}$}}{\end{proof}}
+\renewcommand\Re{\operatorname{Re}}%%redefined Re and Im
+\renewcommand\Im{\operatorname{Im}}
+\newcommand\MdR{\mbox{M}_d(\mathbb{R})} %dxd matrices
+\newcommand\End{\operatorname{End}} %Prefix linear transformations
+\newcommand\GldR{\mbox{Gl}_d(\mathbb{R})}%dxd invertible matrices
+\newcommand\Gl{\operatorname{Gl}}                     %Prefix for general linear group
+\newcommand\OdR{\mbox{O}_d(\mathbb{R})} %Orthogonal matrices
+\newcommand\Sym{\operatorname{Sym}}
+\newcommand\Exp{\operatorname{Exp}}
+%\newcommand\tr{\operatorname{tr}}
+\newcommand\diag{\operatorname{diag}}
+\newcommand\supp{\operatorname{Supp}}
+\newcommand\Spec{\operatorname{Spec}}
+\renewcommand\det{\operatorname{det}}
+\newcommand\Ker{\operatorname{Ker}}
+\newcommand\R{\mathbb{R}}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+\newcommand{\p}{\partial}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\iprod}{\mathbin{\lrcorner}}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\FT}{\mathcal{F}}
+\newcommand{\LT}{\mathcal{L}}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
+
+
+\author{Huan Bui and Evan Randles}
+\title{Ideas for Applications}
+\date{}
+\begin{document}
+\maketitle
+
+%\abstract{}
+
+In this document I'm just writing down ideas we've had regarding applications. I'm a little worried that some things might not be defined, but I will just plough through nonetheless.
+
+$\,$
+
+\hrule
+
+\subsection{Decay estimates for the FT of the surface-carries measure $\sigma_P$}
+
+In the classical setting (by which we mean $P$ and not $iP$), we have 
+\begin{eqnarray*}
+    H^t_P(x) 
+    &=& \int_{\R^d} e^{-t P(\xi)}e^{-i x \cdot \xi}\,d\xi \\
+    &=& \int_{0}^\infty \int_S e^{-t P(r^E \eta)} e^{ - i x \cdot r^E \eta } r^{\mu_P - 1}\,d\sigma_P(\eta)\,dr   \\
+    &=&  \int_{0}^\infty e^{-tr} r^{\mu_P - 1} \lb  \int_S  e^{-i r^{E^\top} x \cdot \eta } \,d\sigma_P(\eta) \rb  \,dr   \\
+    &=& \int^\infty_0 e^{-tr} G_P(r,x) \,dr
+\end{eqnarray*}
+where $x\in \R^d$, $\sigma_P$ is the surface-carried by measure (which we know understood), and 
+\begin{eqnarray*}
+    G_P(r,x) 
+    &=& r^{\mu_P - 1} \int_S  e^{-i r^{E^\top} x \cdot \eta } \,d\sigma_P(\eta) \\ 
+    &=& r^{\mu_P - 1} \FT\{\sigma_P\}\lp r^{E^\top} x \rp \\
+    &=& r^{\mu_P - 1} \widehat{\sigma_P}\lp r^{E^\top}x \rp.
+\end{eqnarray*}
+We recognize that $H^t_P(x) = \LT\lc G_P(r,x) \rc (t)$ and so
+$G_P(r,x) = \LT^{-1}\lc H^t_P(x)\rc(r)$. In particular, by setting $r=1$, we find
+\begin{equation*}
+    \widehat{\sigma_P}(x) = \LT^{-1}\lc H^t_P(x)\rc (1).
+\end{equation*}
+The notion that $H^t_P(x)$ is a Laplace transform of $G_P(r,x)$ is defined because there exist positive constants $C,M$ for which
+\begin{equation*}
+    \abs{H^t_P(x)} \leq \f{C}{t^{\mu_P}}\exp\lb -t M P^\# \lp \f{x}{t} \rp \rb < \infty
+\end{equation*}
+for all $t >0$  and $x \in \R^d$. With this, we can more explicitly write,
+\begin{equation*}
+    \widehat{\sigma_P}(x) = \f{1}{2\pi i}\lim_{\be\to \infty} \int^{\alpha+i\beta}_{\alpha-i\beta} e^{tr} H_P^t(x)\,dt\bigg\vert_{r=1} = \f{1}{2\pi i}\lim_{\be\to \infty} \int^{\alpha+i\beta}_{\alpha-i\beta} e^{t} H_P^t(x)\,dt
+\end{equation*}
+where $\alpha \in \R$ lies on the right of all singularities of $H_P^t(x)$. Assuming $H_P^t(x)$ is entire (\textcolor{red}{which I think it is?}), then we can set $\alpha = 0$. After the change of variables $\tau = -it$, the integral becomes
+\begin{equation*}
+    \widehat{\sigma_P}(x)  = \f{1}{2\pi }\int_{\R} e^{i\tau} H_P^{i\tau}(x) \,d\tau = \FT\lc H_P^{i\tau}(x) \rc(1),
+\end{equation*}
+where $H^{i\tau}_P(x) = 0$ for all $\tau < 0$. \textcolor{red}{What convention are we using for the Fourier transform? Is the thing above $\FT$ or $\FT^{-1}$? I guess this is not surprising? Where do we go from here?}
+
+
+
+
+
+
+
+
+\subsection{Suggestions from LSC}
+
+
+\textcolor{red}{Useful article?} \href{https://arxiv.org/pdf/1507.07356.pdf}{\underline{Ten equivalent definitions of the fractional Laplace operator}}
+
+Let $L = -(-\Delta)^{\alpha/2}$ with $\alpha \in (0,2)$ and $f$ be in $L^p, C_0$ or $C_{\mbox{bu}}$ (\textcolor{blue}{whatever these spaces are}). Some (equivalent) definitions we might want to look into:
+
+\begin{itemize}
+    \item The Fourier definition:
+    \begin{equation*}
+        \FT\lc L f \rc(\xi) = - \abs{\xi}^\alpha \FT\lc f(\xi)  \rc
+    \end{equation*}
+    \item Bochner's definition (with the Bochner's integral)
+    \begin{equation*}
+        L f = \f{1}{\abs{\Gamma\lp \f{-\al}{2} \rp}} \int^\infty_0 (e^{t\Delta} f - f) t^{-1-\alpha/2}\,dt
+    \end{equation*}
+    \textcolor{blue}{where I think the integral is related to the \textbf{subordinate} which appears in one of LSC's suggestions.} This is motivated by the observation that
+    \begin{equation*}
+        \lambda^{\al/2} = \f{1}{\abs{\Gamma(-\f{\al}{2})}} \int_0^\infty (1 - e^{-t\lambda}) t^{-1-\al/2}\,dt,
+    \end{equation*}
+    so that
+    \begin{equation*}
+        L = -(-\Delta)^{\al/2} = \f{1}{\abs{\Gamma(-\f{\al}{2})}} \int_0^\infty ( e^{t\Delta} - 1) t^{-1-\al/2}\,dt
+    \end{equation*}
+
+    
+    
+    \item Semi-group definition:
+    \begin{equation*}
+        L f = \lim_{t\to 0^+} \f{P_t f - f}{t}
+    \end{equation*}
+    where $P_t f = f * p_t$ and $\FT\lc p_t\rc (\xi) = e^{-t\abs{\xi}^\al}$.
+\end{itemize}
+
+\textcolor{blue}{I'm giving up for tonight.}
+
+
+
+
+Suggestions from LSC:
+\begin{enumerate}
+\item Perhaps connect this to analysis of Pseudo-differential operators. 
+\item Take a convolution with a heavy tail, we get one of these positive-definite things with fractional powers, so does this help in the analysis for heavy tails.
+\item Semigroups generated by non-local $P(D)$. 
+\item Fractional powers of the Laplacian: Big differences between integers and and non-integers. This shows up in the off-diagonal bounds. Powers between 1 and 2 -- well known. An easy way to look at it -- take subbordinate semigroups this gives an integral in positive time (This is in Yosida (Functional Analysis, Chapter on analytic semigroup) -- look at the subbordinator). Effect of subbordination is to take the $\alpha$ fractional power of the generator. Take $P$ and apply this formula to $P\to P^{\alpha}$ where $0<\alpha<1$. This means to subbordinate $P$ -- the subbordination formula gives the connection -- it's an integral of K and this universal function called a subbordinator. The result is that the kernel would look like a Cauchy kernel with the. 
+\item The point of this, give examples which connect what we've done and what other people have done. The subbordinator is a laplace transform of $t^{\alpha}$.
+\item Look at Folland an Stein for homogeneous groups for an analogue of this theorem on homogeneous groups. Proposition 14.
+\item Surface-carried measure? Fairly loose term. maybe it means smooth density. \item Not integrable with respect to -> integral of the measurable $d'$-form.
+\end{enumerate}
+
+\subsection{Stuff from Greenblatt's}
+
+
+
+
+
+\end{document}

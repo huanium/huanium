@@ -1,0 +1,1609 @@
+\documentclass[11pt]{article}
+\usepackage[total={7in, 8in}]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath, amsthm, latexsym, amssymb, color,cite,enumerate}
+\usepackage{caption,subcaption,verbatim}
+\usepackage[inline]{enumitem}
+\usepackage{mathtools}
+\pagenumbering{arabic}
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+%\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newcommand*{\myproofname}{Proof}
+\newenvironment{subproof}[1][\myproofname]{\begin{proof}[#1]\renewcommand*{\qedsymbol}{$\mathbin{/\mkern-6mu/}$}}{\end{proof}}
+\renewcommand\Re{\operatorname{Re}}%%redefined Re and Im
+\renewcommand\Im{\operatorname{Im}}
+\newcommand\MdR{\mbox{M}_d(\mathbb{R})} %dxd matrices
+\newcommand\End{\operatorname{End}} %Prefix linear transformations
+\newcommand\GldR{\mbox{Gl}_d(\mathbb{R})}%dxd invertible matrices
+\newcommand\Gl{\operatorname{Gl}}                     %Prefix for general linear group
+\newcommand\OdR{\mbox{O}_d(\mathbb{R})} %Orthogonal matrices
+\newcommand\Sym{\operatorname{Sym}}
+\newcommand\Exp{\operatorname{Exp}}
+\newcommand\tr{\operatorname{tr}}
+\newcommand\diag{\operatorname{diag}}
+\newcommand\supp{\operatorname{Supp}}
+\newcommand\Spec{\operatorname{Spec}}
+\renewcommand\det{\operatorname{det}}
+\newcommand\Ker{\operatorname{Ker}}
+\newcommand\R{\mathbb{R}}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+\author{Huan Bui and Evan Randles}
+\title{A generalized polar coordinate integration formula}
+\date{}
+\begin{document}
+\maketitle
+
+\abstract{This paper is about math.}
+
+\section{Introduction}
+
+Stuff about the standard polar coordinate formula.
+
+In this \textcolor{red}{section}, we establish a generalized polar coordinate integration formula associated to a positive-homogeneous polynomial. In what follows, we fix a positive-homogeneous polynomial $P:\mathbb{R}^d\to [0,\infty)$ and set
+\begin{equation*}
+S=\{\eta\in\mathbb{R}^d:P(\eta)=1\}\hspace{1cm}\mbox{and}\hspace{1cm}B=\{\eta\in\mathbb{R}^d:P(\eta)<1\}. 
+\end{equation*}
+ of $\mathbb{R}^d$, $S$ is a compact hypersurface, i.e., a compact smooth manifold of dimension $d-1$, and $B$ is a bounded open region. \textcolor{red}{I'm not sure if this matters, but $S$ is connected never contains $0$ and is not necessarily convex, $B$ does contains $0$ and, I believe, is connected and simply connected. Also, we should think of $P$ being the essential thing which defines both $E$ and $S$ here -- and we can write $\mu_P=\tr E$ throughout. }
+
+\textcolor{red}{This section needs to contain a description of the standard polar coordinate integration formula and, therein, cite Folland or St.-Sh. For reference, our description should make use of the formula in the following theorem:
+\begin{theorem}
+Let $\sigma_d$ be the canonical surface measure on the unit sphere $\mathbb{S}^{d-1}\subseteq \mathbb{R}^d$, i.e., $\sigma_d$ is the unique rotation-invariant Radon measure on $\mathbb{S}^{d-1}$ for which $\sigma(\mathbb{S}^{d-1})=d\cdot m(\mathbb{B})=(d\cdot\pi^{d/2})/\Gamma(d/2+1)$;  here $\mathbb{B}$ denotes the unit ball in $\mathbb{R}^d$, $m$ is the Lebesgue measure on $\mathbb{R}^d$ and we will write $dm(x)=dx$. Let $f\in L^1(\mathbb{R}^d)$. Then, for $\sigma_d$-almost every $\eta$, $t\mapsto f(t\eta)$ is (absolutely) integrable with respect to the measure $t^{d-1}dt$ on $(0,\infty)$, $\eta\mapsto \int_0^\infty f(t\eta)t^{d-1}\,dt$ is (absolutely) integrable with respect to $\sigma_d$ on $\mathbb{S}^{d-1}$ and
+\begin{equation}\label{eq:StandardPolarIntegrationFormula}
+\int_{\mathbb{R}^d}f(x)\,dx=\int_{\mathbb{S}^{d-1}}\left(\int_0^\infty f(t\eta)t^{d-1}\,dt\right)\,d\sigma_d(\eta).
+\end{equation}
+\end{theorem}}
+
+\section{Positive-Homogeneous Functions}
+
+Our setting is $d$-dimensional Euclidean space $\mathbb{R}^d$ equipped with inner product $x\cdot y=\sum_{k=1}^dx_ky_k$ and associated Euclidean norm $|x|=\sqrt{x_1^2+x_2^2+\cdots+x_d^2}$. We will take $\mathbb{R}^d$ to be equipped with its usual topology and (oriented) smooth structure. Given $x\in\mathbb{R}^d$ and $R>0$, the open ball with center $x$ and radius $R$ is denoted by $\mathbb{B}_R(x)$ and its corresponding sphere is denoted by $\mathbb{S}_R(x)$. We write $\mathbb{B}=\mathbb{B}_1(0)$ and $\mathbb{S}=\mathbb{S}_1(0)$ to denote the standard unit ball and unit sphere, respectively, in $\mathbb{R}^d$. We shall denote by $\End(\mathbb{R}^d)$ the algebra (\textcolor{red}{Or ring}) of linear transformations on $\mathbb{R}^d$ and by $\MdR$ the corresponding set of $d\times d$ real matrices. Also, we shall denote by $\Gl(\mathbb{R}^d)$ the general linear group and by $\GldR$ the corresponding group of $d\times d$ invertible real matrices. For $E\in \End(\mathbb{R}^d)$ (or $E\in\MdR$), $\|E\|$ will denote the so-called operator norm.\\
+
+\noindent Let $\{T_t\}_{t>0}\subseteq \Gl(\mathbb{R}^d)$ be a continuous one-parameter group, i.e., $T$ is a continuous group homomorphism from the multiplicative group of positive real numbers into the general linear group, $\Gl(\mathbb{R}^d)$. It is well-known (c.f., \cite{Randles2017,Engel2000,Engel2005}) that every continuous one-parameter group $\{T_t\}$ has the unique representation
+\begin{equation*}
+T_t=t^E=\exp((\ln t) E)=\sum_{k=0}^\infty \frac{(\ln t)^k}{k!}E^k
+\end{equation*}
+for some $E\in\End(\mathbb{R}^d)$. $E$ is called (infinitesimal) generator of $\{T_t\}$ and $\{T_t\}$ is said to be generated by $E$. This, of course, gives a one-to-one correspondence between $\End(\mathbb{R}^d)$ and the collection of continuous one-parameter groups. Some basic results on one-parameter contracting groups are presented in Appendix \ref{subsec:OneParameterGroups}. Also, we encourage the reader to look at the excellent texts \cite{Engel2005} and \cite{Engel2000} on one-parameter (semi) groups.
+
+\begin{definition} A continuous one-parameter group $\{T_t\}$ is said to be \textit{contracting} if
+\begin{equation*}
+\lim_{t\to 0}\|T_t\|=0. 
+\end{equation*}
+\end{definition}
+
+\noindent The notion of a contracting group (or semigroup) is closely related to notion of (Lyapunov) stability in linear (and nonlinear) dynamical systems (See \textcolor{red}{We need a reference here, preferably one that uses "Lyapunov". Braun's ODE book is a good reference, but doesn't use the name Lyapunov. We should look at R. Bellman's classic (dover) book.}) The following necessary condition will be useful for us when constructing measures on surfaces in $\mathbb{R}^d$.
+
+\begin{proposition}\label{prop:ContractingTrace}
+Let $\{T_t\}\subset\Gl(\mathbb{R}^d)$ be a continuous one-parameter group with generator $E$. If $\{T_t\}$ is  contracting, then $\tr E>0$. 
+\end{proposition}
+\begin{proof}
+The supposition that $\{T_t\}$ is a contracting group implies that $t^E\to \mathbf{0}$ as $t\to 0$ in the operator-norm topology on $\End(\mathbb{R}^d)$; here $\mathbf{0}$ is zero transformation. Because the determinant is a continuous function from $\End(\mathbb{R}^d)$, equipped with operator-norm topology, into $\mathbb{R}$, we have
+\begin{equation*}
+0=\det(\mathbf{0})=\det\left(\lim_{t\to 0}t^E\right)=\lim_{t\to 0}\det\left(t^E\right)=\lim_{t\to 0}t^{\tr E}
+\end{equation*}
+in view of the preceding proposition. Therefore, $\tr E>0$.
+\end{proof}
+
+\noindent As we discussed in the introduction, one main goal of this article is to construct measures on certain surfaces in $\mathbb{R}^d$ (analogous to $\mathbb{S}$) with which we can formulate generalizations of \eqref{eq:StandardPolarIntegrationFormula}. As the unit sphere $\mathbb{S}$ can be defined as a level set of the Euclidean norm $|\cdot|$ on $\mathbb{R}^d$, a function which is continuous,  positive-definite\footnote{Given a function $P:\mathbb{R}^d\to\mathbb{R}$, we say that $P$ is positive-definite if $P\geq 0$ and $P(x)=0$ only when $x=0$.}, and homogeneous in the sense that $t|x|=|tx|$ for all $t>0$ and $x\in\mathbb{R}^d$, the surfaces of interest for us are level sets of certain continuous functions which we will call \textit{positive-homogeneous}. The remainder of this section is dedicated to introducing this class of functions.\\
+
+\noindent In what follows, let $P:\mathbb{R}^d\to\mathbb{R}$ be continuous and define
+\begin{equation}
+S=\{\eta\in\mathbb{R}^d:P(\eta)=1\}
+\end{equation}
+and
+\begin{equation*}
+B=\{\eta\in\mathbb{R}^d:P(\eta)<1\}.
+\end{equation*}
+Given a continuous one-parameter group $\{T_t\}$ with infinitesimal generator $E$, we say that \textit{$P$ is homogeneous with respect to $\{T_t\}$ (and, by an abuse of language, homogeneous with respect to $E$)} if
+\begin{equation}\label{eq:Homogeneous}
+tP(x)=P(T_tx)=P\left(t^Ex\right)
+\end{equation}
+for all $x\in\mathbb{R}^d$ and $t>0$. For a given map $P:\mathbb{R}^d\to\mathbb{R}$, the set of all $E$ for which \eqref{eq:Homogeneous} is satisfied is called the \textit{exponent set of $P$} and shall be denoted by $\Exp(P)$. 
+
+
+\begin{proposition}\label{prop:PositiveHomogeneousCharacterization}
+Let $P:\mathbb{R}^d\to\mathbb{R}$ be continuous, positive-definite (I.e., $P(x)\geq 0$ for all $x\in\mathbb{R}^d$ and $P(x)=0$ if and only if $x=0$), and have $\Exp(P)\neq \varnothing$. The following are equivalent:
+\begin{enumerate}[label=(\alph*), ref=(\alph*)]
+\item\label{cond:SisCompact} $S$ is compact.
+\item\label{cond:PisAboveOne} There is a positive number $M$ for which
+\begin{equation*}
+P(x)>1
+\end{equation*}
+for all $|x|\geq M$. 
+\item\label{cond:Contracting} For each $E\in\Exp(P)$, $T_t=t^E$ is contracting.
+\item\label{cond:ThereExistsContracting} There exists $E\in\Exp(P)$ for which $T_t=t^E$ is contracting.
+\item\label{cond:InfiniteLimit} We have
+\begin{equation*}
+\lim_{x\to\infty}P(x)=\infty.
+\end{equation*}
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+In the case that $d=1$, is is easy to see that every function satisfying the hypotheses is of the form
+\begin{equation*}
+P(x)=\begin{cases}
+P(1)x^\alpha \\
+P(-1)(-x)^\alpha
+\end{cases}
+\end{equation*}
+for some $\alpha>0$ where $P(1),P(-1)>0$ and $\Exp(P)$ consists only of the linear function $x\mapsto x/\alpha$. In this setting, it is easy to see that Conditions \ref{cond:SisCompact}--\ref{cond:InfiniteLimit} are satisfied (always and) simultaneously. We shall therefore assume that $d>1$ for the remainder of the proof.
+
+\begin{subproof}[$\ref{cond:SisCompact}\implies\ref{cond:PisAboveOne}$]
+Given that $S$ is compact, it is bounded and so we have a positive number $M$ for which $P(x)\neq 1$ for all $|x|\geq M$. Observe that, if for two points $x_1,x_2\in \mathbb{R}^d\setminus\mathbb{B}_M(0)$, $P(x_1)<1<P(x_2)$ or $P(x_2)<1<P(x_1)$, then by virtue of the path connectedness of $\mathbb{R}^d\setminus\mathbb{B}_M(0)$ and the intermediate value theorem, we would be able to find  $x_0\in\mathbb{R}^d\setminus\mathbb{B}_M(0)$ for which $P(x_0)=1$, an impossibility. Therefore, to show that Condition \ref{cond:PisAboveOne} holds, we must simply rule out the case in which $P(x)<1$ for all $|x|\geq M$. Let us therefore assume, to reach a contradiction, that this alternate condition holds. In this case, we take $E\in\Exp(P)$ and $y\in\mathbb{R}^d\setminus \{0\}$ and observe that
+\begin{equation*}
+\lim_{t\to\infty}P(t^Ey)=\lim_{t\to\infty}tP(y)=\infty.
+\end{equation*}
+By virtue of our supposition, we find that $|t^Ey|<M\leq M$ for all sufficiently large $t$. In particular, there exists a sequence $t_k\to\infty$ for which $|t_k^Ey|\leq M$ for all $k$ and 
+\begin{equation*}
+\lim_{k\to\infty}P(t_k^Ey)=\infty.
+\end{equation*}
+Because $\overline{\mathbb{B}_M(0)}$, the closure of $\mathbb{B}_M(0)$, is compact, $\{t_k^Ey\}$ has a convergent subsequence which we also denote by $\{t_k^Ey\}$ by a slight abuse of notation. In view of the continuity of $P$ at $\eta=\lim_{k\to\infty}t_k^Ey$, we have
+\begin{equation*}
+P(\eta)=\lim_{k\to\infty}P(t_k^Ey)=\lim_{k\to\infty}t_kP(y)=\infty,
+\end{equation*}
+which is impossible. Thus Condition \ref{cond:PisAboveOne} holds.
+\end{subproof}
+\begin{subproof}[$\ref{cond:PisAboveOne}\implies\ref{cond:Contracting}$]
+We shall prove the contrapositive statement. Suppose that, for $E\in\Exp(P)$, $\{t^E\}$ is not contracting. In this case, by virtue of Proposition \ref{prop:ContractingCharacterization}, there exists $x\in\mathbb{R}^d\setminus\{0\}$ and a sequence $t_k\to 0$ for which $t_k^Ex$ does not converge to zero in $\mathbb{R}^d$. If our sequence $\{t_k^Ex\}$ is bounded, then it must have a convergent subsequence $\{t_{k_m}^Ex\}$ with non-zero subsequential limit $\eta=\lim_{m\to\infty}t_{k_m}^Ex$. By the continuity of $P$, we have
+\begin{equation*}
+P(\eta)=\lim_{m\to\infty}P(t_{k_m}^Ex)=\lim_{k\to\infty}t_{k_m}P(x)=0
+\end{equation*}
+which cannot be true for it would violate the positive-definiteness of $P$. We must therefore consider the other possibility: The sequence $\{t_k^Ex\}$ is unbounded. In particular, there must be some $k_0$ for which $t_{k_0}<1/P(x)$ and $|t_{k_0}^Ex|>M$. Upon putting $y=t_{k_0}^Ex$, we have $|y|>M$ and  $P(y)=P(t_{k_0}^Ex)=t_kP(x)<1$ which shows that Condition \ref{cond:PisAboveOne} cannot hold.
+\end{subproof}
+\begin{subproof}[$\ref{cond:Contracting}\implies\ref{cond:ThereExistsContracting}$] This is immediate.
+\end{subproof}
+\begin{subproof}[$\ref{cond:ThereExistsContracting}\implies\ref{cond:InfiniteLimit}$]
+Let $E\in\Exp(P)$ be such that $\{t^E\}$ is contracting and let $\{x_n\}\subseteq\mathbb{R}^d$ be such that $\lim_{k\to\infty}|x_n|=\infty$. By virtue of Proposition \ref{prop:ScaleFromSphere}, there exist sequences $\{t_k\}\subseteq (0,\infty)$ and $\{\eta_k\}\in\mathbb{S}$ for which $t_k^E\eta_k=x_k$ for all $k$ and $\lim_{k\to\infty}t_k=\infty$. Given that $P$ is continuous and strictly positive on the compact set $\mathbb{S}$, we have $\inf_{\eta\in\mathbb{S}}P(\eta)>0$ and therefore
+\begin{equation*}
+\liminf_k P(x_k)=\liminf_k t_kP(\eta_k)\geq \liminf_k t_k\left(\inf_{\eta\in\mathbb{S}}P(\eta)\right)=\infty
+\end{equation*}
+showing that $\lim_{k\to\infty} P(x_k)=\infty$, as desired.
+\end{subproof}
+\begin{subproof}[$\ref{cond:InfiniteLimit}\implies\ref{cond:SisCompact}$]
+Because $S$ is the preimage of the closed singleton $\{1\}$ under the continuous function $P$, it is closed. By virtue of Condition \ref{cond:InfiniteLimit}, $S$ is also be bounded and thus compact in view of the Heine-Borel theorem.
+\end{subproof}
+\end{proof}
+
+\textcolor{red}{\hline}
+\begin{proposition}
+If $P$ is continuous, positive definite and $\Exp(P)$ contains a diagonalizable $E\in\End(\mathbb{R}^d)$, then $\{t^E\}$ is contracting and hence all of the above conditions are (simultaneously) met. 
+\end{proposition}
+\begin{proof}
+Let's assume, to reach a contradiction, that $\{t^E\}$ is not contracting. By repeating the same argument given in ``$\ref{cond:PisAboveOne}\implies\ref{cond:Contracting}$", we are left with only one possibility: There is a non-zero $x\in\mathbb{R}^d$ and a sequence $t_k\to 0$ for which $|t_k^Ex|\to\infty$. Given that $E$ is diagonalizable, let $v_1,v_2,\dots,v_d$ be a basis of eigenvectors of $E$ and let $\lambda_1,\lambda_2,\dots,\lambda_d$ be their corresponding eigenvalues. Then
+\begin{equation*}
+x=\alpha_1v_1+\alpha_2v_2+\cdots+\alpha_dv_d
+\end{equation*}
+and
+\begin{equation*}
+t_k^Ex=\alpha_1t_k^{\lambda_1}v_1+\alpha_2t_k^{\lambda_2}v_2+\cdots+\alpha_dt_k^{\lambda_d}v_d
+\end{equation*}
+for all $k$. Given that $|t_k^Ex|\to\infty$ and $t_k\to 0$, we must have at least one negative eigenvalue. We therefore assume, without loss of generality, that $\lambda_1<0$ observe that
+\begin{equation*}
+\infty=\lim_{t\to \infty}tP(v_1)=\lim_{t\to\infty}P(t^E v_1)=\lim_{t\to \infty}P(t^{\lambda_1} v_1)=P(0)
+\end{equation*}
+which is impossible.
+\end{proof}
+\textcolor{red}{\begin{remark}I'm still not convinced that the conclusion of the above proposition is not always true even when $E$ is not diagonalizable. It could be true and it could be not true. We really need to either prove it or find a counterexample.
+\end{remark}
+\begin{remark}
+In fact, I believe that you can even extend the proposition to say that, if $E$ has real spectrum then it still holds. In this case, the Jordan decomposition (diagonalizable + nilpotent) should still make the same argument go through. So, to seek a counterexample, we should probably need to look in, at least $\mathbb{R}^3$. The reason for this is that, to make things break, I believe we need at least one complex eigenvalue (which means two of them) and two eigenvalues whose real parts have opposite signs.
+\end{remark}
+\begin{remark}
+Okay, I've found a reference that might help us generalize the Prop 2.4 here. See Theorem 1 on page 378 of Martin Braun's 4th edition of "Differential Equations and their applications". 
+\end{remark}}
+
+\begin{remark}
+If we are able to show that these conditions are always satisfied, then we must change the definition below. 
+\end{remark}
+\textcolor{red}{\hline}
+
+\begin{definition}
+Let $P:\mathbb{R}^d\to\mathbb{R}$ be continuous, positive-definite and have $\Exp(P)\neq \varnothing$. If any one (and hence all) of the equivalent conditions in Proposition \ref{prop:PositiveHomogeneousCharacterization} are fulfilled, we say that $P$ is positive-homogeneous.
+\end{definition}
+\begin{example}[Examples]
+\textcolor{red}{We need to build this out. Maybe multiple example environments}
+\begin{enumerate}
+\item The Euclidean norm $|\cdot|$ is positive-homogeneous. $\Exp(|\cdot|)=I+\mathfrak{o}(d)$ where $I$ is the identity and $\mathfrak{o}(d)$ is the Lie algebra of the orthogonal group (characterized by the set of skew-symmetric matrices).
+\item For any $\alpha>0$, $x\mapsto |\cdot|^\alpha$ is positive-homogeneous. $Exp(|\cdot|^{\alpha})=\frac{1}{\alpha}I+\mathfrak{o}(d).$
+\item Consider $P:\mathbb{R}^d\to \mathbb{R}$ defined by
+\begin{equation*}
+P(x,y)=x^2+y^4
+\end{equation*}
+for $(x,y)\in\mathbb{R}^2$. In this case $\Exp(P)$ is a singleton consisting of $E\in\Gl(\mathbb{R}^d)$ having standard representation $\diag(1/2,1/4)$. \textcolor{blue}{Can we prove this?}.
+\item Let's do one here whose $S$ is non-convex.
+\item In \cite{Randles2017}, a positive-homogeneous polynomial $P$ is, by definition, a positive-definite (multivariate) polynomial for which $\Exp(P)$ contains an element $E$ of $\End(\mathbb{R}^d)$ whose spectrum is purely real (equivalently, whose characteristic polynomial factors over $\mathbb{R}$). By virtue of Proposition 2.2 of \cite{Randles2017}, for each such polynomial $P$ and $E\in\Exp(P)$ with real spectrum, there exists $A\in\Gl(\mathbb{R}^d)$ (representing a change of basis of $\mathbb{R}^d$) and a $d$-tuple of positive integers $\mathbf{m}=(m_1,m_2,\dots,m_d)\in\mathbb{N}_+^d$ for which $A^{-1}EA$ has standard matrix representation
+\begin{equation}\label{eq:DiagonalizableE}
+\diag\{(2m_1)^{-1},(2m_2)^{-1},\dots,(2m_d)^{-1}\}
+\end{equation}
+and
+\begin{equation}\label{eq:SemiElliptic}
+(P\circ A)(x)=\sum_{|\beta:\mathbf{m}|=2}a_\beta x^\beta
+\end{equation}
+for $x=(x_1,x_2,\dots,x_d)\in\mathbb{R}^d$; here, for a multi-index $\beta=(\beta_1,\beta_2,\dots,\beta_d)\in\mathbb{N}^d$, $x^{\beta}=x_1^{\beta_1}x_2^{\beta_2}\cdots x_d^{\beta_d}$ and
+\begin{equation*}
+|\beta:\mathbf{m}|:=\sum_{k=1}^d\frac{\beta_k}{m_k}.
+\end{equation*}
+Polynomials of the form \eqref{eq:SemiElliptic} are said to be semi-elliptic in the sense of L. H\"{o}rmander and the constant-coefficient partial differential operators they define are hypoelliptic \cite{Hormander1983}. With the representation \eqref{eq:DiagonalizableE}, it is easy to see that $t^{E}$ is contracting and therefore every positive-homogeneous polynomial is a positive-homogeneous function by virtue of Condition \ref{cond:ThereExistsContracting} of Proposition \ref{prop:PositiveHomogeneousCharacterization}. It is straightforward to check that the \textcolor{red}{list all examples above} are positive-homogeneous polynomials of the form \eqref{eq:SemiElliptic}, i.e., semi-elliptic polynomials, with $A=I$. We refer to Section 7.3 of \cite{Randles2017} which presents a positive-homogeneous polynomial which is not semi-elliptic (and so $A\neq I$).
+
+\item Let $Q$ be a positive-homogeneous function with exponent set $\Exp(Q)$ and compact level set $S_Q=\{\eta:Q(\eta)=1\}$. Given any $f\in C^0(S_Q)$ for which $f(\eta)>0$ for all $\eta\in S_Q$ and $E\in \Exp(Q)$, define $P=P_{f,Q}:\mathbb{R}^d\to\mathbb{R}$ by
+\begin{equation*}
+P(x)=\begin{cases}
+Q(x)f\left((Q(x)^{-E}x\right) & x\neq 0\\
+0 & x=0
+\end{cases}
+\end{equation*}
+for $x\in\mathbb{R}^d$. We claim that $P$ is positive-definite and $\Exp(Q)\subseteq \Exp(P)$.
+
+\begin{subproof}To see this, we first observe that, for any $x\in\mathbb{R}^d\setminus \{0\}$, $Q((Q(x)^{-E}x)=Q(x)/Q(x)=1$ and hence $Q(x)^{-E}x\in S_Q$ and so the above formula makes sense and ensures that $P$ is continuous on $\mathbb{R}^d\setminus\{0\}$. Futhermore, because $f$ is continuous and positive on the compact set $S_Q$, we have $0<\min Q\leq \max Q<\infty$. From this it follows that $P$ must be positive-definite and also, by virtue of the squeeze theorem, continuous at $x=0$. Now, given $E\in\Exp(Q)$,
+\begin{equation*}
+P(t^Ex)=Q(t^Ex)f(Q(t^Ex)^{-E}t^Ex)=tQ(x)f(Q(x)^{-E}x)=tP(x)
+\end{equation*}
+whenever $x\neq 0$ and $t>0$. It follows that $E\in\Exp(P)$ and, because we know that $t^E$ is contracting, we conclude that $P$ is a positive-homogeneous function in view of Proposition \ref{prop:PositiveHomogeneousCharacterization}. 
+\end{subproof}
+ The utility of this construction allows us to see that ``most'' positive-homogeneous functions are not smooth. To see this, take any positive-definite function $Q\in C^{\infty}(\mathbb{R}^d)$. It follows (\textcolor{red}{See Section \ref{sec:SigmaForSmoothP}}) that $S_Q$ is a smooth compact embedded hypersurface of $\mathbb{R}^d$. If $P=P_{f,Q}$ is $C^\infty(\mathbb{R}^d)$, $P\vert_{S_Q}=f$ is necessarily $C^\infty(S_Q)$. It follows that $P\notin C^\infty(\mathbb{R}^d)$ whenever $f$ is chosen from $C^0(S_Q)\setminus C^\infty(S_Q)$. By precisely the same argument, we see that $P\in C^0(\mathbb{R}^d)\setminus C^k(\mathbb{R}^d)$ whenever $f\in C^0(S_Q)\setminus C^k(S_Q)$ for each $k\in\mathbb{N}$.
+
+We also like to point out, in view of the above construction, that $S_P=\{\eta\in\mathbb{R}^d:P(\eta)=1\}$ does not generally coincide with $S_Q$. In fact, $S_Q=S_P$ if and only if $P=Q$ and (equivalently) $f=1$.
+
+As a straightforward example, we have chosen $Q(x_1,x_2)=|(x_1,x_2)|=\sqrt{x_1^2+x_2^2}$ on $\mathbb{R}^2$ with $S_Q=\mathbb{S}$ and 
+\begin{equation*}
+f(x_1,x_2)=w(\mbox{Arg}(x_1,x_2))+3
+\end{equation*}
+where $w:\mathbb{R}\to\mathbb{R}$ is the $2\pi$-periodic Weierstrass function. The resulting positive-homogeneous function $P$ is plotted \textcolor{red}{below}. \textcolor{blue}{Huan, I'm also happy to do a periodic sawtooth or something. We should highlight $S_Q$ and $S_P$ in the graph.}
+\end{enumerate}
+\end{example}
+
+
+
+
+\noindent Given a positive-homogeneous function $P$, let $\Sym(P)$ be the set of $O\in\End(\mathbb{R}^d)$ for which
+\begin{equation*}
+P(Ox)=P(x)
+\end{equation*}
+for all $x\in\mathbb{R}^d$. By virtue of the positive-definiteness of $P$, it is easy to see that $\Sym(P)$ is a subgroup of $\Gl(\mathbb{R}^d)$. For this reason, $\Sym(P)$ is said to be the \textit{symmetric group associated to $P$}. 
+
+\begin{proposition}\label{prop:SymCompact}
+For each positive-homogeneous function $P$, $\Sym(P)$ is a compact subgroup of $\Gl(\mathbb{R}^d)$. In particular, it is a subgroup of the orthogonal group $O(\mathbb{R}^d)$.
+\end{proposition}
+\begin{proof}
+By virtue of the Heine-Borel theorem (and the fact that $\Gl(\mathbb{R}^d)$ is finite dimensional), we prove that $\Sym(P)$ is closed and bounded. To this end, let $\{O_n\}\subseteq\Sym(P)$ be a sequence converging to $O\in \Gl(\mathbb{R}^d)$. For each $x\in\mathbb{R}^d$, the continuity of $P$ guarantees that
+\begin{equation*}
+P(Ox)=P\left(\lim_{n\to\infty}O_nx\right)=\lim_{n\to\infty}P(O_nx)=\lim_{n\to\infty}P(x)=P(x).
+\end{equation*}
+Hence, $O\in\Sym(P)$ and so $\Sym(P)$ is closed.
+
+We assume, to reach a contradiction, that $\Sym(P)$ is not bounded. In this case, there is a sequence $\{\eta_n\}\subseteq \mathbb{S}$ for which $\lim_{n\to\infty}|O_n\eta_n|=\infty$. Given that $\mathbb{S}$ is compact, by passing to a subsequence if needed, we may assume without loss in generality that $\lim_{n\to\infty}\eta_n=\eta\in\mathbb{S}$. By virtue of Proposition \ref{prop:PositiveHomogeneousCharacterization} and the continuity of $P$,
+\begin{equation*}
+P(\eta)=\lim_{n\to\infty}P(\eta_n)=\lim_{n\to\infty}P(O_n\eta_n)=\infty
+\end{equation*}
+which is impossible. Hence $\Sym(P)$ is bounded.
+\end{proof}
+
+\begin{corollary}
+Let $P$ be a positive-homogeneous function, then
+\begin{equation*}
+\tr E=\tr E'>0
+\end{equation*}
+for all $E,E'\in\Exp(P)$.
+\end{corollary}
+\begin{proof}
+By virtue of Propositions \ref{prop:ContractingTrace} and \ref{prop:PositiveHomogeneousCharacterization}, $\tr E>0$ for all $E\in\Exp(P)$. It remains to show that the trace map is constant on $\Exp(P)$. To this end, let $E,E'\in\Exp(P)$. Then, for all $t>0$ and $x\in\mathbb{R}^d$,
+\begin{equation*}
+P(x)=t(1/t)P(x)=tP((1/t)^{E'}x)=P(t^E(1/t)^{E'}x)=P(t^{E}t^{-E'}x).
+\end{equation*}
+Thus $O_t=t^{E}t^{-E'}\in\Sym(P)$ for each $t>0$. In view of the Propositions \ref{prop:ContinuousGroupProperties} and \ref{prop:SymCompact} and the homomorphism property of the determinant,
+\begin{equation*}
+1=\det(O_t)=\det(t^{E}t^{E'})=\det(t^{E})\det(t^{-E'})=t^{\tr E}t^{\tr E}=t^{\tr E-\tr E'}
+\end{equation*}
+for all $t>0$ and therefore $\tr E=\tr E'$.
+\end{proof}
+
+\noindent In view of the preceding corollary, to each positive-homogeneous function $P$, we define the \textit{homogeneous order of $P$} to be the unique positive number $\mu_P$ for which
+\begin{equation*}
+\mu_P=\tr E
+\end{equation*}
+for all $E\in\Exp(P)$. 
+
+\begin{example}\textcolor{red}{Needs editing}
+It is easy to see that for the $P$'s in the begging examples, we have: 1: $\mu_P=d$, 2: $\mu_P=d/\alpha$, 3: $\mu_P=3/4$, 4: I don't remember, 5: $\mu_P=(2m_1)^{-1}+(2m_2)^{-1}+\cdots+(2m_d)^{-1}$. 6: $\mu_P=\mu_Q$.
+\end{example}
+
+
+\textcolor{red}{Some thoughts:
+\begin{enumerate}
+\item This is looking fairly good. 
+\item I wonder if we should put some of the results concerning conjugation related to $\Exp(P)$ and $\Sym(P)$ here.
+\item What 
+\end{enumerate}}
+
+
+
+
+
+\section{A surface measure on $S$ and a generalized polar integration formula}\label{sec:IntegrationFormula}
+
+In this section, we fix a positive-homogeneous function $P$ and construct a measure $\sigma$ on the compact set $S$ associated to $P$. Using the measure $\sigma$, we establish an analogue of the the formula \eqref{eq:StandardPolarIntegrationFormula} to integrate functions on $\mathbb{R}^d$. As \eqref{eq:StandardPolarIntegrationFormula} finds utility in the harmonic analysis of radial functions, i.e., those functions of the form $f(x)=f_0(|x|)$, our analogue (\textcolor{red}{Theorem \ref{thm:MainIntegrationFormula}}) will aid the analysis of functions of the form $f(x)=f_0(P(x))$. In fact, this is the underlying motivation for our work. Beyond this central motivation, we shall establish a number of desirable properties satisfied by the measure $\sigma$ and treat some natural questions of independent interest which arise in the course of our development. Our construction of $\sigma$ in the present section uses only tools from point-set topology and measure theory.  In Section \ref{sec:SigmaForSmoothP}, we study the special case in which a positive-homogeneous function $P$ is additionally smooth. In that case, we will find that $S$ is a smooth compact embedded hypersurface of $\mathbb{R}^d$ and the measure $\sigma$ is closely related to the Riemannian volume on $S$.\\
+
+
+
+
+
+\noindent Our construction proceeds as follows. In Subsection \ref{subsec:ConstructionofSigma}, we fix $E\in\Exp(P)$ and consider the one-parameter contracting group $\{t^E\}$. As the standard isotropic one-parameter group $t\mapsto tI=t^I$ is well-fitted to the unit sphere $\mathbb{S}$ and allows every non-zero $x\in\mathbb{R}^d$ to be written uniquely as $x=t\eta$ for $t\in (0,\infty)$ and $\eta\in \mathbb{S}$, $\{t^E\}$ is well-fitted to to $S$ and has the property that every non-zero $x\in\mathbb{R}^d$ can be written uniquely as $x=t^E\eta$ where $t\in(0,\infty)$ and $\eta\in S$. With this one-parameter group as a tool, we define a \textit{surface-carried}\footnote{\textcolor{red}{We really need to see if this is standard vocabulary}} measure $\sigma=\sigma_{P,E}$ on $S$ by taking sufficiently nice sets $F\subseteq S$, stretching them into a quasi-conical region of the associated ``ball" $B$ with the contracting group $\{t^E\}$, and computing the Lebesgue measure of the result. In Subsection \ref{subsec:ProductMeasure}, we turn our focus to an associated product measure $\lambda\times\sigma$ on $(0,\infty)\times S$ with which we are able to formulate and prove a generalization of \eqref{eq:StandardPolarIntegrationFormula}; this is Theorem \ref{thm:MainIntegrationFormula}. We then derive a number of corollaries of Theorem \ref{thm:MainIntegrationFormula}, including the result that $\sigma$ is a Radon measure on $S$. As everything done in Subsections \ref{subsec:ConstructionofSigma} and \ref{subsec:ProductMeasure} is done using the contracting group $\{t^E\}$ for a chosen $E\in\Exp(P)$, it isn't clear, a priori, exactly how $\sigma$ is dependent on the choice of $E\in\Exp(P)$, if at all. In Subsection \ref{subsec:IndepdendentofE}, we prove that $\sigma$ is, in fact, independent of the choice of $E\in \Exp(P)$ and this quickly yields a stronger version of Theorem \ref{thm:MainIntegrationFormula}; this is Theorem \ref{thm:BestIntegrationFormula}.\\
+
+\noindent Throughout this section, $P$ denotes a fixed positive-homogeneous function on $\mathbb{R}^d$ with homogeneous order $\mu_P>0$ and exponent set $\Exp(P)$. We will take $S=S_P=\{\eta\in\mathbb{R}^d:P(\eta)=1\}$ to be equipped with the relative topology inherited from $\mathbb{R}^d$ and, given $(0,\infty)$ with its usual topology, we take $(0,\infty)\times S$ to be equipped with the product topology. 
+
+
+\subsection{Construction of $\sigma$}\label{subsec:ConstructionofSigma}
+ 
+We fix $E\in\Exp(P)$ and define $\psi:(0,\infty)\times S\to\mathbb{R}^d\setminus\{0\}$ defined by
+\begin{equation}\label{eq:Homeomorphism}
+\psi(t,\eta)=t^E\eta
+\end{equation}
+for $t>0$ and $\eta\in S$. As $\psi$ is the restriction of the continuous function $(0,\infty)\times \mathbb{R}^d\ni (t,x)\mapsto t^E x\in\mathbb{R}^d$ to $(0,\infty)\times S$, it is necessarily continuous. As the following proposition shows, $\psi$ is, in fact, a homeomorphism.
+
+\begin{proposition}\label{prop:PsiHomeomorphism}
+The map $\psi:(0,\infty)\times S\to\mathbb{R}^d\setminus\{0\}$, defined by \eqref{eq:Homeomorphism} is a homeomorphism with continuous inverse $\psi^{-1}:\mathbb{R}^d\setminus\{0\}\to (0,\infty)\times S$ given by
+\begin{equation*}
+\psi^{-1}(x)=(P(x),(P(x))^{-E}x)
+\end{equation*}
+for $x\in\mathbb{R}^d\setminus\{0\}$.
+\end{proposition}
+
+\begin{proof}
+Given that $P$ is continuous and positive-definite, $P(x)>0$ for each $x\in \mathbb{R}^d\setminus\{0\}$ and the map $\mathbb{R}^d\setminus\{0\}\ni x \mapsto (P(x))^{-E}x\in \mathbb{R}^d$ is continuous. Further, in view of the homogeneity of $P$,
+\begin{equation*}
+P\left((P(x))^{-E}\xi\right)=P(x)^{-1}P(x)=1
+\end{equation*}
+for all $x\in\mathbb{R}^d\setminus\{0\}$. It follows from these two observations that
+\begin{equation*}
+\rho(x)=(P(x),(P(x))^{-E}x),
+\end{equation*}
+defined for $x\in\mathbb{R}^d\setminus\{0\}$, is a continuous function taking $\mathbb{R}^d\setminus\{0\}$ into $(0,\infty)\times S$. We have
+\begin{equation*}
+(\psi\circ \rho)(x)=\psi(P(x),(P(x))^{-E}x)=(P(x))^{E}(P(x))^{-E}x=x
+\end{equation*}
+for every $x\in \mathbb{R}^d\setminus \{0\}$ and
+\begin{equation*}
+(\rho\circ\psi)(t,\eta)=\rho(t^E\eta)=(P(t^{E}\eta),(P(t^{E}\eta))^{-E}(t^E\eta))=(tP(\eta),(tP(\eta))^{-E}(t^{E}\eta))=(t,\eta)
+\end{equation*}
+for every $(t,\eta)\in (0,\infty)\times S$. Thus $\rho$ is a (continuous) inverse for $\psi$ and so it follows that $\psi$ is a homeomorphism and $\rho=\psi^{-1}$.
+\end{proof}
+
+
+\begin{remark}In Section \ref{sec:SigmaForSmoothP}, we shall treat the special case that $P\in C^{\infty}(\mathbb{R}^d)$. In this case, it is straightforward to see that $S$ is a smooth embedded hypersurface and $\psi$ is a diffeomorphism. \textcolor{red}{(Point the reader to these statements)}
+\end{remark}
+
+\noindent As our immediate goal is to construct a measure on the surface $S$, we shall first construct an appropriate $\sigma$-algebra on $S$. To this end, a set $F\subseteq S$ is said to be \textit{measurable} if
+\begin{equation*}
+\widetilde F:=\bigcup_{0<t<1}t^E F=\{t^E\eta\in\mathbb{R}^d:\eta\in F,0<t<1\}
+\end{equation*}
+is Lebesgue measurable and the collection of all such subsets $F$ of $S$ shall be denoted by $\Sigma_S$. In other words, if $\mathcal{M}_d$ denotes the $\sigma$-algebra of Lebesgue measurable sets in $\mathbb{R}^d\setminus\{0\}$, then
+\begin{equation*}
+\Sigma_S=\{F\subseteq S:\widetilde{F}\in\mathcal{M}_d\}.
+\end{equation*}
+
+
+\begin{proposition}\label{prop:BorelContainment}
+$\Sigma_S$ is a $\sigma$-algebra on $S$ and contains the Borel $\sigma$-algebra on $S$, $\mathcal{B}(S)$.
+\end{proposition}
+
+\begin{proof}
+We first show that $\Sigma_S$ is a $\sigma$-algebra. Since $\widetilde S=B\setminus\{0\}$, it is open and therefore Lebesgue measurable. Hence $S\in \Sigma_S$. Let $G, F\in \Sigma_S$ be such that $G\subseteq F$. Then,
+\begin{equation*}
+\widetilde{F\setminus G}=\bigcup_{0<t<1}t^E\left(F\setminus G\right)=\bigcup_{0<t<1}\left(t^EF\setminus t^E G\right)=\left(\bigcup_{0<t<1}t^E F\right)\setminus\left(\bigcup_{0<t<1}t^E G\right)=\widetilde F\setminus \widetilde G
+\end{equation*}
+where we have used the fact that the collection $\{t^E F\}_{0<t<1}$ is mutually disjoint to pass the union through the set difference. Consequently $\widetilde F\setminus \tilde{G}$ is Lebesgue measurable and therefore $F\setminus G\in \Sigma_S$.  Now, let $\{F_n\}_{n\in\mathbb{N}}$ be a countable collection of measurable sets on $S$, i.e., $\{F_n\}\subseteq \Sigma_S$. Then
+\begin{equation*}
+    \widetilde{\bigcup_{n=1}^\infty F_n}= \bigcup_{0<t<1} t^E \left(\bigcup_{n=1}^\infty F_n\right)= \bigcup_{0 <t < 1}  \bigcup_{n=1}^\infty  t^E F_n =\bigcup_{n=1}^\infty \bigcup_{0 <t < 1}  t^E F_n =\bigcup_{n=1}^\infty \widetilde{F_n} \in \mathcal{M}_d
+\end{equation*}
+and so $\bigcup_n F_n\in \Sigma_S$. Thus $\Sigma_S$ is a $\sigma$-algebra. 
+
+Finally, we show that
+\begin{equation*}
+\mathcal{B}(S)\subseteq\Sigma_S.
+\end{equation*}
+As the Borel $\sigma$-algebra is the smallest $\sigma$-algebra containing the open subsets of $S$, it suffices to show that $\mathcal{O}\in \Sigma_S$ whenever $\mathcal{O}$ is open in $S$. Armed with Proposition \ref{prop:PsiHomeomorphism}, this is an easy task: Given an open set $\mathcal{O}\subseteq S$, observe that
+\begin{equation*}
+\widetilde{\mathcal{O}}=\{t^E\eta:0<t<1,\eta\in\mathcal{O}\}=\psi((0,1)\times\mathcal{O}).
+\end{equation*}
+Upon noting that $(0,1)\times\mathcal{O}$ is an open subset of $(0,\infty)\times S$, Proposition \ref{prop:PsiHomeomorphism} guarantees that $\widetilde{\mathcal{O}}=\psi((0,1)\times\mathcal{O})\subseteq\mathbb{R}^d\setminus\{0\}$ is open and therefore Lebesgue measurable. 
+\end{proof}
+
+\noindent We are now ready to specify a measure on the measurable space $(S,\Sigma_S)$. For each $F\in \Sigma_S$, we define
+\begin{equation*}
+\sigma(F)=\mu_P\cdot m(\widetilde F)
+\end{equation*}
+where $m$ is the Lebesgue measure on $\mathbb{R}^d$ and $\mu_P=\tr E>0$ is the homogeneous order associated to $P$. We have:
+
+\begin{proposition}\label{prop:sigmaisameaure}
+$\sigma$ is a finite measure on $(S,\Sigma_S)$.
+\end{proposition}
+\begin{proof}
+
+\noindent It is clear that $\sigma$ is non-negative and $\sigma(\varnothing)=0$ because $\widetilde{\varnothing}=\varnothing$. Let $\{ F_n  \}^\infty_{n=1} \subseteq \Sigma_S $ be a mutually disjoint collection. We claim that $\{ \widetilde{F_n} \}_{n=1}^\infty\subseteq\mathcal{M}_d$ is also a mutually disjoint collection. To see this, suppose that $x = t_n^E \eta_n = t_m^E \eta_m\in \widetilde{F_n}\cap\widetilde{F_m}$, where $t_n,t_m \in (0,1)$, $\eta_n \in F_n$, and $\eta_m \in F_m $. Then
+\begin{equation*}
+    t_n = P(t_n^E \eta_n) = P(x) = P(t_m^E \eta_m) = t_m,
+\end{equation*}
+implying that $\eta_n = \eta_m\in F_n\cap F_m$. Because $\{F_n\}_{n=1}^\infty$ is mutually disjoint, we must have $n=m$ which verifies our claim. By virtue of the countable additivity of Lebesgue measure, we therefore have
+\begin{equation*}
+\sigma\left(\bigcup_{n=1}^\infty F_n\right)
+    = \mu_P\cdot m\left( \widetilde{\bigcup^\infty_{n=1} F_n } \right)=\mu_P\cdot m\left( \bigcup^\infty_{n=1}\widetilde{F_n} \right)
+    = \mu_P\sum^\infty_{n=1} m(\widetilde{F_n})
+    = \sum^\infty_{n=1}\sigma(F_n).
+\end{equation*}
+Therefore $\sigma$ is a measure on $(S,\Sigma_S)$. In view of Condition \ref{cond:PisAboveOne} of Proposition \ref{prop:PositiveHomogeneousCharacterization}, $\widetilde{S}=B\setminus\{0\}$ is a bounded subset of $\mathbb{R}^d\setminus\{0\}$ and hence $\sigma(S)=\mu_P\cdot m(B\setminus\{0\})<\infty$ showing that $\sigma$ is finite.
+\end{proof}
+
+\noindent By virtue of the two preceding propositions, $\sigma$ is a finite Borel measure on $S$. In fact, as a consequence of Theorem \ref{thm:MainIntegrationFormula} below, we will see that $(S,\Sigma_S,\sigma)$ is the completion of the measure space $(S,\mathcal{B}(S),\sigma)$ and $\sigma$ is a Radon measure, i.e., it is both inner and outer regular. 
+
+\subsection{Product Measure something something}\label{subsec:ProductMeasure}
+
+ Consider the measure spaces $(S,\Sigma_S,\sigma)$ and $((0,\infty),\mathcal{L},\lambda)$ where $\mathcal{L}$ is the $\sigma$-algebra of Lebesgue measurable sets on $(0,\infty)$ and $d\lambda(t)=t^{\mu_P-1}\,dt$, i.e., for each $L\in\mathcal{L}$,
+\begin{equation*}
+\lambda(L)=\int_0^\infty \chi_{L}(t)t^{\mu_P-1}\,dt.
+\end{equation*}
+It is easy to see that $\lambda$ is $\sigma$-finite. Given this and in view of the finiteness of the measure $\sigma$, there is a unique product measure $\lambda\times\sigma$ on $(0,\infty)\times S$ which is defined on the product $\sigma$-algebra $\mathcal{L}\times\Sigma_S$ and satisfies
+\begin{equation*}
+(\lambda\times\sigma)(L\times F)=\lambda(L)\sigma(F)
+\end{equation*}
+for all $L\in\mathcal{L}$ and$F\in \Sigma_S$. We shall denote by $((0,\infty)\times S,\Sigma,\lambda\times\sigma)$ the completion of the measure space $((0,\infty)\times S,\mathcal{L}\times\Sigma_S,\lambda\times\sigma)$. For this measure space, the following formulation of the Fubini/Tonelli theorem is applicable:
+\begin{theorem}[Theorem 8.12 of \cite{Rudin1987}]\label{thm:Fubini}
+Let $g:(0,\infty)\times S\to\mathbb{C}$ be $\Sigma$-measurable. For each $t\in (0,\infty)$, define $g^t:S\to\mathbb{C}$ by $g^t(\eta)=g(t,\eta)$ for $\eta\in S$ and, for each $\eta\in S$, define $g_\eta:(0,\infty)\to\mathbb{C}$ by $g_\eta(t)=g(t,\eta)$ for $t\in (0,\infty)$. 
+\begin{enumerate}
+\item For $\lambda$-almost every $t$, $g^t$ is $\Sigma_S$-measurable and, for $\sigma$-almost every $\eta$, $g_\eta$ is $\mathcal{L}$-measurable.
+\item\label{item:Fubini1} If $g\geq 0$, then:
+\begin{enumerate}
+\item For $\lambda$-almost every $t$, 
+\begin{equation*}
+H(t)=\int_S g^t(\eta)\,d\sigma(\eta)
+\end{equation*}
+exists as a non-negative extended real number. 
+\item For $\sigma$-almost every $\eta$,
+\begin{equation*}
+G(\eta)=\int_0^\infty g_\eta(t)t^{\mu_P-1}\,dt
+\end{equation*}
+exists as a non-negative extended real number. 
+\item We have
+\begin{equation*}
+\int_0^\infty H(t)t^{\mu_P-1}dt=\int_{(0,\infty)\times S}g\,d(\lambda\times\sigma)=\int_S G(\eta)\,d\sigma(\eta)
+\end{equation*}
+or, equivalently,
+\begin{equation}\label{eq:Fubini}
+\int_0^\infty\left(\int_S g(t,\eta)\,d\sigma(\eta)\right)t^{\mu_P-1}\,dt=\int_{(0,\infty)\times S}g\,d(\lambda\times\sigma)=\int_S\left(\int_0^\infty g(t,\eta)t^{\mu_P-1}\,dt\right)\,d\sigma(\eta).
+\end{equation}
+\end{enumerate}
+\item\label{item:Fubini2} If $g$ is complex valued and
+\begin{equation*}
+\int_S\left(\int_0^\infty |g(t,\eta)|t^{\mu_P-1}\,dt\right)\,d\sigma(\eta)<\infty\hspace{1cm}\mbox{or}\hspace{1cm}\int_0^\infty\left(\int_S|g(t,\eta)|\,d\sigma(\eta)\right)t^{\mu_P-1}\,dt<\infty,
+\end{equation*}
+then $g\in L^1((0,\infty)\times S,\lambda\times\sigma)$.
+\item If $g\in L^1((0,\infty)\times S,\lambda\times\sigma)$, then $g^t\in L^1(S,\sigma)$ for $\lambda$-almost every $t$, $g_\eta\in L^1((0,\infty),\lambda)$ for $\Sigma$-almost every $\eta$, and \eqref{eq:Fubini} holds.
+\end{enumerate}
+\end{theorem}
+
+\noindent Our main theorem of this \textcolor{red}{section} is stated as follows. We refer the reader to Sections 3.6 and 9.2 of \cite{Bogachev2007} for background. \textcolor{red}{Now that we know $\sigma$ doesn't depend on $E$, we should change this statement slightly. Say: For each $E\in\Exp(P)$, define $\psi_E(t,\eta)=t^E\eta$. Then $\psi_E$ is a point-isomorphism of ......}
+
+
+\begin{theorem}\label{thm:MainIntegrationFormula}
+Let $((0,\infty)\times S,\Sigma,\lambda\times\sigma)$ be as above and let $m$ be the (restricted) Lebesgue measure on $(\mathbb{R}^d\setminus\{0\},\mathcal{M}_d,m)$.
+\begin{enumerate}
+\item\label{item:MainIntegrationFormula1} The map $\psi: (0,\infty)\times S\to\mathbb{R}^d\setminus\{0\}$, defined by \eqref{eq:Homeomorphism}, is a point isomorphism of the measure spaces $((0,\infty)\times S,\Sigma,\lambda\times\sigma)$ and $(\mathbb{R}^d\setminus\{0\},\mathcal{M}_d,m)$. That is
+\begin{equation*}
+\mathcal{M}_d=\{A\subseteq \mathbb{R}^d\setminus\{0\}:\psi^{-1}(A)\in\Sigma\}
+\end{equation*}
+and, for each $A\in\mathcal{M}_d$,
+\begin{equation*}
+m(A)=(\lambda\times\sigma)(\psi^{-1}(A)).
+\end{equation*}
+\item\label{item:MainintegrationFormula2} If $f:\mathbb{R}^d\to\mathbb{C}$ is Lebesgue measurable, then $f\circ \psi$ is $\Sigma$-measurable and the following statements hold:
+\begin{enumerate}
+\item If $f\geq 0$, then
+\begin{equation}\label{eq:MainIntegrationFormula}
+\int_{\mathbb{R}^d}f(x)\,dx=\int_0^\infty\left(\int_S f(t^E\eta)\,d\sigma(\eta)\right)t^{\mu_P-1}\,dt=\int_S\left(\int_0^\infty f(t^E\eta)t^{\mu_P-1}\,dt\right)\,d\sigma(\eta).
+\end{equation}
+\item When $f$ is complex-valued, we have $f\in L^1(\mathbb{R}^d)$ if and only if $f\circ\psi\in L^1((0,\infty)\times S,\Sigma,\lambda\times\sigma)$ and, in this case, \eqref{eq:MainIntegrationFormula} holds.
+\end{enumerate}
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+\textcolor{red}{Slight abuse of notation going on with $m$ and $m$ and $dx$ -- should say when we mean the restriction and when we don't?}.
+\end{remark}
+
+\noindent To prove this theorem, we shall first treat several lemmas. These lemmas isolate and generalize (and hopefully clarify) several important ideas used in standard proofs of \eqref{eq:StandardPolarIntegrationFormula} (see, e.g., \cite{Folland1984} and \cite{Stein2005}). 
+
+\begin{lemma}\label{lemma:Scaling}
+Let $A\subseteq\mathbb{R}^d$ and $t>0$. The set $A$ is Lebesgue measurable if and only if $t^E A=\{x=t^E a:a\in A\}$ is Lebesgue measurable and, in this case,
+\begin{equation*}
+m(t^E A)=t^{\tr E}m(A).
+\end{equation*}
+\end{lemma}
+\begin{proof}
+Because $x\mapsto t^E x$ is a linear isomorphism, $t^E A$ is Lebesgue measurable if and only if $A$ is Lebesuge measureable (See Theorem 2.20 of \cite{Rudin1987}). Observe that $x\in t^E A$ if and only if $t^{-E}x\in A$ and therefore
+\begin{equation*}
+m(t^E A)=\int_{\mathbb{R}^d}\chi_{t^E A}(x)\,dx=\int_{\mathbb{R}^d}\chi_{A}(t^{-E}x)\,dx.
+\end{equation*}
+Now, by making the linear change of variables $x\mapsto t^E x$, we have
+\begin{equation*}
+m(t^E A)=\int_{\mathbb{R}^d}\chi_A(x)|\det(t^E)|\,dx=t^{\tr E}m(A),
+\end{equation*}
+because $\det(t^E)=t^{\tr E}>0$.
+\end{proof}
+
+\begin{lemma}\label{lem:SpecialRectangle}
+Let $F\in\Sigma_S$. If $I\subseteq (0,\infty)$ is open, closed, $G_\delta$, or $F_\sigma$, then $\psi(F\times I)\in\mathcal{M}_d$ and
+\begin{equation}\label{eq:SpecialRectangle}
+m(\psi(F\times I))=(\lambda\times\sigma)(F\times I)=\sigma(F)\lambda(I).
+\end{equation}
+\end{lemma}
+\begin{proof}
+We fix $F\in\Sigma_S$ and consider several cases for $I$.\\
+
+\begin{subproof}[Case 1:]\textit{$I=(0,b)$ for $0<b\leq \infty$.} When $b$ is finite, observe that
+\begin{equation*}
+\psi(F\times I)=\{t^E\eta:0<t<b,\eta\in F\}=b^E\{t^E\eta:0<t<1,\eta \in F\}=b^E\widetilde{F}.
+\end{equation*}
+By virtue of Lemma \ref{lemma:Scaling}, it follows that $\psi(F\times I)\in\mathcal{M}_d$ and
+\begin{eqnarray*}
+\lefteqn{\hspace{-2.5cm}(\lambda\times\sigma)(F\times I)=\sigma(F)\lambda(I)}\\
+&=&\left((\tr E) m(\widetilde{F})\right)\left(\int_0^b t^{\tr E-1}\,dt\right)=b^{\tr E}m(\widetilde{F})=m(b^{E}\widetilde{F})\\
+&&\hspace{8cm}=m(\psi(F\times I)).
+\end{eqnarray*}
+When $b=\infty$ i.e., $I=(0,\infty)$, we observe that
+\begin{equation*}
+I=\bigcup_{n=1}^\infty (0,n)=\bigcup_{n=1}^\infty I_n
+\end{equation*}
+where the open intervals $I_n=(0,n)$ are nested and increasing. In view of the result above (for finite $b=n$), we have
+\begin{equation*}\psi(F\times I)=\psi\left(\bigcup_{n=1}^\infty (F\times I_n)\right)=\bigcup_{n=1}^\infty\psi(F\times I_n)\in\mathcal{M}_d.
+\end{equation*}
+Given that $\psi$ is a bijection, $\{\psi(F\times I_n)\}$ is necessarily a nested increasing sequence and so, by the continuity of the measures $\lambda\times\sigma$ and $m$,
+\begin{equation*}
+(\lambda\times\sigma)(F\times I)=\lim_{n\to\infty}(\lambda\times\sigma)(F\times I_n)=\lim_{n\to\infty}m(\psi(F\times I_n))= m(\psi(F\times I)). 
+\end{equation*}
+\end{subproof}
+
+\begin{subproof}[Case 2:]\textit{$I=(0,a]$ for $0<a<\infty$.} We have
+\begin{equation*}
+I=(0,a]=\bigcap_{n=1}^\infty (0,a+1/n)=\bigcap_{n=1}^\infty I_n
+\end{equation*}
+where the open intervals $I_n=(0,a+1/n)$ are nested and decreasing. By reasoning analogous to that given in Case 1, we have
+\begin{equation*}
+\psi(F\times I)=\bigcap_{n=1}^\infty \psi(F\times I_n)\in \mathcal{M}_d
+\end{equation*}
+and
+\begin{equation*}
+(\lambda\times\sigma)(F\times I)=\lim_{n\to\infty}(\lambda\times\sigma)(F\times I_n)=\lim_{n\to\infty}m(\psi(F\times I_n))=m(\psi(F\times I)).
+\end{equation*}
+In particular, $m(\psi(F\times I))=\sigma(F)\lambda((0,a])=\sigma(F)a^{\tr E}/\tr E<\infty.$
+\end{subproof}
+\begin{subproof}[Case 3:]\textit{$I=(a,b)$ for $0<a<b\leq \infty$.} In this case, $I=(0,b)\setminus (0,a]$ and so, in view of Cases 1 and 2, $\psi(F\times I)=\psi(F\times (0,b))\setminus \psi(F\times(0,a])\in\mathcal{M}_d$ and
+\begin{equation*}
+(\lambda\times\sigma)(F\times I)=(\lambda\times\sigma)(F\times (0,b))-(\lambda\times\sigma)(F\times(0,a])=m(\psi(F\times (0,b)))-m(\psi(F\times (0,a]))=m(\psi(F\times I))
+\end{equation*}
+where we have used the fact that $(\lambda\times\sigma)(F\times(0,a])=m(\psi(F\times (0,a]))<\infty$.
+\end{subproof}
+\begin{subproof}[Case 4:]\textit{$I\subseteq (0,\infty)$ is open.} In this case, it is known that $I$ can be expressed as a countable union of disjoint open intervals $\{I_n\}$ and, by virtue of Cases 1 and 3, we have
+\begin{equation*}
+\psi(F\times I)=\bigcup_{n=1}^\infty\psi(F\times I_n)\in\mathcal{M}_d,
+\end{equation*}
+where this union is disjoint, and
+\begin{eqnarray*}
+\lefteqn{\hspace{-1cm}m(\psi(F\times I))=\sum_n m(\psi(F\times I_n))=\sum_n (\lambda\times\sigma)(F\times I_n)}\\
+&&\hspace{2cm}=\sum_n \sigma(F)\lambda(I_n)\sigma(F)\left(\sum_n \lambda(I_n)\right)=\sigma(F)\lambda(I)=(\lambda\times\sigma)(F\times I).
+\end{eqnarray*}
+\end{subproof}
+\begin{subproof}[Case 5:]\textit{$I\subseteq (0,\infty)$ is closed.} In this case, we have $I=(0,\infty)\setminus O$ where $O$ is open and so
+\begin{equation*}
+\psi(F\times I)=\psi(F\times ((0,\infty)\setminus O))=\psi(F\times (0,\infty))\setminus \psi(F\times O)\in\mathcal{M}_d.
+\end{equation*}
+At this point, we'd like to use the property that 
+\begin{equation*}
+m(\psi(F\times (0,\infty))\setminus \psi(F\times O))=m(\psi(F\times (0,\infty)))-m(\psi(F\times O)),
+\end{equation*} but this only holds when $m(\psi(F\times O)$ is finite. We must therefore proceed differently. For each natural number $n$, define $O_n=O\cap(0,n)$ and $I_n=(0,n)\setminus O_n$. It is straightforward to show that $\{I_n\}$ and $\{\psi(F\times I_n)\}$ are nested and increasing with
+\begin{equation*}
+I=\bigcup_{n=1}^\infty I_n\hspace{1cm}\mbox{and}\hspace{1cm}\psi(F\times I)=\bigcup_{n=1}^\infty \psi(F\times I_n). 
+\end{equation*}
+The results of Cases 1 and 4 guarantee that, for each $n$,
+\begin{equation*}
+m(\psi(F\times O_n)))=(\lambda\times\sigma)(F\times O_n)\leq (\lambda\times\sigma)(F\times (0,n))<n^{\tr E}m(\tilde F)<\infty
+\end{equation*}
+and therefore
+\begin{equation*}
+m(\psi(F\times I_n))=m(\psi(F\times (0,n)))-m(\psi(F\times O_n))=(\lambda\times\sigma)(F\times (0,n))-(\lambda\times\sigma)(F\times O_n)=(\lambda\times\sigma)(F\times I_n).
+\end{equation*}
+Then, by virtue of the continuity of measure,
+\begin{equation*}
+m(\psi(F\times I))=\lim_{n\to\infty}m(\psi(F\times I_n))=\lim_{n\to\infty}(\lambda\times\sigma)(F\times I_n)=(\lambda\times\sigma)(F\times I). 
+\end{equation*}
+\end{subproof}
+\begin{subproof}[Case 6]\textit{$I\subseteq (0,\infty)$ is $G_\delta$ or $F_\sigma$.} Depending on whether $I$ is $G_\delta$ or $F_\sigma$,  express $I$ as an intersection of nested decreasing open sets or a union of nested increasing closed sets. In both cases, by virtually the same argument given in the previous cases, we find that $\psi(F\times I)\in \mathcal{M}_d$,
+\begin{equation*}
+m(\psi(F\times I))=(\lambda\times\sigma)(F\times I).
+\end{equation*}
+\end{subproof}
+\end{proof}
+
+\textcolor{blue}{\begin{remark}
+Huan, the analogous result to the following lemma is in the first paragraph on Page 281 of \cite{Stein2005} and is in the sentence preceding ``So we have established (10) for all measurable rectangles..." Truthfully, I don't follow their argument and, actually, I don't quite believe it. 
+\end{remark}}
+\begin{lemma}\label{lem:AllMeasurableRectangles} For any $F\in \Sigma_S$ and $L\in\mathcal{L}$, $\psi(F\times L)\in\mathcal{M}_d$ and 
+\begin{equation*}
+m(\psi(F\times L))=(\lambda\times\sigma)(F\times L).
+\end{equation*}
+\end{lemma}
+\begin{proof}
+Fix $F\in\Sigma_S$ and $L\in\mathcal{L}$. It is easy to see that $\lambda$ and the Lebesgue measure $dt$ on $(0,\infty)$ are mutually absolutely continuous (\textcolor{blue}{Huan, you should check this and the following sentence.}). It follows that $((0,\infty), \mathcal{L},\lambda)$ is a complete measure space and, further, that there exists an $F_\sigma$ set $L_\sigma\subseteq (0,\infty)$ and a $G_\delta$ set $L_\delta\subseteq (0,\infty)$ for which $L_\sigma\subseteq L\subseteq L_\delta$ and $\lambda(L_\delta\setminus L_\sigma)=0$. Note that, necessarily, $\lambda(L)=\lambda(L_\sigma)=\lambda(L_\delta)$. We have
+\begin{equation}\label{eq:AllMeasurableRectangles1}
+\psi(F\times L)=\psi(F\times L_\sigma)\cup\psi(F\times (L\setminus L_\sigma))
+\end{equation}
+where, by virtue of the preceding lemma, $\psi(F\times L_\sigma)\subseteq \mathcal{M}_d$ and
+\begin{equation}\label{eq:AllMeasurableRectangles2}
+m(\psi(F\times L_{\sigma}))=(\lambda\times\sigma)(F\times L_\sigma)=\sigma(F)\lambda(L_\sigma)=\sigma(F)\lambda(L)=(\lambda\times\sigma)(F\times L).
+\end{equation}
+Observe that
+\begin{equation*}
+\psi(F\times (L\setminus L_\sigma))\subseteq \psi(F\times (L_{\delta}\setminus L_\sigma))
+\end{equation*}
+where, because $L_\delta\setminus L_\sigma$ is an $G_{\delta}$ set, the latter set is a member of $\mathcal{M}_d$ and
+\begin{equation*}
+m(\psi(F\times (L_\delta\setminus L_\sigma)))=(\lambda\times\sigma)(F\times (L_\delta\setminus L_\sigma))=\sigma(F)\lambda(L_\delta\setminus L_\sigma))=0
+\end{equation*}
+by virtue of the preceding lemma. Using the fact that $(\mathbb{R}^d\setminus\{0\},\mathcal{M}_d,m)$ is complete, we conclude that $\psi(F\times (L\setminus L_\sigma))\in \mathcal{M}_d$ and $m(\psi(F\times (L\setminus L_\sigma)))=0$. It now follows from \eqref{eq:AllMeasurableRectangles1} and \eqref{eq:AllMeasurableRectangles2} that $\psi(F\times L)\in\mathcal{M}_d$ and
+\begin{equation*}
+m(\psi(F\times L))=m(\psi(F\times L_\sigma))+m(\psi(F\times (L\setminus L_\sigma))=(\lambda\times\sigma)(F\times L),
+\end{equation*}
+as desired.
+\end{proof}
+
+\noindent \textcolor{blue}{As it is fairly elementary, I've commented out the lemma showing that $S$, as a compact set of a metric space, necessarily contains a countably dense set. If this appears in your thesis, you should feel free to include the lemma}
+%\begin{lemma}
+%Let $S$ be a compact subset of a metric space. Then $S$ contains a countably dense set.
+%\end{lemma}
+%\begin{proof}
+%For each $n\in\mathbb{N}$, consider the open cover
+%\begin{equation*}
+%\{B_{1/n}(x)\cap S, x\in S\}
+%\end{equation*}
+%of $S$. Since $S$ is compact, there exists a finite subcover. Let $x_{j,n}$, $j=1,2,\dots N_n$ denote the center of each of the balls, then, we have that $S$ is covered by $\{B_{1/n}(x_{j,n})\cap S,j=1,2,\dots, N_n\}$. Thus, for each $n\in \mathbb{N}$, we have a finite set $\{x_{j,n}\}$ of centers. The countable union of these finite sets, $\bigcup^\infty_{n=1} \{ x_{j,n}\}$, is countable. It is also dense because for every point $x\in S$ and $\epsilon >0$, there is always some $n$ such that $\vert x_{j,n} - x\vert < 1/n < \epsilon$.  
+%\end{proof}
+
+
+\begin{lemma}\label{lem:OpenRectangle}
+Every open subset $U\subseteq \mathbb{R}^d\setminus\{0\}$ can be written as a countable union of open sets of the form $\psi(\mathcal{U})$ where $\mathcal{U}=\mathcal{O}\times I$ is an open rectangle in $(0,\infty)\times S$.
+\end{lemma}
+
+
+\begin{proof}
+In what follows, $|\cdot|$ denotes the Euclidean norm on $\mathbb{R}^d$, $N_\delta(x)$ denotes the associated open ball of radius $\delta$ and center $x\in\mathbb{R}^d$ and, for each linear transformation $T:\mathbb{R}^d\to\mathbb{R}^d$, $\|T\|$ denotes the operator norm of $T$ associated to the Euclidean norm on $\mathbb{R}^d$. Given that $S$ is compact (as a subspace of the metric space $\mathbb{R}^d$), $S$ has a countably dense set $\{\eta_j\}_{j=1}^\infty$. Let $\{t_k\}_{k=1}^\infty$ be a countably dense subset of $(0,\infty)$. For each triple of natural numbers $j,l,n\in\mathbb{N}_+$, consider the open set
+\begin{equation*}
+\mathcal{U}_{j,l,n}=\mathcal{O}_{j,n}\times \{ \vert t - t_l \vert < 1/n \}\subseteq (0,\infty)\times S
+\end{equation*}
+where
+\begin{equation*}
+\mathcal{O}_{j,n}=\{\eta\in S: |\eta-\eta_j|<1/n\}.
+\end{equation*}
+Here, $|\cdot|$ denotes the Euclidean norm on $\mathbb{R}^d$. Fix $U\subseteq \mathbb{R}^d\setminus \{0\}$, an open subset of $\mathbb{R}^d\setminus\{0\}$. We will show that
+\begin{equation}\label{eq:OpenRectangle}
+U=\bigcup_{\substack{j,l,n\\ \psi(\mathcal{U}_{j,l,n})\subseteq U}}\psi(\mathcal{U}_{j,l,n}),
+\end{equation}
+where each $\psi(\mathcal{U}_{j,l,n})$ is open because $\psi$ is a homeomorphism. It is clear that any element of the union on the right hand side of \eqref{eq:OpenRectangle} belongs to some $\psi(\mathcal{U}_{j,l,n}) \subseteq U$ and so the union is a subset of $U$. To prove \eqref{eq:OpenRectangle}, it therefore suffices to prove that, for each $x\in U$, there exists a triple $j,l,n$ with
+\begin{equation*}
+x\in\psi(\mathcal{U}_{j,l,n})\subseteq U.
+\end{equation*}
+To this end, fix $x\in U$ and, because $U$ is open, let $\delta>0$ be such that $N_{\delta}(x)\subseteq U$. Consider $(\eta_x,t_x)=\psi^{-1}(x)\in (0,\infty)\times S$ and set $M=\|t_x^E\|>0$ and $C=\|E|>0$. Observe that 
+\begin{eqnarray*}
+\|I-\alpha^E\|&=&\left\|\sum_{k=1}^\infty \frac{(\ln \alpha)^k}{k!} E^k\right\|\\
+&\leq &\sum_{k=1}^\infty \frac{|\ln \alpha|^k}{k!} \|E\|^k=e^{(C|\ln \alpha|)}-1
+\end{eqnarray*}
+for all $\alpha>0$. Since $\alpha\mapsto e^{(C|\ln \alpha|)}-1$ is continuous and $0$ at $\alpha=1$, we can choose $\delta'>0$ for which
+\begin{equation*}
+\|I-\alpha ^E\|\leq \frac{\delta}{2M (  |\eta_x|+2)}
+\end{equation*}
+whenever $|\alpha-1|<\delta'$. Choose an integer
+\begin{equation*}
+n>\max \left\{\frac{1}{t_x},\frac{1}{\delta't_x}, \frac{4 M }{\delta}\right\}.
+\end{equation*}
+In view of the density of the collections $\{t_l\}$ and $\{\eta_j\}$, we can find $t_l, \eta_j$ such that
+\begin{equation*}
+    \vert t_l - t_x \vert < \frac{1}{n},\quad \vert \eta_j - \eta_x \vert < \frac{1}{n}.
+\end{equation*}
+It follows that the corresponding open set $\mathcal{U}_{j,l,n}$ contains $\psi^{-1}(x)$, or, equivalently, $x\in \psi(\mathcal{U}_{j,l,n})$ since $\psi$ is bijective. Thus, it remains to show that $\psi(\mathcal{U}_{j,l,n}) \subseteq N_\delta(x)$. To this end, let $y=\psi(\eta_y,t_y)\in\psi(\mathcal{U}_{j,l,n})$ and consider 
+\begin{equation*}
+    z = \psi(\eta_y,t_x).
+\end{equation*}
+By the triangle inequality, we have
+\begin{eqnarray*}
+    | x - y | 
+    &\leq& |x-z | + |z-y| \\
+    &\leq& \vert \psi(\eta_x,t_x) - \psi(\eta_y,t_x) \vert 
+    + \vert \psi(\eta_y,t_x) - \psi(\eta_y,t_y) \vert\\
+    &=& \vert t_x^E \eta_x - t_x^E \eta_y \vert 
+    + \vert t_x^E \eta_y - t_y^E \eta_y \vert\\
+    &=& \vert t_x^E (\eta_x - \eta_y) \vert + \vert (t_x^E - t_y^E) \eta_y \vert\\
+    &\leq& M\vert \eta_x - \eta_y \vert + \|{t_x^E - t_y^E}\|  \vert \eta_y \vert.
+\end{eqnarray*}
+Since both $(\eta_x,t_x),(\eta_y,t_y) \in \mathcal{U}_{j,l,n}$, we have
+\begin{equation*}
+    \vert \eta_x - \eta_y \vert \leq \vert \eta_x - \eta_j \vert + \vert \eta_j - \eta_y \vert < \frac{2}{n}
+\end{equation*}
+and
+\begin{equation*}
+    \vert \eta_y \vert \leq \vert \eta_y - \eta_x \vert + \vert \eta_x \vert < \vert \eta_x \vert + \frac{2}{n}.
+\end{equation*}
+Also, since $|t_x-t_y|<1/n$, it follows that $t_y=\alpha t_x$ where
+\begin{equation*}
+|1-\alpha|<\frac{1}{nt_x} < \delta'
+\end{equation*}
+by our choice of $n$. Consequently,
+\begin{eqnarray*}
+    \vert x - y \vert 
+    &< & \frac{2}{n} M+ \left( \vert \eta_x \vert + \frac{2}{n} \right) \|{t_x^E -   t_x^E \alpha^E}\|   \\ 
+    &<& \frac{2}{n}M + \left( \vert \eta_x \vert + 2 \right)M\| I - \alpha^E\| \\
+    &\leq&  \frac{2M }{n} +  \frac{\delta M \left( \vert \eta_x \vert + 2\right) }{2M (| \eta_x | + 2)}  \\
+    &<& \frac{\delta}{2} + \frac{\delta}{2} \\
+    &=& \delta,
+\end{eqnarray*}
+and so we have established \eqref{eq:OpenRectangle}. Finally, upon noting that $\{\mathcal{U}_{j,l,n})\}$ is a countable collection of open rectangles (indexed by $(j,l,n)\in\mathbb{N}_+^3$), the union in \eqref{eq:OpenRectangle} is necessarily countable and we are done with the proof.
+\end{proof}
+
+\noindent \textcolor{blue}{The following is a (graduate level) homework-exercise worthy lemma. You should try to prove it yourself before you read the proof. Though it is somewhat difficult (to state and prove -- for me, at least), it is abstract enough that I suspect it is fairly well-known and we should look for a reference.}\\
+
+\noindent In our final lemma preceding the proof of Theorem \ref{thm:MainIntegrationFormula}, we treat a general measure-theoretic statement which gives sufficient conditions concerning two measure spaces to ensure that their completions are isomorphic \textcolor{red}{Check this against the pushforward -- I don't like the Bogachev reference \cite{Bogachev2007})}. Though we suspect that this result is well-known, we present its proof for completeness.
+
+\
+\begin{lemma}\label{lem:PushforwardLemma}
+Let $(X_1,\Sigma_1,\nu_1)$ and $(X_2,\Sigma_2,\nu_2)$ be measure spaces, let $\varphi:X_1\to X_2$ be a bijection and denote by $(X_i',\Sigma_i',\nu_i')$ the completion of the measure space $(X_i,\Sigma_i,\nu_i)$ for $i=1,2$. Assume that the following two properties are satisfied:
+\begin{enumerate}
+\item\label{property:PushforwardLemma1} For each $A_1\in\Sigma_1$, $\varphi(A_1)\in\Sigma_2'$ and $\nu_2'(\varphi(A_1))=\nu_1(A_1).$
+\item\label{property:PushforwardLemma2} For each $A_2\in\Sigma_2$, $\varphi^{-1}(A_2)\in \Sigma_1'$ and $\nu_1'(\varphi^{-1}(A_2))=\nu_2(A_2)$.
+\end{enumerate}
+Then the measure spaces $(X_1',\Sigma_1',\nu_1')$ and $(X_2',\Sigma_2',\nu_2')$ are isomorphic with (point) isomorphism $\varphi$. \textcolor{red}{I believe this is another way to state that $\nu_2'$ is precisely the pushforward of $\nu_1'$. We should check this.} Specifically,
+\begin{equation}\label{eq:PushforwardLemma1}
+\Sigma_2'=\{A_2\subseteq X_2: \varphi^{-1}(A_2)\in\Sigma_1'\}
+\end{equation}
+and
+\begin{equation}\label{eq:PushforwardLemma2}
+\nu_2'(A_2)=\nu_1'(\varphi^{-1}(A_2))
+\end{equation}
+for all $A_2\in\Sigma_2'$.
+\end{lemma}
+\begin{proof}
+Let us first assume that $A_2\in\Sigma_2'$. By definition, $A_2=G_2\cup H_2$ where $G_2\in\Sigma_2$ and $H_2\subseteq G_{2,0}\in \Sigma_2$ with $\nu_2'(A_2)=\nu_2(G_2)$ and $\nu_2'(H_2)=\nu_2(G_{2,0})=0$. Consequently, $\varphi^{-1}(A_2)=\varphi^{-1}(G_2)\cup\varphi^{-1}(H_2)$ and $\varphi^{-1}(H_2)\subseteq \varphi^{-1}(G_{2,0})$. In view of Property \ref{property:PushforwardLemma2}, $\varphi^{-1}(G_2),\varphi^{-1}(G_{2,0})\in \Sigma_1'$ and we have
+\begin{equation*}
+\nu_1'(\varphi^{-1}(G_2))=\nu_2(G_2)=\nu_2'(A_2)\hspace{1cm}\mbox{and}\hspace{1cm}\nu_1'(\varphi^{-1}(G_{2,0}))=\nu_2(G_{2,0})=0.
+\end{equation*}
+In view of the fact that $(X_1',\Sigma_1',\nu_1')$ is complete, $\varphi^{-1}(H_2)\in\Sigma_1'$ and $\nu_1'(\varphi^{-1}(H_2))=0$. Consequently, we obtain $\varphi^{-1}(A_2)=\varphi^{-1}(G_2)\cup\varphi^{-1}(H_2)\in\Sigma_1'$ and
+\begin{equation*}
+\nu_2'(A_2)=\nu_1'(\varphi^{-1}(G_2))\leq\nu_1'(\varphi^{-1}(A_2))\leq\nu_1'(\varphi^{-1}(G_2))+\nu_1'(\varphi^{-1}(H_2))=\nu_2(G_2)+0=\nu_2'(A_2).
+\end{equation*}
+From this we obtain that $\Sigma_2'\subseteq \{A_2\subseteq X_2:\varphi^{-1}(A_2)\in\Sigma_1'\}$ and, for each $A_2\in\Sigma_2'$, $\nu_2'(A_2)=\nu_1'(\varphi^{-1}(A_2))$. It remains to prove that
+\begin{equation*}
+\{A_2\subseteq X_2:\varphi^{-1}(A_2)\in\Sigma_1'\}\subseteq \Sigma_2'.
+\end{equation*}
+To this end, let $A_2$ be a subset of $X_2$ for which $\varphi^{-1}(A_2)\in\Sigma_1'$. By the definition of $\Sigma_1'$, we have $\varphi^{-1}(A_2)=G_1\cup H_1$ where $G_1\in\Sigma_1$, $H_1\subseteq G_{1,0}\in\Sigma_1$ and $\nu_1'(H_1)=\nu_1(G_{1,0})=0$. In view of Property \ref{property:PushforwardLemma1}, $\varphi(G_1)\in\Sigma_2'$, $\varphi(H_1)\subseteq\varphi(G_{1,0})\in\Sigma_2'$ and $\nu_2'(\varphi(G_{1,0}))=\nu_1(G_{1,0})=0$. Because $(X_2',\Sigma_2',\nu_2')$ is complete, we have $\varphi(H_1)\in\Sigma_2'$ and so
+\begin{equation*}
+A_1=\varphi(\varphi^{-1}(A_2))=\varphi(G_1)\cup\varphi(H_1)\in \Sigma_2',
+\end{equation*}
+as desired.
+\end{proof}
+
+\noindent We are finally in a position to prove Theorem \ref{thm:MainIntegrationFormula}.\\
+
+\noindent\textcolor{blue}{Huan, my use of the monotone class lemma below avoids the method in \cite{Stein2005} which relies on Theorem 3.3 (of \cite{Stein2005}) and sweeps some things under the carpet.}
+
+\begin{proof}[Proof of Theorem \ref{thm:MainIntegrationFormula}]
+Denote by $\mathcal{C}$ the collection of sets $G\subseteq (0,\infty)\times S$ for which $\psi(G)\in \mathcal{M}_d$ and $m(\psi(G))=(\lambda\times\sigma)(G).$ By virtue of Lemma \ref{lem:AllMeasurableRectangles}, it follows that $\mathcal{C}$ contains all elementary sets, i.e., finite unions of disjoint measurable rectangles. Using the continuity of measure (applied to the measures $m$ and $\lambda\times\sigma$) and the fact that $\psi$ is a bijection, it is straightforward to verify that $\mathcal{C}$ is a monotone class. By the so-called monotone class lemma (Theorem 8.3 of \cite{Rudin1987}), it immediately follows that $\Sigma_S\times\mathcal{L}\subseteq\mathcal{C}$. In other words, for each $G\in\Sigma_S\times\mathcal{L}$,
+\begin{equation}\label{eq:Good1}
+\psi(G)\in\mathcal{M}_d\hspace{1cm}\mbox{and}\hspace{1cm}m(\psi(G))=(\lambda\times\sigma)(G).
+\end{equation}
+We claim that, for each Borel subset $A$ of $\mathbb{R}^d\setminus\{0\}$, $\psi^{-1}(A)\subseteq \Sigma_S\times \mathcal{L}$. To this end, we write
+\begin{equation*}
+\psi(\Sigma_S\times\mathcal{L})=\{\psi(G):G\in\Sigma\times \mathcal{L}\}
+\end{equation*}
+for the $\sigma$-algebra on $\mathbb{R}^d\setminus\{0\}$ induced by $\psi$. In view of Lemma \ref{lem:OpenRectangle}, $\psi(\Sigma_S\times\mathcal{L})$ contains every open subset of $\mathbb{R}^d\setminus\{0\}$ and therefore
+\begin{equation*}
+\mathcal{B}(\mathbb{R}^d\setminus\{0\})\subseteq\psi(\Sigma_S\times\mathcal{L}).
+\end{equation*}
+where $\mathcal{B}(\mathbb{R}^d\setminus\{0\})$ denotes the $\sigma$-algebra of Borel subsets of $\mathbb{R}^d\setminus\{0\}$ thus proving our claim. 
+
+Together, the results of the two preceding paragraphs show that, for each $A\in\mathcal{B}(\mathbb{R}^d\setminus\{0\})$, $\psi^{-1}(A)\subseteq \Sigma_S\times\mathcal{L}$ and $m(A)=(\lambda\times\sigma)(\psi^{-1}(A))$. Upon noting that $\Sigma_S\times\mathcal{L}\subseteq \Sigma$, we immediately obtain the following statement. For each $A\in\mathcal{B}(\mathbb{R}^d\setminus\{0\})$,
+\begin{equation}\label{eq:Good2}
+\psi^{-1}(A)\subseteq \Sigma\hspace{1cm}\mbox{and}\hspace{1cm}m(A)=(\lambda\times\sigma)(\psi^{-1}(A)).
+\end{equation}
+In comparing \eqref{eq:Good1} and \eqref{eq:Good2} with Properties \ref{property:PushforwardLemma1} and \ref{property:PushforwardLemma2} of Lemma \ref{lem:PushforwardLemma} and upon noting that $((0,\infty)\times S,\Sigma,\lambda\times\sigma)$ is the completion of $((0,\infty)\times S,\Sigma_S\times\mathcal{L},\lambda\times\sigma)$ and $(\mathbb{R}^d\setminus\{0\},\mathcal{M}_d,m)$ is the completion of $(\mathbb{R}^d\setminus\{0\},\mathcal{B}(\mathbb{R}^d\setminus\{0\}),m)$, Item \ref{item:MainIntegrationFormula1} of the theorem follows immediately from Lemma \ref{lem:PushforwardLemma}.
+
+It remains to prove Item \ref{item:MainintegrationFormula2}. To this end, let $f:\mathbb{R}^d\to\mathbb{C}$ be Lebesgue measurable. Because $\mathcal{M}_d=\{A\subseteq \mathbb{R}^d\setminus\{0\}:\psi^{-1}(A)\in\Sigma\}$, it follows immediately that $f\circ\psi$ is $\Sigma$-measurable \textcolor{blue}{Add the details here: We can use the statement that $f:\mathbb{R}^d\to\mathbb{C}$ is Lebesgue measurable if and only if $f^{-1}(B)$ is a Lebesgue measurable subset of $\mathbb{R}^d$ for every $B\in\mathcal{B}(\mathbb{C})$}. In the case that $f\geq 0$, Item \ref{item:MainIntegrationFormula1} guarantees that
+\begin{equation*}
+\int_{\mathbb{R}^d}f(x)\,dx=\int_{\mathbb{R}^d\setminus \{0\}}f(x)\,dx=\int_{(0,\infty)\times S}(f\circ \psi)(\eta,t) \,d(\lambda\times\sigma)(\eta,t)
+\end{equation*}
+where we have used the fact that the $\{0\}\subseteq\mathbb{R}^d$ has Lebesgue measure $0$  (\textcolor{red}{It would be nice to have a good statement of the change of variables formula we're using} -- \textcolor{blue}{is this in Folland?}). From this, \eqref{eq:MainIntegrationFormula} follows from Item \ref{item:Fubini1} in Theorem \ref{thm:Fubini}. Finally, by applying the above result to $|f|\geq 0$, we obtains $f\in L^1(\mathbb{R}^d)$ if and only if $f\circ \psi\in L^1((0,\infty)\times S,\Sigma,\lambda\times\sigma)$ and, in this case, \eqref{eq:MainIntegrationFormula} follows directly from Item \ref{item:Fubini2} of Theorem \ref{thm:Fubini},
+\end{proof}
+
+\noindent Using Theorem \ref{thm:MainIntegrationFormula}, we are able to establish the following proposition. 
+
+\begin{proposition}\label{prop:Regular}
+Consider the finite Borel measure $\sigma$ on the measure space $(S,\Sigma_S,\sigma)$. For each $F\in\Sigma_S$,
+\begin{equation}\label{eq:OuterRegular}
+\sigma(F)=\inf\{\sigma(\mathcal{O}):F\subseteq\mathcal{O}\subseteq S\mbox{ and $\mathcal{O}$ is open}\}
+\end{equation}
+and
+\begin{equation}
+\sigma(F)=\sup\{\sigma(K):K\subseteq F\subseteq S\mbox{ and $K$ is compact}\}.
+\end{equation}
+In particular, $\sigma$ is a Radon measure \textcolor{red}{(Need a citation -- Folland)}.
+\end{proposition}
+\begin{proof}
+Given that $S$ is compact and $\sigma$ is finite, it suffices to prove \eqref{eq:OuterRegular}, i.e., it suffices to prove the statement: For each $F\in \Sigma_S$ and $\epsilon>0$, there is an open subset $\mathcal{O}$ of $S$ containing $F$ for which 
+\begin{equation*}
+\sigma(\mathcal{O}\setminus F)<\epsilon.
+\end{equation*}
+To this end, let $F\in \Sigma_S$ and $\epsilon>0$. Given that $\widetilde{F}$ is a Lebesgue measurable subset of $\mathbb{R}^d$ and the Lebesgue measure $m$ is outer regular, there exists an open set $U\subseteq \mathbb{R}^d$ for which $\widetilde{F}\subseteq U$ and
+\begin{equation}\label{eq:LebesgueOuter}
+m(U\setminus \widetilde{F})=m(U)-m(\widetilde{F})<\epsilon/(2\tr E).
+\end{equation}
+Since $\widetilde{F}$ is necessarily a subset of the open set $B\setminus\{0\}$, we assume without loss of generality that $U\subseteq B\setminus\{0\}$.
+For each $0<t<1$, consider the open set
+\begin{equation*}
+\mathcal{O}_t=S\cap\left( t^{-E}U\right)
+\end{equation*}
+in $S$. Observe that, for each $x\in F$, $t^E x\in \widetilde{F}\subseteq U$ and therefore $x\in \mathcal{O}_t$. Hence, for each $0<t<1$, $\mathcal{O}_t$ is an open subset of $S$ containing $F$. 
+
+We claim that there is at least one $t_0\in (0,1)$ for which 
+\begin{equation}\label{eq:GoodIneq}
+m(\widetilde{\mathcal{O}_{t_0}})< m(U)+\epsilon/(2\tr E).
+\end{equation}
+To prove the claim, we shall assume, to reach a contradiction, that 
+\begin{equation*}
+m(\widetilde{\mathcal{O}_{t}})\geq m(U)+\epsilon/(2\tr E)
+\end{equation*}
+for all $0<t<1$. By virtue of Theorem \ref{thm:MainIntegrationFormula},
+\begin{equation*}
+m(U)=\int_{0}^\infty\left(\int_S \chi_{U}(t^E\eta)\,d\sigma(\eta)\right)t^{\tr E-1}\,dt.
+\end{equation*}
+Upon noting that $U\subseteq B\setminus\{0\}$, it is easy to see that
+\begin{equation*}
+U=\bigcup_{0<s<1}s^E\mathcal{O}_s
+\end{equation*}
+and
+\begin{equation*}
+t^E\eta\in \bigcup_{0<s<1}s^E\mathcal{O}_s
+\end{equation*}
+if and only if $0<t<1$ and $\eta\in \mathcal{O}_t$. Consequently,
+\begin{eqnarray*}
+m(U)&=&\int_0^1\left(\int_S\chi_{\mathcal{O}_t}(\eta)\,d\sigma(\eta)\right)t^{\tr E-1}\,dt\\
+&=&\int_0^1\sigma(\mathcal{O}_t)t^{\tr E-1}\,dt\\
+&=&\int_0^1 (\tr E)m(\widetilde{\mathcal{O}_t})t^{\tr E-1}\,dt.
+\end{eqnarray*}
+Upon making use of our supposition, we have
+\begin{equation*}
+\int_0^1(\tr E) m(\widetilde{\mathcal{O}_t})t^{\tr E-1}\,dt\geq \int_0^1(\tr E)(m(U)+\epsilon/(2\tr E))t^{\tr E-1}\,dt=m(U)+\epsilon/(2\tr E)
+\end{equation*}
+and so
+\begin{equation*}
+m(U)\geq m(U)+\epsilon/(2\tr E),
+\end{equation*}
+which is impossible. Thus, the stated claim is true.
+
+Given any such $t_0$ for which \eqref{eq:GoodIneq} holds, set $\mathcal{O}=\mathcal{O}_{t_0}$. As previously noted, $\mathcal{O}$ is an open subset of $S$ which contains $F$. In view of \eqref{eq:LebesgueOuter} and \eqref{eq:GoodIneq}, we have
+\begin{equation*}
+m(\widetilde{\mathcal{O}})-m(\widetilde{F})<m(U)-m(\widetilde{F})+\epsilon/(2\tr E)<\epsilon/(2\tr E)+\epsilon/(2\tr E)=\epsilon/\tr E
+\end{equation*}
+and therefore
+\begin{equation*}
+\sigma(\mathcal{O}\setminus F)=\sigma(\mathcal{O})-\sigma(F)=\tr E(m(\widetilde{\mathcal{O}})-m(\widetilde{F}))<\epsilon,
+\end{equation*}
+as desired.
+\end{proof}
+
+\begin{corollary}
+The completion of the measure space $(S,\mathcal{B}(S),\sigma)$ is $(S,\Sigma_S,\sigma)$. In particular, the latter space is complete and every $F\in \Sigma_S$ is of the form $F=G\cup H$ where $G$ is a Borel set and $H$ is a subset of a Borel set $Z$ with $\sigma(Z)=0$.
+\end{corollary}
+
+\textcolor{red}{We should think about maybe calling this a proposition. }
+\begin{proof}
+Let us denote by $(S,\overline{\mathcal{B}(S)},\overline{\sigma})$ the completion of the measure space $(S,\mathcal{B}(S),\sigma)$. Our job is to show that $\overline{\mathcal{B}(S)}=\Sigma_S$ and $\overline{\sigma}(F)=\sigma(F)$ for all $F$ in this common $\sigma$-algebra. 
+
+First, let $F\in\overline{\mathcal{B}(S)}$ which is, by definition, a set of the form $F=G\cup H$ where $G\in\mathcal{B}(S)$ with $\overline{\sigma}(F)=\sigma(G)$ and $H\subseteq G_0\in\mathcal{B}(S)$ with $\sigma(G_0)=0$. In view of Proposition \ref{prop:BorelContainment}, $\widetilde{G}\in \mathcal{M}_d$, $\widetilde{H}\subseteq \widetilde{G_0}\in\mathcal{M}_d$ and we have
+\begin{equation*}
+m(\widetilde{G_0})=\frac{1}{\tr E}\sigma(G_0)=0
+\end{equation*}
+Since $(\mathbb{R}^d\setminus\{0\},\mathcal{M}_d,m)$ is complete, we conclude that $\widetilde{H}\in\mathcal{M}_d$ with $m(\widetilde{H})=0$ and therefore $H\in\Sigma_S$ with $\sigma(H)=(\tr E)m(\widetilde{H})=0$. It follows that $F=G\cup H\in\Sigma_S$ and
+\begin{equation*}
+\overline{\sigma}(F)=\sigma(G)\leq \sigma(F)\leq\sigma(G)+\sigma(H)=\sigma(G)+0=\overline{\sigma}(F).
+\end{equation*}
+It remains only to prove that $\Sigma_S\subseteq\overline{\mathcal{B}(S)}$. To this end, let $F\in\Sigma_S$ be arbitrary but fixed. By appealing to Proposition \ref{prop:Regular}, for each integer $n\in\mathbb{N}$, there exists a compact set $F_n\subseteq F$ for which
+\begin{equation*}
+\sigma(F\setminus F_n)=\sigma(F)-\sigma(F_n)<1/n.
+\end{equation*}
+Set
+\begin{equation*}
+G=\bigcup_{n=1}^\infty F_n\subseteq F
+\end{equation*}
+and $H=F\setminus G$. 
+We observe that $G$ is a Borel set (in fact, an $F_\sigma$ set) and
+\begin{equation*}
+\sigma(H)=\sigma(F)-\sigma(G)=\sigma(F)-\lim_{n\to\infty}\sigma(F_n)=0,
+\end{equation*}
+by the continuity of measure. We have shown that
+\begin{equation*}
+F=G\cup H
+\end{equation*}
+where $G\in\mathcal{B}(S)$ and $H\in\Sigma_S$ with $\sigma(H)=0$. It remains to find a Borel set $G_0\supseteq H$ for which $\sigma(G_0)=0$. To this end, we again appeal to Proposition \ref{prop:Regular} to form a collection of open sets $\{\mathcal{O}_n\}_{n=1}^\infty$ such that, for each $n\in\mathbb{N}$, $H\subseteq \mathcal{O}_n$ and $\sigma(\mathcal{O}_n)=\sigma(\mathcal{O}_n)-\sigma(H)<1/n$. Finally, consider
+\begin{equation*}
+G_0=\bigcap_{n=1}^\infty\mathcal{O}_n,
+\end{equation*}
+which is necessarily a Borel set (in fact, a $G_\delta$-set) containing $H$ and, by the continuity of measure, has $\sigma(G_0)=0$, as desired.
+\end{proof}
+
+\textcolor{blue}{Some questions (I think the third is easiest):
+\begin{enumerate}
+\item To what extent does $\sigma$ depend on $E$? In other words, if $E,E'\in\Exp(P)$ (which necessarily have $\tr E=\tr E'$ in view of Section 2 of \cite{Randles2017}), would our construction have yielded the same measure $\sigma$ had we instead used the dilation $T_t=t^{E'}$ for everything? They should be closely related if not equal. But I'm really curious about this. For a little background reading, see the material near Proposition 2.3 of \cite{Randles2017}. 
+\item We discussed the fact that the surface measure on the (usual) sphere $\mathbb{S}^{d-1}$ was the unique Radon measure which was rotationally invariant and satisfied $\sigma_d(\mathbb{S}^{d-1})=d\cdot m(\mathbb{B})$. I suspect that we also have some characterization for our measure $\sigma$ on $S$ -- in fact, this is why I suspect that $\sigma$ might not depend on the choice of $E$. Here are two possible conjectures and I really don't know if they are true:
+\begin{conjecture} For any $O\in\Sym(P)$ and $F\in\Sigma_S$,
+\begin{equation}\label{eq:Conjec1}
+\sigma(O F)=\sigma(F).
+\end{equation} 
+\end{conjecture}
+\begin{conjecture}
+If $\sigma$ does not depend on $E$ (hence the construction produces the same measure $\sigma$ regardless of which $E\in\Exp(P)$ is chosen) and \eqref{eq:Conjec1} holds, $\sigma$ is the unique Radon measure on $S$ which satisfies \eqref{eq:Conjec1} and $\sigma(S)=\tr E m(B)$.
+\end{conjecture}
+\item There are many polynomials (and positive-definite continuous functions) that have $S$ as their ``unital" level set. For example: For any $\alpha>0$, $Q_{\alpha}(\xi):=(P(\xi))^\alpha$ is continuous and has
+\begin{equation*}
+S=\{\eta\in\mathbb{R}^d:Q_{\alpha}(\xi)=1\}.
+\end{equation*}
+Further, $Q_\alpha$ is positive-homogeneous\footnote{and is a polynomial precisely when $\alpha=1,2,\dots$.} and has $\Exp(Q_{\alpha})=\Exp(P)/\alpha$ in the senses that $E_\alpha\in \Exp(Q_\alpha)$ if and only if $E_\alpha=E/\alpha$ for $E\in \Exp(P)$. If you use $E_{\alpha}=E/\alpha$ to construct a measure $\sigma_\alpha$ on $S$ via the above construction, how is $\sigma_\alpha$ related to $\sigma$? I think I have an idea about this, but you should try it. Another question: Are there other polynomials (which are not powers of $P$) that have $S$ as their unital level set? 
+\end{enumerate}}
+
+
+
+
+\textcolor{blue}{{\Large Okay!}, I have an answer to Question 1. It's given below. I still haven't addressed the invariance under $\Sym(P)$ which, as you know, is a stronger statement. }
+\subsection{Does this construction depend on $E$?}\label{subsec:IndependentofE}
+
+Let $P$ be a positive-homogeneous polynomial and let $S=\{\eta\in\mathbb{R}^d:P(\eta)=1\}$. In the preceding section, we selected $E\in\Exp(P)$ and used it (via its associated one-parameter group of dilations $T_t=t^E$) to construct the measure $\sigma$ on $S$ for which \eqref{eq:MainIntegrationFormula} holds. As mentioned \textcolor{red}{earlier}, $\Exp(P)$ isn't necessarily a singleton and so we are led to ask: 
+\begin{quote}\textit{In what sense, if any, does the above construction depend on $E$?} 
+\end{quote}
+To answer this question, let $E_1,E_2\in\Exp(P)$  (which are possibly different) and consider the associated respective measure spaces $(S,\Sigma_{S,1},\sigma_1)$ and $(S,\Sigma_{S,2},\sigma_2)$ produced via the above construction. 
+
+
+\begin{proposition}\label{prop:Endependence}
+These measure spaces are the same, i.e., $\Sigma_{S,1}=\Sigma_{S,2}$ and $\sigma_1=\sigma_2$. In other words, the surface measure $\sigma$ from the previous section depends only on $P$. 
+\end{proposition}
+\begin{proof}
+In view of the two preceding \textcolor{red}{results}, it suffices to show that 
+\begin{equation*}
+\sigma_1(F)=\sigma_2(F)
+\end{equation*}
+for all $F\in \mathcal{B}(S)\subseteq \Sigma_{S,1}\cap\Sigma_{S,2}$. To this end, we let $F\in\mathcal{B}(S)$ be arbitrary but fixed. 
+
+Given $n\in\mathbb{N}$, using the regularity of the measures $\sigma_1$ and $\sigma_2$, select open sets $\mathcal{O}_{n,1},\mathcal{O}_{n,2}$ and compact sets $K_{n,1},K_{n,2}$ for which
+\begin{equation*}
+K_{n,j}\subseteq F\subseteq \mathcal{O}_{n,j}\hspace{1cm}\mbox{and}\hspace{1cm}\sigma_j(\mathcal{O}_{n,j}\setminus K_{n,j})<1/n
+\end{equation*}
+for $j=1,2$. Observe that $K_n=K_{n,1}\cup K_{n,2}$ is a compact set, $\mathcal{O}_n=\mathcal{O}_{n,1}\cap\mathcal{O}_{n,2}$ is an open set and $K_n\subseteq F\subseteq \mathcal{O}_n$. Further, 
+\begin{equation*}
+\sigma_j(\mathcal{O}_n\setminus K_n)\leq \sigma_j(\mathcal{O}_{n,j}\setminus K_{n,j})<1/n
+\end{equation*}
+for $j=1,2$ Given that $\mathcal{O}_n$ is open in $S$, $\mathcal{O}_n=S\cup U_n$ where $U_n$ is an open subset of $\mathbb{R}^d$ and, because that $S$ is compact, $K_n=K_n\cap S$ is a compact subset of $\mathbb{R}^d$. By virtue of Urysohn's lemma, let $\phi_n:\mathbb{R}^d\to [0,1]$ be a continuous function which is compactly supported in $U_n$ and for which $\phi_n(x)=1$ for all $x\in K_n$. Using this sequence of functions $\{\phi_n\}$, we establish the following two facts: 
+
+\begin{lemma}
+For $n\in\mathbb{N}_+$ and $j=1,2$, $g_{n,j}:(0,\infty)\to\mathbb{R}$ defined by
+\begin{equation*}
+g_{n,j}(t)=\int_S\phi_n(t^{E_j}\eta)\,d\sigma_j(\eta).
+\end{equation*}
+is continuous.
+\end{lemma}
+\begin{subproof}
+First, we note that, for each $t\in (0,\infty)$, the above integral makes sense because $\eta\mapsto \phi_n(t^{E_j}\eta)$ is Borel measurable (because it's continuous on $S$) and non-negative. Let $\epsilon>0$ and $t_0\in (0,\infty)$ be arbitrary but fixed. It is clear that the function $(0,\infty)\times S\ni (\eta,t)\mapsto \phi_n(t^{E_j}\eta)$ is continuous on its domain and therefore, in view of the compactness of $S$, we can find a $\delta>0$ for which
+\begin{equation*}
+|\phi_n(t^{E_j}\eta)-\phi_n(t_0^{E_j}\eta)|\leq\frac{\epsilon}{2\sigma_j(S)}\hspace{1cm}\mbox{whenever}\hspace{1cm}|t-t_0|<\delta
+\end{equation*}
+for all $\eta\in S$. \textcolor{blue}{This is a fairly standard ``uniform" continuity compactness argument. You should try to prove it.} The triangle inequality guarantees that
+\begin{equation*}
+|g_{n,j}(t)-g_{n,j}(t_0)|\leq \int_S|\phi_n(t^{E_j}\eta)-\phi_n(t_0^{E_j}\eta)|\,d\sigma_j(\eta)\leq\epsilon/2<\epsilon
+\end{equation*}
+whenever $|t-t_0|<\delta$.
+\end{subproof}
+\begin{lemma}
+For $j=1,2$,
+\begin{equation*}
+\sigma_j(F)=\lim_{n\to\infty}g_{n,j}(1).
+\end{equation*}
+\end{lemma}
+\begin{subproof}
+For each $n\in\mathbb{N}$,
+\begin{equation*}
+g_{n,j}(1)=\int_{S}\phi_n(\eta)\,d\sigma_j(\eta)
+\end{equation*}
+because $1^{E_j}=I$. By construction, we have $\chi_{K_n}(\eta)\leq\phi_{n}(\eta)\leq \chi_{\mathcal{O}_n}(\eta)$ for all $\eta\in S$ and $n\in\mathbb{N}_+$ and therefore
+\begin{equation*}
+\sigma_j(K_n)\leq g_{n,j}(1)\leq \sigma_{j}(\mathcal{O}_n)
+\end{equation*}
+by the monotonicity of the integral. Since
+\begin{equation*}
+\sigma_j(F)=\lim_{n\to\infty}\sigma_j(K_n)=\lim_{n\to\infty}\sigma_j(\mathcal{O}_n)
+\end{equation*}
+in view of our choice of $\mathcal{O}_n$ and $K_n$, the desired result follows immediately from the preceding inequality (and the squeeze theorem).
+\end{subproof}
+\noindent Given any $0<r<1< s$ and $n\in\mathbb{N}$, consider the function $f=f_{n,r,s}:\mathbb{R}^d\to [0,1]$ given by
+\begin{equation*}
+f(x)=\phi_n(x)\chi_{[r,s]}(P(x))
+\end{equation*}
+for $x\in\mathbb{R}^d$. It is clear that $f$ is Lebesgue measurable on $\mathbb{R}^d$ and non-negative. By virtue of Theorem \ref{thm:MainIntegrationFormula} (applied to the two measures $\sigma_1$ and $\sigma_2$), we have
+\begin{equation}\label{eq:SameMeasure1}
+\int_0^\infty \int_Sf(t^{E_1}\eta)\,d\sigma_1(\eta)t^{\tr E_1-1}\,dt=\int_{\mathbb{R}^d}f(x)\,dx=\int_0^\infty \int_Sf(t^{E_2}\eta)\,d\sigma_2(\eta)t^{\tr E_2-1}\,dt
+\end{equation}
+Upon noting that
+\begin{equation*}
+f(t^{E_j}\eta)=\phi_n(t^{E_j}\eta)\chi_{[r,s]}\left((P(t^{E_j}\eta)\right)=\phi_n(t^{E_j}\eta)\chi_{[r,s]}(tP(\eta))=\chi_{[r,s]}(t)\phi_n(t^{E_j}\eta)
+\end{equation*}
+for $\eta\in S$, $t\in (0,\infty)$, and $j=1,2$, we have
+\begin{equation*}
+\int_0^\infty\int_S f(t^{E_j}\eta)\,d\sigma_j(\eta)t^{\tr E_j-1}\,dt=\int_{[r,s]}\int_S\phi_n(t^{E_j}\eta)\,d\sigma_j(\eta) t^{\tr E_j-1}\,dt=\int_{[r,s]}g_{n,j}(t)t^{\tr E_j-1}\,dt
+\end{equation*}
+for $j=1,2$. Given that $t\mapsto g_{n,j}(t)t^{\tr E_j-1}$ is continuous and bounded on $[r,s]$ (which is in part due to our lemma), the final integral above can be interpreted as a Riemann integral. That is, for $j=1,2$ and $0<r<1<s$,
+\begin{equation}\label{eq:SameMeasure2}
+\int_0^\infty \int_S f(t^{E_j}\eta)\,d\sigma_j(\eta)t^{\tr E_j-1}\,dt=\int_r^sg_{n,j}(t)t^{\tr E_j-1}\,dt.
+\end{equation}
+In view of \eqref{eq:SameMeasure1} and \eqref{eq:SameMeasure2}, we conclude that
+\begin{equation*}
+\int_r^s g_{n,1}(t)t^{\tr E_j-1}\,dt=\int_r^s g_{n,2}(t)t^{\tr E_2-1}\,dt
+\end{equation*}
+for all $0<r<1<s$. By virtue of the continuity of the integrands, the fundamental theorem of calculus guarantees that
+\begin{equation*}
+g_{n,1}(t)t^{\tr E_1-1}=g_{n,2}(t)t^{\tr E_2-1}
+\end{equation*}
+for all $t\in [r,s]$. In particular, at $t=1$, we have $g_{n,1}(1)=g_{n,2}(1)$ \textcolor{blue}{We can actually conclude that the $g$'s are the same everywhere because the traces are the same}. In view of the second lemma, it follows that
+\begin{equation*}
+\sigma_1(F)=\lim_{n\to\infty}g_{n,1}(1)=\lim_{n\to\infty}g_{n,2}(1)=\sigma_2(F).
+\end{equation*}
+\end{proof}
+
+\noindent \textcolor{blue}{One thing I've been thinking about is that the above proof provides a method by which $\sigma$ might be able to be characterized without making any reference whatsoever to $E$. I'm not completely sure about this, but if we follow the construction, we've essentially shown that
+\begin{equation*}
+\sigma(F)=\lim_{n\to\infty}F_n'(1)
+\end{equation*}
+where
+\begin{equation*}
+F_n(s)=\int_{\mathbb{R}^d}f_{n,s}(x)\,dx
+\end{equation*}
+where
+\begin{equation*}
+f_{n,s}=\phi_n(x)\chi_{[1/2,s]}(P(x)).
+\end{equation*}
+I wonder if this provides us with a way to write (and I'm being very loose about this): Denote by $\mathcal{A}_F$ the set of continuous and compactly supported functions $\phi:\mathbb{R}^d\to [0,1]$ with $\phi(x)=1$ for all $x\in F$. Then
+\begin{equation*}
+\sigma(F)=(?)\inf\left\{\frac{d}{ds}\left(\int_{\mathbb{R}^d}\phi(x)\chi_{[1/2,s]}(P(x))\,dx\right)\bigg\vert_{s=1}:\phi\in \mathcal{A}_F\right\}
+\end{equation*}
+or maybe
+\begin{equation*}
+\sigma(F)=(?)\inf\left\{\lim_{h\to 0}\frac{1}{h}\int_{\mathbb{R}^d}\phi(x)\chi_{[1,1+h]}(P(x))\,dx:\phi\in \mathcal{A}_F\right\}
+\end{equation*}
+}
+
+
+
+
+
+
+
+\begin{convention}
+For $O\in \Sym(P)$ and $F\subseteq S$, we define
+\begin{equation*}
+    O(F) \coloneqq \{ O \eta : \eta \in F \}.
+\end{equation*}
+\end{convention}
+
+
+
+
+
+
+
+
+\begin{lemma}\label{lem:ExpP}
+$\Exp(P)$ is invariant under conjugation by $\Sym(P)$. That is, for any  $O \in \Sym{(P)} $
+\begin{equation*}
+    \Exp(P) = O^\top \Exp(P) O.
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+Since $\Sym(P) < \OdR{}$, if $O\in \Sym{P}$ then $O^\top = O^{-1} \in \Sym{P}$. Thus,
+\begin{equation}\label{eq:OOO}
+    P(t^E \eta) = tP(\eta) = tP(O\eta) = P(t^E O\eta) = P(O^\top t^E O \eta) = P(t^{O^\top E O }\eta)
+\end{equation}
+for all $t>0,\eta\in \R^d$. It follows that $O^\top E O \in \Exp(P)$ for every $E\in \Exp(P)$ and $O\in \Sym(P)$.  
+Now, if $E_i, E_j\in \Exp(P)$ and $E_i\neq E_j$, then $O^\top E_i O \neq O^\top E_j O$ since $O,O^\top\in \OdR{}$. Thus the conjugation map induced by $O$, $\varphi_O: \Exp{P}\to \Exp{P}$ defined by 
+\begin{equation*}
+    \varphi_O (E) = O^\top E O
+\end{equation*}
+is one-to-one. Further, for any $E\in \Exp(P)$, a similar argument as \eqref{eq:OOO} shows that $OEO^\top \in \Exp(P)$ and satisfies
+\begin{equation*}
+    \varphi_O(OEO^\top) = O^\top (OEO^\top) O = E\in \Exp{(P)}.
+\end{equation*}
+So, $\varphi_O$ is bijective, which means 
+\begin{equation*}
+    \Exp(P) = O^\top \Exp(P) O = O \Exp{(P)} O^\top, \quad \text{for all } O\in \Sym{(P)}.
+\end{equation*}
+\end{proof}
+
+
+
+\begin{corollary}
+For any $O\in\Sym(P)$ and $F\in\Sigma_S$,
+\begin{equation*}
+\sigma(O (F))=\sigma(F).
+\end{equation*} 
+That is, the measure $\sigma$ is invariant under the symmetry group $\Sym(P)$ of $P$. 
+\end{corollary}
+
+
+
+\begin{proof}
+Let $E\in \Exp(P)$ and $O\in \Sym(P)$ be given. In view of Lemma \ref{lem:ExpP}, we have 
+\begin{equation*}
+    E' = O^\top E O \in \Exp(P).
+\end{equation*}
+Consider the measure spaces constructed from $E$ and $E'$ respectively: $(S, \Sigma_{S,E},\sigma_E)$ and $(S,\Sigma_{S,E'},\sigma_{E'})$. By virtue of Proposition \ref{prop:Endependence}, these measure spaces are the same, i.e., $\Sigma_{S,E} = \Sigma_{S,E'}$ and $\sigma_{E} = \sigma_{E'}$. For convenience, let us call these equivalent measure spaces the triple $(S,\Sigma_S,\sigma)$. 
+
+Let $F\in \Sigma_S$ be given. We will show that $O(F)\in \Sigma_S$. To this end, we first notice that since $O\in \Sym(P) < \OdR$, we have $O O^\top = I$. As a result, we can write
+\begin{equation*}
+    \widetilde{O(F)} = \bigcup_{0<t<1}t^E O(F) = \bigcup_{0<t<1} O O^\top t^E O(F) = \bigcup_{0<t<1}O t^{O^\top E O} F = O\lp \bigcup_{0<t<1}t^{E'} F\rp.
+\end{equation*}
+We observe that the set $\bigcup_{0<t<1} t^{E'}F$ is Lebesgue measurable since $F\in \Sigma_S = \Sigma_{S,E'}$. By the orthogonal invariance of the Lebesgue measure, $\widetilde{O(F)}$ is also Lebesgue measurable, with
+\begin{equation*}
+    m (\widetilde{O(F)} ) = m\lb O \lp \bigcup_{0<t<1}t^{E'}F \rp \rb =  m\lp \bigcup_{0<t<1}t^{E'}F \rp.
+\end{equation*}
+Therefore, $O(F)\in \Sigma_S$, with which it makes sense to ask for the measure $\sigma$ of $O(F)$:
+\begin{equation*}
+    \sigma(O(F)) = (\tr E)m(\widetilde{O(F)}).
+\end{equation*}
+Now, in view of Proposition \ref{prop:Endependence} and the fact that $\tr E = \tr E'$ for $E,E'\in \Exp(P)$, we have that
+\begin{equation*}
+    m\lp \bigcup_{0<t<1}t^{E'}F \rp = \frac{\sigma_{E'}(F)}{\tr E' }  
+    = 
+    \frac{\sigma_E(F)}{\tr E'} =  \frac{\sigma_E(F)}{\tr E}   = m\lp \bigcup_{0<t<1} t^E F  \rp.
+\end{equation*}
+From the last three equations, we conclude that 
+\begin{equation*}
+    \sigma(O(F)) = \sigma(F).
+\end{equation*}
+Therefore, the measure $\sigma$ is invariant under symmetry group $\Sym(P)$ of $P$.  
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:BestIntegrationFormula}]
+\textcolor{red}{Needed}
+\end{proof}
+
+\begin{theorem}\label{thm:BestIntegrationFormula}
+Let $P$ be a positive-homogeneous function with homogeneous order $P$ and exponent set $\Exp(P)$. Let the compact set $S=S_P=\{\eta\in\mathbb{R}^d:P(\eta)=1\}$ in $\mathbb{R}^d$ be equipped with its relative topology and denote by $\mathcal{B}(S)$ the Borel $\sigma$-algebra on $S$. Also, let $\mathcal{L}$ denote the $\sigma$-algebra of Lebesgue measurable sets on $(0,\infty)$ and let $\lambda=\lambda_P$ be the measure on $((0,\infty),\mathcal{L})$ with $d\lambda(t)=t^{\mu_P-1}\,dt$. There exists a $\sigma$-algebra $\Sigma_S$ on $S$ containing $\mathcal{B}(S)$ and Radon measure $\sigma=\sigma_P$ on $(S,\Sigma_S)$ which satisfies the following properties:
+\begin{enumerate}
+\item $(S,\Sigma_S,\sigma)$ is the completion of $(S,\mathcal{B}(S),\sigma)$. In particular $(S,\Sigma_S,\sigma)$ is a complete measure space.
+\item For any $F\in\Sigma_S$ and $O\in\Sym(P)$, $\sigma(OF)=\sigma(F)$.
+\item For any $F\in\Sigma_S$ and $E\in\Exp(P)$, 
+\begin{equation*}
+\widetilde{F}_E:=\bigcup_{0<t<1}\left(t^E F\right)=\left\{t^E\eta\in\mathbb{R}^d\setminus\{0\}:0<t<1,\eta\in F\right\}
+\end{equation*}
+is a Lebesgue measurable subset of $\mathbb{R}^d\setminus \{0\}$ and
+\begin{equation*}
+\sigma(F)=\mu_P\cdot m\left(\widetilde{F}_E\right)
+\end{equation*}
+where $m$ denotes the Lebesgue measure on $\mathbb{R}^d$.
+\item Denote by $((0,\infty)\times S,\Sigma,\lambda\times\sigma)$ the completion of the product measure space $((0,\infty)\times S,\mathcal{L}\times \Sigma_S,\lambda\times\sigma)$. Then given any $E\in \Exp(P)$, the map $\psi_E:(0,\infty)\times S\to\mathbb{R}^d\setminus\{0\}$ defined by $\psi_E(t,\eta)=t^E\eta$ is a point isomorphism of the measure spaces $((0,\infty)\times S,\Sigma,\lambda\times\sigma)$ and $(\mathbb{R}^d\setminus\{0\},\mathcal{M}_d,m)$. That is
+\begin{equation*}
+\mathcal{M}_d=\{A\subseteq \mathbb{R}^d\setminus\{0\}:\psi_E^{-1}(A)\in\Sigma\}
+\end{equation*}
+and, for each $A\in\mathcal{M}_d$,
+\begin{equation*}
+m(A)=(\lambda\times\sigma)(\psi_E^{-1}(A)).
+\end{equation*}
+\item\label{item:MainintegrationFormula2} Given any Lebesgue measureable function $f:\mathbb{R}^d\to\mathbb{C}$ and $E\in \Exp(P)$, then $f\circ \psi_E$ is $\Sigma$-measurable and the following statements hold:
+\begin{enumerate}
+\item If $f\geq 0$, then
+\begin{equation}\label{eq:MainIntegrationFormula}
+\int_{\mathbb{R}^d}f(x)\,dx=\int_0^\infty\left(\int_S f(t^E\eta)\,d\sigma(\eta)\right)t^{\mu_P-1}\,dt=\int_S\left(\int_0^\infty f(t^E\eta)t^{\mu_P-1}\,dt\right)\,d\sigma(\eta).
+\end{equation}
+\item When $f$ is complex-valued, we have $f\in L^1(\mathbb{R}^d)$ if and only if $f\circ\psi\in L^1((0,\infty)\times S,\Sigma,\lambda\times\sigma)$ and, in this case, \eqref{eq:MainIntegrationFormula} holds.
+\end{enumerate}
+\end{enumerate}
+\end{theorem}
+\section{Using a smooth structure on $S$ to compute $\sigma$.}\label{sec:SigmaForSmoothP}
+
+\textcolor{red}{If we drop the smoothness asssumption in the definition of Positive-homogeneous, which we should, will need to start assuming $P$ is smooth here.}
+
+Up to this point, we have not used anything about the fine (smooth) structure of $S$. We've relied only on results from basic point-set topology (including the compactness of $S$, the continuity of $P$ and $\psi$) and measure theory to construct and develop basic results concerning the measure $\sigma$ and the resulting polar coordinate integration formula \eqref{eq:MainIntegrationFormula}. In this section, we shall use our additional knowledge of $S$, particularly that is is a smooth manifold, to get a handle on computing integrals of the form
+\begin{equation*}
+\int_S g(\eta)\,d\sigma(\eta)
+\end{equation*}
+for (sufficiently nice) $\Sigma_S$-measurable functions $g$. 
+
+To this end, let us view $S$ through the eyes of smooth manifold theory. To avoid some trivialities, we assume henceforth that $d>1$. Given $E\in\Exp(P)$, observe that
+\begin{equation*}
+P(\xi)=\frac{d}{dt}\left(tP(\xi)\right)=\frac{d}{dt}(P(t^E\xi))=\left(\nabla P\right)(t^E\xi)\cdot \left(t^{E-I}E\xi\right)
+\end{equation*}
+for $t>0$ and $\xi\in\mathbb{R}^d$. By evaluating this expression at $t=1$, we see that
+\begin{equation*}
+P(\xi)=\nabla P(\xi)\cdot(E\xi)
+\end{equation*}
+for all $\xi\in\mathbb{R}^d$. In particular, $\eta\in S$ if and only if  
+\begin{equation*}
+\nabla P(\eta)\cdot (E\eta)=1
+\end{equation*}
+from which we see that $P$'s gradient, $\nabla P$, is non-vanishing on $S$. As a consequence, $S$ is a smooth embedded compact hypersurface of $\mathbb{R}^d$. (\textcolor{blue}{Huan, I'm having a hard time finding readable references for these words and I'm not sure what depth you should understand them. The reference I'm using is John M. Lee \textit{Introduction to Smooth Manifolds} -- though it is pretty thorough, it is NOT an easy reference. Specifically, the conclusion I made above is a consequence of Corollary 8.10 therein.)} 
+
+
+Let $\mathcal{A}=\{(\mathcal{O}_\alpha,\varphi_{\alpha})\}$ be a smooth atlas on $S$. Given that $S$ is compact, we will assume (without loss of generality) that this is a finite atlas \textcolor{red}{I'm not sure this is what we want to do, it just makes all the partition of unity business easier}. Using $\mathcal{A}$, we shall construct an atlas $\widetilde{\mathcal{A}}$ on $B_0:=B\setminus \{0\}$ in the following way: For each index $\alpha$, consider the map $\rho_{\alpha}:V_\alpha \to \widetilde{\mathcal{O}_\alpha}= \psi(\mathcal{O}_\alpha\times(0,1))$ defined by
+\begin{equation*}
+\rho_{\alpha}(\mathbf{x},t)=\psi(\varphi_\alpha^{-1}(\mathbf{x}),t)=t^E\varphi^{-1}_{\alpha}(\mathbf{x})
+\end{equation*}
+for all
+\begin{equation*}
+(\mathbf{x},t)=(x_1,x_2,\dots,x_{d-1},t)\in V_\alpha:=\varphi_{\alpha}(\mathcal{O}_\alpha)\times (0,1)\subseteq\mathbb{R}^d.
+\end{equation*}
+Given that $\varphi_\alpha$ and $\psi$ are homeomorphisms, it is easy to see that $\rho_{\alpha}$ is a homeomorphism with inverse $\rho_{\alpha}^{-1}=\widetilde{\varphi}_\alpha$ given by
+\begin{equation*}
+\widetilde{\varphi}_\alpha(\xi)=(\varphi_{\alpha}(P(\xi)^{-E}\xi),P(\xi))
+\end{equation*}
+for $\xi\in \widetilde{\mathcal{O}_a}$.
+\begin{proposition}
+\begin{equation*}
+\widetilde{\mathcal{A}}=\{(\widetilde{\mathcal{O}_\alpha},\widetilde{\varphi}_\alpha)\}
+\end{equation*}
+is an atlas on the open submanifold $B_0=B\setminus\{0\}$ of $\mathbb{R}^d$.
+\end{proposition}
+\begin{proof}
+Given that $\mathcal{A}$ is an atlas on $S$, we have
+\begin{equation*}
+\bigcup_\alpha \widetilde{\mathcal{O}_\alpha}=\bigcup_{\alpha}\psi(\mathcal{O}_\alpha\times (0,1))=\psi\left(\left(\bigcup_\alpha \mathcal{O}_\alpha\right)\times (0,1)\right)=\psi(S\times (0,1))=B_0.
+\end{equation*}
+It remains to show that every pair of charts in $\widetilde{\mathcal{A}}$ are smoothly compatible. To this end, set $U_\alpha=\widetilde{\varphi}_{\alpha}(\widetilde{\mathcal{O}_\alpha}\cap\widetilde{\mathcal{O}_\beta})\subseteq \mathbb{R}^d$ and $U_\beta=\widetilde{\varphi}_{\beta}(\widetilde{\mathcal{O}_\alpha}\cap\widetilde{\mathcal{O}_\beta})\subseteq \mathbb{R}^d$ and observe that $\widetilde{\varphi}_\beta\circ \widetilde{\varphi}_\alpha^{-1}:U_\alpha\to U_\beta$ is given by
+\begin{eqnarray*}
+\left(\widetilde{\varphi}_\beta\circ \widetilde{\varphi}_\alpha^{-1}\right)(\mathbf{x},t)&=&\widetilde{\varphi}_\beta\left(t^{E}\varphi_\alpha^{-1}(\mathbf{x})\right)\\
+&=&\left(\varphi_{\beta}\left(P(t^E\varphi_{\alpha}^{-1}(\mathbf{x}))^{-E}\left(t^E\varphi_{\alpha}^{-1}(\mathbf{x})\right)\right),P\left(t^E\varphi_{\alpha}^{-1}(\mathbf{x})\right)\right)\\
+&=&\left(\left(\varphi_\beta^{-1}\circ\varphi_\alpha\right)(\mathbf{x}),t\right)
+\end{eqnarray*}
+for $(\mathbf{x},t)\in U_\alpha$. By virtue of the fact that $\mathcal{A}$ is an atlas,  $\varphi_\beta^{-1}\circ\varphi_\alpha$ is necessarily a diffeomorphism and so it immediately follows that $\widetilde{\varphi}_\beta\circ \widetilde{\varphi}_\alpha^{-1}$ is a diffeomorphism.
+\end{proof}
+With the above atlas in mind, let $F\in\Sigma_S$ \textcolor{red}{Do we want to assume that $F$ is open and then use the regularity of $\sigma$?} be such that $F\subseteq \mathcal{O}_\alpha$ for some chart $\mathcal{O}_\alpha$ and set $U_\alpha=\varphi_{\alpha}(F)\subseteq \mathbb{R}^{d-1}$. It is easy to see that
+\begin{equation*}
+\widetilde{F}=\psi(F\times (0,1))=\widetilde{\varphi}_\alpha^{-1}(U\times (0,1))
+\end{equation*}
+Consequently, \textcolor{red}{Need a reference for doing this on an open submanifold of Euclidean space. Is this in Wade? Is the determinant always non-vanishing?}
+\begin{equation}\label{eq:CoordinateFormulaTilde1}
+m(\widetilde{F})=\int_{\widetilde{\varphi}_\alpha(\widetilde{F})} \left|\det(D\widetilde{\varphi}^{-1}_\alpha(\mathbf{u}))\right| \,d\mathbf{u}\\
+=\int_0^1\left(\int_{U_\alpha}\left|\det(D(\rho_\alpha)(\mathbf{x},t))\right|\,dx\right)\,dt
+\end{equation}
+where we have written $\mathbf{u}=(\mathbf{x},t)$ and $d\mathbf{u}=dx\,dt$. For notational simplicity, we write $h=\varphi_{\alpha}^{-1}$and observe that
+\begin{eqnarray*}
+D(\rho_\alpha)(\mathbf{x},t)=D(t^Eh(\mathbf{x}))&=&\left(D_{\mathbf{x}}\left(t^Eh(\mathbf{x})\right)\big\vert|D_t\left(t^Eh(\mathbf{x})\right)\right)\\
+&=&\left(t^E D_x h(\mathbf{x})\big\vert t^{E-I}(E(h(\mathbf{x})))\right)\\
+&=&t^E\left(D_x h(\mathbf{x})\big\vert t^{-1}(E(h(\mathbf{x})))\right)
+\end{eqnarray*}
+for $(\mathbf{x},t)\in \varphi_\alpha(\mathcal{O}_\alpha)\times (0,1)$ where \textcolor{red}{Perhaps too many parentheses? Can we leave some notation suppressed? Also, maybe using $\mathbf{x}$ is a bad idea. What about $\mathbf{u}$?}
+\begin{equation*}
+D_x h(\mathbf{x})=D_x h(x_1,x_2,\dots,x_{d-1})=
+\begin{pmatrix}
+\frac{\partial h_1}{\partial x_1} & \frac{\partial h_1}{\partial x_2} & \cdots & \frac{\partial h_1}{\partial x_{d-1}}\\
+\frac{\partial h_2}{\partial x_1} & \frac{\partial h_2}{\partial x_2} & \cdots & \frac{\partial h_2}{\partial x_{d-1}}\\
+ \vdots & \vdots &\ddots & \vdots\\
+\frac{\partial h_d}{\partial x_1} & \frac{\partial h_d}{\partial x_2} & \cdots & \frac{\partial h_d}{\partial x_{d-1}}\\
+\end{pmatrix}.
+\end{equation*}
+Given $\varphi_\alpha^{-1}$ and $E$, define $\Omega_\alpha:\varphi_{\alpha}(\mathcal{O}_\alpha)\to \GldR$ by
+\begin{equation*}
+\Omega_\alpha(\mathbf{x})=\left(D_x h(\mathbf{x})\big\vert Eh(\mathbf{x})\right)=
+\begin{pmatrix}
+\frac{\partial h_1}{\partial x_1} & \frac{\partial h_1}{\partial x_2} & \cdots & \frac{\partial h_1}{\partial x_{d-1}} & (Eh)_1\\
+\frac{\partial h_2}{\partial x_1} & \frac{\partial h_2}{\partial x_2} & \cdots & \frac{\partial h_2}{\partial x_{d-1}} & (Eh)_2\\
+ \vdots & \vdots &\ddots & \vdots & \vdots \\
+\frac{\partial h_d}{\partial x_1} & \frac{\partial h_d}{\partial x_2} & \cdots & \frac{\partial h_d}{\partial x_{d-1}} & (Eh)_d\\
+\end{pmatrix}.
+\end{equation*}
+and, using properties of the determinant, we find
+\begin{eqnarray*}
+\lefteqn{\hspace{-1cm}\det \left((D\rho_\alpha)(\mathbf{x},t)\right)=\det(t^E)\det\left(D_x h(\mathbf{x})\big\vert t^{-1}E(h(\mathbf{x}))\right)}\\
+&&\hspace{3cm}=t^{\tr E}t^{-1}\det (D_xh(\mathbf{x})\big\vert E(h(\mathbf{x})))=t^{\tr E-1}\det (\Omega_\alpha(\mathbf{x}))
+\end{eqnarray*}
+for $(\mathbf{x},t)\in U_\alpha\times (0,1)$. In view of \eqref{eq:CoordinateFormulaTilde1}, we have
+\begin{equation*}
+m\left(\widetilde{F}\right)=\int_0^1 t^{\tr E-1}\left(\int_{U_\alpha}|\det(\Omega_\alpha(\mathbf{x}))|\,dx\right)\,dt=\frac{1}{\tr E}\int_{U_\alpha}|\det(\Omega_\alpha(\mathbf{x}))|\,dx
+\end{equation*}
+and therefore
+\begin{equation*}
+\sigma(F)=(\tr E)m\left(\widetilde{F}\right)=\int_{U_\alpha}|\det(\Omega_\alpha(\mathbf{x}))|\,dx.
+\end{equation*}
+This computation allows us to prove the following result.
+\begin{lemma}
+For each $F\in\Sigma_S$ which is in the domain of some chart $(\mathcal{O}_\alpha,\varphi_\alpha)$, 
+\begin{equation*}
+\mathbf{x}\mapsto \chi_{\varphi_\alpha(F)}|\det(\Omega_\alpha (\mathbf{x}))|
+\end{equation*}
+is Lebesgue measurable on $\mathbb{R}^{d-1}$ and
+\begin{equation*}
+\sigma(F)=\int_{\varphi_\alpha(F)}|\det(\Omega_\alpha (\mathbf{x}))|\,dx.
+\end{equation*}
+\end{lemma}
+\begin{proof}
+Given $F\in\Sigma_S$ for which $F\subseteq\mathcal{O}_\alpha$, we invoke the outer regularity of $\sigma$ to produce a sequence of nested open sets $\{\mathcal{U}_n\}$ for which
+\begin{equation*}
+F\subseteq \mathcal{U}_{n+1}\subseteq\mathcal{U}_n\subseteq\mathcal{O}_\alpha
+\end{equation*}
+for all $n\in\mathbb{N}_+$ and for which
+\begin{equation*}
+\sigma(F)=\lim_{n\to\infty}\sigma(\mathcal{U}_n).
+\end{equation*}
+For each $n\in\mathbb{N}_+$, set
+\begin{equation*}
+f_n(\mathbf{x})=\chi_{\varphi_\alpha(\mathcal{U}_n)}(\mathbf{x})|\det(\Omega_\alpha(\mathbf{x}))|
+\end{equation*}
+for $\mathbf{x}\in\mathbb{R}^{d-1}$ \textcolor{red}{This has got to be Borel measurable}. By virtue of the computations preceding the lemma, we have
+\begin{equation*}
+\sigma(\mathcal{U}_n)=\int_{\varphi_\alpha(\mathcal{U}_n)}|\det(\Omega_\alpha(\mathbf{x}))|\,dx=\int_{\mathbb{R}^{d-1}}f_n(\mathbf{x})\,dx
+\end{equation*}
+for each $n\in\mathbb{N}_+$. Given that the sequence $\mathcal{U}_n$ is nested and decreasing, it follows that $\{f_n\}$ is a non-negative decreasing sequence of of measurable functions and consequently
+\begin{equation*}
+f(\mathbf{x})=\inf_{n\to\infty}f_n(\mathbf{x})
+\end{equation*}
+exits for each $\mathbf{x}\in\mathbb{R}^{d-1}$ and is Lebesgue measurable. Further, by the monotone convergence theorem, we have
+\begin{equation*}
+\sigma(F)=\lim_{n\to\infty}\sigma(\mathcal{U}_n)=\lim_{n\to\infty}\int_{\mathbb{R}^{d-1}}f_n(\mathbf{x})\,dx=\int_{\mathbb{R}^{d-1}}f(\mathbf{x})\,dx.
+\end{equation*}
+We then see that the lemma will be proved if we can show that
+\begin{equation*}
+f(\mathbf{x})=\chi_{\varphi_{\alpha}(F)}(\mathbf{x})|\det(\Omega_\alpha(\mathbf{x}))|
+\end{equation*}
+almost everywhere \textcolor{blue}{with respect to the $d-1$ Lebesgue measure}. \textcolor{red}{ahhhh -- I think we need inner regularity to prove this}
+\end{proof}
+\begin{theorem}
+Let $\mathcal{A}=\{\mathcal{O}_\alpha,\varphi_\alpha\}$ be an atlas on $S$ and let $\{k_\alpha\}$ be a $C^\infty$ partition of unity subordinate to the cover $\{\mathcal{O}_\alpha\}$. Given a $\Sigma_S$-measurable function $g$, assume that $g\geq 0$ or $g\in L^1(S,\sigma)$.
+\begin{enumerate}
+\item If $\supp(g)\subseteq \mathcal{O}_\alpha$ for some $\alpha$, then
+\begin{equation*}
+\int_S g(\eta)\,d\sigma(\eta)=\int_{\mathcal{O}_\alpha}(g\circ\varphi_{\alpha}^{-1})(\mathbf{x})|\det(\Omega_\alpha(\mathbf{x}))|\,dx
+\end{equation*}
+\item In general,
+\begin{equation*}
+\int_S g(\eta)\,d\sigma(\eta)=\sum_{\alpha}\int_{\mathcal{O}_\alpha}(g\circ \varphi_\alpha^{-1})(\mathbf{x})(k_\alpha\circ\varphi_{\alpha}^{-1})(\mathbf{x})|\det(\Omega_\alpha(\mathbf{x}))|\,dx
+\end{equation*}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Thoughts: First, I don't think the stuff done before the proof can be done for arbitrary measurable sets. So, we should do it for open sets and then use the regularity of $\sigma$ to get the desired statement. Maybe this should be a lemma. 
+
+Now, think about some statement that says: Given a chart $(\mathcal{O}_\alpha,\varphi_\alpha)$ can we use the above formula (and perhaps the fact that it shows absolute continuity with respect to Lebesgue measure to show that if $F\in \Sigma_S$ then $U_\alpha=\varphi_{\alpha}(F)$ is Lebesgue measurable?
+
+Okay, now that that's done: Assume that $g\geq 0$. Assume first that $g$ is supported on the neighborhood of a chart. Given that $g$ is $\Sigma_S$ measurable, if we can prove the above paragraph, we obtain that $g\circ\varphi^{-1}_\alpha$ is Lebesgue measurable. So, now approximate by simple functions.
+\end{proof}
+
+
+
+
+
+
+
+
+
+\section{Riemannian Geometry on $S$}
+
+
+
+\appendix
+
+
+\section{Appendix}\label{sec:Appendix}
+\subsection{Continuous one-parameter subgroups of $\Gl(\mathbb{R}^d)$.}\label{subsec:OneParameterGroups}
+\textcolor{red}{Needs cleaning up}
+
+\begin{proposition}[See Section 8 of \cite{Randles2017}]\label{prop:ContinuousGroupProperties}
+Let $E,G\in\End(\mathbb{R}^d)$ and $A\in\Gl(\mathbb{R}^d)$. Also, let $E^*$ denote the adjoint of $E$. Then, for all $t,s>0$, the following statements hold:
+
+\vspace{.3cm}
+\begin{tabular}{lllll}
+$\bullet$ $1^E=I$ &  $\bullet$ $t^{E^*}=(t^E)^*$ & $\bullet$ $(t^E)^{-1}=t^{-E}$ &   $\bullet$ If $EG=GE$, then $t^Et^G=t^{E+G}$\\
+\vspace{.1cm}\\
+$\bullet$ $(st)^E=s^Et^E$ & $\bullet$ $At^EA^{-1}=t^{AEA^{-1}}$&  $\bullet$ $\det\left(t^E\right)=t^{\tr E}$\\
+
+\end{tabular}
+\end{proposition}
+
+\begin{definition} A continuous one-parameter group $T_t=t^E$ is said to be \textit{contracting} if
+\begin{equation*}
+\lim_{t\to 0}\|T_t\|=0. 
+\end{equation*}
+\end{definition}
+\noindent By virtue of the Banach-Steinhaus theorem, we have the following useful characterization.
+\begin{proposition}\label{prop:ContractingCharacterization}
+Let $\{T_t\}$ be a continuous one-parameter group. Then $\{T_t\}$ is contracting if and only if
+\begin{equation}\label{eq:ContractingSufficient}
+\lim_{t\to\infty}|T_tx|=0
+\end{equation}
+for all $x\in\mathbb{R}^d$.
+\end{proposition}
+
+\begin{proof}It is clear that \eqref{eq:ContractingSufficient} is a necessary condition for $\{T_t\}$ to be contracting. We must therefore prove \eqref{eq:ContractingSufficient} also sufficient. To this end, we assume that the continuous one-parameter group $\{T_t\}$ satisfies \eqref{eq:ContractingSufficient}. By virtue of the continuity of $\{T_t\}$ and \eqref{eq:ContractingSufficient}, we have
+\begin{equation*}
+\sup_{0<t\leq 1}|T_t x|<\infty
+ \end{equation*}
+for each $x\in\mathbb{R}^d$. From the Banach-Steinhaus theorem, it follows that $\|T_t\|\leq C$ for all $0<t\leq 1$. Now, suppose that $\{T_t\}$ is not contracting. In this case, one can find a sequence $\{\eta_n\}\subseteq\mathbb{S}$ and a sequence $t_n\rightarrow 0$ for which $\lim_n|T_{t_n}\eta_n|>0$. But because the unit sphere is compact, $\{\eta_n\}$ has a convergence subsequence $\eta_{n_k}\rightarrow \eta$ with $|\eta|=1$ . Observe that, for all $n$,
+ \begin{equation*}
+ |T_{t_n}(\eta-\eta_n)|\leq C|\eta-\eta_n|
+ \end{equation*}
+ and so it follows that
+ \begin{equation*}
+ \lim_{k\rightarrow\infty}|T_{t_{n_k}}\eta|=\lim_{k\rightarrow\infty}|T_{t_{n_k}}\eta_{n_k}|>0,
+ \end{equation*}
+ a contradiction.
+ \end{proof}
+
+
+
+
+\begin{lemma}\label{lem:OperatorBoundsforContractingGroup}
+Let $\{T_t\}\subseteq\GldR$ be a continuous one-parameter group and let $E\in\End(\mathbb{R}^d)$ be its generator, i.e., $T_t=t^E$ for all $t>0$.
+If $\{T_t\}$ is contracting, then $E\in\Gl(\mathbb{R}^d)$ and there is a positive constant $C$ for which
+\begin{equation*}
+\|T_t\|\leq C+t^{\|E\|}
+\end{equation*}
+for all $t>0$.
+\end{lemma}
+\begin{proof}
+If for some non-zero vector $\eta$, $E\eta=0$, then $t^E\eta=\eta$ for all $t>0$ and this would contradict our assumption that $\{T_t\}$ is contracting. Hence $E\in\Gl(\mathbb{R}^d)$ and, in particular, $\|E\|>0$. From the representation $T_t=t^E$, it follows immediately that $\|T_t\|\leq t^{\|E\|}$ for all $t\geq 1$ and so it remains to estimate $\|T_t\|$ for $t<1$. Given that $\{T_t\}$ is continuous and contracting, the map $t\mapsto \|T_t\|$ is continuous and approaches $0$ as $t\rightarrow 0$ and so it is necessarily bounded for $0<t\leq 1$.
+\end{proof}
+
+\textcolor{red}{There is a result about diagonalizable contracting groups commented out here}
+\begin{comment}
+\begin{lemma}\label{lem:SpectralEstimateforContractingGroup}
+Let $E\in\GldR$ be diagonalizable with strictly positive spectrum. Then $\{t^E\}$ is a continuous one-parameter contracting group. Moreover, there is a positive constant $C$ such that
+\begin{equation*}
+\|t^E\|\leq Ct^{\lambda_{\mbox{\tiny{max}}}}
+\end{equation*}
+for all $t\geq 1$ and
+\begin{equation*}
+\|t^E\|\leq Ct^{\lambda_{\mbox{\tiny{min}}}}
+\end{equation*}
+for all $0<t<1$, where $\lambda_{\mbox{\tiny{max}}}=\max(\Spec(E))$ and $\lambda_{\mbox{\tiny{min}}}=\min(\Spec(E))$.
+\end{lemma}
+\begin{proof}
+Let $A\in\GldR$ be such that $A^{-1}EA=D=\diag(\lambda_1,\lambda_2,\dots,\lambda_d)$ where necessarily $\Spec(E)=\Spec(D)=\{\lambda_1,\lambda_2,\dots,\lambda_d\}\subseteq (0,\infty)$. It follows from the spectral mapping theorem that $\Spec(t^D)=\{t^{\lambda_1},t^{\lambda_2},\dots,t^{\lambda_d}\}$ for all $t>0$ and moreover, because $t^D$ is symmetric,
+\begin{equation*}
+\|t^D\|\leq \max(\{t^{\lambda_1},t^{\lambda_2},\dots,t^{\lambda_d}\})
+=\begin{cases}
+t^{\lambda_{\mbox{\tiny{max}}}} & \mbox{if }t\geq 1\\
+t^{\lambda_{\mbox{\tiny{min}}}} & \mbox{if }t<1.
+\end{cases}
+\end{equation*}
+By virtue of Proposition \ref{prop:tEProperties}, we have
+\begin{equation*}
+\|t^E\|=\|At^DA^{-1}\|\leq \|A\|\|t^D\|\|A^{-1}\|\leq C\|t^D\|=C\times
+\begin{cases}
+t^{\lambda_{\mbox{\tiny{max}}}} & \mbox{if }t\geq 1\\
+t^{\lambda_{\mbox{\tiny{min}}}} & \mbox{if }t<1
+\end{cases}
+\end{equation*}
+for $t>0$ where $C=\|A\|\|A^{-1}\|$; in particular, $\{t^E\}$ is contracting because $\lambda_{\mbox{\tiny{min}}}>0$.
+\end{proof}
+\end{comment}
+
+
+\begin{proposition}\label{prop:ContractingLimits}
+Let $\{T_t\}_{t>0}\subseteq\Gl(\mathbb{R}^d)$ be a continuous one-parameter contracting group.  Then, for all non-zero $x\in\mathbb{R}^d$,
+\begin{equation*}
+\lim_{t\rightarrow 0}|T_t x|=0\hspace{.5cm}\mbox{ and }\hspace{.5cm}\lim_{t\rightarrow\infty}|T_t x|=\infty.
+\end{equation*}
+\end{proposition}
+\begin{proof}
+The validity of the first limit is clear. Upon noting that $|x|=|T_{1/t}T_tx|\leq \|T_{1/t}\||T_t x|$ for all $t>0$, the second limit follows at once.
+\end{proof}
+\begin{proposition}\label{prop:ScaleFromSphere}
+Let $\{T_t\}_{t>0}$ be a continuous one-parameter contracting group. There holds the following:
+\begin{enumerate}[label=(\alph*), ref=(\alph*)]
+\item\label{item:ScaleFromSphere_1} For each non-zero $x\in \mathbb{R}^d$, there exists $t>0$ and $\eta\in \mathbb{S}$ for which $T_t\eta=x$. Equivalently,
+\begin{equation*}
+\mathbb{R}^d\setminus\{0\}=\{T_t\eta:t>0\mbox{ and }\eta\in \mathbb{S}\}.
+\end{equation*}
+\item\label{item:ScaleFromSphere_2} For each sequence $\{x_n\}\subseteq\mathbb{R}^d$ such that $\lim_n|x_n|=\infty$, $x_n=T_{t_n}\eta_n$ for each $n$, where $\{\eta_n\}\subseteq \mathbb{S}$ and $t_n\rightarrow\infty$ as $n\rightarrow\infty$.
+\item\label{item:ScaleFromSphere_3} For each sequence $\{x_n\}\subseteq\mathbb{R}^d$ such that $\lim_n|x_n|=0$, $x_n=T_{t_n}\eta_n$ for each $n$, where $\{\eta_n\}\subseteq \mathbb{S}$ and $t_n\rightarrow 0$ as $n\rightarrow\infty$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+In view of Proposition \ref{prop:ContractingLimits}, the assertion \ref{item:ScaleFromSphere_1} is a straightforward application of the intermediate value theorem. For \ref{item:ScaleFromSphere_2}, suppose that $\{x_n\}\subseteq\mathbb{R}^d$ is such that $|x_n|\rightarrow \infty$ as $n\rightarrow\infty$. In view of \ref{item:ScaleFromSphere_1}, take $\{\eta_n\}\subseteq S$ and $\{t_n\}\subseteq (0,\infty)$ for which $x_n=T_{t_n}\eta_n$ for each $n$. In view of Lemma \ref{lem:OperatorBoundsforContractingGroup},
+\begin{equation*}
+\infty=\liminf_n |x_n|\leq\liminf_n \left(C+t_n^M\right)|\eta_n|\leq C+\liminf_nt_n^M,
+\end{equation*}
+where $C,M>0$ and therefore $t_n\rightarrow\infty$. If instead $\lim_n x_n=0$,
+\begin{equation*}
+\infty=\lim_{n\rightarrow\infty}\frac{|\eta_n|}{|x_n|}=\lim_{n\rightarrow\infty}\frac{|T_{1/t_n}x_n|}{|x_n|}\leq\limsup_n\|T_{1/t_n}\|\leq\limsup_n(C+(1/t_n)^M)
+\end{equation*}
+from which we see that $t_n\rightarrow 0$, thus proving \ref{item:ScaleFromSphere_3}.
+\end{proof}
+
+\textcolor{red}{I'm not sure we need this}
+\begin{proposition}\label{prop:ContractingCapturesCompact}
+Let $\{T_t\}$ be a continuous contracting one-parameter group. Then for any open neighborhood $\mathcal{O}\subseteq\mathbb{R}^d$ of the origin and any compact set $K\subseteq\mathbb{R}^d$, $K\subseteq T_t(\mathcal{O})$ for sufficiently large $t$.
+\end{proposition}
+\begin{proof}
+Assume, to reach a contradiction, that there are sequences $\{x_n\}\subseteq K$ and $t_n\rightarrow\infty$ for which $x_n\notin T_{t_n}(\mathcal{O})$ for all $n$. Because $K$ is compact, $\{x_n\}$ has a subsequential limit and so by relabeling, let us take sequences $\{\zeta_k\}\subseteq K$ and $\{r_k\}\subseteq (0,\infty)$ for which $\zeta_k\rightarrow \zeta$, $r_k\rightarrow\infty$ and $\zeta_k\notin T_{r_k}(\mathcal{O})$ for all $k$. Setting $s_k=1/r_k$ and using the fact that $\{T_t\}$ is a one-parameter group, we have $T_{s_k}\zeta_k\notin\mathcal{O}$ for all $k$ and so $\liminf_{k}|T_{s_k}\zeta_k|>0$, where $s_k\rightarrow 0$. This is however impossible because $\{T_t\}$ is contracting and so
+\begin{equation*}
+\lim_{k\rightarrow\infty}|T_{s_k}\zeta_k|\leq\lim_{k\rightarrow \infty}|T_{s_k}(\zeta_k-\zeta)|+\lim_{k\rightarrow\infty}|T_{s_k}\zeta|\leq C\lim_{k\rightarrow\infty}|\zeta_k-\zeta|+0=0
+\end{equation*}
+in view of Lemma \ref{lem:OperatorBoundsforContractingGroup}.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{thebibliography}{99}
+
+\bibitem{Bogachev2007}
+V. I. Bogachev.
+\newblock {\em {Measure Theory} Vol. 1}.
+\newblock Springer-Verlag, 2007.
+
+\bibitem{Engel2005}
+Klaus-Jochen Engel and Rainer Nagel
+\newblock {\em {A Short Course on Operator Semigroups}}.
+\newblock Springer-Verlag, 2005
+
+\bibitem{Engel2000}
+K.-J. Engle and R. Nagel
+\newblock {\em {One-Parameter Semigroups for Linear Evolution Equations}}, {\em Graduate Texts in Mathematics., Vol. 194,}
+\newblock Springer-Verlag, 2000. 
+
+\bibitem{Folland1984}
+Gerald Folland.
+\newblock {\em {Real Analysis: Modern Techniques and Their Applications}}, {\em Pure \& Applied Mathematics}.
+\newblock Wiley-Interscience, 1984
+
+\bibitem{Hormander1983}
+Lars H{\"{o}}rmander.
+\newblock {\em {The Analysis of Linear Partial Differential Operators II}}.
+\newblock Springer-Verlag Berlin Heidelberg, Berlin, 1983.
+
+\bibitem{Randles2017}
+Evan Randles and Laurent Saloff-Coste. 
+\newblock {\em {``Convolution powers of complex functions on $\mathbb{Z}^d$."}
+\newblock Revista Matem\'{a}tica Iberoamericana, vol. 33, no. 3, 2017, pp. 1045-1121.}
+
+
+\bibitem{Rudin1987}
+Walter Rudin.
+\newblock {\em {Real and Complex Analysis}}, {\em McGraw-Hill Series in Higher Mathematics}.
+\newblock WCB/McGraw-Hill, 1987.
+
+\bibitem{Stein2005}
+Elias Stein and Rami Shakarchi.
+\newblock {\em {Real Analysis} Measure Theorem, Integration, \& Hilbert Spaces}, {\em Princeton Lectures in Analysis III}.
+\newblock Princeton University Press, 2005.
+
+\end{thebibliography}
+\end{document}

@@ -65,7 +65,7 @@ tic
 %%%%%% PLOT THE CONVOLUTION POWER %%%%%%%
 
 h = figure(1)
-n_times = 11;
+n_times = 101;
 support_bound = 50;
 %disp('Calculating...');
 %data = real(fast_convolve(n_times, support_bound));    % plot the real part

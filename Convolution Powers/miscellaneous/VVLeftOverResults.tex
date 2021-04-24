@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+\usepackage[total={7in, 8in}]{geometry}
+\usepackage{graphicx}
+\usepackage[margin=0.5in]{caption}
+\usepackage{comment}
+\usepackage{amsmath, amsthm, latexsym, amssymb, color,cite,enumerate, physics, framed}
+\usepackage{ulem} %For sout
+\usepackage{caption,subcaption,verbatim, empheq, cancel}
+\usepackage[inline]{enumitem}
+\usepackage{mathtools}
+\pagenumbering{arabic}
+%\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand*{\myproofname}{Proof}
+\newenvironment{subproof}[1][\myproofname]{\begin{proof}[#1]\renewcommand*{\qedsymbol}{$\mathbin{/\mkern-6mu/}$}}{\end{proof}}
+\renewcommand\Re{\operatorname{Re}}%%redefined Re and Im
+\renewcommand\Im{\operatorname{Im}}
+\newcommand\MdR{\mbox{M}_d(\mathbb{R})} %dxd matrices
+\newcommand\End{\operatorname{End}} %Prefix linear transformations
+\newcommand\GldR{\mbox{Gl}_d(\mathbb{R})}%dxd invertible matrices
+\newcommand\Gl{\operatorname{Gl}} %Prefix for general linear group
+\newcommand\OdR{\mbox{O}_d(\mathbb{R})} %Orthogonal matrices
+\newcommand\Sym{\operatorname{Sym}}
+\newcommand\Exp{\operatorname{Exp}}
+%\newcommand\tr{\operatorname{tr}}
+\newcommand\diag{\operatorname{diag}}
+\newcommand\supp{\operatorname{Supp}}
+\newcommand\Spec{\operatorname{Spec}}
+\renewcommand\det{\operatorname{det}}
+\newcommand\Ker{\operatorname{Ker}}
+\newcommand\Interior{\operatorname{Int}}
+\newcommand\R{\mathbb{R}}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+\newcommand{\p}{\partial}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\iprod}{\mathbin{\lrcorner}}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\FT}{\mathcal{F}}
+\newcommand{\LT}{\mathcal{L}}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\newcommand{\slantedslash}{\mathbin{\rotatebox[origin=c]{23}{$-$}}}
+\newcommand{\rint}{\mathop{\mathpalette\docircint\relax}\!\int}
+\newcommand{\docircint}[2]{%
+  \ifx#1\displaystyle
+    \displayrint
+  \else
+    \normalrint{#1}%
+  \fi
+}
+\newcommand{\displayrint}{\displaystyle \slantedslash \mkern-18mu}
+\newcommand{\normalrint}[1]{%
+  \smallerc{#1}\ifx#1\textstyle\mkern-9mu\else\mkern-8.2mu\fi
+}
+\newcommand{\smallerc}[1]{%
+  \vcenter{\hbox{$\ifx#1\textstyle\scriptstyle\else\scriptscriptstyle\fi \slantedslash $}}%
+}
+
+
+
+
+\begin{document}
+
+This is for left over stuff that I've pulled from V10.
+
+\textcolor{red}{We may not need this at all} The following result will be helpful in establishing estimates using the Van der Corput lemma; its proof is straightforward and omitted.
+\begin{lemma}\label{lem:ScalingofSubHomogeneous}
+Let $Q$ be a complex-valued function defined on a neighborhood of $0$, $E\in\End(\mathbb{R}^d)$ be such that $r^E$ is contracting, and $k>0$.
+\begin{enumerate}
+\item If $Q$ is subhomogeneous with respect to $E/k$, then, for each $\epsilon>0$ and compact set $K$, there is a $\delta>0$ for which 
+\begin{equation*}
+\abs{Q(r^{E}\xi)}\leq \epsilon r^k
+\end{equation*}
+for all $0<r<\delta^k$ and $\xi\in K$.
+\item If $Q$ is strongly subhomogeneous with respect to $E/k$, then, for each $\epsilon>0$ and compact set $K$, there is $\delta>0$ for which
+\begin{equation*}
+\abs{\partial_r Q(r^E\xi)}\leq \epsilon k  r^{k-1}
+\end{equation*}
+for all $0<r<\delta^k$ and $\xi\in K$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Let $Q$ be subhomogeneous with respect to $E/k$. Then, for each $\epsilon > 0$ and compact set $K$, Definition \ref{def:homogeneous_types} guarantees a $\delta> 0$ for which 
+$\abs{Q(\theta^{E/k} \xi)} \leq \epsilon \theta$ for all $0 < \theta < \delta$ and $\xi \in K$. For $r = \theta^{1/k}$, we have $0<r<\delta^k$ whenever $0<\theta<\delta$. Consequently,
+\begin{equation*}
+    \abs{Q(r^E \xi)} =\abs{Q(\theta^{E/k}\xi)} \leq \epsilon \theta= \epsilon r^k
+\end{equation*}
+for all $0 < r < \delta^k$ and $\xi \in K$. 
+
+Assume additionally that $Q$ is strongly subhomogeneous with respect to $E/k$. Let $\epsilon > 0$ and a compact set $K$ be given. Definition \ref{def:homogeneous_types} guarantees a $\delta> 0$ for which $\abs{\p_\theta Q(\theta^{E/k} \xi)} \leq \epsilon$ for all $\xi \in K$ and $0 < \theta < \delta$. As before, for $r = \theta^{1/k}$, we have $0<r<\delta^k$ whenever $0<\theta<\delta$. Consequently, the chain rule guarantees that
+\begin{equation*}
+    \abs{\p_r Q(r^{E} \xi)} = \abs{\p_\theta Q(\theta^{E/k} \xi)} 
+    \abs{\f{\p \theta}{\p r}} \leq \epsilon k  r^{k-1}
+\end{equation*}
+for all $0 < r < \delta^k$ and $\xi \in K$. 
+\end{proof}
+
+
+\textcolor{red}{There was a result about diagonalizable contracting groups commented out here}
+
+\begin{lemma}\label{lem:SpectralEstimateforContractingGroup}
+Let $E\in\GldR$ be diagonalizable with strictly positive spectrum. Then $\{t^E\}$ is a continuous one-parameter contracting group. Moreover, there is a positive constant $C$ such that
+\begin{equation*}
+\|t^E\|\leq Ct^{\lambda_{\mbox{\tiny{max}}}}
+\end{equation*}
+for all $t\geq 1$ and
+\begin{equation*}
+\|t^E\|\leq Ct^{\lambda_{\mbox{\tiny{min}}}}
+\end{equation*}
+for all $0<t<1$, where $\lambda_{\mbox{\tiny{max}}}=\max(\Spec(E))$ and $\lambda_{\mbox{\tiny{min}}}=\min(\Spec(E))$.
+\end{lemma}
+\begin{proof}
+Let $A\in\GldR$ be such that $A^{-1}EA=D=\diag(\lambda_1,\lambda_2,\dots,\lambda_d)$ where necessarily $\Spec(E)=\Spec(D)=\{\lambda_1,\lambda_2,\dots,\lambda_d\}\subseteq (0,\infty)$. It follows from the spectral mapping theorem that $\Spec(t^D)=\{t^{\lambda_1},t^{\lambda_2},\dots,t^{\lambda_d}\}$ for all $t>0$ and moreover, because $t^D$ is symmetric,
+\begin{equation*}
+\|t^D\|\leq \max(\{t^{\lambda_1},t^{\lambda_2},\dots,t^{\lambda_d}\})
+=\begin{cases}
+t^{\lambda_{\mbox{\tiny{max}}}} & \mbox{if }t\geq 1\\
+t^{\lambda_{\mbox{\tiny{min}}}} & \mbox{if }t<1.
+\end{cases}
+\end{equation*}
+By virtue of Proposition \ref{prop:tEProperties}, we have
+\begin{equation*}
+\|t^E\|=\|At^DA^{-1}\|\leq \|A\|\|t^D\|\|A^{-1}\|\leq C\|t^D\|=C\times
+\begin{cases}
+t^{\lambda_{\mbox{\tiny{max}}}} & \mbox{if }t\geq 1\\
+t^{\lambda_{\mbox{\tiny{min}}}} & \mbox{if }t<1
+\end{cases}
+\end{equation*}
+for $t>0$ where $C=\|A\|\|A^{-1}\|$; in particular, $\{t^E\}$ is contracting because $\lambda_{\mbox{\tiny{min}}}>0$.
+\end{proof}
+
+
+%\textcolor{red}{I'm not sure we need this. Actually, I've now used it in the proof of Proposition \ref{prop:Subhomequivtolittleoh}}
+\begin{proposition}\label{prop:ContractingCapturesCompact}
+Let $\{T_t\}$ be a continuous contracting one-parameter group. Then for any open neighborhood $\mathcal{O}\subseteq\mathbb{R}^d$ of the origin and any compact set $K\subseteq\mathbb{R}^d$, $K\subseteq T_t(\mathcal{O})$ for sufficiently large $t$.
+\end{proposition}
+\begin{proof}
+Assume, to reach a contradiction, that there are sequences $\{x_n\}\subseteq K$ and $t_n\rightarrow\infty$ for which $x_n\notin T_{t_n}(\mathcal{O})$ for all $n$. Because $K$ is compact, $\{x_n\}$ has a subsequential limit and so by relabeling, let us take sequences $\{\zeta_k\}\subseteq K$ and $\{r_k\}\subseteq (0,\infty)$ for which $\zeta_k\rightarrow \zeta$, $r_k\rightarrow\infty$ and $\zeta_k\notin T_{r_k}(\mathcal{O})$ for all $k$. Setting $s_k=1/r_k$ and using the fact that $\{T_t\}$ is a one-parameter group, we have $T_{s_k}\zeta_k\notin\mathcal{O}$ for all $k$ and so $\liminf_{k}|T_{s_k}\zeta_k|>0$, where $s_k\rightarrow 0$. This is however impossible because $\{T_t\}$ is contracting and so
+\begin{equation*}
+\lim_{k\rightarrow\infty}|T_{s_k}\zeta_k|\leq\lim_{k\rightarrow \infty}|T_{s_k}(\zeta_k-\zeta)|+\lim_{k\rightarrow\infty}|T_{s_k}\zeta|\leq C\lim_{k\rightarrow\infty}|\zeta_k-\zeta|+0=0
+\end{equation*}
+in view of Lemma \ref{lem:OperatorBoundsforContractingGroup}.
+\end{proof}
+
+
+
+
+
+
+
+\end{document}

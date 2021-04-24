@@ -1,0 +1,472 @@
+
+\documentclass{article}
+\usepackage{amsmath, amsthm, latexsym, amssymb, graphicx,color,cite,enumerate}
+\pagenumbering{arabic}
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\renewcommand\Re{\operatorname{Re}}%%redefined Re and Im
+\renewcommand\Im{\operatorname{Im}}
+\newcommand\FdR{\mbox{F}_d(\mathbb{R})}
+\newcommand\MdR{\mbox{M}_d(\mathbb{R})}
+\newcommand\GldR{\mbox{Gl}_d(\mathbb{R})}
+\newcommand\Sym{\operatorname{Sym}}
+\newcommand\Exp{\operatorname{Exp}}
+\newcommand\tr{\operatorname{tr}}
+\newcommand\diag{\operatorname{diag}}
+\newcommand\supp{\operatorname{Supp}}
+\newcommand\Spec{\operatorname{Spec}}
+\renewcommand\det{\operatorname{det}}
+\newcommand\Ker{\operatorname{Ker}}
+\newcommand{\sslash}{\mathbin{/\mkern-6mu/}}
+\author{Evan Randles}
+\title{A quasi-polar coordinate formula}
+\date{}
+\begin{document}
+\maketitle
+
+In this section, we establish quasi-polar coordinate integration formula aligned to a positive-homogeneous polynomial. Let $P:\mathbb{R}^d\to [0,\infty)$ be a positive homogeneous polynomial, take $E\in\Exp(P)$ and set
+\begin{equation*}
+S=\{\eta\in\mathbb{R}^d: P(\eta)=1\}\hspace{1cm}\mbox{and}\hspace{1cm}B=\{\eta\in\mathbb{R}^d:P(\eta)<1\}.
+\end{equation*}
+We note that, in view of the results of \cite{Randles2017}, $T_t=t^E$ is a dilation of $\mathbb{R}^d$, $S$ is a compact hypersurface, i.e., a compact smooth manifold of dimension $d-1$, and $B$ is a bounded open region. \textcolor{red}{I'm not sure if this matters, but $S$ is connected never contains $0$ and is not necessarily convex, $B$ does contains $0$ and, I believe, is connected and simply connected.} 
+
+\section{Topological structure of $S$ and $S\times (0,\infty)$}
+
+We shall take $S$ to be equipped with the relative topology inherited from $\mathbb{R}^d$ and, given $(0,\infty)$ with its usual topology, we take $S\times (0,\infty)$ to be equipped with the product topology. Consider the map $\psi:S\times (0,\infty)\to\mathbb{R}^d\setminus\{0\}$ defined by
+\begin{equation}\label{eq:Homeomorphism}
+\psi(\eta,t)=t^E\eta
+\end{equation}
+for $\eta\in S$ and $t>0$. As $\psi$ is the restriction of the continuous function $\mathbb{R}^d\times (0,\infty)\ni (\xi,t)\mapsto t^E\xi\in\mathbb{R}^d$ to $S\times (0,\infty)$, it is necessarily continuous. As the following proposition shows, $\phi$ is, in fact, a homeomorhpism.
+
+\begin{proposition}
+The map $\psi:S\times (0,\infty)\to\mathbb{R}^d\setminus\{0\}$, defined by \eqref{eq:Homeomorphism} is a homeomorphism with continuous inverse $\psi^{-1}:\mathbb{R}^d\setminus\{0\}\to S\times (0,\infty)$ given by
+\begin{equation*}
+\psi^{-1}(\xi)=((P(\xi)^{-E}\xi,P(\xi))
+\end{equation*}
+for $\xi\in\mathbb{R}^d\setminus\{0\}$.
+\end{proposition}
+
+\begin{remark}
+In \textcolor{red}{future} section, we will give $S$ a smooth structure under which $\psi$ will be seen to be a diffeomorphism.
+\end{remark}
+
+\begin{proof}
+Given that $P$ is continuous and positive-definite, $P(\xi)>0$ for each $\xi\in \mathbb{R}^d\setminus\{0\}$ and the map $\mathbb{R}^d\setminus\{0\}\ni \xi \mapsto P(\xi)^{-E}\xi\in \mathbb{R}^d$ is continuous. Let us momentarily consider
+\begin{equation*}
+\rho(\xi)=(P(\xi)^{-E}\xi,P(\xi)
+\end{equation*}
+defined for $\xi\in\mathbb{R}^d\setminus\{0\}$ is a continuous function. Further, observe that, for each $\xi\in\mathbb{R}^d\setminus\{0\}$,
+
+and therefore $\rho:\mathbb{R}^d\setminus\{0\}\to S\times (0,\infty)$ and so it is a candidate for the inverse of $\psi$. Now
+\begin{equation*}
+(\psi\circ \rho)(\xi)=\psi((P(\xi)^{-E}\xi,P(\xi))=P(\xi)^{E}(P(\xi)^{-E}\xi)=\xi
+\end{equation*}
+for every $\xi\in \mathbb{R}^d\setminus \{0\}$ and
+\begin{equation*}
+(\rho\circ\psi)(\eta,t)=\rho(t^E\eta)=P(t^{E}\eta)^{-E}t^{E}\eta,P(t^{E}\eta))=((tP(\eta))^{-E}t^E\eta,tP(\eta)=(\eta,t)
+\end{equation*}
+for every $(\eta,t)\in S\times (0,\infty)$. In particular, $\psi$ is bijective with (continuous) inverse $\psi^{-1}=\rho$. 
+\end{proof}
+
+
+\begin{remark}We shall later discuss manifold structures on $S$ and $S\times (0,\infty)$ at which point we'll see that, in fact, $\psi$ is a diffeomorphism.
+\end{remark}
+
+Given our goal of this \textcolor{red}{section}, to establish a quasi-polar coordinate formula for integration, we need to first discuss compatible $\sigma$-algebras on $S$ and $S\times (0,\infty)$. To begin, a set $F\subseteq S$ is said to be \textit{measurable} if
+\begin{equation*}
+\widetilde F:=\bigcup_{0<t<1}t^E F=\{t^E\eta\in\mathbb{R}^d:\eta\in F,0<t<1\}
+\end{equation*}
+is Lebesgue measurable, i.e., $\widetilde F\in \mathcal{M}_d$. We shall denote the collection of all such subsets of $S$ by $\Sigma_S$. \noindent For each $F\in \Sigma_S$, we define
+\begin{equation*}
+\sigma(F)=(\tr E) m(\widetilde F)
+\end{equation*}
+where $m$ is the Lebesgue measure on $\mathbb{R}^d$.
+
+
+
+
+\begin{proposition}
+$\Sigma_S$ is a $\sigma$-algebra on $S$.
+\end{proposition}
+
+
+
+
+
+
+
+
+\begin{proof}
+Since $\widetilde S=B\setminus\{0\}$, which is open, $\widetilde S\in \mathcal{M}_d$ and therefore $S\in \Sigma_S$. Let $G, F\in \Sigma_S$ be such that $G\subseteq F$. Then,
+\begin{eqnarray*}
+\widetilde{F\setminus G}&=&\bigcup_{0<t<1}t^E\left(F\setminus G\right)\\
+&=&\bigcup_{0<t<1}\left(t^EF\setminus t^E G\right)\\
+&=&\left(\bigcup_{0<t<1}t^E F\right)\setminus\left(\bigcup_{0<t<1}t^E G\right)\\
+&=&\widetilde F\setminus \widetilde G
+\end{eqnarray*}
+where we have used the fact that the collection $\{t^E F\}_{0<t<1}$ is mutually disjoint to pass the union through the set difference. Consequently $\widetilde F\setminus \tilde{G}$ is Lebesgue measurable and therefore $F\setminus G\in \Sigma_S$. 
+
+Finally, let $\{F_n\}_{n\in\mathbb{N}}$ be a countable collection of measurable sets on $S$, i.e., $\{F_n\}\subseteq \Sigma_S$. Then
+\begin{equation*}
+    \widetilde{\bigcup_{n=1}^\infty F_n}= \bigcup_{0<t<1} t^E \left(\bigcup_{n=1}^\infty F_n\right)= \bigcup_{0 <t < 1}  \bigcup_{n=1}^\infty  t^E F_n =\bigcup_{n=1}^\infty \bigcup_{0 <t < 1}  t^E F_n =\bigcup_{n=1}^\infty \widetilde{F_n} 
+\end{equation*}
+and because $\cup_n \widetilde{F_n}\in \mathcal{M}_d$ (closed under countable union), we have that $\cup_n F_n\in \Sigma_S$. 
+\end{proof}
+
+ 
+
+\begin{proposition}
+$\sigma$ is a finite measure on $(S,\Sigma_S)$ and $(S,\Sigma_S,\sigma)$ is a complete measure space. We call $\sigma$ the surface-carried measure on $S$.
+\end{proposition}
+\begin{proof}
+
+\noindent Let us first verify that $\sigma$ is a finite measure on $(S,\Sigma_S)$. It is clear that $\widetilde{\varnothing}=\varnothing$ and therefore
+\begin{equation*}
+\sigma(\varnothing)=(\tr E)m(\varnothing)=0.
+\end{equation*}
+Second, for any $F \in \Sigma_S$, 
+\begin{equation*}\sigma(F) = (\tr E) m(\tilde{F}) \geq 0
+\end{equation*}
+because $m$ is a measure and $\tr E\geq 0$. Now, let $\{ F_n  \}^\infty_{n=1} \subseteq \Sigma_S $ be a mutually disjoint collection of sets, then $\{ \widetilde{F_n} \}_{n=1}^\infty$ is also a mutually disjoint
+collection of sets in $\mathcal{M}_d$. To see this, we show that if  $\widetilde{F_n} \cap \widetilde{F_m}\neq \varnothing$, then $n=m$. For suppose that $x = t_n^E \eta_n = t_m^E \eta_m$, where $t_n,t_m \in (0,1), \eta_n \in \widetilde{F_n}, \eta_m \in \widetile{F_m}$, then
+\begin{equation*}
+    t_n = P(t_n^E \eta_n) = P(x) = P(t_m^E \eta_m) = t_m.
+\end{equation*}
+Consequently, $\eta_n = \eta_m$ and so $F_n\cap F_m\neq \varnothing$ implying that $n=m$, as desired.
+
+Setting, $F=\bigcup_{n=1}^\infty F_n$ and making use of the additivity of Lebesgue measure, we have
+\begin{eqnarray*}
+    \lefteqn{\sigma(F)
+    = (\tr E)m\left( \widetilde{\bigcup^\infty_{n=1} F_n } \right)}\\
+    &&\hspace{2.5cm}= (\tr E)m\left( \bigcup^\infty_{n=1}\widetilde{F_n} \right)
+    = \tr E \sum^\infty_{n=1} m(\widetilde{F_n})
+    = \sum^\infty_{n=1}\sigma(F_n).
+\end{eqnarray*}
+Finally, because $\widetilde{S} = B\setminus\{ 0 \}$ is a bounded open region in $\mathbb{R}^d$, $m(\widetilde{S}) < \infty$ and so $\sigma(S) = (\tr E) m(\widetilde{S}) < \infty$ showing that $\sigma$ is finite.
+    
+   We now show that $(S,\Sigma_S,\sigma)$ is a complete measure space. Suppose that $F\subseteq K_0\in \Sigma_S$ with $\sigma(K_0)=0$. Thus, $\widetilde{F}\subseteq \widetilde{K_0}$ and $m(\widetilde{K_0})=\sigma(K_0)/\tr E =0$. By virtue of the completeness of Lebesgue measure, we conclude that $\widetilde F\in \mathcal{M}_d$ whence $F\in\Sigma_S$, as desired.
+\end{proof}
+
+
+
+\textbf{Question:} Why are complete measure spaces good?\\
+
+
+
+
+
+As $S$ carries its natural topology inherited from $\mathbb{R}^d$, we denote by $\mathcal{B}(S)$ the Borel $\sigma$-algebra on $S$, i.e., the smallest $\sigma$-algebra containing the open sets. 
+
+
+
+\begin{lemma}    
+$
+\mathcal{B}(S)\subseteq \Sigma_S.
+$
+\end{lemma}
+\begin{proof}
+Let $\mathcal{O}\in S$ be an open set. Recalling that $\psi:S\times (0,\infty)\to\mathbb{R}^d$, given by \eqref{eq:Homeomorphism} is a homeomorphism, it is an open map and therefore $\psi(\mathcal{O}\times (0,1))$ is open. Observer, however, that
+\begin{equation*}
+\widetilde{\mathcal{O}}=\{x=t^E\eta:0<t<1,\eta\in\mathcal{O}\}=\{\psi(\eta,t):t\in(0,1),\eta\in\mathcal{O}\}=\psi(\mathcal{O}\times(0,1))
+\end{equation*}
+and hence $\widetilde{\mathcal{O}}$ is an open set in $\mathbb{R}^d \setminus \{0\}$ and is therefore a member of $\mathcal{M}_d$. Thus, $\mathcal{O} \in  \Sigma_S$. Consequently,
+\begin{equation*}
+\mathcal{B}(S)\subseteq\Sigma_S.
+\end{equation*}
+\end{proof}
+
+Given that $\mathcal{B}(S)\subseteq \Sigma_S$, $\sigma$ is a measure on $\mathcal{B}(S)$, and we may consider 
+\begin{equation*}
+\overline{\mathcal{B}(S)}=\{F\subseteq S: F=K\cup Z\mbox{ where } Z\subseteq K_0, K,K_0\in\mathcal{B}(S)\mbox{ and }\sigma(K_0)=0\}
+\end{equation*}
+under which \textcolor{red}{Help. How do I say this is complete}. 
+
+
+
+
+
+\begin{proposition}[Conjecture] 
+$\Sigma_S=\overline{\mathcal{B}(S)}$
+\end{proposition}
+\begin{proof}
+By an argument analogous to that by which we showed that $\Sigma_S$ is complete, it is easy to see that $\overline{\mathcal{B}(S)}\subseteq \Sigma_S$. It remains to show the reverse statement.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+The completion of $\mathcal{B}(S)$, denoted by $\overline{\mathcal{B}}(S)$, is the collection of subsets of $S$ of the form $F=U\cup Z$ where $U\in \mathcal{B}(S)$ and $Z\subseteq V\in \mathcal{B}(S)$ with $\sigma(V)=0$.
+
+\textcolor{blue}{
+By the homogeneity of $P$, we observe that
+\begin{equation*}
+P(\xi)=\frac{d}{dt}(tP(\xi))=\frac{d}{dt}P(t^E\xi)=\nabla P(t^E\xi)\cdot (t^{E-1}E\xi)
+\end{equation*}
+and so, by evaluating at $t=1$, we find that
+\begin{equation*}
+1=P(\eta)=\nabla P(\eta)\cdot E\eta
+\end{equation*}
+for all $\eta\in S$. Consequently, $\nabla P$ is everywhere nonvanishing on $S$ and consequently $S$ is a $d-1$ dimensional smooth manifold (\textcolor{red}{By the IFT, need reference)}.  We want: $\psi: S\times (0,\infty)\to\mathbb{R}^d$ is a homeomorphism. To see this}
+
+
+
+
+
+Throughout this document, we will denote the Lebesgue measure on $\mathbb{R}^d$ by $m$ and write $dx=dm(x)$. By a measurable set $A\subseteq \mathbb{R}^d$ we mean a Lebesgue \textcolor{red}{(Or Borel?)} measurable set. \\
+
+Using the fact that $T_t=t^E$ is a dilation, we observe that $\psi:S\times (0,\infty)\to \mathbb{R}^d\setminus\{0\}$ given by
+\begin{equation}\label{eq:MainBijection}
+\psi(\eta,t)=t^E\eta
+\end{equation}
+is a bijection. \textcolor{red}{I'm not sure if we need this, but I believe it is also a homeomorpism and diffeomorphism}.
+
+\begin{proposition}\label{prop:Scaling}
+For any measurable set $A\subseteq\mathbb{R}^d$ and $t>0$, the set $t^E A=\{x=t^E a:a\in A\}$ is measurable and
+\begin{equation*}
+m(t^E A)=t^{\tr E}m(A).
+\end{equation*}
+\end{proposition}
+\begin{proof}
+Because $x\mapsto t^E x$ is a linear isomorphism, $t^E A$ is measurable because $A$ is measurable. Observe that $x\in t^E A$ if and only if $t^{-E}x\in A$ and therefore
+\begin{equation*}
+m(t^E A)=\int_{\mathbb{R}^d}\chi_{t^E A}(x)\,dx=\int_{\mathbb{R}^d}\chi_{A}(t^{-E}x)\,dx.
+\end{equation*}
+Now, by making the linear change of variables $x\mapsto t^E x$, we have
+\begin{equation*}
+m(t^E A)=\int_{\mathbb{R}^d}\chi_A(x)|\det(t^E)|\,dx=t^{\tr E}m(A),
+\end{equation*}
+because $\det(t^E)=t^{\tr E}>0$.
+\end{proof}
+
+\noindent Our immediate goal is to establish a quasi-polar coordinate formula. This construction naturally requires us to define a measure on the set $S$ and this will be done using the tools (and language) of measure theory. This so-called surface-carried measure will then be characterized using the tools of differentiable manifold theory. We shall first approach the problem through a measure-theoretic lens and then we will connect this description to that of differentiable manifolds.\\
+
+\noindent We say that a set $F\subseteq S$ is $S$-measurable if 
+\begin{equation*}
+\tilde{F}=\bigcup_{0<t<1}F_t=\bigcup_{0<t<1} t^E F
+\end{equation*}
+is measurable in $\mathbb{R}^d$. It is straightforward to see that the set of $S$-measurable sets is a $\sigma$-algebra and we shall henceforth denote it by $\Sigma_S$.
+
+%
+%
+%\begin{proposition}[\textit{Proof needed}]
+%Given the relative topology on $S$, denote by $\mathcal{B}(S)$ the Borel $\sigma$-algebra on $S$. Then %$\mathcal{B}(S)\subseteq \Sigma_S$.
+%\end{proposition}
+
+
+%\begin{proof}
+%Let $X \in \mathcal{B}(S)$ be given. Then $X$ is a Borel set on $S$. 
+%\end{proof}
+
+
+
+%Given $F\in \Sigma_S$, we define
+%\begin{equation*}
+%\sigma(F)=(\tr E) m(\tilde F)
+%\end{equation*}
+%where (again) $\tilde F=\cup_{0<t<1}F_t$. It is clear that $\sigma$ is a measure on $(S,\Sigma_S)$. Also, because
+%\begin{equation*}
+%\tilde S=\{t^E\eta:P(\eta)=1,0<t<1\}=\{t^E\eta:P(t^E\eta)=t\in(0,1)\}=B,
+%\end{equation*}
+%we have $\sigma(S)=(\tr E) m(B).$ 
+
+\begin{theorem}
+Let $f\in L^1(\mathbb{R}^d)$. Then, for almost every $t\in (0,\infty) $, the slice $f^t$ defined by $f^t(\eta)=f(t^E\eta)$ for $\eta \in S$ is integrable with respect to the measure $d\sigma(\eta)$, the function $t\to \int_S f(t^E\eta)\,d \sigma(\eta)$ is integrable with respect to the measure $t^{\tr E-1}\,dt$ and
+\begin{equation*}
+\int_{\mathbb{R}^d} f(x)\,dx=\int_0^\infty \left(\int_S f(t^E\eta)d\sigma(\eta)\right) t^{\tr E-1}\,dt.
+\end{equation*}
+\end{theorem}
+\begin{proof}
+We consider the product measure $\mu=\mu_1\times\mu_2$ on $S\times (0,\infty)$ where $\mu_1=\sigma$ and $d\mu_2(t)=t^{\tr E-1}\,dt$. Given that
+\begin{equation*}
+\mathbb{R}^d\setminus \{0\}=\{t^E\eta:\eta\in S,t\in (0,\infty)\}=\psi\left(S\times (0,\infty)\right)
+\end{equation*}
+where $\psi$ is given by \eqref{eq:MainBijection}, our \textcolor{red}{immediate} goal is to show that (the restriction of) Lebesgue measure on $\mathbb{R}^d\setminus \{0\}$ is the push-forward of the measure $\mu$ \textcolor{red}{under} $\psi$. In other words, 
+\begin{equation*}
+m(A)=\psi_*(d\mu)=\mu(\psi^{-1}(A))
+\end{equation*}
+for all Lebesgue measurable sets $A\subseteq \mathbb{R}^d\setminus \{0\}$.  \textcolor{red}{I believe that we show equivalently that $m(\psi(K))=\mu(K)$ for all elements $K$ in the product $\sigma$-algebra, $\Sigma_S\times \mathcal{B}(0,\infty)$ (but I'm not sure).}
+
+First, let's consider a measurable rectangle of the form $F\times (0,b)\subseteq S\times (0,\infty)$. First, observe that
+\begin{eqnarray*}
+\psi(F\times (0,b))&=&\{x=t^E \eta:0<t<b,\eta\in F\}\\
+&=&b^{E}\{x=t^E\eta:0<t<1,\eta\in F\}\\
+&=&b^{E}\left(\bigcup_{0<t<1} F\right)\\
+&=&b^E\tilde F
+\end{eqnarray*}
+ and so
+\begin{equation*}
+m(\psi(F\times (0,b))=m(b^E\tilde F)=b^{\tr E}m(\tilde F).
+\end{equation*}
+by virtue of Proposition \ref{prop:Scaling}. By definition of the product measure, we have
+\begin{equation*}
+\mu(F\times (0,b))=\sigma(F)\mu_2(0,b)=(\tr E)m(\tilde F)\int_0^bt^{\tr E-1}\,dt=b^{\tr E}m(\tilde F).
+\end{equation*}
+Therefore
+\begin{equation*}
+\mu(F\times (0,b))=m(\psi(F\times (0,b))).
+\end{equation*}
+For any $F\in \Sigma_S$ and $a>0$, the collection of sets $\{F\times (0,a+1/n)\}_{n=1}^\infty$ is nested and decreasing with 
+\begin{equation*}
+F\times (0,a]=\bigcap_{n=1}^\infty F\times (0,a+1/n).
+\end{equation*}
+By the continuity of measure, we have
+\begin{equation*}
+\mu(F\times (0,a])=\lim_{n\to \infty}\mu(F\times (0,a+1/n)).
+\end{equation*}
+Using the fact that $\psi$ is a bijection, a similar argument guarantees that
+\begin{equation*}
+m(\psi(F\times (0,a]))=\lim_{n\to\infty}m(\psi(F\times (0,a+1/n))).
+\end{equation*}
+An appeal to the preceding paragraph guarantees that
+\begin{equation*}
+m(\psi(F\times (0,a]))=\mu(F\times (0,a]).
+\end{equation*}
+Upon taking complements, we immediately find that 
+\begin{equation*}
+m(\psi(F\times I))=\mu(F\times I)
+\end{equation*}
+whenever $F\in \Sigma_S$ and $I$ is an interval. Given that intervals generate the Borel $\sigma$-algebra on $(0,\infty)$, , $\mathcal{B}(0,\infty)$,  and rectangles generate the product $\sigma$-algebra $\Sigma_S\times \mathcal{B}(0,\infty)$ on the product space $S\times (0,\infty)$, we have that
+\begin{equation*}
+m(\psi(K))=\mu(K)
+\end{equation*}
+for all measurable $K$ in $S\times (0,\infty)$. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+\newpage
+
+
+
+
+\noindent We want to prove $\overline{\mathcal{B}(S)} = \Sigma_S$. To this end, we need to show $\Sigma_S \subseteq \overline{\mathcal{B}(S)}$, i.e., for every $F\in \Sigma_S$, we  can write $F = K \cup Z$ where $K \in\mathcal{B}(S)$ and $Z\subseteq K_0 \in \mathcal{B}(S)$ with $\sigma(K_0) = 0$. \\
+
+
+\begin{theorem}[Theorem 3.4 of Stein \& Shakarchi's \textit{Real Analysis}]
+
+    Suppose $f$ is an integrable function on $\mathbb{R}^d$. Then for almost every $\gamma \in S^{d-1}$ the slice $f^\gamma$ defined by $f^\gamma(r) = f(r\gamma)$ is an integrable function with respect to the measure $r^{d-1}\,dr$. Moreover, $\int^{\infty}_0 f^\gamma(r)r^{d-1}\,dr$ is integrable on $S^{d-1}$ and the identity
+    \begin{equation*}
+        \int_{\mathbb{R}^d} f(x)\,dx = \int_{S^{d-1}} \left( \int^\infty_0 f(r\gamma) r^{d-1}\,dr \right)\,d\sigma(\gamma)
+    \end{equation*}
+    holds. 
+\end{theorem}
+
+
+\begin{proof}
+    This theorem is a special case of Theorem 7. 
+\end{proof}
+
+
+
+\noindent \textbf{Exercise 12, Stein \& Shakarchi, \textit{Real Analysis}}. Suppose $\mathbb{R}^d \setminus \{0\}$ is represented as $\mathbb{R}_+ \times S^{d-1}$, with $\mathbb{R}_+ = \{ 0 < r < \infty \}$. Then every open set in $\mathbb{R}^d/\setminus \{ 0 \}$  can be written as a countable union of open rectangles of this product. \\
+
+\noindent [\textit{Hint:} Consider the countable collection of rectangles of the form
+\begin{equation*}
+\{ r_j < r < r'_k \} \times \{ \gamma \in S^{d-1} : \vert\gamma - \gamma_l\vert < 1/n \}.
+\end{equation*}
+Here $r_j ,r'_k$ range over all positive rationals, and $\{\gamma_l\}$ is a countable dense set of $S^{d-1}$, and $n\in \mathbb{N}$]. 
+
+\begin{proof}
+Before starting the proof, I want to rewrite the hinted open rectangles into something that's easier to manage and let $\mathcal{O}_{j,l,n}$ denote these open rectangles:
+\begin{equation*}
+    \mathcal{O}_{j,l,n} = \{ \vert r - r_j \vert < 1/n \} \times \{ \gamma \in S^{d-1} : \vert \gamma - \gamma_l \vert < 1/n\}
+\end{equation*}
+
+With this, let an open set $\mathcal{O} \subseteq \mathbb{R}^d \setminus \{ 0 \}$ be given. Choose a point $a\in \mathcal{O}$. In polar coordinates, $a = (\vert a \vert, a/\vert a\vert)$. If for every $a \in \mathcal{O}$ we can find an $\mathcal{O}_{j,l,n}$ such that $a\in \mathcal{O}_{j,l,n} \subseteq \mathcal{O}$ then we're done. \\
+
+Since $a\in \mathcal{O}$ and $\mathcal{O}$ is open, there is a $\delta > 0$ such that $B_\delta(a) \subseteq \mathcal{O}$. Let a sufficiently large(*) $n$ be given. Then, we can find $r_j, \gamma_l$ such that 
+\begin{equation*}
+    \vert r_j - \vert a \vert\vert < \frac{1}{n}, \quad \bigg\vert \gamma_l - \frac{a}{\vert a\vert}\bigg\vert < \frac{1}{n} 
+\end{equation*}
+With these, we have found an $\mathcal{O}_{j,l,n}$ such that $a\in \mathcal{O}_{j,l,n}$. Now, if we can show that it is possible for $\mathcal{O}_{j,l,n} \subseteq B_\delta(a)$ (provided sufficiently large $n$) then we're done. To this end, we want to show that every $x = (\vert x \vert, x/\vert x \vert)\in \mathcal{O}_{j,l,n}$ is within a distant $d$ from $a$, i.e., $\vert a - x \vert < d$. Consider a point $y$ that is equidistant from the origin as $x$ but has the same angular position as $a$:
+\begin{equation*}
+    y = (\vert x \vert, a/\vert a\vert). 
+\end{equation*}
+By the triangle inequality, we have
+\begin{eqnarray*}
+    \vert x-a \vert \leq \vert x-y\vert + \vert y-a\vert \leq \vert x \vert \bigg\vert \frac{x}{\vert x \vert} - \frac{a}{\vert a \vert} \bigg\vert + \vert \vert x \vert - \vert a \vert \vert.
+\end{eqnarray*}
+Since $x,a\in \mathcal{O}_{j,l,n}$ we have the following inequalities:
+\begin{equation*}
+    \vert x \vert \leq \vert \vert x \vert- r_j \vert + r_j \leq \frac{1}{n} + \left(\vert a \vert + \frac{1}{n}\right) = \vert a \vert + \frac{2}{n},
+\end{equation*}
+\begin{equation*}
+    \bigg\vert \frac{x}{\vert x \vert} - \frac{a}{\vert a \vert} \bigg\vert \leq \bigg\vert \frac{x}{\vert x \vert} - \gamma_l \bigg\vert + \bigg\vert \gamma_l - \frac{a}{\vert a \vert} \bigg\vert \leq \frac{2}{n},
+\end{equation*}
+and
+\begin{equation*}
+    \vert \vert x \vert - \vert a \vert \vert \leq \vert \vert x \vert - r_j \vert + \vert r_j -  \vert a \vert \vert \leq \frac{2}{n}.
+\end{equation*}
+With these, we have that
+\begin{equation*}
+    \vert x - a\vert \leq \left( \vert a \vert + \frac{2}{n} \right) \frac{2}{n}+ \frac{2}{n} = \frac{2}{n}\left( \vert a \vert + 1 + \frac{2}{n} \right) \leq \frac{2}{n}\left( \vert a \vert + 3 \right).
+\end{equation*}
+Thus, if we chose a sufficiently large $n\in \mathbb{N}$ such that
+\begin{equation*}
+    \frac{1}{n} < \frac{\delta}{2(\vert a \vert + 3)}
+\end{equation*}
+then 
+\begin{equation*}
+    \frac{2}{n}\left( \vert a \vert + 3 \right) < \delta
+\end{equation*}
+from which it follows that $\vert x - a\vert < \delta$, or equivalently that $\mathcal{O}_{j,l,n} \subseteq B_\delta$. Thus, for any $a\in \mathcal{O}$, we can find an $\mathcal{O}_{j,l,n} \subseteq B_\delta(a) \subseteq \mathcal{O}$. Thus, $\mathcal{O}$ is necessarily a union of all $\mathcal{O}_{j,l,n}$ where the $r_j \in \mathbb{Q}_+$, $\gamma_l \in \{ \gamma_l \}$ a countable dense set of $S^{d-1}$, and $n\in \mathbb{N}$. It follows that $\mathcal{O}$ is a countable union of these open $\mathcal{O}_{j,l,n}$'s. \\
+
+\noindent \textbf{Comment:} In this proof, $S^{d-1}$ is in spherical coordinates. However, we can extend this to our $S^{d-1} = \{ \eta \in \mathbb{R}^{d-1}: P(\eta) = 1\}$ as well. In this case, the angular position of a point $x \in \mathbb{R}^d\setminus \{ 0\}$ no longer has the form $x/\vert x \vert$. Rather, for any $x \in \mathbb{R}^d\setminus \{ 0 \}$,  $ x = (\vert x \vert , \eta_x)$ where $P(\eta_x) = 1$. The proof does not rely on the spherical nature of $S$, and so the result extends to our $S^{d-1}$. 
+
+\end{proof}
+
+
+
+With this, we have resolved the point made in page 281 of Stein  and Shakarchi's \textit{Real Analysis:} ``To go further we note that any open set in $\mathbb{R}^d\setminus \{ 0 \}$ can be written as a countable union of rectangles $\bigcup^\infty_{j=1} A_j \times B_j$, where $A_j$ and $B_j$ are open in $(0,\infty)$ and $S^{d-1}$, respectively.'' Consider our map $\psi: (0,\infty)\times S^{d-1} \to \mathbb{R}^d\setminus \{ 0 \}$ defined by $\psi(t,\eta) = t^E \eta$ again. $\psi$ is a homeomorphism, which means $\psi$ maps any open set in $(0,1)\times S^{d-1}$ (which can be written as a countable union of almost disjoint closed cubes?) to an open set in $\mathbb{R}^d\setminus \{ 0\}$, which can be written as a countable union of open rectangles of the form $A \times B$ with $A \subseteq \mathbb{R}_+$ and $B\subseteq S^{d-1}$. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

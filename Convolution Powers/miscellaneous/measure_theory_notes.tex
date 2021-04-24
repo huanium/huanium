@@ -1,0 +1,923 @@
+\documentclass{article}
+\usepackage[left=1in,right=1in,top=1in, bottom=1in]{geometry}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage{bm}
+\usepackage{authblk}
+\usepackage{framed}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+%\makeatletter
+%\renewcommand{\@chapapp}{Part}
+%\renewcommand\thechapter{$\bf{\ket{\arabic{chapter}}}$}
+%\renewcommand\thesection{$\bf{\ket{\arabic{section}}}$}
+%\renewcommand\thesubsection{$\bf{\ket{\arabic{subsection}}}$}
+%\renewcommand\thesubsubsection{$\bf{\ket{\arabic{subsubsection}}}$}
+%\makeatother
+
+%\usepackage{newpxtext,newpxmath}
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+%\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+
+
+
+
+\begin{document}
+
+
+
+
+\begin{center}
+	\textbf{Some Topics in Measure Theory}\\
+	{Huan Q. Bui \& Evan Randles}\\
+\end{center}
+
+
+\section{Introduction}
+
+This is a collection of concepts in measure theory that serves as my crash course to the subject. Read at your own risk!!!
+
+
+\section{Some Theorems on Subsets of $\mathbb{R}^n$}
+
+\begin{theorem}
+Every open subset $\mathcal{O}$ of $\mathbb{R}$ can be written uniquely as a countable union of disjoint open intervals.
+\end{theorem}
+
+
+\begin{theorem}
+Every open subset $\mathcal{O}$ of $\mathbb{R}^d$, $d\geq 1$, can be written as a countable union of almost disjoint closed cubes. 
+\end{theorem}
+
+
+\section{Exterior measure}
+
+\begin{definition}[Exterior measure]
+If $E \subseteq \mathbb{R}^d$, then the exterior measure of $E$ is 
+\begin{equation*}
+    m_*(E) = \inf \sum^\infty_{n=1}\abs{Q_j} \in [0,\infty]
+\end{equation*}
+where the infimum is taken over all countable coverings $E\subseteq \bigcup^\infty_{j=1} Q_j$ by closed cubes.
+\end{definition}
+
+
+\begin{prop}
+(Monotonicity) If $E_1 \subset E_2$ then $m_*(E_1)\leq m_*(E_2)$.
+\end{prop}
+
+\begin{prop}
+(Countable Sub-additivity) If $E = \bigcup^\infty_{j=1} E_j$ then $m_*(E) \leq \sum^\infty_{j=1} m_*(E_j)$.
+\end{prop}
+
+
+\begin{prop}
+If $E \subseteq \mathbb{R}^d$, $m_*(E) \leq \inf m_*(\mathcal{O})$ where the infimum is taken over all open $\mathcal{O} \supseteq E$. 
+\end{prop}
+
+\begin{prop}
+If $E = E_1 \cup E_2$ and $d(E_1, E_2) > 0$ then $m_*(E) = m_*(E_1) + m_*(E_2)$.
+\end{prop}
+
+\begin{prop}
+If $E$ is a countable union of almost disjoint cubes $E = \cup^\infty_{i=1}Q_i$ then $m_*(E) = \sum^\infty_{i=1}\abs{Q_i}$.
+\end{prop}
+
+
+
+
+
+
+\section{Measurable sets and the Lebesgue measure}
+
+\begin{definition}[Lebesgue measurable]
+    A subset $E$ of $\R^d$ is Lebesgue measurable if for any $\epsilon > 0$ there exists an open set $\mathcal{O}$ containing $E$ such that 
+    \begin{equation*}
+        m_*(\mathcal{O}\setminus E) \leq \epsilon,
+    \end{equation*}
+    in which case, the Lebesgue measure of $E$ is given by
+    \begin{equation*}
+        m(E) = m_*(E).
+    \end{equation*}
+\end{definition}
+
+
+\begin{prop}
+Every open set in $\R^d$ is measurable. 
+\end{prop}
+
+\begin{prop}
+If $m_*(E) = 0$ then $E$ is measurable. In particular, if $F\subseteq E$ with $m_*(E)=  0$ then $F$ is measurable. 
+\end{prop}
+
+\begin{prop}
+A countable union of measurable sets is measurable. 
+\end{prop}
+
+\begin{prop}
+Closed sets are measurable. 
+\end{prop}
+
+\begin{prop}
+The complement of a measurable set is measurable.
+\end{prop}
+
+\begin{prop}
+A countable intersection of measurable sets is measurable.
+\end{prop}
+
+
+\begin{theorem}
+If $E_1,\dots,$ are disjoint measurable sets, and $E = \bigcup^\infty_{i=1}E_i$ then 
+\begin{equation*}
+    m(E) = \sum^\infty_{i=1}m(E_i)
+\end{equation*}
+\end{theorem}
+
+\begin{corollary}
+Suppose $E_1,\dots,$ are measurable subsets of $\mathbb{R}^d$, 
+\begin{itemize}
+    \item If $E_k \uparrow E$ then $m(E) = \lim_{n\to \infty}m(E_n)$.
+    \item If $E_k \downarrow E$ and $m(E_k) < \infty$ for some $k$ then $m(E) = \lim_{n\to \infty} m(E_n)$.
+\end{itemize}
+\end{corollary}
+
+
+
+
+\begin{theorem}
+If  $E$ is a measurable subset of $\R^d$ then for every $\epsilon > 0$, 
+\begin{itemize}
+    \item There exists an open set $\mathcal{O}$ with $E \subseteq \mathcal{O}$ and $m(\mathcal{O}\setminus E) \leq \epsilon$.
+    
+    \item There exists a closed set $F$ with $F \subseteq E$ and $m(E\setminus F) \leq \epsilon$.
+    
+    \item If $m(E)$ is finite, there exists a compact set $K$ with $K \subseteq E$ and $m(E\setminus K) \leq \epsilon$.
+    
+    \item If $m(E)$ is finite, then there exists a finite union $F = \bigcup^N_{i=1}Q_i$ of closed cubes such that $m(E\Delta F) \leq \epsilon$, where the notation $E\Delta F$ stands for the symmetric difference between the sets $E$ and $F$:
+    \begin{equation*}
+        E \Delta F = (E\setminus F) \cup (F \setminus E).
+    \end{equation*}
+\end{itemize}
+\end{theorem}
+
+
+
+\begin{corollary}
+A subset $E$ of $\R^d$ is measurable 
+\begin{itemize}
+    \item if and only if $E$ differs from a $G_\delta$ set by a set of measure zero. Here a $G_\delta$ set is a countable intersection of open sets,
+    
+    \item if and only if $E$ differs from a $F_\sigma$ by a set of measure zero. Here an $F_\sigma$ set is a countable union of closed sets.
+\end{itemize}
+\end{corollary}
+
+
+
+
+
+\section{$\sigma$-algebra}
+
+\begin{definition}[$\sigma$-algebra]
+Consider a set $X$ an its power set $\mathcal{P}(X)$. A set $\mathcal{A} \subseteq \mathcal{P}(X)$ is a $\sigma$-algebra if 
+\begin{itemize}
+    \item $\varnothing, X \in \mathcal{A} $
+    \item $A\in \mathcal{A} \implies A^c = X\setminus A \in \mathcal{A}$.
+    \item $A_j \in \mathcal{A}, i\in \mathbb{N} \implies \bigcup^\infty_{i=1} A_j \in \mathcal{A}$.
+\end{itemize}
+Any set $A\in \mathcal{A}$ is called an $\mathcal{A}$-measurable set. 
+\end{definition}
+
+
+\begin{remark}
+If $\mathcal{A}_i$ is a $\sigma$-algebra on $X$, then for $i \in I$ where $I$ is any index set, then $\bigcap_{i\in I} \mathcal{A}_i$ is also a $\sigma$-algebra on $X$. This is important especially when we want to construct some $\sigma$-algebra that has all the properties of other $\sigma$-algebras.
+\end{remark}
+
+
+ 
+
+
+
+
+
+
+\section{Borel $\sigma$-algebra}
+
+
+\begin{proposition}
+For $\mathcal{M} \subset \mathcal{P}(X)$, there is a smallest $\sigma$-algebra that contains $\mathcal{M}$:
+\begin{equation*}
+    \sigma(M) \coloneqq  \bigcap_{\mathcal{A}\supseteq \mathcal{M}} \mathcal{A}, \quad \mathcal{A} \text{ is a $\sigma$-algebra}
+\end{equation*}
+called the $\sigma$-algebra generated by $\mathcal{M}$. 
+\end{proposition}
+\begin{definition}[Borel $\sigma$-algebra]
+Let $X$ be a topological space (or a metric space, or a subset of $\mathbb{R}^n$), so that we have ``open sets.'' The Borel $\sigma$-algebra $\mathcal{B}(X)$ is the smallest $\sigma$-algebra generated by the open sets.
+\end{definition}
+
+
+
+
+
+
+
+
+
+\section{Measure(able) space}
+
+\begin{definition}[Measure(able) space]
+Consider a set $X$ and a $\sigma$-algebra $\mathcal{A}$ on $X$. $(X, \mathcal{A})$ is a measurable space. The map $\mu : \mathcal{A} \to [0,\infty] = [0,\infty) \cup \{ \infty\}$ is called a measure if it satisfies:
+\begin{itemize}
+    \item $\mu(\varnothing) = 0$
+    \item $\sigma$-additivity
+    \begin{equation*}
+        \mu \lp \bigcup^\infty_{i=1} A_i \rp = \sum^\infty_{i=1} \mu(A_i)
+    \end{equation*}
+    whenever $A_i \cap A_j = \varnothing$ for $i \neq j$ and $A_i \in \mathcal{A}$ for all $i$. 
+\end{itemize}
+Once the measure $\mu$ is defined on the measurable space $(X,\mathcal{A})$, the triple $(X,\mathcal{A},\mu)$ is called a measure space.  
+\end{definition}
+
+
+
+
+
+\section{Measurable functions}
+
+\begin{definition}
+Given measurable spaces $(\Omega_1, \mathcal{A}_1)$ and $(\Omega_2, \mathcal{A}_2)$. Consider a map $f : \Omega_1 \to \Omega_2$. $f$ is measurable (w.r.t $\mathcal{A}_1, \mathcal{A}_2$) if the pre-image $f^{-1}(A_2) \in \mathcal{A}_1$ for all $A_2 \in \mathcal{A}_2$. 
+\end{definition}
+
+
+\begin{exmp}
+Given $(\Omega, \mathcal{A})$ and $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$. It is easy to check that the characteristic function (or the indicator function) $\chi_A : \Omega \to \mathbb{R}$ is a measurable function. 
+\end{exmp}
+
+
+\begin{prop}
+If $f,g$ are measurable functions, then $f\circ g$ (if it is defined) is also a measureable function. This can be checked by looking at subsequent pre-images. 
+\end{prop}
+
+
+\begin{prop}
+Given $(\Omega, \mathcal{A})$ and $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$ and measureable functions $f,g : \Omega \to \mathbb{R}$. Then $f\pm g, f\circ g, \abs{f}$ are measurable functions. 
+\end{prop}
+
+
+
+
+\begin{prop}
+The finite-value function $f$ is measurable if and only if $f^{-1}(\mathcal{O})$ is measurable for every open set $\mathcal{O}$ and if and only if $f^{-1}(F) $ is measurable for every closed set $F$. 
+\end{prop}
+
+
+\begin{prop}
+If $f$ is continuous on $\R^d$, then $f$ is measurable. If $f$ is measurable and finite-valued, an $\Phi$ is continuous, then $\Phi \circ f$ is measurable. 
+\end{prop}
+
+
+\begin{prop}
+Suppose $\{ f_n \}_{n\in \mathbb{N}}$ is a sequence of measurable functions then 
+\begin{equation*}
+    \sup_n f_n(x), \quad \inf_n f_n(x), \quad  \limsup_{n\to \infty} f_n(x), \quad \liminf_{n\to \infty} f_n(x)
+\end{equation*}
+are all measurable. 
+\end{prop}
+
+
+\begin{prop}
+Suppose $\{ f_n \}_{n\in \mathbb{N}}$ is a sequence of measurable functions and 
+\begin{equation*}
+    \lim_{n\to \infty} f_n(x) = f(x)
+\end{equation*}
+then $f$ is measurable. 
+\end{prop}
+
+
+\begin{prop}
+If $f,g$ are measurable, then 
+\begin{itemize}
+    \item The integer powers $f^k$, $k\geq 1$, are measurable. 
+    
+    \item $f+g,f g$ are measurable if both $f,g$ are finite-valued. 
+\end{itemize}
+\end{prop}
+
+
+\begin{prop}
+If $f$ is measurable and $f=g$ for almost every $x$ then $g$ is measurable. 
+\end{prop}
+
+\section{Lebesgue Integral}
+
+\begin{definition}[Simple Functions] 
+A function $f$ is a simple function if we can find measurable sets $A_i,\dots, A_n$ and numbers $c_1,\dots,c_n \in \mathbb{R}$ such that we can write 
+\begin{equation*}
+    f(x) = \sum^n_{i=1}c_i \chi_{A_i}(x).
+\end{equation*}
+\end{definition}
+
+\begin{remark}
+Simple functions are measurable.
+\end{remark}
+
+Suppose a simple function $f$ is given by the representation 
+\begin{equation*}
+    f(x) = \sum^n_{i=1}c_i \chi_{A_i}(x).
+\end{equation*}
+then the ``Lebesgue integral'' of $f$ is given by
+\begin{equation*}
+    I(f) \coloneqq \sum^n_{i=1} c_i \mu(A_i)
+\end{equation*}
+where $\mu$ is the Lebesgue measure. However, this becomes problematic when some measures are infinite and the $c_i$ are not all negative or positive. One way to refine this to introduce the set of nonnegative simple functions:
+\begin{equation*}
+    \mathcal{S}^+ \coloneqq \{ f: X\to \mathbb{R} \vert\, f \text{ simple}, f\geq 0 \}.
+\end{equation*}
+
+
+\begin{definition}[Lebesgue integral of a nonnegative simple function]
+Let $f \in \mathcal{S}^+$ be given and choose a representation:
+\begin{equation*}
+    f(x) = \sum^n_{i=1}c_i \chi_{A_i}(x).
+\end{equation*}
+The Lebesgue integral of $f$ with respect to the measure $\mu$ is 
+\begin{equation*}
+    \int_X f\,d\mu \equiv \int_X f(x)\,d\mu(x) = I(f) = \sum^n_{i=1} c_i \mu(A_i) \in [0,\infty].
+\end{equation*}
+\end{definition}
+
+
+
+
+
+
+\begin{theorem}
+Suppose $f$ is measurable on $\R^d$. Then there exists a sequence of simple functions $\{ \varphi_k \}_{k\in\mathbb{N}}$ that satisfies 
+\begin{equation*}
+    \abs{\varphi_k(x)} \leq \abs{\varphi_{k+1}(x)}, \quad \lim_{k\to \infty}\varphi_k(x) = f(x), \forall x
+\end{equation*}
+In particular, we have $\abs{\varphi_k(x)} \leq \abs{f(x)}$ for all $x,k$. 
+\end{theorem}
+
+
+\begin{theorem}
+Suppose $f$ is measurable on $\R^d$. Then there exists a sequence of step functions $\{ \psi_k \}_{k\in \mathbb{N}}$ that converges pointwise to $f(x)$ for almost every $x$. 
+\end{theorem}
+
+
+
+\begin{definition}[L-integrals for nonnegative functions]
+Let $f: X \to [0,\infty)$ be a measurable function. 
+\begin{equation*}
+    \int_X f\,d\mu =  \sup\{ I(h) \vert \, h \in \mathcal{S}^+, h\leq f\} \in [0,\infty]
+\end{equation*}
+$f$ is $\mu$-integrable if $\int_X f\,d\mu < \infty$.
+\end{definition}
+
+
+
+\begin{prop}
+Given measurable nonnegative functions $f,g: X \to [0,\infty)$, $f=g$ $\mu$-almost everywhere (a.e.) $\implies \int_X f\,d\mu = \int_X g\,\mu $. By $f=g$ $\mu$-a.e., we mean $\mu(\{ x\in X \vert f(x) \neq g(x) \}) = 0$.
+\end{prop}
+
+
+\begin{prop}[Linearity]
+$I(\al f + \be g) = \al I(f) + \be I(g)$ for $\al,\be \geq 0$.
+\end{prop}
+
+\begin{prop}[Monotonicity]
+$f\leq g \implies I(f) \leq I(g)$ for $f,g\in \mathcal{S}^+$.
+\end{prop}
+
+\begin{prop}
+Given measurable nonnegative functions $f,g: X \to [0,\infty)$, $f\leq g$ $\mu$-a.e. $\implies \int_X f\,d\mu \leq \int_X g\,d\mu$.
+\end{prop}
+
+\begin{prop}
+Given measurable nonnegative functions $f,g: X \to [0,\infty)$, $f=0$ $\mu$-a.e. $\iff \int_X f\,d\mu = 0$.
+\end{prop}
+
+
+\begin{prop}[Additivity]
+If $E$ and $F$ are disjoint subsets of $\R^d$ with finite measure, then
+\begin{equation*}
+    \int_{E \cup F} \varphi = \int_e \varphi + \int_F \varphi.
+\end{equation*}
+\end{prop}
+
+\begin{prop}[Triangle Inequality]
+If $\varphi$ is a simple function, then so is $\abs{\varphi}$, and
+\begin{equation*}
+    \abs{\int \varphi} \leq \int \abs{\varphi}.
+\end{equation*}
+\end{prop}
+
+
+\begin{prop}
+The propositions above hold for functions $f,g$ which are bounded and supported on sets of finite measure.
+\end{prop}
+
+
+
+
+\section{Bounded Convergence Theorem}
+
+\begin{theorem}[BCT]
+ Suppose that $\{ f_n \}$ is a sequence of measurable functions that are all bounded by $M$, are supported on a set $E$ of finite measure, and $f_n(x) \to f(x)$ for almost every $x$ as $n\to \infty$. Then $f$ is measurable, bounded, supported on $E$ for almost every $x$, and
+ \begin{equation*}
+     \int \abs{f_n - f} \to 0, \quad n\to \infty.
+ \end{equation*}
+ Consequently, 
+ \begin{equation*}
+     \int f_n \to \int f, \quad n\to \infty.
+ \end{equation*}
+\end{theorem}
+
+
+
+
+\section{Monotone Convergence Theorem}
+
+
+
+
+\begin{theorem}[MCT]
+Let a measure space $(X,\mathcal{A},\mu)$ and measurable functions $f_n,f: X\to [0,\infty)$ be given for all $n\in \mathbb{N}$ with
+\begin{itemize}
+    \item $f_1\leq f_2 \leq f_3 \leq \dots $ $\mu$-a.e.
+    \item $\lim_{n\to \infty}f_n(x) = f(x)$ $\mu$-a.e. 
+\end{itemize}
+then 
+\begin{equation*}
+    \lim_{n\to \infty} \int_X f_n \,d\mu = \int \lim_{n\to \infty} f_n \,d\mu = \int_X f\,d\mu.
+\end{equation*}
+\end{theorem}
+
+
+\begin{corollary}
+Suppose $(g_n)_{n\in \mathbb{N}}$ with $g_n : X \to [0,\infty]$ measurable for all $n$ be given. Then  $\sum^\infty_{i=1}g_n : X \to [0, \infty]$ is measurable. By the MCT
+\begin{equation*}
+    \int_X \sum^\infty_{i=1} g_n \,d\mu = \sum^\infty_{i=1} \int_X g_n \,d\mu.
+\end{equation*}
+\end{corollary}
+
+
+\begin{corollary}
+Let $(X_j,\Sigma_j,\mu_j)$ for $j=1,2$ be measure spaces which are isomorphic in the sense that there is a bijection $\varphi:X_1\to X_2$ for which
+\begin{equation*}
+\Sigma_2=\{A\in X_2:\varphi^{-1}(A)\in\Sigma_1\}
+\end{equation*}
+and, for each $A\in\Sigma_2$,
+\begin{equation*}
+\mu_2(A)=\mu_1(\varphi^{-1}(A)).
+\end{equation*}
+Let $f:X_2\to\mathbb{C}$. Then $f$ is $\Sigma_2$-measurable if and only if $f\circ \varphi:X_1\to\mathbb{C}$ is $\Sigma_1$ measurable. Further, if $f\geq 0$,
+\begin{equation*}
+\int_{X_2}f\,d\mu_2=\int_{X_1}f\circ \varphi\,d\mu_1.
+\end{equation*}
+If $f$ is generally complex-valued, then $f\in L^1(\mu_1)$ if and only if $f\circ \psi\in L^1(\mu_2)$ and in this case we also have
+\begin{equation*}
+\int_{X_2}f\,d\mu_2=\int_{X_1}f\circ \varphi\,d\mu_1.
+\end{equation*}
+\end{corollary}
+Note, you'll have to use the simple approximation lemma (pg. 274 of St.-Sh.). Also, note that 
+\begin{equation*}
+f=f_+-f_-
+\end{equation*}
+where
+\begin{equation*}
+f_+(x)=\max\{f(x),0\}\geq 0\hspace{1cm}\mbox{and}\hspace{1cm}f_-(x)=\max\{-f(x),0\}\geq 0
+\end{equation*}
+and
+\begin{equation*}
+|f|(x)=|f(x)|=f_++f_-.
+\end{equation*}
+
+
+
+\section{Fatou's Lemma}
+
+\begin{lemma}[Fatou's] 
+Let a measure space $(X,\mathcal{A},\mu)$ be given with $f_n : X \to [0,\infty]$ be measurable for all $n\in \mathbb{N}$. Then 
+\begin{equation*}
+    \int_X \liminf_{n\to \infty} f_n \,d\mu \leq \liminf_{n\to \infty} \int_X f_n \,d\mu
+\end{equation*}
+where $\liminf_{n\to \infty} f_n: X \to [0,\infty]$ is defined by
+\begin{equation*}
+    g(x) \coloneqq \lp\liminf_{n\to \infty} f_n \rp (x) = \lim_{n\to \infty} \underbrace{\lp\inf_{k \geq n} f_k(x)\rp}_{g_k(x) }  \in [0,\infty].
+\end{equation*}
+\end{lemma}
+It turns out that $g_1 \leq g_2 \leq \dots$ are measurable and thus $g(x)$ is also measurable.  
+
+
+\section{Lebesgue's Dominated Convergence Theorem}
+
+
+\begin{theorem}[LDCT]
+Let a measure space $(X,\mathcal{A},\mu)$ be given. Consider the set of all Lebesgue-integrable functions:
+\begin{equation*}
+    \lag^1(\mu) \coloneqq \{ f: X \to \mathbb{R} \text{ measureable}\vert \, \int_X \abs{f}^1\,d\mu < \infty \}.
+\end{equation*}
+For $f\in \lag^{1}(\mu)$, write $f = f^+ - f^-$ with $f^+,f^- \geq 0$ and define
+\begin{equation*}
+    \int_X f\,d\mu \coloneqq \int_X f^+ \,d\mu - \int_X f^- \,d\mu.
+\end{equation*}
+Consider $f_n : X \to \mathbb{R}$ a sequence of measurable functions and $f : X \to \mathbb{R}$ with $\lim_{n\to \infty} f_n(x) = f(x)$ for $x\in X$, $\mu$-a.e. where $\abs{f_n} \leq g$ with $g\in \lag^1(\mu)$ for all $n$. Then $f_1, \dots, \in \lag^{1}(\mu)$, $f\in \lag^{1}(\mu)$ and 
+\begin{equation*}
+    \lim_{n\to \infty} \int_X f_n\,d\mu = \int_X f\,d\mu.
+\end{equation*}
+\end{theorem}
+
+
+\section{$\sigma$-finite measure}
+
+\begin{definition}[$\sigma$-finite measure]
+Let $(X,\mathcal{A}, \mu)$ be a measure space. The measure $\mu$ is called a $\sigma$-finite measure if it satisfies one of the following equivalent criteria:
+\begin{itemize}
+    \item The set $X$ can be covered with at most countably many measurable sets with finite measure, i.e., there are sets $A_1,\dots, \in \mathcal{A}$ with $\mu(A_n)< \infty$ for all $n$ such that $\bigcup_{n\in \mathbb{N}} A_n = X$.
+    
+    
+    \item The set $X$ can be covered with at most countable many measureable disjoint sets with finite measure, i.e., there are sets $B_1,\dots, \in \mathcal{A}$ with $\mu(B_n) < \infty$ for all $n$ and $B_i \cap B_j = \varnothing$ for $i\neq j$ that satisfy $\bigcup_{n\in \mathbb{N}} B_n = X$.
+    
+    
+    \item The set $X$ can be covered with a monotone sequence of measurable sets with finite measure, i.e., there are sets $C_1,\dots, \in \mathcal{A}$ with $C_1 \subseteq C_2 \subseteq \dots$ and $\mu(C_n) < \infty$ for all $n$ that satisfy $\bigcup_{n\in \mathbb{N}} C_n = X$.
+    
+    \item There exists a strictly positive measurable function $f$ whose integral is finite, i.e., $f(x) > 0$ for all $x\in X$ and $\int_X f\,d\mu < \infty$. 
+\end{itemize}
+If $\mu$ is a $\sigma$-finite measure, the measure space $(X,\mathcal{A},\mu)$ is called a $\sigma$-finite measure space. 
+\end{definition}
+
+
+
+
+\section{Lebesgue's Decomposition Theorem \& Radon-Nikodym Theorem}
+
+Consider the special measure space $(\mathbb{R},\mathcal{B}(\mathbb{R}),\lambda)$ where $\lambda$ is the Lebesgue reference measure: $\lambda([a,b)) = b-a$. Also, consider another measure $\mu: \mathcal{B}(\mathbb{R}) \to [0,\infty]$. 
+
+\begin{definition}
+$\,$
+\begin{itemize}
+    \item $\mu$ is called \textbf{absolutely continuous} with respect to the reference measure $\lambda$ if $\lambda(A) = 0 \implies \mu(A) = 0$ for all $A \in \mathcal{B}(\mathbb{R})$. To denote this, one writes $\mu \ll \lambda$.
+    
+    \item $\mu$ is called \textbf{singular} with respect to the reference measure $\lambda$ if there is $N \in \mathcal{B}(\mathbb[R])$ with $\lambda(N) = 0$ and $\mu(\mathbb{R}\setminus N) = 0$. To denote this, one writes $\mu \perp \lambda$.  
+\end{itemize}
+\end{definition}
+
+
+\begin{theorem}
+Consider some measure $\mu : \mathcal{B}(\mathbb{R}) \to [0,\infty]$ that is $\sigma$-finite.
+\begin{itemize}
+    \item (Lebesgue's Decomposition Theorem). There are two measures (uniquely determined) $\mu_{ac}, \mu_{s}: \mathcal{B}(\mathbb{R}) \to [0,\infty]$ with
+    \begin{equation*}
+        \mu = \mu_{ac} + \mu_{s}
+    \end{equation*}
+    where $\mu_{ac}\ll \lambda$ and $\mu_s \perp \lambda$.
+    
+    \item (Radon-Nikodym Theorem). There is a measurable map $h: \mathbb{R} \to [0,\infty)$ with
+    \begin{equation*}
+        \mu_{ac}(A) = \int_A h\,d\lambda
+    \end{equation*}
+    for all $A \in \mathcal{B}(\mathbb{R})$. We call such an $h$ a \textbf{density function}. 
+\end{itemize}
+\end{theorem}
+
+
+
+
+
+
+
+
+\section{Product Measure}
+
+Let $(X,\mathcal{M},\mu)$ and $(Y,\mathcal{N},\nu)$ be measure spaces. We have the product $\sigma$-algebra $\mathcal{M}\otimes \mathcal{N}$ on $X\times Y$., so now we construct the a measure on $\mathcal{M} \otimes \mathcal{N}$ that is the product of $\mu$ and $\nu$. \\
+
+A measurable \textbf{rectangle} is a set of the form $A\times B$ where $A\in \mathcal{M}$ and $B \in \mathcal{N}$. The collection $\mathcal{A}$ of finite disjoint unions of rectangles is an algebra. The $\sigma$-algebra it generates is $\mathcal{M} \otimes \mathcal{N}$. \\
+
+
+Suppose $A\times B$ is a rectangle that is a finite/countable \textbf{disjoint} union of rectangles $A_j \times B_j$. Then for $x\in X, y\in Y$,
+\begin{equation*}
+    \chi_A(x)\chi_B(y) = \chi_{A\times B}(x,y) = \sum \chi_{A_j \times B_j}(x,y) =  \chi_{A_j}(x)\chi_{B_j}(y).
+\end{equation*}
+Integrating wrt $x$ to get
+\begin{equation*}
+    \mu(A)\chi_B(y) = \dots = \sum \mu(A_j)\chi_{B_j}(y).
+\end{equation*}
+By symmetry, we get
+\begin{equation*}
+    \mu(A)\nu(B) = \sum \mu(A_j)\nu(B_j)
+\end{equation*}
+
+Thus, if $E \in \mathcal{A}$ is a disjoint union of rectangles $A_1\times B_1,\dots, A_n \times B_n$ and we set
+\begin{equation*}
+    \pi(E) = \sum^n_{1}\mu(A_j)\nu(B_j)
+\end{equation*}
+then $\pi$ is well-defined on $\mathcal{A}$ and $\pi$ is a premeasure (a function that satisfies $\mu(\varnothing)=0$ and $\sigma$-additivity but isn't necessarily defined on a $\sigma$ algebra) on $\mathcal{A}$. Theorem 1.4 of Folland says that $\pi$ generates an exterior measure on $X\times Y$ whose restriction to $\mathcal{M}\otimes \mathcal{N}$ is a measure that extends $\pi$. This measure is the product of  $\mu$ and $\nu$ and we denote it by  $\mu\times \nu$. \\
+
+If $\mu,\nu$ are $\sigma$-finite, then $\mu\times \nu$ is also $\sigma$-finite. In this case, Theorem 1.4 of Folland also tells us that $\mu\times \nu$ is a \textbf{unique} measure on $\mathcal{M}\otimes \mathcal{N}$ such that 
+\begin{equation*}
+    \mu \times \nu (A\times B) = \mu(A) \nu(B)
+\end{equation*}
+for all rectangles $A\times B$. \\
+
+
+\section{``Measurable Slice'' Theorems}
+
+\begin{definition}[Slices]
+Let $(X,\mathcal{M},\mu),(Y,\mathcal{N},\nu)$ be measure spaces. If $E \subset X\times Y$, for $x\in X, y\in Y$ we define the $x$-section $E_x$ and $y$-section $E^y$ of $E$ by
+\begin{equation*}
+    E_x = \{y\in Y : (x,y)\in E \} \subseteq Y, \quad
+    E^y = \{ x\in X: (x,y)\in E \} \subseteq X
+\end{equation*}
+Also, if $f$ is a function on $X\times Y$ we define the $x$-section $f_x$ and $y$-section $f^y$ of $f$ by 
+\begin{equation*}
+    f_x(y) = f^y(x) = f(x,y).
+\end{equation*}
+\end{definition}
+
+
+\begin{exmp} One can check that
+\begin{equation*}
+    (\chi_E)_x = \chi_{E_x}, \quad (\chi_E)^y = \chi_{E^y}
+\end{equation*}
+\end{exmp}
+
+
+
+
+\begin{prop}
+$\,$
+\begin{itemize}
+    \item If $E \in \mathcal{M}\otimes \mathcal{N}$, then $E_x \in \mathcal{N}$ for all $x\in X$ and $E^y \in \mathcal{M}$ for all $y\in Y$. 
+    
+    \item If $f$ is $\mathcal{M}\otimes \mathcal{N}$-measurable, then $f_x$ is $\mathcal{N}$-measurable for all $x\in X$ and $f^y$ is $\mathcal{M}$-measurable for all $y\in Y$
+\end{itemize}
+\end{prop}
+
+
+
+
+\section{Monotone Class Lemma}
+
+
+
+\begin{definition}[Algebra in a set]
+Let $X$ be a set. An algebra in $X$ is a non-empty collection of subsets of $X$ that is closed under complements, finite unions, and finite intersections. 
+\end{definition}
+
+\begin{definition}[Premeasure]
+Let $\mathcal{A}$ be an algebra in $X$. A premeasure on an algebra $\mathcal{A}$ is a function $\mu_0 : \mathcal{A} \to [0,\infty]$ that satisfies 
+\begin{itemize}
+    \item $\mu_0(\varnothing) = 0.$
+    
+    \item If $E_1,\dots$ is a countable collection of disjoint sets in $\mathcal{A}$ with $\bigcup^\infty_{n=1}E_n \in \mathcal{A}$ then 
+    \begin{equation*}
+        \mu_0 \lp \bigcup^\infty_{k=1} E_k \rp = \sum^\infty_{k=1} \mu_0 (E_k)
+    \end{equation*}
+\end{itemize}
+In particular, $\mu_0$ is finitely additive on $\mathcal{A}$. 
+\end{definition}
+
+
+
+
+
+\begin{definition}[Monotone class]
+A monotone class on a space $X$ is a subset $\mathcal{C}\subset \mathcal{P}(X)$ that is closed under increasing unions and countable decreasing intersections. That is, if $E_j \in \mathcal{C}$ and $E_1 \subset E_2 \subset \dots$ then $\bigcup E_j \in \mathcal{C}$, and likewise for intersections.
+\end{definition}
+
+\begin{remark}
+Every $\sigma$-algebra is a monotone class.
+\end{remark}
+
+\begin{remark}
+The intersection of any family of monotone classes is a monotone class.
+\end{remark}
+
+
+
+\begin{definition}[Monotone class Generated by a subset of $\mathcal{P}(X)$]
+For any $\mathcal{E} \subset \mathcal{P}(X)$, there is a unique smallest monotone class containing $\mathcal{E}$, called the monotone class \textbf{generated by $\mathcal{E}$}. 
+\end{definition}
+
+\begin{definition}[$\sigma$-algebra generated by a family of subsets]
+Let $F$ be an arbitrary family of subsets of $X$. Then there exists a unique smallest $\sigma$-algebra which contains every set in $F$. It is, in fact, the intersection of all $\sigma$-algebras containing $F$. This $\sigma$-algebra is denoted $\sigma(F)$ and is called the $\sigma$-algebra generated by $F$.
+\end{definition}
+
+
+
+\begin{lemma}[Monotone Class Lemma]
+If $\mathcal{A}$ is an algebra of subsets of $X$, then the monotone class $\mathcal{C}$ generated by $\mathcal{A}$ coincides with the $\sigma$-algebra $\mathcal{M}$ generated by $\mathcal{A}$. 
+\end{lemma}
+
+\begin{proof}
+$\mathcal{M}$ is a $\sigma$-algebra, so it is a monotone class. As a result, $\mathcal{C} \subset \mathcal{M}$. To show the reverse containment, we show that $\mathcal{C}$ is a $\sigma$-algebra. To do this, let $E \in \mathcal{C}$ be given and define
+\begin{equation*}
+    \mathcal{C}(E) = \{ F\in \mathcal{C} : E\setminus F, F\setminus E, E\cap F \in \mathcal{C}\}.
+\end{equation*}
+Check that $\varnothing, E\in \mathcal{C}(E)$, and $E \in \mathcal{C}(F) \iff F \in \mathcal{C}(E)$. Check that $\mathcal{C}(E)$ is a monotone class. Because $\mathcal{A}$ is an algebra, $E \in\mathcal{A} \implies F\in \mathcal{C}(E) \forall F\in \mathcal{A}$. This means $\mathcal{A}\subset \mathcal{C}(E) \implies \mathcal{C} \subset \mathcal{C}(E)$. This means if $F\in \mathcal{C}$ then $F\in \mathcal{C}(E) \iff E \in \mathcal{C}(F) \forall E\in \mathcal{A}$, and by a similar argument we get $\mathcal{C}\in \mathcal{C}(F)$. So, if $E,F\mathcal{C}, E\setminus F, E \cap F \in \mathcal{C}$. Now, $X\in \mathcal{A} \subset \mathcal{C}$, so $\mathcal{C}$ is an algebra. Finally, since $\mathcal{C}$ is closed under countable increasing unions, $\mathcal{C}$ is a $\sigma$-algebra. 
+\end{proof}
+
+\begin{theorem}
+Suppose $(X,\mathcal{M},\mu), (Y,\mathcal{N},\nu)$ are $\sigma$-finite measure spaces. If $E\in \mathcal{M}\otimes \mathcal{N}$ then the functions $x\mapsto \nu(E_x)$ and $y\mapsto \mu(E^y)$ are measurable on $X,Y$ respectively and
+\begin{equation*}
+    \mu\times \nu(E) = \int \nu(E_x)d\mu(x) = \int \mu(E^y)\,d\nu(y)
+\end{equation*}
+\end{theorem}
+
+
+
+
+
+\section{Fubini-Tonelli's Theorem}
+
+
+
+
+
+\begin{theorem}
+Suppose that $(X,\mathcal{M},\mu)$ and $(Y,\mathcal{N},\nu)$ are $\sigma$-finite measure spaces
+\begin{itemize}
+    \item (Tonelli's) If $f \in \lag^+(X\times Y)$ then the functions $g(x) =\int f_x\,d\nu$ and $h(y) = \int f^y \,d\mu$ are in $\lag^+(X), \lag^+(Y)$, respectively, and
+    \begin{equation*}
+        \int f \,d(\mu\times \nu) = \int \lb \int f(x,y)\,d\nu(y) \rb d\mu(x) = \int \lb \int f(x,y)\,d\mu(x) \rb \,d\nu(y).
+    \end{equation*}
+    
+    \item (Fubini's) If $f \in \lag^1(\mu\times \nu)$ then $f_x \in \lag^1(\nu)$ for a.e. $x\in X$,  $f^y \in \lag^1(\mu)$ for a.e. $y\in Y$, the a.e.-defined functions $g(x) = \int f_x\,d\nu$ and $h(y) = \int f^y\,d\mu$ are in $\lag^1(\mu),\lag^1(\nu)$ respectively, and   
+    \begin{equation*}
+        \int f \,d(\mu\times \nu) = \int \lb \int f(x,y)\,d\nu(y) \rb d\mu(x) = \int \lb \int f(x,y)\,d\mu(x) \rb \,d\nu(y).
+    \end{equation*}
+\end{itemize}
+\end{theorem}
+
+
+\section{Fubini's Theorem for Complete Measures}
+
+
+\begin{theorem}[Fubini's Theorem for Complete Measures]
+Suppose that $(X,\mathcal{M},\mu)$ and $(Y,\mathcal{N},\nu)$ are $\sigma$-finite and complete measure spaces, and let $(X\times Y, \lag, \lambda)$ be the completion of $(X\times Y, \mathcal{M}\otimes \mathcal{N}, \mu\times \nu)$. If $f$ is $\lag$-measurable and either (a) $f\geq 0$ or (b) $f\in \lag^1(\lambda)$, then $f_x,f^y$ are also integrable for a.e. $x,y$. Moreover, $x\mapsto \int f_x\,d\nu, y\mapsto \int f^y\,d\mu$ are measurable, and in case (b) also integrable, and
+\begin{equation*}
+    \int f\,d\lambda = \iint f(x,y)\,d\mu(x)d\nu(y) = \iint f(x,y)\,d\nu(y)d\mu(x) .
+\end{equation*}
+\end{theorem}
+
+\section{Integration in Polar Coordinates}
+
+Denote the unit sphere $\{ x\in \R^n : \abs{x} = 1 \}$ by $S^{n-1}$. If $x\i n\R^n\setminus\{ 0\}$ then the polar coordinates of $x$ are
+\begin{equation*}
+    r = \abs{x}\in (0,\infty),\quad x' = \f{x}{\abs{x}} \in S^{n-1}.
+\end{equation*}
+
+The map $\Phi(x)=(r,x')$ is a continuous bijection from $\R^n\setminus\{ 0 \}$ to $(0,\infty)\times S^{n-1}$ whose continuous inverse is $\Phi^{-1}(r,x') = rx'$. Denote by $m_*$ the Borel measure on $(0,\infty) \times S^{n-1}$ induce by $\Phi$ from the Lebesgue measure on $\R^n$, that is 
+\begin{equation*}
+    m_*(E)  = m(\Phi^{-1}(E)).
+\end{equation*}
+Moreover, define the measure $\rho = \rho_n$ on $(0,\infty)$ by 
+\begin{equation*}
+    \rho(E) = \int_E r^{n-1} \,dr.
+\end{equation*}
+
+
+\begin{theorem}
+There is a unique Borel measure $\sigma = \sigma_{n-1}$ on $S^{n-1}$ such that $m_* = \rho\times \sigma$. If $f$ is Borel measurable on $\R^n$ and $f\geq 0$ or $f\in \lag^{1}(m)$, then 
+\begin{equation*}
+    \int_{\R^n}f(x)\,dx = \int^\infty_{0}\int_{S^{n-1}} f(rx')r^{n-1}\,d\sigma(x')\,dr.
+\end{equation*}
+\end{theorem}
+
+
+
+
+\section*{References}
+
+\noindent [1] Stein \& Shakarchi's \textit{Real Analysis}.\\
+\noindent [2] G. Folland's \textit{Real Analysis: Modern Techniques and Their Applications}.\\
+\noindent [3] Rudin's \textit{Principles of Mathematical Analysis}.
+
+
+
+
+
+
+	
+\end{document}
