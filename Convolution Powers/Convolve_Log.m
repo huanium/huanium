@@ -23,13 +23,14 @@ tic
  
 support_bound = 1000;
 sup = [];
-points = 14; % how many data points? ==> goes to 2^points convolutions 
+points = 13; % how many data points? ==> goes to 2^points convolutions 
 steps = 2:1:points; % start with Phi^(0) = Phi, end at Phi^(2^points-1)
 % muP = 1/2+1/4;
 % muP = 1/2 + 1/8;
 % muP = 1/2 + 1/2;
 % muP = 1/2 + 1/6;
-muP = 1/4 + 1/4;
+% muP = 1/4 + 1/4;
+muP = 1/2 + 1/2;
 % initialize Phi^(2)
 conv = fast_convolve(1, support_bound); % create Phi^(1) = Phi*Phi
 M = max(abs(conv) , [], 'all'); % find max;
@@ -55,7 +56,7 @@ hold on
 nY = 2*n.^(-muP);
 p2 = plot(log2(n), log2(nY), 'LineWidth', 2, 'Color', 'red')  % plot log instead
 hold off
-legend('log_2 f(n)', 'log_2(2n^{-1/2})', 'FontSize',14);
+legend('log_2 f(n)', 'log_2(n^{-1})', 'FontSize',14);
 
 
 
@@ -111,47 +112,59 @@ end
 function conv_power = fast_convolve(n_times, support_bound)
 
 
+% Phi = zeros(3,3);
+% shift = floor(3/2)+1;
+% Phi( 0+shift, 1+shift)  =  1/4;
+% Phi( 0+shift,-1+shift)  = 1/4;
+% Phi( 1+shift, 0+shift)  = 1/4;
+% Phi(-1+shift, 0+shift)  = 1/4;
+% 
+
+
+
+
 % simple Example with E = diag(1/4, 1/4).
 % no cross terms
 
-Phi = zeros(9,9);
-shift = floor(9/2)+1;
 
-Phi( 0+shift, 0+shift)  =  complex(93/128, -3/16);
-Phi( 1+shift, 0+shift)  = complex(7/64, 1/16);
-Phi(-1+shift, 0+shift)  = complex(7/64, 1/16);
-Phi( 2+shift, 0+shift)  = -complex(7/128, 1/64);
-Phi(-2+shift, 0+shift)  = -complex(7/128, 1/64);
-Phi( 3+shift, 0+shift)  = 1/64;
-Phi(-3+shift, 0+shift)  = 1/64;
-Phi( 4+shift, 0+shift)  = -1/512;
-Phi(-4+shift, 0+shift)  = -1/512;
-Phi( 0+shift, 1+shift)  = complex(7/64, 1/16);
-Phi(-0+shift,-1+shift)  = complex(7/64, 1/16);
-Phi( 0+shift, 2+shift)  = -complex(7/128, 1/64);
-Phi(-0+shift,-2+shift)  = -complex(7/128, 1/64);
-Phi( 0+shift, 3+shift)  = 1/64;
-Phi(-0+shift,-3+shift)  = 1/64;
-Phi( 0+shift, 4+shift)  = -1/512;
-Phi(-0+shift,-4+shift)  = -1/512;
-
-% % EXAMPLE 0 in the paper
-% Phi = zeros(5,5);
-% shift = floor(5/2)+1;
+% Phi = zeros(9,9);
+% shift = floor(9/2)+1;
 % 
-% Phi( 0+shift, 0+shift)  =  (1/192)*(144 - 64i);
-% Phi( 1+shift, 0+shift)  = (1/192)*(16 + 16i);
-% Phi(-1+shift, 0+shift)  = (1/192)*(16 + 16i);
-% Phi( 2+shift, 0+shift)  = -4*(1/192) ;
-% Phi(-2+shift, 0+shift)  = -4*(1/192)  ;    
-% Phi( 0+shift, 1+shift)  = (1/192)*(16+16i);
-% Phi( 0+shift,-1+shift)  = (1/192)*(16+16i);
-% Phi( 0+shift, 2+shift)  = -4*(1/192);
-% Phi( 0+shift,-2+shift)  = -4*(1/192);
-% Phi( -1+shift, -1+shift)  = (1/192)*1i;  
-% Phi( 1+shift, -1+shift)  = -(1/192)*1i;   
-% Phi( -1+shift, 1+shift)  = -(1/192)*1i;  
-% Phi( 1+shift, 1+shift)  = (1/192)*1i;  
+% Phi( 0+shift, 0+shift)  =  complex(93/128, -3/16);
+% Phi( 1+shift, 0+shift)  = complex(7/64, 1/16);
+% Phi(-1+shift, 0+shift)  = complex(7/64, 1/16);
+% Phi( 2+shift, 0+shift)  = -complex(7/128, 1/64);
+% Phi(-2+shift, 0+shift)  = -complex(7/128, 1/64);
+% Phi( 3+shift, 0+shift)  = 1/64;
+% Phi(-3+shift, 0+shift)  = 1/64;
+% Phi( 4+shift, 0+shift)  = -1/512;
+% Phi(-4+shift, 0+shift)  = -1/512;
+% Phi( 0+shift, 1+shift)  = complex(7/64, 1/16);
+% Phi(-0+shift,-1+shift)  = complex(7/64, 1/16);
+% Phi( 0+shift, 2+shift)  = -complex(7/128, 1/64);
+% Phi(-0+shift,-2+shift)  = -complex(7/128, 1/64);
+% Phi( 0+shift, 3+shift)  = 1/64;
+% Phi(-0+shift,-3+shift)  = 1/64;
+% Phi( 0+shift, 4+shift)  = -1/512;
+% Phi(-0+shift,-4+shift)  = -1/512;
+
+% EXAMPLE 0 in the paper
+Phi = zeros(5,5);
+shift = floor(5/2)+1;
+
+Phi( 0+shift, 0+shift)  =  (1/192)*(144 - 64i);
+Phi( 1+shift, 0+shift)  = (1/192)*(16 + 16i);
+Phi(-1+shift, 0+shift)  = (1/192)*(16 + 16i);
+Phi( 2+shift, 0+shift)  = -4*(1/192) ;
+Phi(-2+shift, 0+shift)  = -4*(1/192)  ;    
+Phi( 0+shift, 1+shift)  = (1/192)*(16+16i);
+Phi( 0+shift,-1+shift)  = (1/192)*(16+16i);
+Phi( 0+shift, 2+shift)  = -4*(1/192);
+Phi( 0+shift,-2+shift)  = -4*(1/192);
+Phi( -1+shift, -1+shift)  = (1/192)*1i;  
+Phi( 1+shift, -1+shift)  = -(1/192)*1i;   
+Phi( -1+shift, 1+shift)  = -(1/192)*1i;  
+Phi( 1+shift, 1+shift)  = (1/192)*1i;  
 
 
 % %%%%% EXAMPLE 1 in PAPER %%%%%%%%%%%

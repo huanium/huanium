@@ -33,6 +33,8 @@
 \usepackage{tensor}
 \usepackage{hyperref}
 \usepackage{xcolor}
+\captionsetup[figure]{labelformat=empty}% redefines the caption setup of the figures environment in the beamer class.
+
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\F}{\mathcal{F}}
@@ -89,7 +91,7 @@
  
  
 %Information to be included in the title page:
-\title[A generalized integration formula...]
+\title[Convolution powers...]
 {
 	Convolution powers
 	of complex-valued functions on $\mathbb{Z}^d$
@@ -97,7 +99,7 @@
 
 
 
-\author[Bui \& Randles] % (optional)
+\author[Huan Bui] % (optional)
 {Huan Q. Bui \\
 	$\,$\\
 	Advisor: Professor Evan Randles}
@@ -126,42 +128,53 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{The Classical Local Limit Theorem}
+
+
+
+
+
+
 \begin{frame}
-\frametitle{The Classical Local Limit Theorem}
+\frametitle{Random walk theory}
 
-Given iid random vectors $X_1, X_2, \dots \in \mathbb{Z}^d$ from a probability distribution $\phi$:
+\textcolor{purple}{\textbf{Problem:}} A random walker  takes a sequence of steps $X_1, X_2,\dots$ on $\mathbb{Z}^d$.\\
+
+
+Each $X_i$ is independent of previous steps and follows some distribution $\phi$. 
 \begin{equation*}
-\phi(x) = \mathbb{P}(X_i = x).
+\phi(x) = \mathbb{P}(X = x).
 \end{equation*}
 
 
-
-
-The random walk $S_n = X_1 + X_2 + \dots + X_n$ has distribution
-\begin{equation*}
-\phi^{(n)}(x)=\sum_{y\in\mathbb{Z}^d}\phi^{(n-1)}(x-y)\phi(y) = \phi^{(n-1)}\ast \phi^{(1)}.
-\end{equation*}
-
-\textbf{How does $\phi^{(n)}$ behave when $n\to \infty$?}
+\fbox{?} What is the distribution which $S_n = X_1 + X_2 + \dots + X_n$ follows?
+\begin{align*}
+S_1  &\quad\text{follows}\quad \phi(x)\\
+S_2  &\quad \text{follows} \quad \phi^{(2)}(x)= \sum_{y\in \mathbb{Z}^d} \phi(y)\phi(x-y)\\
+\vdots &\\
+S_n &\quad \text{follows} \quad \phi^{(n)}(x) = \sum_{y\in \mathbb{Z}^d}\phi^{(n-1)}(y) \phi (x-y)
+\end{align*}
+\pause
+\centering\textcolor{purple}{\fbox{\textbf{How does $\phi^{(n)}$ behave as $n\to \infty$?}}}
 
 \end{frame}
 
 
 
 
+
+
 \begin{frame}
-%\frametitle{The Classical Local Limit Theorem}
+\frametitle{Random walk theory}
 \noindent \underline{Example:} Simple random walk in $\mathbb{Z}^2$
 
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[width=0.8\textwidth]{convolve_1.eps}
+		\includegraphics[width=0.75\textwidth]{convolve_1.eps}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[width=0.8\textwidth]{convolve_2.eps}
+		\includegraphics[width=0.75\textwidth]{convolve_2.eps}
 	\end{subfigure}
 \end{figure}
 \vspace{-15pt}
@@ -175,53 +188,106 @@ The random walk $S_n = X_1 + X_2 + \dots + X_n$ has distribution
 		\includegraphics[width=0.8\textwidth]{convolve_22.eps}
 	\end{subfigure}
 \end{figure}
+\end{frame}
 
+
+
+
+\begin{frame}
+\frametitle{Random walk theory}
+\noindent \underline{Example:} Simple random walk in $\mathbb{Z}^2$.
+
+\begin{equation*}
+f(n) = \max_{\mathbb{Z}^d}\, \phi^{(n)} \quad \text{decays like} \quad 1/n
+\end{equation*}
+
+\vspace{-15pt}
+\begin{figure}[!htb]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{SRW_ex_11.eps}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{SRW_ex.eps}
+	\end{subfigure}
+\end{figure}
 
 \end{frame}
+
+
+
+%\begin{frame}
+%\frametitle{The Classical Local Limit Theorem}
+%
+%Given iid random vectors $X_1, X_2, \dots \in \mathbb{Z}^d$ from a probability distribution $\phi$:
+%\begin{equation*}
+%\phi(x) = \mathbb{P}(X_i = x).
+%\end{equation*}
+%The random walk $S_n = X_1 + X_2 + \dots + X_n$ has distribution
+%\begin{equation*}
+%\phi^{(n)}(x)=\sum_{y\in\mathbb{Z}^d}\phi^{(n-1)}(x-y)\phi(y) = \phi^{(n-1)}\ast \phi^{(1)}.
+%\end{equation*}
+%
+%\textbf{How does $\phi^{(n)}$ behave when $n\to \infty$?}
+%
+%\end{frame}
 
 
 
 
 
 \begin{frame}
-\frametitle{The Classical Local Limit Theorem}
-\includegraphics[scale=0.025]{nutshell} If $\phi$ is a ``nice'' probability distribution on $\mathbb{Z}^d$ with finite variance then 
-%\pause 
+\frametitle{Random walk theory}
+\includegraphics[scale=0.025]{nutshell} If $\phi$ is a ``nice'' probability distribution on $\mathbb{Z}^d$ then\\
+
+
+\pause 
+
+
 \begin{itemize}
-	\item Global decay: There are positive constants $C_1, C_2$ for which 
+	\item \textbf{Global decay:} There are positive constants $C_1, C_2$ for which 
 	\begin{equation*}
 	C_1 n^{-d/2} \leq \| \phi^{(n)} \|_\infty \leq C_2n^{-d/2}, \quad \forall n\in \mathbb{N}_+.
 	\end{equation*}
-	%\pause
 	
 	
-	\item Local description for large $n$:
+	
+	\pause
+	\item \textbf{Local description} for large $n$ (\textcolor{blue}{like CLT!}):
 	\begin{equation*}
-	\phi^{(n)}(x) = n^{-d/2} \Phi_\phi \lp x n^{-d/2} \rp + o\lp n^{-d/2} \rp, \quad \text{	uniformly for } x\in \mathbb{Z}^d
+	\phi^{(n)}(x) = \frac{1}{n^{d/2}} \Phi_\phi \lp \frac{x}{\sqrt{n}} \rp + o\lp \frac{1}{n^{d/2}} \rp, \quad \text{	uniformly for } x\in \mathbb{Z}^d
 	\end{equation*}
 	where $\Phi_\phi$ is the generalized Gaussian associated with $\phi$. 
-	%\pause
 	
-	\item Global estimate: There are positive constants $C$ and $M$ for which
-	\begin{equation*}
-	\phi^{(n)}(x) \leq \frac{C}{n^{d/2}} \exp \lp -\frac{M\abs{x}^2}{n} \rp, \quad \forall x\in \mathbb{Z}^d, n\in \mathbb{N}_+
-	\end{equation*}
 	
+%	\pause
+%	\item \textbf{Global estimate:} There are positive constants $C$ and $M$ for which
+%	\begin{equation*}
+%	\phi^{(n)}(x) \leq \frac{C}{n^{d/2}} \exp \lp -\frac{M\abs{x}^2}{n} \rp, \quad \forall x\in \mathbb{Z}^d, n\in \mathbb{N}_+
+%	\end{equation*}
+%	
 \end{itemize}
 \end{frame}
 
 
 
-\section{Beyond the Classical LLT}
-\begin{frame}
-\frametitle{Beyond the Classical LLT}
-\textbf{What if positivity is dropped?}\\
-$\,$\\
 
-Consider $\phi: \mathbb{Z}^d \to \mathbb{C}$ and define 
+\begin{frame}
+\frametitle{Beyond probability theory}
+
+
+\begin{center}
+	\textcolor{blue}{\fbox{\textbf{What if positivity is dropped?}}}\\
+\end{center}
+
+
+
+Consider $\phi: \mathbb{Z}^d \to \mathbb{C}$ and define $\phi^{(n)}$ as before
 
 \begin{equation*}
-\phi^{(n)}(x)=\sum_{y\in\mathbb{Z}^d}\phi^{(n-1)}(x-y)\phi(y) = \phi^{(n-1)}\ast \phi^{(1)}.
+\phi^{(n)}(x)=\sum_{y\in\mathbb{Z}^d}\phi^{(n-1)}(x-y)\phi(y).
 \end{equation*}
 
 %
@@ -234,7 +300,6 @@ About the asymptotic behavior of $\phi^{(n)}$ as $n\to \infty$, can we still ask
 \begin{itemize}
 	\item A global decay?
 	\item A local description?
-	\item A global estimate?
 \end{itemize}
 
 
@@ -262,11 +327,11 @@ About the asymptotic behavior of $\phi^{(n)}$ as $n\to \infty$, can we still ask
 
 
 \begin{frame}
-\frametitle{Beyond the Classical LLT}
+\frametitle{Beyond probability theory}
 
 
 
-\underline{Example}:
+\underline{Example}: Consider $\phi: \mathbb{Z}^2 \to \mathbb{C}$ given by
 
 \begin{equation*}
 \phi(x,y) =
@@ -286,7 +351,7 @@ i   &(x,y) = \pm(1,1)\\
 
 
 \begin{frame}
-\frametitle{Beyond the Classical LLT}
+\frametitle{Beyond probability theory}
 
 
 \begin{figure}[!htb]
@@ -306,65 +371,62 @@ i   &(x,y) = \pm(1,1)\\
 
 
 \begin{frame}
-\frametitle{Beyond the Classical LLT}
+\frametitle{Beyond probability theory}
+
+\begin{equation*}
+f(n) = \max|\phi^{(n)}|
+\end{equation*}
+
+
 
 \begin{figure}[!htb]
-	\begin{subfigure}{0.495\textwidth}
+	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{Abs_400.eps}
+		\includegraphics[width=\textwidth]{decay_11.eps}
 	\end{subfigure}
-	\begin{subfigure}{0.495\textwidth}
+	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{Abs_1500.eps}
+		\includegraphics[width=\textwidth]{decay_1.eps}
 	\end{subfigure}
 \end{figure}
-
-
 
 \end{frame}
 
 
 
-%\begin{frame}
-%\frametitle{Beyond the Classical LLT}
-%
-%\underline{Example:} Look at $\phi^{(n)}$ for 
-%\begin{equation*}
-%\phi(x,y) = 
-%\frac{1}{768}\times
-%\begin{cases}
-%602 - 112i &(x,y) = (0,0)\\
-%56 + 32i   &(x,y) = (-1,0)\\
-%72 + 32i   &(x,y) = (1,0)\\
-%-16        &(x,y) = (\pm 2,0)\\
-%56 + 32i   &(x,y) = (0,\pm 1)\\
-%-28 - 8i   &(x,y) = (0,\pm 2)\\
-%56         &(x,y) = (0,\pm 3)\\
-%-1         &(x,y) = (0,\pm 4)\\
-%4          &(x,y) = (-1,\pm 1)\\
-%-4         &(x,y) = (1,\pm 1)\\
-%0          &\text{otherwise}.
-%\end{cases}
-%\end{equation*}
-%\end{frame}
+
 
 
 
 \begin{frame}
-\frametitle{Beyond the Classical LLT}
+\frametitle{Beyond probability theory}
 
 A different $\phi$ gives a completely different behavior.
 
 \begin{figure}
-\begin{subfigure}{0.495\textwidth}
+\begin{subfigure}{0.38\textwidth}
 	\centering
 	\includegraphics[width=\textwidth]{conv_ex0.eps}
 \end{subfigure}
-\begin{subfigure}{0.495\textwidth}
+\begin{subfigure}{0.38\textwidth}
 	\centering
 	\includegraphics[width=\textwidth]{conv_ex1.eps}
 \end{subfigure}
 \end{figure}
+\vspace{-19pt}
+
+
+\begin{figure}[!htb]
+	\begin{subfigure}{0.42\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{decay_22.eps}
+	\end{subfigure}
+	\begin{subfigure}{0.42\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{decay_2.eps}
+	\end{subfigure}
+\end{figure}
+
 \end{frame}
 
 
@@ -377,14 +439,17 @@ A different $\phi$ gives a completely different behavior.
 
 
 \begin{frame}
-\frametitle{Beyond the Classical LLT}
-\textbf{What if positivity is dropped?}\\
-$\,$\\
+\frametitle{Beyond probability theory}
+\begin{center}
+	\textcolor{blue}{\fbox{\textbf{What if positivity is dropped?}}}\\
+\end{center}
 
-Consider $\phi: \mathbb{Z}^d \to \mathbb{C}$ and define 
+
+
+Consider $\phi: \mathbb{Z}^d \to \mathbb{C}$ and define $\phi^{(n)}$ as before
 
 \begin{equation*}
-\phi^{(n)}(x)=\sum_{y\in\mathbb{Z}^d}\phi^{(n-1)}(x-y)\phi(y) = \phi^{(n-1)}\ast \phi^{(1)}.
+\phi^{(n)}(x)=\sum_{y\in\mathbb{Z}^d}\phi^{(n-1)}(x-y)\phi(y).
 \end{equation*}
 
 %
@@ -395,18 +460,11 @@ Consider $\phi: \mathbb{Z}^d \to \mathbb{C}$ and define
 
 About the asymptotic behavior of $\phi^{(n)}$ as $n\to \infty$, can we still ask for
 \begin{itemize}
-	\item \textcolor{purple}{\textbf{A global decay? $\impliedby$}} 
+	\item \textcolor{purple}{\textbf{A global decay? $\impliedby$} Focus of Bui and Randles (2021)} 
 	\item A local description?
-	\item A global estimate?
 \end{itemize}
 
 
-
-\pause
-
-\centering{\textbf{\textcolor{purple}{HOW?}}}
-
-
 \end{frame}
 
 
@@ -419,35 +477,48 @@ About the asymptotic behavior of $\phi^{(n)}$ as $n\to \infty$, can we still ask
 \frametitle{Global decay estimate for $\abs{\phi^{(n)}}$}
 
 
-
-\begin{center}
-\fbox{{{FT\{$\phi^{(n)}$\} = (FT\{$\phi$\})$^n$}}}
-\end{center}
-$\,$\\
-
-
-Define the Fourier transform for $\phi$ in $\mathcal{S}_d$:
+Define the Fourier transform for\footnote{\tiny{Actually, we take $\phi\in \mathcal{S}_d$ -- a discrete analogue of the Schwartz class.}} $\phi: \mathbb{Z}^d \to \mathbb{C}$
 \begin{equation*}
 \widehat{\phi}(\xi)=\sum_{x\in\mathbb{Z}^d}\phi(x)e^{ix\cdot\xi}
 \end{equation*}
-$\,$\\
-The asymptotic behavior of $\phi^{(n)}$ is characterized by how $\widehat{\phi}$ behaves near where $|\widehat{\phi}|$ is maximized:
+
+\textcolor{purple}{
+\begin{center}
+\fbox{{{FT\{$\phi^{(n)}$\} = (FT\{$\phi$\})$^n$}}}
+\end{center}}
+
+
+
+The asymptotic behavior of $\phi^{(n)}$ is characterized by how $\widehat{\phi}$ behaves near where $|\widehat{\phi}|$ is maximized.
 
 \begin{equation*}
-\Omega(\phi)=\left\{\xi\in \mathbb{T}^d:\abs{\widehat{\phi}(\xi)}=1\right\}, \quad \mathbb{T}^d=(-\pi,\pi]^d
+\Omega(\phi)=\left\{\xi\in \mathbb{T}^d:\abs{\widehat{\phi}(\xi)} \text{ is maximized}\right\}, \quad \mathbb{T}^d=(-\pi,\pi]^d
 \end{equation*}
-
-
 \end{frame}
 
 
 
 \begin{frame}
 \frametitle{Global decay estimate for $\abs{\phi^{(n)}}$}
-For each $\xi_0\in \Omega(\phi)$, look at $\widehat{\phi}$ near $\xi_0$...
-\begin{equation*}
-\widehat{\phi}(\xi+\xi_0) = \widehat{\phi}(\xi_0) e^{\Gamma_{\xi_0}(\xi)}
-\end{equation*}
+
+
+\begin{columns}
+	\column{0.56\linewidth}
+	\centering
+	For each $\xi_0\in \Omega(\phi)$, look at $\widehat{\phi}$ near $\xi_0$...
+	\begin{equation*}
+	\widehat{\phi}(\xi+\xi_0) = \widehat{\phi}(\xi_0) e^{\Gamma_{\xi_0}(\xi)}
+	\end{equation*}
+	\column{0.4\linewidth}
+	\begin{figure}
+		\includegraphics[scale=0.30]{d_dim_ex_1}
+		\caption{\textcolor{purple}{A $|\widehat{\phi}|$ on $\mathbb{T}^2$}}
+	\end{figure}
+\end{columns} 
+\vspace{-15pt}
+
+
+
 
 %\pause
 %Rearrange...
@@ -460,26 +531,33 @@ For each $\xi_0\in \Omega(\phi)$, look at $\widehat{\phi}$ near $\xi_0$...
 
 
 %\pause
-\begin{center}
-	\textbf{\textcolor{purple}{Need info about $Q,R$ to find a global estimate. Why?}}
-\end{center}
+%\begin{center}
+%	\textbf{\textcolor{purple}{Need info about $Q,R$ to find a global estimate. Why?}}
+%\end{center}
+%
 
 
+\pause
 
-
-
-\includegraphics[scale=0.06]{key}$\,\,\,$ Recall $\widehat{\phi^{(n)}} = \widehat{\phi}^{n}$. So, $\phi^{(n)} = \text{FT}^{-1}\left\{ \widehat{\phi}^{n}  \right\} \sim \text{FT}^{-1}\left\{ e^{n\Gamma_{\xi_0}(\xi)} \right\}$.\\
+Recall $\widehat{\phi^{(n)}} = \widehat{\phi}^{n}$. So, $\phi^{(n)}  \sim \text{FT}^{-1}\left\{ e^{n\Gamma_{\xi_0}(\xi)} \right\}$.\\
 $\,$\\
 
 
 
-\textcolor{blue}{$\implies$ The structure of $\Gamma$ determines the asymptotic behavior of $\widehat{\phi}$} \\
+\textcolor{blue}{\textbf{$\implies$ The structure of $\Gamma$ determines the asymptotic behavior of ${\phi}^{(n)}$.}} \\
+$\,$\\
 
-Taylor expand $\Gamma_{\xi_0}$...
+
+
+\pause
+
+
+So, Taylor expand $\Gamma_{\xi_0}$...
 \begin{equation*}
-\Gamma_{\xi_0}(\xi)=i\alpha_{\xi_0}\cdot\xi -iQ_{\xi_0}(\xi)  -R_{\xi_0}(\xi) + \text{ h.o.t.}, \quad Q_{\xi_0}, R_{\xi_0} \text{ real polynomials}
+\Gamma_{\xi_0}(\xi)=i\alpha_{\xi_0}\cdot\xi -P_{\xi_0}(\xi) + \text{ h.o.t.}, \quad P_{\xi_0} \text{ a polynomial.}
 \end{equation*}
 
+\textcolor{olive}{\textbf{The nature of this expansion is characterizing.}}
 
 
 \end{frame}
@@ -494,7 +572,7 @@ Taylor expand $\Gamma_{\xi_0}$...
 \begin{frame}
 \frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $1$ dimension}
 
-\underline{In $1$ dimension}:\\
+\underline{In $1$ dimension}: 2 types\\
 $\,$\\
 
 $\xi_0$ is of \textbf{positive homogeneous type} if
@@ -504,14 +582,16 @@ $\xi_0$ is of \textbf{positive homogeneous type} if
 $\implies$ $\phi^{(n)}$ is easy to estimate.\\
 $\,$\\
 
+
+\pause
 $\xi_0$ is of \textbf{imaginary homogeneous type} if
 \begin{equation*}
-\Gamma_{\xi_0}(\xi) = i\alpha_{\xi_0} \xi - i\xi^mp(\xi) - \gamma \xi^k   + \text{ h.o.t.},  
+\Gamma_{\xi_0}(\xi) = i\alpha_{\xi_0} \xi - i\beta\xi^m   + \text{ h.o.t.},  \quad \beta\in \mathbb{R}\setminus\{0\}
 \end{equation*}
 
 $\implies$ $\widehat{\phi}^n$ is highly oscillatory. $\phi^{(n)}$ is more difficult to estimate.\\
 $\,$\\
-\underline{Remark}: In $d=1$, these two types are collectively exhaustive for f.s. $\phi$'s.
+$\bullet$ \textcolor{blue}{These types are collectively exhaustive for f.s. $\phi$'s (Thom\'{e}e -- 1965)}
 \end{frame}
 
 
@@ -527,16 +607,16 @@ $\,$\\
 
 
 \begin{center}
-	\textbf{\textcolor{purple}{\cite{randles_convolution_2015} has completely solved the $1$-dimensional problem. }  }
+	\textbf{\textcolor{purple}{Randles \& Saloff-Coste sorted out the $1$-dimensional problem. }  }
 \end{center}
 
 
-\begin{theorem}[Global decay estimate, Theorem 1.1 of \cite{randles_convolution_2015}]
+\begin{theorem}[Global decay estimate, Randles \& Saloff-Coste -- 2015\nocite{randles_convolution_2015}]
 	Let $\phi : \mathbb{Z} \to \mathbb{C}$ be finitely supported and whose support contains more than one point. Then there is $\mathbb{N} \ni m \geq 2$, and $A$, $C$, $C' > 0$ such that 
 	\begin{equation*}
-	Cn^{-1/m} \leq A^{-n}\| \phi^{(n)} \|_\infty \leq C' n^{-1/m}, \quad \forall n\in \mathbb{N}
+	Cn^{-1/m} \leq A^{-n}\| \phi^{(n)} \|_\infty \leq C' n^{-1/m}, \quad \forall n\in \mathbb{N}.
 	\end{equation*}
-	Here, $A=\sup|\widehat{\phi}(\xi)|$.
+	Here, $A=\max|\widehat{\phi}(\xi)|$.
 \end{theorem}
 
 
@@ -548,7 +628,7 @@ $\,$\\
 \begin{frame}
 \frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $1$ dimension}
 
-\underline{Example}: $\phi:\mathbb{Z} \to \mathbb{C}$ defined below. $\sup | \phi^{(n)} |$ decays like $n^{-1/2}$.
+\underline{Example}: $\phi:\mathbb{Z} \to \mathbb{C}$ defined below. $\| \phi^{(n)} \|_\infty$ decays like $n^{-1/2}$.
 \begin{align*}
 \phi(0) = \frac{5-2i}{8} \quad \phi(\pm 1) = \frac{2+i}{8} \quad \phi(\pm 2) = -\frac{1}{16} \quad \phi = 0 \text{ otherwise.}
 \end{align*}
@@ -567,10 +647,10 @@ $\,$\\
 \begin{frame}
 \frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $1$ dimension}
 
-How to generalize to $d$ dimensions?\\ $\implies$ Need \textbf{positive homogeneous functions}\\
+How to generalize to $d$ dimensions?\\ $\implies$ Need \textbf{\textcolor{blue}{positive homogeneous functions}}\\
 $\,$\\
 \begin{definition}
-	Let $P:\mathbb{R}^d\to\mathbb{R}$ be continuous, positive definite, and $E\in \text{Gl}(\mathbb{R}^d)$ s.t. $P(r^E \eta) = rP(\eta)$. If $S = \{ \eta \in \mathbb{R}^d : P(\eta) = 1 \}$ is compact then we say that $P$ is\textbf{ positive homogeneous}*.\\
+	Let $P:\mathbb{R}^d\to\mathbb{R}$ be continuous, positive definite, and $d\times d$ matrix $E$ s.t. $$P(r^E \eta) = rP(\eta), \quad r>0,\,\,\eta\in\mathbb{R}^d.$$ If $S \coloneqq \{ \eta \in \mathbb{R}^d : P(\eta) = 1 \}$ is compact, then we say that $P$ is\textbf{ positive homogeneous}*.\\
 	$\,$\\
 	
 	\scriptsize{(*) see equivalent definitions in \cite{bui2021generalized}}
@@ -583,7 +663,7 @@ $\,$\\
 
 
 \begin{frame}
-\frametitle{\frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $1$ dimension}}
+\frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $1$ dimension}
 
 \underline{Examples}:
 \begin{figure}
@@ -611,25 +691,25 @@ $\,$\\
 
 
 
-\begin{frame}
-\frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $1$ dimension}
-
-\underline{Examples}: $S$ doesn't have to be smooth
-\begin{figure}
-	\centering
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=0.9\textwidth]{Fig2c.eps}
-		\caption{$Q(x,y) = \sqrt{x^2+y^2}$}
-	\end{subfigure}
-	\hspace{-30pt}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=0.9\textwidth]{Fig2a.eps}
-		\caption{$P(\xi) = Q(\xi) \times \text{Weierstrass}(\xi)$}
-	\end{subfigure}
-\end{figure}
-\end{frame}
+%\begin{frame}
+%\frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $1$ dimension}
+%
+%\underline{Examples}: $P$ doesn't have to be smooth
+%\begin{figure}
+%	\centering
+%	\begin{subfigure}{0.49\textwidth}
+%		\centering
+%		\includegraphics[width=0.9\textwidth]{Fig2c.eps}
+%		\caption{$Q(x,y) = \sqrt{x^2+y^2}$}
+%	\end{subfigure}
+%	\hspace{-30pt}
+%	\begin{subfigure}{0.49\textwidth}
+%		\centering
+%		\includegraphics[width=0.9\textwidth]{Fig2a.eps}
+%		\caption{$P(\xi) = Q(\xi) \times \text{Weierstrass}(\xi)$}
+%	\end{subfigure}
+%\end{figure}
+%\end{frame}
 
 
 
@@ -644,14 +724,15 @@ $\xi_0$ is of \textbf{positive homogeneous type} if
 \begin{equation*}
 \Gamma_{\xi_0}(\xi) = i\alpha_{\xi_0}\cdot\xi - P_{\xi_0}(\xi) + \text{ h.o.t.}
 \end{equation*}
-where $P_{\xi_0}(\xi)$ is a positive homogeneous \textit{polynomial}\\
-$\,$\\
 
 
 $\xi_0$ is of \textbf{imaginary homogeneous type} if
 \begin{equation*}
-\Gamma_{\xi_0}(\xi) \sim i\alpha_{\xi_0}\cdot \xi - iP_{\xi_0}(\xi)  + \text{ h.o.t.}
+\Gamma_{\xi_0}(\xi) = i\alpha_{\xi_0}\cdot \xi - iP_{\xi_0}(\xi)  + \text{ h.o.t.}
 \end{equation*}
+where $P_{\xi_0}(\xi)$ is a positive homogeneous \textit{polynomial}.
+
+
 \end{frame}
 
 
@@ -673,19 +754,19 @@ $\xi_0$ is of \textbf{imaginary homogeneous type} if
 
 
 \begin{center}
-	\textbf{\textcolor{purple}{\cite{randles_convolution_2017} has partially solved the $d$-dimensional problem. }  }
+	\textbf{\textcolor{purple}{A partial answer in $d$ dimensions is due to Randles \& Saloff-Coste. }  }
 \end{center}
 
 
-\begin{theorem}[Global decay estimate, Theorem 1.4 of \cite{randles_convolution_2017}]\label{thm:d}
-	Let $\phi \in \mathcal{S}_d$ be such that $\sup | \widehat{\phi}(\xi)| = 1$ and suppose that each $\xi \in \Omega(\phi)$ is of \textbf{positive homogeneous type} for $\widehat{\phi}$. There are $\mu_\phi$, $C$, $C' >0$ for which 
+\begin{theorem}[Global decay estimate, Randles \& Saloff-Coste -- 2017\nocite{randles_convolution_2017}]\label{thm:d}
+	Let $\phi \in \mathcal{S}_d$ be such that $\sup | \widehat{\phi}| = 1$ and suppose that each $\xi_0 \in \Omega(\phi)$ is of \textbf{positive homogeneous type}. There are $\mu_\phi$, $C$, $C' >0$ for which 
 	\begin{equation*}
-	C'n^{-\mu_\phi} \leq \| \phi^{(n)} \|_\infty \leq C n^{-\mu_\phi}, \quad \forall n\in \mathbb{N}
+	C'n^{-\mu_\phi} \leq \| \phi^{(n)} \|_\infty \leq C n^{-\mu_\phi}, \quad \forall n\in \mathbb{N}_+.
 	\end{equation*}
 \end{theorem}
 $\,$\\
 
-\centering\textcolor{blue}{\textbf{We now extend this to $\xi$ of imaginary homogeneous type.}}
+\centering\textcolor{blue}{\textbf{We extend this to include points of imaginary homogeneous type.}}
 
 
 \end{frame}
@@ -700,12 +781,12 @@ $\,$\\
 
 
 
-\begin{theorem}[Theorem 3.2 of \cite{bui2021generalized}]\label{thm:ConvolutionPowerEstimate}
+\begin{theorem}[B, Randles -- 2021]
+	\label{thm:ConvolutionPowerEstimate}
 	Let $\phi\in\mathcal{S}_d$ be such that $\sup |\widehat{\phi}|=1$ and suppose that each $\xi_0\in\Omega(\phi)$ is of positive homogeneous or imaginary homogeneous type* for $\widehat{\phi}$. Then, for any compact set $K$, there are $C_K, \mu_\phi>0$ for which**
 	\begin{equation*}
-	\left|\phi^{(n)}(x)\right|\leq\frac{C_K}{n^{\mu_\phi}}
+	\left|\phi^{(n)}(x)\right|\leq C_K n^{-\mu_\phi}, \quad \forall x\in K,\,n\in\mathbb{N}_+.
 	\end{equation*}
-	for all $x\in K$ and $n\in\mathbb{N}_+$.\\
 	$\,$\\
 	
 	\scriptsize{(*) and some additional conditions}\\
@@ -723,36 +804,17 @@ $\,$\\
 
 
 
+
+
+
+
+
+
+
 \begin{frame}
 \frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $d$ dimensions}
 
 \underline{Example}: From earlier...
-
-\begin{equation*}
-\phi(x,y) = 
-\frac{1}{768}\times
-\begin{cases}
-602 - 112i &(x,y) = (0,0)\\
-56 + 32i   &(x,y) = (0,\pm 1)\mbox{ or }(-1,0)\\
-72 + 32i   &(x,y) = (1,0)\\
--28 - 8i   &(x,y) = (0,\pm 2)\\
--16        &(x,y) = (\pm 2,0)\\
-56         &(x,y) = (0,\pm 3)\\
--1         &(x,y) = (0,\pm 4)\\
-4          &(x,y) = (-1,\pm 1)\\
--4         &(x,y) = (1,\pm 1)\\
-0          &\text{otherwise}.
-\end{cases}
-\end{equation*}
-
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $d$ dimensions}
-
-
 
 \begin{figure}
 	\begin{subfigure}{0.495\textwidth}
@@ -787,7 +849,7 @@ $\,$\\
 	\Gamma_{0}(\xi)=-i\left(\frac{\tau^2}{24}-\frac{\tau\zeta^2}{96} +\frac{ \zeta^4}{96}\right) + \text{ h.o.t.}
 	\end{equation*}
 	
-	\item $\mu_\phi = 1/2 + 1/4 = 3/4$
+	\item $\mu_\phi = 3/4$
 \end{itemize}
 \end{frame}
 
@@ -797,7 +859,7 @@ $\,$\\
 \begin{frame}
 \frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $d$ dimensions}
 
-Let $K = [-300,300]\times[-300,300]$ and pick $C=2$.  
+Let $K = [-300,300]\times[-300,300]$ and with $C=2$,
 \begin{equation*}
 f(n)\coloneqq\max_{K}\abs{\phi^{(n)}}\leq 2n^{-\mu_\phi}= 2n^{-3/4}
 \end{equation*}
@@ -807,12 +869,12 @@ f(n)\coloneqq\max_{K}\abs{\phi^{(n)}}\leq 2n^{-\mu_\phi}= 2n^{-3/4}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{Fig7a.eps}
-		\caption{$\log_2 f(n)$, $\log_2 2n^{-3/4}$ vs $\log_2 n$.}
+		%\caption{$\log_2 f(n)$, $\log_2 2n^{-3/4}$ vs $\log_2 n$.}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{Fig7b.eps}
-		\caption{$f(n)$, $2n^{-3/4}$ vs. $n$}
+		%\caption{$f(n)$, $2n^{-3/4}$ vs. $n$}
 	\end{subfigure}
 	\label{fig:Conv_Pwr_2}
 \end{figure}
@@ -824,56 +886,56 @@ f(n)\coloneqq\max_{K}\abs{\phi^{(n)}}\leq 2n^{-\mu_\phi}= 2n^{-3/4}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+%\begin{frame}
+%\frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $d$ dimensions}
+%
+%\underline{Example}:  $\phi: \mathbb{Z}^2 \to \mathbb{C}$ defined by $\phi=2^{-7}\phi_1-i2^{-11}\phi_2+2^{-21}\phi_3$ where
+%
+%\scriptsize
+%\begin{equation*}
+%\phi_1(x,y)=\begin{cases}
+%15 + 15i &(x,y) = (\pm 1,0)\\
+%16 + 16i &(x,y) = (0, \pm 1)\\
+%1 + 1i &(x,y) = (\pm 3,0)\\
+%0 &\mbox{otherwise}
+%\end{cases},
+%\quad
+%\phi_2(x,y) = 
+%\begin{cases}
+%682 &(x,y) = (0,0)\\
+%152  &(x,y) = (\pm 2,0)\\
+%-28  &(x,y) = (\pm 4,0)\\
+%8 &(x,y) = (\pm 6, 0)\\
+%-1 &(x,y) = (\pm 8, 0)\\
+%60  &(x,y) = (0, \pm 2)\\
+%-24 &(x,y) = (0,\pm 4)\\
+%4 &(x,y) = (0,\pm 6)\\
+%0 &\mbox{otherwise}
+%\end{cases},
+%\end{equation*}
+%\begin{equation*}
+%\phi_3(x,y) = 
+%\begin{cases}
+%1387004 &(x,y) = (0,0)\\
+%-106722 &(x,y) = (\pm 2,0)\\
+%3960 &(x,y) = (\pm 4,0)\\
+%-1045 &(x,y) = (\pm 6, 0)\\
+%138  &(x,y) = (\pm 8, 0)\\
+%-9 &(x,y) = (\pm 10, 0)\\
+%-131072 &(x,y) = (0, \pm 2)\\
+%0 &\mbox{otherwise}
+%\end{cases}
+%\end{equation*}
+%
+%
+%
+%\end{frame}
+
+
+
 \begin{frame}
 \frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $d$ dimensions}
-
-\underline{Example}:  $\phi: \mathbb{Z}^2 \to \mathbb{C}$ defined by $\phi=2^{-7}\phi_1-i2^{-11}\phi_2+2^{-21}\phi_3$ where
-
-\scriptsize
-\begin{equation*}
-\phi_1(x,y)=\begin{cases}
-15 + 15i &(x,y) = (\pm 1,0)\\
-16 + 16i &(x,y) = (0, \pm 1)\\
-1 + 1i &(x,y) = (\pm 3,0)\\
-0 &\mbox{otherwise}
-\end{cases},
-\quad
-\phi_2(x,y) = 
-\begin{cases}
-682 &(x,y) = (0,0)\\
-152  &(x,y) = (\pm 2,0)\\
--28  &(x,y) = (\pm 4,0)\\
-8 &(x,y) = (\pm 6, 0)\\
--1 &(x,y) = (\pm 8, 0)\\
-60  &(x,y) = (0, \pm 2)\\
--24 &(x,y) = (0,\pm 4)\\
-4 &(x,y) = (0,\pm 6)\\
-0 &\mbox{otherwise}
-\end{cases},
-\end{equation*}
-\begin{equation*}
-\phi_3(x,y) = 
-\begin{cases}
-1387004 &(x,y) = (0,0)\\
--106722 &(x,y) = (\pm 2,0)\\
-3960 &(x,y) = (\pm 4,0)\\
--1045 &(x,y) = (\pm 6, 0)\\
-138  &(x,y) = (\pm 8, 0)\\
--9 &(x,y) = (\pm 10, 0)\\
--131072 &(x,y) = (0, \pm 2)\\
-0 &\mbox{otherwise}
-\end{cases}
-\end{equation*}
-
-
-
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $d$ dimensions}
-
+\underline{Example}: $\Omega$ has more than one point...
 
 
 \begin{figure}
@@ -902,13 +964,14 @@ f(n)\coloneqq\max_{K}\abs{\phi^{(n)}}\leq 2n^{-\mu_\phi}= 2n^{-3/4}
 \includegraphics[scale=0.4]{d_dim_ex_2}
 \caption{$|\widehat{\phi}|$ on $(-\pi, \pi] \times (-\pi, \pi]$}
 \end{figure}
+\vspace{-10pt}
 \begin{itemize}
 \item $\sup|\widehat{\phi}| = 1$ and $\Omega(\phi)= \{\xi_0,\xi_1 \}  = \{ (0,0), (\pi,\pi) \} $
 \begin{equation*}
 \Gamma_{0}(\xi)=-i\left(\frac{\tau^6}{128}+\frac{\zeta^2}{8}\right) + \dots \qquad \Gamma_{1}(\xi)= +i\left(\frac{3\tau^2}{8}+\frac{\zeta^2}{4}\right) + \dots
 \end{equation*}
 
-\item $\mu_\phi = \min\{1/6+1/2, 1/2+1/2\} = \min\{2/3,1\}=  2/3$
+\item $\mu_\phi = 2/3$
 \end{itemize}
 \end{frame}
 
@@ -918,7 +981,7 @@ f(n)\coloneqq\max_{K}\abs{\phi^{(n)}}\leq 2n^{-\mu_\phi}= 2n^{-3/4}
 \begin{frame}
 \frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: In $d$ dimensions}
 
-Let $K = [-500,500]\times[-500,500]$ and pick $C=1$.  
+Let $K = [-500,500]\times[-500,500]$ and with $C=1$,
 \begin{equation*}
 f(n)\coloneqq\max_{K}\abs{\phi^{(n)}}\leq n^{-\mu_\phi}= n^{-2/3}
 \end{equation*}
@@ -927,12 +990,12 @@ f(n)\coloneqq\max_{K}\abs{\phi^{(n)}}\leq n^{-\mu_\phi}= n^{-2/3}
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Fig9a.eps}
-\caption{$\log_2 f(n)$, $\log_2 n^{-2/3}$ vs $\log_2 n$.}
+%\caption{$\log_2 f(n)$, $\log_2 n^{-2/3}$ vs $\log_2 n$.}
 \end{subfigure}
 \begin{subfigure}{0.49\textwidth}
 \centering
 \includegraphics[width=\textwidth]{Fig9b.eps}
-\caption{$f(n)$, $n^{-2/3}$ vs. $n$}
+%\caption{$f(n)$, $n^{-2/3}$ vs. $n$}
 \end{subfigure}
 \label{fig:Conv_Pwr_3}
 \end{figure}
@@ -947,28 +1010,18 @@ f(n)\coloneqq\max_{K}\abs{\phi^{(n)}}\leq n^{-\mu_\phi}= n^{-2/3}
 \begin{enumerate}
 	\item Numerical solutions to PDEs
 	\begin{itemize}
-		\item Approximate solutions by taking convolution powers\\
+		\item Approximate solutions via convolution power schemes\\
 		$\,$\\
 	\end{itemize}
 
-\pause
-	\item Quantum (field) theory
-	\begin{itemize}
-		\item Oscillatory integrals are ubiquitous
-		\item Solutions to PDEs in QFT are often difficult to obtain/approximate\\
-		$\,$\\
-	\end{itemize}
 
-\pause
 	\item $\dots$\\
 	$\,$\\
 	
 \pause
 
-	\item For its own sake
-	\begin{itemize}
-		\item Inspiration from examples/numerical evidence
-	\end{itemize}
+
+	\item IT'S NICE.
 \end{enumerate}
 
 \end{frame}
@@ -997,7 +1050,7 @@ f(n)\coloneqq\max_{K}\abs{\phi^{(n)}}\leq n^{-\mu_\phi}= n^{-2/3}
 
 \pause
 
-\textbf{\textcolor{magenta}{New conjecture:}} No positivity? No problem.
+\textbf{\textcolor{magenta}{New conjecture:}} \textcolor{teal}{\textbf{No positivity? No problem.}}
 
 \begin{figure}
 	\vspace{-10pt}
@@ -1021,29 +1074,29 @@ $\quad$$\phi^{(n)}$ $\to$ $H^{iP}_t$$\quad$
 
 
 
-\begin{frame}
-\frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: Extra}
-
-
-\textcolor{purple}{\textbf{Proof ingredients:}} \\
-
-1/ A generalized polar-coordinate integration formula (see \cite{bui2021generalized})\\
-2/ Van der Corput lemma
-
-\begin{lemma}[Van der Corput lemma]
-	Let $g\in C^1([a,b])$ be complex-valued and let $\Phi\in C^2([a,b])$ be real-valued such that $\Phi''(x) \neq 0$ for all $x\in [a,b]$. Then
-	\begin{equation*}
-	\abs{\int^b_a g(u) e^{i\Phi(u)}\,du} \leq \min \lc \frac{4}{\delta}, \frac{8}{\sqrt{\rho}}  \rc \lp \norm{g'}_1 + \norm{g}_\infty \rp,
-	\end{equation*}
-	where $\delta = \inf_{x\in [a,b]} \abs{\Phi'(x)}$ and $\rho = \inf_{x\in [a,b]} \abs{\Phi''(x)}$. 
-\end{lemma}
-
-\includegraphics[scale=0.06]{key}$\,\,\,$ Integration by parts to bring the \textbf{amplitude} $g$ out\\
-\includegraphics[scale=0.06]{key}$\,\,\,$ Integral dominated by the slowly-varying part of the \textbf{phase} $\Phi$
-
-
-
-\end{frame}
+%\begin{frame}
+%\frametitle{Global decay estimate for $\abs{\phi^{(n)}}$: Extra}
+%
+%
+%\textcolor{purple}{\textbf{Proof ingredients:}} \\
+%
+%1/ A generalized polar-coordinate integration formula (see \cite{bui2021generalized})\\
+%2/ Van der Corput lemma
+%
+%\begin{lemma}[Van der Corput lemma]
+%	Let $g\in C^1([a,b])$ be complex-valued and let $\Phi\in C^2([a,b])$ be real-valued such that $\Phi''(x) \neq 0$ for all $x\in [a,b]$. Then
+%	\begin{equation*}
+%	\abs{\int^b_a g(u) e^{i\Phi(u)}\,du} \leq \min \lc \frac{4}{\delta}, \frac{8}{\sqrt{\rho}}  \rc \lp \norm{g'}_1 + \norm{g}_\infty \rp,
+%	\end{equation*}
+%	where $\delta = \inf_{x\in [a,b]} \abs{\Phi'(x)}$ and $\rho = \inf_{x\in [a,b]} \abs{\Phi''(x)}$. 
+%\end{lemma}
+%
+%\includegraphics[scale=0.06]{key}$\,\,\,$ Integration by parts to bring the \textbf{amplitude} $g$ out\\
+%\includegraphics[scale=0.06]{key}$\,\,\,$ Integral dominated by the slowly-varying part of the \textbf{phase} $\Phi$
+%
+%
+%
+%\end{frame}
 
 
 
