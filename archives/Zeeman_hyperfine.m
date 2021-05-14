@@ -11,7 +11,7 @@ J = 3/2;
 I = 3/2;
 L = 1; 
 S = 1/2;
-B = 0:0.0025:1.2; % units is Gauss
+B = 0:0.02:5; % units is Gauss
 Ahf = 1.973e6; % Ahf coef in Hz 
 Bhf = 0.870e6; % Bhf coef in Hz
 
@@ -111,7 +111,7 @@ function mag = mag(B, J, L, S, mj, mi, mjj, mii)
     
     mag = 0;
     if mj == mjj && mi == mii
-        mag = (muB/hbar)*(gJ*mj + gI*mi)*B*1e-4; % B is in Gauss
+        mag = (muB/(hbar*2*pi))*(gJ*mj + gI*mi)*B*1e-4; % B is in Gauss
     else 
         mag = 0;
     end
