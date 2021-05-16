@@ -23,34 +23,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
-%\newcommand{\fig}[1]{figure #1}
-%\newcommand{\explain}{appendix?}
-%\newcommand{\rat}{\mathbb{Q}}
-%
-%\newcommand{\mathbb{R}}{\mathbb{R}}
-%\newcommand{\nat}{\mathbb{N}}
-%\newcommand{\inte}{\mathbb{Z}}
-%\newcommand{\M}{{\cal{M}}}
-%\newcommand{\sss}{{\cal{S}}}
-%\newcommand{\rrr}{{\cal{R}}}
-%\newcommand{\uu}{2pt}
-%\newcommand{\vv}{\vec{v}}
-%\newcommand{\comp}{\mathbb{C}}
-%\newcommand{\field}{\mathbb{F}}
-%\newcommand{\f}[1]{ \hspace{.1in} (#1) }
-%\newcommand{\set}[2]{\mbox{$\left\{ \left. #1 \hspace{3pt}
-%\right| #2 \hspace{3pt} \right\}$}}
-%\newcommand{\integral}[2]{\int_{#1}^{#2}}
-%\newcommand{\ba}{\hookrightarrow}
-%\newcommand{\ep}{\varepsilon}
-%\newcommand{\limit}{\operatornamewithlimits{limit}}
-%\newcommand{\ddd}{.1in}
-%\newcommand{\ccc}{2in}
-%\newcommand{\aaa}{1.5in}
-%\newcommand{\B}{{\cal B}}
-%\newcommand{\C}{{\cal C}}
-%\newcommand{\D}{{\cal D}}
-%\newcommand{\FF}{{\cal F}}
+
 \usepackage{amssymb}% http://ctan.org/pkg/amssymb
 \usepackage{pifont}% http://ctan.org/pkg/pifont
 \newcommand{\cmark}{\ding{51}}%
@@ -82,7 +55,22 @@
 	\end{align*}
 	
 	
-	\item 
+	\item From Part (a), there are two kinds of admissible partitions of $[9]$: the ones with one size-3 block and three identical size-2 blocks, and the ones with three (identical) size-3 blocks. \\
+	
+	
+	To distribute $[9]$ into three identical blocks of $3$, there are
+	\begin{equation*}
+	\f{1}{3!} {9\choose 3} {6\choose 3}
+	\end{equation*}
+	ways. To distribute $[9]$ into a block of 3 and three blocks of $2$, we do the following: choose 3 out of 9 elements for the size-3 block, then distribute the 6 remaining elements across three identical size-2 blocks. There are
+	\begin{equation*}
+	{9 \choose 3} \times  \f{1}{3!}{6\choose 2}{4\choose 2}
+	\end{equation*}
+	ways to do this. So, in total there are
+	\begin{equation*}
+	\boxed{\f{1}{3!} {9\choose 3} {6\choose 3} + \f{1}{3!} {9 \choose 3}{6\choose 2}{4\choose 2}}
+	\end{equation*}
+	partitions of $[9]$ such that all blocks have size $2$ or $3$. 
 \end{enumerate}
 
 
@@ -95,11 +83,27 @@
 
 
 \begin{enumerate}[(a)]
-	\item \underline{Claim}: The number of subsets $S$ of $[n]$ such that $S$ contains no two consecutive integers is ${F_{n+2}}$.
+	\item \underline{Claim}: The number $S_n$ of subsets $\mathcal{S}$ of $[n]$ such that $\mathcal{S}$ contains no two consecutive integers is $\boxed{{F_{n+2}}}$ for $n\geq 1$.
 	
 	
 	\begin{proof}
+		We first show that $S_n$ follows a similar recurrence relation as the Fibonacci numbers. We have that $S_1 = \abs{\{ \{\varnothing\}, \{1\}   \}}  = 2$ and $S_2 = \abs{\{ \{\varnothing\}, \{1\} , \{2\}  \}} = 3$. To find $S_{n}$ for $n\geq 3$, we can split the subsets of $[n]$ into those that contain $n$ and those that don't. 
+		\begin{enumerate}[(i)]
+			\item Within the subsets that don't contain $n$, it is clear that there are $S_{n-1}$ subsets with no consecutive integers.
+			
+			
+			\item Within the subsets that contain $n$, the admissible subsets are exactly the admissible subsets that don't contain $n-1$. We can get all of these subsets by appending $n$ to each of the $S_{n-2}$ admissible subsets of $[n-2]$.
+		\end{enumerate}
 		
+		Therefore, we have
+		\begin{equation*}
+		S_{n} = S_{n-1} + S_{n-2}, \quad n \geq 3.
+		\end{equation*}
+		Now, the Fibonacci sequence starts with $F_1 = 1, F_2 = 1, F_3 = 2,\dots$, while this sequence goes as $S_1 = 2, S_2 = 3, S_3 = 5, \dots$. So, we shift the index by $2$ to get
+		\begin{equation*}
+		S_n = F_{n+2},\quad n\geq 1
+		\end{equation*}
+		as claimed. 
 	\end{proof} 
 	
 	
@@ -107,12 +111,29 @@
 	
 	
 	
-	\item \underline{Claim}: The number of compositions of $n$ into parts of size greater than $1$ is $F_{n-2}$.
+	\item \underline{Claim}: The number $T_n$ of compositions of $n$ into parts of size greater than $1$ is $\boxed{F_{n-1}}$ if $n\geq 2$, with $T_1 = 0$.
 	
 	
 	\begin{proof}
+		We first show that $T_n$ follows a similar recurrence relation as the Fibonacci numbers. We won't worry about the trivial case $T_1 = 0$ and start with $T_2 = 1$, $T_3 = 1$. To find $T_n$ for $n\geq 3$, we first consider all $T_{n+2}$ compositions of $n+2$ with parts size greater than 1. Some of these admissible compositions have parts of size 2, and some don't. 
+		\begin{enumerate}[(i)]
+			\item For each of the admissible compositions of $n+2$ with at least a size-2 part, we can remove the first occurrence of the size-2 part, and obtain all  admissible compositions for $n+2-2 = n$. There are $T_n$ of these compositions.
+			
+			
+			\item For each of the admissible compositions of $n+2$ with parts of size greater than 2, we can simply subtract 1 from the first part and obtain all the admissible compositions of $n+2-1=n+1$. There are $T_{n+1}$ of these compositions.
+		\end{enumerate}
 		
+		  We thus have $T_{n+2} = T_n + T_{n+1}$, and so re-indexing gives
+		\begin{equation*}
+		T_n = T_{n-1} + T_{n-2}, \quad n\geq 3.
+		\end{equation*} 
+		Now, the Fibonacci sequences starts with $F_1 = 1, F_2 = 1, F_3 = 2,\dots$, while this sequence goes as $T_2 = 1, T_3 = 1, T_4 = 2, \dots$. So, we shift the index by $-1$ to get
+		\begin{equation*}
+		T_n = F_{n-1}, \quad n \geq 2, 
+		\end{equation*}
+		with $T_1= 0$, as claimed. 
 	\end{proof}
+
 
 \end{enumerate}
 
@@ -127,7 +148,7 @@
 \begin{enumerate}[(a)]
 	\item \underline{Claim}:
 	\begin{equation*}
-	\boxed{S(k,k-2) = \sum^k_{i=3} (i-2) { {i-1} \choose  2  }}
+	\boxed{S(k,k-2) = \sum^k_{i=3} (i-2) { {i-1} \choose  2  }, \quad k\geq 2}
 	\end{equation*}
 	
 	\begin{proof}
@@ -149,13 +170,17 @@
 		\begin{equation*}
 		S(k,k-2) = S_k = \underbrace{S_2}_{= S(2,0) = 0} + \sum^{k}_{i=3} (i-2){{i-1} \choose 2} = \sum^{k}_{i=3} (i-2){{i-1} \choose 2}.
 		\end{equation*}
-		as desired. 
+		as desired. \textcolor{purple}{I have checked this against the table we made for Problem 135.}
 	\end{proof}
 	
 	
 	\item \underline{Claim}:
 	\begin{equation*}
-	\boxed{S(k,2) = 2^{k-1}-1, \, k\geq 2 \qquad \text{and} \qquad S(k,3) = ,\, k\geq 3}
+	\boxed{S(k,2) = 2^{k-1}-1, \quad  k\geq 2}
+	\end{equation*}
+	and 
+	\begin{equation*}
+	\boxed{S(k,3) = \f{1}{2}(1+3^{k-1}-2^k), \quad   k\geq 3}
 	\end{equation*}
 	
 	
@@ -166,39 +191,68 @@
 		\end{equation*}
 		With $n=2$, we have
 		\begin{align*}
-		S(k,2) &= S(k-1, 1) + nS(k-1,2)\\
+		S(k,2) &= S(k-1, 1) + 2S(k-1,2)\\
 		&= 1 + 2S(k-1,2).
 		\end{align*}
-		Let $S_k$ denote $S(k,2)$ then we have a first-order linear recurrence:
+		Let $S_k$ denote $S(k,2)$ then we have a first-order linear recurrence
 		\begin{equation*}
 		S_k = 1 + 2S_{k-1}.
 		\end{equation*}
-		With $S_2 = S(2,2) = 1$, the formula for $S(k,2)$, due to Problem 98, is
+		with $k\geq 2$ and  $S_2 = S(2,2) = 1$. The formula for $S(k,2)$, due to Problem 98, is
 		\begin{equation*}
 		S(k,2) = S_k = 2^{k-2} S_2 + 1\times \left(\f{2^{k-2}-1}{2-1}\right) = 2^{k-2} +  2^{k-2}-1 = 2^{k-1}-1, \quad k \geq 2,
 		\end{equation*}
-		as claimed\footnote{Here, recurrence begins at $S_2$, so the exponent in the formula only goes up to $k-2$.}. Now, we will use this result and Problem 134 to find $S(k,3)$:
+		as claimed\footnote{Here, recurrence begins at $S_2$, so the exponent in the formula only goes up to $k-2$.}. \textcolor{purple}{I have checked this against the table we made for Problem 135. \textcolor{black}{$\triangle$}} 
+		
+		
+		
+		\indent Next, we will use this result and Problem 134 to find $S(k,3)$:
 		\begin{align*}
 		S(k,3) &= S(k-1,2) + 3S(k-1,3)\\
-		&= (2^{k-1}-1) + 3S(k-1,3).
+		&= (2^{k-2}-1) + 3S(k-1,3).
 		\end{align*}
-		Let $T_k$ denote $S(k,3)$, then we have the recurrence relation
+		Let $T_k$ denote $S(k,3)$, then we have a recurrence relation
 		\begin{equation*}
-		T_k = (2^{k-1}-1) + 3T_{k-1}.
+		T_k = (2^{k-2}-1) + 3T_{k-1}
 		\end{equation*}
-		
-		%a(n) = (1 + 3^(n-1) - 2^n)/2
+		with $k\geq 3$ and $T_3 = S(3,3)=1$. \textcolor{blue}{As far as I know, there's really no nice way to deal with this but brute force...} By writing this out term by term, we find a rough formula for $T_k$:
+		\begin{align*}
+		T_3 &= S(3,3) = 1\\
+		T_4 &= S(4,3) = (2^{4-2}-1) + 3\cdot 1\\
+		T_5 &= S(5,3) = (2^{5-2}-1)+3(2^{4-2}-1+3\cdot 1)\\
+		T_6 &= S(6,3) = (2^{6-2}-1)+3[(2^{5-2}-1)+3(2^{4-2}-1+3\cdot 1)]\\
+		\vdots\\
+		T_k &= S(k,3) = \sum^k_{i=4} 2^{i-2} 3^{k-i} - \sum^{k-4}_{i=0}3^i + 3^{k-3}.
+		\end{align*} 
+		Now, we simplify this as follows:
+		\begin{align*}
+		T_k &= \sum^k_{i=4} 2^{i-2} 3^{k-i} - \f{3^{k-3}-1}{3-1} + 3^{k-3}\\
+		%&= \sum^k_{i=4} 2^{i-1} 3^{k-i} - \f{1}{2}3^{k-3}+\f{1}{2}\\
+		&= 3^{k-2}\left[
+		\sum^k_{i=4}\left(\f{2}{3}\right)^{i-2} + \f{1}{2\cdot 3}
+		\right] + \f{1}{2}\\
+		&= 3^{k-2}\left[\sum^{k-2}_{j=2}\left(\f{2}{3}\right)^j + \f{1}{2\cdot 3}  \right] + \f{1}{2}\\
+		&= 3^{k-2}\left[ -1 - \f{2}{3} + \f{1-(2/3)^{k-1}}{1-2/3} + \f{1}{2\cdot 3}  \right] + \f{1}{2}\\
+		&= \f{1}{2}(1 + 3^{k-1} - 2^k),\qquad k\geq 3
+		\end{align*}
+		as desired. \textcolor{purple}{I've also checked this against the table from Problem 135.} $\triangle$
 	\end{proof}
 	
 	
 	
-	\item \underline{Claim}: 
+	\item \underline{Claim}\footnote{The claim is inspired by Supplementary Problem 11 on Page 76.}: 
 	\begin{equation*}
 	\boxed{S(k,n) = \sum^{k}_{i=1} S(k-i,n-1) {{k-1}\choose{i-1}}}
 	\end{equation*}
 	
 	\begin{proof}
+		Intuitively, this formula makes sense. To put $k$ distinct things into $n$ identical boxes so that each box gets at least one, we can pick out a few things from $k$, put them into one box, and distribute the rest into the remaining $n-1$ boxes so that each gets at least one. As a result, $S(k,n)$ is the sum of the number of ways this can happen. \\
 		
+		
+		To be more precise, we can talk about $S(k,n)$ as the number of ways to partition the set $[k]$ into $n$ non-empty parts $P_1,P_2,\dots,P_n$. Fix the $k$th element in the part $P_n$ (since each part must have at least one, and the parts are identical). We want to look at all possibilities for $P_n$. Suppose $P_n$ must have $i$ elements, then we need to add $(i-1)$ extra elements from the remaining $(k-1)$ elements to $P_n$. There are ${{k-1}\choose{i-1}}$ ways to do this. Next, we need to distribute the remaining $(k-i)$ elements into the remaining $(n-1)$ parts such that each part gets at least one. There are $S(k-i,n-1)$ ways to do this for each $i$. From here, we see that $S(k,n)$ is a sum of $S(k-i,n-1){{k-1}\choose{i-1}}$ over all $i$'s:
+		\begin{equation*}
+		S(k,n) = \sum^k_{i=1}S(k-i,n-1){{k-1}\choose{i-1}}.
+		\end{equation*}
 	\end{proof}
 \end{enumerate}
 
@@ -225,7 +279,7 @@ P_2 = { {27} \choose  15 } - {14 \choose 8 }{ {13} \choose  7 }.
 \end{equation*}
 With this, we combine the two parts of the journey to find that there are 
 \begin{equation*}
-P = P_1 P_2 = {{8+15}\choose 8} = \boxed{{23\choose 8} \times \left\{   { {27} \choose  15 } - {14 \choose 8 }{ {13} \choose  7 }\right\} }
+P = P_1 \times P_2= \boxed{{23\choose 8} \times \left\{   { {27} \choose  15 } - {14 \choose 8 }{ {13} \choose  7 }\right\} }
 \end{equation*}
 paths from $(0,0)$ to $(20,30)$ that go through $(8,15)$ but not $(14,23)$. 
 
