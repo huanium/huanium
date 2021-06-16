@@ -1,0 +1,360 @@
+\documentclass{book}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+
+
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+
+
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+\begin{document}
+\begin{titlepage}\centering
+ \clearpage
+ \title{{\textsc{\textbf{ATOMIC PHYSICS}}}\\ \smallskip - A Quick Guide - \\}
+ \author{\bigskip Huan Q. Bui}
+  \affil{B.A., COLBY COLLEGE (2021) $\,$\\  
+  	MASSACHUSETTS INSTITUTE OF TECHNOLOGY}
+ \date{June 15, 2021}
+ \maketitle
+ \thispagestyle{empty}
+\end{titlepage}
+
+\subsection*{Preface}
+\addcontentsline{toc}{subsection}{Preface}
+
+
+$\,$\\
+
+
+\noindent Greetings, \\
+
+
+While I have spent most of my undergraduate years in Professor Charles Conover's lab at Colby College working on cold atom experiments, I never had \textit{formal} training in atomic, molecular, and optical physics. The closest to formal training I have for AMO physics is a standard quantum mechanics course I took in the fall of my junior year. Most of the intuition I have for atomic physics, I learned from my discussions with Professor Conover or read from books and articles here and there. This article is my attempt at \textit{formally} teaching myself atomic physics.   \\
+
+This article is basically my version of an ``atomic physics dictionary,'' which should keep growing as I go along in my education and research at MIT. As a result of this, there is no good way for me to organize the topics in here but by alphabetical order (hence ``dictionary''). I don't know how well I'll be able to curate this article, but we'll see.\\
+
+
+\noindent In any case, good luck and, most importantly, enjoy!
+
+
+\newpage
+
+
+
+
+
+\chapter*{A}
+\chapter*{B}
+
+
+\section*{Bloch's Theorem and Bloch States}
+
+
+Consider a periodic potential $V(\mathbf{r})$ associated with a lattice whose \textcolor{blue}{primitive lattice translation vectors} are given by 
+\begin{equation*}
+\mathbf{T} = n_1 \mathbf{a}_1 +  n_2 \mathbf{a}_2  +  n_3 \mathbf{a}_3,
+\end{equation*}
+where $n_i$ are integers and $\mathbf{a_i}$ are the three noncoplanar vectors ($\mathbf{T}$ is basically vectors which translates from one vertex in the lattice to another arbitrary one). Since $V$ is periodic, we have
+\begin{equation*}
+V(\mathbf{T} + \mathbf{r}) = V(\mathbf{r}). 
+\end{equation*}
+In Fourier components, 
+\begin{equation*}
+V(\mathbf{r}) = \sum_\mathbf{G} V_\mathbf{G} e^{i\mathbf{G}\cdot \mathbf{r}}
+\end{equation*}
+where $\mathbf{G}$ are a set of vectors and $V_\mathbf{G}$ are Fourier coefficients. By the periodicity of $V$, we have
+\begin{equation*}
+e^{i\mathbf{G}\cdot \mathbf{T}} = 1 \implies \mathbf{G}\cdot \mathbf{T} = 2\rho \pi, \quad \rho \in \mathbb{Z}.
+\end{equation*}
+The only way to define $\mathbf{G}$ such that the above equation makes sense is:
+\begin{equation*}
+\mathbf{G} = m_1 \mathbf{A}_1 + m_2 \mathbf{A}_2 + m_3 \mathbf{A}_3
+\end{equation*}
+where $m_j$ are integers and $\mathbf{A}_j$ are three noncoplanar vectors defined by 
+\begin{equation*}
+\mathbf{a}_j \cdot \mathbf{A}_l = 2\pi \delta_{jl}
+\end{equation*}
+This shows the existence of an $r$-lattice implies that of a $k$-lattice, and we call $\mathbf{G}$ the \textcolor{blue}{reciprocal lattice}. \\
+
+
+What set of functions describes the motion of electrons in such a potential? Since we want to reflect the translation symmetry of the lattice, we may impose the \textit{Born-von Karman periodic boundary condition} on the plane wave 
+\begin{equation*}
+\phi(\mathbf{r}) = e^{i(\mathbf{k}\cdot \mathbf{r} - \omega t)}
+\end{equation*}
+to get
+\begin{equation*}
+\phi(\mathbf{r} + N_j \mathbf{a_j}) = \phi(\mathbf{r})
+\end{equation*}
+where $j=1,2,3$ and $N = N_1N_2N_3$ is the number of primitive unit cells in the crystal; $N_j$ is the number of unit cells in the $j$th direction. From here, we have that 
+\begin{equation*}
+e^{iN_j \mathbf{k}\cdot \mathbf{a}_j} = 1.
+\end{equation*}
+Following a similar argument as before, we find that the only allowed $\mathbf{k}$ vectors are of the form
+\begin{equation*}
+\mathbf{k} = \sum^3_{j=1}\f{m_j}{N_j}\mathbf{A}_j
+\end{equation*}
+
+
+
+
+
+
+
+
+Now, consider a Schr\"{o}dinger equation with potential $V(\mathbf{r})$:
+\begin{equation*}
+\widehat{H}\psi = \lb -\f{\hbar^2 \nabla^2}{2m} + V(\mathbf{r}) \rb \psi = E\psi.
+\end{equation*}
+In Fourier components, we again have
+\begin{equation*}
+V(\mathbf{r}) = \sum_\mathbf{G} V_\mathbf{G} e^{i\mathbf{G}\cdot \mathbf{r}}.
+\end{equation*}
+Let us set the background potential to zero, i.e., $V_0 \equiv 0$. Next, let us write the solution $\phi(\mathbf{r})$ as a combination of plane waves obeying the Born-von Karman PBC:
+\begin{equation*}
+\psi(\mathbf{r}) = \sum_\mathbf{k}C_\mathbf{k} e^{i\mathbf{k}\cdot \mathbf{r}},
+\end{equation*}
+so that $\phi(\mathbf{r})$ also satisfies the Born-von Karman PBC. Plugging this into the SE, we find 
+\begin{equation*}
+\sum_\mathbf{k} \f{\hbar^2k^2}{2m} C_\mathbf{k} e^{i\mathbf{k}\cdot \mathbf{r}} + \underbrace{\lb \sum_\mathbf{G} V_\mathbf{G} e^{i\mathbf{G}\cdot \mathbf{r}} \rb \lb \sum_\mathbf{k} C_\mathbf{k} e^{i\mathbf{k}\cdot \mathbf{r}} \rb}_{V(\mathbf{r}\psi)} = E\sum_\mathbf{k} C_\mathbf{k} e^{i\mathbf{k}\cdot \mathbf{r}}
+\end{equation*}
+where we can re-write:
+\begin{equation*}
+V(\mathbf{r})\psi = \sum_{\mathbf{G},\mathbf{k}} V_\mathbf{G}C_\mathbf{k} e^{i(\mathbf{G}+ \mathbf{k})\cdot \mathbf{r}}  = \sum_{\mathbf{G},\mathbf{k}} V_\mathbf{G}C_{\mathbf{k}-\mathbf{G}} e^{i\mathbf{k}\cdot \mathbf{r}}.
+\end{equation*}
+With this, we can factor out $e^{i\mathbf{k}\cdot \mathbf{r}}$ in each term of the SE and use the fact that the plane waves form an orthogonal basis, we find 
+\begin{equation*}
+\lp \f{\hbar^2k^2}{2m} - E \rp C_\mathbf{k} + \sum_\mathbf{G} V_\mathbf{G} C_{\mathbf{k}-\mathbf{G}} = 0.
+\end{equation*}
+
+Let us write $\mathbf{k} = \mathbf{q} - \mathbf{G}'$ and let $\mathbf{G}'' = \mathbf{G}' + \mathbf{G}$, where $\mathbf{q}$ lies in the \textcolor{blue}{first Brillouin zone}. With this change of variables, we have the result
+\begin{equation*}
+\lp \f{\hbar^2 (\mathbf{q} - \mathbf{G}')^2}{2m} - E \rp C_{\mathbf{q} - \mathbf{G}'} + \sum_{\mathbf{G}''}V_{\mathbf{G}'' - \mathbf{G}'}C_{\mathbf{q} - \mathbf{G}''} = 0.
+\end{equation*}
+
+
+Now, we're ready for the statement of the \textbf{Bloch's Theorem}. The result above involves coefficients $C_{\mathbf{k}}$ in which $\mathbf{k} = \mathbf{q} - \mathbf{G}$, where $\mathbf{G}$ are general reciprocal lattice vectors. This means that if we fix $\mathbf{q}$, then the only $C_\mathbf{k}$ that feature are of the form $C_{\mathbf{q} - \mathbf{G}}$. In other words, for each $\mathbf{q}$, there is a wavefunction $\psi_\mathbf{q}(r)$ that takes the form
+\begin{equation*}
+\psi_\mathbf{q}(\mathbf{r}) = \sum_\mathbf{G} C_{\mathbf{q} - \mathbf{G}} e^{i(\mathbf{q} - \mathbf{G})\cdot \mathbf{r}},
+\end{equation*}
+where we have substituted $\mathbf{k} = \mathbf{q} - \mathbf{G}$. Factoring out $e^{i\mathbf{q}\cdot \mathbf{r}}$, we find 
+\begin{equation*}
+\boxed{\psi_\mathbf{q}(\mathbf{r})  = e^{i\mathbf{q}\cdot \mathbf{r}} \sum_\mathbf{G} C_{\mathbf{q} - \mathbf{G}} e^{-i \mathbf{G}\cdot \mathbf{r}} \equiv e^{i\mathbf{q}\cdot\mathbf{r}}u_{j,\mathbf{q}}}
+\end{equation*}
+So, the solution is a plane wave with wave vector within the first Brillouin zone TIMES a function with the periodicity of the lattice. Functions of this form are known as \textbf{Bloch functions} or \textbf{Bloch states}. They serve as a suitable basis for the wave functions or states of electrons in crystalline solids. 
+
+
+
+\textbf{Bloch's Theorem} is as follows: \textit{The eigenstates $\psi$ of a one-electron Hamiltonian defined above for all Bravais lattice translation vectors $\mathbf{T}$ can be chosen to be a plane wave times a function with the periodicity of the Bravais lattice.} We note two things:
+\begin{itemize}
+	\item This is true for any particle propagating in a lattice
+	\item The theorem makes no assumption about the \textit{strength/depth} of the potential. 
+\end{itemize}
+
+
+
+
+
+
+
+
+
+\hrule 
+
+
+\noindent \textbf{Notes:} The terminologies in \textcolor{blue}{blue} can be found in \cite{kittel1996introduction} or Wikipedia. The concepts are simple enough, so I won't include their definitions here. 
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{C}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{D}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{E}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{F}
+
+
+\section*{Feshbach Resonance}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{G}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{H}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{I}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{K}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{L}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{M}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{N}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{O}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{P}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Q}
+
+\section*{Quantum Harmonic Oscillator}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{R}
+
+
+\section*{Raman side-band cooling}
+
+
+\section*{Recoil temperature}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{S}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{T}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{U}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{V}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{W}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{X}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Y}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Z}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\newpage
+
+\bibliography{Bui_AMO} 
+\bibliographystyle{ieeetr}
+
+
+\end{document}
