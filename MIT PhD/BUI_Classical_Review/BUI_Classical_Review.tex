@@ -1,0 +1,363 @@
+\documentclass{book}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+
+
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+
+
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+\begin{document}
+\begin{titlepage}\centering
+ \clearpage
+ \title{{\textsc{\textbf{CLASSICAL MECHANICS}}}\\ \smallskip - A Quick Review - \\}
+ \author{\bigskip Huan Q. Bui}
+  \affil{B.A., COLBY COLLEGE (2021) $\,$\\  
+  	MASSACHUSETTS INSTITUTE OF TECHNOLOGY}
+ \date{June 15, 2021 -   \today}
+ \maketitle
+ \thispagestyle{empty}
+\end{titlepage}
+
+
+
+
+\noindent \textbf{Preface}
+
+
+$\,$\\
+
+
+\noindent Greetings, \\
+
+This article contains some of my preparation for the upcoming Ph.D. qualifying exam in classical mechanics. There will be some theory as well as examples and problems. I'm only covering the more ``advanced'' content from undergraduate courses such as Lagrangian and Hamiltonian mechanics and so on. Familiarity with intermediate classical mechanics is assumed. \\
+
+\noindent Enjoy! (I guess)
+
+
+
+\newpage
+
+
+
+
+
+
+
+\chapter{Theory}
+
+
+
+
+
+
+\section{Lagrangian Mechanics}
+
+The \textbf{Lagrangian} for a conservative system is given by 
+\begin{equation*}
+\lag = T - U
+\end{equation*}
+where $T$ is the kinetic energy and $U$ is the potential energy. \\
+
+The $n$ parameters $q_1,\dots,q_n$ are said to be \textbf{generalized coordinates} for an $N$-particle system if every particle's position $\mathbf{r}_i$ can be expressed as a function of $q_1,\dots,q_n$ (and time $t$) and if $n$  is the smallest number that allows the system to be described this way ($n$ must be minimal). \\
+
+In 3D, if $n< 3N$, then the system is said to be \textbf{constrained}. $q_1,\dots,q_n$ are said to be \textbf{natural} if the functional relationships between the $q_i$'s and $\mathbf{r}_i$ are time-independent. \\
+
+
+The number of \textbf{degrees of freedom} of a system is the number of coordinates that can be independently varied. If the degrees of freedom is equal to the the number of generalized coordinates (which is ``normal'') then the system is said to be \textbf{holonomic}. An example of a nonholonomic system is a ball rolling on a flat table without slipping (see Taylor's \textit{Classical Mechanics}, Chapter 7 for more details) or a mass on the surface of a sphere in a gravitational field. \\
+
+
+Holonomic (i.e. ``normal'') systems satisfy the \textbf{Euler-Lagrange equations}:
+\begin{equation*}
+\f{d}{dt}\f{\p \lag}{\p \dot{q}_i} = \f{\p \lag}{\p {q}_i}.
+\end{equation*} 
+The Euler-Lagrange equations are equivalent to \textbf{Hamilton's principle}, which states that the actual path which a particle follows between two points $1$ and $2$ in a given time interval $[t_1,t_2]$ is such that the action 
+\begin{equation*}
+S = \int^{t_2}_{t_1} \lag\,dt
+\end{equation*}
+is stationary. \\
+
+
+For each generalized coordinate $q_i$, we have a \textbf{generalized momentum} $p_i$, given by
+\begin{equation*}
+p_i = \f{\p \lag}{\p \dot{q}_i}.
+\end{equation*}
+It easy to see that, from the Euler-Lagrange equations, $p_i$ is constant, or \textbf{conserved}, whenever $\p\lag / \p q_i = 0$. In this case, we say that the generalized coordinate $q_i$ is \textbf{ignorable} or \textbf{cyclic}.  \\
+
+This can be stated the following way: $p_i$ is a constant of motion if the conjugate coordinate $q_i$ is cyclic. This is basically \textbf{Noether's Theorem}. 
+
+
+
+
+
+
+\section{Hamiltonian Mechanics}
+
+
+
+The \textbf{Hamiltonian} can be obtained from the Lagrangian via the Legendre transformation. The Hamiltonian is defined as
+\begin{equation*}
+\mathcal{H} = \sum_{i=1}^n p_i  \dot{q}_i - \lag.
+\end{equation*}
+
+
+The Hamiltonian is said to be \textbf{conserved} if $\p \lag/\p t = -\p \ham/\p t = 0$. If the coordinates $q_1,\dots,q_n$ are natural (recall: ``natural'' = time-independent with respect to positions) then the Hamiltonian is equal to the \textbf{total energy} of the system. \\
+
+
+
+
+For each $i = 1,2,\dots, n$, the time evolution of the system is given by the \textbf{Hamilton's equations}:
+\begin{equation*}
+\dot{q}_i = \f{\p \mathcal{H}}{ \p p_i} \quad \text{and} \quad \dot{p}_i = -\f{\p \ham}{\p q_i}.
+\end{equation*}
+An important identity:
+\begin{equation*}
+\f{\p \lag}{\p t} = - \f{\p \ham}{\p t}.
+\end{equation*}
+
+
+
+A somewhat more advanced but related topic is \textbf{Poisson brackets}. Given the canonical coordinates $p_i,q_i$ and two functions $f(q_i,p_i,t),g(q_i, p_i,t)$, the Poisson bracket of $f,g$ is defined by 
+\begin{equation*}
+\{ f,g \} = \sum_i \lp \f{\p f}{\p q_i} \f{\p g}{\p p_i} - \f{\p f}{\p p_i} \f{\p g}{\p q_i} \rp.
+\end{equation*} 
+
+
+
+Poisson brackets for the canonical coordinates are
+\begin{equation*}
+\{q_i, q_j \} = 0, \quad \{ p_i ,p_j \} = 0, \quad \{ q_i , p_i \} = \delta_{ij}
+\end{equation*}
+
+
+
+Hamilton's equations of motion can be formulated in terms of Poisson brackets. Let $\phi = \phi(p,q,t)$ be some function on the solution's trajectory-manifold. Then we have
+\begin{equation*}
+\f{d}{dt}\phi(p,q,t) = \f{\p \phi}{\p q} \f{d q}{dt} + \f{\p \phi }{\p p} \f{d p}{dt} + \f{\p \phi}{\p t}.
+\end{equation*}
+Let $p = p(t)$ and $q = q(t)$ be solutions to the Hamilton's equations, i.e., $\dot{p} = -\p \ham / \p q$ and $\dot{q} = \p \ham  / \p p$. From the definition of Poisson brackets we can identify:
+\begin{equation*}
+\dot{p} = -\f{\p \ham}{\p q} = \{ p,\ham \} \quad \text{and} \quad \dot{q} = \f{\p \ham}{\p p} = \{ q,\ham \}.
+\end{equation*}
+Thus, from the chain rule above we find that, for any function $\phi = \phi(p,q,t)$,
+\begin{equation*}
+\f{d}{dt}\phi(p,q,t) = \f{\p \phi}{\p q} \f{\p \ham}{\p p} - \f{\p \phi}{\p p}\f{\p \ham}{\p q} + \f{\p \phi}{\p t} = \{ \phi,\ham \} + \f{\p \phi}{\p t}.
+\end{equation*}
+
+
+\section{Two-Body Central-Force Problems}
+
+
+
+
+\section{Mechanics in Non-inertial Frames}
+
+
+
+\section{Rotational Motion of Rigid Bodies}
+
+
+
+\section{Coupled Oscillators and Normal Modes}
+
+
+The configuration of a system with $n$ degrees of freedom can be specified by an $n\times 1$ column matrix $\mathbf{q}$ of generalized coordinates $q_i$. For small oscillations near a stable equilibrium (with coordinates chosen so that $\mathbf{q} = 0$ at equilibrium), the equation of motion has the form 
+\begin{equation}
+\mathbf{M} \ddot{\mathbf{q}} = -\mathbf{K} \mathbf{q}. 
+\end{equation}
+Here $\mathbf{M}$ and $\mathbf{K}$ are the \textbf{mass} and \textbf{spring-constant matrices}, respectively. Their matrix elements can be obtained by writing out the kinetic and potential energies into the forms:
+\begin{equation*}
+T = \f{1}{2}\sum_{j,k} M_{jk} \dot{q}_j \dot{q}_k \quad \text{and} \quad U = \f{1}{2}\sum_{j,k} K_{jk}q_jq_k.
+\end{equation*} 
+Sometimes one may forget these forms. To recover them, either write out the equations of motion explicitly, or use dimensional analysis. A possible problem with trying to remember these things is the factor of $1/2$. My recommendation when you have a lot of time left on the exam is to work out the equations of motion explicitly, be it from Newtonian or Lagrangian mechanics, and then rearrange and get the matrix equation above. \\
+
+
+A \textbf{normal mode} is any motion in which all $n$ coordinates oscillation sinusoidally with the same frequency $\omega$ (a \textbf{normal/eigen-frequency}) and can be written as 
+\begin{equation*}
+\mathbf{q}(t) = \Re\{ \mathbf{a} e^{i\omega t} \} \implies \ddot{\mathbf{q}} = -\omega^2 \mathbf{q},
+\end{equation*}
+where 
+\begin{equation*}
+\lp \mathbf{K} - \omega^2 \mathbf{M} \rp \mathbf{a} = \mathbf{0}
+\end{equation*}
+
+
+For any system with $n$ degrees of freedom and a stable equilibrium at $\mathbf{q} = 0$, there are $n$ normal frequencies $\omega_1,\dots, \omega_n$ (not necessarily distinct) and $n$ linearly independent eigenvectors $\mathbf{a}_1,\dots, \mathbf{a}_n$ spanning the configuration space of the system. \\
+
+
+When any solution is expanded in terms of the normal modes, the expansion coefficients $\xi_i(t)$ are called \textbf{normal coordinates}, and each oscillates at the corresponding eigenfrequency $\omega_i$.
+
+
+
+
+
+
+\section{Collision Theory}
+
+The \textbf{scattering angle} is the angle $\theta$ by which the projectile is deflected in its counter with a target. The \textbf{impact parameter} $b$ is the distance by which the projectile would have missed the center of the target if it had been undeflected. \\
+
+
+The \textbf{cross section} $\sigma_\text{oc}$ for a particular outcome (oc) (elastic scattering, absorption, reaction, fission) is defined by 
+\begin{equation*}
+N_\text{oc} = N_\text{inc} n_\text{tar} \sigma_\text{oc}.
+\end{equation*}
+$N_\text{oc}$ is the number of outcomes of the type considered, $N_\text{inc}$ is the number of incident projectiles, and $n_\text{tar}$ is the density (number/area) of targets. \\
+
+
+The \textbf{differential cross section} $d\sigma/d\Omega (\theta,\phi)$ for scattering in a direction $(\theta,\phi)$ is defined by 
+\begin{equation*}
+N_\text{sc, into $d\Omega$} = N_\text{inc} n_\text{tar} \f{d\sigma}{d\Omega}(\theta,\phi) \,d\Omega.
+\end{equation*}
+
+
+
+If you can find the scattering angle as a function of the impact parameter $b$ or vice versa then 
+\begin{equation*}
+\f{d\sigma}{d\Omega} = \f{b}{\sin\theta} \abs{\f{db}{d\theta}}.
+\end{equation*}
+
+
+
+\section{Special Relativity}
+
+
+
+
+
+
+
+\section{Miscellaneous Factoids}
+
+\subsection{}
+
+The Lagrangian for a charge in an electromagnetic field is 
+\begin{equation*}
+\lag(\mathbf{r}, \dot{\mathbf{r}},t) = \f{1}{2}m \dot{\mathbf{r}}^2 - q(V - \dot{\mathbf{r}}\cdot \mathbf{A}).
+\end{equation*}
+
+
+
+
+\chapter{Problems}
+
+
+
+
+\bibliography{Bui_AMO} 
+\bibliographystyle{ieeetr}
+
+
+\end{document}
