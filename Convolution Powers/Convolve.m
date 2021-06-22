@@ -14,148 +14,181 @@ tic
 %%%%%%%%%%%%%%%%%%%
 
 
-%%%%%% max |\phi^(n) (x)| vs. n  %%%%%%%
- 
-support_bound = 700;
-n = 0:10:500;
-sup = [];
-%scaled_sup = [];
-% muP = 1/2+1/4;
-%muP = 1/2 + 1/8;
-muP = 1/2 + 1/2;
-%muP = 1/2 + 1/6;
-% muP = 1/4 + 1/4;
-for n_times = n
-    M = max(abs(fast_convolve(n_times, support_bound)) , [], 'all'); % find max;
-    sup = [sup M]; % concatenate
-    %scaled_sup = [scaled_sup (n_times^muP)*M]; % concatenate
-    disp(['Progress: ' num2str(n_times)]);
-end
-% figure for SUP
-figure(1)
-p1 = plot(n,sup, '-o', 'color','blue', 'LineWidth', 1)
-%plot(log(n),log(sup), '-o', 'color','blue', 'LineWidth', 1) % plot log instead
-%xlim([0 max(n)])
-%ylim([-0.01 0.7])
-%xlabel('log(n)', 'FontSize',16);
-xlabel('n', 'FontSize',16);
-ylabel('', 'FontSize', 16 );
-% figure for SCALED_SUP
-hold on 
-n1 = n+1;
-nY = n1.^(-muP);
-C=1;
-p2 = plot(n1, C.*nY, 'LineWidth', 2, 'Color', 'red')
-%plot(log(n), log(nY), 'LineWidth', 2)  % plot log instead
-hold off
-legend('f(n)','n^{-1}', 'FontSize',14);
-%legend('f(n) = log(max_{K}|\phi^{(n)}|)','log(n^{-\mu_\phi}) = log(n^{-3/4})', 'FontSize',14);
-
-% figure(2)
-% plot(n,scaled_sup, '-o', 'color','blue', 'LineWidth', 1)
-% xlim([0 max(n)])
-% ylim([0 1.8])
+% %%%%%% max |\phi^(n) (x)| vs. n  %%%%%%%
+%  
+% support_bound = 700;
+% n = 0:10:500;
+% sup = [];
+% %scaled_sup = [];
+% % muP = 1/2+1/4;
+% %muP = 1/2 + 1/8;
+% muP = 1/2 + 1/2;
+% %muP = 1/2 + 1/6;
+% % muP = 1/4 + 1/4;
+% for n_times = n
+%     M = max(abs(fast_convolve(n_times, support_bound)) , [], 'all'); % find max;
+%     sup = [sup M]; % concatenate
+%     %scaled_sup = [scaled_sup (n_times^muP)*M]; % concatenate
+%     disp(['Progress: ' num2str(n_times)]);
+% end
+% % figure for SUP
+% figure(1)
+% p1 = plot(n,sup, '-o', 'color','blue', 'LineWidth', 1)
+% %plot(log(n),log(sup), '-o', 'color','blue', 'LineWidth', 1) % plot log instead
+% %xlim([0 max(n)])
+% %ylim([-0.01 0.7])
+% %xlabel('log(n)', 'FontSize',16);
 % xlabel('n', 'FontSize',16);
-% legend('n^{\mu_\phi} \cdot f(n) = n^{3/4}f(n)', 'FontSize',14)
+% ylabel('', 'FontSize', 16 );
+% % figure for SCALED_SUP
+% hold on 
+% n1 = n+1;
+% nY = n1.^(-muP);
+% C=1;
+% p2 = plot(n1, C.*nY, 'LineWidth', 2, 'Color', 'red')
+% %plot(log(n), log(nY), 'LineWidth', 2)  % plot log instead
+% hold off
+% legend('f(n)','n^{-1}', 'FontSize',14);
+% %legend('f(n) = log(max_{K}|\phi^{(n)}|)','log(n^{-\mu_\phi}) = log(n^{-3/4})', 'FontSize',14);
+% 
+% % figure(2)
+% % plot(n,scaled_sup, '-o', 'color','blue', 'LineWidth', 1)
+% % xlim([0 max(n)])
+% % ylim([0 1.8])
+% % xlabel('n', 'FontSize',16);
+% % legend('n^{\mu_\phi} \cdot f(n) = n^{3/4}f(n)', 'FontSize',14)
 
 
 
 
 
-% %%%%%% PLOT THE CONVOLUTION POWER %%%%%%%
-% 
-% h = figure(1)
-% n_times = 301;
-% support_bound = 100;
-% %disp('Calculating...');
-% %data = real(fast_convolve(n_times, support_bound));    % plot the real part
-% %data = imag(fast_convolve(n_times, support_bound));    % plot the img part
-% %data = abs(fast_convolve(n_times, support_bound));      % plot the abs
-% %dim = size(data);
-% %x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
-% %y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
-% %[X, Y] = meshgrid(x, y);
-% %s = surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.5);
-% % xlabel('X', 'FontSize',16);
-% % ylabel('Y', 'FontSize',16);
-% % % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-% % title(['|\phi^{(', num2str(n_times), ')}|'], 'FontSize', 16 );
-% % % colorbar;
-% % % s = meshc(X, Y, data);
-% % xlabel('X');
-% % ylabel('Y');
-% % xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-% % ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-% 
-% % xlim([-floor(dim(1)/4)  floor(dim(2)/4)]);
-% % ylim([-floor(dim(1)/4)  floor(dim(2)/4)]);
-% box off
-% 
-% 
-% % filename = 'C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\CLAS 2021 Math\convolve_1.gif';
-% 
-% 
-% 
-% data = real(fast_convolve(1, support_bound));    % plot the real part
-% dim = size(data);
-% x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
-% y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
-% [X, Y] = meshgrid(x, y);
-% surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.5);
-% %mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
-% view([+60 10])
-% %view(2)
+%%%%%% PLOT THE CONVOLUTION POWER %%%%%%%
+
+h = figure(1)
+h.Position = [100 100 1200 500];
+n_times = 605;
+support_bound = 100;
+%disp('Calculating...');
+%data = real(fast_convolve(n_times, support_bound));    % plot the real part
+%data = imag(fast_convolve(n_times, support_bound));    % plot the img part
+%data = abs(fast_convolve(n_times, support_bound));      % plot the abs
+%dim = size(data);
+%x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
+%y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
+%[X, Y] = meshgrid(x, y);
+%s = surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.5);
 % xlabel('X', 'FontSize',16);
 % ylabel('Y', 'FontSize',16);
 % % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-% title(['|\phi^{(', num2str(i), ')}|'], 'FontSize', 16 );
+% title(['|\phi^{(', num2str(n_times), ')}|'], 'FontSize', 16 );
 % % colorbar;
 % % s = meshc(X, Y, data);
+% xlabel('X');
+% ylabel('Y');
 % xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
 % ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-% %zlim([0 0.005]);
-% %pause(0.05)
-% drawnow
-% 
-% 
-% 
-% for i=1:n_times
-%     data = real(fast_convolve(i, support_bound));    % plot the real part
-%     dim = size(data);
-%     x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
-%     y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
-%     [X, Y] = meshgrid(x, y);
-%     surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.5);
-%     %mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
-%     view([+60 10])
-%     %view(2)
-%     xlabel('X', 'FontSize',16);
-%     ylabel('Y', 'FontSize',16);
-%     % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-%     title(['|\phi^{(', num2str(i-1), ')}|'], 'FontSize', 16 );
-%     % colorbar;
-%     % s = meshc(X, Y, data);
-%     xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-%     ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-%     %zlim([0 1/4]);
-%     %pause(0.05)
-%     %zlim([0 0.005]);
-%     drawnow
-%     
-%     
-% %     % save as GIF
-% %     % Capture the plot as an image
-% %     frame = getframe(h);
-% %     im = frame2im(frame);
-% %     [imind,cm] = rgb2ind(im,256);
-% %     % Write to the GIF File
-% %     if i == 1
-% %         imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime', 0.03);
-% %     else
-% %         imwrite(imind,cm,filename,'gif','WriteMode','append','DelayTime', 0.03);
-% %     end
-%     
-% end
+
+% xlim([-floor(dim(1)/4)  floor(dim(2)/4)]);
+% ylim([-floor(dim(1)/4)  floor(dim(2)/4)]);
+box off
+
+
+filename = 'C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\CLAS 2021 Math\Gaussian.gif';
+
+data = real(fast_convolve(1, support_bound));    % plot the real part
+dim = size(data);
+x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
+y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
+[X, Y] = meshgrid(x, y);
+
+
+subplot(1,2,1)
+surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.9);
+%mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
+view([+50 20])
+%view([+140 30]) %gaussian
+xlabel('X', 'FontSize',16);
+ylabel('Y', 'FontSize',16);
+% title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+%title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+% colorbar;
+% s = meshc(X, Y, data);
+xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+zlim([0 0.004]);
+
+subplot(1,2,2)
+surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
+%mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
+view([+0 90])
+xlabel('X', 'FontSize',16);
+ylabel('Y', 'FontSize',16);
+% title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+%title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+% colorbar;
+% s = meshc(X, Y, data);
+xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+drawnow
+
+
+
+for i=1:5:n_times
+    data = real(fast_convolve(i, support_bound));    % plot the real part
+    dim = size(data);
+    x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
+    y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
+    [X, Y] = meshgrid(x, y);
+    subplot(1,2,1)
+    surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.9);
+    view([+50 20])
+    %view([+140 30]) %gaussian
+    xlabel('X', 'FontSize',16);
+    ylabel('Y', 'FontSize',16);
+    title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+    %title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+    % colorbar;
+    % s = meshc(X, Y, data);
+    xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+    ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+    zlim([0 0.004]);
+
+
+    subplot(1,2,2)
+    surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
+    view([+0 90])
+    %view(2)
+    xlabel('X', 'FontSize',16);
+    ylabel('Y', 'FontSize',16);
+    % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+    %title(['|\phi^{(', num2str(i-1), ')}|'], 'FontSize', 16 );
+    %title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+    title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+    % colorbar;
+    % s = meshc(X, Y, data);
+    xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+    ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+    drawnow
+    
+    
+    %sgtitle('Simple Random Walk in Z^2', 'FontSize', 16 ) 
+    
+    
+    % save as GIF
+    % Capture the plot as an image
+    frame = getframe(h);
+    im = frame2im(frame);
+    [imind,cm] = rgb2ind(im,256);
+    % Write to the GIF File
+    if i == 1
+        imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime', 0.03);
+    else
+        imwrite(imind,cm,filename,'gif','WriteMode','append','DelayTime', 0.03);
+    end
+    
+end
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -184,9 +217,9 @@ Phi(-1+shift, 0+shift)  = 1/4;
 
 
 
-% simple Example with E = diag(1/4, 1/4).
-% no cross terms
-
+% % simple Example with E = diag(1/4, 1/4).
+% % no cross terms
+% 
 % Phi = zeros(9,9);
 % shift = floor(9/2)+1;
 % 
