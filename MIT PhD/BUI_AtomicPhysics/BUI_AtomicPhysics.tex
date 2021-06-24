@@ -123,7 +123,7 @@
 \begin{document}
 \begin{titlepage}\centering
  \clearpage
- \title{{\textsc{\textbf{ATOMIC PHYSICS}}}\\ \smallskip - A Quick Guide - \\}
+ \title{{\textsc{\textbf{EXPERIMENTAL ATOMIC PHYSICS}}}\\ \smallskip - A Quick Guide - \\}
  \author{\bigskip Huan Q. Bui}
   \affil{B.A., COLBY COLLEGE (2021) $\,$\\  
   	MASSACHUSETTS INSTITUTE OF TECHNOLOGY}
@@ -143,10 +143,10 @@ $\,$\\
 
 While I have spent most of my undergraduate years in Professor Charles Conover's lab at Colby College working on cold atom experiments, I never had \textit{formal} training in atomic, molecular, and optical physics. The closest to formal training I have for AMO physics is a standard quantum mechanics course I took in the fall of my junior year. Most of the intuition I have for atomic physics, I learned from my discussions with Professor Conover or read from books and articles here and there. This article is my attempt at \textit{formally} teaching myself this subject. It will mostly contain basic/essential concepts in AMO physics. I'll also sprinkle in a few ideas or definitions that are relevant to what I do in Prof. Zwierlein's group. \\
 
-This article is my version of an ``atomic physics dictionary,'' which should keep growing as I go along in my education and research at MIT. As a result, there is no good way for me to organize the topics here but by alphabetical order (hence ``dictionary''). I don't know how well I'll be able to curate this article, but we'll see.\\
+This article is my version of an ``atomic physics dictionary,'' which should keep growing as I go along in my education and research at MIT. As a result, there is no good way for me to organize the topics here but by alphabetical order (hence ``dictionary''). I don't know how well I'll be able to curate this article, but we'll see. As the title suggests, this article is about \textit{experimental} atomic physics. So I will try to include not just atomic physics theory but also experimental techniques/designs and some control and electronics theory. \\
 
 
-In any case, good luck and, most importantly, enjoy!
+In any case, enjoy and please feel free to report any errors!
 
 
 \newpage
@@ -355,6 +355,229 @@ If the transitions used for Doppler cooling have natural linewidths $\gamma$, th
 T_\text{Doppler} = \f{\hbar \gamma}{2k_B}
 \end{equation*} 
 where $k_B$ is the Boltzmann constant. This is usually much higher than the \textcolor{blue}{recoil temperature}, which is the temperature associated with the momentum gained from spontaneous emission. 
+
+
+
+
+
+
+\section*{Dynamical System \& Feedback}
+
+
+
+This section is mostly based on Sections II and III of \cite{bechhoefer2005feedback}. \\
+
+
+Dynamical systems are often represented by some differential equation. A simple example is a \textbf{low-pass filter}, to which many sensors are equivalent. 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{images/low-pass-filter}
+	\caption{From \cite{bechhoefer2005feedback}}
+\end{figure}
+
+Let the potentials be with respect to ground. By Kirchoff's law we have
+\begin{equation*}
+V_\text{out}(t) = \f{Q(t)}{C} = V_\text{in} - Ri(t) = V_\text{in} - R\dot{Q}(t) = V_\text{in} - RC\dot{V}_\text{out}.
+\end{equation*}
+So we have the following differential equation:
+\begin{equation*}
+\dot{V}_\text{out}(t) = -\f{1}{RC} V_\text{out}(t) + \f{1}{RC}V_\text{in}(t).
+\end{equation*}
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{images/DDHO}
+	\caption{From \cite{bechhoefer2005feedback}}
+\end{figure}
+
+
+
+Another simple (and canonical) system is the damped driven harmonic oscillator:
+\begin{equation*}
+m\ddot{q} + 2\gamma \dot{q} + kq = k q_0(t).
+\end{equation*}
+Here, $\omega_0^2 = k/m$ is the natural resonance frequency, and we define $\zeta = \gamma/ \sqrt{mk}$ to be the damping parameter, with $0 <\zeta <1 $ for underdamping and $\zeta > 1$ for overdamping. With these, we have
+\begin{equation*}
+\ddot{q} + 2\zeta \dot{q} + q = q_0(t). 
+\end{equation*}
+From standard ODE theory, this second-order equation can be written as a system of two coupled first order ODEs. 
+
+
+\subsection*{Laplace transform}
+
+
+While thinking in time domain can be most natural, sometimes it is much more useful and intuitive to solve problems in control theory/dynamics systems in frequency domain. There two main tools for this purpose: Fourier transform and Laplace transform. In control theory, the Laplace transform has certain advantages over the Fourier transform since physical problems often have initial values that are more compatible with Laplace-transform methods. While the inverse Laplace transform is not as symmetric and ``nice'' as the Fourier transform, it is capable of transforming functions which do not decay to zero at infinity such as the Heaviside step function. Similarly, the Laplace transform can also handle unstable systems. The Laplace transform $y(s)$ of some signal $y(t)$ is given by 
+\begin{equation*}
+y(s) \equiv \lag[y(t)] = \int^\infty_0 y(t)e^{-ts}\,dt.
+\end{equation*}
+Two important identities of the Laplace transform are:
+\begin{equation*}
+\lag[d^n y(t)/dt^n] = s^n y(s) \quad \text{and} \quad \lag\lb \int y(t)\,dt \rb = \f{1}{s}y(s).
+\end{equation*}
+These identities are what make the Laplace transform useful: it transforms a differential equation into an algebraic equation. For example, Laplace-transforming the first-order equation
+\begin{equation*}
+\dot{y}(t) = -\omega_0 y(t) + \omega_0 u(t)
+\end{equation*}
+gives
+\begin{equation*}
+sy(s) = \omega_0 [ u(s) - y(s)],
+\end{equation*}
+which gives
+\begin{equation*}
+G(s) \equiv \f{y(s)}{u(s)} = \f{1}{1+ s/\omega_0}.
+\end{equation*}
+
+Here, $G(s)$ is called the \textbf{transfer function}, $u(s)$ is the driving function, i.e., the \textbf{input}, and $y(s)$ is the response, i.e., the \textbf{output}. The transfer function is the ratio of output to input (in frequency domain). In this particular example, $\omega_0 = 1/RC = 2\pi f_0$ is the characteristic angular frequency of the low-pass filter. \\
+
+The \textbf{frequency response} of the system is a measure of the magnitude and phase of the output as a function of frequency, in comparison to the input. For example, if a sine wave is injected into a system at a certain frequency, a linear system will respond at that same frequency with a certain amplitude and phase relative to the input. Also, doubling the input amplitude also doubles the output amplitude. Thus, for linear (and time-invariant) systems, the frequency response can be seen as applying the system's transfer function to a purely imaginary number argument representing the frequency of the sinusoidal excitation. \\
+
+In even simpler terms, by evaluating $G(s)$ at $s = i\omega$,  we have
+\begin{equation*}
+G(i\omega) = \f{y(i\omega)}{u(i\omega)}.
+\end{equation*}
+Now note that $y(i\omega)$ and $u(i\omega)$ are the Fourier transforms, i.e,. the \textbf{spectra}, of the output and input, respectively. This is what we mean by $G(i\omega)$ being the system's frequency response to the (spectrum) of the input. \\
+
+
+In any case, back to our example, we have
+\begin{equation*}
+G(i\omega) = \f{1}{1 + i\omega/\omega_0}. 
+\end{equation*}
+From here, we can find the \textbf{amplitude} and \textbf{phase} of the frequency response $G(i\omega)$:
+\begin{equation*}
+\abs{G(i\omega)} = \f{1}{\sqrt{1+ \omega_0^2/\omega^2}} \quad \text{and} \quad \arg(G(i\omega)) = -\tan^{-1} \f{\omega}{\omega_0}.
+\end{equation*}
+So, the frequency response of a system is simply the transfer function obtained by the Fourier transform. 
+
+
+
+\subsection*{Bode magnitude and phase plots}
+
+The \textbf{Bode plot} for a linear, time-invariant system (which is what we're interested in most of the time -- so I will drop this condition from now on) with transfer function $G(s)$ consists of a magnitude and a phase plot.\\
+
+
+The \textbf{Bode magnitude plot} is the log-log plot of $\abs{G(i\omega)}$ against $\omega$ (or $\omega_0$). Often, the magnitude is given in \textit{decibels}, i.e., the value being plotted is given by $20 \log_{10} \abs{G(i\omega)}$.  
+
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/bode-1st-order}
+	\caption{From \cite{bechhoefer2005feedback}. Transfer function for a first-order, low pass filter. (a) Bode magnitude plot. The asymptotes intersect at the cutoff frequency $\omega_0$.  (b) Bode phase plot. The phase lag is $-\pi/2$ asymptotically, crossing $-\pi/4$ at $\omega_0$. }
+\end{figure}
+
+
+
+
+Similarly, the Laplace/Fourier transfer functions for the damped driven harmonic oscillator are 
+\begin{equation*}
+G(s) = \f{1}{1 + 2\zeta s + s^2} \quad \text{and}\quad G(i\omega) = \f{1}{1+ 2i\zeta\omega - \omega^2}.
+\end{equation*}
+With corresponding Bode plots:
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/bode-2nd-order}
+	\caption{From \cite{bechhoefer2005feedback}. Transfer function for the damped driven harmonic oscillator. $\zeta = 1$ shows critically damped dynamics, while $\zeta = 0.1$ shows underdamped dynamics. (a) Bode magnitude plot.  (b) Bode phase plot. }
+\end{figure}
+
+
+
+\subsection{Convolution theorem and transfer functions}
+
+
+The convolution theorem says that
+\begin{equation*}
+\lag[G\ast H] = G(s)H(s),
+\end{equation*} 
+where $\ast$ denotes the convolution. This is not hard to prove and is left to the reader. \\
+
+
+The convolution is needed when one wants to describe compound systems where the output of one element is fed into the input of the next element. Consider the following example. Suppose we have a damped driven harmonic oscillator as before: 
+\begin{equation*}
+\ddot{y} + 2\zeta \dot{y} + y = u(t)
+\end{equation*}
+with a first-order sensor which reports the position of the oscillator:
+\begin{equation*}
+\dot{v} + v = y(t). 
+\end{equation*}
+Here, we see that $u(t)$ drives the oscillator $y(t)$, and $y(t)$ drives the sensor output $v(t)$. Laplace transforming both equations gives
+\begin{equation*}
+y(s) = G(s)u(s) = \f{1}{1 + 2\zeta s + s^2}u(s) \quad \text{and} \quad v(s) = H(s)y(s) = \f{1}{1+s} y(s),
+\end{equation*}
+and so $v(s) = H(s) G(s) u(s) \equiv F(s) u(s)$. We see that having two elements in series leads to a transfer function that is the product
+of the transfer functions of the individual elements. This motivates the block diagram below. We note that in time domain, the products become convolution products. 
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{images/block-1}
+	\caption{From \cite{bechhoefer2005feedback}}
+\end{figure}
+
+
+\subsection*{Feedback}
+
+
+Let some system be given whose dynamics is given by $G(s)$. Let the output be $y(t)$. Our goal is to make $y(t)$ follow some \textbf{control signal} $r(t)$ as faithfully as possible. To do this, we measure the \textbf{error signal} $e(t) = r(t) - y(t)$. We now apply some control law $K$ such that $\abs{e(t)}$ or $a\abs{e(t)}^2$ is minimized. The entire feedback system can be represented by the following block diagram:
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{images/block-2}
+	\caption{From \cite{bechhoefer2005feedback}.}
+\end{figure}
+
+We ask what the relationship between the control signal and output signal is. To work this out, we first look at the top line. The error signal is used to generate the output signal. This relationship is 
+\begin{equation*}
+y(s) = G(s)K(s) e(s). 
+\end{equation*}
+Now, to the bottom line. The output is fed back into the system to generate a new error signal. We have $e(s) = r(s) - y(s)$, so 
+\begin{align*}
+y(s) = G(s)K(s) e(s) = G(s)K(s) [r(s) - y(s)] \\\implies y(s) = \f{K(s)G(s)}{1 + K(s)G(s)}r(s) \equiv \f{L(s)}{1 + L(s)}r(s) \equiv T(s) r(s). 
+\end{align*}
+
+Consider the low pass filter again, but this time with a DC gain $G_0$
+\begin{equation*}
+G(s) = \f{G_0}{1+ s/\omega_0},
+\end{equation*}
+and proportional feedback control law $K(s) = K_p$, a constant. Then, we have
+\begin{equation*}
+T(s) = \f{K_p G_0}{K_p G_0 + 1 + s/\omega_0} = \f{K_p G_0}{K_p G_0 +1} \f{1}{1 + s/[\omega_0(1 + K_p G_0)]}
+\end{equation*}
+This is nothing but a low pass filter once again, with modified gain and cutoff frequency. The new DC gain is of course $K_p G_0 / (1 + K_p G_0)$, and the new cutoff frequency is $\omega_0(1 + K_p G_0)$. \\
+
+
+Next, we consider the effects of an output disturbance $d(t)$ and sensor noise $\xi(t)$. The corresponding block diagram is now
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{images/block-3}
+	\caption{From \cite{bechhoefer2005feedback}.}
+\end{figure}
+Here, we have
+\begin{equation*}
+e(s) = r(s) - [y(s) + \xi(s)] = r(s) - y(s) - \xi(s) 
+\end{equation*}
+and
+\begin{equation*}
+y(s) = G(s) K(s) e(s) + d(s).
+\end{equation*}
+From here, we find 
+\begin{equation*}
+y(s) = \f{KG}{1+KG}[r(s) - \xi(s)] + \f{1}{1+ KG}d(s). 
+\end{equation*}
+
+
+
+
+
+
+
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{E}
 
@@ -1002,6 +1225,9 @@ By changing the bias $\Delta$, it is possible to create spin imbalances, spin os
 
 \section*{Zeeman slower}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 
 
 

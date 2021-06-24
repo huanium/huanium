@@ -67,7 +67,7 @@ tic
 h = figure(1)
 h.Position = [100 100 1200 500];
 n_times = 605;
-support_bound = 100;
+support_bound = 200;
 %disp('Calculating...');
 %data = real(fast_convolve(n_times, support_bound));    % plot the real part
 %data = imag(fast_convolve(n_times, support_bound));    % plot the img part
@@ -93,7 +93,7 @@ support_bound = 100;
 box off
 
 
-filename = 'C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\CLAS 2021 Math\Gaussian.gif';
+filename = 'C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\CLAS 2021 Math\Ex10_minmax.gif';
 
 data = real(fast_convolve(1, support_bound));    % plot the real part
 dim = size(data);
@@ -105,7 +105,7 @@ y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
 subplot(1,2,1)
 surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.9);
 %mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
-view([+50 20])
+view([+30 20])
 %view([+140 30]) %gaussian
 xlabel('X', 'FontSize',16);
 ylabel('Y', 'FontSize',16);
@@ -116,7 +116,8 @@ title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
 % s = meshc(X, Y, data);
 xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
 ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-zlim([0 0.004]);
+% zlim([0 0.004]);
+zlim([min(data(:)) max(data(:))]);
 
 subplot(1,2,2)
 surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
@@ -143,7 +144,7 @@ for i=1:5:n_times
     [X, Y] = meshgrid(x, y);
     subplot(1,2,1)
     surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.9);
-    view([+50 20])
+    view([+30 20])
     %view([+140 30]) %gaussian
     xlabel('X', 'FontSize',16);
     ylabel('Y', 'FontSize',16);
@@ -153,7 +154,8 @@ for i=1:5:n_times
     % s = meshc(X, Y, data);
     xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
     ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-    zlim([0 0.004]);
+    zlim([min(data(:)) max(data(:))]);
+
 
 
     subplot(1,2,2)
@@ -183,9 +185,9 @@ for i=1:5:n_times
     [imind,cm] = rgb2ind(im,256);
     % Write to the GIF File
     if i == 1
-        imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime', 0.03);
+        imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime', 0.075);
     else
-        imwrite(imind,cm,filename,'gif','WriteMode','append','DelayTime', 0.03);
+        imwrite(imind,cm,filename,'gif','WriteMode','append','DelayTime', 0.075);
     end
     
 end
@@ -207,18 +209,18 @@ disp(' ');
 
 function conv_power = fast_convolve(n_times, support_bound)
 
-% 
-Phi = zeros(3,3);
-shift = floor(3/2)+1;
-Phi( 0+shift, 1+shift)  =  1/4;
-Phi( 0+shift,-1+shift)  = 1/4;
-Phi( 1+shift, 0+shift)  = 1/4;
-Phi(-1+shift, 0+shift)  = 1/4;
+% % 
+% Phi = zeros(3,3);
+% shift = floor(3/2)+1;
+% Phi( 0+shift, 1+shift)  =  1/4;
+% Phi( 0+shift,-1+shift)  = 1/4;
+% Phi( 1+shift, 0+shift)  = 1/4;
+% Phi(-1+shift, 0+shift)  = 1/4;
 
 
 
-% % simple Example with E = diag(1/4, 1/4).
-% % no cross terms
+% simple Example with E = diag(1/4, 1/4).
+% no cross terms
 % 
 % Phi = zeros(9,9);
 % shift = floor(9/2)+1;
@@ -351,33 +353,33 @@ Phi(-1+shift, 0+shift)  = 1/4;
 
 
 
-% % NEW EXAMPLE! in the paper
-% Phi = zeros(21,21);
-% shift = floor(21/2)+1;
-% % interesting example where \Omega = {(0,0), (pi,pi)} (see paper)
-% Phi(  0+shift, 0+shift)  = 346751/524288 - 341i/1024;
-% Phi( -1+shift, 0+shift)  = 15/128 + 15i/128;
-% Phi(  1+shift, 0+shift)  = 15/128 + 15i/128;
-% Phi( -2+shift, 0+shift)  = -53361/1048576 - 19i/256;
-% Phi(  2+shift, 0+shift)  = -53361/1048576 - 19i/256;
-% Phi( -3+shift, 0+shift)  = 1/128 + 1i/128;
-% Phi(  3+shift, 0+shift)  = 1/128 + 1i/128;
-% Phi( -4+shift, 0+shift)  = 495/262144 + 7i/512;
-% Phi(  4+shift, 0+shift)  = 495/262144 + 7i/512;
-% Phi( -6+shift, 0+shift)  = -1045/2097152 - 1i/256;
-% Phi(  6+shift, 0+shift)  = -1045/2097152 - 1i/256;
-% Phi( -8+shift, 0+shift)  = 69/1048576 + 1i/2048;
-% Phi(  8+shift, 0+shift)  = 69/1048576 + 1i/2048;
-% Phi(-10+shift, 0+shift)  = -9/2097152;
-% Phi( 10+shift, 0+shift)  = -9/2097152;
-% Phi(  0+shift, 1+shift)  = 1/8 + 1i/8;
-% Phi(  0+shift,-1+shift)  = 1/8 + 1i/8;
-% Phi(  0+shift, 2+shift)  = -1/32 - 15i/512;
-% Phi(  0+shift,-2+shift)  = -1/32 - 15i/512;
-% Phi(  0+shift, 4+shift)  = 3i/256;
-% Phi(  0+shift,-4+shift)  = 3i/256;
-% Phi(  0+shift, 6+shift)  = -1i/512;
-% Phi(  0+shift,-6+shift)  = -1i/512;
+% NEW EXAMPLE! in the paper
+Phi = zeros(21,21);
+shift = floor(21/2)+1;
+% interesting example where \Omega = {(0,0), (pi,pi)} (see paper)
+Phi(  0+shift, 0+shift)  = 346751/524288 - 341i/1024;
+Phi( -1+shift, 0+shift)  = 15/128 + 15i/128;
+Phi(  1+shift, 0+shift)  = 15/128 + 15i/128;
+Phi( -2+shift, 0+shift)  = -53361/1048576 - 19i/256;
+Phi(  2+shift, 0+shift)  = -53361/1048576 - 19i/256;
+Phi( -3+shift, 0+shift)  = 1/128 + 1i/128;
+Phi(  3+shift, 0+shift)  = 1/128 + 1i/128;
+Phi( -4+shift, 0+shift)  = 495/262144 + 7i/512;
+Phi(  4+shift, 0+shift)  = 495/262144 + 7i/512;
+Phi( -6+shift, 0+shift)  = -1045/2097152 - 1i/256;
+Phi(  6+shift, 0+shift)  = -1045/2097152 - 1i/256;
+Phi( -8+shift, 0+shift)  = 69/1048576 + 1i/2048;
+Phi(  8+shift, 0+shift)  = 69/1048576 + 1i/2048;
+Phi(-10+shift, 0+shift)  = -9/2097152;
+Phi( 10+shift, 0+shift)  = -9/2097152;
+Phi(  0+shift, 1+shift)  = 1/8 + 1i/8;
+Phi(  0+shift,-1+shift)  = 1/8 + 1i/8;
+Phi(  0+shift, 2+shift)  = -1/32 - 15i/512;
+Phi(  0+shift,-2+shift)  = -1/32 - 15i/512;
+Phi(  0+shift, 4+shift)  = 3i/256;
+Phi(  0+shift,-4+shift)  = 3i/256;
+Phi(  0+shift, 6+shift)  = -1i/512;
+Phi(  0+shift,-6+shift)  = -1i/512;
 
 conv_power = Phi;
 
