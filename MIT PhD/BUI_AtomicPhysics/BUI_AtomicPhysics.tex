@@ -567,6 +567,85 @@ From here, we find
 y(s) = \f{KG}{1+KG}[r(s) - \xi(s)] + \f{1}{1+ KG}d(s). 
 \end{equation*}
 
+Assuming that we're still working with a low pass filter, we make a few remarks:
+\begin{itemize}
+	\item The disturbances $d(t)$ would have been rejected up to cutoff frequency $\omega' = \omega_0(1+ K_p G_0)$. This is a good thing. 
+	
+	\item The control signal effectively becomes $r-\xi$, and the system has no way to distinguish the control signal from the measurement noise $\xi(t)$. This means that the higher the gain is (recall that the gain is $KG/(1+KG)$), the noisier the output. 
+\end{itemize}
+
+
+The frequency $\omega'$ is called the \textbf{feedback bandwidth}. From our analysis we see that high feedback bandwidth is \textbf{good} because it allows the system to track rapidly varying control, but also \textbf{bad} because it also noise through which contaminates the output. This tradeoff can be express by rewriting the equation above as 
+\begin{align*}
+e_0(s) \equiv r(s) - y(s) &= r(s) - \lb \f{KG}{1+KG}[r(s) - \xi(s)] + \f{1}{1+ KG}d(s)  \rb \\
+&= \f{1}{1+KG}[r(s) - d(s)] + \f{KG}{1+KG}\xi(s) \\
+&\equiv S(s)[r(s) - d(s)] + T(s) \xi(s). 
+\end{align*}
+Here, we call $e_0(s)$ the \textbf{tracking error signal}, $S(s)$ the \textbf{sensitivity function} and $T(s) = 1- S(s)$ the \textbf{complementary sensitivity function}. The goal is to minimize $e_0$, of course. However, a fundamental obstacle is that $S+T = 1$ at all frequencies: if $S$ is small and disturbances are rejected then the output becomes noisy, and vice versa. There are ways around this, though. 
+
+
+\subsection*{Feedforward}
+
+
+Wikipedia has a nice explanation for \textbf{feedforward} so I'll just paste it here: ``With feed-forward or feedforward control, the disturbances are measured and accounted for before they have time to affect the system. In the house example, a feed-forward system may measure the fact that the door is opened and automatically turn on the heater before the house can get too cold. The difficulty with feed-forward control is that the effects of the disturbances on the system must be accurately predicted, and there must not be any unmeasured disturbances. For instance, if a window was opened that was not being measured, the feed-forward-controlled thermostat might let the house cool down.'' \\
+
+
+To implement this, one may apply a \textbf{prefilter} $F(s)$ to the control signal $r(s)$. In the absence of any feedback, the system response is just $y(s) = F(s)G(s)r(s)$. If we can choose $F = G^{-1}$ then $y$ just follows $r$ directly, which is what we mean by ``feedforward.'' In practice, it is impossible to find $F = G^{-1}$; however, one can approximate $G^{-1}$. \\
+
+
+Since it is not possible to implement feedforward and because disturbances are usually unknown, in practice one usually combines feedforward with feedback. A block diagram for this scheme has the form
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{images/block-4}
+	\caption{From \cite{bechhoefer2005feedback}}
+\end{figure}
+
+The output now becomes
+\begin{equation*}
+y(s) = \f{KG}{1+KG}[F(s)r(s) - \xi(s) ] + \f{1}{1+KG}d(s).
+\end{equation*}
+
+Choose $F$ as close as possible to $1+(KG)^{-1}$ reduces the load on the feedback while simultaneously rejecting disturbances via the feedback loop. 
+
+
+\subsection*{Case study: Operational Amplifier (OpAmp)}
+
+
+An op amp is basically a very high gain differential amplifier that uses negative feedback to trade off high gain for reduced sensitivity to drift. 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{images/op-amp}
+	\caption{From \cite{bechhoefer2005feedback}}
+\end{figure}
+
+The op amp in the configuration above does the following:
+\begin{equation*}
+V_\text{out} = A(V_\text{in} - V_-),
+\end{equation*}
+where $A$ is the gain. We want to find the transfer function $G$ which is also the closed-loop gain. The resistors $R_1$ and $R_2$ form a voltage divider:
+\begin{equation*}
+V_- = V_\text{out} \f{R_2}{R_1 + R_2} \equiv V_\text{out} \beta.
+\end{equation*}
+From here, we can find 
+\begin{equation*}
+G = \f{V_\text{out}}{V_\text{in}} = A - A\f{V_-}{V_\text{in}} = A - A\f{V_\text{out}}{V_\text{in}} \beta \implies G = \f{V_\text{out}}{V_\text{in}} = \f{A}{1+A\beta}. 
+\end{equation*}
+When $A \gg 1$, we have an approximation:
+\begin{equation*}
+G \approx \f{1}{\beta} = \f{R_1 + R_2}{R_2} = 1 + \f{R_1}{R_2}. 
+\end{equation*}
+
+
+
+
+
+
+
+
+\subsection*{Integral control}
+
 
 
 
