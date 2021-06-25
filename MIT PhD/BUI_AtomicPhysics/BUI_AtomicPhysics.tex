@@ -167,7 +167,7 @@ Atomic coherence is often discussed in the context of Rabi flopping. If a cohere
 
 The coherence time is the time over which the system maybe considered coherent. 
 
-\section*{Avoided crossing}
+\section*{Avoided crossing} 
 
 
 \begin{figure}[!htb]
@@ -484,7 +484,7 @@ With corresponding Bode plots:
 
 
 
-\subsection{Convolution theorem and transfer functions}
+\subsection*{Convolution theorem and transfer functions}
 
 
 The convolution theorem says that
@@ -646,9 +646,52 @@ G \approx \f{1}{\beta} = \f{R_1 + R_2}{R_2} = 1 + \f{R_1}{R_2}.
 
 \subsection*{Integral control}
 
+So far, we have only covered proportional control, which suffers from \textbf{proportional droop} -- meaning that there is always some non-zero difference between the set point and the output of the system: only for an infinite gain that $y_\infty = r_\infty$. \\
 
 
+In integral control, one applies a control $K_i \int_{-\infty}^t e(t')\,dt'$ instead of (just) the proportional term $K_p e(t)$. As long as $e(t) \neq 0$, the integral will build up and eliminates steady state error. This can be seen in the time domain:
+\begin{equation*}
+\dot{y}(t) = -\omega_0 y(t) + \omega_0^2 K_i \int_{-\infty}^t [r_\infty - y(t')]\,dt'
+\end{equation*} 
+which after differentiating gives
+\begin{equation*}
+\ddot{y}(t) = -\omega_0\dot{y}(t) + \omega_0^2 K_i [r_\infty - y(t)]
+\end{equation*}
+which has steady state solution $y_\infty = r_\infty$. Now we want to go into frequency domain. To do this, we first recall that $y(s) = K(s) G(s) e(s)$. To find $K(s)$, we Laplace-transform $K(t)$, which requires the identity $\lag[\int e(t)\,dt] = e(s)/s$:
+\begin{equation*}
+K(s) = \lag[K(t)] = K_i \f{e(s)}{s}.
+\end{equation*}
+So,
+\begin{equation*}
+\dot{y}(s) = -\omega_0 \lb y(s) + \f{K_i}{s/\omega_0} \rb e(s).
+\end{equation*}
+Consider the low pass filter again with transfer function 
+\begin{equation*}
+G(s) = \f{1}{1+ s/\omega_0}.
+\end{equation*}
+With this $K(s)$, the complementary sensitivity function becomes
+\begin{equation*}
+T(s) = \f{KG}{1+ KG} = \f{1}{1 + \f{s}{\omega_0 K_i} + \f{s^2}{K_i \omega_0^2}}.
+\end{equation*}
+We see that this new transfer function resembles a second-order system. Indeed, the integral control law transform a first-order system into a second-order system, with new natural frequency ${\omega_0'}^2 = K_i \omega_0^2$ and $\zeta = 1/2\sqrt{K_i}$. \\
 
+
+Integral control can be improved by combining with proportional control:
+\begin{equation*}
+K(s)  = K_p + \f{K_i}{s/\omega_0},
+\end{equation*}
+which gives faster response while still eliminating steady-state errors. One can write down the closed-loop transfer function and show that $T\to 1$ for $\omega\to 0$ and is asymptotically first-order with time constant $1/K_p \omega_0$. \\
+
+
+In general, the transfer function for a PID controller is given by 
+\begin{equation*}
+K(s) = K_p + \f{K_i}{s} + K_d s.
+\end{equation*}
+In a closed-loop system with transfer function $G(s)$ without any noise or measurement error, the overall transfer function is given by 
+\begin{equation*}
+T(s) = \f{K(s)G(s)}{1+ K(s)G(s)}. 
+\end{equation*}
+Adding noise and measurement error follows the same procedure as described above. 
 
 
 
@@ -774,6 +817,12 @@ and the Zeeman shift $\Delta \mu B$ between the singlet and triplet states (whic
 \chapter*{H}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{I}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{J}
+
+
+\section*{Jaynes-Cummings model}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{K}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1129,6 +1178,16 @@ E + \Delta & \Omega \\ \Omega^* & E - \Delta
 \end{pmatrix}.
 \end{equation*}
 
+
+
+
+\section*{Rabi oscillation}
+
+
+
+
+
+
 \section*{Raman scattering}
 
 
@@ -1189,6 +1248,71 @@ Consider an atom undergoing spontaneous emission of a single photon whose moment
 T_r = \f{\hbar^2k^2}{k_Bm} = \f{h^2}{k_B m \lambda^2}.
 \end{equation*} 
 There is a factor of $1/2$ in an alternative definition, which can be obtained from setting $T_r k_B = p^2/2m$. But I'm following the convention set by \cite{metcalf2007laser}, which does not include the factor of $1/2$.
+
+
+
+
+
+
+\section*{Rotating wave approximation}
+
+
+The rotating wave approximation ignores highly oscillatory terms in the Hamiltonian. This is a valid approximation when the applied electromagnetic radiation is near resonance with an atomic transition, and the intensity is low. The name of the approximation comes from the transformation of the Hamiltonian to the \textbf{interaction picture}. In this picture, the atomic Hamiltonian is absorbed into the system ket, and so the evolution due to the interaction with the atom with the light field is the only thing to consider. \\
+
+
+Consider a example of a two-level system with resonance frequency $\omega_0$. The atomic Hamiltonian is 
+\begin{equation*}
+\ham_0 = \f{\hbar \omega_0}{2}\ket{e}\bra{e} - \f{\hbar\omega_0}{2}\ket{g}\bra{g}.
+\end{equation*}
+Now we introduce a classical electric field $\vec{E}(t) = \vec{E}_0 e^{-i\omega_L t} + \vec{E}_0^* e^{+i \omega_L t}$. Under the \textbf{dipole approximation}, the interaction Hamiltonian is given by 
+\begin{equation*}
+\ham_I = -\vec{d} \cdot \vec{E},
+\end{equation*}
+where $\vec{d}$ is the dipole moment operator of the atom. To go further, we have to find the matrix elements of $\vec{d}$. Notice that $\bra{e} \vec{d} \ket{e} = \bra{g}\vec{d}\ket{g} = 0$ due to parity. So, we only have the matrix element $\bra{e} \vec{d} \ket{g}$ and its complex conjugate. Let $\vec{d}_{eg} = \bra{e} \vec{d} \ket{g}$, then $\vec{d}$ is just 
+\begin{equation*}
+\vec{d} = \vec{d}_{eg} \ket{e}\bra{g} + \vec{d}_{eg}^* \ket{g}\bra{e}. 
+\end{equation*}
+With this, the interaction Hamiltonian becomes:
+\begin{align*}
+\ham_1 
+&=  -\vec{d}\cdot \vec{E}\\
+&= - \lp \vec{d}_{eg} \ket{e}\bra{g} + \vec{d}_{eg}^* \ket{g}\bra{e} \rp
+ \cdot \lp \vec{E}_0 e^{-i\omega_L t} + \vec{E}_0^* e^{+i \omega_L t} \rp\\
+&= - \lp \vec{d}_{eg}\cdot \vec{E}_0 e^{-i\omega_L t} + \vec{d}_{eg}\cdot \vec{E}_0^* e^{+i\omega_L t} \rp \ket{e}\bra{g}\\
+&\quad\quad - \lp \vec{d}_{eg}^*\cdot \vec{E}_0 e^{-i\omega_L t} + \vec{d}_{eg}^*\cdot \vec{E}_0^* e^{+i\omega_L t} \rp \ket{g}\bra{e}\\
+&= -\hbar \lp \Omega e^{-i\omega_L t} + \widetilde{\Omega}^*e^{+i\omega_L t} \rp \ket{e}\bra{g} - \lp \widetilde{\Omega}^* e^{-i\omega_L t} + \Omega e^{+i\omega_L t} \rp \ket{g}\bra{e}.
+\end{align*}
+
+The Hamiltonian in the interaction picture is obtained by the unitary transform $\ham_{1,I} = U \ham_1 U^\dagger$ where
+\begin{equation*}
+U = e^{i \ham_0 t/\hbar} = \ket{g}\bra{g} + e^{i\omega_0 t}\ket{e}\bra{e}.
+\end{equation*}
+So we have
+\begin{align*}
+\ham_{1,I} &= U \ham_1 U^\dagger\\
+&= -\hbar \lp \Omega e^{-i\Delta t} + \widetilde{\Omega}^*e^{+i(\omega_L + \omega_0) t} \rp \ket{e}\bra{g} - \hbar\lp \widetilde{\Omega}^* e^{-i(\omega_L  + \omega_0)t} + \Omega e^{+i\Delta t} \rp \ket{g}\bra{e}
+\end{align*}
+where $\Delta = \omega_L - \omega_0$ is the detuning and $\omega_L + \omega_0$ is the high frequency which we want to eliminate. Here is where the rotating approximation comes in: 
+\begin{equation*}
+\ham_{1,I}^{\text{RWA}} = -\hbar \Omega e^{-i\Delta t}  \ket{e}\bra{g} - \hbar\Omega e^{+i\Delta t}  \ket{g}\bra{e}.
+\end{equation*} 
+Transforming this back into the Schr\"{o}dinger picture we have
+\begin{align*}
+\ham_1^\text{RWA} &= U^\dagger\ham_{1,I}^{\text{RWA}}U \\
+&= -\hbar \Omega e^{-i\Delta t}e^{-i \omega_0 t}\ket{e}\bra{g} - \hbar \Omega^* e^{i\Delta t}\ket{g}\bar{e}e^{i\omega_0 t}\\
+&= -\hbar \Omega e^{-i\omega_L t}\ket{e}\bra{g} - \hbar \Omega^* e^{i\omega_L t}\ket{g}\bra{e}.
+\end{align*}
+The total Hamiltonian in the rotating wave approximation is thus
+\begin{align*}
+\ham^\text{RWA} &= \ham_0+ \ham_1^\text{RWA} \\
+&= \f{\hbar \omega_0}{2}\ket{e}\bra{e} - \f{\hbar \omega_0}{2}\ket{g}\bra{g} -\hbar \Omega e^{-i\omega_L t}\ket{e}\bra{g} - \hbar \Omega^* e^{i\omega_L t}\ket{g}\bra{e}.
+\end{align*}
+In the standard basis, we have
+\begin{equation*}
+\ham^\text{RWA} =  \f{\hbar}{2} \begin{pmatrix}
+\omega_0 & -\Omega e^{-i\omega_L t} \\ -\Omega^* e^{i\omega_L t} & -\omega_0
+\end{pmatrix}.
+\end{equation*}
 
 
 
@@ -1293,6 +1417,11 @@ By changing the bias $\Delta$, it is possible to create spin imbalances, spin os
 \chapter*{V}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{W}
+
+
+\section*{WKB approximation}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{X}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
