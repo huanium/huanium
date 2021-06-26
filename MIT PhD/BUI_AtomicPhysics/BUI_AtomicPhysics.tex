@@ -1181,11 +1181,6 @@ E + \Delta & \Omega \\ \Omega^* & E - \Delta
 
 
 
-\section*{Rabi oscillation}
-
-
-
-
 
 
 \section*{Raman scattering}
@@ -1423,6 +1418,143 @@ By changing the bias $\Delta$, it is possible to create spin imbalances, spin os
 
 
 \section*{WKB approximation}
+
+The WKB method is used to find approximate solutions to the time-independent SE in 1D. It is particularly useful in calculating \textbf{bound state energies} and \textbf{tunneling rates} through potential barriers.  The contents of this section are from \cite{harrow8} and \cite{griffiths2018introduction}. \\
+
+
+
+The WKB approximation is slightly different from perturbation theory. Perturbation theory covers the limits where $\delta H $ is small relative to $\abs{E_m^0 - E_n^0}$. The WKB approximation covers the limits where the system is close to being classical (which is why it is also called a \textit{semiclassical approximation}). It results in powers not of $\delta H$ but of $\hbar$, and thus becomes exact in the classical limit ($\hbar \to 0$). \\
+
+
+Before we start, let's set up a few things. First, we have the \textbf{probability density function}
+\begin{equation*}
+\rho(\vec{x},t) = \abs{\psi (\vec{x},t)}^2.
+\end{equation*} 
+From the conservation of probability equation $\p_t P + \vec{\nabla}\cdot \vec{j} = 0$ (which follows from taking the time derivative of $P$ and applying the SE), where $j$ is the probability flux, given by 
+\begin{equation*}
+\vec{j}(\vec{x},t) = \f{\hbar}{2mi}\lb \psi^* \vec{\nabla} \psi - \psi \vec{\nabla} \psi^* \rb = \f{\hbar}{m} \Im \lp \psi^* \vec{\nabla} \psi \rp = \f{1}{m} \Re\lp \psi^* \widehat{p} \psi \rp
+\end{equation*}
+where $\widehat{p} = -i\hbar \vec{\nabla}$ is of course the momentum operator. \\
+
+
+
+We see that if we write the wavefunction $\psi$ as
+\begin{equation*}
+\psi(\vec{x},t) = \sqrt{\rho(\vec{x},t)} e^{iS(x)/\hbar}
+\end{equation*}  
+where $S(x)$ is purely real, then by the definition of $\vec{j}$ we have
+\begin{equation*}
+\vec{j}(\vec{x},t) = \f{\hbar}{m} \Im\lp \psi^* \vec{\nabla} \psi\rp = \f{\hbar}{m} \f{\rho}{\hbar} \vec{\nabla}S. 
+\end{equation*}
+So, the phase function is related to the probability flux:
+\begin{equation*}
+\vec{j}(\vec{x},t) = \rho \f{\vec{\nabla}S }{m}.
+\end{equation*}
+We'll get back to these things later. \\
+
+
+
+Consider a particle with energy $E$ and mass $m$ moving in a potential $V(x)$. Classically, the kinetic energy is $E - V(x)$. This suggests that the momentum can be defined by 
+\begin{equation*}
+p(x) = \sqrt{2m(E-V(x))} \implies \lambda_{\text{de Broglie}} = \f{h}{p(x)} = \f{2\pi \hbar}{p(x)}.
+\end{equation*} 
+We have the following DE:
+\begin{equation*}
+\hbar^2 \p_x^2 \psi = -2m(E-V(x)) \psi \equiv -\kappa^2 \psi. 
+\end{equation*}
+If $V(x) \leq E$ then we have exponentially decaying solutions ``at rate $\kappa(x)$.'' \\
+
+
+Put $\psi(x) = e^{iS(x)/\hbar}$, where $S(x)$ is complex. Substituting this into the SE (for the classical region), we have
+\begin{align*}
+p^2(x) e^{iS(x)/\hbar} &= -\hbar^2 \p_x^2 e^{iS(x)\hbar} \\
+&= -\hbar^2 \lp i \f{S''(x)}{\hbar}  - \f{(S'(x))^2}{\hbar}\rp e^{iS(x)/\hbar}
+\end{align*}
+which gives
+\begin{equation*}
+\boxed{(S')^2 - i\hbar S'' = p^2(x)},
+\end{equation*}
+where derivatives are with respect to $x$. So far this is exact, but here is where the WKB approximation comes in. If the potential $V(x)$ is slowly varying in $x$, then $p(x)$ is also slowly varying in $x$, and the $-i\hbar S''$ term will be small. Here, ``slowly varying'' means that the variation in the potential is across distances that are very large compared to de Broglie wavelength of the particle. In the classical limit, $\hbar$ is small, so we may write 
+\begin{equation*}
+S(x) = S_0(x) + \hbar S_1 (x) + \hbar^2 S_2(x) + \dots
+\end{equation*}
+The WKB approximation takes
+\begin{equation*}
+S(x) = S_0(x) + \hbar S_1(x). 
+\end{equation*}
+substituting this back into the boxed equation and eliminate higher order terms, we find 
+\begin{equation*}
+(S_0')^2 = p^2(x) \, \text{ at } \mathcal{O}(\hbar^0) \quad \text{and } \quad
+2S_0'S_1' - iS_0'' = 0\, \text{ at } \mathcal{O}(\hbar^1).
+\end{equation*}
+The first equation gives
+\begin{equation*}
+S_0(x) = \pm  \int_{x_0}^x p(x')\,dx'
+\end{equation*}
+where $x_0$ is arbitrary, and by substituting this into the second equation, we find 
+\begin{equation*}
+S_1(x) = \f{i}{2} \ln p(x) + C.
+\end{equation*}
+With these, we can write down the approximate wavefunction:
+\begin{align*}
+\psi(\vec{x},t) = e^{iS(x)/\hbar} &\approx e^{i(S_0(x) + \hbar S_1(x))/\hbar}\\
+&= \exp\lp \pm \f{i}{\hbar}\int_{x_0}^x p(x')\,x' \rp \exp \lp -\f{1}{2}\ln p(x) + C \rp
+\end{align*}
+Thus in the classically allowed regions we have the solution
+\begin{equation*}
+\boxed{\psi(\vec{x}) = \f{A}{\sqrt{\abs{p(x)}}} \exp\lp \f{i}{\hbar}\int_{x_0}^x p(x')\,x' \rp  + \f{B}{\sqrt{\abs{p(x)}}} \exp\lp -\f{i}{\hbar}\int_{x_0}^x p(x')\,x' \rp    }
+\end{equation*}
+with $p(x) = \sqrt{2m (E - V(x))}$. In the classically forbidden region, $p(x)$ becomes purely imaginary, and we have
+\begin{equation*}
+\boxed{\psi(\vec{x}) = \f{C}{\sqrt{\abs{p(x)}}} \exp\lp \f{1}{\hbar}\int_{x_0}^x\abs{ p(x')}\,x' \rp  + \f{D}{\sqrt{\abs{p(x)}}} \exp\lp -\f{1}{\hbar}\int_{x_0}^x \abs{p(x')}\,x' \rp    }
+\end{equation*}
+For some details about the validity of the WKB method, see \cite{harrow8}. \\
+
+
+
+\subsection*{Bohr-Sommerfeld quantization}
+WKB generalizes an idea in ``old quantum mechanics'' that quantum orbits are quantized by $h = 2\pi \hbar$. Consider an infinite well, with $V(x)$ finite (not necessarily constant) between $x=0$ and $x=a$ and infinite elsewhere. Assume that $E > V(x)$ for all  $0 < x < a$. The solution from WKB has the form 
+\begin{equation*}
+\psi(x) = \f{1}{\sqrt{p(x)}}C\cos(\phi(x)) + D\sin(\phi(x)). 
+\end{equation*}
+where 
+\begin{equation*}
+\phi(x) = \f{1}{\hbar}\int_{0}^x p(x')\,dx'.
+\end{equation*}
+Since $\psi(0) = \phi(0) = 0$, we find $C =0$. From $\psi(a) = 0$ we find that $\phi(a) = n\pi$. So, we have a quantization condition:
+\begin{equation*}
+\f{1}{\hbar}\int_0^a \sqrt{2m (E_n - V(x))}\,dx = n\pi,
+\end{equation*}
+where $E_n$ is the $n$th energy level. \\
+
+As a sanity check, we see that when $V =0 $ between $x = 0$ and $x=a$, we get the infinite square well energies:
+\begin{equation*}
+E_n = \f{\pi^2 \hbar^2 n^2}{2ma^2}
+\end{equation*}
+
+
+
+
+\subsection*{Connection formulae}
+What if we have potential walls that are not hard vertical walls? For this we will need \textbf{connection formulae}  to connect oscillating solutions in the allowed regions with the decaying solutions in the forbidden regions. 
+
+
+Let's look at what happens when we replace the infinite square well with a harmonic oscillator potential. The Hamiltonian in this case is 
+\begin{equation*}
+H = \f{p^2}{2m} + \f{1}{2} m \omega^2 x^2.
+\end{equation*}
+
+
+
+
+
+
+
+
+
+\subsection*{Tunneling rates}
+As promised, 
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
