@@ -1515,7 +1515,7 @@ For some details about the validity of the WKB method, see \cite{harrow8}. \\
 \subsection*{Bohr-Sommerfeld quantization}
 WKB generalizes an idea in ``old quantum mechanics'' that quantum orbits are quantized by $h = 2\pi \hbar$. Consider an infinite well, with $V(x)$ finite (not necessarily constant) between $x=0$ and $x=a$ and infinite elsewhere. Assume that $E > V(x)$ for all  $0 < x < a$. The solution from WKB has the form 
 \begin{equation*}
-\psi(x) = \f{1}{\sqrt{p(x)}}C\cos(\phi(x)) + D\sin(\phi(x)). 
+\psi(x) = \f{1}{\sqrt{p(x)}} (C\cos(\phi(x)) + D\sin(\phi(x))). 
 \end{equation*}
 where 
 \begin{equation*}
@@ -1544,6 +1544,213 @@ Let's look at what happens when we replace the infinite square well with a harmo
 H = \f{p^2}{2m} + \f{1}{2} m \omega^2 x^2.
 \end{equation*}
 
+Recall that the energy levels are 
+\begin{equation*}
+E_n = \hbar \omega \lp n+ \f{1}{2} \rp. 
+\end{equation*}
+The turning point for each $\ket{n}$ is given by equating the potential and the energy:
+\begin{equation*}
+\f{1}{2}m\omega^2 x^2 = \hbar \omega \lp n+ \f{1}{2} \rp. 
+\end{equation*}
+This gives
+\begin{equation*}
+x_\text{turn} = \pm  \sqrt{\f{\hbar}{m\omega}} \sqrt{2n + 1}.
+\end{equation*}
+Repeating what we've done before, we have
+\begin{equation*}
+\phi(x) = \f{1}{\hbar}\int_{-x_\text{turn}}^{x_\text{turn}} p(x')\,dx' = \f{1}{\hbar}\int_{-x_\text{turn}}^{x_\text{turn}} \sqrt{2m(E - V(x))}\,dx' = \pi \lp n + \f{1}{2} \rp. 
+\end{equation*}
+
+Comparing this to the hard wall problem, we see that there is a difference of $\pi/2$. Why is this?  \\
+
+Before continuing, we can also look at the approximate solution in the forbidden region. Here, suppose that $\abs{x} \gg \sqrt{\hbar/m\omega}$ so that $\sqrt{2m(E-V)} \approx \sqrt{-2m V}$. Applying the WKB approximation we find 
+\begin{equation*}
+\psi \propto e^{-m\omega x^2/2\hbar},
+\end{equation*}
+which is what we would expect. \\
+
+
+
+In any case, let's return to the turning point problem and connection solutions inside and outside. When $E = V(a)$, we say that $a$ is a turning point. Near a turning point, WKB breaks down since solutions go from oscillating to decay and vice versa. When the wall of the potential is not vertical, we can't simply to try match boundary conditions at the border. Something nontrivial will happen at the turning point, which could involve reflection/transmission as well as phase shifts.\\
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/wkb_1}
+\end{figure}
+
+This subsection will follow \cite{griffiths2018introduction}. Near a turning point, let us approximate the potential function by linearizing it:
+\begin{equation*}
+V(x) \approx V(a) + (a-x)V'(a) + \dots
+\end{equation*}
+To simplify notation we shift the origin and the overall energy so that $a=0$ and $E = V(0) = 0$. Near the turning point, the SE looks like 
+\begin{equation*}
+-\f{\hbar^2}{2m} \psi''(x) + xV'(0) \psi(x) = 0 \implies \psi''(x) = \f{2m V'(0)}{\hbar^2} x\psi(x).
+\end{equation*} 
+Define 
+\begin{equation*}
+\al^3 =  \f{2m V'(0)}{\hbar^2} 
+\end{equation*}
+and $z = \al x$, so that we get the following ODE:
+\begin{equation*}
+\boxed{\psi''(z) \psi(z) = z\psi(z)}
+\end{equation*}
+whose solutions are the \textbf{Airy functions}. This is a second-order equation, so the solution space is spanned by two Airy functions: $Ai(z)$ and $Bi(z)$. \\
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=1\textwidth]{images/wkb_2}
+	\caption{From \cite{griffiths2018introduction}}
+\end{figure}
+
+We see that for $z\ll 0$ the solutions are oscillatory while for $z\gg 0$ we have exponential growth/decay. We can then match up the Airy function near the turning point with the decaying and oscillating
+solutions that are valid far from the turning point. This will gives us the \textbf{connection formulae}. \\
+
+
+Here's the high-level picture: In the classically allowed region we have two oscillating solutions. Near the turning point we have two Airy functions as solutions. In the forbidden region we have two exponentially decaying/growing solutions. At each boundary we have two constraints given by the continuity of $\psi$ and $\psi'$. \\
+
+
+Now we're ready to looking at the  connection formulae. Consider one turning point. The \textbf{patching wavefunction} $\psi_p(x)$ which connects the inside and outside WKB wavefunctions  is a linear combination of the oscillatory Airy function $Ai(x)$ and the exponential Airy function $Bi(x)$:
+\begin{equation*}
+\psi_p(x) = a Ai(\al x) + b Bi(\al x).
+\end{equation*}
+
+We need to match this to either side of the patching region. These overlap zones are close enough to the turning point that the linearized potential is reasonable accurate, and yet far enough away from the turning point that the WKB approximation is reliable. With this, we see that in the overlap regions, we have 
+\begin{equation*}
+p(x) \approx \sqrt{2m(E-E-V'(0)x)} = \hbar \al^{3/2}\sqrt{-x}.
+\end{equation*}
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{images/wkb_3}
+	\caption{From \cite{griffiths2018introduction}}
+\end{figure}
+
+
+
+Assuming that the classically forbidden region is $x>0$, we have the WKB wavefunction:
+\begin{align*}
+\psi(x) = 
+\begin{cases}
+\f{1}{\sqrt{p(x)}} \lb Be^{(i/\hbar) \int_x^0 p(x')\,dx'} + C e^{(i/\hbar) \int_x^0 p(x')\,dx'}  \rb, &\quad\quad x < 0 \\
+\f{1}{\sqrt{\abs{p(x)}} }  De^{-(1/\hbar)\int_0^x \abs{p(x')}\,dx'}, &\quad\quad x > 0
+\end{cases}
+\end{align*}
+
+
+Now we match the patching wavefunction to these WKB solutions. In the patching region 2, 
+\begin{equation*}
+\int_0^x \abs{p(x')}\,dx' \approx \hbar \al^{3/2}\int^x_0 \sqrt{x'}\,dx' = \f{2}{3}\hbar (\al x)^{3/2}.
+\end{equation*}
+The WKB solution in this region is 
+\begin{equation*}
+\psi(x) \approx \f{D}{\sqrt{\hbar} \al^{3/4} x^{1/4} } e^{-(2/3)(\al x)^{3/2}},
+\end{equation*}
+while the patching wavefunction is given by the asymptotic form of the Airy function when $z \gg 0$: 
+\begin{equation*}
+\psi_p(x) = \f{a}{2\sqrt{\pi} (\al x)^{1/4}} e^{-(2/3) (\al x)^{3/2}} + \f{b}{\sqrt{\pi} (\al x)^{1/4}} e^{+(2/3) (\al x)^{3/2}}.
+\end{equation*}
+Comparing the two solutions, we must have the following:
+\begin{equation*}
+\boxed{a = \sqrt{\f{4\pi}{\al \hbar} } D \quad \text{and} \quad b =0}
+\end{equation*}
+
+
+Now we repeat the process for region 1. In the wavefunction-matching process, we must now use the asymptotic form of the Airy function for $z\ll 0$. Finally, comparing the coefficients, one finds that
+\begin{equation*}
+\boxed{\f{a}{2i\sqrt{\pi} }e^{i\pi /4}  = \f{B}{\sqrt{\hbar \al}} \quad \text{and} \quad \f{-a}{2i \sqrt{\pi}}e^{-i\pi /4} =  \f{C}{\sqrt{\hbar \al}}}
+\end{equation*}
+From the previous boxed equation, we find 
+\begin{equation*}
+\boxed{B = -ie^{i\pi/4} D \quad \text{and} \quad C = ie^{-i\pi /4} D} 
+\end{equation*}
+which puts everything in terms of $D$. These are called the \textbf{connection formulae}, which join the WKB solutions at either side of the turning point. By shifting the turning point back from the origin to some arbitrary $x_2$, the WKB wavefunction becomes
+\begin{align*}
+\boxed{
+\psi(x) \approx 
+\begin{cases}
+\f{2D}{\sqrt{p(x)}} \sin\lb \f{1}{\hbar} \int_x^{x_2} p(x')\,dx' + \f{\pi}{4} \rb, &\quad\quad x < x_2\\
+\f{D}{\sqrt{\abs{p(x)}}} e^{-(1/\hbar) \int_{x_2}^x \abs{p(x')}\,dx'}, &\quad\quad x > x_2.
+\end{cases}}
+\end{align*}
+This situation is with allowed region on the left and forbidden region on the right. We can do the same thing for a setup where the allowed region is on the right and forbidden region on the left. The solution in the latter case is 
+\begin{align*}
+\boxed{
+	\psi(x) \approx 
+	\begin{cases}
+	\f{D'}{\sqrt{\abs{p(x)}}} e^{-(1/\hbar) \int_{x}^{x_1} \abs{p(x')}\,dx'}, &\quad\quad x < x_1\\
+	\f{2D'}{\sqrt{p(x)}} \sin\lb \f{1}{\hbar} \int_{x_1}^{x} p(x')\,dx' + \f{\pi}{4} \rb, &\quad\quad x > x_1
+	\end{cases}}
+\end{align*}
+
+
+With these, let's consider some potentials. It turns out the WKB lets us find not just \textbf{quantization rules} but also \textbf{the oscillation of solutions} within the classically allowed region.
+\begin{itemize}
+	\item \textbf{Potential well with one vertical wall:} Suppose there is a wall at $x=0$. Then we have $\psi(0) = 0$. Assume further that in this situation the left of $x_2$ is allowed but the right is forbidden. 
+	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.75\textwidth]{images/wkb_4}
+		\caption{From \cite{griffiths2018introduction}}
+	\end{figure}
+
+	To the left of $x_2$, the solution is sinusoidal and must satisfy 
+	\begin{align*}
+	&\f{1}{\hbar} \int_0^{x_2} p(x')\,dx' + \f{\pi}{4} = n\pi\\
+	 &\implies \boxed{\int_0^{x_2} p(x')\,dx' = \lp n - \f{1}{4} \rp\pi \hbar, \quad n = 1,2,3,\dots}
+	\end{align*}
+	
+	
+	For this case, consider the example of a \textbf{half-harmonic oscillator}. The potential is 
+	\begin{equation*}
+	V(x) = \begin{cases}
+	\f{1}{2}m\omega^2 x^2, &\quad x > 0\\
+	0, &\quad x \leq 0
+	\end{cases}
+	\end{equation*}
+	Then in this case
+	\begin{equation*}
+	p(x) = \sqrt{2m(E - (1/2) m\omega^2 x^2 )} = m\omega \sqrt{x_2^2 -x^2}
+	\end{equation*}
+	where the turning point $x_2$ is given by 
+	\begin{equation*}
+	x_2 = \f{1}{\omega}\sqrt{\f{2E}{m}}.
+	\end{equation*}
+	This gives
+	\begin{equation*}
+	\int_0^{x_2}p(x')\,dx' = \dots = \f{\pi E}{2\omega} = \lp n - \f{1}{4} \rp \pi\hbar.
+	\end{equation*}
+	This leads to
+	\begin{equation*}
+	E_n = \lp 2n - \f{1}{2}   \rp \hbar \omega, \quad n = 1,2,3,\dots
+	\end{equation*}
+	
+	
+	\item \textbf{Potential well with no vertical walls.} In this case, the oscillatory solutions (from patching at the two turning points) must be equal. This means that
+	\begin{align*}
+	\f{2D'}{\sqrt{p(x)}} \sin\lb \f{1}{\hbar} \int_{x_1}^{x} p(x')\,dx' + \f{\pi}{4} \rb 
+	&= \f{2D}{\sqrt{p(x)}} \sin\lb \f{1}{\hbar} \int_x^{x_2} p(x')\,dx' + \f{\pi}{4} \rb \\
+	&= -\f{2D}{\sqrt{p(x)}} \sin\lb - \f{1}{\hbar} \int_x^{x_2} p(x')\,dx' - \f{\pi}{4} \rb 
+	\end{align*}
+	The arguments inside the sine function must be equal (up to $n\pi$). So, we must have
+	\begin{equation*}
+	\boxed{\int_{x_1}^{x_2} p(x)\,dx = \lp n - \f{1}{2} \rp  \pi \hbar, \quad n = 1,2,\dots}
+	\end{equation*}
+	This quantization rule allows us to calculate allowed energies, provided the form of the potential $V$.
+	
+	
+	
+	\item \textbf{Potential well with two vertical walls.} This is standard stuff:
+	\begin{equation*}
+	\boxed{\int_{x_1}^{x_2}p(x)\,dx = n\pi \hbar, \quad n = 1,2,\dots}
+	\end{equation*}
+	
+	
+	
+	\item Problem 8.15 of \cite{griffiths2018introduction} deals with the case of a double well potential. The reader  is highly encouraged to give it a try.
+\end{itemize}
 
 
 
@@ -1553,8 +1760,37 @@ H = \f{p^2}{2m} + \f{1}{2} m \omega^2 x^2.
 
 
 \subsection*{Tunneling rates}
-As promised, 
+WKB can also be used to compute tunneling rates. The tunneling rate is just the transition probability:
+\begin{equation*}
+T = \f{\abs{F}^2}{\abs{A}^2}  
+\end{equation*}
 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/wkb_5}
+	\caption{From \cite{griffiths2018introduction}. Potential to be tunneled through.}
+\end{figure}
+
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{images/wkb_6}
+	\caption{From \cite{griffiths2018introduction}. Tunneling wavefunction.}
+\end{figure}
+
+
+Both the incoming and transmitted wavefunctions are oscillatory. Using WKB, we can calculate $T$. The formula is 
+\begin{equation*}
+\boxed{T = \f{\abs{F}^2}{\abs{A}^2}   = \exp\lb -\f{2}{\hbar} \int_0^a \abs{p(x)}\,dx \rb \equiv e^{-2\gamma}}
+\end{equation*}
+
+From tunneling rates one can also calculate \textbf{lifetimes}. To do this, we use the following conversion rule:
+\begin{equation*}
+\text{lifetime} = \f{1}{\text{tunnel. prob. per unit time}} \approx \f{1}{T \cdot \text{\# hits per unit time}} = \f{1}{T \f{1}{\tau}} = \f{\tau}{T}
+\end{equation*}
+where $\tau$ is the period of oscillation between the two turning points in which the particle is trapped. We won't worry too much about lifetime calculations.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
