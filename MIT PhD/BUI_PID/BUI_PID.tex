@@ -163,7 +163,7 @@ A first guess is setting the driving function to be the desired position, i.e., 
 \begin{equation*}
 x(\omega) = G(\omega) r(\omega).
 \end{equation*}
-A convenient way to see how the system may respond to any driving function is to study the transfer function $G(\omega)$ using the \textbf{amplitude} and \textbf{phase Bode plots}. The former is almost always a log-log plot, while the latter can either be a linear-linear or log-linear plot. For our system, we can generate these plots (Figure \ref{fig:bode_1}) in Mathematica using the following code. 
+A convenient way to see how the system may respond to any driving function is to study the transfer function $G(\omega)$ using the \textbf{amplitude} and \textbf{phase Bode plots}. The former is almost always a log-log plot, while the latter can either be a linear-linear or log-linear plot. For our system, we can generate these plots (Figure \ref{fig:bode_1}) in Mathematica using the following Mathematica code. 
 
 \begin{lstlisting}
 \[Beta] = 2; \[Omega]0 = 2*Pi;
@@ -286,14 +286,25 @@ Taking the Fourier transform and rearranging gives
 T(\omega) \equiv \f{v_\text{out}(\omega)}{v_\text{in}(\omega)} = \f{1}{1+iRC \omega}.
 \end{equation*}
 
-The Bode plots (Figure \ref{fig:bode_2}) associated with the open-loop system are generated using the following commands. 
+The Bode plots (Figure \ref{fig:bode_2}) associated with the open-loop system are generated using the following Mathematica commands. 
 \begin{lstlisting}
-LogLogPlot[Abs[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0, 200}, 
-AxesLabel -> {\[Omega]/"\[Omega]0", Abs[KG]}]
+Kd = 1; Kp = \[Beta]*Kd; Ki = \[Omega]0^2*Kd;
 
-LogLinearPlot[Arg[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0.01, 200}, 
-PlotRange -> Full, AxesLabel -> {\[Omega]/"\[Omega]0", Arg[KG]}]
+K[\[Omega]_] := Kp - I*Ki/\[Omega] + I*Kd*\[Omega]; 
+
+
+LogLogPlot[Abs[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0, 200}, 
+AxesLabel -> {\[Omega]/"\[Omega]0", Abs[KG[\[Omega]]]}]
+
+LogLinearPlot[Arg[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0.01, 400}, 
+PlotRange -> Full, 
+AxesLabel -> {\[Omega]/"\[Omega]0", Arg[KG[\[Omega]]]}, 
+Exclusions -> None]
 \end{lstlisting}
+
+
+
+
 
 
 \begin{figure}
@@ -324,7 +335,19 @@ This is basically a driven harmonic oscillator with a modified natural frequency
 \begin{equation*}
 x(\omega\ll \omega_P) \approx \f{K_p}{1+K_p} r(\omega) \approx r(\omega),
 \end{equation*}
-which says that the gain is very close to unity $\omega$ within $\omega_P$ (again, assuming that $P\gg 1$). Both of these features can be seen in Figure \ref{fig:bode_3}. 
+which says that the gain is very close to unity $\omega$ within $\omega_P$ (again, assuming that $P\gg 1$). Both of these features can be seen in Figure \ref{fig:bode_3}, generated using the following Mathematica code.
+\begin{lstlisting}
+Kd = 0; Kp = 100; Ki = 0;
+
+K[\[Omega]_] := Kp - I*Ki/\[Omega] + I*Kd*\[Omega]; 
+T[\[Omega]_] := G[\[Omega]]*K[\[Omega]]/(1 + G[\[Omega]]*K[\[Omega]]);
+
+LogLogPlot[Abs[T[a*\[Omega]0]], {a, 0, 200}, 
+AxesLabel -> {\[Omega]/"\[Omega]0", Abs[T]}]
+
+LogLinearPlot[Arg[T[a*\[Omega]0]], {a, 0.01, 400}, PlotRange -> Full, 
+AxesLabel -> {\[Omega]/"\[Omega]0", Arg[T]}, Exclusions -> None]
+\end{lstlisting}
 
 
 \begin{figure}
