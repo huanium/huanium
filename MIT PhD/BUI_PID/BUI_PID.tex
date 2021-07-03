@@ -135,13 +135,13 @@ Consider a 1D harmonic oscillator with natural resonance frequency $\omega_0$ an
 \ddot{x}(t) + \be \dot{x}(t) + \omega_0^2 x(t) = \omega_0^2 y(t).
 \end{equation*}
 
-There are many ways to solve this ODE, but in the context of control theory, we will proceed using the Fourier transform (or the Laplace transform). The point of the FT is twofold: (1) we convert a differential equation into an algebraic equation, and (2) we from the time domain to the frequency domain, where analysis becomes more ``intuitive'' (eventually, anyway). \\
+There are many ways to solve this ODE, but in the context of control theory, we will proceed using the Fourier transform (or the Laplace transform). The point of the FT is twofold: (1) we convert a differential equation into an algebraic equation, and (2) we go from the time domain to the frequency domain, where analysis becomes more ``intuitive'' (eventually, anyway).  \\
 
-In any case, define the FT of $x(t)$ as 
+\noindent In any case, we define the FT of $x(t)$ as 
 \begin{equation*}
 x(\omega) = \int \f{d t }{2\pi } e^{i\omega t} x(t). 
 \end{equation*}
-We note that factors of $2\pi$ don't really matter here since we now take the FT of both sides of the ODE to find
+Factors of $2\pi$ don't really matter here since we now take the FT of both sides of the ODE to find
 \begin{equation}\label{eq:ODE}
 -\omega^2 x(\omega) + i\beta \omega x(\omega) + \omega_0^2 x(\omega) = \omega_0^2 y(\omega).
 \end{equation}
@@ -149,21 +149,21 @@ Here, we have used the following identity:
 \begin{equation*}
 \F\lb \f{d^n }{dt^n} x(t) \rb = (i\omega)^n x(\omega).
 \end{equation*}
-From \eqref{eq:ODE}, we can define $G(\omega)$, the \textbf{impulse response function} (in frequency domain) as the ratio of output $x(\omega)$ over input $y(\omega)$:
+From \eqref{eq:ODE}, we can define $G(\omega)$, the \textbf{impulse response function} (in frequency domain), as the ratio of output $x(\omega)$ over input $y(\omega)$:
 \begin{equation*}
 G(\omega) \equiv \f{x(\omega)}{y(\omega)} = \f{1}{(\omega_0^2 - \omega^2) + i\beta \omega}
 \end{equation*}
-We can justify why $G$ is called as such by considering the impulse input $y(t) = y_0 \delta(t)$ and find that $G(\omega) = x(\omega)/y_0$. More commonly, $G(\omega)$ is also known as the \textbf{transfer function} of the system.\footnote{There might be some confusion here regarding whether to use the Fourier or Laplace transform. Here's the resolution: If we're using the FT, then evaluate $G$ at $\omega\in \mathbb{R}$. If we're using the LT, then evaluate $G$ at $i\omega$.}\\
+We can justify why $G$ is called as such by considering the impulse input $y(t) = y_0 \delta(t)$ and find that $G(\omega) = x(\omega)/y_0$. More commonly, $G(\omega)$ is also known as the \textbf{transfer function} of the system.\footnote{There might be some confusion here regarding whether to use the Fourier or Laplace transform. Here's the resolution: If we're using the FT, then evaluate $G$ at $\omega\in \mathbb{R}$. If we're using the LT, then evaluate $G$ at $i\omega$.} With $G(\omega)$, we have basically solved the problem: given some input $y(\omega)$, we can inverse-FT to find $x(t)$ from $x(\omega)$ via $G(\omega)$. 
 
-
-We have basically solved the problem: given some input $y(\omega)$, we can inverse-FT to find $x(t)$ from $x(\omega)$ via $G(\omega)$. Now, suppose we want to control the position of the oscillator so that $x(t)$ follows some desired position $r(t)$ as faithfully as possible. How do we do this? \\
-
+\begin{framed}
+	\noindent Suppose we want to control the position of the oscillator so that $x(t)$ follows some desired position $r(t)$ as faithfully as possible. How do we do this? 
+\end{framed}
 
 A first guess is setting the driving function to be the desired position, i.e., $y(t) = r(t)$. In this case, we have 
 \begin{equation*}
 x(\omega) = G(\omega) r(\omega).
 \end{equation*}
-A convenient way to see how the system may respond to any driving function is to study the transfer function $G(\omega)$ using the \textbf{amplitude} and \textbf{phase Bode plots}. The former is almost always a log-log plot, while the latter can either be a linear-linear or log-linear plot. For our system, we can generate these plots (Figure \ref{fig:bode_1}) in Mathematica using the following Mathematica code. 
+A convenient way to see how the system may respond to any driving function is to study the transfer function $G(\omega)$ using the \textbf{amplitude} and \textbf{phase Bode plots}. The former is almost always a log-log plot, while the latter can either be a linear-linear or log-linear plot. For our system, we can generate these plots (Figure \ref{fig:bode_1}) in Mathematica using the following Mathematica code. \footnote{For the reader who is disinclined to create a new Mathematica notebook, the Mathematica code for this article can be downloaded \href{https://huanqbui.com/MIT PhD/BUI_AtomicPhysics/mathematica/PID_DDSHO.nb}{here}.}
 
 \begin{lstlisting}
 \[Beta] = 2; \[Omega]0 = 2*Pi;
@@ -179,7 +179,7 @@ AxesLabel -> {\[Omega]/"\[Omega]0", Arg[G]}]
 \end{lstlisting}
 
 
-\begin{figure}
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{bode_1}
 	\quad
@@ -190,7 +190,7 @@ AxesLabel -> {\[Omega]/"\[Omega]0", Arg[G]}]
 
 
 
-To continue our analysis, we consider different regimes for $\omega$:
+\noindent To continue our analysis, we consider different regimes for $\omega$:
 \begin{itemize}
 	\item  For low frequencies ($\omega \ll \omega_0$), the system follows the drive quite well: $\abs{G} \approx 1$ and the phase lag $\arg(G) \approx 0$.
 	
@@ -220,17 +220,17 @@ To continue our analysis, we consider different regimes for $\omega$:
 So, we have a problem: using $y(t) = r(t)$ itself as a driving function is only good when $\omega$ is very small. But there's a way around this (otherwise this article wouldn't exist). For our system to follow $r(t)$ more faithfully, the driving function must also take into account the current position $x(t)$ \textbf{relative} to the reference $r(t)$. This is \textbf{feedback}: we control our system based on not just the reference but also the current state of the system. Feedback is nice because it detects if the system lags behind or if its amplitude is too large or too small and tries to compensate accordingly. Furthermore, it allows us to correct for \textbf{noise}, which appears in all real system. While we can simply let some function $\xi(t)$ represent noise, we won't worry about it for the forthcoming part of our analysis. \\
 
 
-What we have to do now is instead of naively setting $y(t) = r(t)$, we will first define some \textbf{error signal} $\epsilon(t)$ and try to minimize it. The error signal is simply how far away our system is from the reference:
+What we have to do is instead of naively setting $y(t) = r(t)$, we will first define some \textbf{error signal} $\epsilon(t)$ and try to minimize it. The error signal is simply how far away our system is from the reference:
 \begin{equation*}
 \epsilon(t) = r(t) - x(t).
 \end{equation*}
 
-With the error signal, we can now define the driving function $y(t)$ such that $y(t)$ changes the system to minimize $e(t)$. This is where the three letters \textbf{P-I-D} come in. Intuitively, we want $y(t)$ to do the following things:
+\noindent With the error signal, we can now define the driving function $y(t)$ such that $y(t)$ changes the system to minimize $e(t)$. This is where the three letters \textbf{P-I-D} come in. Intuitively, we want $y(t)$ to do the following things:
 \begin{itemize}
 	\item If $\epsilon(t)$ is large (large error), then $y(t)$ should also be large (large correction), and vice versa. So, we can set $y(t) = K_p \epsilon(t)$. This is \textbf{P}, which stands for \textbf{Proportional}. Here $K_p$ is called the \textbf{proportional gain}. 
 	
 	
-	\item If $\epsilon(t)$ has been large \textit{so far} (still far away from reference), then $y(t)$ must also be large (move faster towards reference), and vice versa. We can set $y(t) = K_i \int_0^t \epsilon(t')\,dt'$. This is \textbf{I}, which stands for \textbf{Integral}. Here, $K_i$ is called the \textbf{integral gain}. \footnote{The lower bound of the integral can be $0$ or $-\infty$ -- this doesn't really matter too much here.}
+	\item If the system is not at the reference for a long time, then $y(t)$ must be larger to move the system faster towards the reference, and vice versa. We can set $y(t) = K_i \int_0^t \epsilon(t')\,dt'$. This is \textbf{I}, which stands for \textbf{Integral}. Here, $K_i$ is called the \textbf{integral gain}. \footnote{The lower bound of the integral can be $0$ or $-\infty$ -- this doesn't really matter too much here.}
 	
 	
 	\item If $\epsilon(t)$ is changing fast, then we're still far away from the reference, so we make $y(t)$ large to approach the reference faster. So we set $y(t)= K_d \dot{\epsilon}(t)$. This is \textbf{D}, which stands for \textbf{Derivative}. Here, $K_d$ is called the \textbf{derivative gain}. 
@@ -240,7 +240,8 @@ Putting everything together, we have the \textbf{PID control function}
 \begin{equation*}
 y(t) = K_p \epsilon(t) + K_i \int_0^t \epsilon(t')\,dt' + K_d \f{d}{dt}\epsilon(t).
 \end{equation*}
-Now, this is just another ODE. And just we before, we can go to Fourier space to solve it. Here, our system is the PID controller, and the input is the driving function. Inspired by our previous approach, we can also define an impulse response function $K(\omega)$ for the PID controller:
+
+This is just another ODE. And just as we did before, we can go to Fourier space to solve it. Our system is the PID controller, and the input is the driving function. Inspired by our previous approach, we can also define an impulse response function $K(\omega)$ for the PID controller:
 \begin{equation*}
 y(\omega) = \lp K_p - i\f{K_i}{\omega} + iK_d\omega \rp \epsilon(\omega) \equiv K(\omega) \epsilon(\omega),
 \end{equation*}
@@ -252,12 +253,12 @@ So, we have $x(\omega) = G(\omega)y(\omega)$ and $y(\omega) = K(\omega)[r(\omega
 \begin{equation*}
 x(\omega)  = \f{K(\omega) G(\omega)}{1+ K(\omega) G(\omega)} r(\omega) \equiv T(\omega) r(\omega),
 \end{equation*} 
-which is now completely independent of $y(\omega)$ and $\epsilon(\omega)$ and is dependent only on the reference and $\omega$. This is what we want. Note how we have chosen the error signal such that there is a $(-)$ sign in front of $x(t)$. This is so that the error signal goes in the direction which reduces the error. \\
+which is now completely independent of $y(\omega)$ and $\epsilon(\omega)$ and is dependent only on the reference and $\omega$. This is what we want. Note how we have chosen the error signal such that there is a $(-)$ sign in front of $x(t)$. This is so that the error signal makes $y(t)$ goes in the direction which reduces the error. \\
 
-Our system is now a combination of the ``bare'' system with the oscillator and the PID controller. Depending on $K_i, K_p, K_d$ we may or may not have resonance. The goal of PID tuning, which we will do ``experimentally'' later, is to find these three parameters such that the system has good response in a large frequency range. Ideally, we want the gain to be \textbf{unity} and phase lag to be (near) zero for as large $\omega$ as possible.\\
+\noindent Our system is now a combination of the ``bare'' system with the oscillator and the PID controller. Depending on $K_i, K_p, K_d$ we may or may not have resonance. The goal of PID tuning, which we will do ``experimentally'' later, is to find these three parameters such that the system has good response in a large frequency range. Ideally, we want the gain to be \textbf{unity} and phase lag to be (near) zero for as large $\omega$ as possible.\\
 
 
-Before analyzing each of P-I-D separately, let us first consider a special set of $K_p, K_i, K_d$ for the resonance in $G(\omega)$ is canceled out. Recall that the transfer function for the composite system is 
+Before analyzing each of P-I-D separately, let us first consider a special set of $K_p, K_i, K_d$ for the resonance in $G(\omega)$ to canceled out. Recall that the transfer function for the composite system is 
 \begin{equation*}
 T(\omega) = \f{K(\omega)G(\omega)}{1+K(\omega) G(\omega)}.
 \end{equation*}
@@ -273,20 +274,7 @@ we have
 \begin{equation*}
 K(\omega) = \f{-iK_i}{\omega}
 \end{equation*}
-which no longer have the $\omega_0$ frequency. Also, we see that the open-loop (i.e., $KG$ only) system now has a $1/\omega$ frequency response (1st-order) rather than a $\sim 1/\omega^2$ (2nd-order). Meanwhile, the closed-loop transfer function is 
-\begin{equation*}
-T(\omega) = \f{K(\omega)G(\omega)}{1+ K(\omega) G(\omega)} = \f{1}{1+ i\omega/K_i}.
-\end{equation*}
-This is nothing but a low-pass filter with time constant $\tau = 1/K_i$. To see why, we have to recall the ODE for the low-pass filter: 
-\begin{equation*}
-v_\text{out}(t) = v_\text{in} (t) - RC \f{d}{dt}v_\text{out}(t)
-\end{equation*}
-Taking the Fourier transform and rearranging gives
-\begin{equation*}
-T(\omega) \equiv \f{v_\text{out}(\omega)}{v_\text{in}(\omega)} = \f{1}{1+iRC \omega}.
-\end{equation*}
-
-The Bode plots (Figure \ref{fig:bode_2}) associated with the open-loop system are generated using the following Mathematica commands. 
+which no longer have the $\omega_0$ frequency. Also, we see that the open-loop (i.e., $KG$ only) system now has a $1/\omega$ frequency response (1st-order) rather than a $\sim 1/\omega^2$ (2nd-order). The Bode plots (Figure \ref{fig:bode_2}) associated with the open-loop system are generated using the following Mathematica commands. 
 \begin{lstlisting}
 Kd = 1; Kp = \[Beta]*Kd; Ki = \[Omega]0^2*Kd;
 
@@ -307,7 +295,7 @@ Exclusions -> None]
 
 
 
-\begin{figure}
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{bode_3}
 	\quad
@@ -317,6 +305,21 @@ Exclusions -> None]
 \end{figure}
 
 
+
+
+\noindent Meanwhile, the closed-loop transfer function is 
+\begin{equation*}
+T(\omega) = \f{K(\omega)G(\omega)}{1+ K(\omega) G(\omega)} = \f{1}{1+ i\omega/K_i}.
+\end{equation*}
+This is nothing but a low-pass filter with time constant $\tau = 1/K_i$. To see why, we have to recall the ODE for the low-pass filter: 
+\begin{equation*}
+v_\text{out}(t) = v_\text{in} (t) - RC \f{d}{dt}v_\text{out}(t)
+\end{equation*}
+Taking the Fourier transform and rearranging gives
+\begin{equation*}
+T(\omega) \equiv \f{v_\text{out}(\omega)}{v_\text{in}(\omega)} = \f{1}{1+iRC \omega}.
+\end{equation*}
+The time constant is $\tau = RC$. 
 
 
 
@@ -332,10 +335,14 @@ Rearranging gives
 \ddot{x}(t) + \beta \dot{x} + \omega_0^2 (1+K_p) x(t) = \omega_0^2 K_p P r(t). 
 \end{equation*}
 This is basically a driven harmonic oscillator with a modified natural frequency of $\omega_P = \omega_0 \sqrt{1+K_p}$. When the proportional gain $K_p$ is very high $(K_p \gg 1)$, the modified natural frequency is much greater than the original natural frequency, $\omega_P \gg \omega$. As a result, the oscillator can follow the reference without significant phase lags even with $\omega$'s much larger than $\omega_0$. Meanwhile, the gain can be calculated from  
-\begin{equation*}
-x(\omega\ll \omega_P) \approx \f{K_p}{1+K_p} r(\omega) \approx r(\omega),
-\end{equation*}
-which says that the gain is very close to unity $\omega$ within $\omega_P$ (again, assuming that $P\gg 1$). Both of these features can be seen in Figure \ref{fig:bode_3}, generated using the following Mathematica code.
+\begin{align*}
+x(\omega\ll \omega_P) 
+&= G(\omega)\bigg\vert_{\omega \ll \omega_0} r(\omega)\\
+&= \f{\omega_0^2 K_p}{\omega_0^2(1+K_p)-\omega^2 + i\beta \omega}\bigg\vert_{\omega\ll \omega_0} r(\omega) \\
+&\approx \f{K_p}{1+K_p} r(\omega) \\
+&\approx r(\omega),\quad\quad \text{ when } K_p \gg 1
+\end{align*}
+which says that the gain is very close to unity $\omega$ within $\omega_P$ (again, assuming that $K_p\gg 1$). Both of these features can be seen in Figure \ref{fig:bode_3}, generated using the following Mathematica code.
 \begin{lstlisting}
 Kd = 0; Kp = 100; Ki = 0;
 
@@ -350,7 +357,7 @@ AxesLabel -> {\[Omega]/"\[Omega]0", Arg[T]}, Exclusions -> None]
 \end{lstlisting}
 
 
-\begin{figure}
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{bode_5}
 	\quad
@@ -361,7 +368,7 @@ AxesLabel -> {\[Omega]/"\[Omega]0", Arg[T]}, Exclusions -> None]
 
 
 
-So why not use only P rather than PID? Well, the catch is that we just pushed the resonance frequency of our system to a much higher value which could be comparable to variations due to noise. If noise is around the modified resonance frequency $\omega_P$ then resonance will kick in. There are two types of noise: $d(t)$ due to disturbance to our system (more or less ``mechanical'') and $\xi(t)$ which is measurement noise (usually fast). The total dynamics will then be 
+So why not use only P rather than PID? Well, one catch is that we just pushed the resonance frequency of our system to a much higher value which could be comparable to variations due to noise. If noise is around the modified resonance frequency $\omega_P$ then resonance will kick in. There are two types of noise: $d(t)$ due to disturbance to our system (more or less ``mechanical'') and $\xi(t)$ which is measurement noise (usually fast). The total dynamics will then be 
 \begin{equation*}
 x(\omega) = K(\omega)G(\omega) \epsilon(\omega) + d(\omega)
 \end{equation*}
@@ -373,20 +380,143 @@ which gives
 \begin{equation*}
 x(\omega) = \f{K(\omega)G(\omega)}{1+K(\omega)G(\omega)}[r(\omega)-\xi(\omega)] + \f{1}{1+K(\omega)G(\omega)}d(\omega).
 \end{equation*}
-From here, we see that for really high proportional gain (i.e., $\abs{K} \gg 1$), the $d(\omega)$ noise will be suppressed up to $\omega_P$, which is good. However, the measurement noise $\xi(t)$ gets mixed up with the referent signal $r(\omega)$ and amplified. One can define the tracking error, which is the difference between the reference $r$ and the actual position $x$ (all error free), in terms of the errors:
+From here, we see that for really high proportional gain (i.e., $\abs{K} \gg 1$), the $d(\omega)$ noise will be suppressed up to $\omega_P$, which is good. However, the measurement noise $\xi(t)$ gets mixed up with the referent signal $r(\omega)$ and amplified. To analyze this further, one can define the tracking error, which is the difference between the reference $r$ and the actual position $x$ (all error free), in terms of the errors:
 \begin{equation*}
 \epsilon_0 \equiv r - x = S(r-d) + T\xi
 \end{equation*}
-with the \textbf{sensitivity function} $S$ and \textbf{complimentary sensitivity function} $T$. The goal is to make $\epsilon_0$ as small as possible, but we're limited by the fact that $S+T=1$ for all $\omega$. For small $S$ disturbances are rejected but then $T$ is large and measurement noise is coupled in, and vice versa.For more information on this part, the reader may reference \cite{bechhoefer2005feedback}.
+with the \textbf{sensitivity function} $S$ and \textbf{complimentary sensitivity function} $T$. The goal is to make $\epsilon_0$ as small as possible, but we're limited by the fact that $S+T=1$ for all $\omega$. This means that for small $S$, disturbances are rejected but then $T$ is large and measurement noise is coupled in, and vice versa.For more information on this part, the reader may reference \cite{bechhoefer2005feedback}.
 
 
 \subsection{The I-gain}
 
+Another reason why we can't just have $P$-gain is because proportional control suffers from ``proportional droop.'' When $\omega=0$, the DC value $r(\omega=0)$ is not faithfully reproduced, because 
+\begin{equation*}
+x(\omega=0) = \f{K_p}{1+K_p}r(\omega=0) \neq r(\omega=0).
+\end{equation*}
+Basically, this says that there is always some non-zero difference between the reference $r(t)$ and the output of the system $x(t)$. Only for infinite gain $(K_p \to \infty)$ can $x(t)$ match the reference, which we know is not possible physically. \\
+
+This is where the integral gain comes in. Like we said before, the point is that the longer the system is not at the reference, i.e., if $\int e(t')\,dt'$ is large, then $y(t)$ must be large to push the system towards the reference faster. The equation of motion is 
+\begin{equation*}
+\ddot{x} + \beta \dot{x} + \omega_0^2 x(t) = \omega^2 K_i  \int_0^t e(t')\,dt' = \omega^2 K_i  \int_0^t [r(t') - x(t')]\,dt'
+\end{equation*}
+Differentiating both sides, we get
+\begin{equation*}
+\ddddot{x} + \beta \ddot{x} + \omega_0^2 \dot{x}(t) = \omega^2 K_i [ r(t) -x(t) ],
+\end{equation*}
+which has a steady-state solution $x_\infty = r_\infty$. We can also see this by going into Fourier space:
+\begin{equation*}
+x(\omega) = K(\omega) r(\omega) = \lp -i \f{K_i}{\omega} \rp r(\omega).
+\end{equation*}
+We recognize that we have infinite gain $\abs{K} \to \infty$ at DC ($\omega\to 0$). 
 
 
 \subsection{Instability}
 
+It is possible to get instability with feedback. To study when instability might occur, we can revisit the closed-loop transfer function equation:
+\begin{equation*}
+x(\omega) = \f{K(\omega) G(\omega)}{1+ K(\omega)G(\omega)} r(\omega).
+\end{equation*}
+
+It is clear that instability occurs when $K(\omega)G(\omega) = -1$. But since both $K$ and $G$ are complex, this single condition for instability can be split into two (simultaneous) conditions: $\abs{KG} = 1$ \textbf{and} $\arg(KG) = \pi$. \\
+
+
+\noindent For the bare system where $K\equiv 1$, the phase lag is $\pi$ only for $\omega \gg \omega_0$ (see Figure \ref{fig:bode_1}) and $\abs{G} = 1$ only for low frequencies,  so instability is not a problem there. \\
+
+
+\noindent We also don't get instability with pure (ideal) P-gain (see Figure \ref{fig:bode_2}, which acts similarly to Figure \ref{fig:bode_1}). However, it is important to mention that the preceding statement only holds for ideal systems where there is no time lag the measurement and the drive. \\
+
+
+\noindent With pure I-gain, instability becomes a problem because we have a $\pi$ phase lag when $\omega = \omega_0$ due to $K(\omega) = -iK_i/\omega$ (see Figures \ref{fig:bode_4} and \ref{fig:bode_5}). To avoid instability (at resonance) we must have $\abs{GK} < 1$ at resonance. This limits our integral gain to $I < \omega_0/Q$, where $Q$ is the quality factor. To see this, we do the following computation:
+\begin{equation*}
+\abs{GK}\bigg\vert_{\omega_0} < 1 \implies \f{K_i}{\omega_0} \abs{G(\omega_0)} = Q < 1 \implies  K_i < \f{\omega_0}{Q}
+\end{equation*}
+where we recall that 
+\begin{equation*}
+G(\omega_0) = \abs{\f{\omega_0^2}{\omega_0^2 - \omega_0^2 + i\beta \omega_0}} = \f{\omega_0}{\beta} = Q.
+\end{equation*}
+
+
+\noindent Instability in pure I-gain by $K_i > \omega_0/Q$:
+\begin{lstlisting}
+Kd = 0; Kp = 0; Ki = 100; \[Beta] = 2; \[Omega]0 = 2*Pi;
+
+K[\[Omega]_] := Kp - I*Ki/\[Omega] + I*Kd*\[Omega]; 
+G[\[Omega]_] := \[Omega]0^2/((\[Omega]0^2 - \[Omega]^2) + 
+I*\[Beta]*\[Omega]); 
+T[\[Omega]_] := G[\[Omega]]*K[\[Omega]]/(1 + G[\[Omega]]*K[\[Omega]]);
+
+LogLogPlot[Abs[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0.01, 5}, 
+AxesLabel -> {\[Omega]/"\[Omega]0", Abs[KG[\[Omega]]]}]
+
+LogLinearPlot[Arg[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0.01, 100}, 
+PlotRange -> Full, 
+AxesLabel -> {\[Omega]/"\[Omega]0", Arg[KG[\[Omega]]]}, 
+Exclusions -> None]
+\end{lstlisting}
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{bode_7}
+	\quad
+	\includegraphics[width=0.45\textwidth]{bode_8}
+	\caption{Pure I-gain system. Instability occurs at resonance ($\abs{KG}> 1$ since $K_i = 1 < \omega_0/Q = \beta = 2$).} %
+	\label{fig:bode_4}
+\end{figure}
+
+
+\noindent Instability removed in pure I-gain by $K < \omega_0/Q$:
+\begin{lstlisting}
+Kd = 0; Kp = 0; Ki = 100; \[Beta] = 2; \[Omega]0 = 2*Pi;
+
+K[\[Omega]_] := Kp - I*Ki/\[Omega] + I*Kd*\[Omega]; 
+G[\[Omega]_] := \[Omega]0^2/((\[Omega]0^2 - \[Omega]^2) + 
+I*\[Beta]*\[Omega]); 
+T[\[Omega]_] := G[\[Omega]]*K[\[Omega]]/(1 + G[\[Omega]]*K[\[Omega]]);
+
+LogLogPlot[Abs[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0.01, 5}, 
+AxesLabel -> {\[Omega]/"\[Omega]0", Abs[KG[\[Omega]]]}]
+
+LogLinearPlot[Arg[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0.01, 100}, 
+PlotRange -> Full, 
+AxesLabel -> {\[Omega]/"\[Omega]0", Arg[KG[\[Omega]]]}, 
+Exclusions -> None]
+\end{lstlisting}
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{bode_9}
+	\quad
+	\includegraphics[width=0.45\textwidth]{bode_10}
+	\caption{Pure I-gain system. Instability no longer occurs at resonance ($\abs{KG}< 1$ since $K_i = 1 < \omega_0/Q = \beta = 2$).} %
+	\label{fig:bode_5}
+\end{figure}
+
+
+
+When we have integral gain \textit{in addition to} proportional gain, the instability issues are resolved (see Figure \ref{fig:bode_6}). The $\pi$ phase lag is avoided while the DC gain is still infinite. 
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{bode_11}
+	\quad
+	\includegraphics[width=0.45\textwidth]{bode_12}
+	\caption{Pure (I+P)-gain in ideal system. Instability issues are resolved (see Figure \ref{fig:bode_6}). The $\pi$ phase lag is avoided while the DC gain is still infinite. $K_p = 10, K_i = 1$. Note that $\abs{KG}=1$ and the phase flip by $\pi$ don't occur simultaneously.
+		%\footnote{The astute reader may notice that sometimes I put $\arg(KG)= \pi$ when it should be $-\pi$... The point here is the (relative) phase lag. We don't care too much about whether the argument of $KG$ is (absolutely) positive or negative.}
+	} %
+	\label{fig:bode_6}
+\end{figure}
+
+In an actual system, however, there is always a finite delay between the measurement and the drive. A constant delay for
+example would yield a drive $y(t) = \epsilon(t - \tau )$, which in Fourier space corresponds to a phase shift: $y(\omega) = e^{-i\omega \tau}\epsilon(\omega)$. This phase lag is proportional to frequency. Thus, eventually any system will cross the $\pi$ phase lag. At this point, we need $\abs{KG} < 1$ to prevent instabilities.
+
+
+
+
 \subsection{The D-gain}
+
+The point of the D-gain $K_d \dot{e}(t)$ is to prevent the $\pi$ phase lag. Translated into more physical language: the D-gain ``predicts'' trajectory of the system and counteracts before the system goes beyond the reference (around which point the P-gain and I-gain kick in). In most cases, however, we won't worry too much about the D-gain. Most laser lock boxes in atomic physics laboratories do not have the D-control. 
 
 
 
@@ -395,7 +525,29 @@ with the \textbf{sensitivity function} $S$ and \textbf{complimentary sensitivity
 
 
 
+\subsection{Technique}
+
+
+While there are known techniques for tuning the PID parameters (see the Ziegler-Nicholds methods, for example), we usually ``just do it'' by turning some knobs by hand. \\
+
+The technique suggested by Martin Zwierlein is as follows:\\
+
+
+\noindent \textcolor{blue}{``Using a step function as the reference one first starts with the I-gain until the system runs into oscillations. Backing up a bit, one increases P (which in this idealized system cannot lead to ever growing oscillations), then D, which usually makes the feedback faster and reduces oscillations, as the phase lag is reduced from 180 degrees at high frequencies. For the proper choice of the P,I, D-values, one should observe that the system behaves as a low-pass, without oscillations (critical damping of oscillations).''}
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=\textwidth]{MZ_PID}
+	\caption{From \cite{zwierleinPID}.}
+	\label{fig:MZ_PID}
+\end{figure}
+
+
 \subsection{MATLAB code}
+
+The MATLAB file is available for download \href{https://huanqbui.com/MIT PhD/BUI_AtomicPhysics/MATLAB/PID_harmonic_osc.m}{here}. The user is encouraged to follow the steps outlined by MZ and reproduce a similar sequence of plots as that in Figure \ref{fig:MZ_PID}.
+
 
 \begin{lstlisting}
 % Author: Huan Q. Bui
