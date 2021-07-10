@@ -264,27 +264,27 @@ T(\omega) = \f{K(\omega)G(\omega)}{1+K(\omega) G(\omega)}.
 \end{equation*}
 Let's find $K_p, K_i,K_d$ such that $K(\omega) G(\omega)$ doesn't go bad:
 \begin{equation*}
-K(\omega) G(\omega) = \f{\omega_0^2( K_p - iK_i/\omega + iK_d \omega)}{\omega_0^2 - \omega^2 + i\beta \omega}.
+K(\omega) G(\omega) = \f{\omega_0^2( K_p - iK_i/\omega + iK_d \omega)}{\omega_0^2 - \omega^2 + i\beta \omega} = \f{-i\omega_0^2( i\omega K_p + K_i - K_d \omega^2)}{\omega(\omega_0^2 - \omega^2 + i\beta \omega)} 
 \end{equation*}
 It turns out that by fixing $K_d$ and setting 
 \begin{equation*}
-K_p  =\beta K_d \quad \text{and} \quad K_i = \omega_0^2 K_d,
+K_p  =\beta K_d, \quad  K_i = \omega_0^2 K_d, \quad \text{and} \quad K_d = \f{1}{\omega_0}
 \end{equation*}
 we have
 \begin{equation*}
-K(\omega) = \f{-iK_i}{\omega}
+K(\omega)G(\omega) = \f{-i\omega_0}{\omega}
 \end{equation*}
-which no longer have the $\omega_0$ frequency. Also, we see that the open-loop (i.e., $KG$ only) system now has a $1/\omega$ frequency response (1st-order) rather than a $\sim 1/\omega^2$ (2nd-order). The Bode plots (Figure \ref{fig:bode_2}) associated with the open-loop system are generated using the following Mathematica commands. 
+which no longer has the $\omega_0$ resonance frequency. Also, we see that the open-loop (i.e., $KG$ only) system now has a $1/\omega$ frequency response (1st-order) rather than a $\sim 1/\omega^2$ (2nd-order). The Bode plots (Figure \ref{fig:bode_2}) associated with the open-loop system are generated using the following Mathematica commands. 
 \begin{lstlisting}
-Kd = 1; Kp = \[Beta]*Kd; Ki = \[Omega]0^2*Kd;
+Kd = 1/\[Omega]0; Kp = \[Beta]*Kd; Ki = \[Omega]0^2*Kd;
 
 K[\[Omega]_] := Kp - I*Ki/\[Omega] + I*Kd*\[Omega]; 
 
 
-LogLogPlot[Abs[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0, 200}, 
+LogLogPlot[Abs[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0.01, 10}, 
 AxesLabel -> {\[Omega]/"\[Omega]0", Abs[KG[\[Omega]]]}]
 
-LogLinearPlot[Arg[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0.01, 400}, 
+LogLinearPlot[Arg[K[a*\[Omega]0]*G[a*\[Omega]0]], {a, 0.01, 100}, 
 PlotRange -> Full, 
 AxesLabel -> {\[Omega]/"\[Omega]0", Arg[KG[\[Omega]]]}, 
 Exclusions -> None]
@@ -300,7 +300,7 @@ Exclusions -> None]
 	\includegraphics[width=0.45\textwidth]{bode_3}
 	\quad
 	\includegraphics[width=0.45\textwidth]{bode_4}
-	\caption{Open-loop gain $KG$ for oscillator-PID system with natural resonance frequency $\omega_0$ ``tweaked away.'' The phase lag is constantly $\pi/2$ and the gain decreases like $1/\omega$ Again, $\beta = 2,\omega_0 = 2\pi$.} %
+	\caption{Open-loop gain $KG$ for oscillator-PID system with natural resonance frequency $\omega_0$ ``tweaked away'' (the gain at $\omega = \omega_0$ is unity, which implies to change in amplitude). The phase lag is constantly $\pi/2$ and the gain decreases like $1/\omega$. Again, $\beta = 2,\omega_0 = 2\pi$.} %
 	\label{fig:bode_2}
 \end{figure}
 
@@ -309,9 +309,9 @@ Exclusions -> None]
 
 \noindent Meanwhile, the closed-loop transfer function is 
 \begin{equation*}
-T(\omega) = \f{K(\omega)G(\omega)}{1+ K(\omega) G(\omega)} = \f{1}{1+ i\omega/K_i}.
+T(\omega) = \f{K(\omega)G(\omega)}{1+ K(\omega) G(\omega)} = \f{1}{1+ i\omega/\omega_0}.
 \end{equation*}
-This is nothing but a low-pass filter with time constant $\tau = 1/K_i$. To see why, we have to recall the ODE for the low-pass filter: 
+This is nothing but a low-pass filter with time constant $\tau = 1/\omega_0$. To see why, we have to recall the ODE for the low-pass filter: 
 \begin{equation*}
 v_\text{out}(t) = v_\text{in} (t) - RC \f{d}{dt}v_\text{out}(t)
 \end{equation*}
@@ -362,7 +362,7 @@ AxesLabel -> {\[Omega]/"\[Omega]0", Arg[T]}, Exclusions -> None]
 	\includegraphics[width=0.45\textwidth]{bode_5}
 	\quad
 	\includegraphics[width=0.45\textwidth]{bode_6}
-	\caption{Bode plot for $P$-controller. Here, $\beta = 2,\omega_0 = 2\pi$, and $K_p = 100$.} %
+	\caption{Bode plot for P-controlled system $\abs{KG}(\omega)$ and $\arg(KG)$. Here, $\beta = 2,\omega_0 = 2\pi$, and $K_p = 100$.} %
 	\label{fig:bode_3}
 \end{figure}
 
@@ -384,7 +384,8 @@ From here, we see that for really high proportional gain (i.e., $\abs{K} \gg 1$)
 \begin{equation*}
 \epsilon_0 \equiv r - x = S(r-d) + T\xi
 \end{equation*}
-with the \textbf{sensitivity function} $S$ and \textbf{complimentary sensitivity function} $T$. The goal is to make $\epsilon_0$ as small as possible, but we're limited by the fact that $S+T=1$ for all $\omega$. This means that for small $S$, disturbances are rejected but then $T$ is large and measurement noise is coupled in, and vice versa.For more information on this part, the reader may reference \cite{bechhoefer2005feedback}.
+with the \textbf{sensitivity function} $S$ and \textbf{complimentary sensitivity function} $T$. The goal is to make $\epsilon_0$ as small as possible, but we're limited by the fact that $S+T=1$ for all $\omega$. This means that for small $S$, disturbances are rejected but then $T$ is large and measurement noise is coupled in, and vice versa.
+For more information on this part, the reader may reference \cite{bechhoefer2005feedback}.
 
 
 \subsection{The I-gain}
@@ -401,13 +402,48 @@ This is where the integral gain comes in. Like we said before, the point is that
 \end{equation*}
 Differentiating both sides, we get
 \begin{equation*}
-\ddddot{x} + \beta \ddot{x} + \omega_0^2 \dot{x}(t) = \omega^2 K_i [ r(t) -x(t) ],
+\dddot{x} + \beta \ddot{x} + \omega_0^2 \dot{x}(t) = \omega^2 K_i [ r(t) -x(t) ],
 \end{equation*}
 which has a steady-state solution $x_\infty = r_\infty$. We can also see this by going into Fourier space:
 \begin{equation*}
 x(\omega) = K(\omega) r(\omega) = \lp -i \f{K_i}{\omega} \rp r(\omega).
 \end{equation*}
 We recognize that we have infinite gain $\abs{K} \to \infty$ at DC ($\omega\to 0$). 
+
+
+
+
+\subsection{The PI controller}
+
+In practice, we mostly have P and I only. Also, when testing a PI controller, we want to look at how a PI controller responses to purely sinusoidal (single-frequency) errors. Here we present a ``typical'' Bode plot for a PI-controller only (i.e. we set $G\equiv 1$). 
+
+
+
+\begin{lstlisting}
+Kd = 0; Kp = 1; Ki = 1;(*PI gain only*)
+
+K[\[Omega]_] := Kp - I*Ki/\[Omega] + I*Kd*\[Omega];
+
+LogLogPlot[Abs[K[a*\[Omega]0]], {a, 0.01, 10}, 
+AxesLabel -> {\[Omega]/"\[Omega]0", "|K[\[Omega]]|"}] (*just K*)
+
+LogLinearPlot[Arg[K[a*\[Omega]0]], {a, 0.01, 400}, PlotRange -> Full, 
+AxesLabel -> {\[Omega]/"\[Omega]0", Arg[K]}, 
+Exclusions -> None](*P only, phase plot for K*)
+\end{lstlisting}
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{bode_13}
+	\quad
+	\includegraphics[width=0.45\textwidth]{bode_14}
+	\caption{Bode plot for PI-controlled system $\abs{K}(\omega)$ and $\arg(K)$. Here, $\beta = 2,\omega_0 = 2\pi$, and $K_p = 100$.} %
+	\label{fig:bode_7}
+\end{figure}
+
+
+
 
 
 \subsection{Instability}
