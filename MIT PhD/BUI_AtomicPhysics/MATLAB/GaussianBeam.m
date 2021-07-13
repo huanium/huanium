@@ -132,6 +132,10 @@ function new_Rz = qz_to_Rz(qz)
 end
 
 % Electric field in cylindrical coords
+% The Gouy phase is already included in this defn
+% see page 8/44 of 
+% http://ecee.colorado.edu/~ecen5616/WebMaterial...
+% .../24%20Gaussian%20beams%20and%20Lasers.pdf
 function E_field = E(r,z)
     global w0
     global zR
@@ -166,5 +170,19 @@ function Rk = thin_lens(f)
     Rk = [1 0 ; -1/f 1];
 end
 
+% thick lens refraction
+function Nk = thick_lens(n2, R1, R2, t)
+    % n2: index of refraction of lens
+    % R1: radius of curvature of 1st surface
+    % R2: radius of curvature of 2nd surface
+    % t: center thickness of lens
+    global n
+    Nk = [1 0; (n2-n)/(R2*n) n2/n]*[1 t ; 0 1]*[1 0 ; (n-n2)/(R1*n2) n/n2];
+end
+
+% flat mirror reflection
+function Sk = flat_mirror()
+    Sk = [1 0 ; 0 1];
+end
 
 
