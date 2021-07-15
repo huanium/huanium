@@ -27,15 +27,15 @@ global theta_inc; % incoming beam incidence angle
 
 %%%%% SETTING UP %%%%%
 wavelength= 1064e-9; % in meters
-w0 = 20e-6; % beam waist in meters
+w0 = 5e-6; % beam waist in meters
 A0 = 20; % arbitrary...
 n = 1; % of air
 zR = pi*w0^2*n/wavelength;
 theta = wavelength/(n*w0); % beam divergence, in rads
-theta_inc = -5*pi/180; % 5 degs from horizontal
+theta_inc = -10.8*pi/180; % 5 degs from horizontal
 % focus point defined along path of incoming beam 
-focusZ = 0*0.2e-4; % Z-position of focus
-focusX = 0*0.5e-4;  % X-position of focus
+focusZ = 2e-5; % Z-position of focus
+focusX = 0.5e-4;  % X-position of focus
 
 %%% retro mirror position and angle
 global retro_X_intercept
@@ -47,12 +47,13 @@ retro_angle = pi/2 + theta_inc; % gives perfect retro-reflection
 retro_angle = retro_angle - retro_misalign;
 
 % input range 
-res_Z = 2e-6; % resolution Z
-res_X = 1e-5; % resolution X
-x_bound = 2000e-6;
-z_bound = 200e-6;
+res_Z = 1e-7; % resolution Z
+res_X = 1e-7; % resolution X
+x_bound = 200e-6;
+z_bound = 40e-6;
 x = -x_bound:res_X:x_bound;
 z = -z_bound:res_Z:z_bound;
+%z = -13e-6:res_Z:-12.5e-6;
 [X, Z] = meshgrid(x, z);
 
 Efield = @E;
@@ -78,12 +79,12 @@ E_ret = Efield(w0, zR, new_X(X-eff_focus_X_retro,Z-eff_focus_Z_retro,-theta_refl
 
 
 
-pattern = abs(E_inc +E_refl + E_ret).^2;
+pattern = abs(E_inc - E_refl + 0*E_ret).^2;
 
 h = figure(1);
 % top view
 surf(X,Z,pattern, 'LineStyle', 'none', 'EdgeAlpha', 0 , 'FaceAlpha',1);
-ylim([-z_bound z_bound]); % this sets the 'Z' bound...
+ylim([-z_bound 0]); % this sets the 'Z' bound...
 view([0,90])
 %h.Position = [100 100 800 800];
 xlabel('X (m)')
