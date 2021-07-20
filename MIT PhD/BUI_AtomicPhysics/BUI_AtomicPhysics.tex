@@ -1037,6 +1037,199 @@ and the Zeeman shift $\Delta \mu B$ between the singlet and triplet states (whic
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{G}
+
+
+\section{Gross-Pitaevskii equation and BEC}
+
+In this section we derive the Gross-Pitaevskii equation (GPE) which describes the dynamics of BECs. The derivation presented in this section is provided by \cite{rogel2013gross}. 
+
+
+A BEC is obtained from a collection
+of bosons in the ground state at very low temperatures. We can therefore ask about
+the energy of the ground state and use this to provide us with information about the
+system. The general Hamiltonian for an $N$ particle system is given by 
+\begin{equation*}
+\ham = \sum^N_{i=1} \lp \f{\mathbf{p}_i^2}{2m} + V_{ext}(\mathbf{r}_i) \rp + \f{1}{2}\sum^N_{i=1}\sum^N_{j\neq i}V\lp \abs{\mathbf{r}_i - \mathbf{r}_j} \rp
+\end{equation*}
+
+The first term is the KE of the $i$-th particle, followed by the trapping potential. The final term is represents the interaction energy between the $N$ particles. The ground state corresponds to the lowest energy and we can find it by minimizing the energy associated with this Hamiltonian. From the thermodynamics point of view, the ground state of the system is achieved when the \textbf{free energy} $F = E - \mu N$ is minimized. Here, $E$ is the energy of the system, and $\mu$ is the chemical potential. \\
+
+
+Given $\ham$, the energy is just the expectation value of $\ham$:
+\begin{equation*}
+E(\psi) = \f{\bra{\psi} \ham \ket{\psi}}{\braket{\psi}}. 
+\end{equation*}
+
+We will use this to minimize $F$. Now, every particle in the system has some wavefunction $\psi_i$. But solve a problem exactly with $N$ such $\psi_i$'s is very difficult: if there are $N$ particles then there are $N^2$ terms in the Hamiltonian. So, to simplify the problem, we resort to making the \textbf{mean-field approximation}, which basically says that the action felt by a given particle due to the rest is substituted by the mean action of the fluid over the particle. The mean-field approximation is good if one can neglect the corresponds in the gas, i.e., if the gas is \textbf{dilute}, which turns out to be the case for experimentally obtained condensates. The approximation fails if closer neighbors interact too much strongly compared to particles further apart. \\
+
+
+In any case, under the mean-field approximation, or one particle, all the rest have the same status as they all are in the same independent state $\ket{\psi}$ and thus we can drop the label of wavefunctions. Thus, we need to minimize the free energy over a space of functions given by 
+\begin{equation*}
+\ket{\Psi} = \otimes \ket{\psi}
+\end{equation*}
+with the normalization condition
+\begin{equation*}
+\braket{\Psi} = 1.
+\end{equation*}
+
+With this, we want to minimize
+\begin{equation*}
+F(\Psi) = \bra{\Psi} \ham \ket{\Psi} - \mu \braket{\Psi}.
+\end{equation*}
+We now compute each term:
+\begin{align*}
+\bra{\Psi}  \sum^N_{i=1} \f{\mathbf{p}_i^2}{2m}  \ket{\Psi} 
+&= \sum^N_{i=1}\f{\hbar^2}{2m} \int \nabla \psi^*(\mathbf{r}_i) \nabla \psi(\mathbf{r}_i) \,d\mathbf{r}_i \\
+&=  N\f{\hbar^2}{2m} \int \abs{\nabla \psi(\mathbf{r})}^2 \,d\mathbf{r}\\
+&= -N \f{\hbar^2}{2m}\int \psi^*(\mathbf{r})\nabla^2 \psi(\mathbf{r})\,d\mathbf{r}.
+\end{align*}
+The potential term is written as 
+\begin{align*}
+\bra{\Psi} \sum^N_{i=1}V_{ext}(\mathbf{r}_i) \ket{\Psi} = N \int \psi^*(\mathbf{r}) V_{ext}(\mathbf{r}) \psi(\mathbf{r})\,d\mathbf{r}.
+\end{align*}
+Interaction energy term:
+\begin{align*}
+\bra{\Psi} \f{1}{2}\sum^N_{i=1}\sum^N_{j\neq i} V(\abs{\mathbf{r}_i - \mathbf{r}_j}) \ket{\Psi} 
+&= \f{1}{2}\sum^N_{i=1}\sum^N_{j\neq i} \int \,d\mathbf{r}_i \int \,d\mathbf{r}_j \psi^*(\mathbf{r}_i) \psi^*(\mathbf{r}_j) V(\abs{\mathbf{r}_i - \mathbf{r}_j}) \psi(\mathbf{r}_i) \psi(\mathbf{r}_j) \\
+&= \f{N(N-1)}{2} \int \,d\mathbf{r} \int \,d\mathbf{r}' \psi^*(\mathbf{r}_i) \psi^*(\mathbf{r}') V(\abs{\mathbf{r} - \mathbf{r}}) \psi(\mathbf{r}') \psi(\mathbf{r}').
+\end{align*}
+Finally the chemical potential term:
+\begin{align*}
+\mu \braket{\Psi} = \mu \lp \int \psi^*(\mathbf{r}) \psi(\mathbf{r}) \,d\mathbf{r} \rp^N.
+\end{align*}
+
+Now we want to minimize $F$. We do this using calculus of variations. We will consider small variations in $\psi(\mathbf{r}$, taking $\psi$ and $\psi^*$ as independent variables. Finding $\delta/\delta \psi$ and $\delta/\delta \psi^*$ for the expressions containing the kinetic and potential terms is rather straightforward. For the interaction term, we have
+\begin{equation*}
+\f{\delta}{\delta \psi^*} \bra{\Psi} \f{1}{2}\sum^N_{i=1}\sum^N_{j\neq i} V(\abs{\mathbf{r}_i - \mathbf{r}_j}) \ket{\Psi} \\
+= N(N-1) \int \delta \psi^*(\mathbf{r}) \lp \int \abs{\psi(\mathbf{r})}^2 V(\abs{\mathbf{r} - \mathbf{r}'}) \,d\mathbf{r}' \rp \psi(\mathbf{r})\,d\mathbf{r}
+\end{equation*}
+Similarly, for the chemical potential we have
+\begin{align*}
+\f{\delta \braket{\Psi}}{\delta \psi^*}  &= N\lp \int \psi^*(\mathbf{r})\psi(\mathbf{r})\,d\mathbf{r} \rp^{N-1}\int \delta \psi^*(\mathbf{r}) \psi(\mathbf{r})\,d\mathbf{r} \\
+&=  N\int \delta \psi^*(\mathbf{r}) \psi(\mathbf{r})\,d\mathbf{r}.
+\end{align*}
+Putting it together we have
+\begin{equation*}
+0=\f{\delta F}{\delta \psi^*} = N\int \lb  \f{-\hbar^2\nabla^2}{2m}  + V_{ext}(\mathbf{r})+ (N-1)\lp \int \abs{\psi(\mathbf{r})}^2V(\abs{\mathbf{r} - \mathbf{r}'})\,d\mathbf{r}' \rp  - \mu   \rb \psi(\mathbf{r}) \delta \psi^*(\mathbf{r})\,d\mathbf{r}.
+\end{equation*}
+So the term in the square bracket acting on $\psi$ must vanish. \\
+
+
+It is common to choose an interaction potential
+\begin{equation*}
+V(\abs{\mathbf{r} - \mathbf{r}'}) = \f{4\pi \hbar^2}{m}a\delta(\mathbf{r} - \mathbf{r}')
+\end{equation*}
+where $a$ is the $s$-wave scattering length. Using the approximation that $N-1\approx N$ we have the \textbf{time-independent Gross-Pitaevskii equation}
+\begin{equation*}
+\boxed{\lp \f{-\hbar^2\nabla^2}{2m}  + V_{ext}(\mathbf{r})+ N \f{4\pi\hbar^2}{m}a\abs{\psi(\mathbf{r})}^2 \rp \psi(\mathbf{r})   = \mu \psi(\mathbf{r})}
+\end{equation*}
+
+The scattering length a
+measures the intensity of the interactions between the bosons. Its sign indicates whether the interactions are attractive $(a < 0)$ or repulsive $(a > 0)$.
+
+
+\subsection*{Remarks}
+
+\noindent \textbf{Normalization:} While we can choose the normalization condition $\braket{\Psi} = 1$ so that it is the probability density of finding a boson, we can choose $\braket{\Psi} = N$, the square modulus of the number density of the fluid. \\
+
+\noindent \textbf{Phase:} The phase doesn't have intrinsic meaning but its fluctuations do. Suppose we put the wavefunction is polar form:
+\begin{equation*}
+\psi = \sqrt{\rho} \exp(i\theta)
+\end{equation*}
+where $\theta$ is the phase and $\rho$ is the number density, then the probability current can be expressed as 
+\begin{equation*}
+\mathbf{j} = \f{i\hbar}{2m} \lp \psi \nabla \psi^* - \psi^* \nabla \psi \rp = \rho \f{\hbar }{m} \nabla \theta \equiv \rho \mathbf{v}.
+\end{equation*}
+Here
+\begin{equation*}
+\mathbf{v} = \f{i\hbar}{2m} \f{(\psi \nabla \psi^* - \psi^*\nabla \psi )}{\abs{\psi}^2}  =\f{\hbar}{m}\nabla \theta
+\end{equation*}
+is the velocity of the bosons. This expression will make better sense when we talk about the hydrodynamic form of the GPE.\\
+
+
+\noindent \textbf{Trapping potential:}  Most of the time, the bosons are confined in a
+small region of space (by optical and/or magnetic means). This situation is simulated with the aid of a trapping potential with a minimum in the central part. In general, any ``nice'' potential can be locally approximated by a harmonic potential with the condensate sitting in a position where the quadratic term is dominant:
+\begin{equation*}
+V_{ext}(\mathbf{r}) = \f{1}{2}m\omega^2 r^2.
+\end{equation*}
+Here $m$ is the mass of the bosons, and $\omega$ is the frequency of the trap. If atoms in the condensate do not interact (repulsive condensate, which is the case of 87Rb), then the ground state of the trapping potential on its own would just be a Gaussian $\psi(\mathbf{r})\propto e^{-(r/r_0)^2}$ where $r_0 \sim \sqrt{\hbar/m\omega} \approx 1.04 \mu$. However, experimentally formed condensates have parabolic form. This is because of the relatively large density. In this case, the kinetic energy is negligible compared to the rest of the terms, and we have
+\begin{equation*}
+\psi(\mathbf{r}) = \sqrt{\f{\mu - m\omega^2 r^2/2}{gN}}
+\end{equation*}
+which has parabolic form. This approximation is known as the \textbf{Thomas-Fermi approximation}. 
+
+
+\subsection*{Time-dependent GPE}
+
+The time-dependent GPE is given by 
+\begin{equation*}
+i\hbar \f{\p\psi}{\p t} = \lp -\f{\hbar^2}{2m} \nabla^2 + V_{ext} + g\abs{\psi}^2 \rp \psi
+\end{equation*}
+which we can see is a nonlinear SE. Let $\widetilde{\psi}$ be a solution using the normalization condition that $\braket{\widetilde{\psi}} = N(\widetilde{\psi})$. Multiplying both sides by $\widetilde{\psi}^*$ we have
+\begin{equation*}
+i\hbar [\p_t \widetilde{\psi}] \widetilde{\psi}^* = -\f{\hbar^2}{2m} [\nabla^2 \widetilde{\psi} ] \widetilde{\psi}^* + V_{ext} \abs{\widetilde{\psi}}^2 + g \abs{\widetilde{\psi}}^4.
+\end{equation*}
+Writing a similar equation for $\widetilde{\psi}^*$ and adding the two equations together, we find 
+\begin{equation*}
+2i\p_t N(\widetilde{\psi}) = \int d^3 \mathbf{r} \lb -\f{\hbar^2}{2m} \abs{\nabla \widetilde{\psi}}^2 + V_{ext}(\mathbf{r}) \abs{\widetilde{\psi}}^2 + \f{g}{2} \abs{\widetilde{\psi}}^4 \rb - \mu \abs{\widetilde{\psi}}^2.
+\end{equation*}
+
+Notice the LHS is purely imaginary since $N$ is real, so the quantity
+\begin{equation*}
+E \equiv \int d^3 \mathbf{r} \lb -\f{\hbar^2}{2m} \abs{\nabla \widetilde{\psi}}^2 + V_{ext}(\mathbf{r}) \abs{\widetilde{\psi}}^2 + \f{g}{2} \abs{\widetilde{\psi}}^4 \rb - \mu N(\widetilde{\psi}),
+\end{equation*}
+which corresponds to the total energy of the bosonic gas, must be conserved. So, we see that the solution to GPE has \textbf{two} conserved quantities: the number of particles $N$ and the energy $E$ of the system. 
+
+
+\subsection*{Hydrodynamic form of the GPE}
+
+Here we introduce the hydrodynamic form of the GPE, which is equivalent to the time-dependent GPE. As pointed out earlier, for a solution $\psi = \sqrt{\rho} \exp(i\theta)$, one can use the density $\rho$ and gradient of the phase $\nabla \theta$ to work out the dynamics of the system.\\
+
+
+The first hydrodynamic equation is the \textbf{continuity equation}: 
+\begin{equation*}
+\f{\p \rho}{\p t} + \nabla \cdot \mathbf{j} = 0.
+\end{equation*}
+This holds for the GPE problem because we can derive this equation from the GPE by multiplying it by $\psi^*$ and subtracting the c.c. of the resulting equation. Now, recall that 
+\begin{equation*}
+\mathbf{j} = \f{i\hbar}{2m}\lp \psi \nabla \psi^* - \psi^* \nabla \psi \rp = \rho \mathbf{v} \equiv \rho\f{\hbar}{m}\nabla \theta.
+\end{equation*}
+So the continuity equation becomes
+\begin{equation*}
+\boxed{\f{\p \rho}{\p t}  + \nabla \cdot (\rho \mathbf{v}) = 0}
+\end{equation*}
+This says that the motion of the condensate corresponds to that of a flow since the velocity field $\mathbf{v}$ is a gradient of a scalar quantity $\theta$. Also, if the phase $\theta$ is not singular, then the velocity field is conservative, or \textbf{irrotational}.
+\begin{equation*}
+\nabla \times \mathbf{v} \sim \nabla \times \nabla \theta = 0.
+\end{equation*} 
+This holds only if $\theta$ is not singular, which is not the case at the core of a vortex line. When there is a singularity in the phase, the circulation $\Gamma$ around this singularity will be nonzero. In particular, because the circulation, which is proportional to the change in phase $\Delta \theta$, must be multiples of $2\pi$ due to the single-valuedness of the wavefunction, we must have that
+\begin{equation*}
+\boxed{\Gamma = \Delta \theta = \oint \mathbf{v}\cdot d\mathbf{l} = \oint \f{\hbar}{m}\nabla \theta \cdot d\mathbf{l} = \f{\hbar}{m}2\pi l, \quad l\in \mathbb{Z}}
+\end{equation*}
+\begin{framed}
+If the phase has a singularity, then the circulation is quantized.
+\end{framed}
+
+Following the continuity equation $\p_t \rho + \nabla \cdot (\rho \mathbf{v}) = 0$ (which is an equation of motion for $\rho$), we should also have an equation of motion for the phase $\theta$. To do this, we substitute $\psi = \sqrt{\rho}\exp(i\theta)$ into the time-dependent GPE and pick out the equations for real and imaginary parts. The ``imaginary equation'' is the continuity equation, whereas the ``real equation'' is 
+\begin{equation*}
+-\hbar \p_t \theta = -\f{\hbar }{m\sqrt{\rho}} \nabla \sqrt{\rho} + \f{1}{2} m\mathbf{v}^2 + V_{ext} + g\rho.
+\end{equation*}
+Taking the gradient of this gives us an equation with the velocity field $\mathbf{v}$:
+\begin{equation*}
+m\f{\p \mathbf{v}}{\p t} + \f{1}{2}m\nabla^2 \mathbf{v}^2 = \f{\hbar^2}{2m} \nabla \lp \f{1}{\sqrt{\rho}} \nabla^2 \sqrt{\rho} \rp - \nabla V_{ext} - g\nabla \rho.
+\end{equation*}
+We can simplify this further using the fact that the flow $\mathbf{v}$ is irrotational:
+\begin{equation*}
+\f{1}{2}\nabla \mathbf{v}^2 = (\mathbf{v}\cdot \nabla )\mathbf{v} + \mathbf{v} \times (\nabla \times \mathbf{v}) = (\mathbf{v}\cdot \nabla )\mathbf{v}.
+\end{equation*}
+With this, we get the Euler equation (Navier-Stokes without viscosity):
+\begin{equation*}
+\boxed{m\f{\p \mathbf{v}}{\p t} + m (\mathbf{v}\cdot \nabla) \mathbf{v} = \f{\hbar^2}{2m} \nabla \lp \f{1}{\sqrt{\rho}} \nabla^2 \sqrt{\rho} \rp - \nabla V_{ext} - g \nabla \rho} 
+\end{equation*}
+The hydrodynamic formulation of the GPE is equivalent to the original GPE. In the case of a condensate with non-singular phase, the BEC behaves like a fluid without viscosity and with irrotational flux. 
+ 
+
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{H}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
