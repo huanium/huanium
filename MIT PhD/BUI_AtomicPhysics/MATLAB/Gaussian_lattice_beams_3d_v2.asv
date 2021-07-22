@@ -37,14 +37,12 @@ global res_Z; % resolution in Z
 
 %%%%% SETTING UP %%%%%
 wavelength = 1064e-9; % in meters
-wavelengthZ = 1064e-9; % in meters
+wavelengthZ = 532e-9; % in meters
 w0_vert = 40e-6; % "vert" beam waist 40 um
 w0_horz = 135e-6; % "horz" beam waist 135 um
-w0_Z = 60e-6; % waist of Z beam, 60 um in both x,y
 n = 1;
-zR_vert = pi*w0_vert^2*n/wavelength; % Rayleigh range vert
-zR_horz = pi*w0_horz^2*n/wavelength; % Rayleigh range horz
-zR_Z    = pi*w0_Z^2*n/wavelengthZ;   % Rayleigh range Z
+zR_vert = pi*w0_vert^2*n/wavelength; % Rayleigh range Y
+zR_horz = pi*w0_horz^2*n/wavelength; % Rayleigh range X
 theta_inc_X = -10.8*pi/180; % 10.8 degs from horizontal
 theta_inc_Y = -10.8*pi/180; % 10.8 degs from horizontal
 
@@ -54,11 +52,9 @@ focusX_vert = 3e-3; % mm
 focusY_vert = 0*3e-3; % mm
 X_beam_knob = 1;
 Y_beam_knob = 1;
-Z_beam_knob = 1;
 
-% false = view nodal surfaces (curved if focus on at (0,0,0))
-% true  = view @ atom location
-layer_view = true;
+% false = view nodal surfaces (cu)
+layer_view = false;
 
 if layer_view
     % % for layer view
@@ -67,21 +63,20 @@ if layer_view
     res_Z = 5e-8; % resolution Z
     x_bound = 10e-6;
     y_bound = 10e-6;
-    z_low = -11.9e-6; % where the atom layer is
+    z_low = -12.1e-6; % where the atom layer is
     z_high = -10.5e-6;
-    zslice = [-21*wavelengthZ];
+    zslice = [(z_low+z_high)/2];
     z = z_low:res_Z:z_high;
 else
     % % for large lattice view
-    res_X = 2e-6; % resolution X
-    res_Y = 2e-6; % resolution Y
+    res_X = 4e-6; % resolution X
+    res_Y = 4e-6; % resolution Y
     res_Z = 2e-7; % resolution Z
     x_bound = 200e-6;
     y_bound = 200e-6;
     z_bound = 20e-6;
     z = -z_bound:res_Z:0;
     zslice = [];
-    zlim = ([-z_bound 0]);
 end
 
 %%% Now set up
