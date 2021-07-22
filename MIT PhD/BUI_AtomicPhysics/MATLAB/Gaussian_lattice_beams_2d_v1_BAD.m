@@ -1,33 +1,13 @@
-%%% Author: Huan Q. Bui
+%%% Huan Q. Bui
 %%% July 13, 2021
-%%% interference of Gaussian beams at substrate surface
+%%% interference of Gaussian beams at substrate surface 2D (v1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%% UPDATES REQUIRED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%% Do we worry about phase accumulation as beams move? %%%
-%%%%%% Need to add the reflection of the retro beam %%%%%%%%%%
+%%%%%% Add ability to move focus of retro beam %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%% July 15, 2021: 
-%%% There is a focusing lens near the retro so that the
-%%% focus of the retro beam should be close to focus of the reflection of the 
-%%% incoming beam.
-%%% This means the focus of the retro beam is in front of the mirror now.
-%%% For simplicity, we'll just set this focus to be the focus of the
-%%% incomng beam (as guaranteed by fiber coupling). The angle of the retro
-%%% beam, for simplicity, will be set as the angle of the reflection of the
-%%% incoming beam
-
-%%% basically this means that, with perfect retro alignment, the retro beam
-%%% is exactly the reflected beam. So the question becomes what happens
-%%% when the retro is not well-aligned? For this we'll need to know what
-%%% and where the focusing lens is.
-
-%%% Need to compute the intensity gradient of the layer with the atoms
-
-
-
-
+%%% SOME INFO:
 %%% lattice spacing 541 nm
 %%% 1000 atoms per image --> 30 by 30 
 %%% size is 30*541 nm x 30*541 nm ~ 15 um x 15 um
@@ -46,6 +26,7 @@ tic
 
 
 %%%%% Real Gaussian profiles %%%%%%%%%%%%%
+%%%%% We only have the X beam on the XZ plane for this script.
 
 global wavelength; % wavelength
 global n; % index of refraction of air
@@ -57,16 +38,15 @@ global retro_X_intercept
 global retro_angle % relative to horizontal
 
 
-
 %%%%% SETTING UP %%%%%
 wavelength= 1064e-9; % in meters
 w0_x = 40e-6; % beam waist (in X) in meters
-w0_y = 140e-6; % beam waist (in Y) in meters
+% w0_y = 135-6; % beam waist (in Y) in meters 
 n = 1; % of air
 zR_x = pi*w0_x^2*n/wavelength; % Rayleigh range X
-zR_y = pi*w0_y^2*n/wavelength; % Rayleigh range Y
+% zR_y = pi*w0_y^2*n/wavelength; % Rayleigh range Y
 theta_X = wavelength/(n*w0_x); % beam divergence in X, in rads
-theta_Y = wavelength/(n*w0_y); % beam divergence in X, in rads
+% theta_Y = wavelength/(n*w0_y); % beam divergence in X, in rads
 theta_inc_X = -10.8*pi/180; % 10.8 degs from horizontal
 
 % focus point defined along path of incoming beam 
@@ -84,13 +64,13 @@ retro_angle = retro_angle - retro_misalign;
 % input range 
 res_Z = 5e-9; % resolution Z
 res_X = 1e-7; % resolution X
-res_Y = 1e-7;
+% res_Y = 1e-7;
 x_bound = 200e-6;
-y_bound = 200e-6;
+% y_bound = 200e-6;
 z_bound = 2e-5;
 x = -x_bound:res_X:x_bound;
 z = -z_bound:res_Z:0;
-y = -y_bound:res_Y:y_bound;
+% y = -y_bound:res_Y:y_bound;
 %z = -13e-6:res_Z:-12.5e-6; % THIS IS THE LAYER WHERE THE ATOMS ARE
 [X, Z] = meshgrid(x, z);
 
@@ -182,8 +162,6 @@ title('Z position of max intensity across X')
 
 
 
-
-
 %%%%%%%%%%%%%%%%%%%
 % clock ends
 Duration = seconds(round(toc));
@@ -200,17 +178,8 @@ disp(' ');
 
 
 
-
-
-
-
-
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%% FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% FUNCTIONS %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -271,7 +240,6 @@ function [eff_focus_X_refl, eff_focus_Z_refl, theta_inc_refl] = refl_focus(theta
     eff_focus_X_refl = focusX;
     eff_focus_Z_refl = -focusZ;
     theta_inc_refl = -theta_inc_X;
-    
 end
 
 % complex beam parameter function
@@ -279,6 +247,7 @@ function beam_parameter_q = q(z, zR)
     % beam_parameter_q = 1/(1/R(z) - 1i*wavelength/(n*pi*w(z)^2));
     beam_parameter_q = z + 1i*zR; % equivalent defn
 end
+
 
 % Electric field function in cylindrical coords
 % The Gouy phase is already included in this defn
@@ -295,6 +264,7 @@ function E_field = E(w0, zR, x, z)
 end
 
 
+%%% this function is not used. See the 3d version.
 function E_3d = E_field_3d(w0_x,w0_y, zR_x, zR_y, x,y,z)
     % beam propagates mostly in the x direction
     global wavelength
@@ -305,7 +275,4 @@ function E_3d = E_field_3d(w0_x,w0_y, zR_x, zR_y, x,y,z)
     
     E_3d = E_field_x*E_field_y;
 end
-
-
-
 
