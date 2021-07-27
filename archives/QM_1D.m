@@ -1,6 +1,6 @@
 %Program 1: Numerical Integration and Plotting using MATLAB 
 N = 1000; % No. of points.
-L = 2*pi; % Range of x: from -L to L.
+L = pi/2; % Range of x: from -L to L.
 x = linspace(-L, L, N).'; % Generate column vector with N 
  % x values ranging from -L to L.
 dx = x(2) - x(1); % Coordinate step.
@@ -48,8 +48,9 @@ Lap = spdiags([e -2*e e],[-1 0 1],N,N) / dx^2;
 
 
 % quantum harmonic oscillator
-%U = 1/2*100*x.^(2); % quadratic harmonic oscillator potential
-U = -1/2*100*x.^(2) + 8.*x.^(4); % some weird potential
+U = 1/2*100*x.^(2); % quadratic harmonic oscillator potential
+%k = 2*pi/1064e-9;
+
 % Total Hamiltonian.
 hbar = 1;
 m = 1;

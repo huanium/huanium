@@ -47,14 +47,16 @@ zR_horz = pi*w0_horz^2*n/wavelength; % Rayleigh range horz
 zR_Z    = pi*w0_Z^2*n/wavelengthZ;   % Rayleigh range Z
 theta_inc_X = -10.8*pi/180; % 10.8 degs from horizontal
 theta_inc_Y = -10.8*pi/180; % 10.8 degs from horizontal
+theta_inc_Z = -90*pi/180; % 90 degs from horizontal
 
 
 % focus point defined along path of incoming beam 
 focusX_vert = 3e-3; % mm
 focusY_vert = 0*3e-3; % mm
+focusZ_vert = 0; % mm Z beam focused at substrate center
 X_beam_knob = 1;
 Y_beam_knob = 1;
-Z_beam_knob = 1;
+Z_beam_knob = 100;
 
 % false = view nodal surfaces (curved if focus on at (0,0,0))
 % true  = view @ atom location
@@ -64,24 +66,25 @@ if layer_view
     % % for layer view
     res_X = 5e-8; % resolution X
     res_Y = 5e-8; % resolution Y
-    res_Z = 5e-8; % resolution Z
+    res_Z = 2e-8; % resolution Z
     x_bound = 10e-6;
     y_bound = 10e-6;
-    z_low = -11.9e-6; % where the atom layer is
-    z_high = -10.5e-6;
-    zslice = [-21*wavelengthZ];
+    z_low = -11.8e-6; % where the atom layer is
+    z_high = -10.6e-6;
+    zslice = [z_low -21*wavelengthZ/2 z_high]; % the position of atom layer by Z beam
     z = z_low:res_Z:z_high;
+    zlim([z_low z_high]);
 else
     % % for large lattice view
     res_X = 2e-6; % resolution X
     res_Y = 2e-6; % resolution Y
-    res_Z = 2e-7; % resolution Z
-    x_bound = 200e-6;
-    y_bound = 200e-6;
+    res_Z = 1e-7; % resolution Z
+    x_bound = 100e-6;
+    y_bound = 100e-6;
     z_bound = 20e-6;
     z = -z_bound:res_Z:0;
     zslice = [];
-    zlim = ([-z_bound 0]);
+    zlim([-z_bound 0]);
 end
 
 %%% Now set up
@@ -126,26 +129,42 @@ EY_vert_refl_ret = Ev(w0_vert, w0_horz, zR_vert, zR_horz, -focusY_vert, Z,X,-Y, 
 EY_horz_inc_ret  = Eh(w0_vert, w0_horz, zR_vert, zR_horz, -focusY_vert, Z,X,-Y, theta_inc_Y);
 EY_horz_refl_ret = Eh(w0_vert, w0_horz, zR_vert, zR_horz, -focusY_vert, Z,X,-Y, -theta_inc_Y);
 
+
+% Z beam stuff: basically just X beam, but with good focus and 90 angle
+EZ_vert_inc  = Ev(w0_Z, w0_Z, zR_Z, zR_Z, focusZ_vert, Z,Y,X, theta_inc_Z);
+EZ_vert_refl = Ev(w0_Z, w0_Z, zR_Z, zR_Z, focusZ_vert, Z,Y,X, -theta_inc_Z);
+
+EZ_horz_inc  = Eh(w0_Z, w0_Z, zR_Z, zR_Z, focusZ_vert, Z,Y,X, theta_inc_Z);
+EZ_horz_refl = Eh(w0_Z, w0_Z, zR_Z, zR_Z, focusZ_vert, Z,Y,X, -theta_inc_Z);
+
+% Z retro and retro refl
+EZ_vert_inc_ret  = Ev(w0_Z, w0_Z, zR_Z, zR_Z, -focusZ_vert, Z,Y,-X, -theta_inc_Z);
+EZ_vert_refl_ret = Ev(w0_Z, w0_Z, zR_Z, zR_Z, -focusZ_vert, Z,Y,-X, theta_inc_Z);
+
+EZ_horz_inc_ret  = Eh(w0_Z, w0_Z, zR_Z, zR_Z, -focusZ_vert, Z,Y,-X, -theta_inc_Z);
+EZ_horz_refl_ret = Eh(w0_Z, w0_Z, zR_Z, zR_Z, -focusZ_vert, Z,Y,-X, theta_inc_Z);
+
 % intensity in the vertical direction
 % note that we don't add the vertical E fields because in the experiment
 % the frequencies of the X and Y beams are ever so slightly different, and
 % so they basically don't interfere. Thus we only just add the intensities
+% same thing with Z, we don't add the X,Y,Z electric fields.
 
 % intensity in the vertical direction
 Int_X_vert = abs((EX_vert_inc + EX_vert_refl) - (EX_vert_inc_ret + EX_vert_refl_ret)).^2;
 Int_Y_vert = abs((EY_vert_inc + EY_vert_refl) - (EY_vert_inc_ret + EY_vert_refl_ret)).^2;
+Int_Z_vert = abs((EZ_vert_inc + EZ_vert_refl) - (EZ_vert_inc_ret + EZ_vert_refl_ret)).^2;
 
 % intensity in the horizontal direction
 % retro is phase shifted by -1 in both beams
 Int_X_horz = abs((EX_horz_inc - EX_horz_refl) - (EX_horz_inc_ret - EX_horz_refl_ret)).^2;
 Int_Y_horz = abs((EY_horz_inc - EY_horz_refl) - (EY_horz_inc_ret - EY_horz_refl_ret)).^2;
+Int_Z_horz = abs((EZ_horz_inc - EZ_horz_refl) - (EZ_horz_inc_ret - EZ_horz_refl_ret)).^2;
 
 total_Intensity = X_beam_knob*(Int_X_vert + Int_X_horz) +...
-    Y_beam_knob*(Int_Y_vert + Int_Y_horz);
+    Y_beam_knob*(Int_Y_vert + Int_Y_horz)+...
+    Z_beam_knob*(Int_Z_vert + Int_Z_horz);
 
-% testing stuff
-% total_Intensity = abs(EX_vert_inc).^2 + abs(EX_horz_inc).^2;
-% total_Intensity = abs(EX_vert_refl).^2 + abs(EX_horz_refl).^2;
 
 figure(1);
 %h.Position = [200 -10 800 800];
@@ -163,10 +182,10 @@ ylim([-y_bound y_bound])
 title('Intensity slices')
 
 
-% % max stuff
-% [maxInt, max_Z_index] = max(total_Intensity, [], 3);
-% [x_surf, y_surf] = meshgrid(x,y);
-% 
+% max stuff
+[maxInt, max_Z_index] = max(total_Intensity, [], 3);
+[x_surf, y_surf] = meshgrid(x,y);
+
 % figure(2);
 % % contour of max Intensity
 % surfc(x_surf, y_surf, maxInt, 'LineStyle', 'none');
@@ -176,7 +195,7 @@ title('Intensity slices')
 % xlim([-x_bound x_bound])
 % ylim([-y_bound y_bound])
 % title('Maximum lattice intensity over atom layer @ dimple')
-% %view(2)
+%view(2)
 % 
 % 
 % figure(3)
@@ -226,8 +245,8 @@ disp(' ');
 
 function E_horz = E_horz(w0_vert, w0_horz, zR_vert, zR_horz, focus_vert, x,y,z, theta)
     % horizontal component of E field
-    x0 = x*cos(theta) + z*sin(theta) - 0;
-    z0 = -x*sin(theta) + z*cos(theta) - focus_vert;
+    x0 = x*abs(cos(theta)) + z*sin(theta) - 0;
+    z0 = -x*sin(theta) + z*abs(cos(theta)) - focus_vert;
     % propagation in \hat{z}'
     % polarization in \hat{x}'
     % \hat{x}' =  cos(theta)*\hat{x} (vert) + sin(theta)*\hat{z} (horz)
@@ -242,6 +261,7 @@ function E_vert = E_vert(w0_vert, w0_horz, zR_vert, zR_horz, focus_vert, x,y,z, 
     % polarization in \hat{x}'
     % \hat{x}' =  cos(theta)*\hat{x} (vert) + sin(theta)*\hat{z} (horz)
     % \hat{z}' = -sin(theta)*\hat{x} (vert) + cos(theta)*\hat{z} (horz)
+    % % abs() to protect E_vert from flipping sign
     E_vert = cos(theta)*E(w0_vert, w0_horz, zR_vert, zR_horz, x0,y,z0);
 end
 
@@ -260,6 +280,9 @@ function E_field = E(w0_vert, w0_horz, zR_vert, zR_horz, x,y,z)
         (zR_vert./q(z,zR_vert)).*(zR_horz./q(z,zR_vert)).*...
         exp(-1i.*k.*x.^2./(2.*q(z,zR_vert))).*...
         exp(-1i.*k.*y.^2./(2.*q(z,zR_horz))).*exp(-1i.*k.*z);
+    
+    % normalize 
+    % E_field = E_field./abs(E_field);
 end
 
 % complex beam parameter function
