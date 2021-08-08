@@ -1,0 +1,56 @@
+This File includes notes about this circuit, and please feel free to edit
+it.  It includes:
+*Changes that should be made to this board before we order more
+*Notes about Op Amp and resistor value choice
+
+=============================================================================
+
+To Change in future versions of this board (feel free to edit this):
+*The offset potentiometers in this version are connected to the +/-15V rails,
+ which are probably relatively noisy.  The next version should get the offset
+ voltage from a LM399H hooked up to an op amp buffer and then a pot.
+*The fixed resistor R8 should be replaced with a change-able resistor jack so
+ that the input stage gain can easily be changed. (R7 and R8 should be
+ matched, so they both need to be able to change)
+*The Error Mod input jack is too close to the adjacent DIP socket and
+ bumps into it, so it should be moved over
+*Many of the silkscreen labels are too close to their objects and are
+ covered up when the component is soldered in place.  Look at an
+ assembled board to figure out which ones should move.
+*Add capacitor to ground from the feedback path of IC6D to ground (in
+ parallel with Error Out, placed near the IC's output pin).  It can
+ sometimes oscillate and this capacitor would help prevent that.  Perhaps
+ the same thing should be done for IC7B
+*One of the INA111's decoupling capacitors has a long trace between it
+ and ground (the one on the -15V supply).  A via to ground should be added
+ right next to this cap
+*The Relock jack should be moved just a bit further from the nearby 
+ resistors.  Right now the edge of the plastic part kind of bumps into the
+ solder on the resistors
+*A little extra space between the power input jack and its adjacent
+ capacitors wouldn't hurt either
+*Update silkscreen labels to match the part numbers of the digital switches, 
+ op amps, and instrumentation amplifiers that we actually use nowdays
+*Move the Total Gain pot a little further from the adjacent op amp so that
+ there is enough space to get the IC extractor tool in there
+*Choose a convention for how to orient the two-pin headers (i.e. pick which
+ pin is connected to GND by default)
+*Change the Dither gain potentiometer to an outside potentiometer. Possibly 
+ do the same for the output offset 
+*Add a D/phase lead stage 
+
+=============================================================================
+
+Notes about op amp and resistor choice:
+    The resistors in the circuit form RC filters with the capacitances of the
+IC input/output pins, which can cause phase delays that degrade the
+performance of the lockbox.  Originally there were a lot of 100k resistors,
+but 10k resistors are recommended to avoid this problem.
+    The op amps should be chosen to have large bandwidth to avoid
+accumulating phase as the signal moves through several of them.  They should
+also be unity gain stable and ok driving the capacative load of a BNC cable.
+Furthermore, they should have low input voltage and current noise spectral
+density for low noise performance.  If a good op amp is chosen, the noise
+at the output should be dominated by Johnson noise of the resistors for
+frequencies ~10Hz and greater.
+	It would be worth redesigning the board to a PIID and crank up the BW
