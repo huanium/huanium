@@ -3,10 +3,10 @@
 
 clear
  
-writerObj = VideoWriter('brusselator', 'MPEG-4');
-%writerObj.Quality = 75;
-writerObj.FrameRate = 20;
-open(writerObj);
+% writerObj = VideoWriter('brusselator', 'MPEG-4');
+% %writerObj.Quality = 75;
+% writerObj.FrameRate = 20;
+% open(writerObj);
 
 
 
@@ -103,7 +103,7 @@ width = 1024;
 % Size of grid for GRAY-SCOTT
 % width = 256;
 % osc_patterns dt
-dt = 0.01;
+dt = 0.005;
 
 % dt for GRAY-SCOTT
 % A = 1; % ignore this 
@@ -145,12 +145,14 @@ while t<stoptime
     t = t+dt;
     ht.String = ['Time = ' num2str(t)];
     
-    if loop_count > 500
-         drawnow;
-         loop_count = 0;
-     else
-         loop_count = loop_count + 1;
-     end
+    drawnow;
+    
+%     if loop_count > 500
+%          drawnow;
+%          loop_count = 0;
+%      else
+%          loop_count = loop_count + 1;
+%      end
     
 %     generate a movie
 %     if loop_count > 250
@@ -160,7 +162,8 @@ while t<stoptime
 %         loop_count = loop_count + 1;
 %     end
 end
-close(writerObj);
+
+%close(writerObj);
 delta = toc;
 
 
@@ -174,26 +177,24 @@ function [t, U, V] = initial_conditions(n, A, B)
 t = 0;
 
 
-
-
 % BRUSSELATOR
 U = A + rand(n);
 V = B/A + rand(n);
 
-% GRAY-SCOTT
+% %GRAY-SCOTT
 % U = ones(n);
 % % Initialize V to zero which a clump of ones
 % V = zeros(n);
 % V(round(n/2)-1:round(n/2)+1 ,round(n/2)-1:round(n/2)+1) = 1;
 % V(round(n/2)-1+6:round(n/2)+1+6, round(n/2)-1+6:round(n/2)+1+6) = 1;
 
-% PHOTO
-%I1=imread('C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\HuanBui_ExpNonLinear\Project 2\mccoy.jpg');
-I1=imread('C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\HuanBui_ExpNonLinear\Project 2\mit1.jpg');
-I2 = imresize(I1,[512 512]); 
-In=im2double(rgb2gray(I2)); 
-U = In/100;
-V = In/100;
+% % PHOTO
+% %I1=imread('C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\HuanBui_ExpNonLinear\Project 2\mccoy.jpg');
+% I1=imread('/home/huanium/Desktop/huanium/LaTeX projects/HuanBui_ExpNonLinear/Project 2/mccoy.jpg');
+% I2 = imresize(I1,[512 512]); 
+% In=im2double(rgb2gray(I2)); 
+% U = In/100;
+% V = In/100;
 
 
 end
