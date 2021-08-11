@@ -139,7 +139,7 @@
 
 
 \section{Notebook}
-The Mathematica notebook which contains all calculations and sketches can be downloaded via this \href{}{link}. 
+The Mathematica notebook which contains all calculations and sketches can be downloaded via this \href{https://raw.githubusercontent.com/huanium/huanium/master/MIT PhD/BUI_AtomicPhysics/mathematica/magnetic-traps.nb}{link}. Right-click and "Save" to save the file to your computer. 
 
 \section{Quadrupole trap (anti-Helmholtz)}
 
@@ -160,7 +160,7 @@ To calculate the magnetic field for one coil, we can use Biot-Savart law because
 \begin{equation*}
 \vec{B}(\vec{r}) = \f{\mu_0 I}{4\pi} \int_C \f{d\vec{l} \times \vec{r}'}{ |{\vec{r}'}|^3} = \f{\mu_0 I}{4\pi} \int_C \f{d\vec{l} \times (\vec{r} - \vec{l})}{|{\vec{r} - \vec{l}}|^3}.  
 \end{equation*}
-We now make the approximation $|\vec{r}| \ll \vec{l}$ (i.e., we're interested in points far from the coil). With this we have the following expansion
+We now make the approximation $|\vec{r}| \ll \vec{l}$ (i.e., we're interested in points far from the coil). With this we have the following expansion\footnote{a more accurate expansion will be presented in the section on the Ioffe-Pritchard trap. For our purposes in this section, it suffices to not include the term $-3|\vec{r}|^2/2|\vec{l}|^2$}
 \begin{equation*}
 \f{1}{|\vec{r} - \vec{l}|^3} \approx \f{1}{|\vec{l}|^3} + \f{3 \vec{r}\cdot \vec{l}}{|\vec{l}|^5} + \dots
 \end{equation*}
@@ -268,6 +268,7 @@ The time-averaged magnetic field strength is thus, by inspection,
 
 \section{Ioffe-Pritchard traps}
 
+This section will essentially follow \cite{allcoil}.
 
 
 \subsection{Calculation}
@@ -283,27 +284,71 @@ There are many variants of the IP trap, the simplest being one with two coils in
 
 Let us revisit the calculation we've done for Helmholtz and anti-Helmholtz coils, but now we will expand to higher orders (still assuming that $\vec{r}$ is near the origin). In particular, we will use
 \begin{equation*}
-\f{1}{|\vec{r} - \vec{l}|^3} \approx \f{1}{|\vec{l}|^3} + \f{3 \vec{r}\cdot \vec{l}}{|\vec{l}|^5} + \f{15}{2}\f{(\vec{r}\cdot\vec{l})^2}{|\vec{l}|^7} + \f{35}{2} \f{(\vec{r}\cdot \vec{l})^3}{|\vec{l}|^9}.
+\f{1}{|\vec{r} - \vec{l}|^3} \approx \f{1}{|\vec{l}|^3} 
+\lb 1 -\f{3}{2}\epsilon
++ \f{15}{8}\epsilon^2 
+- \f{35}{16}\epsilon^3 \rb
+\end{equation*}
+where
+\begin{equation*}
+\epsilon = \f{|\vec{r}|^2}{|\vec{l}|^2} - \f{2\vec{r}\cdot\vec{l}}{|\vec{l}|^2}.
 \end{equation*}
 The expansion can be obtained by following 
 Eq. 3.88 of \cite{griffiths2005introduction}. For a single coil with current $I$ placed a vertical distance $+d$ from the origin, we find the factor $|\vec{l}| = \sqrt{a^2 + d^2}$ to be constant. The field, order-by-order to third order, is thus  
 \begin{equation*}
-B^{(0)}(\vec{r}) = \f{\mu_0 I}{4\pi |\vec{l}|^3}\int_C d\vec{l}\times (\vec{r} - \vec{l}) = \f{1}{2}\f{\mu_0 I a^2}{(a^2 + d^2)^{3/2}} \hat{z} \equiv \f{1}{2}\mathbb{F}\hat{z}
+B^{(0)}(\vec{r}) = \f{\mu_0 I}{4\pi |\vec{l}|^3}\int_C d\vec{l}\times (\vec{r} - \vec{l}) = \f{1}{2}\f{\mu_0 I a^2}{(a^2 + d^2)^{3/2}} \hat{z}
 \end{equation*}
 \begin{align*}
-B^{(1)}(\vec{r}) &= \f{3\mu_0 I}{4\pi |\vec{l}|^5}\int_C d\vec{l}\times (\vec{r} - \vec{l}) \vec{r}\cdot \vec{l}\\
-&=\f{3\mu_0 Ia^2}{4(d^2+a^2)^{5/2}} \left(- x(d-z)\hat{x}  - y (d-z)\hat{y} -  (x^2 + y^2 - 2dz)\hat{z}\right)\\
-&\approx \f{3\mu_0 Ia^2 d}{2(d^2+a^2)^{5/2}} \left(-\f{x}{2}\hat{x}  - \f{y}{2}\hat{y} + z\hat{z}\right)\\
-&\equiv \mathbb{G}\left(-\f{x}{2}\hat{x}  - \f{y}{2}\hat{y} + z\hat{z}\right)
+B^{(1)}(\vec{r}) 
+&= \f{3\mu_0 I}{4\pi |\vec{l}|^5}\int_C d\vec{l}\times (\vec{r} - \vec{l}) \lp \f{|\vec{r}|^2}{|\vec{l}|^2} - \f{2\vec{r}\cdot\vec{l}}{|\vec{l}|^2} \rp
 \end{align*}
 \begin{align*}
 B^{(2)}(\vec{r}) 
-&= \f{15\mu_0 I}{8\pi |\vec{l}|^7}\int_C d\vec{l}\times (\vec{r} - \vec{l}) (\vec{r}\cdot \vec{l})^2\\
-&= 
+&= \f{15\mu_0 I}{8\pi |\vec{l}|^7}\int_C d\vec{l}\times (\vec{r} - \vec{l}) \lp \f{|\vec{r}|^2}{|\vec{l}|^2} - \f{2\vec{r}\cdot\vec{l}}{|\vec{l}|^2} \rp^2
 \end{align*}
+\begin{align*}
+B^{(3)}(\vec{r}) &= \f{35\mu_0 I}{8\pi |\vec{l}|^9}\int_C d\vec{l}\times (\vec{r} - \vec{l}) \lp \f{|\vec{r}|^2}{|\vec{l}|^2} - \f{2\vec{r}\cdot\vec{l}}{|\vec{l}|^2} \rp^3
+\end{align*}
+All these integrals can be done in Mathematica. The total field is found by summing the integrals. Collecting the terms order-by-order to third order (in $z$ and $\rho$) and defining $\rho^2 = x^2 + y^2$ we find that
+\begin{align*}
+\f{B_z(z,\rho)}{\mu_0 I} \approx &\,\,\f{1}{2}\f{a^2}{(a^2+d^2)^{3/2}} + \f{3da^2}{2(a^2+d^2)^{5/2}}z 
+\\
+&+ \f{3a^2(4d^2 - a^2)}{4(a^2+d^2)^{7/2}} \lp z^2 - \f{\rho^2}{2} \rp
++\f{5 a^2 d (4d^2 - 3 a^2)}{4 (a^2 + d^2)^{9/2}}\lp z^3 - \f{3 z\rho^2}{2}\rp\\
+\equiv&\,\, \f{1}{2}\mathbb{F} + \mathbb{G}z + \f{1}{4}\mathbb{H}\lp z^2 - \f{\rho^2}{2} \rp + \f{1}{2} \mathbb{I}\lp z^3 - \f{3 z\rho^2}{2}\rp
+\end{align*}
+where 
 \begin{equation*}
-B^{(3)}(\vec{r}) = \f{35\mu_0 I}{8\pi |\vec{l}|^9}\int_C d\vec{l}\times (\vec{r} - \vec{l}) (\vec{r}\cdot \vec{l})^3 = 
+\mathbb{F} = \f{a^2}{(a^2+d^2)^{3/2}}, \quad \mathbb{G} = \f{3da^2}{2(a^2+d^2)^{5/2}}, \quad 
+\mathbb{H} = \f{3a^2(4d^2-a^2)}{(a^2+d^2)^{7/2}},\quad
+\mathbb{I} = \f{5 a^2 d (4 d^2-3a^2)}{2(a^2 + d^2)^{9/2}} 
 \end{equation*}
+are purely geometric factors. Following similar steps, we can find the field in the radial direction:
+\begin{align*}
+\f{B_\rho}{\mu_0 I} 
+&\approx \f{\sqrt{B_x^2 + B_y^2}}{\mu_0 I} \\
+&= \mathbb{G}\lp -\f{\rho}{2} \rp + \f{1}{4}\mathbb{H}(-\rho z) + \f{1}{2}\mathbb{I}\lp \f{3\rho^3}{8} - \f{3\rho z^2}{2} \rp.
+\end{align*}
+
+In these equations, we can interpret $\mathbb{F}$ as the component of the bias field, $\mathbb{G}$ of the field's gradient, and $\mathbb{H}$ of field curvature.  
+
+
+\subsubsection{Field by Helmholtz pair}
+To transform from one Helmholtz coil to the other in the Helmholtz configuration, we do the following:
+\begin{equation*}
+I \to I, \quad d \to -d.
+\end{equation*}
+With this, we can easily compute the total field.  
+\begin{align*}
+&B_z(z,\rho) \approx \mu_0 I \lb \mathbb{F} + \f{1}{2}\mathbb{H} \lp z^2 - \f{\rho^2}{2} \rp  \rb\\
+&B_\rho(z,\rho) \approx \mu_0 I \lb \f{1}{2}\mathbb{H}(-\rho z) \rb.
+\end{align*}
+The other terms vanish since they are odd functions in $d$. 
+
+
+
+\subsubsection{Field by anti-Helmholtz pair}
+
 
 \subsection{Trap parameters}
 
