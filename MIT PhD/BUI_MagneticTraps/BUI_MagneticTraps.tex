@@ -139,7 +139,7 @@
 
 
 \section{Notebook}
-The Mathematica notebook which contains all calculations and sketches can be downloaded via this \href{https://raw.githubusercontent.com/huanium/huanium/master/MIT PhD/BUI_AtomicPhysics/mathematica/magnetic-traps.nb}{link}. Right-click and "Save" to save the file to your computer. 
+The Mathematica notebook which contains all calculations and sketches can be downloaded via this \href{https://raw.githubusercontent.com/huanium/huanium/master/MIT PhD/BUI_AtomicPhysics/mathematica/magnetic-traps.nb}{link}. Right-click and ``Save" to save the notebook to your computer. 
 
 \section{Quadrupole trap (anti-Helmholtz)}
 
@@ -330,7 +330,7 @@ are purely geometric factors. Following similar steps, we can find the field in 
 &= \mathbb{G}\lp -\f{\rho}{2} \rp + \f{1}{4}\mathbb{H}(-\rho z) + \f{1}{2}\mathbb{I}\lp \f{3\rho^3}{8} - \f{3\rho z^2}{2} \rp.
 \end{align*}
 
-In these equations, we can interpret $\mathbb{F}$ as the component of the bias field, $\mathbb{G}$ of the field's gradient, and $\mathbb{H}$ of field curvature.  
+In these equations, we can interpret $\mathbb{F}$ as the component of the bias field, $\mathbb{G}$ of the field's gradient, and $\mathbb{H}$ of field curvature.  By symmetry, there is no field in the $\phi$ direction. 
 
 
 \subsubsection{Field by Helmholtz pair}
@@ -343,11 +343,100 @@ With this, we can easily compute the total field.
 &B_z(z,\rho) \approx \mu_0 I \lb \mathbb{F} + \f{1}{2}\mathbb{H} \lp z^2 - \f{\rho^2}{2} \rp  \rb\\
 &B_\rho(z,\rho) \approx \mu_0 I \lb \f{1}{2}\mathbb{H}(-\rho z) \rb.
 \end{align*}
-The other terms vanish since they are odd functions in $d$. 
+The other terms vanish since they are odd functions in $d$. We notice that this file only has a bias and curvature components. By letting $a=2d$ we can make  $\mathbb{H}$ vanish, producing a nearly constant field in $\hat{z}$ and almost no field in $\rho$. On the other hand, setting $a = d\sqrt{4/3}$ produces maximal $\mathbb{H}$ (maximal curvature). 
 
 
 
 \subsubsection{Field by anti-Helmholtz pair}
+
+To transform from one Helmholtz coil to the other in the anti-Helmholtz configuration, we do the following:
+\begin{equation*}
+I \to -I, \quad d \to -d.
+\end{equation*}
+With this, we can easily compute the total field:
+\begin{align*}
+&B_z(z,\rho) \approx  \mu_0 I \lb 2\mathbb{G}z + \mathbb{I}\lp z^3 - \f{3z\rho^2}{2} \rp \rb\\
+&B_\rho(z,\rho) \approx \mu_0 I \lb -\mathbb{G}\rho + \mathbb{I}\lp \f{3\rho^3}{8} - \f{3\rho z^2}{2} \rp \rb
+\end{align*}
+where now the terms that are even in $d$ vanish. We notice that $\mathbb{I} = 0$ when $a = d\sqrt{4/3}$. Thus, configuring the field this way cancels out higher order terms. On the other hand, $\mathbb{G}$ is maximal at $a = 2d$. 
+
+
+
+
+\subsubsection{Ioffe-Pritchard trap}
+With the fields calculated, we now just plug everything in and find the total field in the Ioffe-Pritchard configuration. \\
+
+We start with the big Ioffe coils (BI) in the anti-Helmholtz configuration. We will impose the condition $a_{BI} = d_{BI}\sqrt{4/3}$ so that $\mathbb{I}_{BI} = 0$. In Cartesian coordinates, this field is 
+\begin{equation*}
+\vec{B}_{BI}(x,y,z) = \mu_0 I_{BI} \mathbb{G}_{BI}(-x,-y,2z ).
+\end{equation*}
+In practice, $BI$ coils have $y$ as their symmetry axis, with current running in the opposite direction. The correct expression for the field is thus 
+\begin{equation*}
+\vec{B}_{BI}(x,y,z) = \mu_0 I_{BI} \mathbb{G}_{BI}(x,-2y,z).
+\end{equation*}
+
+For the small Ioffe coils, $x$ is the symmetry axis. We also impose the condition $a_{SI} = d_{SI}\sqrt{4/3}$ so that $\mathbb{I}_{SI} = 0$. Since they're also in the anti-Helmholtz configuration we have
+\begin{equation*}
+\vec{B}_{SI}(x,y,z) = \mu_0 I_{SI} \mathbb{G}_{SI} (2x,-y,-z).
+\end{equation*}
+
+For the pinch coils (PI) which are in the Helmholtz configuration, we find 
+\begin{equation*}
+\vec{B}_{PI}(x,y,z) = \mu_0 I_{PI} \lp -\f{1}{2}\mathbb{H}_{PI}xz,  -\f{1}{2}\mathbb{H}_{PI}yz, \mathbb{F}_{PI} + \f{1}{2}\mathbb{H}_{PI} \lp z^2 - \rho^2/2 \rp \rp.
+\end{equation*}
+
+Finally, we have the compensation coils (CO), which are in the Helmholtz configuration, but the current is in the opposite direction to PI's. The field is 
+\begin{equation*}
+\vec{B}_{CO}(x,y,z) = \mu_0 I_{CO} \lp \f{1}{2}\mathbb{H}_{CO}xz,  \f{1}{2}\mathbb{H}_{CO}yz, -\mathbb{F}_{CO} - \f{1}{2}\mathbb{H}_{CO} \lp z^2 - \rho^2/2 \rp \rp.
+\end{equation*}
+
+Adding everything up we find the full field:
+\begin{align*}
+\vec{B}(x,y,z) = 
+&\begin{pmatrix}
+0\\
+0\\ 
+\mu_0 I_{PI} \mathbb{F}_{PI} - \mu_0 I_{CO} \mathbb{F}_{CO} 
+\end{pmatrix}
++ 
+\begin{pmatrix}
+(\mu_0 I_{BI}\mathbb{G}_{BI}  +2 \mu_0 I_{SI} \mathbb{G}_{SI}  )x\\
+-(2\mu_0 I_{BI}\mathbb{G}_{BI} +\mu_0 I_{SI} \mathbb{G}_{SI})y\\
+(\mu_0 I_{BI} \mathbb{G}_{BI} - \mu_0 I_{SI} \mathbb{G}_{SI})z
+\end{pmatrix}\\
+&+ \f{1}{2} \lp \mu_0 I_{PI}\mathbb{H}_{PI} -\mu_0 I_{CO}\mathbb{H}_{CO}  \rp \begin{pmatrix}
+-xz\\-yz\\z^2 - \rho^2/2
+\end{pmatrix}.
+\end{align*}
+We now add another constraint:
+\begin{equation*}
+\mu_0 I_{BI} \mathbb{G}_{BI} = \mu_0 I_{SI} \mathbb{G}_{SI}
+\end{equation*}
+so that the full field simplifies:
+\begin{align*}
+\vec{B}(x,y,z) = 
+\delta \begin{pmatrix}
+0\\
+0\\ 
+1
+\end{pmatrix}
++ 
+\al \begin{pmatrix}
+x\\
+-y\\
+0
+\end{pmatrix}
++ \f{1}{2}\beta \begin{pmatrix}
+-xz\\-yz\\z^2 - \rho^2/2
+\end{pmatrix}
+\end{align*}
+where
+\begin{align*}
+&\al = 3\mu_0 I_{BI}\mathbb{G}_{BI} = 3\mu_0 I_{SI}\mathbb{G}_{SI}\\
+&\beta = \mu_0 I_{PI}\mathbb{H}_{PI} -\mu_0 I_{CO}\mathbb{H}_{CO} \\
+&\delta = \mu_0 I_{PI} \mathbb{F}_{PI} - \mu_0 I_{CO} \mathbb{F}_{CO} .
+\end{align*}
+
 
 
 \subsection{Trap parameters}
@@ -362,6 +451,12 @@ The other terms vanish since they are odd functions in $d$.
 	\includegraphics[width=0.75\textwidth]{all-coils.png}
 	\caption{From \cite{allcoil}}
 \end{figure}
+
+
+
+
+
+\section{The Majorana spin-flip problem}
 
 
 
