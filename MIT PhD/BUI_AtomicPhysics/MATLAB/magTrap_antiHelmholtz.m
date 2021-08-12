@@ -15,7 +15,7 @@ C = 3*mu0*I*a^2*b/(2*(a^2 + b^2)^(5/2)); % constant
 x_bound = 1;
 y_bound = 1;
 z_bound = 1;
-spacing = 0.05;
+spacing = 0.2;
 
 x = -x_bound:spacing:x_bound;
 y = -y_bound:spacing:y_bound;

@@ -138,12 +138,17 @@
 
 
 
-\section{Notebook}
-The Mathematica notebook which contains all calculations and sketches can be downloaded via this \href{https://raw.githubusercontent.com/huanium/huanium/master/MIT PhD/BUI_AtomicPhysics/mathematica/magnetic-traps.nb}{link}. Right-click and ``Save" to save the notebook to your computer. 
+\section{Mathematica Notebook}
+The Mathematica notebook which contains some calculations and sketches can be downloaded via this \href{https://raw.githubusercontent.com/huanium/huanium/master/MIT PhD/BUI_AtomicPhysics/mathematica/magnetic-traps.nb}{link}. Right-click and ``Save" to save the notebook to your computer. 
+
+
+\section{Zeeman Effect \& Earnshaw's Theorem}
+
+
 
 \section{Quadrupole trap (anti-Helmholtz)}
 
-
+This section on the quadrupole trap and the next section on the TOP trap follow \cite{perez2013does}.
 
 \subsection{Calculation}
 
@@ -213,12 +218,147 @@ The field strength is given by
 \abs{B(\vec{r})} = B_0 \sqrt{x^2 + y^2 + 4z^2}.
 \end{equation*}
 
+We notice that this trap is not harmonic. Further, there is a zero minimum of the magnetic field. When particles reach the zero minimum, the Zeeman shifts are reduced, leading to a loss of particles in the trap. The escape mechanism is called the Majorana spin-flip transition which we will discuss later. 
 
 
 \subsection{Trap parameters}
 
 \subsection{Simulation}
 
+
+The quadrupole trap is the simplest magnetic trap configuration. The MATLAB code for this simulation is included below the figures. The code is perhaps not the most efficient way to do things, but this simulation is simple enough that we won't worry about such things for now. 
+
+
+\begin{figure}[!htb]
+	\centering
+	\begin{minipage}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{sim-figs/quad-1.eps}
+	\end{minipage}%
+	\begin{minipage}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{sim-figs/quad-2.eps}
+	\end{minipage}%
+	\begin{minipage}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{sim-figs/quad-3.eps}
+	\end{minipage}%
+\end{figure}
+
+
+\begin{lstlisting}
+% Author: Huan Q. Bui
+% Date: August 10, 2021
+
+% SIMULATE Anti-Helmholtz magnetic field
+
+clear
+
+mu0 = 4*pi*10^(-7);
+I = 10; % current in each coil, in Amperes
+N = 16; % winding number
+a = 0.2; % coil radius, in m
+b = 0.15; % 1/2 distance between coils, in m
+C = 3*mu0*I*a^2*b/(2*(a^2 + b^2)^(5/2)); % constant
+
+x_bound = 1;
+y_bound = 1;
+z_bound = 1;
+spacing = 0.2;
+
+x = -x_bound:spacing:x_bound;
+y = -y_bound:spacing:y_bound;
+z = -z_bound:spacing:z_bound;
+
+[X,Y,Z] = meshgrid(x,y,z);
+
+% magnetic fields formula
+% Bfield = @(x,y,z) [C.*x C.*y -2*C.*z]; 
+% Bfield_XZ = @(x,z) [C.*x -2*C.*z];
+
+h = figure(1)
+
+% magnetic field in XZ plane
+subplot(3,1,1)
+quiver(X,Z,C.*X,-2*C.*Z);
+xlabel('X (m)')
+ylabel('Z (m)')
+title('Field in XZ plane, Y=0')
+xlim([-x_bound x_bound])
+ylim([-z_bound z_bound])
+
+
+subplot(3,1,2)
+% magnetic field in YZ plane
+quiver(Y,Z,C.*Y,-2*C.*Z);
+xlabel('Y (m)')
+ylabel('Z (m)')
+title('Field in YZ plane, X=0')
+xlim([-y_bound y_bound])
+ylim([-z_bound z_bound])
+
+subplot(3,1,3)
+% magnetic field in XY plane
+quiver(X,Y,C.*X,C.*Y);
+xlabel('X (m)')
+ylabel('Y (m)')
+title('Field in XY plane, Z=0')
+xlim([-x_bound x_bound])
+ylim([-y_bound y_bound])
+
+
+% Magnetic field strengths in 2D
+g = figure(2)
+
+subplot(3,1,1)
+[X_XZ,Z_XZ] = meshgrid(x,z);
+B_strength_XZ = sqrt((C.*X_XZ).^2  + (-2*C.*Z_XZ).^2);
+surfc(X_XZ,Z_XZ,B_strength_XZ,'LineStyle' ,'none');
+view(2)
+xlabel('X (m)')
+ylabel('Z (m)')
+title('Field strength (T) in XZ, Y=0')
+
+subplot(3,1,2)
+[Y_YZ,Z_YZ] = meshgrid(y,z);
+B_strength_YZ = sqrt((C.*Y_YZ).^2  + (-2*C.*Z_YZ).^2);
+surfc(Y_YZ,Z_YZ,B_strength_YZ,'LineStyle' ,'none');
+view(2)
+xlabel('Y (m)')
+ylabel('Z (m)')
+title('Field strength (T) in YZ, X=0')
+
+subplot(3,1,3)
+[X_XY,Y_XY] = meshgrid(x,y);
+B_strength_XY = sqrt((C.*X_XY).^2  + (-2*C.*Y_XY).^2);
+surfc(X_XY,Y_XY,B_strength_XY,'LineStyle' ,'none');
+view(2)
+xlabel('X (m)')
+ylabel('Y (m)')
+title('Field strength (T) in XY, Z=0')
+
+% magnetic field strengths in 1D
+k = figure(3)
+% X=0,Y=0
+subplot(3,1,1)
+plot(z,abs(-2*C.*z))
+xlabel('Z (m)')
+ylabel('B (T)')
+title('Field strength in Z')
+% Y=0,Z=0
+subplot(3,1,2)
+plot(x, abs(C.*x))
+xlabel('X (m)')
+ylabel('B (T)')
+title('Field strength in X')
+% X=0,Z=0
+subplot(3,1,3)
+plot(y, abs(C.*y))
+xlabel('Y (m)')
+ylabel('B (T)')
+title('Field strength in Y')
+
+\end{lstlisting}
 
 
 
@@ -244,7 +384,8 @@ B(\vec{r},t) = \sqrt{(B_0 x + B_b\cos\Omega t)^2 + (B_0 y + B_b\sin\Omega t)^2 +
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.6\textwidth]{TOP_trap.png}
-	\caption{From \cite{PhysRevLett.74.3352}}
+	\caption{From \cite{PhysRevLett.74.3352}. By rotating the trap in the $XY$ plane fast enough, the atoms see a time-averaged trap that is not only quadratic (harmonic) but also has no zero minimum when $B_b \neq 0$. We note, however, that the harmonic potential is anisotropic: there is stronger confinement in the $z$-direction.}
+	\label{fig:cornell}
 \end{figure}
 
 For this trap to work $\Omega$ can't be too small or too large. $\Omega$ must be larger than the oscillation frequency of the trapped particles (which is on the order of $100$ Hz) so that the particles feel an effective time-averaged magnetic field. $\Omega$ should also be smaller than the frequency associated with the transition between two adjacent internal quantum states (which is on the order of $1$ MHz) in order to prevent particle losses due to Majorana spin-flips. \\
@@ -262,14 +403,158 @@ The time-averaged magnetic field strength is thus, by inspection,
 
 
 \subsection{Trap parameters}
+Here we want to calculate the trapping frequencies for the trap. Recall that the energy of a magnetic dipole moment $\mu$ acted by an external magnetic field $B$ is given by 
+\begin{equation*}
+E = -\mu |B|,
+\end{equation*}
+where $\mu \sim g_F m_F \mu_B$ (more explicit expressions for $\vec{\mu}$ which involves the spin $s$ and orbital $l$ $g$-factors can be found elsewhere).\\ 
+
+Assuming that the energy goes like the energy for harmonic oscillation. Consider the $x$-direction with $y=z=0$ and ignoring the offset, we find
+\begin{equation*}
+E \sim \f{1}{2}m_\text{atom} \omega_x^2 x^2 = -\mu B = -\mu \f{B_0^2}{4B_b}x^2.
+\end{equation*}
+This gives
+\begin{equation*}
+\omega_x = \sqrt{\f{-\mu B_0^2}{2B_b m_\text{atom}}}.
+\end{equation*}
+By symmetry,
+\begin{equation*}
+\omega_y = \sqrt{\f{-\mu B_0^2}{2B_b m_\text{atom}}}
+\end{equation*}
+Similarly, for $z$:
+\begin{equation*}
+\omega_z = \sqrt{\f{-4\mu B_0^2}{B_b m_\text{atom}}}.
+\end{equation*}
+The aspect ratio is given by 
+\begin{equation*}
+\Lambda = \f{\omega_\rho}{\omega_z} = \f{\omega_x}{\omega_z} = {\f{1}{2\sqrt{2}}}.
+\end{equation*}
+
+
+We see that this trap works for $\mu < 0$, implying that the states are low-field seeking (so that $E = -\mu |B|$ is minimized). 
 
 \subsection{Simulation}
 
 
+The magnetic field at any given time (or instantaneous magnetic field) is simply the quadrupole magnetic field plus some shift in the $XY$ plane (as shown in Figure \ref{fig:cornell}), so we don't have to reproduce it here. The simulation only shows the time-averaged field. Once again, the (probably inefficient) MATLAB code is attached below the figures.
+
+
+
+
+\begin{figure}[!htb]
+	\centering
+	\begin{minipage}{.49\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{sim-figs/TOP-1.eps}
+	\end{minipage}%
+	\begin{minipage}{.49\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{sim-figs/TOP-2.eps}
+	\end{minipage}%
+\end{figure}
+
+
+
+\begin{lstlisting}
+% Author: Huan Q. Bui
+% Date: August 10, 2021
+
+% SIMULATE TOP magnetic trap
+
+clear
+
+mu0 = 4*pi*10^(-7);
+I = 1; % current in each coil, in Amperes
+N = 16; % winding number
+a = 0.2; % coil radius, in m
+b = 0.15; % 1/2 distance between coils, in m
+C = 3*mu0*I*a^2*b/(2*(a^2 + b^2)^(5/2)); % constant
+B = 2*C;
+
+x_bound = 10;
+y_bound = 10;
+z_bound = 10;
+spacing = 0.1;
+
+x = -x_bound:spacing:x_bound;
+y = -y_bound:spacing:y_bound;
+z = -z_bound:spacing:z_bound;
+
+[X,Y,Z] = meshgrid(x,y,z);
+
+% field strength formula:
+% Bstrength = B + (C^2/(4*B))*(x^2 + y^2 + 8z^2);
+
+
+% Magnetic field strengths in 2D
+g = figure(1)
+
+subplot(3,1,1)
+[X_XZ,Z_XZ] = meshgrid(x,z);
+B_strength_XZ = B + (C^2/(4*B))*(X_XZ.^2 + 8.*Z_XZ.^2);
+surfc(X_XZ,Z_XZ,B_strength_XZ,'LineStyle' ,'none');
+view(2)
+xlabel('X (m)')
+ylabel('Z (m)')
+title('Field strength (T) in XZ, Y=0')
+
+subplot(3,1,2)
+[Y_YZ,Z_YZ] = meshgrid(y,z);
+B_strength_YZ = B + (C^2/(4*B))*(Y_YZ.^2 + 8.*Z_YZ.^2);
+surfc(Y_YZ,Z_YZ,B_strength_YZ,'LineStyle' ,'none');
+view(2)
+xlabel('Y (m)')
+ylabel('Z (m)')
+title('Field strength (T) in YZ, X=0')
+
+subplot(3,1,3)
+[X_XY,Y_XY] = meshgrid(x,y);
+B_strength_XY = B + (C^2/(4*B))*(X_XY.^2 + Y_XY.^2);
+surfc(X_XY,Y_XY,B_strength_XY,'LineStyle' ,'none');
+view(2)
+xlabel('X (m)')
+ylabel('Y (m)')
+title('Field strength (T) in XY, Z=0')
+
+% magnetic field strengths in 1D
+k = figure(2)
+% X=0,Y=0
+subplot(3,1,1)
+plot(z,B + (C^2/(4*B)).*(8*z.^2))
+xlabel('Z (m)')
+ylabel('B (T)')
+title('Field strength in Z')
+% Y=0,Z=0
+subplot(3,1,2)
+plot(x, B + (C^2/(4*B)).*(x.^2))
+xlabel('X (m)')
+ylabel('B (T)')
+title('Field strength in X')
+% X=0,Z=0
+subplot(3,1,3)
+plot(y, B + (C^2/(4*B)).*(y.^2))
+xlabel('Y (m)')
+ylabel('B (T)')
+title('Field strength in Y')
+
+\end{lstlisting}
+
+
+
+\newpage
+
+
 \section{Ioffe-Pritchard traps}
 
-This section will essentially follow \cite{allcoil}.
+This section will essentially follow \cite{allcoil} except for the calculation of the magnetic field produced by a coil. Instead of doing an expansion using Legendre polynomials and using power series expansion of the magnetic potential $\Psi$ (where $\vec{B} = \nabla \Psi$), here we simply do a series expansion for integrand of the Biot-Savart law integral and pick out terms of the same orders.  
 
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{all-coils.png}
+	\caption{From \cite{allcoil}}
+\end{figure}
 
 \subsection{Calculation}
 
@@ -294,7 +579,10 @@ where
 \epsilon = \f{|\vec{r}|^2}{|\vec{l}|^2} - \f{2\vec{r}\cdot\vec{l}}{|\vec{l}|^2}.
 \end{equation*}
 The expansion can be obtained by following 
-Eq. 3.88 of \cite{griffiths2005introduction}. For a single coil with current $I$ placed a vertical distance $+d$ from the origin, we find the factor $|\vec{l}| = \sqrt{a^2 + d^2}$ to be constant. The field, order-by-order to third order, is thus  
+Eq. 3.88 of \cite{griffiths2005introduction}. We notice the difference between this expansion and the expansion that appeared in the section on the anti-Helmholtz configuration. Here, we include the term $\abs{\vec{r}}/\abs{\vec{l}}$ in $\epsilon$, so that the expansion is more accurate and match the result due to expansion in Legendre polynomials presented in \cite{allcoil}.\\
+
+
+For a single coil with current $I$ placed a vertical distance $+d$ from the origin, we find the factor $|\vec{l}| = \sqrt{a^2 + d^2}$ to be constant. The field, order-by-order to third order, is thus  
 \begin{equation*}
 B^{(0)}(\vec{r}) = \f{\mu_0 I}{4\pi |\vec{l}|^3}\int_C d\vec{l}\times (\vec{r} - \vec{l}) = \f{1}{2}\f{\mu_0 I a^2}{(a^2 + d^2)^{3/2}} \hat{z}
 \end{equation*}
@@ -412,7 +700,7 @@ We now add another constraint:
 \begin{equation*}
 \mu_0 I_{BI} \mathbb{G}_{BI} = \mu_0 I_{SI} \mathbb{G}_{SI}
 \end{equation*}
-so that the full field simplifies:
+so that the full field simplifies to:
 \begin{align*}
 \vec{B}(x,y,z) = 
 \delta \begin{pmatrix}
@@ -441,16 +729,55 @@ where
 
 \subsection{Trap parameters}
 
+Just as before, we want to calculate the trapping frequencies. Following a similar approach, we find the trapping frequency in the $z$-direction by setting $x=y=0$ and calculate $|\vec{B}|$ then extract $\omega_z$:
+\begin{equation*}
+\f{1}{2}m_\text{atom} \omega_z^2 z^2 = g_F m_F \mu_B\f{1}{2}\beta z^2
+\end{equation*}
+from which we find 
+\begin{equation*}
+\omega_z = \sqrt{\f{ g_F m_F \mu_B \beta}{m_\text{atom}}} = \sqrt{\f{g_F m_F \mu_B\mu_0 }{m_\text{atom}}\lp I_{PI}\mathbb{H}_{PI} - I_{CO}\mathbb{H}_{CO} \rp }.
+\end{equation*}
+Similarly, setting $z=0$ we find the field strength to be 
+\begin{align*}
+|\vec{B}| &= \sqrt{\al^2 \rho^2 + \delta^2 - \f{1}{2}\delta \beta \rho^2 + \cancel{\f{1}{16}\be^2 \rho^4}}\\
+&\approx \sqrt{\delta^2 + \lp  \al^2 - \f{1}{2}\delta \beta\rp\rho^2} \\
+&= \delta \sqrt{1 + \lp \f{\al^2}{\delta^2} - \f{\beta}{2\delta} \rp\rho^2 }\\
+&\approx \delta \lb 1 + \f{1}{2}\lp \f{\al^2}{\delta^2} - \f{\be}{2\delta} \rp \rho^2 \rb\\
+&= \delta + \f{1}{2}\lp \f{\al^2}{\delta} - \f{\beta}{2} \rp \rho^2
+\end{align*}
+As before, we only care about the curvature part:
+\begin{equation*}
+\f{1}{2}m_\text{atom} \omega_\rho^2 \rho^2 = g_F m_F \mu_B \f{1}{2}\lp \f{\al^2}{\delta} - \f{\beta}{2} \rp\rho^2
+\end{equation*}
+which gives
+\begin{align*}
+\omega_\rho &= \sqrt{\f{g_F m_F \mu_B}{m_\text{atom}} \lp \f{\al^2}{\delta} - \f{\be}{2} \rp  } \\
+&= \sqrt{\f{g_F m_F \mu_B \mu_0}{m_\text{atom}} \lp \f{9I_{BI}\mathbb{G}_{BI}^2}{ I_{PI} \mathbb{F}_{PI} -  I_{CO} \mathbb{F}_{CO} }  - \f{ I_{PI}\mathbb{H}_{PI} - I_{CO}\mathbb{H}_{CO}}{2} \rp }.
+\end{align*}
+
+
+
+We can put on more constraints to further simplify things. In particular, we can let $a_{CO} = 2d_{CO}$ so that $\mathbb{H}_{CO} = 0$, meaning that the compensation coils only contribute to the bias field. With this constraint, we have
+\begin{equation*}
+\omega_z = \sqrt{\f{g_F m_F \mu_B\mu_0 }{m_\text{atom}} I_{PI}\mathbb{H}_{PI}  }
+\end{equation*}
+\begin{equation*}
+\omega_\rho = \sqrt{\f{g_F m_F \mu_B \mu_0}{m_\text{atom}} \lp \f{9I_{BI}\mathbb{G}_{BI}^2}{ I_{PI} \mathbb{F}_{PI} -  I_{CO} \mathbb{F}_{CO} }  - \f{ I_{PI}\mathbb{H}_{PI} }{2} \rp }.
+\end{equation*}
+
+
+As before, the aspect ratio can be calculated via
+\begin{equation*}
+\Lambda = \f{\omega_\rho}{\omega_z}.
+\end{equation*}
+
+
+
 \subsection{Simulation}
+As opposed to the MATLAB code provided in \cite{allcoil}, the simulation below uses the expression for $\vec{B}$ which approximates to third order the total magnetic field near the center of the trap. The reader may refer to \cite{allcoil} for the exact simulation for the full field, evaluates the fields due to the coils exactly using numerical integration of elliptic integrals. The reader are also welcomed to compare the results generated using the approximate simulation presented here and those from the full simulation of \cite{allcoil}.
 
 
 
-
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.75\textwidth]{all-coils.png}
-	\caption{From \cite{allcoil}}
-\end{figure}
 
 
 
@@ -460,8 +787,7 @@ where
 
 
 
-\typeout{}
-\bibliography{Bui_MagTrap.bib} 
+\bibliography{Bui_MagTrap} 
 \bibliographystyle{unsrt}	
 
 \end{document}
