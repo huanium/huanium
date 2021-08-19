@@ -1,0 +1,245 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+
+
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+
+
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+\begin{document}
+	
+
+\begin{center}
+	\Large{Landau-Zener Transition Probability\\
+	Some Notes and Numerical Calculations}
+\end{center}	
+	
+\begin{center}
+	\large{Huan Q. Bui}
+\end{center}
+
+\begin{center}
+	\today
+\end{center}
+
+
+\section{Avoided Crossing}
+
+Recall results from avoided crossing: Given a Hamiltonian of the form 
+\begin{equation*}
+\widehat{H}' = \widehat{H} + \widehat{P} = \begin{bmatrix}
+E_1 & \\ & E_2
+\end{bmatrix} + \begin{bmatrix}
+& E_{12} \\ E_{12}* &
+\end{bmatrix} = \begin{bmatrix}
+E_1 & E_{12} \\ E_{12}^* & E_2
+\end{bmatrix},
+\end{equation*}
+the eigen-energies are
+\begin{equation*}
+E_\pm = \f{1}{2}(E_1 + E_2) \pm  \f{1}{2}\sqrt{(E_1 - E_2)^2 + 4\abs{E_{12}}^2}.
+\end{equation*}
+The avoided crossing is shown by plotting the energies $E_\pm$ against the zero-perturbation energy splitting $\Delta E = E_1 - E_2$. Now, imagine that this $\Delta$ is a function of time, then $\Delta E = \Delta E(t)$. In this case we can plot $E_\pm$ against time, and the result looks something like this:
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{avoided-crossing.png}
+	\caption{Avoided crossing following Landau-Zener approximations.}
+	\label{fig:LZ}
+\end{figure}
+
+In this simple system, two things can happen as we sweep $\Delta E$ (in time).  On the one hand, if we sweep very slowly (adiabatic), then eigenstates have time to ``adapt'' and remain at their relative energy levels, i.e., the lower-energy eigenstate will change its wavefunction so that its energy remains the lower energy, and vice versa. If we sweep very quickly (non-adiabatic), on the other hand, then the eigenstate may remain the same, with some probability of transitioning to other eigenstate(s). \\
+
+
+What we mean by ``slowly'' and ``quickly'' will be captured in the adiabatic conditions in the next section. But the main point here is that the transition probability mentioned above is called the Landau-Zener transition probability, named after two physicists who stated and solved the problem (analytically). As we will see below, this probability is an exponential decay which depends on the sweeping rate (how slowly/quickly $\Delta E$ changes) and how strong the two states are coupled. 
+
+
+\section{Results for Linear LZ Sweep}
+
+We will write the Hamiltonian with (possible) time dependence:
+\begin{equation*}
+\widehat{H} = \begin{bmatrix}
+E_1(t) & E_{12}(t) \\ E_{12}(t)^* & E_{2}(t).
+\end{bmatrix}
+\end{equation*}
+
+
+
+Landau and Zener's analytical solution arrived after making the following approximations and simplifications: 
+\begin{itemize}
+	\item $E_{12}$ is very small compared to $\Delta E$. We can treat it as constant.
+	\item $\Delta E$ varies linearly in time 
+\end{itemize}
+
+From these simplifications we have, for all time, 
+\begin{equation*}
+\f{d}{dt}(E_1(t) - E_2(t)) = \al t \quad \text{ and } \quad \f{d}{dt}{E_{12}(t)} = 0.
+\end{equation*}
+
+To state the transition probability due to Landau and Zener, we must define it first. To this end, we first define the ``non-adiabatic'' basis by 
+\begin{equation*}
+\ket{1} = \begin{pmatrix}
+1 \\ 0
+\end{pmatrix} \quad \text{ and }  \quad
+\ket{2} = \begin{pmatrix}
+0 \\ 1
+\end{pmatrix}
+\end{equation*}
+
+Next, let $\ket{\Psi(t)}$ solve the SE, then a natural ansatz for $\ket{\Psi(t)}$ is 
+\begin{equation*}
+\ket{\Psi(t)} = A(t) \exp \lp -\f{i}{\hbar}\int_0^{t} E_1(t')\,dt' \rp \ket{1} + B(t) \exp \lp -\f{i}{\hbar}\int_0^{t} E_2(t')\,dt' \rp \ket{2}.
+\end{equation*}
+We assume that at time $t=-\infty$, the system is in state $\ket{2}$, so that
+\begin{equation*}
+A(-\infty) = 0 \quad \text{ and } \quad B(-\infty) = 1.
+\end{equation*}
+We wish to find the probability $P$ that the system makes a transition from state $\ket{2}$ to $\ket{1}$, which is given by 
+\begin{equation*}
+P = \abs{B(\infty)}^2 = 1- \abs{A(\infty)}^2.
+\end{equation*}
+In his paper, Zener showed that 
+\begin{equation*}
+\boxed{P = e^{-2\pi \gamma}, \text{ where } \gamma = \f{E_{12}^2}{\hbar \abs{\al}}} 
+\end{equation*}
+
+
+\subsection{Numerical verification}
+
+
+
+The (analytical) derivation of the Landau-Zener transition probability is rather involved, so let us start with a numerical verification, inspired by Problem set 7 of MIT's 8.06: Quantum Physics III - Spring 2018. \\
+
+
+We start by getting a set of ODEs for $A(t)$ and $B(t)$ from the SE. 
+
+
+
+
+
+
+
+\subsection{Derivation}
+
+\section{Some Nonlinear LZ Sweep Simulations}
+
+\newpage
+
+\bibliography{BUI_LandauZener} 
+\bibliographystyle{unsrt}	
+
+\end{document}
