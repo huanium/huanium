@@ -518,9 +518,25 @@ The approximation $\mu=0$ breaks down when $N_g \to 0$, since $\mu \approx -k_B 
 \end{equation*} 
 We can write this as $T>T_c$ where the \textbf{critical temperature} is defined by 
 \begin{equation*}
-{N = \lp \f{\pi k_B T_c}{4\epsilon_1} \rp^{3/2} \zeta_{3/2} = 2.612 \lp \f{mk_B T_c}{8\hbar^2 \pi} \rp^{3/2} V}
+\boxed{N = \lp \f{\pi k_B T_c}{4\epsilon_1} \rp^{3/2} \zeta_{3/2} = 2.612 \lp \f{mk_B T_c}{8\hbar^2 \pi} \rp^{3/2} V}
 \end{equation*}
-where we have used the previously given expression for $\epsilon_1$. So, $T_c$ is 
+where we have used the previously given expression for $\epsilon_1$. In terms of atom density, we can write this as 
+\begin{equation*}
+\boxed{n = \f{N}{V} = 2.612 \lp \f{mk_B T_c}{8 \hbar^2 \pi} \rp^{3/2}}
+\end{equation*}
+We can simplify this a bit further by introducing the de Broglie wavelength (with an extra factor of $\sqrt{\pi}$ in the denominator):
+\begin{equation*}
+\lambda_{dB} = \f{h}{p} = \f{h}{\sqrt{2m E}} = \f{h}{\sqrt{2\pi m k_B T_c}}
+\end{equation*}
+so that 
+\begin{equation*}
+\boxed{n = \f{2.612}{\lambda_{dB}^3}}
+\end{equation*}
+We can invert this and call this the \textbf{condition for BEC}. \\
+
+
+
+Anyway, back to $T_c$. We will now put back the $N_{\text{excited}}/N$  ratio:
 \begin{equation*}
 \boxed{T_c = \f{4\epsilon_1}{\pi k_B} \lp \f{N}{\zeta_{3/2}} \rp^{2/3} = 3.31 \f{\hbar^2}{k_B m} \lp \f{N}{V} \rp^{2/3}  }
 \end{equation*}
@@ -547,11 +563,34 @@ Figure \ref{fig:4} shows the comparison between numerical calculations and the a
 
 
 
+\subsection*{Quick calculations to know}
 
-
-
-
-
+Suppose we have $N$ atoms in a harmonic trap with $\omega_z, \omega_x$, and $\omega_y$. There is a way to estimate the critical temperature $T_c$ at which the phase transition to BEC will occur. To do this, we first recall the condition:
+\begin{equation*}
+n = \f{N}{V} = \f{2.6}{\lambda_{dB}^3}.
+\end{equation*}
+Suppose we have a nearly spherical cloud, so the volume can be approximated as 
+\begin{equation*}
+V \sim \f{4\pi}{3}r^3 \sim 4r^3.
+\end{equation*}
+So we end up with
+\begin{equation*}
+N \sim \f{r^3}{\lambda_{dB}^3} \sim \lp \f{k_B T}{\hbar \bar{\omega}} \rp^{3}
+\end{equation*}
+where we have used the relations
+\begin{equation*}
+\lambda_{dB} = \f{h}{\sqrt{2\pi m k_B T}} \quad \text{and} \quad \f{1}{2}M \bar{\omega}^2 r^2 = \f{1}{2}k_B T
+\end{equation*}
+and defined the mean trap frequency as the geometric mean of the single-axis frequencies:
+\begin{equation*}
+\bar{\omega} = (\omega_x \omega_y \omega_z)^{1/3}.
+\end{equation*}
+With this, the critical temperature is 
+\begin{equation*}
+\boxed{T_C \sim \f{N^{1/3}\hbar \bar{\omega}}{k_B}}
+\end{equation*}
+From the critical temperature, we can work out the de Broglie wavelength and density of the sample, etc. 
+ 
 
 
 
@@ -932,7 +971,6 @@ Adding noise and measurement error follows the same procedure as described above
 \section*{Electromagnetically induced transparency (EIT)}
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{F}
 
@@ -1232,6 +1270,47 @@ The hydrodynamic formulation of the GPE is equivalent to the original GPE. In th
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{H}
+
+
+
+\section*{Healing Length (in BEC and GPE)}
+
+
+Recall the Gross-Pitaevskii equation (GPE) which models the dynamics of an interacting BEC:
+\begin{equation*}
+\lb -\f{\hbar^2}{2m}\nabla^2  + V(r) + g\abs{\psi}^2\rb \psi = \mu \psi.
+\end{equation*}
+In the Thomas-Fermi regime, the kinetic term of the GPE is neglected, and we can solve for $\abs{\psi}^2$ in the region where $\psi \neq 0$:
+\begin{equation*}
+\abs{\psi}^2 = \f{\mu - V(r)}{g}.
+\end{equation*}
+As a result, the number density of atoms $n(r) = N \abs{\psi}^2$ in the harmonic potential has the form of an inverted parabola:
+\begin{equation*}
+n(r) = \f{N\mu}{g}\lp 1 - \f{x^2}{R_x^2} - \f{y^2}{R_y^2} - \f{z^2}{R_z^2} \rp \equiv n_0\lp 1 - \f{x^2}{R_x^2} - \f{y^2}{R_y^2} - \f{z^2}{R_z^2} \rp 
+\end{equation*}
+where we define 
+\begin{equation*}
+n_0 = \f{N\mu}{g}
+\end{equation*}
+to be the peak density of the condensate.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{images/thomas-fermi.png}
+\end{figure}
+We notice that the Thomas-Fermi approximation is physically unrealistic as there is a sharp turn at the surface of the condensate. This non-smoothness makes $\nabla^2 \psi$ infinite. Thus, we must put back some kinetic energy to smooth the surface. This requires us to find the shortest length $\xi$ over which the wavefunction can change. To do this, we equate the kinetic energy term $(\hbar^2/2M)\nabla^2 \psi \sim \hbar^2 /(2M\xi^2)$ to the energy scale of the system given by the chemical potential $\mu$:
+\begin{equation*}
+\f{\hbar^2}{2M\xi^2} \approx \mu = \f{gn_0}{N} \implies \xi = \sqrt{\f{\hbar^2 N}{2M g n_0}}
+\end{equation*}
+Further, recall that
+\begin{equation*}
+g = N \f{4\pi\hbar^2}{m}a
+\end{equation*}
+where $a$ is the scattering length. We then have the healing length in more fundamental parameters:
+\begin{equation*}
+\boxed{\xi = \f{1}{\sqrt{8\pi a n_0}}}
+\end{equation*}
+The healing length also determines the size of the vortices that form in the superfluid when the confining potential rotates. At the center of these vortices the wavefunction goes to zero, and the healing length determines the distance over which the density goes from zero to the value in the bulk of the condensate. In other words, the healing length is the distance over which the superfluid \textit{recovers} from a sharp edge.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{I}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1277,8 +1356,12 @@ The avoided crossing is shown by plotting the energies $E_\pm$ against the zero-
 In this simple system, two things can happen as we sweep $\Delta E$ (in time).  On the one hand, if we sweep very slowly (adiabatic), then eigenstates have time to ``adapt'' and remain at their relative energy levels, i.e., the lower-energy eigenstate will change its wavefunction so that its energy remains the lower energy, and vice versa. If we sweep very quickly (non-adiabatic), on the other hand, then the eigenstate may remain the same, with some probability of transitioning to other eigenstate(s). \\
 
 
-What we mean by ``slowly'' and ``quickly'' will be captured in the adiabatic conditions in the next section. But the main point here is that the transition probability mentioned above is called the Landau-Zener transition probability, named after two physicists who stated and solved the problem (analytically). As we will see below, this probability is an exponential decay which depends on the sweeping rate (how slowly/quickly $\Delta E$ changes) and how strong the two states are coupled. 
+What we mean by ``slowly'' and ``quickly'' is captured by the only two time scales in this problem: how fast we sweep the energy splitting and the rate of Rabi oscillation. It turns out that the adiabatic condition is given by 
+\begin{equation*}
+\f{\abs{E_{12}}}{\abs{\al}} \f{\abs{E_{12}}}{\hbar} = \f{\abs{E_{12}}^2}{\hbar\abs{\al}} \equiv \gamma  \gg 1.
+\end{equation*}
 
+The main point here is that the transition probability mentioned above is called the Landau-Zener transition probability, named after two physicists who stated and solved the problem (analytically). As we will see below, this probability is an exponential decay which depends on the sweeping rate (how slowly/quickly $\Delta E$ changes) and how strong the two states are coupled. 
 
 \subsection*{Results for Linear LZ Sweep}
 
@@ -1702,9 +1785,6 @@ title('Field strength in Y')
 \end{lstlisting}
 
 
-
-\newpage
-
 \subsection*{TOP trap}
 
 
@@ -1880,9 +1960,6 @@ title('Field strength in Y')
 
 \end{lstlisting}
 
-
-
-\newpage
 
 
 \subsection*{Ioffe-Pritchard traps}
@@ -2168,11 +2245,6 @@ By modifying the parameters and removing some of the constraints, one can genera
 
 
 
-\newpage
-
-
-
-
 
 \subsection*{The Majorana spin-flip problem}
 
@@ -2203,13 +2275,37 @@ This is really all we need to know about the magic wavelength. Basically, the el
 
 
 
-%\section*{Magnetic evaporative cooling}
+\section*{Magnetic Evaporative Cooling}
+
+The idea of evaporate cooling is pretty simple: it's the same as blowing over a hot cup of tea to cool the tea down. By blowing across the tea in the cup, the hottest atoms (at the top) which carry kinetic energies higher than the average are evaporatively removed, bringing the average kinetic energy of the tea down. In a magnetic trap, this can be done by lowering the wall of the potential wall of the trap. Schematically, this looks like:
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width = 0.6\textwidth]{images/evap}
+	\caption{Schematic representation of evaporative cooling by lowering the magnetic potential wall. In practice, RF ``knifes'' are used to blow hot atoms out of the trap. The Boltzmann distribution is truncated, then re-equilibration creates a new Boltzmann distribution with a lower average than before.}
+\end{figure}
+
+
+During evaporation in a harmonic trap the atom density increases (or at least stay constant) because atoms sink lower in the potential as they get colder. This allows runaway evaporation that reduces the temperature by many orders of magnitude, and increases the phase-space density to a value at which quantum statistics becomes important.\\
+
+
+In practice, evaporation is typically not done by lowering the potential walls because this might reduce the density and eventually make the trap too weak to support the atoms against gravity. More precise control of evaporation is carried out by driving radio-frequency transitions between trapping and anti-trapping states at a given distance from the trap center. Radiation at frequency $\omega_{RF}$ drives the $\Delta M_F = \pm 1$ transitions at a radius $r$ that satisfies $g_F \mu_B b' r = \hbar \omega_{RF}$ where $b'$ is the (linear) magnetic field gradient for large $r$. Hot atoms whose oscillations extend beyond this radius are removed.\\
+
+
+Consider the following example where we have $g_F = 1/2$, $b' = 3$ Tm$^{-1}$, and the frequency varies in radius as 
+\begin{equation*}
+\f{\omega_{RF}}{2\pi r } =\f{g_F \mu_B b'}{2\pi \hbar} = \f{g_F \mu_B b'}{h} = 21 \text{ GHz m}^{-1}
+\end{equation*}
+If we set $\omega_{RF}/2\pi = 40$MHz then we remove atoms over a surface whose cross-section in the $z=0$ plane is a circle of radius $r = 2$mm. Sweeping the frequency down to $20$MHz reduces this radius down to $r = 1$mm. We note that all of these estimates assume that the cutting surface lies in the region where the magnetic field strength is approximately linear: $b'r \gg B_0$ where $B_0$ is the bias field (which removes the zero from the magnetic field strength function). For a bias field of $B_0 = 3\times 10^{-4}$ T and the field gradient $b'$ as above, this approximation is okay because the field is linear as long as $r \gg B_0/b' = 0.1$mm. We can also estimate the temperature of the cloud in this trap to be about between $10^{-4}$ and $10^{-3}$K.\\
 
 
 
-\section{Magnetic Traps for Neutral Atoms}
+As it turns out there is no fundamental cooling limit to evaporative cooling, but of course in practice we never want to go pass the point where the atom number is too low to detect. Moreoever, the RF knife may have a non-zero energy resolution which makes it too ``blunt'' to precisely shave off the hot atoms. In the case where the atoms being trapped are Fermionic, evaporative cooling cannot cool atoms below the Fermi temperature $T_F$ at which quantum degeneracy kicks in and all energy levels below the Fermi energy $k_B T_F$ are occupied (with one atom in each state due to the Pauli exclusion principle). For Bosons, things are a bit different as atoms tend to bunch up in the same quantum state. 
 
-(check back later, I'm writing a separate document on this)
+
+
+
 
 
 \section*{Magneto-optical trap (MOT)} 
@@ -2670,8 +2766,58 @@ In the standard basis, we have
 \chapter*{S}
 
 
+\section*{Speed of Sound in an interacting BEC}
 
-
+Consider a BEC in a uniform potential $V = 0$. The time-dependent GPE is 
+\begin{equation*}
+i\hbar \p_t \psi = -\f{\hbar^2}{2m} \nabla^2 \psi + g\abs{\psi}^2 \psi.
+\end{equation*}
+The trial wavefunction 
+\begin{equation*}
+\psi = \psi_0 e^{-i\mu t/\hbar}
+\end{equation*}
+satisfies this equation with chemical potential $\mu = g \abs{\psi_0}^2$. Next, we will introduce a small perturbation in the wavefunction $\delta \psi$:
+\begin{equation*}
+\psi = \lb \psi_0 + u e^{i(kx - \omega t )} + v^* e^{-i(kx - \omega t)} \rb e^{-i \mu t/\hbar} = \psi_0 e^{-i \mu t/\hbar} + \delta \psi(t).
+\end{equation*}
+We then plug this back into the GPE and make suitable approximations to get the same zeroth order approximation for the chemical potential as above and
+\begin{equation*}
+i\hbar \p_t \lp \delta \psi(t) \rp = \f{\hbar^2 k^2}{2m} \delta \psi(t) + g \abs{\psi_0}^2 2\delta \psi(t) + g \psi_0^2 \delta \psi^*(t).
+\end{equation*}
+Next, we equate the terms with the same time dependence to find two coupled equations for $u$ and $v$, written as a matrix equation:
+\begin{equation*}
+\begin{pmatrix}
+\epsilon_k + 2g\abs{\psi_0}^2 - \mu & g\psi_0^2
+\\ g (\psi_0^*)^2 & \epsilon_k + 2g \abs{\psi_0}^2 - \mu
+\end{pmatrix}
+\begin{pmatrix}
+u\\v
+\end{pmatrix}
+= 
+\hbar \omega \begin{pmatrix}
+u \\-v
+\end{pmatrix}
+\end{equation*}
+where 
+\begin{equation*}
+\epsilon_k = \f{\hbar^2 k^2}{2m}.
+\end{equation*}
+This means that $u,v$ are solutions to the matrix equation
+\begin{equation*}
+\begin{pmatrix}
+\epsilon_k  +  \mu-\hbar \omega & g\psi_0^2
+\\ g (\psi_0^*)^2 & \epsilon_k + \mu + \hbar \omega
+\end{pmatrix}
+\begin{pmatrix}
+u\\v
+\end{pmatrix}
+= 
+0
+\end{equation*}
+where we have used $\mu = g\abs{\psi_0}^2$. From the determinant of this matrix, we can find the relation between the angular frerquency of the small oscillations $\omega$ and the magnitude of their wavevector $k$:
+\begin{equation*}
+\lp \f{\hbar^2 k^2}{2m} + \mu\rp^2 - \hbar^2 \omega^2 = g^2 \abs{\psi_0}^4.
+\end{equation*}
 %\section*{Sisyphus cooling}
 
 
