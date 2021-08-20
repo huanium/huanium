@@ -125,7 +125,7 @@
 
 \begin{center}
 	\Large{Landau-Zener Transition Probability\\
-	Some Notes and Numerical Calculations}
+	Notes and A Simple Numerical Verification}
 \end{center}	
 	
 \begin{center}
@@ -212,32 +212,150 @@ We wish to find the probability $P$ that the system makes a transition from stat
 \begin{equation*}
 P = \abs{B(\infty)}^2 = 1- \abs{A(\infty)}^2.
 \end{equation*}
-In his paper, Zener showed that 
+In his paper \cite{zener1932non}, Zener showed that 
 \begin{equation*}
-\boxed{P = e^{-2\pi \gamma}, \text{ where } \gamma = \f{E_{12}^2}{\hbar \abs{\al}}} 
+\boxed{P = e^{-2\pi \gamma}, \text{ where } \gamma = \f{\abs{E_{12}}^2}{\hbar \abs{\al}}} 
 \end{equation*}
+The derivation is quite nice. Zener casts the differential equation for $B(t)$ into the form of the \textbf{Weber's equation} and extracted the asymptotic behavior for $B(t)$ from there. 
 
 
 \subsection{Numerical verification}
 
 
 
-The (analytical) derivation of the Landau-Zener transition probability is rather involved, so let us start with a numerical verification, inspired by Problem set 7 of MIT's 8.06: Quantum Physics III - Spring 2018. \\
+Since the (analytical) derivation of the Landau-Zener transition probability is rather involved, we will only work with a numerical verification. This verification is inspired by Problem set 7 of MIT's 8.06: Quantum Physics III - Spring 2018. \\
 
 
-We start by getting a set of ODEs for $A(t)$ and $B(t)$ from the SE. 
+We start by getting a set of ODEs for $A(t)$ and $B(t)$ from the SE:
+\begin{align*}
+i\hbar  \f{d}{dt}A(t) &= E_{12} B(t)  \exp\lp -\f{i}{\hbar} \int_0^t E_2(t') - E_1(t') \,dt'\rp\\
+i\hbar  \f{d}{dt}B(t) &= E_{12}^* A(t)  \exp\lp +\f{i}{\hbar} \int_0^t E_2(t') - E_1(t') \,dt'\rp
+\end{align*}
+Let $E_1(t) - E_2(t) = \Delta E(t)$, then 
+\begin{align*}
+i\hbar  \f{d}{dt}A(t) &= E_{12} B(t)  \exp\lp +\f{i}{\hbar} \int_0^t \Delta E(t') \,dt'\rp\\
+i\hbar  \f{d}{dt}B(t) &= E_{12}^* A(t)  \exp\lp -\f{i}{\hbar} \int_0^t \Delta E(t') \,dt'\rp
+\end{align*}
+This is a set of linear, first-order, coupled DEs. From here, we can get a second-order DE for $B$. To get a nice, unit-free equation, we let
+\begin{equation*}
+\tau = \f{\al}{\abs{E_{12}}} t \quad \text{ and } \quad \gamma = \f{\abs{E_{12}}^2}{\hbar \al}.
+\end{equation*}
+We then get
+\begin{equation*}
+\f{d^2 B}{d\tau^2} + i\gamma \tau \f{dB}{d\tau} + \gamma^2 B = 0.
+\end{equation*}
+
+We will solve this for $\gamma = 0.1$ and $\tau \in [-60, 60]$. MATLAB code for this: 
+\begin{lstlisting}
+% Huan Q. Bui
+% 2nd order ODE solver for Landau-Zener problem
+
+clear all
+close all
+global gamma
+
+tspan = [-60 60];
+B0 = 1;
+C0 = 0;
+gamma = 0.1;
+
+[t,y] = ode45(@LZ_ODE,tspan,[B0; C0]);
+% y(1) = B
+% y(2) = C = \dot{B}
+
+plot(t,abs(y(:,1)).^2,'LineWidth', 2)
+title('|B(t)|^2 with \gamma = 0.1 using ODE45');
+xlabel('Time t');
+ylabel('|B(t)|^2');
+grid on
+
+% plot LZ prediction
+yline(exp(-2*pi*gamma), 'LineWidth',2);
+
+% legend
+legend('|B(t)|^2', 'Exp(-2\pi\gamma)');
+
+function dydt = LZ_ODE(t,y)
+global gamma
+dydt = [y(2); -1i*gamma.*t.*y(2) - gamma^2.*y(1)];
+end
+
+\end{lstlisting}
 
 
 
+Plotting $\abs{B(\tau)}$ against $\tau$ and plotting the predicted $\exp(-2\pi \gamma) = \lim_{\tau\to\infty}\abs{B(\tau)}^2$, we find good agreement:
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{LZ}
+\end{figure}
 
 
+We next test how well things agree by solving the ODE in $B(t)$ for a range of $\gamma$'s. We expect that as the time span of the solver is increased, $\abs{B(t_{\text{final}})}^2$ approach $\exp(-2\pi \gamma)$ better and better. See Figure \ref{fig:tau_Infty}.
+
+\begin{figure}[!htb]
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{t050.eps}
+		\caption{$\tau\in [-50,50]$}
+		\includegraphics[width=\textwidth]{t100.eps}
+		\caption{$\tau\in [-100,100]$}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{t200.eps}
+		\caption{$\tau\in [-200,400]$}
+		\includegraphics[width=\textwidth]{t400.eps}
+		\caption{$\tau\in [-400,400]$}
+	\end{minipage}
+	\caption{$\abs{B(\tau)}^2$ approaches $\exp(-2\pi\gamma)$ as the $\tau$ goes to $\infty$. Here, $\gamma \in [0,1.5]$}
+	\label{fig:tau_Infty}
+\end{figure}
 
 
-\subsection{Derivation}
+MATLAB code:
+\begin{lstlisting}
+% Huan Q. Bui
+% Exponential decay in LZ transition probability
 
-\section{Some Nonlinear LZ Sweep Simulations}
+clear all
+close all
 
-\newpage
+% solve LZ ODE for these gammas
+gamma = 0:0.05:1.5;
+tspan = [-50 50];
+B0 = 1;
+C0 = 0;
+
+B_list = [];
+
+for g = gamma
+[t,y] = ode45(@(t,y) LZ_ODE(t,y,g),tspan,[B0; C0]);
+% y(1) = B
+% y(2) = C = \dot{B}
+
+% append the last B(t) = B(t=end) to B_list
+B_list = [B_list abs(y(end,1))^2];
+end
+
+
+plot(gamma,B_list,'-o')
+hold on
+plot(gamma, exp(-2*pi*gamma), 'LineWidth', 1)
+hold off
+title('|B(t_{end})| and Exp(-2\pi\gamma) vs. \gamma')
+xlabel('\gamma')
+ylabel('Transition probability')
+legend('|B(t_f)|', 'Exp(-2\pi\gamma)')
+grid on
+
+function dydt = LZ_ODE(t,y,g)
+dydt = [y(2); -1i*g.*t.*y(2) - g^2.*y(1)];
+end
+
+\end{lstlisting}
+
+
 
 \bibliography{BUI_LandauZener} 
 \bibliographystyle{unsrt}	
