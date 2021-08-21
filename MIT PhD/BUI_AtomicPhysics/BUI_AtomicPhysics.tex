@@ -2648,17 +2648,48 @@ Raman cooling is a sub-Doppler/recoil cooling technique. The general mechanism i
 \end{figure}
 
 
-Now we use the general Raman process to do free-space Raman cooling. In this scheme, pre-cooled atoms experience pulses of Raman-like processes. The two laser beams in this case are now counter-propagating, with $f_2$ being red-detuned with respect to its normal value. This allows for atoms moving towards the $f_2$ beam to be slowed down due to the Doppler effect and end up in the state $\ket{g_2}$. By regularly exchanging the propagation direction of the laser beams and varying the (red) detuning, we can get \textbf{all} atoms whose initial velocities satisfying $\abs{v} > v_\text{max}$ to be in the state $\ket{g_2}$, while atoms with $\abs{v} < v_\text{max}$ remain in the $\ket{g_1}$ state. \\
+Now we use the general Raman process to do free-space Raman cooling. Let us describe this process schematically first. Pre-cooled atoms experience pulses of Raman-like processes. The two laser beams in this case are now counter-propagating, with $f_2$ being red-detuned with respect to its normal value. This allows for atoms moving towards the $f_2$ beam to be slowed down due to the Doppler effect and end up in the state $\ket{g_2}$. By regularly exchanging the propagation direction of the laser beams and varying the (red) detuning, we can get \textbf{all} atoms whose initial velocities satisfying $\abs{v} > v_\text{max}$ to be in the state $\ket{g_2}$, while atoms with $\abs{v} < v_\text{max}$ remain in the $\ket{g_1}$ state. \\
 
 Now, we need to slow down the atoms in $\ket{g_2}$. To do this, a new beam whose frequency is exactly the spacing between $\ket{g_2}$ and $\ket{e}$ is switched on. This beam optically pumps the atoms from $\ket{g_2}$ to $\ket{g_1}$, and the velocities will be randomized in this process and so inevitably a fraction of the atoms in $\ket{g_2}$ will acquire speeds $\abs{v} < v_\text{max}$. By repeating this process several times, the temperature of the cloud can be reduced (to lower than a microkelvin.)\\
 
 
-For more information about this technique and its working principle, the reader may refer to \cite{PhysRevLett.69.1741}.
+For more information about this technique and its working principle, the reader may refer to \cite{PhysRevLett.69.1741}. A nice illustration of the process is provided by \cite{foot2005atomic}.
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width = \textwidth]{images/raman-cooling.png}
+	\caption{A Raman pulse transfers a collection of atoms in a certain narrow velocity range from state $\ket{1}$ to $\ket{2}$ via absorption and spontaneous emissions. This process slows the atoms down. Next, a beam resonantly drives the $\ket{2}\to \ket{i}$ transition and optically pumps the atoms from $\ket{2}$ to $\ket{1}$. The increase in velocity due to the $\ket{2}\to \ket{i}$ is smaller than the initial drop in velocity due to the Raman pulse. This, in combination with the randomization of velocity in the spontaneous emission which makes the atoms go from $\ket{i}\to \ket{1}$ results in a net decrease in velocity of the atoms. By repeating this process with different initial velocities we can pile up the atoms in the $v\sim 0$ velocity class.}
+\end{figure}
 
 
 
+Here's how Raman cooling works in better detail. First, we have to understand \textbf{velocity selection by Raman transitions}. Consider an atom moving with velocity $v$ with spacing $\omega_{12}$ between $\ket{1}$ and $\ket{2}$, and two counter-propagating beams of frequencies $\omega{L1}$ and $\omega_{L2}$.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width = 0.5\textwidth]{images/raman-velocity-selection}
+\end{figure}
+
+Due to the Doppler shift, the atom sees the frequency $\omega_{L2}$ as $\omega_{L2} - k_2v$ and $\omega_{L1}$ as $\omega_{L1} + k_1v$, where $k_1, k_2$ are the wavevectors of these beams, respectively. The condition for resonant Raman excitation is 
+\begin{equation*}
+\omega_{12} = (\omega_{L1} + k_1 v) - (\omega_{L2} - k_2 v) = (\omega_{L1} - \omega_{L2}) + \f{v}{c}(\omega_{L1} + \omega_{L2}).
+\end{equation*}
+In this case, the selected velocity will be given by 
+\begin{equation*}
+v = \f{\omega_{12} - (\omega_{L1} - \omega_{L2})}{2k}
+\end{equation*}
+where $k$ is the mean vector:
+\begin{equation*}
+k = \f{\omega_{L1} + \omega_{L2}}{2c}.
+\end{equation*}
+
+So, we see that we can selectively drive a certain velocity class $v \pm \Delta v/2$ of an atomic ensemble in the ground state to some excited state using the Raman process. The velocity of the excited atoms after this process will be $v - 2v_r$ due to (1) absorption of a photon traveling the opposite direction of motion (caused by the $\omega_{L1}$ beam) and (2) stimulated emission of a photon in the same direction of motion (caused by the $\omega_{L2}$ beam). Here, $v_r$ is the recoil velocity. \\
+
+Some of the atoms are now in the excited state $\ket{2}$ with velocity $v-2v_r$. We bring them back to the $\ket{1}$ state by optical pumping. Specifically, we resonantly drive a transition $\ket{2}$ to some excited state $\ket{i}$ which then spontaneously decays back to $\ket{1}$. Through the first step, the atom will gain $\hbar k$ in momentum, bringing the velocity to $v-v_r$, but in the second step the atom may gain $\hbar k$ again or lose $\hbar k$ due to the random spontaneous emission. So, the atoms return to $\ket{1}$ with a velocity range of $v-2v_r$ to $v$. On average, though, the atoms are now cooler then they were when they first left the initial distribution. By repeating this process, and even changing the direction of the beams, the velocity distribution becomes more and more concentrated around $v=0$. \\
 
 
+A final remark: Raman cooling works well in one dimension but becomes much less efficient in three dimensions since the target is to have all three velocity components $v_x, v_y,v_z$ be in some fixed range $\delta v$. 
 
 
 
@@ -2814,10 +2845,27 @@ u\\v
 = 
 0
 \end{equation*}
-where we have used $\mu = g\abs{\psi_0}^2$. From the determinant of this matrix, we can find the relation between the angular frerquency of the small oscillations $\omega$ and the magnitude of their wavevector $k$:
+where we have used $\mu = g\abs{\psi_0}^2$. From the determinant of this matrix, we can find the relation between the angular frequency of the small oscillations $\omega$ and the magnitude of their wavevector $k$:
 \begin{equation*}
 \lp \f{\hbar^2 k^2}{2m} + \mu\rp^2 - \hbar^2 \omega^2 = g^2 \abs{\psi_0}^4.
 \end{equation*}
+Expanding this and using the fact that $\mu = g \abs{\psi_0}^2$ we find 
+\begin{equation*}
+\f{\hbar^4 k^4}{4m^2} + \f{\hbar^2 k^2 \mu}{m} = \hbar^2 \omega^2.
+\end{equation*}
+Assuming that the wavevector $k$ is small, so that the $k^2$ term dominates the left-hand side, we find the following (approximate) dispersion relation: 
+\begin{equation*}
+v_s = \f{\omega}{k} = \sqrt{\f{\mu}{m}},
+\end{equation*}
+which is the speed of (zero) sound in the BEC.
+
+
+
+
+
+
+
+
 %\section*{Sisyphus cooling}
 
 
@@ -2831,7 +2879,7 @@ where we have used $\mu = g\abs{\psi_0}^2$. From the determinant of this matrix,
 
 
 
-\section*{Superexchange in optical lattice}
+\section*{Superexchange in an optical lattice}
 
 
 Consider a double-well potential with two Bosonic spins, where the relative depths of the wells can be tuned. There are four possible configurations for the system: $\ket{\uparrow, \downarrow}, \ket{\uparrow\downarrow,0}, \ket{0,\uparrow\downarrow}, \ket{\downarrow, \uparrow}$, where the spin on left denotes the spin on the left well, and the spin on the right denotes the spin on the right well. The states $\ket{\uparrow,\downarrow}$ and $\ket{\downarrow,\uparrow}$ are degenerate, and the states $\ket{\uparrow\downarrow,0}$ and $\ket{\downarrow\uparrow,0}$ are separated by $2\Delta$, where $\Delta$ is the difference between the well depths. These two manifolds of states are separated by the interatomic interaction energy $U \gg \Delta$.  Due to quantum tunneling, the manifolds are also coupled, via the tunneling term $J$. We are interested in the \textcolor{blue}{superexchange coupling} $J_{\text{ex}}$ between the states $\ket{\uparrow,\downarrow}$ and $\ket{\downarrow, \uparrow}$. 
