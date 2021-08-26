@@ -13,23 +13,22 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-N = 1000; % No. of points.
+N = 1e5; % No. of points.
 wavelength = 1.064e-6; % 1064 nm light
 k = 2*pi/wavelength; 
 hbar = 1.0545718e-34;
 m = 39.964008*1.66054e-27;
 recoil = hbar^2*k^2/(2*m);
-theta_XY = 10.8*pi/180; % angle of the beams, assume same
-Vxy = (2000*0.14/4.4)*recoil;
-Vz = (52.1/4.4)*recoil;
-x_start = 12.4e-6;
-x_end = 13.1e-6;
+%theta_XY = 10.8*pi/180; % angle of the beams, assume same
+theta_XY = 10.8*pi/180;
+Vxy = (30/4.4)*recoil;
+Vz = (15/4.4)*recoil;
+x_start = 10.5e-6;
+x_end = 15e-6;
 x = linspace(x_start, x_end, N).'; % Generate column vector with N 
 dx = x(2) - x(1); % Coordinate step
 
 % Three-point finite-difference representation of Laplacian
-% using sparse matrices, where you save memory by only
-% storing non-zero matrix elements.
 e = ones(N,1); % a column of ones
 Lap = spdiags([e -2*e e],[-1 0 1],N,N) / (2*dx^2);
 % put -2e on the main diagonal and e-s on upper and lower diagonals
@@ -91,8 +90,8 @@ integrand = @(x) sqrt(2*m)*...
 S_squared = exp(-(2/hbar)*integral(integrand, double(X1), double(X2)));
 disp(['Transmission probability: ' num2str(S_squared)]);
 
-% knocking frequency:
-nu = E(1)/(hbar*2*pi);
+% knocking frequency: taking into account a potential offset...
+nu = (E(1)-min(U))/(hbar*2*pi);
 disp(['Knocking frequency: ' num2str(nu) ' Hz']);
 
 % tunneling rate:
