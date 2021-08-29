@@ -15,15 +15,15 @@ clear
 %%%%%%%%%%% BRUSSELATOR PARAMETERS %%%%%%%%%%%%
 
 % scaling_factor = 10; % works great!
-scaling_factor = 8;
+scaling_factor = 7;
 % wave number ~ 1/sqrt(diffusion rate)
 
 % stripes
 % scaling_factor = 1;
 dV = 10*scaling_factor; % should be fixed
 A = 3; % should be fixed
-dU = 4*scaling_factor;
-B = 10.2;
+% dU = 4*scaling_factor;
+% B = 10.2;
 
 % honeycomb
 % dV = 10*scaling_factor; % should be fixed
@@ -59,8 +59,8 @@ B = 10.2;
 % oscillating squares?
 % mind the scaling_factor... large = better
 % small means more dots get crammed 
-% dU = 6.0*scaling_factor;
-% B = 10.25;
+dU = 6.0*scaling_factor;
+B = 10.25;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -97,13 +97,13 @@ B = 10.2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Size of grid for osc_patterns
-%width = 128;
+width = 128;
 % Size of grid for stable_patterns
-width = 1024;
+% width = 1024;
 % Size of grid for GRAY-SCOTT
 % width = 256;
 % osc_patterns dt
-dt = 0.005;
+dt = 0.001;
 
 % dt for GRAY-SCOTT
 % A = 1; % ignore this 
