@@ -66,8 +66,9 @@ tic
 
 h = figure(1)
 h.Position = [100 100 1200 500];
-n_times = 605;
+n_times = 805;
 support_bound = 200;
+
 %disp('Calculating...');
 %data = real(fast_convolve(n_times, support_bound));    % plot the real part
 %data = imag(fast_convolve(n_times, support_bound));    % plot the img part
@@ -93,7 +94,8 @@ support_bound = 200;
 box off
 
 
-filename = 'C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\CLAS 2021 Math\Ex10_minmax.gif';
+%filename = 'C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\CLAS 2021 Math\Ex10_minmax.gif';
+filename = 'test.gif';
 
 data = real(fast_convolve(1, support_bound));    % plot the real part
 dim = size(data);
@@ -103,15 +105,15 @@ y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
 
 
 subplot(1,2,1)
-surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.9);
+surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0, 'FaceAlpha',1);
 %mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
-view([+30 20])
+view([+20 20])
 %view([+140 30]) %gaussian
 xlabel('X', 'FontSize',16);
 ylabel('Y', 'FontSize',16);
 % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-%title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
-title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+%title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
 % colorbar;
 % s = meshc(X, Y, data);
 xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
@@ -125,9 +127,9 @@ surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceA
 view([+0 90])
 xlabel('X', 'FontSize',16);
 ylabel('Y', 'FontSize',16);
-% title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
-%title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+%title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
 % colorbar;
 % s = meshc(X, Y, data);
 xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
@@ -143,8 +145,8 @@ for i=1:5:n_times
     y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
     [X, Y] = meshgrid(x, y);
     subplot(1,2,1)
-    surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.9);
-    view([+30 20])
+    surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.0 , 'FaceAlpha',1);
+    view([+20 20])
     %view([+140 30]) %gaussian
     xlabel('X', 'FontSize',16);
     ylabel('Y', 'FontSize',16);
@@ -166,8 +168,8 @@ for i=1:5:n_times
     ylabel('Y', 'FontSize',16);
     % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
     %title(['|\phi^{(', num2str(i-1), ')}|'], 'FontSize', 16 );
-    %title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
     title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+    %title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
     % colorbar;
     % s = meshc(X, Y, data);
     xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
@@ -353,7 +355,7 @@ function conv_power = fast_convolve(n_times, support_bound)
 
 
 
-% NEW EXAMPLE! in the paper
+% NEW EXAMPLE! Example 10, in the paper
 Phi = zeros(21,21);
 shift = floor(21/2)+1;
 % interesting example where \Omega = {(0,0), (pi,pi)} (see paper)
