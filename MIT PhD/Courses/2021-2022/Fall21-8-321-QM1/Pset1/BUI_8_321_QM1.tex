@@ -1,0 +1,589 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.321 - Quantum Theory I}\\
+Problem set: \textbf{\#1}
+\end{framed}
+	
+	
+\noindent \textbf{1.} 
+\begin{enumerate}[label=(\alph*)]
+	\item After measuring $S_z$ gives $\hbar/2$, we know that the electron spin state must be $\ket{S_z, +}$. Next, we measure along $\widehat{\mathbf{n}} = (\sin\theta \cos\phi, \sin\theta\sin\phi, \cos\theta)$. The operator associated with this measurement is 
+	\begin{equation*}
+	{S}_\mathbf{n} = \mathbf{S}\cdot \widehat{\mathbf{n}} = \f{\hbar}{2}\sin\theta\cos\phi \sigma_x + \f{\hbar}{2}\sin\theta\sin\phi \sigma_y + \f{\hbar}{2}\cos\theta\sigma_z. 
+	\end{equation*}
+	Working in the $z$-basis where $\ket{+} = (1\quad0)^\top$ and $\ket{-} = (0\quad 1)^\top$ we find 
+	\begin{equation*}
+	{S}_\mathbf{n} = 
+	\f{\hbar}{2}\begin{pmatrix}
+	\cos\theta & \sin\theta (\cos\phi - i \sin\phi) \\
+	\sin\theta (\cos\phi + i \sin\phi) & -\cos\theta
+	\end{pmatrix}
+	= \f{\hbar}{2}\begin{pmatrix}
+	\cos\theta & \sin\theta e^{-i\phi} \\
+	\sin\theta e^{i\phi} & -\cos\theta
+	\end{pmatrix}.
+	\end{equation*}
+	We now diagonalize this, to make sure that it \textit{actually} has an eigenvalue of $\hbar/2$, and to find the $\hbar/2$-eigenvector. Letting $\lambda \in \mathbb{C}$ and setting $S_\mathbf{n} - (\hbar/2)\lambda \mathbb{I} = 0$ gives 
+	\begin{equation*}
+	\det\lp S_\mathbf{n} - \f{\hbar}{2}\lambda \mathbb{I}\rp = 0 \iff 
+	\f{\hbar^2}{4}\lp \lambda^2 - \cos^2\theta \rp - \f{\hbar^2}{4}\sin^2\theta = 0 \iff \lambda = \pm 1.
+	\end{equation*} 
+	The $\hbar/2$-eigenvector $(a \quad b)$ solves the equation
+	\begin{equation*}
+	\begin{pmatrix}
+	\cos\theta - 1 & \sin\theta e^{-i\phi} \\
+	\sin\theta e^{i\phi} & -\cos\theta - 1
+	\end{pmatrix}\begin{pmatrix}
+	a \\ b
+	\end{pmatrix} = 0,
+	\end{equation*}
+	which means that
+	\begin{equation*}
+	\f{b}{a} = \f{1-\cos\theta}{\sin\theta} e^{i\phi} = \f{1+2\sin^2(\theta/2)-1}{2\sin(\theta/2)\cos(\theta/2)}e^{i\phi} = \f{e^{i\phi}\sin(\theta/2)}{\cos(\theta/2)}.
+	\end{equation*}
+	After ensuring the normalization condition, we find that the electron spin state following measuring $\hbar/2$ in the $\widehat{\mathbf{n}}$ direction is 
+	\begin{equation*}
+	\boxed{\ket{S_\mathbf{n}, +} = \begin{pmatrix}
+		\cos\theta/2 \\ e^{i\phi}\sin\theta/2
+		\end{pmatrix}}
+	\end{equation*}
+	The probability of measuring $\ket{S_Z,+}$ to be in $\ket{S_\mathbf{n},+}$ is 
+	\begin{equation*}
+	\boxed{\abs{\bra{S_\mathbf{n},+}\ket{S_z,+}}^2 = \cos^2\theta/2}
+	\end{equation*}
+	
+	
+	
+	
+	
+	
+	\item Measuring $\hbar/2$ in the $\mathbf{n}$ direction means that the electron spin state is now in $\ket{S_\mathbf{n},+}$. The probability that a subsequent measurement in $S_z$ finds $\hbar/2$ is 
+	\begin{equation*}
+	\boxed{\abs{\bra{S_z,+}\ket{S_\mathbf{n},+}}^2= \abs{\bra{S_\mathbf{n},+}\ket{S_z,+}}^2 = \cos^2\theta/2}
+	\end{equation*}
+	This makes sense since this is the equivalent to observing $\hbar/2$ after measuring $\ket{S_z,+}$ in $\widehat{\mathbf{n}}'$ where $\widehat{\mathbf{n}}' = \widehat{\mathbf{n}}(-\theta,\phi)$. In other words, we just call $\widehat{\mathbf{n}}$ the $z$-axis and measure in $\widehat{\mathbf{n}}'$. \qed
+\end{enumerate}
+
+
+
+\newpage
+
+
+
+
+\noindent \textbf{2.} Suppose (to get a contradiction) that it is possible for the spin state of the electron to be such that
+\begin{equation*}
+\langle S_x \rangle = \langle S_y \rangle = \langle S_z \rangle = 0.
+\end{equation*}
+Working in the $z$-basis, let the electron be in 
+\begin{equation*}
+\ket{\psi} = c_1 \ket{S_z, +} + c_2 \ket{S_z, -} \equiv c_1 \ket{+} + c_2 \ket{-}. 
+\end{equation*}
+Since $\langle S_z \rangle = 0$ and that the eigenvalues of $S_z$ are $\pm \hbar/2$, we have $\abs{c_1} = \abs{c_2} \implies c_2 = e^{i\phi} c_1$ where $\phi \in \mathbb{R}$.  Under normalization condition and the irrelevance of global phase, we may set $c_1 = c_2 = 1/\sqrt{2}$. The condition that $\langle S_x \rangle$ puts a constraint on $\phi$. For easy of computation, we may rewrite $S_x, S_y$ in terms of $\ket{+}, \ket{-}$, and their conjugate transposes:
+\begin{equation*}
+S_x = \f{\hbar}{2} \ket{-}\bra{+} + \f{\hbar}{2}\ket{+}\bra{-} \quad\text{and}\quad S_y = \f{i\hbar}{2} \ket{-}\bra{+} - \f{i\hbar}{2}\ket{+}\bra{-}.
+\end{equation*}
+We see that these definitions give rise the same matrix elements of $S_x,S_y$ in the $z$-basis. With these, we have
+\begin{align*}
+0 
+&= \langle S_x \rangle \\
+&= \f{\hbar}{4}\lp \bra{+} + e^{-i\phi} \bra{-} \rp \lp \ket{-}\bra{+} + \ket{+}\bra{-} \rp \lp \ket{+} + e^{i\phi} \ket{-} \rp\\
+&= \f{\hbar}{4}\lp e^{-i\phi} + e^{i\phi}  \rp 
+\implies e^{i\phi} = \pm i
+\end{align*}
+and 
+\begin{align*}
+\langle S_y \rangle 
+&= \f{i\hbar}{4}\lp \bra{+} + e^{-i\phi} \bra{-} \rp 
+\lp \ket{-}\bra{+} - \ket{+}\bra{-}\rp 
+\lp \ket{+} + e^{i\phi} \ket{-} \rp\\
+&= \f{i\hbar}{4}\lp \bra{+} \mp i\bra{-} \rp 
+\lp \ket{-}\bra{+} - \ket{+}\bra{-}\rp 
+\lp \ket{+} \pm i \ket{-} \rp\\
+&= \f{i\hbar}{4}\lp \mp i \mp i \rp \\
+&= \pm \f{\hbar}{2}\neq 0.
+\end{align*}
+Thus we found a contradiction. The electron cannot be in a state such that $\langle S_x\rangle = \langle S_y \rangle = \langle S_z\rangle = 0$.\qed
+
+
+
+
+\newpage
+
+
+
+
+
+
+
+
+\noindent \textbf{3.} Since all electrons are in the same state $\ket{\al} = s_+ \ket{+} + s_-\ket{-}$ such that $\langle S_z \rangle = 0$, we know (from the previous problem) that $s_- = e^{i\phi} s_+$ for some $\phi \in \mathbb{R}$. From the previous problem, we also found that $\langle S_x \rangle = (\hbar/4)\lp e^{-i\phi} + e^{i\phi}  \rp$. Setting this equal to $\hbar/4$, we find that $e^{-i\phi} + e^{i\phi}  = 1$, which gives $e^{i\phi} = 1/2\pm i\sqrt{3}/2$.
+
+\begin{enumerate}[label=(\alph*)]
+	\item With $e^{i\phi} = 1/2 \pm i\sqrt{3}/2$, we can calculate $S_y$:
+	\begin{align*}
+	\langle S_y \rangle 
+	&= \f{i\hbar}{4}\lb \bra{+} + (1/2\mp i\sqrt{3}/2) \bra{-} \rb 
+	\lp \ket{-}\bra{+} - \ket{+}\bra{-}\rp 
+	\lb \ket{+} + (1/2\pm i\sqrt{3}/2) \ket{-} \rb\\
+	&= \f{i\hbar}{4}\lb (1/2\mp i\sqrt{3}/2) - (1/2\pm i\sqrt{3}/2) \rb\\
+	&= \f{-\hbar}{4}\lb \mp \f{\sqrt{3}}{2} \mp \f{\sqrt{3}}{2} \rb \\
+	&= \boxed{\pm\f{\sqrt{3}}{4}\hbar}
+	\end{align*}
+	
+	
+	
+	
+	\item We recall that $\widehat{\mathbf{n}} = (\sin\theta\cos\phi, \sin\theta\sin\phi,\cos\theta)$ and that the eigenstates of $S_\mathbf{n}$ are 
+	\begin{equation*}
+	\ket{S_\mathbf{n}, +} = \begin{pmatrix}
+	\cos\theta/2 \\ e^{i\phi}\sin\theta/2
+	\end{pmatrix} \quad \text{and} \quad 
+	\ket{S_\mathbf{n}, -} = \begin{pmatrix}
+	-\sin\theta/2 \\ e^{i\phi}\cos\theta/2
+	\end{pmatrix}.
+	\end{equation*}
+	From Part (a), we want $\cos\theta/2 = \sin\theta/2 \implies \boxed{\theta = \pi/2 \mod 2\pi}$ and $\boxed{\phi = \pm \pi/3 \mod 2\pi}$ \qed
+\end{enumerate}
+	
+	
+	
+\newpage
+
+
+
+\noindent \textbf{4.} \textbf{Sakurai and Napolitano Problem 1.19 (page 62).} All expectation values are taken using the $\ket{S_z, +} \equiv \ket{+}$ state for this problem.
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item Since $\ket{+} = (1/\sqrt{2})(\ket{+} + 0 \ket{-})$, we have, according to past calculations,
+	\begin{equation*}
+	\bra{+} S_x \ket{+} = \f{\hbar}{4}(0+0) = 0 \implies \langle S_x \rangle^2 = 0.
+	\end{equation*}
+	Using the fact that $S_x^2 = (\hbar^2/4)\mathbb{I}$ (since $S_x$ flips $\ket{+}\to \ket{-}$ and $\ket{-} \to \ket{+}$), we have $\langle S_x^2 \rangle = (\hbar/2)^2 \braket{+} = \hbar^2/4$. Thus,
+	\begin{equation*}
+	\langle (\Delta S_x)^2\rangle \equiv \langle S_x^2\rangle - \langle S_x \rangle^2 = \boxed{\f{\hbar^2}{4}}
+	\end{equation*}
+	We now do the same for $S_y$. Once again, since $S_y^2 = (\hbar^2/4)\mathbb{I}$, we have $\langle S_y^2 \rangle = \hbar^2/4$. We're left with $\langle S_y \rangle^2$, but we've also done this calculation in the previous problem. We observe that since the amplitude of $\ket{-}$ is zero, we have $\langle S_y \rangle = 0 \implies \langle S_y \rangle^2 = 0$. Thus, 
+	\begin{equation*}
+	\langle (\Delta S_x)^2\rangle \langle (\Delta S_y)^2\rangle = {\f{\hbar^4}{16}}.
+	\end{equation*}
+	Finally, since $[S_x, S_y] = i\hbar S_z$ and that $\ket{+}$ is the $\hbar/2$-eigenstate of $S_z$, we can see by inspection that $(1/4)\abs{\langle [S_x, S_y] \rangle}^2 = (1/4)|i\hbar^2/2|^2 = \hbar^4/16$, and therefor, the uncertainty relation 
+	\begin{equation*}
+	\langle (\Delta S_x)^2\rangle \langle (\Delta S_y)^2\rangle \geq  \f{1}{4}\abs{\langle [S_x, S_y] \rangle}^2
+	\end{equation*}
+	is satisfied. 
+	
+	
+	
+	\item $\ket{S_x,+} = 1/\sqrt{2}\ket{+} + 1/\sqrt{2}\ket{-}$. Since $S_x^2 = (\hbar^2/4)\mathbb{I}$ we have $\langle S_x^2  \rangle_x = \hbar^2/4$. We can also quickly find $\langle S_x \rangle^2 = \hbar^2/4$ since $\ket{S_x,+}$ is an eigenstate of $S_x$. Thus, $\langle (\Delta S_x)^2 \rangle = 0$ and therefore, 
+	\begin{equation*}
+	\langle (\Delta S_x)^2\rangle \langle (\Delta S_y)^2\rangle = 0.
+	\end{equation*}
+	This leaves the LHS of the uncertainty to calculate. Since $[S_x, S_y] = i\hbar S_z$, we have
+	\begin{equation*}
+	\bra{+}_x [S_x, S_y] \ket{+}_x = i\hbar \bra{+}_x S_z  \ket{+}_x = \f{i\hbar^2}{4 }\begin{pmatrix}
+	1 & 1
+	\end{pmatrix}^\top \begin{pmatrix}
+	1 & 0 \\ 0 & -1
+	\end{pmatrix}  
+	\begin{pmatrix}
+	1 \\ 1
+	\end{pmatrix} = 0.
+	\end{equation*}
+	Thus, 
+	\begin{equation*}
+	\langle (\Delta S_x)^2\rangle \langle (\Delta S_y)^2\rangle = 0 = \f{1}{4} \abs{\langle [S_x, S_y] \rangle}^2,
+	\end{equation*}
+	and the uncertainty relation still holds. \qed
+\end{enumerate}
+	
+	
+	
+	
+\newpage
+
+
+
+
+\noindent \textbf{5.} \textbf{Sakurai and Napolitano Problem 1.20 (page 62).} \\
+
+
+Without loss of generality, assume that the desired linear combination has the form 
+\begin{align*}
+\ket{\psi} = \ket{\psi(\theta,\phi)} = \cos\f{\theta}{2} \ket{+} + \sin\f{\theta}{2}e^{i\phi} \ket{-},
+\end{align*}
+where we once again work in the $z$-basis. We note that $\ket{\psi(\theta,\psi)}$ spans the full spin-1/2 state space, so this assumption is valid.\\
+
+
+From the previous problem(s), we know that $S_x^2 = S_y^2 = (\hbar^2/4)\mathbb{I}$, so we have
+\begin{equation*}
+\langle S_x^2 \rangle = \langle S_y^2 \rangle = \f{\hbar^2}{4}.
+\end{equation*}
+Next, we compute
+\begin{align*}
+\bra{\psi} S_x \ket{\psi} 
+&= \lb \cos\f{\theta}{2} \bra{+} + \sin\f{\theta}{2}e^{-i\phi} \bra{-} \rb \lp \f{\hbar}{2} \ket{-}\bra{+} + \f{\hbar}{2}\ket{+}\bra{-}  \rp \lb  \cos\f{\theta}{2} \ket{+} + \sin\f{\theta}{2}e^{i\phi} \ket{-} \rb \\
+&= \f{\hbar}{2}\cos\f{\theta}{2}\sin\f{\theta}{2}\lp e^{-i\phi} + e^{i\phi} \rp  \\
+&= \f{\hbar}{2}\sin\theta \cos\phi \implies \langle S_x\rangle^2 = \f{\hbar^2}{4}\sin^2\theta \cos^2\phi.
+\end{align*}
+Similarly, 
+\begin{align*}
+\bra{\psi} S_y \ket{\psi} 
+&= \lb \cos\f{\theta}{2} \bra{+} + \sin\f{\theta}{2}e^{-i\phi} \bra{-} \rb 
+\lp \f{i\hbar}{2} \ket{-}\bra{+} - \f{i\hbar}{2}\ket{+}\bra{-}  \rp \lb  \cos\f{\theta}{2} \ket{+} + \sin\f{\theta}{2}e^{i\phi} \ket{-} \rb \\
+&= \f{i\hbar}{2}\cos\f{\theta}{2}\sin\f{\theta}{2}\lp e^{-i\phi} - e^{i\phi} \rp\\
+&= -i\f{i\hbar}{2}\sin\theta \sin\phi \\
+&= \f{\hbar}{2}\sin\theta\sin\phi \implies \langle S_y\rangle^2 = \f{\hbar^2}{4}\sin^2\theta \sin^2\phi.
+\end{align*}
+So, 
+\begin{align*}
+\langle (\Delta S_x)^2\rangle \langle (\Delta S_y)^2\rangle = \f{\hbar^2}{4}\lp 1- \sin^2\theta\cos^2\phi \rp \lp 1 -\sin^2\theta\sin^2\phi \rp.
+\end{align*}
+An obvious choice which maximizes this quantity for $(\theta,\phi)$ is $(0\mod \pi, \phi\in \mathbb{R})$. To find other solutions, assume that $\theta \neq 0\mod \pi$ is fixed. Then we let $a = 1- \sin^2\theta\cos^2\phi$ and $b = 1 -\sin^2\theta\sin^2\phi$. Since $ab \leq a^2/2+b^2/2$ with equality occurring if and only if $a=b$, we want $\sin^2\theta \cos^2\phi = \sin^2\theta\sin^2\phi$, or $\cos^2\phi = \sin^2\phi = 1/2 \implies \phi = \pi/4 \mod \pi/2$. We're then left to maximize $\lp 1- (1/2)\sin^2\theta\rp \lp 1 -(1/2)\sin^2\theta \rp$, and it is clear that $\theta = 0\mod \pi$ is the solution. In summary, we want $\theta = 0\mod \pi$ and $\phi = \pi/4 \mod \pi/2 $.\\
+
+The desired linear combinations are therefore
+\begin{align*}
+\boxed{\ket{\psi} = \pm \ket{+}\quad \text{and} \quad \ket{\psi} =  i^k e^{i\pi/4}\ket{-}, \,\,\, k\in \mathbb{Z}}
+\end{align*}
+Plugging these values for $\theta,\phi$ into $\bra{\psi} S_x \ket{\psi}$ and $\bra{\psi} S_y \ket{\psi}$ we find $\langle S_x\rangle^2 = \langle S_y\rangle^2 = 0$ and therefore
+\begin{equation*}
+\langle (\Delta S_x)^2\rangle \langle (\Delta S_y)^2\rangle = \f{\hbar^4}{16}.
+\end{equation*}
+The uncertainty relation is not violated because
+\begin{equation*}
+\f{1}{4}\abs{\langle [S_x, S_y]\rangle}^2 = \f{1}{4}\hbar^2 \abs{\bra{\pm}S_z\ket{\pm}}^2 = \f{\hbar^4}{16} \leq  \langle (\Delta S_x)^2\rangle \langle (\Delta S_y)^2\rangle.
+\end{equation*}\qed
+	
+	
+	
+	
+	
+	
+	
+	
+\newpage
+
+
+
+
+\noindent \textbf{6.} Let $A,B \in \mathbb{M}_{n\times n}$, the (finite-dimensional) space of $n\times n$ matrices (they have to be square matrices so that the commutator is defined). The trace function is defined for $A,B,AB,BA$ and satisfies the following properties
+\begin{equation*}
+\tr(AB) = \tr(BA)  \quad \text{and} \quad \tr(AB-BA) = \tr(AB) - \tr(BA),
+\end{equation*}
+whose proofs can be obtained by explicitly writing down the matrix elements of $AB,BA$ and comparing the sum of the diagonal entries of $AB$ to that of $BA$. It is clear that for $n\geq 1$,
+\begin{equation*}
+\tr(AB-BA) = \tr([A,B]) = 0 \neq n = \tr(\mathbb{I}). 
+\end{equation*}
+Therefore $AB-BA = \mathbb{I}$ cannot be satisfied. \qed
+	
+
+\newpage
+
+
+
+
+\noindent \textbf{7.} 
+\begin{enumerate}[label=(\alph*)]
+	\item Treating 
+	\begin{equation*}
+	e^A = \sum^\infty_{a=0} \f{1}{a!} A^a,
+	\end{equation*}
+	we have
+	\begin{equation*}
+	e^A Be^{-A} = \sum^\infty_{a=0}\sum^\infty_{b=0} (-1)^b \f{1}{a!b!} A^a B A^b.
+	\end{equation*}
+	Writing this sum order-by-order, we we have
+	\begin{equation*}
+	e^A B e^{-A} = \sum^\infty_{n=0} \sum^n_{k=0} (-1)^{n-k}\f{1}{k!(n-k)!}A^k B A^{n-k}.
+	\end{equation*}
+	We thus want to show that 
+	\begin{equation*}
+	A^{n}\{ B \} = \sum^n_{k=0} (-1)^{n-k} \f{n!}{k!(n-k)!}A^k B A^{n-k} = \sum^n_{k=0} (-1)^{n-k} {{n}\choose{k}} A^k B A^{n-k}
+	\end{equation*}
+	using induction. The base case $n=0$ is trivial $A^0\{B\} = B = (A^0/0!) B (A^0/0!)$. Assume that this holds for $n$. We now show that it is true for $n+1$. By definition, we have
+	\begin{align*}
+	A^{n+1}\{B\} 
+	&= [A, A^{n}\{B\}] \\ 
+	&= A\lp \sum^n_{k=0} (-1)^{n-k} {{n}\choose{k}} A^k B A^{n-k} \rp - \lp \sum^n_{k=0} (-1)^{n-k} {{n}\choose{k}} A^k B A^{n-k} \rp A.
+	\end{align*}
+	Taking the last term of the first summand and the first term of the second summand out of their sums, we get
+	\begin{equation*}
+	A^{n+1}\{B\} = A^{n+1}B + \sum^{n-1}_{k=0} (-1)^{n-k} {{n}\choose{k}} A^{k+1} B A^{n-k} - \sum^n_{k=1} (-1)^{n-k} {{n}\choose{k}} A^k B A^{n-k+1} - (-1)^n B A^{n+1}.
+	\end{equation*}
+	Shift the indices of the first sum by $k \to k-1$ and multiply the last two terms by $(+1)\times (-1)$ to get
+	\begin{equation*}
+	A^{n+1}\{B\} = A^{n+1}B + \sum^{n}_{k=1} (-1)^{n-k+1} {{n}\choose{k-1}} A^{k} B A^{n-k+1} + \sum^n_{k=1} (-1)^{n-k+1} {{n}\choose{k}} A^k B A^{n-k+1} + (-1)^{n+1} B A^{n+1}.
+	\end{equation*}
+	From combinatorics/Pascal triangle, we know that 
+	\begin{equation*}
+	{n \choose{k-1}} + {n \choose k} = {{n+1} \choose k}.
+	\end{equation*}
+	Thus, 
+	\begin{align*}
+	A^{n+1}\{B\} 
+	= A^{n+1}B + \sum^{n}_{k=1} (-1)^{n-k+1} {{n+1}\choose{k}} A^{k} B A^{n-k+1} + (-1)^{n+1} B A^{n+1} 
+	= \sum^{n}_{k=0} (-1)^{(n+1)-k} {{n+1}\choose {k}} A^k B A^{(n+1)-k},
+	\end{align*}
+	as desired. As a result, we have 
+	\begin{align*}
+	e^A B e^{-A} 
+	= \sum^\infty_{n=0} \sum^n_{k=0} (-1)^{n-k}\f{1}{k!(n-k)!}A^k B A^{n-k}
+	= \sum^\infty_{n=0} \f{1}{n!} \sum^n_{k=0} (-1)^{n-k}{n\choose k}A^k B A^{n-k}
+	= \sum^\infty_{n=0} \f{1}{n!} A^n\{B\}.
+	\end{align*}
+	We will introduce the following notation:
+	\begin{equation*}
+	e^A B e^{-A} = \sum^\infty_{n=0} \f{1}{n!} A^n\{B\} = e^{[A,\cdot]}(B)
+	\end{equation*}
+
+	
+	
+	\item \textcolor{blue}{\textbf{Note to the grader:} Some of the ideas I used for solving this problem came from Theorem 5.4 (Derivative of Exponential) in Brian Hall's \textit{Lie Groups, Lie Algebras, and Representations: An Elementary Introduction}, 2nd Edition}. \textcolor{purple}{I wonder if this problem could be solved using a similar approach used in Part (a), i.e., treating everything as power series.}\\
+	
+	We first start by treating some lemmas. The first lemma allows us to convert the derivative of the exponential map into something that is nicer to handle.
+	
+	\begin{lemma}\label{lem:1}
+	\begin{equation*}
+	\f{d}{dt} e^{X(t)} = \f{d}{d\tau} e^{X(t) + \tau \f{dX(t)}{dt}} \bigg\vert_{\tau = 0}.
+	\end{equation*}
+	\end{lemma}
+	\begin{proof}
+		We show this using power series:
+		\begin{align*}
+		\f{d}{d\tau} e^{X(t) + \tau \f{dX}{dt}} \bigg\vert_{\tau = 0} 
+		&= \f{d}{d\tau}\sum^\infty_{n=0} \f{1}{n!} \lb X(t) + \tau \f{dX(t)}{dt} \rb^n \bigg\vert_{\tau=0}\\
+		&= \sum^\infty_{n=0} \f{1}{n!} \sum^{n-1}_{k=0} \lb X(t) + 0   \rb^k \lb X(t) + 0  \rb \lb X(t) + 0  \rb\\
+		&= \sum^\infty_{n=0} \f{1}{n!} \sum^{n-1}_{k=0}X^k \f{dX(t)}{dt} X(t)^{n-1-k}\\
+		&= \sum^\infty_{n=0} \f{1}{n!} \f{d}{dt} X(t)^k \\
+		&= \f{d}{dt} e^{X(t)}.
+		\end{align*}
+		Here we note that that product rule must be written out explicitly since $X(t)$ and $dX(t)/dt$ don't necessarily commute. 
+	\end{proof}
+
+	The second lemma gives us the right hand side, as we will see later. Basically, this lemma lets us convert the right hand side into a geometric series of more convenient terms. 
+	\begin{lemma}\label{lem:2}
+		\begin{align*}
+		\lim_{m\to \infty} \f{1}{m} \sum^{m-1}_{k=0} \lp e^{-X/m} \rp^k = \f{1-e^{-X}}{X} = \sum^\infty_{k=0} (-1)^k \f{X^k}{(k+1)!}
+		\end{align*}
+	\end{lemma}
+	\begin{proof}
+		We note here is that while the first equality makes sense when $X$ is a number, it does not when $X$ is a matrix. However, we won't worry about that. All we care about the equality between the first and third expressions. It also makes sense (i.e. it still works) when we replace $e^X$ with $e^{[A,\cdot]}(B)$, which is something we introduced in Part (a). This will be useful later in the derivation/proof. The proof of this lemma uses geometric series and power series. 
+		\begin{equation*}
+		\f{1}{m}\sum^{m-1}_{k=0} \lp e^{-X/m} \rp^k = \f{1}{m}  \f{1-e^{-X}}{1-e^{-X/m}}. 
+		\end{equation*}
+		Taking $m\to \infty$, the denominator of the right hand side becomes unity: 
+		\begin{equation*}
+		\lim_{m\to \infty} \f{1}{m} \sum^{m-1}_{k=0} \lp e^{-X/m} \rp^k = \f{1-e^{-X}}{X}.
+		\end{equation*}
+		The rest is power series:
+		\begin{equation*}
+		\f{1-e^{-X}}{X} = -\f{1}{X} \sum^\infty_{n=1} \f{1}{n!}(-1)^nX^n = \sum^\infty_{n=0} \f{(-1)^{n}}{(n+1)!}X^{n}.
+		\end{equation*}
+	\end{proof}
+
+	The forthcoming lemma allows us to deal with a technical detail in the main proof. The motivation for this lemma will be clear later (I will point out where each lemma helps the main proof). 
+	\begin{lemma}\label{lem:3}
+		\begin{align*}
+		\f{d}{d\tau} \exp\lp \f{X(t)}{m} + \f{\tau}{m} \f{dX(t)}{dt}\rp \bigg\vert_{\tau = 0} = \f{1}{m} \f{d}{d\tau} \exp\lp \f{X(t)}{m} + \tau \f{dX(t)}{dt}\rp \bigg\vert_{\tau = 0} = 
+		\end{align*}
+	\end{lemma}
+
+	\begin{proof}
+		The point of this manipulation is so that the term $dX/dt$ does not vanish when we take $m\to \infty$. To show this, we once again use power series:
+		\begin{align*}
+		\f{d}{d\tau} \exp\lp \f{X(t)}{m} + \f{\tau}{m} \f{dX(t)}{dt}\rp \bigg\vert_{\tau = 0} 
+		&= \sum^\infty_{n=0} \f{1}{n!}\sum^{n-1}_{k=0} \lb \f{X(t)}{m} + 0\rb^k \lc \f{1}{m}\f{dX(t)}{dt} + 0 \rc \lb \f{X(t)}{m} + 0 \rb^{n-k-1} \\
+		&= \f{1}{m} \sum^\infty_{n=0} \f{1}{n!}\sum^{n-1}_{k=0} \lp \f{X(t)}{m}\rp^k \f{dX(t)}{dt} \lp \f{X(t)}{m} \rp^{n-k-1} \\
+		&= \f{1}{m}\f{d}{d\tau} \exp \lp \f{X(t)}{m} + \tau \f{dX(t)}{dt} \rp\bigg\vert_{\tau=0},
+		\end{align*}
+		where the last equality follows from Lemma \ref{lem:1}. 
+	\end{proof}
+	
+	We are now ready for the main proof. 
+	
+	\begin{proof}[\textbf{Proof}]
+		\begin{align*}
+		e^{-iA(t)} \f{d}{dt} e^{iA(t)} 
+		&= e^{-iA(t)}\f{d}{d\tau} e^{iA(t) + \tau \f{idA(t)}{dt}} \bigg\vert_{\tau = 0} \quad\quad\quad (\text{by Lemma \ref{lem:1}})\\
+		&= e^{-iA(t)} \f{d}{d\tau} \lb \exp\lp \f{iA(t)}{m} + \f{\tau}{m} \f{idA(t)}{dt} \rp \rb^m \bigg\vert_{\tau = 0}\\
+		&= e^{-iA(t)}
+		\sum^{m-1}_{k=0}
+		\lp e^{iA(t)/m}\rp^{m-k-1}
+		\lb \f{d}{d\tau} 
+		\exp \lp \f{iA(t)}{m} + \f{\tau}{m}\f{idA(t)}{dt} \rp  
+		\rb \bigg\vert_{\tau = 0}
+		\lp e^{iA(t)/m} \rp^k\\
+		&= e^{-iA(t)}e^{(m-1)A(t)/m} \sum^{m-1}_{k=0} \lp e^{A(t)/m}\rp^{-k}
+		\lb \f{d}{d\tau} 
+		\exp \lp \f{iA(t)}{m} + \f{\tau}{m}\f{idA(t)}{dt} \rp  
+		\rb \bigg\vert_{\tau = 0}
+		\lp e^{iA(t)/m} \rp^k
+		 \\
+		 \text{Lemma \ref{lem:3}}\quad &= e^{-iA(t)}e^{(m-1)A(t)/m} \f{1}{m} \sum^{m-1}_{k=0} \underbrace{\lp e^{A(t)/m}\rp^{-k}
+		 \lb \f{d}{d\tau} 
+		 \exp \lp \f{iA(t)}{m} + \tau\f{idA(t)}{dt} \rp  
+		 \rb \bigg\vert_{\tau = 0}
+		 \lp e^{iA(t)/m} \rp^k}\\
+		 \text{Part (a)}\quad
+		 &= e^{-iA(t)}e^{(m-1)A(t)/m} \sum^{m-1}_{k=0} \f{1}{m} \sum^\infty_{n=0} \f{1}{n!} \lp \f{-ikA(t)}{m} \rp^n \lc  \f{d}{d\tau} 
+		 \exp \lp \f{iA(t)}{m} + \tau\f{idA(t)}{dt} \rp  
+		 \bigg\vert_{\tau = 0}  \rc\\
+		 \text{Part (a)}\quad 
+		 &= e^{-iA(t)}e^{(m-1)A(t)/m} \f{1}{m}\sum^{m-1}_{k=0}
+		 \lp e^{[-iA(t)/m,\cdot]} \rp^k
+		 \lc  \f{d}{d\tau} 
+		 \exp \lp \f{iA(t)}{m} + \tau\f{idA(t)}{dt} \rp  
+		  \bigg\vert_{\tau = 0}  \rc\\
+		 \text{Lemma \ref{lem:2}, } m\to \infty \quad 
+		 &= e^{-iA(t)} e^{iA(t)} \sum^\infty_{n=0}\f{(-i)^n}{(n+1)!}A(t)^n \lc \f{idA(t)}{dt} \rc = \boxed{i\sum^\infty_{n=0}\f{(-i)^n}{(n+1)!}A(t)^n \lc \f{dA(t)}{dt} \rc}
+		\end{align*}
+		as desired. In the equality preceding the penultimate equality, we have used 
+		\begin{equation*}
+		\f{d}{d\tau} 
+		\exp \lp \f{iA(t)}{m} + \tau\f{idA(t)}{dt} \rp  
+		\bigg\vert_{\tau = 0} = i\f{dA(t)}{dt},
+		\end{equation*}
+		which can again be proven straightforwardly using power series.
+	\end{proof}
+	
+\end{enumerate}
+	
+	
+\end{document}
+
+
+
+
+
+
+
+
