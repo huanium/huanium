@@ -81,7 +81,7 @@
 %\setcounter{chapter}{-1}
 
 
-
+\usepackage{enumitem}
 
 
 
@@ -125,17 +125,771 @@
 
 
 \begin{document}
-		\begin{framed}
-			\noindent Name: \textbf{Huan Q. Bui}\\
-			Course: \textbf{8.309 - Classical Mechanics III}\\
-			Problem set: \textbf{\#1}
-		\end{framed}
+\begin{framed}
+	\noindent Name: \textbf{Huan Q. Bui}\\
+	Course: \textbf{8.309 - Classical Mechanics III}\\
+	Problem set: \textbf{\#1}
+\end{framed}
+	
+	
+	
+\noindent \textbf{1.} \textbf{Two Particles in a Gravitational Field}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item In the center of mass (COM) frame, the Lagrangian is given by 
+	\begin{align*}
+	\lag 
+	&= T - U\\
+	&= T - U_\text{attraction} - U_g\\
+	&= \lb \f{1}{2} m_1 \dot{\vec{r}}_1^2  + \f{1}{2}m_2\dot{\vec{r}}_2^2\rb - \lb - \f{Gm_1m_2}{\abs{\vec{r}}} - g(m_1x_1 + m_2x_2) \rb \\ 
+	&= \f{1}{2}(m_1+m_2) \dot{\vec{R}}_{\text{COM}}^2 + \f{1}{2} \f{m_1m_2}{m_1+m_2} \dot{\vec{r}}^2 + \f{Gm_1m_2}{r} + g(m_1+m_2) X_\text{COM},
+	\end{align*}
+	where $X_\text{COM}$ is the $x$-component of $\vec{R}_\text{COM}$. To obtain this Lagrangian, we have solved for $\vec{r}_1$ and $\vec{r}_2$ in terms of $\vec{R}_\text{COM}$ and $\vec{r}$ from the following definitions:
+	\begin{equation*}
+	\begin{cases}
+	\vec{R}_\text{COM} = (m_1 \vec{r}_1 + m_2 \vec{r}_2)/(m_1+m_2)  \\
+	\vec{r} = \vec{r}_2 - \vec{r}_1
+	\end{cases} 
+	\implies \begin{cases}
+	\vec{r}_1 = \vec{R}_\text{COM} - m_2 \vec{r}/(m_1+m_2) \\
+	\vec{r}_2 = \vec{R}_\text{COM} + m_1 \vec{r}/(m_1+m_2) \\
+	X_\text{COM} = (m_1 x_1 + m_1 x_2)/(m_1 + m_2)
+	\end{cases}
+	\end{equation*}
+	Calling the total mass $m_1 + m_2 = M$ and reduced mass $m_1m_2/(m_1+m_2) = \mu$, we have
+	\begin{equation*}
+	\boxed{\lag = 
+	\underbrace{ \f{1}{2}M \dot{\vec{R}}_{\text{COM}}^2 + gMX_\text{COM} }_{\text{COM}}  + \underbrace{ \f{1}{2} \mu \dot{\vec{r}}^2 + \f{Gm_1m_2}{r}  }_{\text{relative}}}
+	\end{equation*}
+	The Lagrangian splits into two parts which describe the center-of-mass and relative dynamics, respectively. This makes sense physically because both bodies are essentially in ``free fall'' with each other. The center of mass of the system is decoupled from the relative motion, i.e. we can go to a frame in which the center of mass is stationary, and the only dynamics left is the relative motion of the masses.  
+	
+	
+	\item Going to the center of mass frame, we have the following Lagrangian
+	\begin{equation*}
+	\lag_r = \f{1}{2} \mu \dot{\vec{r}}^2 + \f{Gm_1m_2}{r}.
+	\end{equation*}
+	To avoid taking derivatives of the basis vectors in spherical coordinates, we may write $\dot{\vec{r}} = \dot{x}^2 + \dot{y}^2 + \dot{z}^2$ where $(x,y,z) = r(\sin\theta\cos\phi, \sin\theta\sin\phi, \cos\theta)$ and let Mathematica compute the more familiar derivatives. The result is 
+	\begin{equation*}
+	\boxed{\lag_r = \f{1}{2}\mu \lb  \dot{r}^2 + r^2\lp\dot{\theta}^2 + \dot{\phi}^2\sin^2\theta \rp  \rb + \f{Gm_1m_2}{r}}
+	\end{equation*}
+	The corresponding Euler-Lagrange equations are
+	\begin{align*}
+	\f{d}{dt}\lp \f{\p \lag_r}{\p \dot{r}}\rp = \f{\p \lag_r}{\p r}  
+	&\implies 
+	\mu \ddot{r} = -\f{G m_1 m_2}{r^2} + \mu r\lp\dot{\theta}^2 + \dot{\phi}^2\sin^2\theta\rp\\
+	\f{d}{d\theta}\lp \f{\p \lag_r}{\p \dot{\theta}}\rp = \f{\p \lag_r}{\p \theta}  
+	&\implies 
+	2\dot{r}\dot{\theta} + r\ddot{\theta} = r\dot{\phi}^2\cos\theta \sin\theta \\
+	\f{d}{d\phi}\lp \f{\p \lag_r}{\p \dot{\phi}}\rp = \f{\p \lag_r}{\p \phi} 
+	&\implies 
+	\mu r \sin\theta \lb 2\lp \dot{r}\sin\theta  + r \dot{\theta} \cos\theta \rp \dot{\phi} + r \ddot{\phi} \sin\theta \rb =0
+	\end{align*}
+	
+	\item The Hamiltonian corresponding to this Lagrangian is obtained via the Legendre transform. To do this, we first find the canonical momenta $p_r, p_\theta, p_\phi$ in Mathematica using $p_i = \p \lag_r/ \p \dot{q}_i$. 
+	\begin{align*}
+	p_r = \mu \dot{r} \quad\quad p_\theta = \mu r^2 \dot{\theta} \quad\quad p_\phi = \mu r^2\sin^2\theta \dot{\phi}
+	\end{align*}
+	The Hamiltonian is 
+	\begin{align*}
+	\ham_r &= \lp p_r \dot{r} + p_\theta \dot{\theta} + p_\phi \dot{\phi} \rp - \lag_r \\
+	&= \boxed{\f{1}{2}\mu \lb \dot{r}^2 + r^2 \lp \dot{\theta}^2+ \dot{\phi}^2\sin^2\theta  \rp \rb - \f{Gm_1m_2}{r}}
+	\end{align*}
+	Alternatively, we can get this Hamiltonian (which is the total energy) by recognizing that the kinetic part of the Lagrangian is quadratic and the potential is not velocity dependent. \\
+	
+	To find the Hamiltonian equations of motion, we first express $\ham_r$ in terms of the canonical momenta:
+	\begin{equation*}
+	\ham_r = \f{p_r^2}{2\mu} + \f{p_\theta^2}{2\mu r^2} + \f{p_\phi^2}{2\mu r^2\sin^2\theta} - \f{G m_1m_2}{r}
+	\end{equation*}
+	With this, we find
+	\begin{align*}
+	\dot{r} = \f{\p \ham_r }{\p p_r} = \f{p_r}{\mu}; 
+	\quad\quad 
+	\dot{\theta} = \f{\p \ham}{\p p_\theta} = \f{p_\theta}{\mu r^2}; 
+	\quad\quad 
+	\dot{\phi} = \f{p_\phi}{\mu r^2 \sin^2\theta}
+	\end{align*}
+	and 
+	\begin{align*}
+	\dot{p}_r = -\f{\p \ham_r}{\p r} = \f{p_\theta^2}{\mu r^3} + \f{p_\phi^2}{\mu r^3\sin^2\theta} - \f{Gm_1m_2}{r^2}; 
+	\quad\quad 
+	\dot{p}_\theta = -\f{\p\ham_r}{\p \theta}  = \f{p_\phi^2\cos\theta}{\mu r^2\sin^3\theta}; 
+	\quad\quad \dot{p}_\phi = - \f{\p \ham}{\p \phi} = 0.
+	\end{align*}\qed
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	\item 
+	Mathematica code: 
+	\begin{lstlisting}
+	(* Problem 1 *)
+	
+	(* KE, PE, and Lagrangian *)
+	
+	In[1]:= KE = (\[Mu]/2)*(D[x[t], t]^2 + D[y[t], t]^2 + D[z[t], t]^2);
+	
+	In[2]:= PE = -G*m1*m2/r[t];
+	
+	In[3]:= L = KE - PE
+	
+	Out[3]= (G m1 m2)/r[t] + 
+	1/2 \[Mu] (Derivative[1][x][t]^2 + Derivative[1][y][t]^2 + 
+	Derivative[1][z][t]^2)
+	
+	In[4]:= L = 
+	L /. {x[t] -> r[t]*Sin[\[Theta][t]]*Cos[\[Phi][t]], 
+	y[t] -> r[t]*Sin[\[Theta][t]]*Sin[\[Phi][t]], 
+	z[t] -> r[t]*Cos[\[Theta][t]],
+	x'[t] -> D[r[t]*Sin[\[Theta][t]]*Cos[\[Phi][t]], t], 
+	y'[t] -> D[r[t]*Sin[\[Theta][t]]*Sin[\[Phi][t]], t], 
+	z'[t] -> D[r[t]*Cos[\[Theta][t]], t]} // FullSimplify
+	
+	Out[4]= 1/2 ((2 G m1 m2)/
+	r[t] + \[Mu] Derivative[1][r][t]^2 + \[Mu] r[
+	t]^2 (Derivative[1][\[Theta]][t]^2 + 
+	Sin[\[Theta][t]]^2 Derivative[1][\[Phi]][t]^2))
+	
+	In[5]:= (* The 'r' equation *)
+	
+	In[6]:= D[D[L, r'[t]], t] // FullSimplify
+	
+	Out[6]= \[Mu] (r^\[Prime]\[Prime])[t]
+	
+	In[7]:= D[L, r[t]] // FullSimplify
+	
+	Out[7]= -((G m1 m2)/
+	r[t]^2) + \[Mu] r[
+	t] (Derivative[1][\[Theta]][t]^2 + 
+	Sin[\[Theta][t]]^2 Derivative[1][\[Phi]][t]^2)
+	
+	In[8]:= (* The 'Theta' equation *)
+	
+	In[9]:= D[D[L, \[Theta]'[t]], t] // FullSimplify
+	
+	Out[9]= \[Mu] r[
+	t] (2 Derivative[1][r][t] Derivative[1][\[Theta]][t] + 
+	r[t] (\[Theta]^\[Prime]\[Prime])[t])
+	
+	In[10]:= D[L, \[Theta][t]] // FullSimplify
+	
+	Out[10]= \[Mu] Cos[\[Theta][t]] r[t]^2 Sin[\[Theta][t]] Derivative[
+	1][\[Phi]][t]^2
+	
+	(* The 'Phi' equation *)
+	
+	In[11]:= D[D[L, \[Phi]'[t]], t] // FullSimplify
+	
+	Out[11]= \[Mu] r[
+	t] Sin[\[Theta][
+	t]] (2 (Sin[\[Theta][t]] Derivative[1][r][t] + 
+	Cos[\[Theta][t]] r[t] Derivative[1][\[Theta]][t]) Derivative[
+	1][\[Phi]][t] + 
+	r[t] Sin[\[Theta][t]] (\[Phi]^\[Prime]\[Prime])[t])
+	
+	In[12]:= D[L, \[Phi][t]] // FullSimplify
+	
+	Out[12]= 0
+	
+	(* Canonical momenta *)
+	
+	In[13]:= pr[t] = D[L, r'[t]]
+	
+	Out[13]= \[Mu] Derivative[1][r][t]
+	
+	In[14]:= p\[Theta][t] = D[L, \[Theta]'[t]]
+	
+	Out[14]= \[Mu] r[t]^2 Derivative[1][\[Theta]][t]
+	
+	In[15]:= p\[Phi][t] = D[L, \[Phi]'[t]]
+	
+	Out[15]= \[Mu] r[t]^2 Sin[\[Theta][t]]^2 Derivative[1][\[Phi]][t]
+	
+	(* Lagrangian to Hamiltonian *)
+	
+	In[17]:= H = (pr[t]*r'[t] + p\[Theta][t]*\[Theta]'[t] + 
+	p\[Phi][t]*\[Phi]'[t]) - L // Expand
+	
+	Out[17]= -((G m1 m2)/r[t]) + 1/2 \[Mu] Derivative[1][r][t]^2 + 
+	1/2 \[Mu] r[t]^2 Derivative[1][\[Theta]][t]^2 + 
+	1/2 \[Mu] r[t]^2 Sin[\[Theta][t]]^2 Derivative[1][\[Phi]][t]^2
+	
+	In[63]:= (* Velocities: new instances of P to put in Hamiltonian *)
+	
+	In[18]:= velocities = 
+	Solve[{Pr[t] == D[L, r'[t]], P\[Theta][t] == D[L, \[Theta]'[t]], 
+	P\[Phi][t] == D[L, \[Phi]'[t]]}, {r'[t], \[Theta]'[t], \[Phi]'[
+	t]}][[1]]
+	
+	Out[18]= {Derivative[1][r][t] -> Pr[t]/\[Mu], 
+	Derivative[1][\[Theta]][t] -> P\[Theta][t]/(\[Mu] r[t]^2), 
+	Derivative[1][\[Phi]][t] -> (
+	Csc[\[Theta][t]]^2 P\[Phi][t])/(\[Mu] r[t]^2)}
+	
+	(* Write Hamiltonian in terms of momenta: *)
+	
+	In[19]:= H = H /. velocities // Expand
+	
+	Out[19]= Pr[t]^2/(2 \[Mu]) + P\[Theta][t]^2/(2 \[Mu] r[t]^2) + (
+	Csc[\[Theta][t]]^2 P\[Phi][t]^2)/(2 \[Mu] r[t]^2) - (G m1 m2)/r[t]
+	
+	(*Hamiltonian EOMs*)
+	
+	In[20]:= D[r[t], t] == D[H, Pr[t]]
+	
+	Out[20]= Derivative[1][r][t] == Pr[t]/\[Mu]
+	
+	In[21]:= D[\[Theta][t], t] == D[H, P\[Theta][t]]
+	
+	Out[21]= Derivative[1][\[Theta]][t] == P\[Theta][t]/(\[Mu] r[t]^2)
+	
+	In[22]:= D[\[Phi][t], t] == D[H, P\[Phi][t]]
+	
+	Out[22]= Derivative[1][\[Phi]][t] == (
+	Csc[\[Theta][t]]^2 P\[Phi][t])/(\[Mu] r[t]^2)
+	
+	In[26]:= D[Pr[t], t] == -D[H, r[t]] // Expand
+	
+	Out[26]= Derivative[1][Pr][t] == 
+	P\[Theta][t]^2/(\[Mu] r[t]^3) + (
+	Csc[\[Theta][t]]^2 P\[Phi][t]^2)/(\[Mu] r[t]^3) - (G m1 m2)/r[t]^2
+	
+	In[27]:= D[P\[Theta][t], t] == -D[H, \[Theta][t]] // Expand
+	
+	Out[27]= Derivative[1][P\[Theta]][t] == (
+	Cot[\[Theta][t]] Csc[\[Theta][t]]^2 P\[Phi][t]^2)/(\[Mu] r[t]^2)
+	
+	In[83]:= D[P\[Phi][t], t] == -D[H, \[Phi][t]] // Expand
+	
+	Out[83]= Derivative[1][P\[Phi]][t] == 0
+	\end{lstlisting}
+	
+\end{enumerate}
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{2.} \textbf{Double Pendulum in a Plane with Gravity}
+
+\begin{enumerate}[label=(\alph*)]
+	\item In rectangular coordinates:
+	\begin{align*}
+	\lag 
+	&= T - U \\
+	&= \f{1}{2}m_1(\dot{x}_1^2 + \dot{y}_1^2) + \f{1}{2}m_2(\dot{x}_2^2 + \dot{y}_2^2) - m_1gy_1 - m-2 g y_2.
+	\end{align*}
+	With 
+	\begin{align*}
+	x_1 = l_1 \sin\theta_1; &\quad\quad x_2 = l_2 \sin\theta_2 + l_1 \sin\theta_1 \\
+	y_1 = -l_1\cos\theta_1; &\quad\quad y_2 = -l_2\cos\theta_2 - l_1\cos\theta_1
+	\end{align*}
+	we have
+	\begin{align*}
+	\boxed{\lag = \f{1}{2}(m_1+m_2) l_1^2\dot{\theta}_1^2  + \f{1}{2}l_1^2m_2\dot{\theta}_2^2 + l_1l_2m_2\cos(\theta_1 - \theta_2) \dot{\theta_1}\dot{\theta_2} + gl_1(m_1+m_2)\cos\theta_1 + gl_2m_2\cos\theta_2}
+	\end{align*}
+	The equations of motion are:
+	\begin{equation*}
+	\f{d}{dt}\lp \f{\p \lag}{\p \dot{\theta}_1} \rp = \f{\p \lag}{\p \theta_1} 
+	\implies 
+	l_2m_2\sin(\theta_1 - \theta_2) \dot{\theta}_2^2 + (m_1+m_2)(g\sin\theta_1 + l_1 \ddot{\theta}_1) + l_2m_2\cos(\theta_1 - \theta_2)\ddot{\theta}_2 = 0
+	\end{equation*}
+	\begin{equation*}
+	\f{d}{dt}\lp \f{\p \lag}{\p \dot{\theta}_2} \rp = \f{\p \lag}{\p \theta_1}
+	\implies 
+	g\sin\theta_2 - l_1\sin(\theta_1 - \theta_2)\dot{\theta}_1^2 + l_1\cos(\theta_1-\theta_2) \ddot{\theta}_1 + l_2 \ddot{\theta}_2 = 0.
+	\end{equation*}
+	
+	
+	\item Now take $m_1 = m_2 = m$. Following a similar procedure as before, we first find the canonical momenta using $p_i = \p \lag / \p \dot{q}_i$, then find the Hamiltonian by Legendre-transforming the Lagrangian. Equivalently, we can simply take the total energy, as the kinetic part of the Lagrangian is quadratic and the potential is velocity independent. 
+	\begin{equation*}
+	\boxed{\ham = l_1^2 m \dot\theta_1^2 +\f{1}{2}l_2^2 m \dot\theta_2^2 + l_1l_2m\cos(\theta_1-\theta_2)\dot\theta_1\dot\theta_2 - 2gl_1m\cos\theta_1 - g l_2 m \cos\theta_2 }
+	\end{equation*}
+	To write $\ham$ in terms of the canonical momenta, we need to find how they are related to the velocities. Setting $p_{\theta_i} = \p \lag / \p \dot{\theta}_i$ we find 
+	\begin{equation*}
+	\dot{\theta}_1 = \f{-l_2 p_{\theta_1} + l_1\cos(\theta_1-\theta_2)p_{\theta_2}}{l_1^2 l_2 m [\cos^2(\theta_1 - \theta_2) - 2]}
+	\quad\quad 
+	\dot{\theta}_2 = \f{l_2\cos(\theta_1-\theta_2)p_{\theta_1} - 2l_1 p_{\theta_2}}{l_1l_2^2 m [\cos^2(\theta_1 - \theta_2)-2]}
+	\end{equation*}
+	In terms of $p_{\theta_1}$ and $p_{\theta_2}$, the Hamiltonian is 
+	\begin{equation*}
+	\boxed{\ham = 
+	-\frac{l_1^2 \left(g{l_2}^2 m^2 [\cos (2 (\theta_1-\theta_2))-3] 
+	(2l_1 \cos \theta_1+l_2 \cos \theta_2 +2 2p_{\theta_2}^2\right)
+	-2l_1l_2p_{\theta_1}p_{\theta_2} \cos (\theta_1-\theta_2)+ l_2^2 p_{\theta_1}^2}
+	{l_1^2l_2^2 m [\cos (2 (\theta_1-\theta_2))-3]}}
+	\end{equation*}
+	The remain equations of motion are the ``$\dot{p}$'' equations:
+	\begin{align*}
+	\dot{p}_{\theta_1} = 
+	\frac{-2 g l_1^3 l_2^2 m^2 \sin \theta_1[\cos
+		(2 (\theta_1-\theta_2))-3]^2
+		+2 \sin (2
+		(\theta_1-\theta_2)) \left(2 l_1^2
+		p_{\theta_2}^2+l_2^2 p_{\theta_1}^2\right)
+		}
+	{l_1^2 l_2^2 m [\cos (2
+		(\theta_1-\theta_2))-3]^2} \\
+	+ \frac{-2
+		l_1l_2 p_{\theta_1}p_{\theta_2} \sin
+		(\theta_1-\theta_2) (\cos (2 (\theta_1-\theta_2))+5)}{l_1^2 l_2^2 m [\cos (2
+		(\theta_1-\theta_2))-3]^2}
+	\end{align*}
+	and 
+	\begin{align*}
+	\dot{p}_{\theta_2} 
+	= 
+	&g l_2 m \sin\theta_2 \\
+	&+\frac{2 \sin (\theta_1-\theta_2) \left(-4
+		l_1^2 p_{\theta_2}^2 \cos (\theta_1-\theta_2)+l_1 l_2 p_{\theta_1}p_{\theta_2} [\cos (2 (\theta_1-\theta_2))+5]-2 l_2^2 p_{\theta_1}^2 \cos (\theta_1-\theta_2)\right)}{l_1^2 l_2^2 m [\cos (2 (\theta_1-\theta_2))-3]^2}
+	\end{align*}
+	
+	\item Mathematica code:
+	\begin{lstlisting}
+	(* Problem 2 *)
+	
+	(* KE, PE, and Lagrangian *)
+	
+	In[1]:= KE = (1/2)*m1*(D[x1[t], t]^2 + D[y1[t], t]^2) + (1/2)*
+	m2*(D[x2[t], t]^2 + D[y2[t], t]^2);
+	
+	In[2]:= PE = m1*g*y1[t] + m2*g*y2[t];
+	
+	In[3]:= L = KE - PE;
+	
+	In[4]:= L = L /. {
+	x1[t] -> l1*Sin[\[Theta]1[t]],
+	y1[t] -> -l1*Cos[\[Theta]1[t]],
+	x2[t] -> l2*Sin[\[Theta]2[t]] + l1*Sin[\[Theta]1[t]],
+	y2[t] -> -l2*Cos[\[Theta]2[t]] - l1*Cos[\[Theta]1[t]],
+	x1'[t] -> D[l1*Sin[\[Theta]1[t]], t],
+	y1'[t] -> D[-l1*Cos[\[Theta]1[t]], t],
+	x2'[t] -> D[l2*Sin[\[Theta]2[t]] + l1*Sin[\[Theta]1[t]], t],
+	y2'[t] -> D[-l2*Cos[\[Theta]2[t]] - l1*Cos[\[Theta]1[t]], t]} // 
+	FullSimplify
+	
+	Out[4]= 1/2 (2 g (l1 (m1 + m2) Cos[\[Theta]1[t]] + 
+	l2 m2 Cos[\[Theta]2[t]]) + 
+	l1^2 (m1 + m2) Derivative[1][\[Theta]1][t]^2 + 
+	2 l1 l2 m2 Cos[\[Theta]1[t] - \[Theta]2[t]] Derivative[
+	1][\[Theta]1][t] Derivative[1][\[Theta]2][t] + 
+	l2^2 m2 Derivative[1][\[Theta]2][t]^2)
+	
+	(* Lagrangian EOMs *)
+	
+	In[5]:= D[D[L, \[Theta]1'[t]], t] == D[L, \[Theta]1[t]] // FullSimplify
+	
+	Out[5]= l1 (l2 m2 Sin[\[Theta]1[t] - \[Theta]2[t]] Derivative[
+	1][\[Theta]2][
+	t]^2 + (m1 + m2) (g Sin[\[Theta]1[t]] + 
+	l1 (\[Theta]1^\[Prime]\[Prime])[t]) + 
+	l2 m2 Cos[\[Theta]1[t] - \[Theta]2[
+	t]] (\[Theta]2^\[Prime]\[Prime])[t]) == 0
+	
+	In[6]:= D[D[L, \[Theta]2'[t]], t] == D[L, \[Theta]2[t]] // FullSimplify
+	
+	Out[6]= l2 m2 (g Sin[\[Theta]2[t]] - 
+	l1 Sin[\[Theta]1[t] - \[Theta]2[t]] Derivative[1][\[Theta]1][
+	t]^2 + l1 Cos[\[Theta]1[t] - \[Theta]2[
+	t]] (\[Theta]1^\[Prime]\[Prime])[t] + 
+	l2 (\[Theta]2^\[Prime]\[Prime])[t]) == 0
+	
+	(* Take m1 = m2 = m *)
+	
+	In[7]:= D[D[L, \[Theta]1'[t]], t] == D[L, \[Theta]1[t]] /. {m1 -> m, 
+	m2 -> m} // FullSimplify
+	
+	Out[7]= l1 m (2 g Sin[\[Theta]1[t]] + 
+	l2 Sin[\[Theta]1[t] - \[Theta]2[t]] Derivative[1][\[Theta]2][
+	t]^2 + 2 l1 (\[Theta]1^\[Prime]\[Prime])[t] + 
+	l2 Cos[\[Theta]1[t] - \[Theta]2[t]] (\[Theta]2^\[Prime]\[Prime])[
+	t]) == 0
+	
+	In[8]:= D[D[L, \[Theta]2'[t]], t] == D[L, \[Theta]2[t]] /. {m1 -> m, 
+	m2 -> m} // FullSimplify
+	
+	Out[8]= l2 m (g Sin[\[Theta]2[t]] - 
+	l1 Sin[\[Theta]1[t] - \[Theta]2[t]] Derivative[1][\[Theta]1][
+	t]^2 + l1 Cos[\[Theta]1[t] - \[Theta]2[
+	t]] (\[Theta]1^\[Prime]\[Prime])[t] + 
+	l2 (\[Theta]2^\[Prime]\[Prime])[t]) == 0
+	
+	(*Hamiltonian*)
+	
+	In[9]:= H = (D[L, \[Theta]1'[t]]*D[\[Theta]1[t], t] + 
+	D[L, \[Theta]2'[t]]*D[\[Theta]2[t], t]) - L /. {m1 -> m, 
+	m2 -> m} // Expand
+	
+	Out[9]= -2 g l1 m Cos[\[Theta]1[t]] - g l2 m Cos[\[Theta]2[t]] + 
+	l1^2 m Derivative[1][\[Theta]1][t]^2 + 
+	l1 l2 m Cos[\[Theta]1[t] - \[Theta]2[t]] Derivative[1][\[Theta]1][
+	t] Derivative[1][\[Theta]2][t] + 
+	1/2 l2^2 m Derivative[1][\[Theta]2][t]^2
+	
+	(*solve for velocities in terms of momenta to write H in terms of \
+	momenta*)
+	
+	In[10]:= D[L, \[Theta]1'[t]] /. {m1 -> m, m2 -> m} // FullSimplify
+	
+	Out[10]= l1 m (2 l1 Derivative[1][\[Theta]1][t] + 
+	l2 Cos[\[Theta]1[t] - \[Theta]2[t]] Derivative[1][\[Theta]2][t])
+	
+	In[11]:= velocities = 
+	Solve[{P\[Theta]1[t] == D[L, \[Theta]1'[t]], 
+	P\[Theta]2[t] == D[L, \[Theta]2'[t]]}, {\[Theta]1'[
+	t], \[Theta]2'[t]}][[1]] /. {m1 -> m, m2 -> m} // FullSimplify
+	
+	Out[11]= {Derivative[1][\[Theta]1][t] -> (-l2 P\[Theta]1[t] + 
+	l1 Cos[\[Theta]1[t] - \[Theta]2[t]] P\[Theta]2[t])/(
+	l1^2 l2 m (-2 + Cos[\[Theta]1[t] - \[Theta]2[t]]^2)), 
+	Derivative[1][\[Theta]2][t] -> (
+	l2 Cos[\[Theta]1[t] - \[Theta]2[t]] P\[Theta]1[t] - 
+	2 l1 P\[Theta]2[t])/(
+	l1 l2^2 m (-2 + Cos[\[Theta]1[t] - \[Theta]2[t]]^2))}
+	
+	In[12]:= H = H /. velocities // FullSimplify
+	
+	Out[12]= -((l2^2 P\[Theta]1[t]^2 - 
+	2 l1 l2 Cos[\[Theta]1[t] - \[Theta]2[t]] P\[Theta]1[
+	t] P\[Theta]2[t] + 
+	l1^2 (g l2^2 m^2 (-3 + 
+	Cos[2 (\[Theta]1[t] - \[Theta]2[t])]) (2 l1 Cos[\[Theta]1[
+	t]] + l2 Cos[\[Theta]2[t]]) + 
+	2 P\[Theta]2[t]^2))/(l1^2 l2^2 m (-3 + 
+	Cos[2 (\[Theta]1[t] - \[Theta]2[t])])))
+	
+	(* Hamiltonian EOMs *)
+	
+	In[16]:= Solve[P\[Theta]1'[t] == -D[H, \[Theta]1[t]], 
+	P\[Theta]1'[t]][[1]] // FullSimplify
+	
+	Out[16]= {Derivative[1][P\[Theta]1][
+	t] -> (-2 g l1^3 l2^2 m^2 (-3 + 
+	Cos[2 (\[Theta]1[t] - \[Theta]2[t])])^2 Sin[\[Theta]1[t]] - 
+	2 l1 l2 (5 + Cos[2 (\[Theta]1[t] - \[Theta]2[t])]) P\[Theta]1[
+	t] P\[Theta]2[t] Sin[\[Theta]1[t] - \[Theta]2[t]] + 
+	2 (l2^2 P\[Theta]1[t]^2 + 2 l1^2 P\[Theta]2[t]^2) Sin[
+	2 (\[Theta]1[t] - \[Theta]2[t])])/(l1^2 l2^2 m (-3 + 
+	Cos[2 (\[Theta]1[t] - \[Theta]2[t])])^2)}
+	
+	In[17]:= Solve[P\[Theta]2'[t] == -D[H, \[Theta]2[t]], 
+	P\[Theta]2'[t]][[1]] // FullSimplify
+	
+	Out[17]= {Derivative[1][P\[Theta]2][
+	t] -> (2 (-2 l2^2 Cos[\[Theta]1[t] - \[Theta]2[t]] P\[Theta]1[
+	t]^2 + l1 l2 (5 + 
+	Cos[2 (\[Theta]1[t] - \[Theta]2[t])]) P\[Theta]1[
+	t] P\[Theta]2[t] - 
+	4 l1^2 Cos[\[Theta]1[t] - \[Theta]2[t]] P\[Theta]2[
+	t]^2) Sin[\[Theta]1[t] - \[Theta]2[t]])/(l1^2 l2^2 m (-3 + 
+	Cos[2 (\[Theta]1[t] - \[Theta]2[t])])^2) - 
+	g l2 m Sin[\[Theta]2[t]]}
+	
+	In[66]:= \[Theta]1'[t] == D[H, P\[Theta]1[t]] // FullSimplify
+	
+	Out[66]= l1 Derivative[1][\[Theta]1][t] == (
+	2 l2 P\[Theta]1[t] - 
+	2 l1 Cos[\[Theta]1[t] - \[Theta]2[t]] P\[Theta]2[t])/(
+	3 l1 l2 m - l1 l2 m Cos[2 \[Theta]1[t] - 2 \[Theta]2[t]])
+	
+	In[67]:= \[Theta]2'[t] == D[H, P\[Theta]2[t]] // FullSimplify
+	
+	Out[67]= Derivative[1][\[Theta]2][t] == (
+	2 (l2 Cos[\[Theta]1[t] - \[Theta]2[t]] P\[Theta]1[t] - 
+	2 l1 P\[Theta]2[t]))/(
+	l1 l2^2 m (-3 + Cos[2 (\[Theta]1[t] - \[Theta]2[t])]))
+	\end{lstlisting}
+\end{enumerate}
+
+
+
+
+\newpage
+\noindent \textbf{3.} \textbf{Point Mass on a Hoop:} Goldstein Ch.2 Problem \#18. 
+
+By the geometry of the problem, we the system may be described by one (spherical) coordinate $\theta$ defined as usual. $r$ is fixed at $r=a$ and $\phi(t) = \omega t$, where $\omega$ is fixed.
+\begin{equation*}
+(x,y,z) = (a\sin\theta \cos\omega t, a\sin\theta\sin\omega t, a\cos\theta).
+\end{equation*}
+With this, the Lagrangian is 
+\begin{align*}
+\lag 
+&= \f{1}{2}m \lb \dot{x}^2 + \dot{y}^2 + \dot{z}^2\rb - mgz\\
+&= \f{1}{2} am \lb -2g\cos\theta + a\omega^2\sin^2\theta  + a\dot{\theta}^2 \rb.
+\end{align*}
+There is only one Lagrangian equation of motion:
+\begin{equation*}
+\f{d}{dt}\lp \f{\p \lag}{\p \dot\theta} \rp = \f{\p \lag}{\p \theta} \implies a \ddot{\theta} =  \lp g + a\omega^2 \cos\theta \rp\sin\theta.
+\end{equation*}
+It is clear from the functional form of $\lag$ that a constant of motion is $r$ since $r=a$ fixed. Moreover, since $\lag$ is time-independent, energy is conserved, therefore is also a constant of motion. In this case, the energy function is identically the Hamiltonian because the Lagrangian is quadratic in the kinetic part and velocity-independent in the potential part. Thus, we have
+\begin{equation*}
+\text{const} = \ham = \f{\p \lag}{\p \dot\theta}\dot\theta - \lag = \frac{1}{2} a m \left(a \dot\theta^2-a \omega^2 \sin^2\theta+2 g \cos\theta\right).
+\end{equation*}
+
+
+We now want to find the critical value $\omega_0$ described in the problem statement. Since the particle is stationary, $\dot{\theta} = 0$. The particle is at a stationary point exactly when it is at a local minimum of the effective potential. From the Hamiltonian, we can read off the effective potential as 
+\begin{equation*}
+V(\theta) = \f{1}{2}am\lp -a\omega^2\sin^2\theta + 2g\cos\theta \rp.
+\end{equation*}
+We find that 
+\begin{align*}
+0 = \f{\p V(\theta)}{\p \theta} = \f{1}{2}am\lp -a\omega^2\sin 2\theta -2g\sin\theta \rp = am\sin\theta \lp -a\omega^2\cos\theta - g  \rp 
+\end{align*}
+so the stationary points are $\theta = 0, \pi$ or $\theta = \arccos(-\omega_0^2/\omega^2)$ where $\boxed{\omega_0 \equiv \sqrt{g/a}}$. Of these three points, $\theta=0$ is always unstable since it for $\theta\approx 0$ $V(\theta)$ looks like $\cos\theta$, so the particle will move away from $\theta=0$. \\
+
+When $\omega_0 \geq  \omega$, the only equilibrium is $\theta=\pi$ since $\p V(\theta)/\p \theta \leq 0$ for all $\theta \in[0,\pi]$. When $\omega_0 \leq \omega$, the equilibrium point becomes $\theta = \theta_0 = \arccos(-\omega_0^2/\omega^2)$ because $\p V/\p \theta \geq 0$ for $\theta \geq \theta_0$.\\
+
+
+Mathematica code:
+\begin{lstlisting}
+(*Problem 3*)
+In[20]:= KE = (m/2)*(D[x[t], t]^2 + D[y[t], t]^2 + D[z[t], t]^2);
+In[21]:= PE = m*g*z[t];
+In[22]:= L = KE - PE
+Out[22]= -g m z[t] + 
+1/2 m (Derivative[1][x][t]^2 + Derivative[1][y][t]^2 + 
+Derivative[1][z][t]^2)
+(*Lagrangian*)
+In[23]:= L = L /. {x[t] -> a*Sin[\[Theta][t]]*Cos[\[Omega]*t], 
+y[t] -> a*Sin[\[Theta][t]]*Sin[\[Omega]*t], 
+z[t] -> a*Cos[\[Theta][t]],
+x'[t] -> D[a*Sin[\[Theta][t]]*Cos[\[Omega]*t], t], 
+y'[t] -> D[a*Sin[\[Theta][t]]*Sin[\[Omega]*t], t], 
+z'[t] -> D[a*Cos[\[Theta][t]], t]} // FullSimplify
+Out[23]= 1/2 a m (-2 g Cos[\[Theta][t]] + a \[Omega]^2 Sin[\[Theta][t]]^2 + 
+a Derivative[1][\[Theta]][t]^2)
+In[19]:= (*Hamiltonian*)
+In[25]:= H = D[L, \[Theta]'[t]]*\[Theta]'[t] - L // FullSimplify
+Out[25]= 1/2 a m (2 g Cos[\[Theta][t]] - a \[Omega]^2 Sin[\[Theta][t]]^2 + 
+a Derivative[1][\[Theta]][t]^2)
+In[26]:= 1/2 a m (2 g Cos[\[Theta][t]] - a \[Omega]^2 Sin[\[Theta][t]]^2 + 
+a Derivative[1][\[Theta]][t]^2) // TeXForm
+Out[26]//TeXForm=
+\frac{1}{2} a m \left(a \theta '(t)^2-a \omega ^2 \sin ^2(\theta
+(t))+2 g \cos (\theta (t))\right)
+(*Lagrangian EOM*)
+In[88]:= FullSimplify[D[D[L, \[Theta]'[t]], t] == D[L, \[Theta][t]]]
+Out[88]= a^2 m (\[Theta]^\[Prime]\[Prime])[t] == 
+a m (g + a \[Omega]^2 Cos[\[Theta][t]]) Sin[\[Theta][t]]
+\end{lstlisting}
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{4.} \textbf{Spring System on a Plane}
+
+\begin{enumerate}[label = (\alph*)]
+	\item The Lagrangian in Cartesian coordinates is 
+	\begin{equation*}
+	\boxed{
+	\lag = \f{1}{2}m_1(\dot{x}_1^2 + \dot{y}_1^2)+ \f{1}{2}m_2(\dot{x}_2^2 + \dot{y}_2^2) - \f{1}{2}k \lp \sqrt{(x_1-x_2)^2+(y_1-y-2)^2} -b \rp^2
+	}
+	\end{equation*}
+	
+	
+	
+	
+	\item New coordinates are  $(x_\text{COM},y_{\text{COM}},r,\theta)$, where $(x_\text{COM}, y_\text{COM})$ describes the position of the center of mass of the system, while $(r,\theta)$ together describe the relative position vector of the two masses. These new coordinates are defined by 
+	\begin{align*}
+	blahhhhhhh
+	\end{align*}
+	
+	
+	
+	\item 
+	
+	
+	
+	
+	\item 
+	
+	
+	
+	\item Mathematica code:
+	\begin{lstlisting}
+	(*Problem 4*)
+	
+	In[50]:= KE = (1/2)*(m1 + m2)*(D[xCOM[t], t]^2 + 
+	D[yCOM[t], t]^2) + (1/2)*(m1*
+	m2)*(D[r[t], t]^2 + r[t]^2*D[\[Theta][t], t]^2)/(m1 + m2);
+	
+	In[51]:= PE = (k/2)*(r[t] - b)^2;
+	
+	In[52]:= L = KE - PE;
+	
+	(*Lagrangian*)
+	
+	In[53]:= L // FullSimplify
+	
+	Out[53]= 1/2 (-k (b - r[t])^2 + (m1 + m2) (Derivative[1][xCOM][t]^2 + 
+	Derivative[1][yCOM][t]^2) + (
+	m1 m2 (Derivative[1][r][t]^2 + 
+	r[t]^2 Derivative[1][\[Theta]][t]^2))/(m1 + m2))
+	
+	(*Lagrangian EOMs*)
+	
+	(*xCOM equation*)
+	
+	In[54]:= Solve[FullSimplify[D[D[L, xCOM'[t]], t] == D[L, xCOM[t]]], 
+	xCOM''[t]][[1]] // Expand
+	
+	Out[54]= {(xCOM^\[Prime]\[Prime])[t] -> 0}
+	
+	(*yCOM equation*)
+	
+	In[55]:= Solve[FullSimplify[D[D[L, yCOM'[t]], t] == D[L, yCOM[t]]], 
+	yCOM''[t]][[1]] // Expand
+	
+	Out[55]= {(yCOM^\[Prime]\[Prime])[t] -> 0}
+	
+	(*r equation*)
+	
+	In[65]:= Solve[FullSimplify[D[D[L, r'[t]], t] == D[L, r[t]]], 
+	r''[t]][[1]] // FullSimplify
+	
+	Out[65]= {(r^\[Prime]\[Prime])[t] -> (k (m1 + m2) (b - r[t]))/(
+	m1 m2) + r[t] Derivative[1][\[Theta]][t]^2}
+	
+	In[15]:= (*theta equation*)
+	
+	In[57]:= Solve[
+	FullSimplify[
+	D[D[L, \[Theta]'[t]], t] == D[L, \[Theta][t]]], \[Theta]''[t]][[
+	1]] // Expand
+	
+	Out[57]= {(\[Theta]^\[Prime]\[Prime])[t] -> -((
+	2 Derivative[1][r][t] Derivative[1][\[Theta]][t])/r[t])}
+	
+	(*Cyclic coordinates*)
+	
+	In[58]:= D[L, xCOM[t]]
+	
+	Out[58]= 0
+	
+	In[59]:= D[L, yCOM[t]]
+	
+	Out[59]= 0
+	
+	In[60]:= D[L, \[Theta][t]]
+	
+	Out[60]= 0
+	
+	(*Conserved generalized momenta*)
+	
+	In[61]:= D[L, xCOM'[t]] // Simplify
+	
+	Out[61]= (m1 + m2) Derivative[1][xCOM][t]
+	
+	In[62]:= D[L, yCOM'[t]] // Simplify
+	
+	Out[62]= (m1 + m2) Derivative[1][yCOM][t]
+	
+	In[63]:= D[L, \[Theta]'[t]] // Simplify
+	
+	Out[63]= (m1 m2 r[t]^2 Derivative[1][\[Theta]][t])/(m1 + m2)
+	\end{lstlisting}
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\noindent \textbf{6.} \textbf{Routhian Mechanics}\\
+
+
+\noindent We start with the definition of a particular Routhian:
+\begin{equation*}
+R(q_1,\dots,q_n, p_1,\dots,p_s, \dot{q}_{s+1}, \dots, \dot{q}_{n},t) = \sum^s_{k=1} p_k \dot{q}_k  - \lag(q_1,\dots,q_n, \dot{q}_1,\dots \dot{q}_n,t).
+\end{equation*}
+For $i = 1,\dots,n$ we have
+\begin{equation*}
+\boxed{\f{\p R}{\p q_i}} = -\f{\p \lag}{\p q_i} = -\f{d}{dt} \lp \f{\p \lag}{\p \dot{q}_i} \rp = -\f{d}{dt}p_i = \boxed{-\dot{p}_i}
+\end{equation*}
+For $i=1,\dots,s$, we have
+\begin{equation*}
+\boxed{\f{\p R}{\p p_i} = \dot{q}_i}
+\end{equation*}
+For $i = s+1,\dots,n$, we have 
+\begin{equation*}
+\boxed{\f{\p R}{\p \dot{q}_i}} = -\f{\p \lag}{\p \dot{q}_i} = \boxed{-p_i} \implies \boxed{\f{d}{dt}\f{\p R}{\p \dot{q}_i}} = -\f{d}{dt}\lp \f{\p \lag}{\p \dot{q}_i} \rp = -\f{d}{dt} p_i = \boxed{\f{\p R}{\p q_i}}
+\end{equation*}
+Finally, 
+\begin{equation*}
+\f{\p R}{\p t} = -\f{\p \lag}{\p t}.
+\end{equation*}
+
+\newpage
+\noindent \textbf{7.} \textbf{Extra Problem: Equivalent Lagrangians}\\
+
+
+\noindent We claim that 
+\begin{equation*}
+\lag' = \lag + \f{dF(q,t)}{dt}
+\end{equation*}
+where $F$ is a differential function, satisfies the Euler-Lagrange equations.
+
+
+\begin{proof}
+	On the one hand, 
+	\begin{equation*}
+	\f{d}{dt} \f{\p \lag'}{\p \dot{q}}  =
+	\f{d}{dt} \f{\p \lag}{\p \dot{q}}  + \f{d}{dt} \f{\p }{\p \dot{q}} \f{d F}{d t} =  \f{d}{dt} \f{\p \lag}{\p \dot{q}}  
+	+ \f{d}{dt}\f{\p F}{\p q} 
+	= \f{d}{dt} \f{\p \lag}{\p \dot{q}} 
+	+ \f{\p}{\p q}\lp \f{\p F}{\p q} \rp \dot{q}
+	+ \f{\p^2 F}{\p t \p q},
+	\end{equation*}
+	where we have used the fact that $F$ does not depend on $\dot{q}$ for the second equality (i.e., $d F/d t$ generates a factor of $\dot{q}$, which gets taken away by $\p/\p \dot{q}$). \\
+	
+	On the other hand,
+	\begin{equation*}
+	\f{\p \lag'}{\p q}  = \f{\p \lag }{\p q} +  \f{\p}{\p q} \f{dF}{dt} = \f{\p \lag }{\p q} +  \f{\p}{\p q} \lp \f{\p F}{\p q}\rp\dot{q} + \f{\p^2 F}{\p q\p t}.
+	\end{equation*}
+	Since $\p^2 F/\p q\p t = \p^2 F/\p t \p q$ and that $\lag$ satisfies the Euler-Lagrange equations, we see that 
+	\begin{equation*}
+	\f{d}{dt}\f{\p \lag'}{\p \dot{q}} = \f{\p \lag'}{\p q}
+	\end{equation*}
+	as desired.
+\end{proof} 
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 \end{document}
-
-
-
-
-
 
 
 
