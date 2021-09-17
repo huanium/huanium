@@ -1,0 +1,477 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+\def\dbar{{\mkern3mu\mathchar'26\mkern-12mu   d}}
+
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+
+\usepackage{enumitem}
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+		\begin{framed}
+			\noindent Name: \textbf{Huan Q. Bui}\\
+			Course: \textbf{8.333 - Statistical Mechanics I}\\
+			Problem set: \textbf{\#1}
+		\end{framed}
+	
+\noindent \textbf{1. Non-Carnot Engine.} According to Clausius's theorem, we have
+\begin{equation*}
+\oint \f{\dbar Q}{T} \leq 0 \implies  \sum_\al \f{Q_\al^+}{T_\al^+} - \sum_\be \f{Q_\be^-}{T_\be^-} \leq 0.
+\end{equation*} 
+From here, we find that
+\begin{equation*}
+\f{Q^+}{T_\text{max}}  = \f{1}{T_\text{max}} \sum_\al Q_\al^+ \leq  \sum_\al \f{Q_\al^+}{T_\al^+} \leq \sum_\be \f{Q_\be^-}{T_\be^-} \leq \f{1}{T_\text{min}}\sum_\be Q_\be^- = \f{Q^-}{T_\text{min}}.
+\end{equation*}
+Thus, we have
+\begin{equation*}
+\eta = \f{Q^+ - Q^-}{Q^+} = 1 - \f{Q^-}{Q^+} \leq 1 - \f{T_\text{min}}{T_\text{max}} =   \eta_\text{Carnot},
+\end{equation*}
+as desired. \qed
+
+
+\newpage
+
+
+\noindent \textbf{2. Heat exchange between identical bodies.}
+\begin{enumerate}[label=(\alph*)]
+	\item Assuming perfect heat exchange, any two identical bodies at temperatures $\theta_1,\theta_2$ coming into contact will reach a final temperature of $(\theta_1+\theta_2)/2$. In general, for $n$ bodies at temperatures $\{\theta_1,\dots,\theta_n\}$, the final temperature solves the following equation which equates the initial and final heat energies:
+	\begin{equation*}
+	C\sum_{i=1}^n \theta_i = CnT_F \implies \boxed{T_F = \f{1}{n}\sum_{i=1}^n \theta_i}
+	\end{equation*}
+	Thus, $T_F$ is the mean of the initial temperatures. The total change in entropy can be computed as follows:
+	\begin{equation*}
+	\Delta S = \sum_{i=1}^n \Delta S_i = \sum_{i=1}^n \int^{T_F}_{\theta_i} \f{CdT}{T} = C\sum_i \ln \lp \f{T_F}{T_i} \rp = \boxed{C\ln \lp \f{T_F^n}{\prod_{i=1}^n \theta_i} \rp}
+	\end{equation*}
+	
+	
+	
+	\item If all heat transfer is done via Carnot engines, then $\Delta S = 0$ since Carnot engines are reversible. This implies that the final temperature $T_F$ is the geometric mean of the initial temperatures.
+	\begin{align*}
+	\boxed{T_F = \lp \prod_{i=1}^n \theta_i \rp^{1/n} }
+	\end{align*}
+	The amount of work done by the engine is simply the difference in energy:
+	\begin{equation*}
+	\boxed{W = C\sum^n_{i=1}\theta_i - Cn\lp \prod_{i=1}^n \theta_i \rp^{1/n}  }
+	\end{equation*}
+	Alternatively, one could obtain this result by calculating the amount of heat $Q^+$ flowing into the engines and $Q^-$ leaving the engines. Their difference $Q^+ - Q^-$ is the work done by the engines.   
+	
+	\item Suppose without loss of generality that body 1 is at the theoretical maximum $T_H$. It follows that the remaining $(n-1)$ bodies must be at some equilibrium temperature $T_E$, since otherwise one can run a Carnot engine between two bodies of different temperatures and extract positive work to increase $T_H$ further, a contradiction. By conservation of energy, 
+	\begin{align*}
+	T_E = \sum_{i=1}^n \theta_i - T_H. 
+	\end{align*}
+	To solve for $T_H$, we must minimize $T_E$. To this end, we must be maximally efficient in converting any temperature difference (within the $(n-1)$ bodies) into work which will be used for heating up body 1. This calls for the use of Carnot engines. In view of the previous problem, 
+	\begin{equation*}
+	T_E = \lp \prod_{i=2}^n \theta_i \rp^{1/(n-1)} \implies T_H = \sum_{i=1}^n \theta_i - T_E = \sum_{i=1}^n \theta_i - (n-1)\lp \prod_{i=2}^n \theta_i \rp^{1/(n-1)} 
+	\end{equation*}
+	Knowing this, it remains to check if choosing different a body in the beginning might affect $T_H$, and what the maximum $T_H$ for all choices of the $n$ bodies can be. It is easy to see that in order to maximize $T_H$, we must minimize the geometric mean of the remaining $(n-1)$ temperatures. Therefore, to reach the largest possible $T_H$, one must start with the hottest body with temperature $\theta_\text{max}$, then run Carnot engines among the $(n-1)$ remaining bodies, generate work, and heat the body up from $\theta_\text{max}$ to $T_H$. Therefore,
+	\begin{equation*}
+	\boxed{T_H = \sum_{i=1}^n \theta_i - (n-1)\lp \prod_{\substack{i=2 \\ \theta_i \neq \theta_\text{max}}}^n \theta_i \rp^{1/(n-1)}}
+	\end{equation*}
+	
+	\item From the previous part, we find $T_H$ by first picking the to-be-heated object to be one with the highest temperature. So let us pick body 1 at $\theta_1 = \theta_H$
+	\begin{align*}
+	\boxed{T_H(\theta_H, \theta_C) = (2\theta_H + \theta_C) - 2\lp \theta_H \theta_C \rp^{1/2}}
+	\end{align*}
+\end{enumerate}\qed
+
+
+
+\noindent \textbf{3. Hard core gas.} The equation of state is 
+\begin{equation*}
+P(V-Nb) = Nk_B T.
+\end{equation*}
+
+\begin{enumerate}[label=(\alph*)]
+	\item Starting with the fundamental relation
+	\begin{equation*}
+	dE = TdS + \sum_i J_i dx_i + \mu N = TdS - PdV + \mu N
+	\end{equation*}
+	we Legendre transform $E \to E - TS$ so that $S$ is no longer an independent variable. 
+	\begin{equation*}
+	d(E-TS) = dF = -SdT -PdV + \mu dN.
+	\end{equation*}
+	Since the particle number is fixed, $dN=0$ and we will drop this term for the rest of the problem. The Maxwell's relation now comes out of the second mixed derivative of $F$:
+	\begin{equation*}
+	\f{\p^2 F}{\p V \p T}\bigg\vert_{N} = \f{\p^2 F}{\p T \p V}\bigg\vert_{N} \implies \boxed{\f{\p S}{\p V}\bigg\vert_{T,N}} = \f{\p P}{\p T}\bigg\vert_{V,N} = \f{\p}{\p T}\bigg\vert_{V,N} \f{Nk_BT}{V-Nb} = \f{Nk_B}{V-Nb} = \boxed{\f{P}{T}}
+	\end{equation*}
+	
+	
+	\item To calculate $dE(T,N)$, we must replace the independent variable $S$ by $T,V$, the desired independent variables. To do this, we compute the total differential $dS$ as follows:
+	\begin{align*}
+	dS = \f{\p S}{\p V}\bigg\vert_{T,N} dV + \f{\p S}{\p T}\bigg\vert_{V,N} dT = \f{P}{T}dV + \f{\p S}{\p T}\bigg\vert_{V,N} dT.
+	\end{align*}
+	Plugging this back into the fundamental relation for $dE$, we find 
+	\begin{equation*}
+	\boxed{dE(T,V) = T \f{\p S}{\p T}\bigg\vert_{V,N}dT \,\,\,(+ \,\,\mu dN)}
+	\end{equation*}
+	So $E$ is a function of $T$ and $N$ only. 
+	
+	
+	\item We compute the heat capacities as follows, once again setting $dN = 0$:
+	\begin{equation*}
+	C_P = \f{\dbar Q}{d T}\bigg\vert_{P,N} = \f{dE + PdV}{dT}\bigg\vert_{P,N} = \f{dE}{dT}\bigg\vert_{P,N} + P \f{dV}{dT}\bigg\vert_{P,N}
+	\end{equation*}
+	\begin{align*}
+	C_V = \f{\dbar Q}{d T}\bigg\vert_{P,N} = \f{dE + 0}{dT}\bigg\vert_{V,N} = \f{dE}{dT}\bigg\vert_{V,N}.
+	\end{align*}
+	From Part (b), we see that since $E$ only depends on $T$ and $N$, 
+	\begin{align*}
+	\f{dE}{dT}\bigg\vert_{P,N} =  \f{dE}{dT}\bigg\vert_{V,N} = C_V,
+	\end{align*}
+	and so
+	\begin{equation*}
+	C_P = C_V + P \f{Nk_B}{P} = C_V + Nk_B \implies \boxed{\gamma \equiv \f{C_P}{C_V} = 1 + \f{Nk_B}{C_V}}
+	\end{equation*}
+	as desired. 
+	
+	
+	\item From part (c), we know that $\gamma = 1 + Nk_B/C_V$. Now, we need to find $E(P,V)$ or, equivalently, write $dE$ in terms of $dV$ and $dP$. To do this, we will use the equation of state to express the total differential $dT$ in $dP$ and $dV$. 
+	\begin{equation*}
+	dE = C_V dT \implies C_V d\lb \f{P(V-Nb)}{Nk_B}  \rb = \f{C_V}{Nk_B} \lb (V-Nb)dP + PdV  \rb.
+	\end{equation*}
+	Now, the adiabatic condition says
+	\begin{equation*}
+	\dbar Q = 0 \implies dE + PdV = 0 \implies 0 = \f{C_V(V-Nb)}{Nk_B} dP + \lp 1+\f{C_V}{Nk_B} \rp PdV.
+	\end{equation*}
+	Rearranging to move $P$ and $V$ to the opposite sides and integrating, we find 
+	\begin{align*}
+	\int \f{dP}{P} = \lp 1+\f{C_V}{Nk_B} \rp \lp \f{-Nk_B}{C_V} \rp \int \f{dV}{V-Nb} \implies \ln P = -\gamma \ln (V-Nb) + C
+	\end{align*}
+	and therefore,
+	\begin{align*}
+	P(V-Nb)^\gamma = \text{constant},
+	\end{align*}
+	as desired.
+	
+\end{enumerate}
+
+
+
+
+\noindent \textbf{4. Superconducting transition.} 
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item By the third law of thermodynamics $S_s(T=0) = S_n(T=0) = 0$. 
+	\begin{align*}
+	&\boxed{S_s(T)} = S_s(T) - S_s(0) = \int^T_0 \f{C_s(t)\,dt}{t} = \int^T_0 V\al t^2\,dt = \boxed{\f{V\al T^3}{3}}\\
+	&\boxed{S_n(t)} = S_n(T) - S_n(0) = \int^T_0 \f{C_n(t)\,dt}{t} = \int^T_0 V[\be t^2 + \gamma]\,dt = 
+	\boxed{\f{V\be T^3}{3} + V\gamma T}
+	\end{align*}
+	
+	
+	\item Since the latent heat is zero at $T_c$, we have
+	\begin{equation*}
+	0 = L = \f{Q}{m} = \f{T\Delta S}{m} \implies S_s(T_c) = S_n(T_c) \implies V\al T^3 = V\beta T^3 + 3V \gamma T \implies \boxed{T = \sqrt{\f{3\gamma}{\al - \be}}}
+	\end{equation*}
+	
+	
+	\item Since $dV=0$, we simply have $dE = TdS$. Integrating this equation gives us the internal energy at each phase. 
+	\begin{align*}
+	&\boxed{E_s(T)} = E_s(T=0) + \int^{S_s(T)}_{S_s(0)} t \,dS_s(t) = E_0 - V\Delta + \int^T_0 V\al t^3\,dt = \boxed{E_0 - V\Delta + \f{V\al T^4}{4}}\\
+	&\boxed{E_n(T)} = E_n(T=0) + \int^{S_n(T)}_{S_n(0)} t \,dS_n(t) = E_0 + \int^T_0 V\be t^3 + V\gamma t\,dt = \boxed{E_0 + \f{V\beta T^4}{4} + \f{V\gamma T^2}{2}}
+	\end{align*}
+	
+	
+	
+	
+	\item To solve for $\Delta$, we look at the temperature at which phase transition occurs, $T_c$. During phase transition, $\Delta G(T_c) = 0$. Thus, we have
+	\begin{align*}
+	&E_s(T) - T_c S_s(T_c) = E_n(T) - T_c S_n(T_c) \\
+	\implies &E_0 - V\Delta + \f{V\al T^4}{4} - T_c\f{V\al T^3}{3} =  E_0 + \f{V\beta T^4}{4} + \f{V\gamma T^2}{2} -T_c \lb \f{V\be T^3}{3} + V\gamma T\rb\\
+	\implies &\Delta = \f{\gamma T_c^2}{2V}- \f{(\al-\be)T_c^4}{12V}.
+	\end{align*}
+	With $T_c = \sqrt{3\gamma/(\al-\be)}$, we find 
+	\begin{equation*}
+	\boxed{\Delta = \f{3 \gamma^2}{4(\al-\be)}}
+	\end{equation*}
+	
+	
+	
+	
+	\item To find the critical magnetic field, we want to equate the Gibbs free energy (as we did before), but this time at temperature $T$, including the effect of magnetic fields. The Legendre transformation says 
+	\begin{equation*}
+	dG_s = d(E_s-TS-B_sM_s) = -S_sdT - M_sdB_s = -S_sdT + \f{VB}{4\pi}dB_s.
+	\end{equation*}
+	Since $S_s(T)$ is known, we can integrate this equation to find 
+	\begin{equation*}
+	G_s(T) = -\f{V\al T^4}{12} + \f{VB^2}{8\pi} + E_s(T=0) = E_0 - V\Delta -\f{V\al T^4}{12} + \f{VB^2}{8\pi}.
+	\end{equation*}
+	Similarly, the Gibbs free energy for the normal phase can be calculated. This time, there is no $B$ involved:
+	\begin{equation*}
+	G_n(T) = E_n(T=0) - \f{V\be T^4}{12} - \f{V\gamma T^2}{2} = E_0 - \f{V\be T^4}{12} - \f{V\gamma T^2}{2}.
+	\end{equation*}
+	At the critical magnetic field, $B_c$, the Gibbs free energies are equal, giving 
+	\begin{align*}
+	G_n(T) = G_s(T) \implies 
+	B_c(T)^2 &= 8\pi \gamma \lp \f{(\al-\be)T^4}{12\gamma} - \f{ T^2}{2} + \f{\Delta}{\gamma}  \rp\\
+	&= 8\pi \gamma \lp \f{1}{4}\f{T^4}{T_c^2} - \f{T^2}{2} + \f{T_c^2}{4} \rp \\
+	&= 2\pi \gamma T_c^2\lp \f{T^4}{T_c^4} - 2\f{T^2}{T_c^2}+ 1 \rp \\
+	&= \underbrace{2\pi \gamma T_c^2}_{B_0^2} \lp 1 -  \f{T^2}{T_c^2} \rp^2 \\
+	&\implies \boxed{B_c(T) = B_0 \lp 1 - \f{T^2}{T_c^2} \rp}
+	\end{align*}
+	as desired. Here, $B_0 = T_c \sqrt{2\pi \gamma}$.
+	
+	
+	\item Mathematica code:
+	\begin{lstlisting}
+	In[9]:= Solve[-v*d + a*Tc^4/4 - Tc*a*Tc^3/3 == 
+	b*Tc^4/4 + g*Tc^2/2 - Tc*(b*Tc^3/3 + g*Tc), d][[1]] // 
+	FullSimplify // Expand
+	
+	Out[9]= {d -> (g Tc^2)/(2 v) - (a Tc^4)/(12 v) + (b Tc^4)/(12 v)}
+	
+	In[11]:= (g Tc^2)/(2 v) - (a Tc^4)/(12 v) + (b Tc^4)/(
+	12 v) /. {Tc -> Sqrt[3*g/(a - b)]} // FullSimplify
+	
+	Out[11]= (3 g^2)/(4 a v - 4 b v)
+	\end{lstlisting}
+	
+
+	
+\end{enumerate}
+
+
+
+
+
+\noindent \textbf{5. Photon gas Carnot cycle.} 
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item The work $W$ done in the cycle is simply the area of the parallelogram:
+	\begin{equation*}
+	\boxed{W = dPdV}
+	\end{equation*}
+	
+	
+	\item Pick the isotherm $T$. Starting with $dE = \dbar Q + \dbar W$, we find 
+	\begin{align*}
+	\dbar Q &= dE -  \dbar W \\
+	&= \f{\p E}{\p V}\bigg\vert_{T} dV  + PdV \\
+	&= \boxed{\lp  \f{\p E}{\p V}\bigg\vert_{T} + P \rp dV}
+	\end{align*}
+	
+	
+	\item The Carnot engine efficiency is 
+	\begin{equation*}
+	\eta = 1 - \f{T}{T+dT} = \f{dT}{T+dT} \approx \boxed{\f{dT}{T}} = \f{W}{Q} = \boxed{\f{dP}{\f{\p E}{\p V}\big\vert_{T} + P }}
+	\end{equation*}
+	
+	
+	\item With $P = AT^4$, we have
+	\begin{align*}
+	\f{dT}{T} &= \f{4AT^3\,dT}{\f{\p E}{\p V}\big\vert_{T} + AT^4 } \\
+	\implies \f{\p E}{\p V}\bigg\vert_{T} &= 3AT^4  \implies \boxed{E(T,V)} = E(T,0) + 3AT^4 = \boxed{3AT^4 V} = 3PV
+	\end{align*}
+	
+	
+	\item The adiabatic condition requries that $\dbar Q =0$, so we have
+	\begin{equation*}
+	dE = \dbar W \implies 3(PdV + VdP) = -PdV \implies \int 4dV/V = -\int 3dP/P \implies  \boxed{(PV)^{4/3} = \text{constant}}
+	\end{equation*}
+\end{enumerate}
+
+
+
+
+\noindent \textbf{6. Irreversible Processes.}
+
+
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item Starting with the change in entropy:
+	\begin{equation*}
+	\Delta S = \Delta S_1 + \Delta S_2 \geq \int^{T_f}_{T_1^0} \f{\dbar Q_1}{T_1} + \int^{T_f}_{T_2^0} \f{\dbar Q_2}{T_2} = \int \f{T_1 - T_2}{T_1T_2}\,\dbar Q.
+	\end{equation*}
+	Let $\dbar Q = \dbar Q_{12}$ denote the heat flow from 1 to 2. If $T_1 \geq T_2$ then heat flows from $1$ to $2$ according to the second law, and so $\dbar Q \geq 0$. If $T_1 < T_2$ then heat flows in the opposite direction, and $\dbar Q < 0$. Thus, the product $(T_1-T_2)\,d\bar Q \geq 0$ for all $T_1, T_2$. As a result, $\Delta S \geq 0$.  
+	
+	\item We consider the change in total entropy of the system:
+	\begin{align*}
+	\Delta S &= \Delta S_\text{bath} + \Delta S_{\text{gas}} \\
+	&= \Delta S_\text{gas} - \f{1}{T} \Delta E_\text{gas} - \f{1}{T}P\Delta V_\text{gas}\\
+	&= -\f{1}{T}\lp \Delta E_\text{gas} -  T\Delta S_\text{gas} - P\Delta V_\text{gas}  \rp \\
+	&= -\f{1}{T} \Delta G_\text{gas}.
+	\end{align*}
+	Since $\Delta S \geq 0$, we must have that $\Delta G \leq 0$. In part (a), we saw an example where ``\textit{in a closed system, equilibrium is characterized by the maximum value of entropy $S$''}. In view of this result (or, the second law of thermodymamics), $G$ must minimize, i.e., ``\textit{the equilibrium of a gas at fixed $T$ and $P$ is characterized by the minimum of the Gibbs free energy $G = E + PV - TS$}''.
+\end{enumerate}
+
+
+
+
+\noindent \textbf{7. Relaxation dynamics.}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item Since we want to minimize  
+	\begin{equation*}
+	H = U - \mathbf{J}\cdot \mathbf{x},
+	\end{equation*}
+	the ``first derivative'' of $U(\mathbf{x})$ must be equal to $\mathbf{J}$ and the ``second derivative'' of $U(\mathbf{x})$ must be positive. More precisely, a stable equilibrium is attained whereever $\grad U = \mathbf{J}$ and the Hessian matrix $D = [\p^2 U /\p x_i \p x_j]$ is positive definite. 
+	
+	
+	\item Starting with $H = U - J_i x_i$, we take the (total) time derivative and set it negative to ensure that $H$ decreases as the system relaxes:
+	\begin{align*}
+	0 &< \f{d}{dt}H \\
+	&= \f{dU}{dt}   + \f{d}{dt}(J_i x_i) \\
+	&= \f{\p U}{\p x_i}\dot{x}_i + \cancel{\f{\p U}{\p t}} + J_i \dot{x}_i\\
+	&= -\lp \f{\p U}{\p x_i} + J_i \rp \gamma_{ik} \lp \f{\p U}{\p x_k} - J_k \rp\\
+	&= -\delta J_i \gamma_{ik} \delta J_k,
+	\end{align*}
+	i.e., that $\delta J_i \gamma_{ik} \delta J_k > 0$. In other words, we require that $\Gamma = \{ \gamma_{ik}\}$ be \textbf{positive definite}. 
+	
+	
+	
+	\item 
+\end{enumerate}
+
+
+\noindent \textbf{8. The solar system.}
+
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item The motion and organization of planets is much more ordered than the original dust
+	cloud. However, this does not violate the second law of thermodynamics because during the formation of planets, much of potential energy (due to gravity) among other forms of energy were released into the universe, carrying entropy away. So even though the solar system looks ordered, it is only a part of the larger thermodynamic system (solar system + the rest of the universe) whose total entropy is increased. 
+	
+	\item The nuclear processes of the sun convert protons to heavier elements such as carbon. However, this further organization does not lead to a reduction in entropy because nuclear fusion releases (less ordered) energy causing an increase in the entropy of the total system (sun + universe). 
+	
+	
+	\item The evolution of life and intelligence requires even further levels of organization. This is achieved on Earth without violating the second law by evolution is constantly powered by multiple energy sources such as radiation from the Sun, geothermal heat, fossil fuels, etc. Organisms consume these sources of energy and convert them into other forms that are less usable, less ordered. 
+\end{enumerate}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
