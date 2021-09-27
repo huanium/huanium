@@ -576,6 +576,17 @@ as desired. \\
 		&\boxed{\ddot\theta  = -\f{3g}{2L}\cos\theta}
 		\end{align*}
 		
+		Mathematica code:
+		\begin{lstlisting}
+		In[12]:= Solve[
+		FullSimplify[\[Theta]''[t]*m*
+		l^2/12 == \[Lambda]1*(l/2)*Sin[\[Theta][t]] - \[Lambda]2*(l/2)*
+		Cos[\[Theta][t]]], \[Theta]''[t]]
+		
+		Out[12]= {{(\[Theta]^\[Prime]\[Prime])[t] -> -((
+		3 g Cos[\[Theta][t]])/(2 l))}}
+		\end{lstlisting}
+		
 		\item To solve for $\theta$, we will find the formula for $t=t(\theta)$. The first step is the old trick where one multiplies both sides of the $\theta$ equation by $\dot\theta$ and integrate: 
 		\begin{align*}
 		\ddot\theta \dot \theta = -\f{3g}{2L}\cos\theta \dot\theta \implies \dot\theta^2 = \f{3g}{L}(\sin\theta_0-\sin\theta),
@@ -605,6 +616,20 @@ as desired. \\
 		&\boxed{\ddot\theta= \frac{3\cos \theta \left(-2g/L + \sin\theta \dot\theta^2\right)}{ 3\cos^2\theta+1}}
 		\end{align*}
 		
+		Mathematica code:
+		\begin{lstlisting}
+		In[16]:= Solve[\[Theta]''[t]*m*
+		l^2/12 == -(1/
+		2) (2 g m - l m Sin[\[Theta][t]] Derivative[1][\[Theta]][t]^2 + 
+		l m Cos[\[Theta][t]] (\[Theta]^\[Prime]\[Prime])[t])*
+		Cos[\[Theta][t]]*l/2, \[Theta]''[t]] // FullSimplify
+		
+		Out[16]= {{(\[Theta]^\[Prime]\[Prime])[t] -> (
+		3 Cos[\[Theta][t]] (-2 g + 
+		l Sin[\[Theta][t]] Derivative[1][\[Theta]][t]^2))/(
+		l + 3 l Cos[\[Theta][t]]^2)}}
+		\end{lstlisting}
+		
 		
 		\item Assume that the ladder does not bounce back when $\theta = 0$. We wish to show that the normal force on the ladder due to the floor, $\lambda_2$, never vanishes (whether the ladder is in contact with the wall or not). \\
 		
@@ -622,9 +647,9 @@ as desired. \\
 		\end{align*}
 		We notice that this is independent of $L$. Moreover, since $\theta \leq \theta \in [0,\pi/2]$, we have
 		\begin{align*}
-		\lambda_2 \geq \f{3gM}{2}\lb \f{5}{3} - \f{3}{2}\sin^2\theta_0 \rb > 0.
+		\lambda_2 \geq \f{3gM}{2}\lb \f{5}{3} - \f{3}{2}\sin^2\theta_0 \rb > 0
 		\end{align*}
-		for all $\theta_0 \in [0,\pi/2]$. Therefore, $\lambda_2$ never vanishses, and the ladder never leaves the floor when it is in contact with the wall. \\ 
+		for all $\theta_0 \in [0,\pi/2]$. Therefore, $\lambda_2$ never vanishes, and the ladder \textbf{never leaves the floor} when it is in contact with the wall, as desired. \\ 
 		
 		
 		
@@ -636,27 +661,189 @@ as desired. \\
 		\begin{align*}
 		\f{M}{2}\dot x^2 + \f{M}{2}\dot y^2 - mgy + \f{1}{2}\f{1}{12}ML^2 \dot\theta^2 = \f{M}{2}\dot x^2 + \f{M}{2}\dot y(\theta_c)^2 - mgy(\theta_c) + \f{1}{2}\f{1}{12}ML^2 \dot\theta^2(\theta_c)
 		\end{align*}
-		At $\theta_c$, many of the above quantities are known: 
+		The $\dot{x}$ terms cancel on both sides, so we won't worry about that (which makes sense as there's no longer a normal force due to the wall). At $\theta_c$, many of the above quantities are known: 
 		\begin{align*}
-		blah
+		&y(\theta_c) = \f{L}{2}\sin\theta_c = \f{L}{2}\f{2}{3}\sin\theta_0 = \f{L}{3}\sin\theta_0\\
+		&\dot y(\theta_c) = \f{L}{2}\cos\theta_c \dot\theta(\theta_c) = \f{L}{2}\cos\lb \arcsin\lp \f{2}{3}\sin\theta_0 \rp \rb \sqrt{\f{3g}{L}\lb \sin\theta_0 - \f{2}{3}\sin\theta_0\rb}\\
+		&\dot\theta^2(\theta_c) = \f{3g}{L}\lb \sin\theta_0 - \f{2}{3}\sin\theta_0\rb = \f{g}{L}\sin\theta_0.
 		\end{align*}
-		Moreover, by definition, we can write the left-hand side entirely in terms of $\dot \theta$ and $\theta$:
+		Moreover, we can write the left-hand side entirely in terms of $\dot \theta$ and $\theta$ since
 		\begin{align*}
-		blah
+		y =  \f{L}{2}\sin\theta.
 		\end{align*}
-		Putting everything together and solving for $\dot\theta$ gives
+		Putting everything together and solving for $\dot\theta$ gives us the following equation:
 		\begin{align*}
 		\dot\theta^2 = \frac{4g \left(9 \sin\theta-\sin ^3\theta_0-3 \sin\theta_0\right)}{3L \left(3 \cos ^2\theta+1\right)}.
 		\end{align*}
-		Plugging this into the expression for $\lambda_2$ we find 
+		Plugging this into the expression for $\lambda_2$, we find 
 		\begin{align*}
 		\lambda_2 = \frac{gM \left[2 \sin\theta \left(\sin ^3\theta_0+3 \sin\theta_0-9 \sin\theta\right)+9 \cos ^2\theta+3\right]}{3\left(3 \cos ^2\theta+1\right)^2}.
 		\end{align*}
-		\textcolor{red}{By hook or by crook we will show that $\lambda_2$ also never vanishes.}
+		It remains to check that $\lambda_2$ never vanishes for all $\theta_0\in [0,\pi/2]$ and $0\leq \theta \leq \theta_c = \arcsin((2/3)\sin\theta_0)$. To this end, we numerically check in Mathematica using their \texttt{Manipulate} tool. Below are several screenshots of the quantity:
+		\begin{align*}
+		2 \sin\theta \left(\sin ^3\theta_0+3 \sin\theta_0-9 \sin\theta\right)+9 \cos ^2\theta+3
+		\end{align*}
+		where we let $\theta_0$ range from $0$ to $\pi/2$ and for each value of $\theta_0$, we plot this quantity for $\theta \in [0,\theta_c]$ where $\theta_c = \arcsin((2/3)\sin\theta_0)$. (Again, we're using the assumption that once $\theta=0$ the ladder doesn't bounce back, which implies that $\theta$ can only be in the range $[0,\theta_c]$.
+		
+		\begin{figure}[!htb]
+			\centering
+			\includegraphics[width=0.3\textwidth]{lambda2_1.eps}
+			\includegraphics[width=0.3\textwidth]{lambda2_2.eps}
+			\includegraphics[width=0.3\textwidth]{lambda2_3.eps}
+		\end{figure}
+		It is clear that the quantity is always positive. Therefore, $\lambda_2$ never vanishes even when the ladder has left the wall, and so the ladder \textbf{never leaves the floor} as desired. \\
 		
 		
 		
-		\item  
+		Mathematica code:
+		\begin{lstlisting}
+		(*Part g*)
+		
+		(*Expression for Lambda2,where Theta'' is replaced by its \
+		EOM from (e)*)
+		
+		In[3]:= \[Lambda]2 = (1/2) (2 g m - 
+		l m Sin[\[Theta][t]] Derivative[1][\[Theta]][t]^2 + 
+		l m Cos[\[Theta][t]] (\[Theta]^\[Prime]\[Prime])[
+		t]) /. {\[Theta]''[t] -> (
+		3 Cos[\[Theta][t]] (-2 g + 
+		l Sin[\[Theta][t]] Derivative[1][\[Theta]][t]^2))/(
+		l + 3 l Cos[\[Theta][t]]^2)} // FullSimplify
+		
+		Out[3]= (m (2 g - 
+		l Sin[\[Theta][t]] Derivative[1][\[Theta]][t]^2))/(2 + 
+		6 Cos[\[Theta][t]]^2)
+		
+		(*Solve ThetaPrime in terms of Theta and known constants only*)
+		(*Note that there are two solutions but we only care about magnitude so OK*)
+		
+		In[13]:= ThetaPrime = 
+		Solve[(1/2)*m*(l/2)^2*Cos[\[Theta][t]]^2*\[Theta]'[t]^2 - 
+		m*g*(l/2)*Sin[\[Theta][t]] + (1/2)*(1/12)*m*l^2*\[Theta]'[t]^2
+		==
+		(1/2)*
+		m*((l/2)*(Cos[ArcSin[(2/3)*Sin[\[Theta]0]]])*
+		Sqrt[((3*g/l)*(Sin[\[Theta]0] - (2/3)*Sin[\[Theta]0]))])^2 - 
+		m*g*(l/2)*(2/3)*Sin[\[Theta]0] + (1/2)*(1/12)*m*
+		l^2*(3*g/l)*(Sin[\[Theta]0] - (2/3)*Sin[\[Theta]0]), \[Theta]'[
+		t]][[2]]
+		
+		Out[13]= {Derivative[1][\[Theta]][t] -> (
+		2 Sqrt[-3 g Sin[\[Theta]0] - g Sin[\[Theta]0]^3 + 
+		9 g Sin[\[Theta][t]]])/(Sqrt[3] Sqrt[l + 3 l Cos[\[Theta][t]]^2])}
+		
+		(*Obtain expression for Lambda2*)
+		
+		In[19]:= (m (2 g - l Sin[\[Theta][t]] Derivative[1][\[Theta]][t]^2))/(
+		2 + 6 Cos[\[Theta][t]]^2) /. {ThetaPrime} // FullSimplify
+		
+		Out[19]= (g m (3 + 9 Cos[\[Theta][t]]^2 + 
+		2 (3 Sin[\[Theta]0] + Sin[\[Theta]0]^3 - 
+		9 Sin[\[Theta][t]]) Sin[\[Theta][t]]))/(3 (1 + 
+		3 Cos[\[Theta][t]]^2)^2)
+		
+		(* Manipulate to check if Lambda2 ever vanishes *)
+		
+		Manipulate[
+		Plot[3 + 9 Cos[h]^2 + 
+		2 (3 Sin[hEnd] + Sin[hEnd]^3 - 9 Sin[h]) Sin[h], {h, 0, 
+		ArcSin[(2/3)*Sin[hEnd]]}], {hEnd, 0.000001, Pi/2}]
+		\end{lstlisting}
+ 		
+		
+		
+		\item  Assuming that $L=3$ meters and $\theta_0 = \pi/3$, we can solve a piecewise problem to find the complete trajectory of $\theta(t)$ starting at $t=0$ to $t=t_\text{final}$ where the ladder is completely flat on the floor (since we assumed that the ladder does not bounce). This can be done in Mathematica, using the \texttt{NDSolve} function. But before starting, we must find the initial values for both differential equations. 
+		
+		
+		\textbf{Before the ladder leaves the wall,} the initial value problem is 
+		\begin{align*}
+		\ddot\theta  = -\f{3g}{2L}\cos\theta, \quad \theta(0) = \theta_0, \quad \dot\theta(0) = 0.
+		\end{align*}
+		We would like to solve this problem but only until $t_\text{end}$ where the ladder leaves the wall. $t_\text{end}$ can be found  using Part (c):
+		\begin{align*}
+		t_\text{end} = \sqrt{\f{L}{3g}} \int_{\theta_0=\pi/3}^{\theta = \arcsin((2/3)\sin(\pi/3))} \f{d\theta'}{\sqrt{\sin\theta' - \sin\pi/3}} \approx 0.563257 \text{ s}
+		\end{align*}
+		
+		Mathematica code:
+		\begin{lstlisting}
+		(* Find tEnd *)
+		
+		tEnd = 
+		NIntegrate[-1/Sqrt[-3*9.8/3*(Sin[Theta] - Sin[Pi/3])], {Theta, Pi/3, 
+		ArcSin[(2/3)*Sin[Pi/3]]}]
+		
+		0.563257
+		
+		(* Solve IVP *)
+		
+		l = 3;
+		g = 9.8;
+		
+		s = NDSolve[{\[Theta]''[t] == (-3*g/(2*l))*Cos[\[Theta][t]], \[Theta][
+		0] == Pi/3, \[Theta]'[0] == 0},
+		\[Theta][t], {t, 0, tEnd}]
+		
+		(* Plotting Theta before leaving the wall *)
+		
+		Plot[Evaluate[\[Theta][t] /. s], {t, 0, tEnd}, PlotRange -> All, 
+		AxesLabel -> {t, \[Theta]}]
+		
+		\end{lstlisting}
+		
+		\begin{figure}[!htb]
+			\centering
+			\includegraphics[width=0.5\textwidth]{theta_contact.eps}
+			\caption{$\theta(t)$ between the initial release and just before the ladder leaves the wall}
+		\end{figure}
+	
+		Based on Part (e), we know that \textbf{after the ladder has left the wall}, the initial value problem, which begins at $t=t_\text{end}$, becomes 
+		\begin{align*}
+		\ddot\theta= \frac{3\cos \theta \left(-2g/L + \sin\theta \dot\theta^2\right)}{ 3\cos^2\theta+1}, \quad \theta(t_\text{end})  = \arcsin\lp \f{2}{3}\sin\f{\pi}{3} \rp, \quad \dot\theta(t_\text{end}) = -\sqrt{\f{3g}{L}\lp\sin\f{\pi}{3}-\sin\theta(t_\text{end})\rp}
+		\end{align*}
+		where we notice that $\dot\theta(t_\text{end}) < 0$ because the angle which the ladder makes with the floor is decreasing in time. Since we assume that the ladder does not bounce after it becomes flat on the floor, $\theta=0$ for all time after some time $t_\text{final}$. This value $t_\text{final}$ can be found by finding where the solution $\theta(t)$ intersects the $x$-axis. This can be done using \texttt{FindRoot} in Mathematica. \\
+		
+		
+		Mathematica code:
+		\begin{lstlisting}
+		(* Solve IVP *)
+		
+		s2 = NDSolve[{\[Theta]1''[t] == 
+		3*Cos[\[Theta]1[
+		t]]*(-2*g/l + 
+		Sin[\[Theta]1[t]]*\[Theta]1'[t]^2)/(3*Cos[\[Theta]1[t]]^2 + 1),
+		\[Theta]1[tEnd] == ArcSin[(2/3)*Sin[Pi/3]],
+		\[Theta]1'[
+		tEnd] == -Sqrt[(3*g/l)*(Sin[Pi/3] - 
+		Sin[ArcSin[(2/3)*Sin[Pi/3]]])]},
+		\[Theta]1[t], {t, tEnd, 1}]
+		
+		(* Solve for tFinal *)
+		tFinal = FindRoot[Evaluate[\[Theta]1[t] /. s2], {t, tEnd, 1}][[1]]
+		
+		t -> 0.840774
+		
+		(* Plotting Theta after leaving the wall *)
+		
+		Plot[Evaluate[\[Theta]1[t] /. s2], {t, tEnd, t /. tFinal}, 
+		PlotRange -> All, AxesLabel -> {t, \[Theta]}, PlotStyle -> Red]
+		\end{lstlisting}
+		
+		\begin{figure}[!htb]
+			\centering
+			\includegraphics[width=0.5\textwidth]{theta_non_contact.eps}
+			\caption{$\theta(t)$ between the ladder leaving the wall and hitting the floor}
+		\end{figure}
+		Putting two solutions together, we can find the full evolution of $\theta$ in time. The solutions match at the critical $\theta_c$ where the ladder leaves the wall, as expected. The horizontal line the figure corresponds to $\theta_c$, where the solutions change from with wall contact to without wall contact. 
+		\begin{figure}[!htb]
+			\centering
+			\includegraphics[width=0.5\textwidth]{theta_full.eps}
+			\caption{$\theta(t)$ between the initial release and when the ladder becomes flat on the floor}
+		\end{figure}
+	
+	
+		
+		
+		
 	\end{enumerate} 
 	
 	
