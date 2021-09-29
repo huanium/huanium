@@ -136,23 +136,126 @@ Problem set: \textbf{\#2}
 
 \noindent \textbf{1.} Let $A$ be a skew-Hermitian operator, i.e., $A^\dagger = -A$.
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Let $\lambda$ and $\ket{\lambda}$ be an eigenvalue and eigenvector of $A$, respectively. Then we have
+	\begin{align*}
+	A\ket{\lambda} = \lambda\ket{\lambda} \implies \lambda\braket{\lambda} = \bra{\lambda}A\ket{\lambda} = -\bra{\lambda}A\ket{\lambda}  = \bra{\lambda}A^*\ket{\lambda} = \lambda^* \braket{\lambda} \implies -\lambda = \lambda^*.
+	\end{align*} 
+	Since $\lambda \in \mathbb{C}$, the only solution is $\lambda = 0$. Thus, the only real eigenvalue of $A$ (up to multiplicity/degeneracy) is $0$.
 	
-	\item 
+	  
+	
+	\item  Let $A,B$ be Hermitian operators. Then
+	\begin{align*}
+	[A,B] = AB - BA = A^\dagger B^\dagger - B^\dagger A^\dagger = (BA - AB)^\dagger = -(AB-BA)^\dagger = -[A,B]^\dagger.
+	\end{align*}
+	Thus $[A,B]$ is skew-Hermitian. 
 \end{enumerate}
 
 
 
-\noindent \textbf{2.}
+\noindent \textbf{2.} Let $H,K$ be Hermitian operators with non-negative eigenvalues and assume that that the trace defined throughout this problem. Since $H,K$ are Hermitian operators we may assume that there exist complete orthonormal (eigen)bases $\{ \ket{h_i}\}$ and $\ket{k_i}$ for $H,K$ respectively with $H\ket{h_i} = h_i \ket{h_i}$ and $K\ket{k_i} = k_i \ket{k_i}$, and $h_i,k_i \geq 0$ for all $i$. Then we can spectral-decompose $H,K$ in their product as follows
+\begin{align*}
+HK = \sum_n h_n \ketbra{h_n}\sum_m k_m \ketbra{k_m} = \sum_{n,m} h_n k_m \ket{h_n}\bra{h_n} \ket{k_m}\bra{k_m}.
+\end{align*}
+Since $\tr(A) = \sum_i \bra{\phi_i} A \ket{\phi_i}$ for any orthonormal basis $\{ \phi_i\}$, we have
+\begin{align*}
+\tr(HK) &= \sum_j \bra{h_j} \lb  \sum_{n,m} h_n k_m \ket{h_n}\bra{h_n} \ket{k_m}\bra{k_m} \rb    \ket{h_j} \\
+&= \sum_{n,m} h_n k_m \bra{h_n} \ket{k_m} \bra{k_m}\ket{h_n}, \quad \text{by orthonormality}\\
+&= \sum_{n,m} h_n k_m \abs{\bra{h_n} \ket{k_m}}^2.
+\end{align*}
+Since $h_i,k_i \geq 0$ for all $i$, and the modulus square is always nonnegative, we see that $\tr(HK) \geq 0$, as desired. \\
+
+Suppose $\tr(HK) = 0$, then by nonnegativity we must have $h_n k_m \abs{\bra{h_n}\ket{k_m}}^2 = 0$ for all $n,m$, or equivalently $h_nk_m \bra{h_n}\ket{k_m} = 0$ for all $n,m$. In view of the first equation for $HK$, we see that $HK= 0$.  \\
 
 
 
 
-\noindent \textbf{3.}
 
 
 
-\noindent \textbf{4.}
+
+
+
+
+
+
+\noindent \textbf{3.} Let a Hermitian operator $H$ be given with positive spectrum and a complete orthonormal basis. 
+
+\begin{enumerate}[label=(\alph*)]
+	\item We want to prove that for any two vectors $\ket{\al}, \ket{\be}$ 
+	\begin{align*}
+	\abs{\bra{\al} H \ket{\be}}^2 \leq \bra{\al}H \ket{\al} \bra{\be} H \ket{\be}.
+	\end{align*}
+	
+	There are two ways to go about this proof, in which both approaches are actually the same and only differ by appearance. I will present the notationally ``light'' version first. This goes as follows: Since $H$ is Hermitian with positive spectrum, we may find a complete orthonormal basis in which $H$ is diagonal. The transformation between $H$ and its diagonalization $D$ is given by a unitary operator $U$ as $H  = U^\dagger D U$. Since $D$ is diagonal with positive entries, we can define its square root $\sqrt{D}$. From here, we can also define the square root of $H$, denoted $\sqrt{H}$ by $U^\dagger \sqrt{D} U$. We can check:
+	\begin{align*}
+	\sqrt{H} \sqrt{H} = U^\dagger \sqrt{D} U U^\dagger \sqrt{D} U = U^\dagger \sqrt{D}\sqrt{D} U = U^\dagger D U = H.
+	\end{align*}
+	It is easy to show that $\sqrt{H}$ is also Hermitian: 
+	\begin{align*}
+	\sqrt{H}^\dagger = \lp U^\dagger \sqrt{D} U \rp^\dagger  = U^\dagger \sqrt{D}^\dagger U = U^\dagger \sqrt{D} U = \sqrt{H}, 
+	\end{align*}
+	where we have used the fact that $\sqrt{D}$ is strictly diagonal and positive, thus Hermitian. The rest of the proof is now a simple application of the Cauchy-Schwarz inequality for inner products:
+	\begin{align*}
+	\abs{\bra{\al} H \ket{\be}}^2 &= \abs{ \bra{\al} \sqrt{H}\sqrt{H} \ket{\be} }^2 = \abs{ \bra{\al} \sqrt{H}^\dagger \sqrt{H} \ket{\be} }^2 =  \abs{ \bra{\al \sqrt{H}^\dagger}\ket{ \sqrt{H}\be} }^2 \\
+	&\leq \braket{\sqrt{H}\al} \braket{\sqrt{H} \be}\\
+	&= \bra{\al} \sqrt{H}^\dagger\sqrt{H}\ket{\al} \bra{\be}\sqrt{H}^\dagger\sqrt{H}\ket{ \be}= \bra{\al} {H}\ket{\al} \bra{\be}{H}\ket{ \be}
+	\end{align*}
+	as desired.\\
+	
+	
+	
+	The more notationally heavy approach is to consider a complete orthonormal eigenbasis for $H$, which we may call $\{\ket{\lambda_i} \}$ where $\{\lambda_i\}$ are the eigenvalues of $H$. Under this basis, we have
+	\begin{align*}
+	\ket{\al} = \sum_i a_i \ket{\lambda_i} \quad\quad\quad \ket{\be} = \sum_i b_i \ket{\lambda_i}
+	\end{align*} 
+	and so 
+	\begin{align*}
+	\abs{\bra{\al} H \ket{\be}}^2  = \abs{ \sum_i a_i^* \bra{\lambda_i}\lambda_j b_j \ket{\lambda_j} }^2 = \abs{ \sum_{i} a_i^* \lambda_i b_i }^2 = \abs{ \sum_i \lp a_i \sqrt{\lambda_i}\rp^\dagger \lp b_i\sqrt{\lambda_i}\rp }^2.
+	\end{align*}
+	Note that $\sqrt{\lambda_i}\in \mathbb{R}^+$, which is possible because $\lambda_i > 0$. Now, call 
+	\begin{align*}
+	\ket{\al'} = \sum_i a_i \sqrt{\lambda_i} \ket{\lambda_i} \quad\quad\quad \ket{\be'} = \sum_i b_i \sqrt{\lambda_i} \ket{\lambda_i}.
+	\end{align*}
+	It is clear that 
+	\begin{align*}
+	\abs{\bra{\al} H \ket{\be}}^2  = \abs{ \bra{\al'}\ket{\be'}}^2.
+	\end{align*}
+	On the other hand, we have
+	\begin{align*}
+	&\bra{\al}H \ket{\al} = \sum_{i,j} a_i^* a_j \lambda_j \bra{\lambda_i}\ket{\lambda_j} = \sum_i \abs{a_i}^2 \lambda_i = \braket{\al'}\\
+	&\bra{\be}H \ket{\be} = \sum_{i,j} b_i^* b_j \lambda_j \bra{\lambda_i}\ket{\lambda_j} = \sum_i \abs{b_i}^2 \lambda_i = \braket{\be'}.
+	\end{align*}
+	Applying the Cauchy-Schwarz inequality,
+	\begin{align*}
+	\abs{\bra{\al} H \ket{\be}}^2 = \abs{ \bra{\al'}\ket{\be'}}^2 \leq \braket{\al'} \braket{\be'} = \bra{\al}H \ket{\al} \bra{\be}H \ket{\be}
+	\end{align*}
+	we successfully proved the desired result. 
+	
+	\item The trace of $H$ is simply the sum of its eigenvalues, so $\tr(H) > 0$. To show explicitly, we use the orthonormal basis introduced in Part (a). Since $\lambda_i > 0$ for all $i$, we have
+	\begin{align*}
+	\tr(H) = \sum_i \bra{\lambda_i} H \ket{\lambda_i} = \sum_i \lambda_i \braket{\lambda_i} = \sum_i \lambda_i > 0.
+	\end{align*}
+\end{enumerate}
+
+
+
+\noindent \textbf{4.} Let a unitary operator $U$ be given which satisfies the eigenvalue equation $U\ket{\lambda} = \lambda\ket{\lambda}$.
+
+\begin{enumerate}[label = (\alph*)]
+	\item Since $\braket{\lambda} \neq 0$ (because $\ket{\lambda}$ is an eigenvector), we have
+	\begin{align*}
+	\braket{\lambda} = \bra{\lambda} U^\dagger U  \ket{\lambda } = \abs{\lambda}^2 \braket{\lambda} \implies  \abs{\lambda}^2 = 1.
+	\end{align*}
+	Since $\lambda\in \mathbb{C}$, it must be of the form $\lambda = e^{i\theta}$	where $\theta\in \mathbb{R}$. 
+	
+	
+	\item Let distinct  eigenvectors $\ket{\mu}$ and $\ket{\lambda}$ be given with corresponding (distinct) eigenvalues $e^{i\theta_\mu}$ and $e^{i\theta_\lambda}$. We have
+	\begin{align*}
+	\bra{\mu}\ket{\lambda} = \bra{\mu} U^\dagger U \ket{\lambda} =  e^{-i\theta_\mu}e^{i\theta_\lambda}\bra{\mu}\ket{\lambda}.
+	\end{align*}
+	Since the eigenvalues are not the same, we have that $e^{-i\theta_\mu}e^{i\theta_\lambda} \neq 1$ (i.e., that the complex conjugate of one is not the complex conjugate of the other). Thus, equality holds only if $\bra{\mu}\ket{\lambda} = 0$. 
+\end{enumerate}
 
 
 
