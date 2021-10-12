@@ -15,8 +15,8 @@ end
 hold off
 grid on
 
-xlabel('x')
-ylabel('Eigenvalues')
+xlabel('$x$', 'Interpreter', 'latex', 'FontSize', 16)
+ylabel('Eigenvalues (units = $\hbar^2/4$)', 'Interpreter','latex', 'FontSize', 16)
 title(['Spectrum of H for N=' num2str(N)])
 
 
