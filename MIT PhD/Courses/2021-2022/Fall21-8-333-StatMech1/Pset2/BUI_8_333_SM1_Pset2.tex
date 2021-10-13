@@ -1,0 +1,335 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+\def\dbar{{\mkern3mu\mathchar'26\mkern-12mu   d}}
+
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+
+\usepackage{enumitem}
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+		\begin{framed}
+			\noindent Name: \textbf{Huan Q. Bui}\\
+			Course: \textbf{8.333 - Statistical Mechanics I}\\
+			Problem set: \textbf{\#2}
+		\end{framed}
+	
+
+
+
+\noindent \textbf{1. Random deposition.}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item Consider a site. Assume that the gold atoms arrive at this site over time via a Poisson process. The deposition rate is $d$ layers per second, so this Poisson process has rate $d$. Over time $t$, the average number of deposition at a site is $dt$. With this, we have
+	\begin{align*}
+	\Pr(m \text{ atoms in time } t) = \boxed{\f{(dt)^m e^{-dt}}{m!}}
+	\end{align*} 
+	Glass is not covered if there is no deposition, i.e., $m=0$. The fraction of the glass not covered by the atoms is the probability of zero deposition:
+	\begin{align*}
+	\Pr(0 \text{ atoms in time } t) = \boxed{e^{-dt}}
+	\end{align*}
+	We see that the fraction of the glass not covered decreases exponentially in time. 
+	
+	
+	\item From Part (a), we know that the average thickness is $\langle x \rangle = dt$. To find the variance we need to compute the second moment:
+	\begin{align*}
+	\langle x^2 \rangle = \sum_{i=0}^\infty x^2 \f{(dt)^x e^{-dt}}{x!}= dt + d^2t^2.
+	\end{align*}
+	Therefore, the variance in thickness is 
+	\begin{align*}
+	\sigma^2 = \langle x^2 \rangle - \langle x \rangle^2 = \boxed{dt}
+	\end{align*}
+\end{enumerate}
+
+
+
+\noindent \textbf{2. Semi-flexible polymer in two dimensions. } 
+
+\begin{enumerate}[label=(\alph*)]
+	\item It's nicer to work with the $\phi$-dependent $\ham$, so let us write $\mathbf{t}_m \cdot \mathbf{t}_n$ in terms of angles:
+	\begin{align*}
+	\mathbf{t}_m \cdot \mathbf{t}_n = 	a^2 \cos(\theta_m + \theta_{m+1} + \dots + \theta_{n-1}).
+	\end{align*}
+	The summed form for the angles is not very convenient to work with, as there is no clear way to find $\langle \mathbf{t}_m \cdot \mathbf{t}_n \rangle$ written in this form. Instead, let us find $a^2 \langle \exp(i(\theta_m + \theta_{m+1}+\dots + \theta_{n-1})) \rangle $ and then take the real part. This, written in this form, is still cumbersome. However, we may assume that the angles $\phi_i$ are independent, and therefore 
+	\begin{align*}
+	\langle \mathbf{t}_m \cdot \mathbf{t}_n \rangle = \Re \lb a^2 \langle \exp(i(\theta_m + \theta_{m+1}+\dots + \theta_{n-1})) \rangle \rb = \Re \lb a^2\prod^{n-1}_{j=m} \langle e^{i\phi_j} \rangle \rb = a^2 \prod^{n-1}_{j=m} \langle \cos\phi_j \rangle. 
+	\end{align*}
+	Moreover, since the angles $\phi_i$'s are independent, the probability for each configuration is simply the product of the individual probabilities:
+	\begin{align*}
+	\Pr (\phi_1,\dots,\phi_{N-1}) = \exp\lb \f{a^2 \kappa}{k_BT} \sum_{i=1}^{N-1} \cos\phi_i\rb = \prod^{N-1}_{i=1}\exp\lb \f{a^2\kappa}{k_BT} \cos\phi_i\rb .
+	\end{align*}
+	And so we may write
+	\begin{align*}
+	\Pr (\phi_i) = \exp\lb \f{a^2\kappa}{k_BT} \cos\phi_i \rb
+	\end{align*}
+	
+	With this we have
+	\begin{align*}
+	\langle \mathbf{t}_m \cdot \mathbf{t}_n \rangle = a^2 \prod^{n-1}_{j=m}  \f{\int \,d\phi \cos\phi \exp\lb \f{a^2\kappa}{k_BT} \cos\phi_i\rb}{\int \,d\phi \exp\lb \f{a^2\kappa}{k_BT} \cos\phi_i\rb} = a^2 \lc \f{\int \,d\phi \cos\phi \exp\lb \f{a^2\kappa}{k_BT} \cos\phi\rb}{\int \,d\phi \exp\lb \f{a^2\kappa}{k_BT} \cos\phi\rb}   \rc^{\abs{n-m}}.
+	\end{align*}
+	So $\langle \mathbf{t}_m \cdot \mathbf{t}_n \rangle$ has the form $a^2 [f(T)]^{\abs{n-m}}$ where $f(T)$ is the fraction in the curly brackets. We may write $\langle \mathbf{t}_m \cdot \mathbf{t}_n \rangle$ as an exponential: 
+	\begin{align*}
+	\langle \mathbf{t}_m \cdot \mathbf{t}_n \rangle = a^2 \exp\lb \abs{n-m}\ln f(T) \rb = a^2 \exp\lb \f{\abs{n-m}}{1/\ln f(T)} \rb \equiv a^2 \exp\lb \f{-\abs{n-m}}{\xi} \rb,
+	\end{align*}
+	as desired. The persistence length is thus
+	\begin{align*}
+	\boxed{l_p = a\xi = \f{a}{-\ln f(T)} = \f{a}{\ln \lb \f{\int \,d\phi \exp\lb \f{a^2\kappa}{k_BT} \cos\phi\rb}{\int \,d\phi \cos\phi \exp\lb \f{a^2\kappa}{k_BT} \cos\phi\rb}   \rb}}
+	\end{align*}
+	
+	
+	
+	\item By definition, we have
+	\begin{align*}
+	\mathbf{R} = \sum_{i=1}^N \mathbf{t}_i \implies \langle R^2 \rangle = \langle \mathbf{R}\cdot \mathbf{R} \rangle = \sum_{m,n=1}^{N} \langle \mathbf{t}_m, \mathbf{t}_n \rangle 
+	= \sum_{m,n=1}^{N} a^2 \exp\lb \f{-\abs{n-m}}{\xi} \rb.
+	\end{align*}
+	Now we consider what happens when $N\to \infty$. We see that $\mathbf{R}$ has the form 
+	\begin{align*}
+	\langle R^2 \rangle = a^2 \lb N  + N_1e^{-1/\xi} + N_2 e^{-2/\xi} + N_3 e^{-3/\xi} + \dots  \rb 
+	\end{align*}   
+	where $N_1,N_2,N_3,\dots$ are natural numbers. In the limit $N\to \infty$, we have $N_j\approx 2N$ for small $j$'s (swapping $n,m$ gives an extra factor of $2$), and $N_j$'s for large $j$'s don't really matter because of the exponential decay $e^{-j/\xi}$. So, we may very well write this as 
+	\begin{align*}
+	\langle R^2 \rangle \approx a^2 \lb N + 2N \lp e^{-1/\xi} + e^{-2/\xi} + e^{-3/\xi} + \dots \rp \rb 
+	\end{align*}
+	We now recall that 
+	\begin{align*}
+	\f{x}{1-x} = x+x^2+x^3 + \dots
+	\end{align*}
+	So, we have a rather compact formula for $\langle R^2 \rangle$:
+	\begin{align*}
+	\boxed{\langle R^2 \rangle = a^2 N \lp 1 + 2\f{e^{-1/\xi}}{1-e^{-1/\xi}} \rp,\quad\quad N\to \infty }
+	\end{align*}
+	
+	
+	\item $\mathbf{R}$ is a sum of iid's $\mathbf{t}_i$. In view of the central limit theorem, $p(\mathbf{R})$ is a Gaussian. To determine the form of $p(\mathbf{R})$, we must find the first and second moments. Since each $\mathbf{t}_i$ is  random, we can conclude that $\langle \mathbf{R} \rangle = 0$. The second moment is given by Part (b), and so the variance of this distribution is $\sigma^2 = \langle R^2 \rangle - 0 = \langle R^2 \rangle $ which is what we found in Part (b). To find the normalization constant, we look at the covariance matrix $C$. Its determinant $|\det(C)|$ will be the product of $\langle R_x^2\rangle$ and $\langle R_y^2 \rangle$, each of which is $\langle R^2 \rangle /2$ (by symmetry, and the fact that variances of independent variables add). With these, 
+	\begin{align*}
+	p(\mathbf{R}) = \f{1}{\sqrt{(2\pi)^2 |\det(C)|}} \exp \lp -\f{\mathbf{R}^\top C^{-1} \mathbf{R}}{ 2} \rp = \boxed{\f{1}{\pi \langle R^2 \rangle} \exp\lp -\f{\mathbf{R}\cdot \mathbf{R}}{\langle R^2 \rangle} \rp}
+	\end{align*}
+	where we have used the fact that $C = \langle R^2 \rangle\mathbb{I}/2$. 
+	
+	\item We shall ``formally'' consider the modified probability weight: 
+	\begin{align*}
+	\exp(-\ham /k_BT) \to \exp(\mathbf{F}\cdot \mathbf{R} /k_BT) \exp(-\ham /k_BT).
+	\end{align*} 
+	Taking the average of $\mathbf{R}$ under these new weights yields
+	\begin{align*}
+	\langle \mathbf{R} \rangle = \f{\int \mathbf{R} \exp(\mathbf{F}\cdot \mathbf{R} /k_BT) \exp(-\ham /k_BT) }{\int \exp(\mathbf{F}\cdot \mathbf{R} /k_BT) \exp(-\ham /k_BT)}.
+	\end{align*}
+	We may treat $\mathbf{R}\exp(\mathbf{F}\cdot\mathbf{R}/k_BT)$ and $\exp(\mathbf{F}\cdot \mathbf{R}/k_BT)$ as input functions whose averages we wish to find and write
+	\begin{align*}
+	\langle R \rangle = \f{\langle \mathbf{R} \exp(\mathbf{F}\cdot \mathbf{R}/k_BT) \rangle' }{\langle \exp(\mathbf{F}\cdot \mathbf{R}/k_BT) \rangle' }
+	\end{align*}
+	where the new average $\langle \cdot \rangle'$ are essentially averages for when $\mathbf{F} = 0$. The denominator becomes unity, while the numerator can be expanded as
+	\begin{align*}
+	\langle \mathbf{R}_i \exp(\mathbf{F}\cdot \mathbf{R}/k_BT)\rangle' \approx \langle \mathbf{R}_i \rangle' 
+	+ \f{\langle \mathbf{R}_i \mathbf{F}\cdot \mathbf{R}\rangle'}{k_BT} + \f{\langle \mathbf{R}_i (\mathbf{F}\cdot \mathbf{R})^2 \rangle' }{2k_BT} + \f{\langle \mathbf{R}_i(\mathbf{F}\cdot \mathbf{R})^3\rangle'}{6k_BT} + \dots 
+	\end{align*}
+	where (1) $\mathbf{R}_i$'s are the components of $\mathbf{R}$ (i.e., $i$ is $x$ and $y$), and that $\langle R \rangle$ at $\mathbf{F} =0$ is simply $\langle R^2\rangle$ which we already know. Moreover, terms with odd-powered $\mathbf{R}$'s will vanish by symmetry. We are thus interested in the term 
+	\begin{align*}
+	\langle \mathbf{R}_i \mathbf{F}\cdot \mathbf{R}\rangle' = \langle \mathbf{R}_i \mathbf{F}_j \mathbf{R}_j\rangle' = \mathbf{F}_j \langle \mathbf{R}_i \mathbf{R}_j \rangle' = F_j \delta_{ij} \langle R^2 \rangle /2 = F_i \langle R^2 \rangle/2.
+	\end{align*}
+	With this we have
+	\begin{align*}
+	\boxed{\langle \mathbf{R} \rangle = \f{\langle R^2 \rangle}{2k_BT} \mathbf{F} + \mathcal{O}(F^3) = K^{-1} \mathbf{F} + \mathcal{O}(F^3) , \quad\quad K = \f{2k_B T}{\langle R^2 \rangle}}
+	\end{align*}
+\end{enumerate}
+
+
+
+
+\noindent \textbf{3. Foraging.} We have 
+\begin{align*}
+p(r|t) = \f{r}{2Dt} \exp\lp -\f{r^2}{4Dt} \rp\quad
+\text{and}\quad
+p(t) \propto \exp\lp- \f{t}{\tau} \rp.
+\end{align*}
+Normalizing $p(t)$ give the leading factor equal $1/\tau$. So, we can write
+\begin{align*}
+p(t) = \f{1}{\tau} \exp\lp - \f{t}{\tau} \rp.
+\end{align*}
+The (unconditional) probability of finding the searcher at a distance $r$ from the nest is 
+\begin{align*}
+p(r) = \int_0^\infty p(r|t)p(t)\,dt = \int_0^\infty \f{r}{2D\tau t} \exp\lp -\f{r^2}{4Dt} - \f{t}{\tau} \rp\,dt.
+\end{align*}
+We may compute this using saddle-point approximation. Let $f(t)= r^2/4Dt + t/\tau$. Then we see that $f$ attains a maximum at $t_0 = r\sqrt{\tau}/2\sqrt{D}$. Let $g(t) = r/2D\tau t$. The saddle point approximation reads
+\begin{align*}
+p(r)\approx e^{-f(t_0)} g(t_0)\sqrt{\f{2\pi}{f''(t_0)}} = \exp\lp \f{-r}{\sqrt{D\tau}} \rp \f{1}{\sqrt{D}\tau^{3/2}} \sqrt{\f{2\pi r t^{3/2}}{4\sqrt{D}}} \implies
+\boxed{p(r) \propto \sqrt{r}\exp\lp \f{-r}{\sqrt{D\tau}} \rp}
+\end{align*}
+We could also say that asymptotically the exponential decay in $r$ dominates over the $\sqrt{r}$ growth, and so in the large $r$ limit, $p(r)\sim \exp(-r/\sqrt{D\tau})$.
+
+
+
+\newpage
+
+
+
+
+
+\noindent \textbf{4. Jensen's inequality and Kullback–Liebler divergence. }
+
+\begin{enumerate}[label=(\alph*)]
+	\item \underline{Claim:} Jensen's inequality: For a convex function $\langle f(x) \rangle \geq f(\langle x \rangle)$.
+	\begin{proof}
+		blah
+	\end{proof}
+	
+	
+	\item 
+\end{enumerate}
+
+
+\noindent \textbf{5. }
+
+
+\noindent \textbf{6. }
+
+
+\noindent \textbf{7. }
+
+
+\noindent \textbf{8. }
+
+
+\noindent \textbf{9. }
+
+ 
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
