@@ -10,7 +10,7 @@ parfor j=1:N-1
     data(j) = MinEig(j+1);
 end
 plot(2:1:N, data, 'LineWidth',2)
-ylabel('Smallest Eigenvalue')
+ylabel('Eigenvalues (units = $\hbar^2/4$)', 'Interpreter','latex', 'FontSize', 16)
 xlabel('N')
 grid on
 

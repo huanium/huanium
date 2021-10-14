@@ -289,29 +289,221 @@ We could also say that asymptotically the exponential decay in $r$ dominates ove
 \noindent \textbf{4. Jensen's inequality and Kullback–Liebler divergence. }
 
 \begin{enumerate}[label=(\alph*)]
-	\item \underline{Claim:} Jensen's inequality: For a convex function $\langle f(x) \rangle \geq f(\langle x \rangle)$.
-	\begin{proof}
-		blah
-	\end{proof}
+	\item \underline{Claim:} Jensen's inequality: For a convex function $\langle f(x) \rangle \geq f(\langle x \rangle)$. To prove this, we let a probability density function $p(x)$ be given. Then 
+	\begin{align*}
+	\langle f(x) \rangle = \int p(x) f(x)\,dx \geq \int p(x) \lb f(\langle x \rangle ) + f'(\langle x \rangle)(x-\langle x \rangle) \rb \,dx = f(\langle x\rangle) + f'(\langle x \rangle) \langle x - \langle x \rangle \rangle = f(\langle x \rangle).
+	\end{align*}
+	And we're done.
+	
+	
+	\item We see that $D(p|q)$ is an expectation taken with respect to $p(x)$. The proof uses Jensen's inequality with the fact that the function $-\ln(x)$ is convex:
+	\begin{align*}
+	D(p|q) &= \bigg\langle \ln \f{p}{q} \bigg\rangle_p \\
+	&= \bigg \langle - \ln \f{q}{p}  \bigg\rangle_p \\
+	&\geq -\ln \bigg\langle \f{q}{p} \bigg\rangle_p \\
+	&= -\ln \lb \int p(x) \f{q(x)}{p(x)}\,dx \rb = 0.
+	\end{align*}
+\end{enumerate}
+
+
+\noindent \textbf{5. The book of records.} 
+
+\begin{enumerate}[label=(\alph*)]
+	\item Suppose we have picked $n$ entries $\{x_1,\dots,x_n\}$. The probability that $x_n$ is the largest is actually the same as the probability that any other entry $x_i$ is the largest. Therefore, $\boxed{P_n = 1/n}$
+	
+	\item Since $S_N$ is the number of records after $N$ attempts, we may write $S_N$ as the sum of the indicators $R_i$. As a result,
+	\begin{align*}
+	\langle S_N \rangle = \sum^N_{m=1} \langle R_m \rangle = \sum^N_{m=1} P_m = \sum^N_{m=1}\f{1}{m}.
+	\end{align*}
+	We may estimate the growth of $\langle S_N \rangle$ by bounding it by two integrals. Choose the integral 
+	\begin{align*}
+	I = \int_0^N \f{1}{n}\,dn = \ln N.
+	\end{align*}
+	to be an estimate for $\langle S_N \rangle$. We see that $I$ is an under-estimation. However, we can find how much $\langle S_N \rangle$ differs from $\ln N$ by taking a limit:
+	\begin{align*}
+	\lim_{N\to \infty} \langle S_N \rangle - \ln N = \texttt{EulerGamma} \approx 0.5775216\dots
+	\end{align*}
+	where $\texttt{EulerGamma}$ is the output that I got from evaluating this limit in Mathematica. Therefore, we conclude that $\langle S_N \rangle$ grows like $\boxed{\ln N}$ in the $N\gg 1$ limit. If the number of trials double every year, then $N = N(t) = 2^t$. In this case,
+	\begin{align*}
+	\langle S_N \rangle \sim \ln N = \ln 2^t = \boxed{t\ln 2}
+	\end{align*}
+	asymptotically. 
+	
+	
+	
+	\item  By definition, $\langle R_n R_m \rangle = \langle R_n \rangle_c \langle R_m \rangle_c + \langle R_n R_m \rangle_c = \langle R_n \rangle \langle R_m \rangle + \langle R_n R_m \rangle_c$
+	\begin{align*}
+	\langle R_n R_m \rangle_c = \langle R_n R_m \rangle - \langle R_n \rangle \langle R_m \rangle = P_nP_m - P_nP_m = 0.
+	\end{align*}
+	
+	
+	
+	\item \textbf{(Optional)}
+	
+	
+	\item \textbf{(Optional)}
+\end{enumerate}
+
+
+\noindent \textbf{6. Jarzynski equality.} 
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item The new probability density function $p_f(W(\mu))$ is obtained from $p(\mu)$ via a change of variable transformation for which the rule is 
+	\begin{align*}
+	p_f(W(\mu))\, \abs{\f{dW}{d\mu}} = p(\mu)
+	\end{align*}
+	where $|dW/d\mu|$ is the Jacobian. Similarly, we have
+	\begin{align*}
+	p_b(-W(\mu'))\, \abs{\f{-dW}{d\mu'}} = p'(\mu').
+	\end{align*}
+	Since there is no real thermodynamic reason for $d\mu \neq d\mu'$, we must have
+	\begin{align*}
+	\f{p_f(W)}{p_b(-W)} = \f{p(\mu)}{p'(\mu')} = \f{\mathcal{Z}'}{\mathcal{Z}} \f{\exp(-\be\ham(\mu))}{\exp(-\be\ham(\mu)) \exp(-\be W(\mu))} = \exp[\be(W + F - F')], 
+	\end{align*}
+	as desired, where we have used $\ln \mathcal{Z} = -\be F$. 
+	
+	
+	
+	\item Let $\Delta F = F'-F$. From Part (a) we have
+	\begin{align*}
+	p_f(W) e^{-\be W} = p_b(-W)e^{-\be \Delta F} \implies \langle e^{-\be W}\rangle = \int p_f(W) e^{-\be W}\,dW = e^{-\be \Delta F} \int p_b(-W)\,dW = e^{-\be \Delta F}.
+	\end{align*}
+	As a result, 
+	\begin{align*}
+	\Delta F = -\f{1}{\be}\ln \langle e^{-\be W} \rangle = -k_BT \ln \langle e^{-\be W} \rangle  = 
+	-k_BT \ln \lb \int p_f(W) e^{-\be W}\,dW  \rb,
+	\end{align*}
+	as desired.
+	
+	
+	\item We use Jensen's inequality and the fact that the function $f(W) = e^{-\be W}$ is convex:
+	\begin{align*}
+	\Delta F = -k_BT \ln \langle e^{-\be W} \rangle \leq -k_BT \ln e^{-\be \langle W \rangle}=  -k_BT \ln e^{-\langle W \rangle/k_BT}= \langle W \rangle.
+	\end{align*}
+	
+	
+	\item To do this problem we have to define a probability density function $\rho(\omega)$ associated with violating the second law. Given a particular $W$, the probability density for second law violation is $p_f(W-\omega)p_b(-W)$. Thus, $\rho(\omega)$ is in some sense a ``quasi-convolution'' of $p_f$ and $p_b$:
+	\begin{align*}
+	\rho(\omega) = \int p_f(W-\omega)p_b(-W)\,dW.
+	\end{align*}  
+	We wish to find $\Pr(\omega>0)$, which is given by 
+	\begin{align*}
+	\Pr(\omega>0) = \int_0^\infty \rho (\omega)\,d\omega.
+	\end{align*}
+	In order for a factor of $e^{-\be\omega}$ to pop up, we must make use of the fact that 
+	\begin{align*}
+	\f{p_f(W)}{p_b(-W)} = e^{\be(W+F-F')}
+	\end{align*}
+	In particular, 
+	\begin{align*}
+	\lp \f{p_f(W)}{p_b(-W)}\rp^{-1}  \f{p_f(W-\omega)}{p_b(-W+\omega)} = e^{-\be(W+F-F')} e^{\be(W-\omega+F-F')} = e^{-\be\omega}.
+	\end{align*}
+	As a result,
+	\begin{align*}
+	p_b(-W) p_f(W-\omega) = e^{-\be\omega} p_f(W) p_b(-W+\omega) \implies \rho(\omega) = e^{-\be\omega} \int p_f(W) p_b(-W+\omega)\,dW.
+	\end{align*}
+	By shifting the integration $dW \to d(W+\omega)$, we find that
+	\begin{align*}
+	\rho(\omega) = e^{-\be \omega} \int p_f(W+\omega) p_b(-W)\, d(W+\omega) =  e^{-\be \omega} \int p_f(W+\omega) p_b(-W)\, dW = e^{-\be W} \rho(-\omega).
+	\end{align*}
+	Therefore, 
+	\begin{align*}
+	\Pr(\omega>0) = e^{-\be W} \int_0^\infty \rho(-\omega)\,d\omega \leq e^{-\be W} \underbrace{\int_{-\infty}^\infty p(-\omega)\,d\omega}_{=1} \leq e^{-\be W} = e^{-\be W},
+	\end{align*}
+	as desired, where we have used the fact that the cumulative probability is bounded above by 1. 
+	
+\end{enumerate}
+
+
+\noindent \textbf{7. (Optional) Dice. }
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item The unbiased probabilities are such that the entropy is maximized. Since 6 appears twice as many times as 1, and that entropy must be maximized, we have 
+	\begin{align*}
+	p_6 = 2p_1 = 2a, \quad\quad p_2 = p_3 = p_4 = p_5 = (1- 3a)/4. 
+	\end{align*}
+	Now we compute:
+	\begin{align*}
+	S = -\sum_{i=1}^6 p_i \ln p_i = -a\ln a - 2a \ln 2a - 4\f{1-3a}{4} \ln \f{1-3a}{4} = 
+	-a\ln a - 2a \ln 2a - (1-3a) \ln \f{1-3a}{4}
+	\end{align*}
+	To extremize $S$, we find $dS/da$:
+	\begin{align*}
+	\f{dS}{da} = -8\ln 2 + 3\ln (1-3a) - 3\log a = 3\ln \lb \f{1-3a}{2^{8/3}a} \rb = 0 \iff 1-3a = 2^{8/3}a \implies a = p_1 = \f{1}{2^{8/3}+3}
+	\end{align*}
+	this is an local maximum because $dS/da$ is monotonically decreasing and crosses zero at $a = 1/(2^{8/3}+3)$.  We can now calculate the rest of the probabilities:
+	\begin{align*}
+	\boxed{p_6 = 2p_1 = \f{2}{2^{8/3}+3}, \quad\quad p_2 = p_3 = p_4 = p_5 = \f{1}{4}\lb 1-\f{3}{2^{8/3}+3} \rb = \f{2^{2/3} }{2^{8/3}+3} }
+	\end{align*}
+	
+	\item The information content is the difference in entropy of a fair dice and this one. 
+	\begin{align*}
+	I = S_\text{fair} - S_\text{loaded}= - 6\times \f{1}{6}\log_2 \f{1}{6} - \lb -a_0\log_2 a_0 - 2a_0 \log_2 2a_0 - (1-3a_0) \log_2 \f{1-3a_0}{4} \rb
+	\end{align*}
+	where we have defined $I$ so that it is positive (the entropy associated with a fair dice is maximal) and $a_0 = 1/(2^{8/3}+3)$. With the help of Mathematica, we find 
+	\begin{align*}
+	\boxed{I \approx 0.0267\dots}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[13]:= a0 = 1/(2^(8/3) + 3);
+	
+	In[17]:= N[-Log2[1/6] - (-a0*Log2[a0] - 
+	2*a0*Log2[2*a0] - (1 - 3*a0)*Log2[(1 - 3*a0)/4])]
+	
+	Out[17]= 0.0267239
+	\end{lstlisting}
+\end{enumerate}
+
+
+\noindent \textbf{8. (Optional) Approach to Equilibrium}
+\begin{enumerate}[label=(\alph*)]
+	\item By time-translation invariance we have
+	\begin{align*}
+	C_{ij}(t) = C_{ij}(t+\tau) = \langle x_i(t+\tau) x_j (\tau) \rangle.
+	\end{align*}
+	Picking $\tau = -t$, we find 
+	\begin{align*}
+	C_{ij}(t) = \langle x_i(0)x_j(-t)\rangle.
+	\end{align*}
+	By time-reversal invariance we have
+	\begin{align*}
+	C_{ij}(t) = C_{ij}(-t) = \langle  x_i (0) x_j(t) \rangle = \langle  x_j (t) x_i(0) \rangle = C_{ji}(t),
+	\end{align*}
+	as desired. 
+	
+	\item As appeared in the form 
+	\begin{align*}
+	\sqrt{\f{\det(K)}{(2\pi)^{n}}} \exp\lb -\f{1}{2}K_{ij} x_i x_j \rb,
+	\end{align*}
+	the matrix $[K]$ is the inverse of the covariance matrix associated with this Gaussian, i.e., 
+	\begin{align*}
+	[K^{-1}]_{ij} = \langle (x_i -\langle x_i \rangle)(x_j - \langle x_j \rangle) \rangle 
+	\end{align*}
+	On the other hand, $C_{ij}(0) = \langle x_i(0)x_j(0) \rangle $ forms the autocorrelation matrix. The two matrices are related by the well-known identity:
+	\begin{align*}
+	\boxed{[K]^{-1} = [C(0)] - \langle \mathbf{x}\rangle \langle \mathbf{x}\rangle^\top \implies C[0] = [K]^{-1} + \langle \mathbf{x}\rangle \langle \mathbf{x}\rangle^\top}
+	\end{align*}
+	where $\langle \mathbf{x}\rangle^\top = (\langle x_1 \rangle, \langle x_2 \rangle \dots  )^\top$. 
+	
+	
+	
+	\item Given $J_\al = -\p \ln p(\mathbf{x})/\p x_\al$, we may compute:
+	\begin{align*}
+	J_\al = -\f{\p}{\p x_\al}\ln \lc \sqrt{\f{\det(K)}{(2\pi)^{n}}}  \exp\lb -\f{1}{2}K_{ij} x_i x_j \rb \rc = -\f{\p}{\p x_\al} \lb -\f{1}{2} K_{ij}x_ix_j \rb = K_{\al j} x_j.
+	\end{align*}
+	So, 
+	\begin{align*}
+	\langle J_\al x_\be \rangle = K_{\al j}\langle x_j x_\beta\rangle.
+	\end{align*}
 	
 	
 	\item 
 \end{enumerate}
 
-
-\noindent \textbf{5. }
-
-
-\noindent \textbf{6. }
-
-
-\noindent \textbf{7. }
-
-
-\noindent \textbf{8. }
-
-
-\noindent \textbf{9. }
+\noindent \textbf{9. (Optional) Simpson's Paradox}
 
  
 
