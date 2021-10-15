@@ -211,11 +211,14 @@
 	\begin{align*}
 	\langle R^2 \rangle \approx a^2 \lb N + 2N \lp e^{-1/\xi} + e^{-2/\xi} + e^{-3/\xi} + \dots \rp \rb 
 	\end{align*}
-	We now recall that 
+	\textcolor{blue}{To see this, make a table with $n$'s on the columns and $m$'s on the rows respectively. The content of the table will be $\abs{n-m}$. Obviously, the diagonal contains all $N$ zeros since that's where $n=m$. The adjacent off-diagonals contain terms with $\abs{n-m}=1$, followed by $\abs{n-m}=2$, and so on. Since there are two such off-diagonals for each value of $\abs{n-m}$, the multiplicity for each of the terms is $2N$. When we are sufficiently far off from the diagonal, the exponential decay tells us that we don't have to worry about them. }\\
+	
+	
+	In any case, we now recall the telescoping sum formula
 	\begin{align*}
 	\f{x}{1-x} = x+x^2+x^3 + \dots
 	\end{align*}
-	So, we have a rather compact formula for $\langle R^2 \rangle$:
+	which gives us a more compact formula for the asymptotic behavior of $\langle R^2 \rangle$:
 	\begin{align*}
 	\boxed{\langle R^2 \rangle = a^2 N \lp 1 + 2\f{e^{-1/\xi}}{1-e^{-1/\xi}} \rp,\quad\quad N\to \infty }
 	\end{align*}
@@ -244,9 +247,9 @@
 	\langle \mathbf{R}_i \exp(\mathbf{F}\cdot \mathbf{R}/k_BT)\rangle' \approx \langle \mathbf{R}_i \rangle' 
 	+ \f{\langle \mathbf{R}_i \mathbf{F}\cdot \mathbf{R}\rangle'}{k_BT} + \f{\langle \mathbf{R}_i (\mathbf{F}\cdot \mathbf{R})^2 \rangle' }{2k_BT} + \f{\langle \mathbf{R}_i(\mathbf{F}\cdot \mathbf{R})^3\rangle'}{6k_BT} + \dots 
 	\end{align*}
-	where (1) $\mathbf{R}_i$'s are the components of $\mathbf{R}$ (i.e., $i$ is $x$ and $y$), and that $\langle R \rangle$ at $\mathbf{F} =0$ is simply $\langle R^2\rangle$ which we already know. Moreover, terms with odd-powered $\mathbf{R}$'s will vanish by symmetry. We are thus interested in the term 
+	where $\mathbf{R}_i$'s are the components of $\mathbf{R}$ (i.e., $i$ is $x$ and $y$), and that $\langle R \rangle$ at $\mathbf{F} =0$ is simply $\langle R^2\rangle$ which we already know. Moreover, terms with odd-powered $\mathbf{R}$'s will vanish by symmetry. We are thus interested in the term 
 	\begin{align*}
-	\langle \mathbf{R}_i \mathbf{F}\cdot \mathbf{R}\rangle' = \langle \mathbf{R}_i \mathbf{F}_j \mathbf{R}_j\rangle' = \mathbf{F}_j \langle \mathbf{R}_i \mathbf{R}_j \rangle' = F_j \delta_{ij} \langle R^2 \rangle /2 = F_i \langle R^2 \rangle/2.
+	\langle \mathbf{R}_i \mathbf{F}\cdot \mathbf{R}\rangle' = \langle \mathbf{R}_i \mathbf{F}_j \mathbf{R}_j\rangle' = \mathbf{F}_j \langle \mathbf{R}_i \mathbf{R}_j \rangle' = \mathbf{F}_j \delta_{ij} \langle R^2 \rangle /2 = \mathbf{F}_i \langle R^2 \rangle/2.
 	\end{align*}
 	With this we have
 	\begin{align*}
@@ -280,8 +283,6 @@ We could also say that asymptotically the exponential decay in $r$ dominates ove
 
 
 
-\newpage
-
 
 
 
@@ -301,7 +302,7 @@ We could also say that asymptotically the exponential decay in $r$ dominates ove
 	D(p|q) &= \bigg\langle \ln \f{p}{q} \bigg\rangle_p \\
 	&= \bigg \langle - \ln \f{q}{p}  \bigg\rangle_p \\
 	&\geq -\ln \bigg\langle \f{q}{p} \bigg\rangle_p \\
-	&= -\ln \lb \int p(x) \f{q(x)}{p(x)}\,dx \rb = 0.
+	&= -\ln \lb \int p(x) \f{q(x)}{p(x)}\,dx \rb = -\ln 1 =  0.
 	\end{align*}
 \end{enumerate}
 
@@ -313,7 +314,7 @@ We could also say that asymptotically the exponential decay in $r$ dominates ove
 	
 	\item Since $S_N$ is the number of records after $N$ attempts, we may write $S_N$ as the sum of the indicators $R_i$. As a result,
 	\begin{align*}
-	\langle S_N \rangle = \sum^N_{m=1} \langle R_m \rangle = \sum^N_{m=1} P_m = \sum^N_{m=1}\f{1}{m}.
+	\langle S_N \rangle = \sum^N_{m=1} \langle R_m \rangle = \sum^N_{m=1} (1\times P_m + 0\times (1-P_m)) = \sum^N_{m=1} P_m = \sum^N_{m=1}\f{1}{m}.
 	\end{align*}
 	We may estimate the growth of $\langle S_N \rangle$ by bounding it by two integrals. Choose the integral 
 	\begin{align*}
@@ -331,17 +332,98 @@ We could also say that asymptotically the exponential decay in $r$ dominates ove
 	
 	
 	
-	\item  By definition, $\langle R_n R_m \rangle = \langle R_n \rangle_c \langle R_m \rangle_c + \langle R_n R_m \rangle_c = \langle R_n \rangle \langle R_m \rangle + \langle R_n R_m \rangle_c$
+	\item  By definition, $\langle R_n R_m \rangle = \langle R_n \rangle_c \langle R_m \rangle_c + \langle R_n R_m \rangle_c = \langle R_n \rangle \langle R_m \rangle + \langle R_n R_m \rangle_c$, so
 	\begin{align*}
-	\langle R_n R_m \rangle_c = \langle R_n R_m \rangle - \langle R_n \rangle \langle R_m \rangle = P_nP_m - P_nP_m = 0.
+	\langle R_n R_m \rangle_c = \langle R_n R_m \rangle - \langle R_n \rangle \langle R_m \rangle = P_nP_m - P_nP_m = 0
+	\end{align*}
+	if $m\neq n$. When $m=n$ the covariance term becomes a variance term which is $P_n$. 
+	
+	
+	\item \textbf{(Optional)} We want to compute all moments and the first three cumulants for $S_N$. To compute all moments, we may use the method of characteristic function. However, since there is no nice way to explicitly write out the expectation function, we will have to proceed as follows: Starting with $S_1 = R_1 = 1$, we have $\langle e^{-ik S_1}\rangle  = e^{-ik}$. Next, using the definition
+	\begin{align*}
+	\langle e^{-ik S_N} \rangle = \sum_{n=1}^N\Pr(n) e^{-ik n}
+	\end{align*}
+	we find 
+	\begin{align*}
+	&\langle e^{-ik S_2} \rangle = \f{1}{2}e^{-ik} + \f{1}{2}e^{-2ik} = \f{1}{2!}e^{-ik}(e^{-ik} + 1)\\
+	&\langle e^{-ik S_3} \rangle = \f{1}{2}\f{2}{3} e^{-ik} + \lp \f{1}{2}\f{2}{3} + \f{1}{2}\f{1}{3}\rp e^{-2ik} + \f{1}{2}\f{1}{3}e^{-3ik} = \f{1}{3!}e^{-ik}(e^{-ik}+1)(e^{-ik}+2)\\
+	&\langle e^{-ik S_4} \rangle = \f{1}{2}\f{2}{3}\f{3}{4} e^{-ik} + \lp \f{1}{2}\f{2}{3}\f{1}{4} + \f{1}{2}\f{1}{3}\f{3}{4} + \f{1}{2}\f{2}{3}\f{1}{4}\rp e^{-2ik} +\lp \f{1}{2}\f{1}{3}\f{1}{4}+\f{1}{2}\f{2}{3}\f{3}{4}  + \f{1}{2}\f{1}{3}\f{3}{4}\rp e^{-3ik} + \f{1}{2}\f{1}{3}\f{1}{4}e^{-4ik} \\
+	&\quad\quad\quad\quad\quad\quad= \f{1}{4!}e^{-ik}(e^{-ik}+1)(e^{-ik}+2)(e^{-ik}+3)\\
+	&\quad\quad\vdots
+	\end{align*}
+	where we have used generated the probabilities by writing out all the record-configurations within the sequence $\{ x_n\}$ and finding the probability for each outcome via $P_n = 1/n$. In any case, we see that a pattern emerges(!) and conclude without proving\footnote{The proof is probably closely related to how the probabilities are generated.} that 
+	\begin{align*}
+	\langle e^{-ik S_N} \rangle = \f{1}{N!} \prod_{n=1}^N (e^{-ik}+n-1) = \f{1}{N!} \lb e^{-ik}\rb^{\overline{N}},
+	\end{align*}
+	where the exponent $\overline{N}$ is used in combinatorics to denote the \textit{rising factorial}. \textcolor{purple}{A trip to Wikipedia\footnote{Never knew my undergrad MA355 would be useful for StatMech... I recognized this as something related to \textit{falling factorials} which are related to Stirling numbers. See Kenneth P. Bogart's \textit{Combinatorics Through Guided Discovery} for details about Stirling numbers as well as a change of basis for going from falling to rising factorials.}} tells us that this expression can be expressed in terms of the (unsigned) Stirling numbers of the first kind:
+	\begin{align*}
+	\langle e^{-ik S_N} \rangle = \f{1}{N!} \prod_{n=1}^N (e^{-ik}+n-1) = \f{1}{N!} \lb e^{-ik}\rb^{\overline{N}} = \sum_{n=0}^N { N\choose{n}}_S e^{-ikn}.
+	\end{align*}
+	Now it is trivial to find the moments of $S_N$: we simply expand the exponential into powers of $k$:
+	\begin{align*}
+	\langle e^{-ik S_N} \rangle = \sum_{n=0}^N { N\choose{n}}_S \sum_{m=0}^\infty \f{1}{m!} (-ikn)^m = \sum_{m=0}^\infty \f{(-ik)^m}{m!}\lb \f{1}{N!} \sum_{n=0}^N {N\choose{n}}_S n^m  \rb
+	\end{align*}
+	So, the $n$th moment of $S_N$ is given by the term in the square brackets:
+	\begin{align*}
+	\boxed{\langle S^m_N \rangle = \f{1}{N!} \sum_{n=0}^N {N\choose{n}}_S n^m }
 	\end{align*}
 	
+	Next, since $R_i$'s are independent (in the statement of Part (c)), all correlation terms $\langle R_a R_b R_c\dot \rangle$ vanish. As a result, we have 
+	\begin{align*}
+	\langle S_N^m \rangle = \sum^N_{n=1} \langle R_n^m\rangle \iff  \langle S_N^m \rangle_c = \sum^N_{n} \langle R_n^m\rangle_c. 
+	\end{align*}
+	We simply compute, using the fact that $\langle R_n \rangle = 1/n$:
+	\begin{align*}
+	&\boxed{\langle S_N^1\rangle_c} = \sum^N_{n=1} \langle R_n^1\rangle_c = \boxed{\sum^N_{n=1}\f{1}{n}}\\
+	&\boxed{\langle S_N^2\rangle_c} = \sum^{N}_{n=1} \langle R_n^2 \rangle_c  = 
+	\sum^N_{n=1} (\langle R_n^2 \rangle - \langle R_n\rangle^2) = \sum^N_{n=1}\lb \lp 1^2\times \f{1}{n}+ 0^2\times \f{n-1}{n} \rp - \f{1}{n^2}\rb  = \boxed{\sum^N_{n=1}\lp\f{1}{n} - \f{1}{n^2}\rp}\\
+	&\boxed{\langle  S_N^3 \rangle_c} = 
+	\sum^{N}_{n=1} \langle R_n^3 \rangle_c  
+	= \sum^N_{n=1} (\langle R_n^3 \rangle - 3\langle R_n^2\rangle\langle R_n\rangle+2\langle R_n\rangle^3) = \boxed{\sum^N_{n=1}\lp \f{1}{n} - \f{3}{n^2} + \f{2}{n^3}\rp}\\
+	\end{align*}
+	where in the last equality we have used
+	\begin{align*}
+	\langle R_n^3\rangle = 1^3\f{1}{n} + 0^3\f{n-1}{n} = \f{1}{n}.
+	\end{align*}
+	
+	To answer the last point, since $S_N$ is not quite a sum of iid variables (the $R_n$'s have different distributions for different $n$'s.) and that its variance is not finite when $N\to \infty$, the central limit theorem does not/might not apply to $S_N$. \textcolor{red}{I'm not too sure about this.}
 	
 	
-	\item \textbf{(Optional)}
 	
+	\item \textbf{(Optional)} Suppose the second record occurs at location $m \in \{1,2,\dots,8\}$. Then, the probability for this event (in the total sample space) is 
+	\begin{align*}
+	P(n_2 = m) &=  P_1 (1-P_2)(1-P_3)\dots (1-P_{m-1})P_m (1+P_{m+1}) \dots P_9 \\
+	&= \f{1}{2}\f{2}{3}\f{3}{4}\dots \f{m-2}{m-1}\f{1}{m}\f{m}{m+1}\dots\f{1}{9}\\
+	&= \f{1}{8\times 9\times (m-1)}\\
+	&= \f{1}{72(m-1)}
+	\end{align*}
+	where in the third equality we have used the fact that multiplying the second line by $8(m-1)$ gives $1/9$. To use this probability in the $n_2$ sample space, we have to first normalize it:
+	\begin{align*}
+	\mathcal{N} = \sum^8_{m=2}\f{1}{72(m-1)} = \f{121}{3360}.
+	\end{align*}
+	Therefore,
+	\begin{align*}
+	\boxed{\langle{n_2}\rangle} = \f{1}{\mathcal{N}}\sum^N_{m=1} \f{m}{72(m-1)} =  \f{1343}{363}\approx \boxed{3.7}
+	\end{align*}
 	
-	\item \textbf{(Optional)}
+	Let the third record to fixed at some value. In order for some number $x_m$ to be the fourth record, it has to be bigger than the third record, and all numbers from $x_{m-1}$ to $x_{10}$ inclusive must be less than the third record. Let $p$ denote the probability that we pick a number bigger than the third record, then the probability that a number $x_m$ is the fourth record is 
+	\begin{align*}
+	(1-p)^{m-10}p. 
+	\end{align*}
+	So, we have
+	\begin{align*}
+	\langle n_4 \rangle_\text{3rd record fixed} = \sum^\infty_{m=10}   (1-p)^{m-10}p = 9 + \f{1}{p}
+	\end{align*}
+	using Mathematica. We now want to take the average of this quantity over all possible values of the third record. To do this, let us assume that the numbers are picked from some distribution $\psi$, so that we can write $p$ in terms of the cumulative density function associated with $\psi$, evaluated at the value of the third record. Then 
+	\begin{align*}
+	\langle n_4 \rangle = \langle  \langle n_4 \rangle_\text{3rd record fixed} \rangle_\text{all third records} = \int_{-\infty}^\infty \,dx\,\psi(x)\lp 9 + \f{1}{p(x)} \rp.
+	\end{align*}
+	Since $p(x) = 1-\int_{-\infty}^x \psi(x)\,dx$, we have $-\psi(x)\,dx = dp(x)$ by the fundamental theorem of calculus. With this, we have
+	\begin{align*}
+	\langle n_4 \rangle = \int^1_0 dp\lp 9 + \f{1}{p} \rp 
+	\end{align*}
+	which diverges. So $\langle n_4 \rangle$ is infinite, as expected. 
+	
 \end{enumerate}
 
 
@@ -383,7 +465,7 @@ We could also say that asymptotically the exponential decay in $r$ dominates ove
 	\end{align*}
 	
 	
-	\item To do this problem we have to define a probability density function $\rho(\omega)$ associated with violating the second law. Given a particular $W$, the probability density for second law violation is $p_f(W-\omega)p_b(-W)$. Thus, $\rho(\omega)$ is in some sense a ``quasi-convolution'' of $p_f$ and $p_b$:
+	\item To do this problem we have to define a probability density function $\rho(\omega)$ associated with violating the second law. Given a particular $W$, the probability density for second law violation is $p_f(W-\omega)p_b(-W)$. Thus, $\rho(\omega)$ is in some sense a ``quasi-convolution'' of $p_f$ and $p_b$, obtained by integrating out $W$:
 	\begin{align*}
 	\rho(\omega) = \int p_f(W-\omega)p_b(-W)\,dW.
 	\end{align*}  
@@ -455,6 +537,9 @@ We could also say that asymptotically the exponential decay in $r$ dominates ove
 	
 	Out[17]= 0.0267239
 	\end{lstlisting}
+	
+	
+
 \end{enumerate}
 
 
@@ -482,7 +567,7 @@ We could also say that asymptotically the exponential decay in $r$ dominates ove
 	\begin{align*}
 	[K^{-1}]_{ij} = \langle (x_i -\langle x_i \rangle)(x_j - \langle x_j \rangle) \rangle 
 	\end{align*}
-	On the other hand, $C_{ij}(0) = \langle x_i(0)x_j(0) \rangle $ forms the autocorrelation matrix. The two matrices are related by the well-known identity:
+	On the other hand, $C_{ij}(0) = \langle x_i(0)x_j(0) \rangle = \langle x_i x_j \rangle $ forms the autocorrelation matrix. The two matrices are related by the well-known identity in statistics:
 	\begin{align*}
 	\boxed{[K]^{-1} = [C(0)] - \langle \mathbf{x}\rangle \langle \mathbf{x}\rangle^\top \implies C[0] = [K]^{-1} + \langle \mathbf{x}\rangle \langle \mathbf{x}\rangle^\top}
 	\end{align*}
@@ -496,14 +581,96 @@ We could also say that asymptotically the exponential decay in $r$ dominates ove
 	\end{align*}
 	So, 
 	\begin{align*}
-	\langle J_\al x_\be \rangle = K_{\al j}\langle x_j x_\beta\rangle.
+	\langle J_\al x_\be \rangle = \langle K_{\al j} x_j x_\beta\rangle.
 	\end{align*}
+	In order to compute $\langle x_j x_\be$, we recall the definition for $\langle x_j \rangle$:
+	\begin{align*}
+	\langle x_j \rangle = \sqrt{\f{\det(K)}{(2\pi)^{n}}}\int \dots \int x_j \exp\lb -\f{1}{2}K_{\al\be}x_\al x_\be \rb  \, \prod_m dx_m.
+	\end{align*}
+	By the form of the given Gaussian, we see that $\langle x_j \rangle = 0$. However, let us pretend that $\langle x_j \rangle = \eta_j \neq 0$, so that we can parameterize the Gaussian with these $\eta_j$'s as follows:
+	\begin{align*}
+	\langle x_j \rangle = \eta_j = \sqrt{\f{\det(K)}{(2\pi)^{n}}}\int \dots \int x_j \exp\lb -\f{1}{2}K_{\al\be}(x_\al - \eta_\al)(x_\be  - \eta_\be)\rb  \, \prod_m dx_m.
+	\end{align*}
+	Now we use Feynman's trick of differentiating under the integral sign with respect to $\eta_k$ and re-setting $\eta_j=0$ for all $j$ to find that 
+	\begin{align*}
+	\f{\p}{\p \eta_k} \eta_j = \sqrt{\f{\det(K)}{(2\pi)^{n}}}\int \dots 
+	\int x_j K_{k \al}x_\al 
+	\exp\lb -\f{1}{2}K_{\al\be}(x_\al - \eta_\al)(x_\be  - \eta_\be)\rb  \, \prod_m dx_m = \langle x_j K_{k\al}x_\al\rangle.
+	\end{align*}
+	Thus, we see that 
+	\begin{align*}
+	\langle J_\al x_\be\rangle = \langle K_{\al j} x_j x_\be \rangle = \f{\p}{\p \eta_\al} \eta_{\be} = \delta_{\al\be}, 
+	\end{align*}
+	as desired.
 	
 	
-	\item 
+	\item Starting with $C_{ij}(t) = C_{ji}(t)$, we differentiate both sides with respect to $t$ to find:
+	\begin{align*}
+	\f{d}{dt}\langle x_i(t)x_j(0)\rangle = \f{d}{dt}\langle x_j(t)x_i(0)\rangle 
+	&\implies \langle \dot x_i(t)x_j(0)\rangle = \langle \dot x_j(t)x_i(0)\rangle \\
+	&\implies \langle \mu_{i\al}K_{\al\be}x_\be(t)x_j(0) \rangle = \langle \mu_{j\al}K_{\al\be}x_\be(t)x_i(0) \rangle.
+	\end{align*}
+	Setting $t=0$, we get
+	\begin{align*}
+	\langle \mu_{i\al}K_{\al\be}x_\be(0)x_j(0) \rangle = \langle \mu_{j\al}K_{\al\be}x_\be(0)x_i(0) \rangle 
+	&\implies \langle \mu_{i\al}K_{\al\be}x_\be x_j \rangle = \langle \mu_{j\al}K_{\al\be}x_\be x_i \rangle \\
+	\text{Definition} \quad &\implies \mu_{i\al } \langle J_\al x_j \rangle = \mu_{j \al} \langle J_\al x_i\rangle \\
+	\text{Part (c)}\quad  &\implies \mu_{i\al}\delta_{\al j} = \mu_{j\al} \delta_{\al i}\\
+	&\implies \mu_{ij} = \mu_{ji}.
+	\end{align*}
+	So, the matrix $\mu$ must be symmetric, as desired. 
 \end{enumerate}
 
 \noindent \textbf{9. (Optional) Simpson's Paradox}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item \textcolor{blue}{Shouldn't the question be: ``Show that the country A
+	as a whole can still end up with lower cfrs if its population is \textcolor{red}{younger}.'', as  this would seem paradoxical given that $p_o^A > p_o^B > p_y^A > p_o^B$?}\\
+
+
+	To answer this modified question, I could just give an example. Let $p_o^A = 0.9$, $p_o^B = 0.7$, $p_y^A = 0.5, p_y^B = 0.3$. We would expect that since $A$ has higher fatality rates than $B$ across all age groups, it would have a higher overall fatality rate. However, this assumption ignores the effect of population. Suppose that $A$ has $10$ olds and $90$ youngs,  while $B$ has $90$ olds and $10$ youngs, then we find that
+	\begin{align*}
+	p^A = \f{10\times 0.9 + 90\times 0.5}{100} = 54\%
+	\end{align*}
+	whereas
+	\begin{align*}
+	p^B = \f{90\times 0.7 + 10\times 0.3}{100} = 66\% > p_A.
+	\end{align*}
+	\textcolor{purple}{Note that is it impossible for $A$ to have lower overall fatality rate than $B$ if its population is older. Let $\eta_A$ denote the old/total ratio in $A$ and $\eta_B$ in $B$. Then the overal rates for the countries are defined by two lines
+	\begin{align*}
+	r_A(\eta_A) = \eta_A p_o^A + (1-\eta_A) p_y^A &= p_y^A + \eta_A(p_o^A - p_y^A)\\ 
+	r_B(\eta_B) = \eta_B p_o^B + (1-\eta_B) p_y^B &= p_y^B + \eta_B(p_o^B - p_y^B)
+	\end{align*}
+	defined for $\eta_A,\eta_B\in [0,1]$. It is obvious that the line corresponds to the overall rate of $A$ lies strictly above the line associated with $B$. Therefore, for any $\eta$, we have
+	\begin{align*}
+	r_A(\eta) - r_B(\eta) = (p_y^A - p_y^B) + \eta[(p_o^A - p_o^B) - (p_y^A - p_y^B)] = (1-\eta)(p_y^A - p_y^B) + \eta(p_o^A -p_o^B) > 0
+	\end{align*}
+	which means if the populations of $A$ and $B$ are similar (age-wise) then it is impossible for $A$ to have a smaller fatality rate. Now, suppose we make $A$ even older, i.e., $\eta_A > \eta_B$ then the fatality rate for $B$ is $r_B(\eta_B) < r_B(\eta_A) < r_A(\eta_A)$ where we have used the fact that the slope of $r_B(\eta)$ is positive. As a result, it is actually \textbf{not possible} for $A$ to have a lower fatality rate if its population is \textbf{older.}  }
+	
+	\textcolor{purple}{From this we can also  conclude that $r_A < r_B$ can occur only if $\eta_A < \eta_B  $, or $A$ is younger than $B$. }
+	
+	
+	
+	\item For simplicity we may consider two pairs of engines, two Carnot ($C_1,C_2$) and two non-Carnot ($N_1, N_2$). In view of Part (a), let us define the efficiencies for $C_1,C_2,N_1,N_2$ as $\eta_{C_1}, \eta_{C_2}, \eta_{N_1}, \eta_{N_2}$ such that 
+	\begin{align*}
+	\eta_{C_1} > \eta_{N_1} >  \eta_{C_2} > \eta_{N_2}.
+	\end{align*}
+	Here, $\eta_{C_i} > \eta_{N_i}$ the Carnot and non-Carnot engines in each pair share the same input and output. The Carnot engines receive some quantity $Q$ of heat, and similarly do the non-Carnot engines. However, since we don't know how $Q$ is shared within the engines, we may call $\lambda_C$ and $\lambda_N$ the distribution ratios within the Carnot and non-Carnot engines respectively. Then, the work done by the Carnot and non-Carnot engines are
+	\begin{align*}
+	W_C &= Q  [ \lambda_C \eta_{C_1} + (1-\lambda_C) \eta_{C_2}] \\
+	W_N &= Q  [ \lambda_N \eta_{N_1} + (1-\lambda_N) \eta_{N_2}]
+	\end{align*}
+	By virtue of the analys in Part (a), we may consider the case where 
+	\begin{align*}
+	\eta_{C_1} = 0.9 \quad\quad \eta_{N_1} = 0.7 \quad\quad \eta_{C_2} = 0.5\quad\quad \eta_{N_2} = 0.3
+	\end{align*}
+	and $\lambda_C = 0.1, \lambda_N = 0.9$. We find
+	\begin{align*}
+	W_C = 0.54 Q < 0.66 Q = W_N. 
+	\end{align*}
+	So, the non-Carnot engines actually produce more work! While this seems to violate the second law of thermodynamics, it doesn't. The apparent paradox fails to account for the confounding variable which is the distribution of the input heat $Q$ across the engines. While $Q$ is given to both sets of engines, it is entirely possible that it is simultaneous absorbed by the most efficient non-Carnot engine and least efficient Carnot engine. And since we have made our engines so that $\eta_{C_2} < \eta_{N_1}$, this scenario is thermodynamically allowed. 
+\end{enumerate}
 
  
 
