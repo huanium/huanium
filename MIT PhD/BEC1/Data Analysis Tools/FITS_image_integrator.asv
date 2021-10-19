@@ -1,0 +1,88 @@
+clear all
+
+% Analysis of FITS images %
+
+% % load all files from a folder %
+% prompt  = 'Put folder directory here: ';
+% folderDir = input(prompt, 's');
+
+%{
+inputDir = '~/huanium/MIT PhD/BEC1/2021-10-18-catch-wait/2021-10-18_17-09-26.fits';
+data = fitsread(inputDir, 'primary');
+% data has 3 images
+% first image:
+wA = data(:,:,1);
+woA = data(:,:,2);
+dark = data(:,:,3);
+
+% re-scale
+wA = wA/255; 
+figure(1)
+imshow(wA);
+
+% re-scale
+woA = woA/255; 
+figure(2)
+imshow(woA);
+
+% --DARK: for contrast to see image--
+% re-scale
+dark = dark/255; 
+figure(3)
+imshow(dark);
+
+
+% OD: OD image = ???
+OD = data(:,:,2) - data(:,:,1) + data(:,:,3);
+% re-scale
+OD = OD/255; 
+figure(4)
+imshow(OD);
+
+% integrating ROI 
+roi = drawrectangle;
+%r = floor(roi.Vertices(:,2)) + 1;
+%c = floor(roi.Vertices(:,1)) + 1;
+r = [398 557 557 398]; % default values for testing 
+c = [453 453 1009 1009]; % default values for testing
+J = integralImage(OD);
+regionSum = J(r(1),c(1)) - J(r(2),c(2)) + J(r(3),c(3)) - J(r(4),c(4));
+
+disp(['Region sum is: ', num2str(regionSum)])
+%}
+
+
+% loop through all files in the folder...
+% test folder:
+% ~/huanium/MIT PhD/BEC1/2021-10-18-catch-wait
+% dir '~/huanium/MIT PhD/BEC1/2021-10-18-catch-wait'
+
+% load image and display it:
+regionSums = [];
+myFolder = '~/huanium/MIT PhD/BEC1/2021-10-18-catch-wait';
+filePattern = fullfile(myFolder, '*.fits');
+theFiles = dir(filePattern);
+for k = 1 : length(theFiles)
+    % load files
+    baseFileName = theFiles(k).name;
+    fullFileName = fullfile(theFiles(k).folder, baseFileName);
+    fprintf(1, 'Now reading %s\n', fullFileName);
+    
+    % Now process
+    data_k = fitsread(fullFileName, 'primary');
+    
+    % get OD image
+    OD = data_k(:,:,2) - data_k(:,:,1) + data_k(:,:,3);
+    % re-scale
+    OD = OD/255;
+    
+    % ROI set to be following (assuming catch didn't move much)
+    r = [398 557 557 398]; % default values for testing
+    c = [453 453 1009 1009]; % default values for testing
+    J = integralImage(OD);
+    regionSums(k) = J(r(1),c(1)) - J(r(2),c(2)) + J(r(3),c(3)) - J(r(4),c(4));
+end
+
+disp(regionSums)
+
+times = ()
