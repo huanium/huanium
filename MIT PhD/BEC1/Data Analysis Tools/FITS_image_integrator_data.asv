@@ -3,37 +3,42 @@
 %%% Primitive FITS image display/integrator
 
 
-% load image and display it:
+% load images from a specified folder
 regionSums = [];
-myFolder = '~/huanium/MIT PhD/BEC1/2021-10-18-catch-wait';
-filePattern = fullfile(myFolder, '*.fits');
-theFiles = dir(filePattern);
-for k = 1 : length(theFiles)
+target_folder = uigetdir('C:/');
+filePattern = fullfile(target_folder, '*.fits');
+files = dir(filePattern);
+for k = 1 : length(files)
     % load files
-    baseFileName = theFiles(k).name;
-    fullFileName = fullfile(theFiles(k).folder, baseFileName);
+    baseFileName = files(k).name;
+    fullFileName = fullfile(files(k).folder, baseFileName);
     fprintf(1, 'Reading %s\n', fullFileName);
     
     % Now process
     data_k = fitsread(fullFileName, 'primary');
     
     % get OD image
-    OD = data_k(:,:,2) - data_k(:,:,1) + data_k(:,:,3);
-    % re-scale
-    OD = OD/255;
+    OD = real(-log((data_k(:,:,1) - data_k(:,:,3))./(data_k(:,:,2) - data_k(:,:,3))));
+    % re-normalize and re-scale
+    OD(isinf(OD)) = 1;
+    OD(isnan(OD)) = 0;
+    OD = max(OD,0);
     
     % ROI set to be following (assuming catch didn't move much)
-    r = [401 548 548 401]; % default values for testing 
-    c = [461 461 991 991]; % default values for testing
+    % roi = drawrectangle;
+    % r = floor(roi.Vertices(:,2)) + 1;
+    % c = floor(roi.Vertices(:,1)) + 1;
+    r = [455 513 513 455]; % default values for testing 
+    c = [560 560 901 901]; % default values for testing
     J = integralImage(OD);
     regionSums(k) = J(r(1),c(1)) - J(r(2),c(2)) + J(r(3),c(3)) - J(r(4),c(4));
 end
 
-disp(regionSums)
-times = [0.1 0.1 0.1 10 10 10 20 20 20 40 40 40 80 80 80];
+% disp(regionSums)
+times = [0.1 0.1 0.1 0.1 10 10 10 10 20 20 20 20 40 40 40 60 60 60 60 80 80 80];
+
 % fit now
 f = fit(times',regionSums','exp1');
-
 % plot now
 plot(f)
 hold on
@@ -41,3 +46,11 @@ markerSize = 30;
 scatter(times,regionSums, markerSize, 'b');
 hold off
 legend('fit', 'data')
+ylabel('Sum of pixel values (a.u.)')
+xlabel('Time (s)')
+title('Catch lifetime, ')
+
+% extract lifetime out of fit
+coeffs = coeffvalues(f);
+disp('=========================')
+disp(['Lifetime = ' num2str(-1/coeffs(2)) ' s'])
