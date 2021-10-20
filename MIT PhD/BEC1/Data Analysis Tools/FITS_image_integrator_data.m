@@ -37,8 +37,13 @@ for k = 1 : length(files)
 end
 
 % disp(regionSums)
-%times = [0.1 0.1 10 10 20 20 40 40 80 80 100 100 120 120 150 150];
-times = [0.1 0.1 0.1 0.1 10 10 10 10 20 20 20 40 40 40 40 60 60 60 60 80 80 80 100 100 100 100 120 120 120 120];
+
+% for 2021-10-19-1s-load data
+times = [10 10 20 20 40 40 80 80 100 100 120 120 150 150];
+
+% for 2021-10-19-2s-load data
+% times = [10 10 10 10 20 20 20 40 40 40 40 60 60 60 60 80 80 80 100 100 100 100 120 120 120 120];
+
 % fit now
 f = fit(times',regionSums','exp1');
 % plot now
@@ -47,10 +52,10 @@ hold on
 markerSize = 30;
 scatter(times,regionSums, markerSize, 'b');
 hold off
-legend('fit', 'data')
+legend('exp fit', 'data')
 ylabel('Sum of pixel values (a.u.)')
 xlabel('Time (s)')
-title('Catch lifetime, 1s MOT loading')
+title('Catch lifetime, 2s MOT loading')
 
 % extract lifetime out of fit
 coeffs = coeffvalues(f);
