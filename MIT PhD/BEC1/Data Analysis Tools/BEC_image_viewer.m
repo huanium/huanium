@@ -19,7 +19,6 @@ if isequal(file,0)
 else
    disp(['Selected: ', fullfile(path,file)]);
 end
-
 data = fitsread(fullfile(path,file), 'primary');
 
 
@@ -29,7 +28,10 @@ data = fitsread(fullfile(path,file), 'primary');
 % dark = data(:,:,3);
 OD = real(-log((data(:,:,1) - data(:,:,3))./(data(:,:,2) - data(:,:,3))));
 
-imshow(OD/4);
+% have to flip BEC image up/down to get correct orientation
+scaleMax = 4;
+OD = flipud(OD/scaleMax);
+imshow(OD);
 
 % rectify data for integration
 % make Inf and Nan = 0 so that they don't count

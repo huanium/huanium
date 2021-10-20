@@ -7,34 +7,29 @@ clear all
 % folderDir = input(prompt, 's');
 
 % inputDir = '~/huanium/MIT PhD/BEC1/2021-10-18-catch-wait/2021-10-18_17-20-42.fits';
-% target_folder = uigetdir('C:/');
-% filePattern = fullfile(target_folder, '*.fits');
-% files = dir(filePattern);
-% data = fitsread(fullfile(files(1).folder, files(1).name), 'primary');
-% disp(files(1).name)
+target_folder = uigetdir('C:/');
+filePattern = fullfile(target_folder, '*.fits');
+files = dir(filePattern);
+data = fitsread(fullfile(files(1).folder, files(1).name), 'primary');
 
-[file,path] = uigetfile('*.fits');
-if isequal(file,0)
-   disp('No selection.');
-else
-   disp(['Selected: ', fullfile(path,file)]);
-end
-
-data = fitsread(fullfile(path,file), 'primary');
-
-
+disp(files(1).name)
 % data has 3 images
-% wA = data(:,:,1);
-% woA = data(:,:,2);
-% dark = data(:,:,3);
+% first image:
+wA = data(:,:,1);
+woA = data(:,:,2);
+dark = data(:,:,3);
 OD = real(-log((data(:,:,1) - data(:,:,3))./(data(:,:,2) - data(:,:,3))));
 
+% OD(isinf(OD)) = 1;
+% OD(isnan(OD)) = 0;
+%OD = max(OD,0);
+%OD = OD/max(OD(:));
 imshow(OD/4);
-
-% rectify data for integration
-% make Inf and Nan = 0 so that they don't count
-OD(isinf(OD)) = 0;
-OD(isnan(OD)) = 0;
+% re-scale
+%wA = wA/255; 
+%woA = woA/255; 
+%dark = dark/255; 
+%OD = OD/max(OD(:)); 
 
 % figure(1)
 % imshow(wA);
@@ -42,6 +37,8 @@ OD(isnan(OD)) = 0;
 % imshow(woA);
 % figure(3)
 % imshow(dark);
+% figure(4)
+% imshow(OD);
 
 % integrating ROI 
 roi = drawrectangle;
