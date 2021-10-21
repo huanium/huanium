@@ -320,21 +320,275 @@ So, the answer is \textbf{``in a few seconds.''}\\
 \noindent \textbf{3. }
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Using the fact that $[V(x),x]= 0$ and $[p^2,x] = p[p,x] + [p,x]p = -2i\hbar p$, we find
 	\begin{align*}
 	\sum_{a'}\abs{\bra{a}x\ket{a'}}^2 (E_{a'} - E_a) 
 	&= \sum_{a'}\bra{a}x \ket{a'}\bra{a'}x \ket{a} (E_{a'} - E_a) \\
-	&= 
+	&= \sum_{a'}\bra{a}x E_{a'} \ket{a'}\bra{a'}x \ket{a} - E_a \bra{a}x \ket{a'}\bra{a'}x \ket{a}\\
+	&= \bra{a} x\ham x\ket{a} - \f{1}{2}\bra{a} \ham x x \ket{a} - \f{1}{2}\bra{a} x x \ham \ket{a}\\
+	&= \f{1}{2}\bra{a} x[\ham,x ] \ket{a} - \f{1}{2}\bra{a} [\ham,x]x \ket{a}\\
+	&= \f{1}{2}\bra{a} \lb x, [\ham,x] \rb \ket{a}\\
+	&= \f{1}{4m}\bra{a} \lb x, [p^2,x] \rb \ket{a}\\
+	&= \f{-2i\hbar}{4m} \bra{a} [x,p] \ket{a}\\
+	&= \f{(-i\hbar)(i\hbar)}{2m}\braket{a} \\
+	&= \f{\hbar^2}{2m}. \quad\quad \checkmark
 	\end{align*}
 	
-	\item 
+	\item To prove the first item we simply work backwards:
+	\begin{align*}
+	\f{im}{\hbar} (E_{a}-E_{a'}) \bra{a}x \ket{a'} 
+	&= \f{im}{\hbar} \lc \bra{a} \ham x \ket{a'} - \bra{a} x\ham \ket{a'} \rc\\
+	&= \f{im}{\hbar}\bra{a} [\ham, x]\ket{a'}\\
+	&= \f{im}{2m\hbar}\bra{a} [p^2, x]\ket{a'}\\
+	&= \f{im}{2m\hbar}\bra{a} -2i\hbar p \ket{a'}\\
+	&= \bra{a} p \ket{a'}. \quad\quad \checkmark
+	\end{align*}
+	The second item follows from the first:
+	\begin{align*}
+	\f{\hbar^2}{m^2}\bra{a}p^2\ket{a} 
+	&= \f{\hbar^2}{m^2}\sum_{a'} \bra{a}p\ket{a'}\bra{a'}p\ket{a} \\
+	&= \f{\hbar^2}{m^2}\sum_{a'} \f{im}{\hbar} (E_a - E_{a'})\bra{a}p\ket{a'}\bra{a'} x \ket{a} (E_{a}- E_{a'})\f{-im}{\hbar} \\
+	&= \sum_{a'} \abs{\bra{a}x \ket{a'}}^2 (E_a - E_{a'})^2. \quad\quad\checkmark
+	\end{align*}
 	
 	
-	\item 
+	\item We may write $p^2 = p_x^2 + p_y^2 + p_z^2$ and $\mathbf{x}\cdot \grad V = x \p_x V + y\p_y V + z\p_z V$. And so it suffices to prove the virial theorem in one dimension:
+	\begin{align*}
+	\bra{a} \f{p_x^2}{2m} \ket{a} = \f{1}{2}\bra{a} x \f{\p V}{\p x} \ket{a}.
+	\end{align*}
+	Using the fact that $[\ham,x] = (1/2m)[p_x^2,x]= (-i\hbar/m) p_x$ (as shown earlier) and that\footnote{There's a notational trickiness here: $[\ham,p_x]f = [V,p_x]f = -i\hbar  V\p_x f + i\hbar \p_x(Vf) = -i\hbar  V\p_x f + i\hbar ( \p_x V)f + i\hbar V (\p_x f) = i\hbar (\p_x V)f \quad \checkmark$}
+	\begin{align*}
+	[\ham,p_x] = [V,p_x] = i\hbar \f{\p}{\p x} V
+	\end{align*}
+	we can write
+	\begin{align*}
+	\f{p^2_x}{2m} = \f{p_xp_x}{2m} = \f{m}{-i\hbar}\f{1}{2m}[\ham, x]p_x = \f{i}{2\hbar}[\ham,x]p_x
+	\end{align*}
+	and 
+	\begin{align*}
+	x\f{\p V}{\p x} = \f{1}{i\hbar }x [\ham,p_x] = \f{-i}{\hbar}x[\ham,p_x].
+	\end{align*}
+	So, 
+	\begin{align*}
+	\f{p_x^2}{2m} - \f{1}{2} x\f{\p V}{\p x} = \f{i}{2\hbar}\lp [\ham, x]p_x + x[\ham,p_x] \rp =
+	\f{i}{2\hbar}(\ham x p_x - x\ham p_x + x\ham p_x - xp_x \ham) = \f{i}{2\hbar}[\ham, xp_x].
+	\end{align*}
+	Therefore, we have, for the $x$-coordinates:
+	\begin{align*}
+	\bra{a}  \f{p_x^2}{2m} - x\f{\p}{\p x}V  \ket{a} = \f{i}{2\hbar}\bra{a}[\ham,xp_x] \ket{a} =  \f{i}{2\hbar}\bra{a} \ham xp_x - xp_x \ham \ket{a} = \f{iE_a}{2\hbar}\bra{a} xp_x - xp_x \ket{a} = 0.
+	\end{align*}
+	Generalizing this result to three dimensions by adding the $x$, $y$, and $z$ equations we find
+	\begin{align*}
+	\bra{a} \f{p^2}{2m} \ket{a} = \bra{a} \f{p_x^2 + p_y^2 + p_z^2}{2m} \ket{a} = \f{1}{2}\bra{a} x\p_x V + y\p_y V + z \p_z V \ket{a} = \f{1}{2}\bra{a} \mathbf{x}\cdot \grad V \ket{a}. \quad\quad\checkmark
+	\end{align*}
 \end{enumerate}
 
-\noindent \textbf{4. }
+\noindent \textbf{4. Delta-function well.} For this problem we are interested only in bound states, so $E<0$, and we do not consider scattering states (plane waves).  While we could solve the delta-function well problem directly, we could also solve the problem where the potential is a single delta function peak at the origin,  then shift and combine solutions to form an ansatz for the delta function well problem. To this end, we can consider a temporary potential $\widetilde{V}(x) = v\delta(x) = -\abs{v} \delta(x)$ (since $v<0$). The SE is 
+\begin{align*}
+\f{-\hbar^2}{2m}\f{d^2}{dx^2}\psi + v\delta(x)\psi(x) = E\psi(x).
+\end{align*}
+For $x\neq 0$, there is no potential, and the general solution is 
+\begin{align*}
+\psi(x) = 
+\begin{cases}
+A_L e^{i kx } + B_L e^{-ikx}, \quad x \leq 0 \\
+A_R e^{i kx } + B_R e^{-ikx}, \quad x \geq 0
+\end{cases}
+\end{align*}
+where $k = \sqrt{2mE / \hbar^2}$ which is imaginary. Letting $\kappa = ik \in \mathbb{R}$, we write
+\begin{align*}
+\psi(x) = 
+\begin{cases}
+A_L e^{\kappa x } + B_L e^{-\kappa x}, \quad x \leq  0 \\
+A_R e^{\kappa x } + B_R e^{-\kappa x}, \quad x \geq  0
+\end{cases}.
+\end{align*}
 
+
+\begin{enumerate}[label=(\alph*)]
+	\item Generalizing the previous result to this problem, we may say that the general solution is of the form 
+	\begin{align*}
+	\boxed{\psi(x)_\text{even} = 
+	\begin{cases}
+	A e^{\kappa x}, \quad x < -a\\
+	B e^{\kappa x} + Ce^{-\kappa x}, \quad x\in [-a,a] \\
+	D e^{-\kappa x}, \quad x > a
+	\end{cases}}
+	\end{align*}
+	where we have removed the divergent solutions when $\abs{x} > a$. Since we want the even solutions, we must have $B=C$ and $A=D$. Now, matching the solutions at $\pm a$ gives
+	\begin{align*}
+	A e^{-\kappa a} = B(e^{-\kappa a} + e^{\kappa a}) \implies A = B(1 + e^{2\kappa a}). 
+	\end{align*}
+	This constraint leaves us with two unknowns $A,\kappa$. To solve for $\kappa$, we must use the geometry of the problem, just like the case of the particle in a box. To this end, we must look at how the derivative of $\psi$ changes at, say, $a$ (which suffices, by symmetry). For this we integrate the SE over a small region $[a-\epsilon, a+\epsilon]$
+	\begin{align*}
+	\f{-\hbar^2}{2m}\int_{a-\epsilon}^{a+\epsilon} \f{d^2}{dx^2}\psi(x)\,dx + \int_{a-\epsilon}^{a+\epsilon} V(x)\psi(x)\,dx = E \int_{a-\epsilon}^{a+\epsilon} \psi(x)\,dx.
+	\end{align*}
+	Taking the limit $\epsilon \to 0$, we find 
+	\begin{align*}
+	&-\f{\hbar^2}{2m} \lb \f{d}{dx}B(e^{\kappa x} + e^{-\kappa x})(a) - \f{d}{dx}(Ae^{-\kappa x})(a) \rb - \abs{v} Ae^{-\kappa x}(a) = 0 \\
+	\implies & B\kappa(e^{\kappa a } - e^{-\kappa a} ) + A\kappa e^{-\kappa a} = \f{2m\abs{v} }{\hbar^2}A e^{-\kappa a} \\
+	\implies &  A+ B(e^{2\kappa a} - 1) = \f{2m\abs{v}}{\hbar^2 \kappa} A \\ 
+	\implies & B(1 + e^{2\kappa a}) + B(e^{2\kappa a} - 1) = \f{2m\abs{v}}{\hbar^2 \kappa} B(1 + e^{2\kappa a})\\ 
+	\implies & 2e^{2\kappa a} = \f{2m\abs{v}}{\hbar^2 \kappa} (1 + e^{2\kappa a})\\
+	\implies & e^{2\kappa a} = \f{2m\abs{v}/\hbar^2 \kappa}{2-2m\abs{v}/\hbar^2\kappa} \\
+	\implies & \boxed{e^{-2\kappa a} = \f{\hbar^2\kappa}{m\abs{v}}-1}
+	\end{align*}
+	This equation lets us solve for $\kappa$. Once it is solved, we find $A$ by normalizing:
+	\begin{align*}
+	1 &= \int \abs{\psi}^2\,dx =  \int_{-\infty}^{-a} A^2 e^{2\kappa x} \,dx + \int_{-a}^{a} \f{A^2}{(1+e^{2\kappa a})^2} (e^{\kappa x} + e^{-\kappa x})^2 \,dx + \int_{a}^{\infty} A^2 e^{-2\kappa x} \,dx \\
+	 &\implies  \boxed{{A} =  \sqrt{\kappa} \f{1+e^{2\kappa a}}{\sqrt{2(1 + e^{2\kappa a} + 2a\kappa)}}}
+	\end{align*} 
+	Mathematica code:
+	\begin{lstlisting}
+	In[12]:= Integrate[A^2*Exp[2*K*x], {x, -Infinity, -a}] + 
+	Integrate[(A^2/(1 + Exp[2*K*a])^2)*(Exp[K*x] + Exp[-K*x])^2, {x, -a,
+	a}] + Integrate[A^2*Exp[-2*K*x], {x, a, Infinity}] // FullSimplify
+	
+	Out[12]= ConditionalExpression[(
+	2 A^2 (1 + E^(2 a K) + 2 a K))/((1 + E^(2 a K))^2 K), Re[K] > 0]
+	\end{lstlisting}
+	From the three boxes, we can solve for $\kappa$ numerically (as its equation is transcendental) and write down $\psi(x) = \psi(-x)$. 
+	
+	\item From Part (a), we have
+	\begin{align*}
+	e^{-2\kappa a} = \f{\hbar^2\kappa}{m\abs{v}}-1. 
+	\end{align*}
+	The number of possible energies depend on how many solutions $\kappa$ we can get. Let $\lambda = 2\kappa a$ and $\theta = \hbar^2 /2am\abs{v}$, then we have a simpler equation.
+	\begin{align*}
+	e^{-\lambda } = \theta \lambda - 1. 
+	\end{align*}
+	Notice that the line $y(\lambda) = \theta\lambda - 1$ has slope $\theta > 0$, which means it can only intersection the exponential decay $e^{-\lambda}$ at exactly one point for any combination of parameters. We thus conclude that there is \textbf{exactly one bound state with even parity}.\\
+	
+	To find the energy, we use the fact that $\kappa = i\sqrt{2mE/\hbar^2} \implies \kappa^2 = -2mE/\hbar^2 \implies {E = -\hbar^2\kappa^2/2m} \implies E = -\hbar^2\lambda^2/8ma^2$. However since $\theta$ is not known we can't really write down an expression for $\kappa$. To have something, I will make a table with some values of $\theta$ and corresponding $E$. 
+	
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|}
+			\hline
+			$\theta$ & 1 & 2 &3 &$\dots$ \\
+			\hline
+			$\lambda$ &1.27846&0.738835&0.529611&$\dots$    \\
+			\hline
+			$E$      &$-0.204309 \hbar^2/ma^2$ &$-0.0682347\hbar^2/ma^2$& $-0.035061\hbar^2/ma^2$ & $\dots$ \\ 
+			\hline
+		\end{tabular}
+	\end{center}
+ 	Mathematica code:
+ 	\begin{lstlisting}
+ 	In[21]:= Table[NSolve[Exp[-L] == n*L - 1, L], {n, 1, 3}]
+ 	
+ 	Out[21]= {{{L -> 1.27846}}, {{L -> 0.738835}}, {{L -> 0.529611}}}
+ 	\end{lstlisting}
+ 	
+ 	
+ 	
+	\item When $ma\abs{v}/\hbar^2 \ll 1$, we have $\theta = \hbar^2/2am\abs{v} \gg 1$. In this limit, the right hand side of the equation 
+	\begin{align*}
+	e^{-\lambda } = \theta \lambda - 1
+	\end{align*}
+	goes to zero as $\lambda \to 0$. Therefore, we could expand the left hand side to get 
+	\begin{align*}
+	1 - \lambda \approx \theta \lambda - 1 \implies \lambda = \f{2}{\theta + 1} \approx \f{2}{\theta} \implies 2\kappa a = \f{4ma\abs{v}}{\hbar^2} \implies \kappa \to \f{2m\abs{v}}{\hbar^2}.
+	\end{align*}
+	With this, 
+	\begin{align*}
+	\boxed{E_{\theta \gg 1} = -\f{\hbar^2\kappa^2}{2m} \to -\f{2m\abs{v}^2}{\hbar^2} }
+	\end{align*}
+	
+	
+	\item Now we want the odd parity solution. By inspection, we may write 
+	\begin{align*}
+	\boxed{\psi(x)_\text{odd} = 
+		\begin{cases}
+		A e^{\kappa x}, \quad x < -a\\
+		B e^{\kappa x} - Be^{-\kappa x}, \quad x\in [-a,a] \\
+		-A e^{-\kappa x}, \quad x > a
+		\end{cases}}
+	\end{align*}
+	Now, matching the solutions at $\pm a$ gives
+	\begin{align*}
+	A e^{-\kappa a} = B(e^{-\kappa a} - e^{\kappa a}) \implies A = B(1 - e^{2\kappa a}). 
+	\end{align*}
+	This constraint leaves us with two unknowns $A,\kappa$. To solve for $\kappa$, we must use the geometry of the problem, just like the case of the particle in a box. To this end, we must look at how the derivative of $\psi$ changes at, say, $a$ (which suffices, by symmetry). For this we integrate the SE over a small region $[a-\epsilon, a+\epsilon]$
+	\begin{align*}
+	\f{-\hbar^2}{2m}\int_{a-\epsilon}^{a+\epsilon} \f{d^2}{dx^2}\psi(x)\,dx + \int_{a-\epsilon}^{a+\epsilon} V(x)\psi(x)\,dx = E \int_{a-\epsilon}^{a+\epsilon} \psi(x)\,dx.
+	\end{align*}
+	Taking the limit $\epsilon \to 0$, we find 
+	\begin{align*}
+	&-\f{\hbar^2}{2m} \lb \f{d}{dx}B(e^{\kappa x} - e^{-\kappa x})(a) - \f{d}{dx}(-Ae^{-\kappa x})(a) \rb + \abs{v} Ae^{-\kappa x}(a) = 0 \\
+	\implies & B\kappa(e^{\kappa a } + e^{-\kappa a} ) - A\kappa e^{-\kappa a} = -\f{2m\abs{v} }{\hbar^2}A e^{-\kappa a} \\
+	\implies &  -A+ B(e^{2\kappa a} + 1) = -\f{2m\abs{v}}{\hbar^2 \kappa} A \\ 
+	\implies & -B(1 - e^{2\kappa a}) + B(e^{2\kappa a} + 1) = -\f{2m\abs{v}}{\hbar^2 \kappa} B(1 - e^{2\kappa a})\\ 
+	\implies & 2e^{2\kappa a} = \f{2m\abs{v}}{\hbar^2 \kappa} (e^{2\kappa a}-1)\\
+	\implies & e^{2\kappa a} = \f{-2m\abs{v}/\hbar^2 \kappa}{2-2m\abs{v}/\hbar^2\kappa} \\
+	\implies & \boxed{e^{-2\kappa a} = 1-\f{\hbar^2\kappa}{m\abs{v}}}
+	\end{align*}
+	This equation lets us solve for $\kappa$. Once it is solved, we find $A$ by normalizing:
+	\begin{align*}
+	1 &= \int \abs{\psi}^2\,dx =  \int_{-\infty}^{-a} A^2 e^{2\kappa x} \,dx + \int_{-a}^{a} \f{A^2}{(1-e^{2\kappa a})^2} (e^{\kappa x} - e^{-\kappa x})^2 \,dx + \int_{a}^{\infty} A^2 e^{-2\kappa x} \,dx \\
+	&\implies  \boxed{{A} =  \sqrt{\kappa} \f{-1+e^{2\kappa a}}{\sqrt{2(-1 + e^{2\kappa a} - 2a\kappa)}}}
+	\end{align*} 
+	Mathematica code:
+	\begin{lstlisting}
+	In[45]:= Integrate[A^2*Exp[2*K*x], {x, -Infinity, -a}] + 
+	Integrate[(A^2/(1 - Exp[2*K*a])^2)*(Exp[K*x] - Exp[-K*x])^2, {x, -a,
+	a}] + Integrate[A^2*Exp[-2*K*x], {x, a, Infinity}] // FullSimplify
+	
+	Out[45]= ConditionalExpression[(
+	2 A^2 (-1 + E^(2 a K) - 2 a K))/((-1 + E^(2 a K))^2 K), Re[K] > 0]
+	\end{lstlisting}
+	From the three boxes, we can solve for $\kappa$ numerically (as its equation is transcendental) and write down $\psi(x) = -\psi(-x)$. \\
+	
+	
+	Now, to the energies. Let $\lambda, \theta$ be defined as before, then we have for the odd parity states the following transcendental equation
+	\begin{align*}
+	e^{-\lambda} = 1 -\theta\lambda.
+	\end{align*}
+	The slope of the line on the right hand side is negative. There are \textbf{two} cases. If the slope is too negative then the only intersection it has with the exponential decay is at $\lambda = 0$. But this is an unphysical solution, so we reject it and therefore there is no bound state. Else, we find a bound state whenever $-\theta > -1 \iff {\theta < 1}$ (since $(d/d\lambda)e^{-\lambda}(0) = -1$), i.e., ${\hbar^2/2ma\abs{v} < 1} \iff \abs{v} > \hbar^2/2ma \iff \boxed{v < -\hbar^2/2ma}$ since $v<0$.\\
+	
+	To find the energy, we use the fact that $\kappa = i\sqrt{2mE/\hbar^2} \implies \kappa^2 = -2mE/\hbar^2 \implies {E = -\hbar^2\kappa^2/2m} \implies E = -\hbar^2\lambda^2/8ma^2$. However since $\theta$ is not known we can't really write down an expression for $\kappa$. To have something, I will make a table with some values of $\theta$ and corresponding $E$. 
+	
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+			\hline
+			$\theta$ & 0.1 & 0.3 & 0.5 & 0.7 &$\dots$ \\
+			\hline
+			$\lambda$ &9.99955&3.19706&1.59362&0.761434&$\dots$    \\
+			\hline
+			$E$      &$-12.4989 \hbar^2/ma^2$ &$-1.27765 \hbar^2/ma^2$& $-0.317455 \hbar^2/ma^2$ & $-0.0724727\hbar^2/ma^2$ &$\dots$ \\ 
+			\hline
+		\end{tabular}
+	\end{center}
+	Mathematica code:
+	\begin{lstlisting}
+	In[51]:= Table[NSolve[Exp[-L] == 1 - n*L, L], {n, 0.1, 0.7, 0.2}]
+	
+	Out[51]= {{{L -> 0.}, {L -> 9.99955}}, {{L -> 0.}, {L -> 3.19706}}, 
+	{{L -> 0.}, {L -> 1.59362}}, {{L -> 0.}, {L -> 0.761434}}}
+	\end{lstlisting}
+	
+	\item Assuming that $ma\abs{v}/\hbar^2 \gg 1$ sufficiently large so that there exist both even and odd partity bound states, we may solve for the difference in energy between the two. From the transcendental equations for $\kappa$ of both states, one can see that, for a fixed $\theta < 1$, the solution $\lambda$ associated with the even parity state is always higher than that for the odd parity state. Therefore, the energy of the even parity state is always more negative (thus it is more tightly bound). Thus, we may look at the energy difference:
+	\begin{align*}
+	E_\text{even} - E_\text{odd}.
+	\end{align*} 
+	Let's look at the transcendental equations again:
+	\begin{align*}
+	\text{Even:}& \quad e^{-\lambda} = \theta\lambda - 1\\
+	\text{Odd:}& \quad e^{-\lambda} = 1-\theta\lambda.
+	\end{align*}
+	In the limit $\theta \ll 1$, the slopes of the lines on the right hand side become small, and thus the lines intersection the exponential decay very far away at which $e^{-\lambda}\approx 0$. We see, therefore, that 
+	\begin{align*}
+	\text{Even:}& \quad e^{-\lambda} = \theta\lambda - 1 \to 0=\theta\lambda -1 \implies \theta\lambda = 1 \implies \lambda = \f{1}{\theta} = \f{2ma\abs{v}}{\hbar^2}\\
+	\text{Odd:}& \quad e^{-\lambda} = 1-\theta\lambda\to 0 = 1 - \theta\lambda \implies \theta\lambda = 1 \implies \lambda = \f{1}{\theta} = \f{2ma\abs{v}}{\hbar^2}.
+	\end{align*}
+	as $\theta \ll 1$ or $a\to \infty$ i.e., the binding energies of both even and odd paritity bound states approach the same number
+	\begin{align*}
+	\boxed{E_{\theta \ll 1} = -\f{\hbar^2\kappa^2}{2m} = -\f{m\abs{v}^2}{2\hbar^2}}
+	\end{align*}
+	
+	
+	Physically speaking the energies move closer as $a\to \infty$ because the wells no longer have cooperative effects, i.e., they no longer act as a double well and rather as two independent wells. 
+	
+\end{enumerate}
 
 	
 \end{document}
