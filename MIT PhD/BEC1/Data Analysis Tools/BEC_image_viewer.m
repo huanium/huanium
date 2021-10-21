@@ -29,7 +29,7 @@ data = fitsread(fullfile(path,file), 'primary');
 OD = real(-log((data(:,:,1) - data(:,:,3))./(data(:,:,2) - data(:,:,3))));
 
 % have to flip BEC image up/down to get correct orientation
-scaleMax = 4;
+scaleMax = 5;
 OD = flipud(OD/scaleMax);
 imshow(OD);
 
@@ -45,12 +45,12 @@ OD(isnan(OD)) = 0;
 % figure(3)
 % imshow(dark);
 
-% integrating ROI 
-roi = drawrectangle;
-r = floor(roi.Vertices(:,2)) + 1;
-c = floor(roi.Vertices(:,1)) + 1;
-% r = [455 513 513 455]; % default values for testing 
-% c = [560 560 901 901]; % default values for testing
-J = integralImage(OD);
-regionSum = J(r(1),c(1)) - J(r(2),c(2)) + J(r(3),c(3)) - J(r(4),c(4));
-disp(['Region sum is: ', num2str(regionSum)])
+% % integrating ROI 
+% roi = drawrectangle;
+% r = floor(roi.Vertices(:,2)) + 1;
+% c = floor(roi.Vertices(:,1)) + 1;
+% % r = [455 513 513 455]; % default values for testing 
+% % c = [560 560 901 901]; % default values for testing
+% J = integralImage(OD);
+% regionSum = J(r(1),c(1)) - J(r(2),c(2)) + J(r(3),c(3)) - J(r(4),c(4));
+% disp(['Region sum is: ', num2str(regionSum)])
