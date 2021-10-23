@@ -29,9 +29,14 @@ data = fitsread(fullfile(path,file), 'primary');
 OD = real(-log((data(:,:,1) - data(:,:,3))./(data(:,:,2) - data(:,:,3))));
 
 % have to flip BEC image up/down to get correct orientation
-scaleMax = 5;
+scaleMax = 1.3;
 OD = flipud(OD/scaleMax);
+figure(1)
 imshow(OD);
+
+% show complement image
+figure(2)
+imshow(imcomplement(OD));
 
 % rectify data for integration
 % make Inf and Nan = 0 so that they don't count
