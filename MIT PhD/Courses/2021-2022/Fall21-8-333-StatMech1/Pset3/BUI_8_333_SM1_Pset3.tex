@@ -1,0 +1,587 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+\def\dbar{{\mkern3mu\mathchar'26\mkern-12mu   d}}
+
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+
+\usepackage{enumitem}
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+		\begin{framed}
+			\noindent Name: \textbf{Huan Q. Bui}\\
+			Course: \textbf{8.333 - Statistical Mechanics I}\\
+			Problem set: \textbf{\#3}
+		\end{framed}
+	
+
+
+
+\noindent \textbf{1. Poisson Brackets}
+
+\begin{enumerate}[label=(\alph*)]
+	\item The result follows straightforwardly from classical mechanics and the fact that $\mathcal{O(\mathbf{p}(\mu), \mathbf{q}(\mu))}$ has no explicit time dependence:
+	\begin{align*}
+	\f{d\mathcal{O}}{d t} = \cancel{\f{\p \mathcal{O}}{\p t}} 
+	+ \sum_i\f{\p \mathcal{O}}{\p q_i}\dot{q}_i + \f{\p \mathcal{O}}{\p p_i} \dot{p}_i 
+	= \sum_i \f{\p \mathcal{O}}{\p q_i}\f{\p \ham }{\p p_i} - \f{\p \mathcal{O}}{\p p_i}\f{\p \ham}{\p q_i}
+	 = \{ \mathcal{O},\ham \} \quad\checkmark
+	\end{align*}
+	
+	\item The result here also follows from a straightforward computation using the product rule. From Part (a) and the Leibniz rule for Poisson brackets we have
+	\begin{align*}
+	0 =\langle \{ \mathcal{O}, \ham \}\rangle 
+	&= \int \{ \rho \mathcal{O}, \ham \} - \{ \rho,\ham  \}\mathcal{O}  \,d\Gamma \\
+	&= \int \{ \rho \mathcal{O}, \ham \}\,d\Gamma - \int \{ \rho,\ham  \}\mathcal{O}  \,d\Gamma. 
+	\end{align*}
+	It suffices to show that the first term vanishes. To do this, we use integration by parts. Notice that
+	\begin{align*}
+	\int \f{\p}{\p q} (\rho \mathcal{O}) \f{\p \ham }{\p p}  \,dp\,dq = -\int \lp \f{\p}{\p p} \f{\p}{\p q} \rho \mathcal{O}\rp \ham  \,dp\, dq = -\int \lp \f{\p}{\p q} \f{\p}{\p p} \rho \mathcal{O}\rp \ham  \,dp\, dq = \int \f{\p}{\p p}(\rho \mathcal{O}) \f{\p \ham}{\p q} \,dp,\,dq.
+	\end{align*}
+	Therefore, 
+	\begin{align*}
+	\int \{ \rho \mathcal{O}, \ham \}\,d\Gamma = \int \sum_i \lb \f{\p \rho \mathcal{O}}{\p q_i}\f{\p \ham}{\p p_i} - \f{\p \rho \mathcal{O}}{\p p_i}\f{\p \ham}{\p q_i} \rb \,d\Gamma = 0,
+	\end{align*}
+	as desired. Therefore, 
+	\begin{align*}
+	0 = =\langle \{ \mathcal{O}, \ham \}\rangle = -\int \{ \rho,\ham  \}\mathcal{O}  \,d\Gamma
+	\end{align*}
+	for all choice of $\mathcal{O}$, i.e., $\{  \rho, \ham \} = 0$. 
+	
+\end{enumerate}
+
+
+\noindent \textbf{2. Equilibrium density}
+
+\begin{enumerate}[label=(\alph*)]
+	\item There are two constraints: the normalization in phase space and $\langle \ham \rangle = E$:
+	\begin{align*}
+	\int \,\rho d\Gamma = N \quad\quad \text{and} \quad\quad \int \rho_1 \ham \,d\Gamma = E.  
+	\end{align*}
+	We thus want to minimize the following functional:
+	\begin{align*}
+	F[\rho_1] = N \int \, d\Gamma\,\rho_1(\vec{p},\vec{q}) \ln \rho_1 (\vec{p},\vec{q}) + \be \lb \int \rho_1 \ham \,d\Gamma - E\rb  + \al\lb \int \,\rho d\Gamma -  N  \rb  
+	\end{align*}
+	By the method of Lagrange multipliers, we look at variations in $F$ due to variations in $\rho_1$:
+	\begin{align*}
+	\f{\p F}{\p \rho_1} =  \int \,d\Gamma \lb \ln \rho_1 + 1 + \be \ham + \al N  \rb.
+	\end{align*}
+	This vanishes if 
+	\begin{align*}
+	\ln \rho_1 + 1 + \be \ham + \al = 0 \implies \rho_1 \propto \exp\lb -\be \ham \rb.
+	\end{align*}
+	By the normalization condition we find that 
+	\begin{align*}
+	\rho_1(\vec{p},\vec{q}) 
+	= \f{\exp(\be \ham)}{\int \, d\Gamma\, \exp(-\be\ham)} 
+	= \f{1}{\mathcal{Z}} \exp\lb \be \lp \f{p^2}{2m} + U(\vec{q}) \rp \rb. \quad\checkmark
+	\end{align*}
+	It remains to find $\be$. To do this, we must solve the following equation for $\be$:
+	\begin{align*}
+	E = \f{N \int \,d\Gamma \, \ham \exp(-\be \ham)}{\int \, d\Gamma\, \exp(-\be\ham)}.
+	\end{align*}
+	
+	
+	\item Let $\ham_a$ and $\ham_b$ be given and $N_a, N_b$ be the particle number of species $a$ and $b$. We may approach this problem the same way we did Part (a). Since the energy is held constant, we have 3 Lagrange multipliers: one associated with energy conservation and two associated with conservation of particle numbers. We wish to extremize the following functional:
+	\begin{align*}
+	F[\rho_1^a,\rho_1^b] = 
+	\int \,d\Gamma \lb N_a \rho_1^a \ln \rho_1^a + N_b \rho_1^b \ln \rho_1^b \rb + 
+	\al_a \lp \int \,d\Gamma\, \rho_1^a - N_a \rp
+	+ \al_b \lp \int \,d\Gamma\, \rho_1^b - N_b \rp\\
+	+ \be \lb \int \,d\Gamma (\rho_1^a\ham_a + \rho_1^b\ham_b) - E \rb.
+	\end{align*}
+	We look for variations in $F$ when $\rho_1^a$ and $\rho_1^b$ varies, so we may set
+	\begin{align*}
+	&0 = \f{\p F}{\p \rho_1^a} = \int d\Gamma \, \lb \ln \rho_1^a + 1 + \be \ham_a + \al_a N_a \rb = 0\implies \rho_1^a \propto \exp(-\be \ham_a).\\
+	&0 = \f{\p F}{\p \rho_1^b} = \int d\Gamma \, \lb \ln \rho_1^b + 1 + \be \ham_b + \al_b N_b \rb = 0\implies \rho_1^b \propto \exp(-\be \ham_b).
+	\end{align*}
+	So, as before, 
+	\begin{align*}
+	\rho_1^a = \f{\exp(-\be \ham_a)}{\int \,d\Gamma \exp(-\be \ham_a)} \quad\quad \text{and} \quad\quad 
+	\rho_1^b = \f{\exp(-\be \ham_b)}{\int \,d\Gamma \exp(-\be \ham_b)}
+	\end{align*}
+	where we may (again) find $\be$ using the energy constraint:
+	\begin{align*}
+	E = \f{N_a\int \,d\Gamma \, \ham_a \exp(-\be \ham_a)}{\int \,d\Gamma \, \exp(-\be \ham_a)} + 
+	\f{N_b\int \,d\Gamma \, \ham_b \exp(-\be \ham_b)}{\int \,d\Gamma \, \exp(-\be \ham_b)}.
+	\end{align*}
+	To show that the kinetic energy per particle (i.e. $\langle p^2/2m \rangle$) can be used as an empirical temperature, we can simply compute it and see how the result depends on $\be$. Before doing this, we may assume that $\ham_a = p^2/2m_a + U_a(\vec{q})$ and $\ham_b = p^2/2m_b + U_b(\vec{q})$. We will also assume that there's no inter-species interaction, i.e., $U_{ab} = U_{ba} = 0$. Let's calculate:
+	\begin{align*}
+	\langle \f{p^2}{2m_a} \rangle = \f{1}{\int\,d\Gamma \exp(-\be \ham_a)} \int d^3 \vec{q}  d^3\vec{p} \f{p^2}{2m_a} \exp\lb -\be \lp \f{p^2}{2m_a} + U_a(\vec{q}) \rp \rb.
+	\end{align*}
+	We can deal each term separately:
+	\begin{align*}
+	 \int d^3 \vec{q}  d^3\vec{p} \f{p^2}{2m_a} \exp\lb -\be \lp \f{p^2}{2m_a} + U_a(\vec{q}) \rp \rb 
+	 &=  \underbrace{\int d^3 \vec{q} \exp(-\be U_a(\vec{q}))}_{Q} \int  d^3\vec{p}\,  (p^2/2m_a) \exp(-\be p^2/2m_a)\\
+	 &= Q \int d\Omega \int_0^\infty dp \, p^2 (p^2/2m_a)\exp(-\be p^2/2m_a) \\
+	 &= 4\pi Q \f{(3/2)\sqrt{\pi/2}}{(\be/m_a)^{5/2}m_a}.
+	\end{align*}
+	and 
+	\begin{align*}
+	\int d^3 \vec{q}  d^3\vec{p} \exp\lb -\be \lp \f{p^2}{2m_a} + U_a(\vec{q}) \rp \rb 
+	&=  \int d^3 \vec{q} \exp(-\be U_a(\vec{q})) \int  d^3\vec{p}\, \exp(-\be p^2/2m_a)\\
+	&=  Q \int d\Omega \int_0^\infty dp\,p^2 \exp(-\be p^2/2m_a) \\
+	&= 4\pi Q \f{\sqrt{2\pi}}{2(\be/m_a)^{3/2}}.
+	\end{align*}
+	Taking the ratio between these two numbers and using the $a\leftrightarrow b$ symmetry we find 
+	\begin{align*}
+	\langle \f{p^2}{2m_a} \rangle = \langle \f{p^2}{2m_b}\rangle  = \f{3}{2\be}.
+	\end{align*}
+	Therefore we conclude that the average kinetic energy, or kinetic energy per particle can be used as an empirical temperature. 
+	
+	
+	
+	
+	
+\end{enumerate}
+
+\noindent \textbf{3. Evolving a canonical harmonic oscillator density}
+
+\begin{enumerate}[label=(\alph*)]
+	\item Liouville equation:
+	\begin{align*}
+	\p_t \rho(\vec{p},\vec{q}, t) = -\{\rho(\vec{q},\vec{p},t), \underbrace{\ham_0 - \vec{q}\cdot \vec{F}(t)}_{\ham'}\}.
+	\end{align*}
+	
+	
+	\item Letting $\vec{q} \to \vec{q} - \langle \vec{q} \rangle_t$ and $\vec{p} \to \vec{p} - \langle \vec{p}\rangle_t$ we claim that
+	\begin{align*}
+	\rho(\vec{p}, \vec{q},t) = {\lp \f{\be}{2\pi} \rp^3 \lp \f{K}{m} \rp^{3/2}} \exp\lb -\be\lp \f{K(\vec{q} - \langle \vec{q} \rangle_t)^2}{2} + \f{(\vec{p} - \langle \vec{p}\rangle_t)^2}{2m} \rp \rb = \rho_0(\vec{p} - \langle \vec{p}\rangle_t , \vec{q} - \langle \vec{q}\rangle_t)
+	\end{align*}
+	To confirm, we just calculate:
+	\begin{align*}
+	\p_t \rho(\vec{q},\vec{p},t) = -\be \rho(\vec{p},\vec{q},t) \lb K(\vec{q} - \langle \vec{q} \rangle_t )\lp \dot{\vec{q}} - \f{\p}{\p t} \langle \vec{q}\rangle_t\rp + \f{1}{m}(\vec{p} - \langle \vec{p} \rangle_t)\lp \dot{\vec{p}} - \f{\p}{\p t} \langle \vec{p} \rangle_t \rp \rb.
+	\end{align*}
+	\begin{align*}
+	-\{\rho_0(\vec{p} - \langle \vec{p}\rangle_t , \vec{q} - \langle \vec{q}\rangle_t), \ham' \}
+	&= -\sum_i \f{\p \rho_0(\dots)}{\p q_i}\f{\p \ham'}{\p p_i} - \f{\p \rho_0(\dots)}{\p p_i}\f{\p \ham'}{\p q_i}\\
+	&= +\be \rho(\vec{p},\vec{q},t)\lc  \lb K(\vec{q} - \langle \vec{q}\rangle_t) \rb \f{\vec{p}}{m} -\f{1}{m}(\dot{\vec{p}} -  \langle \vec{p}\rangle_t)  \times \lb K\vec{q} -\vec{F}(t) \rb \rc
+	\end{align*}
+	\textcolor{red}{What am I supposed to do here? I don't know what $\rho(\vec{q},\vec{p},t)$ looks like, so how do I confirm the result?} Obviously if we have the following equations of motion
+	\begin{align*}
+	\boxed{\f{d}{dt}\langle \vec{q} \rangle_t = \dot{\vec{q}} + \f{\vec{p}}{m}} \quad\quad \text{and} \quad\quad \boxed{\f{d}{dt}\langle \vec{p} \rangle_t = \dot{\vec{p}} - K\vec{q} + \vec{F}(t)}
+	\end{align*}
+	then $\rho_0(\dots)$ solve the Liouville's equation for $\rho(\vec{p},\vec{q},t)$. But does that mean $\rho_0(\vec{p} - \langle \vec{p}\rangle_t, \vec{q} - \langle \vec{q} \rangle_t) = \rho(\vec{p},\vec{q},t)$?
+	
+	
+	
+	\item The entropy is given by 
+	\begin{align*}
+	S(t) = -\int \rho(\vec{p},\vec{q},t)\ln \rho(\vec{p},\vec{q},t) \,d\Gamma 
+	= -\int \rho_0(\vec{p} - \langle \vec{p}\rangle_t, \vec{q} - \langle \vec{q}\rangle_t)\ln \rho_0(\vec{p} - \langle \vec{p}\rangle_t, \vec{q} - \langle \vec{q}\rangle_t)\,d\Gamma 
+	\end{align*}
+	\textcolor{red}{Not sure what to do here. Obviously I could plug things in and compute but I don't think I'll end up with something meaningful.}
+	
+	\item $\boxed{\text{No}}$, because when the potential is quadratic, we can still recast the Hamiltonian as a quadratic by completing the square and get constant remainder terms. If the potential is quartic, for example, this will no longer be the case, and the time dependent shift of the density will no longer work. 
+\end{enumerate}
+
+
+
+\noindent \textbf{4. Zeroth-order hydrodynamics}
+
+\begin{enumerate}[label=(\alph*)]
+	\item Recall that 
+	\begin{align*}
+	\vec{c} = \f{\vec{p}}{m} - \langle \f{\vec{p}}{m} \rangle = \f{\vec{p}}{m} - \vec{u} \implies \vec{p} - m\vec{u} = m\vec{c}.
+	\end{align*}
+	With this we may write the zeroth order density as 
+	\begin{align*}
+	f_1^0(\vec{p}, \vec{q}, t) = \f{n(\vec{q},t)}{(2\pi m k_BT (\vec{q},t))^{3/2}} \exp\lb -\f{m\vec{c}^2}{2k_BT(\vec{q},t)} \rb.
+	\end{align*}
+	It is clear that $\vec{c}^2 = c_\al c_\al$, and so 
+	\begin{align*}
+	\langle c_\al c_\al \rangle^0 = \f{k_B T}{m},  
+	\end{align*}
+	the variance associated with the Gaussian form in $\vec{c}$. When $\al \neq\be$, then the covariance $\langle c_\al c_\be \rangle^0 = 0$ because the covariance matrix (which we can read off from the Gaussian above) is diagonal. Therefore, 
+	\begin{align*}
+	\boxed{P^0_{\al\be}} = mn \langle c_\al c_\be\rangle^0 = mn \f{k_BT}{m} \delta_{\al\be} = \boxed{nk_B T \delta_{\al\be}}
+	\end{align*}
+	The heat flux $h_\al^0$ should be zero for zeroth order hydrodynamics. We can already see this from the definition $h_\al^0 = \langle c_\al c^2/2\rangle^0$, but we can also plug things in and calculate:
+	\begin{align*}
+	h_\al^0 = \int \,d\vec{c} \, g(\vec{q},t)\int \,d(m\vec{c}) \, c_\al c^2 \exp\lb -\f{mc^2}{2k_BT(\vec{q},t)} \rb.
+	\end{align*}
+	where $g$ is the factor before the exponential which depends solely on $\vec{q}$ and $t$. In any case, $d(m\vec{c}) = (d\Omega) (mc^2\, dc) $, and so it is clear that the integrand is an odd function due to $c_\al$ factor. As a result, there is no heat flux: $\boxed{h_\al^0 = 0}$.
+	
+	
+	\item Let us begin with Eq. III.79 in Lecture notes \#11:
+	\begin{align*}
+	0 = \p_t (n\langle \chi \rangle ) + \p_\al \lp n\langle \chi p_\al/m \rangle  \rp - n\langle \p_t \chi \rangle - n \langle p_\al \p_\al \chi/m  \rangle - nF_\al \langle \p\chi/\p p_\al \rangle.  
+	\end{align*} 
+	Substituting $\chi=1$ gives the first equation for conservation of particle number:
+	\begin{align*}
+	\p_t n + \p_\al (n u_\al) = 0
+	\end{align*}
+	which gives
+	\begin{align*}
+	D_t n = \p_t n + u_\be \p_\be n = \underbrace{\p_t n + \p_\be (u_\be n )}_0 - n\p_\be u_\be \implies \boxed{D_t n = -n\p_\be u_\be}
+	\end{align*}
+	
+	Letting $\chi = c_\al$ we get the next equation which is momentum conservation:
+	\begin{align*}
+	\p_\be (n\langle (u_\be + c_\be)c_\al \rangle ) + n\p_t u_\al + n\p_\be u_\al \langle u_\be + c_\be \rangle - n\f{F_\al}{m} = 0
+	\end{align*}
+	Since $\langle c_\al \rangle = 0$ we have
+	\begin{align*}
+	m\p_t u_\al + mu_\be \p_\be u_\al = {F_\al} - \f{1}{n}\p_\be P_{\al\be} = {F_\al} - \f{1}{n}\p_\be (nk_B T\delta_{\al\be}) = {F_\al} - \f{1}{n}\p_\al (nk_B T)
+	\end{align*}
+	this gives
+	\begin{align*}
+	mD_t u_\al = m(\p_t u_\al + u_\be \p_\be u_\al) = F_\al - \f{1}{n}\p_\al(nk_B T) \implies \boxed{mD_t u_\al = F_\al - \f{1}{n}\p_\al(n k_B T)} 
+	\end{align*}
+	Finally, we use the hydrodynamic equation
+	\begin{align*}
+	\p_t \epsilon + u_\al \p_\al \epsilon = -\f{1}{n}\p_\al h_\al - \f{1}{n}P_{\al\be} u_{\al\be}
+	\end{align*}
+	where $P_{\al\be},h_\al$ are known, $u_{\al\be} = (1/2)(\p_\al u_\be + \p_\be u_\al)$, and 
+	\begin{align*}
+	\epsilon = \langle \f{mc^2}{2}  \rangle  = 3\times \f{m}{2}\f{k_BT}{m} = \f{3k_BT}{2}.
+	\end{align*}
+	Substituting in these terms gives us 
+	\begin{align*}
+	\boxed{\f{3}{2}\lp \p_t T + u_\al \p_\al T\rp = -\f{T}{n}\p_\al u_\al} 
+	\end{align*}
+	
+	\item 
+	\begin{align*}
+	D_t \ln\lp nT^{-3/2} \rp 
+	&= \p_t \ln\lp nT^{-3/2}\rp + u_\be \p_\be \ln\lp nT^{-3/2} \rp \\
+	&= \f{1}{nT^{-3/2}}\lb T^{-3/2}\p_t n + n\p_t T^{-3/2} \rb + u_\al \f{1}{nT^{-3/2}}\lb T^{-3/2}\p_\al n + n\p_\al T^{-3/2} \rb \\
+	&= \f{1}{n}(\p_t n + u_\al \p_\al n) + \f{-3/2}{T^{-3/2}}T^{-5/2}\lb \p_t T + u_\al \p_\al T \rb \\
+	&= -\p_\be u_\be + \p_\al u_\al \\
+	&= 0 \quad \checkmark
+	\end{align*}
+	where we have used the first and last hydrodynamic equations.
+	
+	
+	\item  We just compute:
+	\begin{align*}
+	H^0(t) 
+	&= \int d^3\vec{q} d^3\vec{p} f_1^0 (\vec{p},\vec{q},t) \ln  f_1^0 (\vec{p},\vec{q},t) \\
+	&= \int d^3\vec{q} d^3\vec{p} \f{n(\vec{q},t)}{(2\pi m k_BT (\vec{q},t))^{3/2}} \exp\lb -\f{(\vec{p} - m\vec{u})^2}{2mk_BT(\vec{q},t)} \rb\times\lb \ln nT^{-3/2}-\f{3}{2}\ln 2\pi m k_B - \f{(\vec{p} - m\vec{u})^2}{2mk_B T(\vec{q},t)}\rb
+	\end{align*}
+	Only the last term in the expansion of the log depends on $\vec{p}$, so we only do any real calculation there. For the other terms, integrating over $\vec{p}$ gives $n(\vec{q},t)$, by the normalization condition. The integral over $\vec{p}$ for the last term after the change of variables $\vec{p} - m\vec{u} = m\vec{c}$ is 
+	\begin{align*}
+	4\pi \int_0^\infty \,dc m^3 c^2\f{-n}{(2\pi m k_BT)^{3/2}} \f{mc^2}{2k_B T} \exp\lb -\f{mc^2}{2k_BT} \rb = 	-\f{3n}{2}.
+	\end{align*}
+	Thus,
+	\begin{align*}
+	\boxed{H^0(t) = \int d^3q \,\,n(\vec{q},t) \lb \ln \lp n(\vec{q},t)T(\vec{q},t)^{-3/2} \rp - \f{3}{2}\ln(2\pi m k_B)   - \f{3}{2} \rb}
+	\end{align*}
+	
+	\item We shall use the hydrodynamic equations in Part (b) to calculate $dH^0/dt$. Since $H^0$ only depends on $t$ and that we will integrate out all $\vec{q}$ anyway, we may as well take $\p/\p t$ rather than $d/dt$ and get the same result:
+	\begin{align*}
+	\f{dH^0}{dt}
+	&= \int d^3 q \,\, \p_t  \lb n\ln nT^{-3/2}\rb + \cancel{\p_t \int d^3 q\, n(\vec{q},t)} \quad\quad\text{(conservation of particle number)} \\
+	&= \int d^3 q \,\, \lb (\p_t n)\ln nT^{-3/2} + n( \p_t \ln n T^{-3/2} )\rb \\
+	&= \int d^3 q \,\, \lb (D_t n - u_\be \p_\be n ) \ln nT^{-3/2} - n ( u_\be \p_\be \ln nT^{-3/2}) \rb, \quad\quad \text{(by (b) and (c))} \\
+	&= \int d^3 q \,\, \lb (-n\p_\be u_\be - u_\be \p_\be n ) \ln nT^{-3/2} - (n u_\be) \p_\be \ln nT^{-3/2} \rb \\
+	&= -\int d^3 q \,\, \p_\be \lb n u_\be \ln n T^{-3/2} \rb \\
+	&= \boxed{0}
+	\end{align*}
+	by virtue of Gauss-Ostrogradsky's theorem.
+	
+	
+	\item Since $H^0$ stays constant, there is no change in entropy as a function of time and therefore equilibrium cannot be achieved unless first-order effects are taken into account. 
+	
+	
+	
+	
+	
+	
+	
+\end{enumerate}
+
+\noindent \textbf{5. Diffusion}
+
+\begin{enumerate}[label=(\alph*)]
+	\item The Liouville equations are
+	\begin{align*}
+	\lag[f_\al] = C_{\al\al} + C_{\al\be} \quad\quad \text{and} \quad\quad \lag[f_\be] = C_{\be\be} + C_{\be\al}.
+	\end{align*}
+	More explicitly,
+	\begin{align*}
+	\boxed{[\p_t + (\vec{p}_\al / m_\al) \cdot \grad ] f_\al = C_{\al\al} + C_{\al\be} 
+	\quad\quad \text{and} \quad\quad 
+	[\p_t + (\vec{p}_\be / m_\be) \cdot \grad ] f_\be = C_{\be\be} + C_{\be\al}}
+	\end{align*}
+	
+	\item Under the assumption that the collision terms are dominant, we have $f_\al$ and $f_\be$ take on the \textit{local equilibrium} densities:
+	\begin{align*}
+	\boxed{f_\al^0(\vec{p},\vec{q},t) = \f{n_\al(\vec{q},t)}{(2\pi m k_B T (\vec{q},t))^{3/2}} \exp\lb -\f{(\vec{p} - m\vec{u}(\vec{q},t))^2}{2m k_B T(\vec{q},t)} \rb}
+	\end{align*}
+	and 
+	\begin{align*}
+	\boxed{f_\be^0(\vec{p},\vec{q},t) = \f{n_\be(\vec{q},t)}{(2\pi m k_B T (\vec{q},t))^{3/2}} \exp\lb -\f{(\vec{p} - m\vec{u}(\vec{q},t))^2}{2m k_B T(\vec{q},t)} \rb}
+	\end{align*}
+	
+	
+	
+	\item The hydrodynamic equations governing $n_\al(\vec{q},t)$ and $n_\be(\vec{q},t)$ are from conservation laws:
+	\begin{align*}
+	\boxed{\begin{cases}
+	{D_t n_\al(\vec{q},t) = -n_\al(\vec{q},t) \p_i u_i} \\
+	m_\al D_t u_i = F_i - \f{1}{n_\al}\p_i (n_\al k_B T(\vec{q},t))\\
+	D_t T(\vec{q},t) = -\f{2}{3}T(\vec{q},t)\p_i u_i
+	\end{cases}	}
+	\end{align*}
+	and
+	\begin{align*}
+	\boxed{\begin{cases}
+	{D_t n_\be(\vec{q},t) = -n_be(\vec{q},t) \p_i u_i} \\
+	m_\be D_t u_i = F_i - \f{1}{n_\be}\p_i (n_\be k_B T(\vec{q},t))\\
+	D_t T(\vec{q},t) = -\f{2}{3}T(\vec{q},t)\p_i u_i
+	\end{cases}	}
+	\end{align*}
+	
+	
+	\item When $n_\al(\vec{q},t)+n_\be(\vec{q},t) = n_\al(\vec{q}) + n_\be(\vec{q}) = n$ and $\vec{u}=0$ with $n,T$ constant we have
+	\begin{align*}
+	\boxed{f_\al^0(\vec{q},\vec{p}) = \f{n_\al(\vec{q})}{(2\pi m_\al k_B T)^{3/2}} \exp\lb -\f{\vec{p}^2}{2m_\al k_B T} \rb}
+	\end{align*}
+	\begin{align*}
+	\boxed{f_\be^0(\vec{q},\vec{p}) = \f{ n- n_\al(\vec{q})}{(2\pi m_\be k_B T)^{3/2}} \exp\lb -\f{\vec{p}^2}{2m_\be k_B T} \rb}
+	\end{align*}
+	A non-uniform mixture, with spatially varying $n_\al(\vec{q})$ and $n_\be(\vec{q})$ will \textbf{not} come to equilibrium in zeroth order hydrodynamics because entropy does not change. To see this, we may evaluate $dH^0/dt$ and show that it is equal to zero. Suppose we start the system at uniform temperature but with spatially varying particle densities (i.e., concentration). Then following a similar calculation as in Problem 4e, we can see that $dH^0 / dt= 0 $, and thus equilibrium cannot be reached. Intuitively, we may think of this system a isothermal solution where the concentration of the solute varies across the solution, but as time goes on since there is no diffusion the concentration remains non-uniform, and entropy does not get maximized (i.e. the solute is completely dispersed throughout the solution). 
+	
+	
+	
+	
+	\item We have
+	\begin{align*}
+	f_\al^1(\vec{p},\vec{q},t) = f_\al^0 [1-\tau_\al \lag_\al[\ln f_\al^0]] = f_\al^0 \lb 1-\tau_\al \lag_\al\lp \ln  nT^{-3/2} - \f{m_\al c^2}{2k_BT} - \f{3}{2}\ln(2\pi m_\al k_B) \rp  \rb
+	\end{align*}
+	following the derivation in the Lecture Notes \#11, pages 70-72. After doing the derivatives and applying the hydrodynamic equations, we find that \textcolor{blue}{(I won't reproduce the steps here because I would just be literally copying from the book/lecture notes.)}
+	\begin{align*}
+	\boxed{f_\al^1(\vec{p},\vec{q},t)  =
+	f_\al^0(\vec{p},\vec{q},t) 
+	\lc 1- \tau_\al\lb  \f{m_\al}{k_BT} \lp c_i c_j  - \f{\delta_{ij}}{3}c^2 \rp u_{ij} + \lp \f{m_\al c^2}{2k_BT} - \f{5}{2} \rp\f{c_i}{T}\p_i T  \rb \rc}
+	\end{align*}
+	For any operator $\mathcal{O}$, to first order we find 
+	\begin{align*}
+	\langle \mathcal{O}\rangle^1 = \langle \mathcal{O}\rangle^0 -\tau_\al  \langle \lag_\al [\ln f_\al^0] \mathcal{O}\rangle^0.
+	\end{align*}
+	And so 
+	\begin{align*}
+	\langle p_\al/m \rangle^1 &= u_\al \\
+	&= u_\al - \tau_\al \bigg\langle \lp \f{m_\al}{k_BT} \lp c_i c_j  - \f{\delta_{ij}}{3}c^2 \rp u_{ij} 
+	+ \lp \f{m_\al c^2}{2k_BT} - \f{5}{2} \rp\f{c_i}{T}\p_i T   \rp \times \f{p_\al}{m}	 \bigg\rangle^0\\
+	&= \boxed{u_\al - \tau_\al\f{\p_i T}{T}\bigg\langle \lp \f{mc^2}{2k_BT} - \f{5}{2}\rp c_\al c_i  \bigg\rangle^0 }
+	\end{align*}
+	where we have used the fact that $\langle c_i c_j\rangle^0 \propto \delta_{ij}$ (we calculated this before), $\vec{p}_\al/m - \vec{u}= \vec{c}$, and the fact that the first expectation term vanishes due to the integrand being an odd function. 
+	
+	
+	
+	\item To see diffusion, we must look at the heat flux computed in first order. 
+	\begin{align*}
+	h_i^1 = n \bigg\langle c_i \f{m_\al c^2}{2} \bigg\rangle^1 = -\f{nm_\al \tau_\al}{2}\f{\p_j T}{T}\bigg\langle \lp \f{m_\al c^2}{2k_BT} - \f{5}{2} \rp c_i c_j c^2  \bigg\rangle^0 = -\f{5}{2}\f{nk_B^2 T \tau_\al}{m}\p_i T.
+	\end{align*}
+	where we have written the first order expectation values in terms of zeroth order expectation value and computed them separately. The first expectation value is zero because the integrand is off in $c$. With this we see that 
+	\begin{align*}
+	\vec{h} = -\kappa \grad T 
+	\end{align*}
+	where $\kappa = 5nk_B^2  T \tau_\al/2m_\al$ is the coefficient of thermal conductivity of the gas. 
+\end{enumerate}
+
+
+\noindent \textbf{6. Viscosity}
+
+\begin{enumerate}[label=(\alph*)]
+	\item Rearranging gives
+	\begin{align*}
+	\boxed{f_1^1} = f_1^0 - \tau_\times \lb \p_t + \f{\vec{p}}{m} \p_{\vec{q}} \rb f_1^0 = f_1^0 - \tau_\times \f{p_y}{m} \f{2m\al}{2mk_B T}(p_x - m\al y) f_1^0 = \boxed{f_1^0\lb 1 - \tau_\times \f{p_y \al}{ mk_B T}(p_x - \al m y) \rb}
+	\end{align*}
+	
+	\item With help from my classmate Linh, I find that
+	\begin{align*}
+	\boxed{\Pi_{xy}} 
+	&= \int d^3 p v_y p_x f_1^1 \\
+	&= \int d^3 p \, \f{p_yp_x}{m} \lb 1 - \tau_\times \f{p_y \al}{ mk_B T}(p_x - \al m y) \rb \f{n}{(2\pi m k_B T)^{3/2}} \exp\lp -\f{1}{2mk_BT }\lb (p_x - m\al y)^2 + p_y^2 + p_z^2 \rb \rp \\
+	&= \int d^3 p \, \f{p_yp_x}{m} \lb- \tau_\times \f{p_y \al}{ mk_B T}(p_x - \al m y) \rb \f{n}{(2\pi m k_B T)^{3/2}} \exp\lp -\f{1}{2mk_BT }\lb (p_x - m\al y)^2 + p_y^2 + p_z^2 \rb \rp \\
+	&= -\f{n\al \tau_\times }{m^2 k_BT}\f{1}{(2\pi m k_B T)^{3/2}}\int dp_z\,\exp\lp \f{-p_z^2}{2mk_BT} \rp 
+	\int d p_y \,p_y^2 \exp\lp \f{-p_y^2}{2mk_BT}\rp \\
+	&\quad\quad\quad\quad\quad \times \int d p_x p_x(p_x - \al m y)\exp\lp \f{-(p_x-m\al y)^2}{2mk_BT}\rp \\
+	&= \boxed{-\al \tau_\times k_B n T}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[1]:= A1 = (n*a*tx)/(m^2*kb*T);
+	
+	In[3]:= A2 = 
+	Integrate[Exp[-pz^2/(2*m*kb*T)], {pz, -Infinity, Infinity}];
+	
+	In[11]:= A3 = 
+	Integrate[py^2*Exp[-py^2/(2*m*kb*T)], {py, -Infinity, Infinity}];
+	
+	In[10]:= A4 = 
+	Integrate[
+	px*(px - m*a*y)*Exp[-(px - m*a*y)^2/(2*m*kb*T)], {px, -Infinity, 
+	Infinity}];
+	
+	In[13]:= A5 = (1/(2*Pi*m*kb*T)^(3/2));
+	
+	In[15]:= -A1*A2*A3*A4*A5 // FullSimplify
+	
+	Out[15]= ConditionalExpression[-a kb n Sqrt[1/(kb m T)] T Sqrt[kb m T]
+	tx, Re[1/(kb m T)] > 0]
+	\end{lstlisting}
+	
+	
+	\item 
+	\begin{align*}
+	\boxed{\eta = \f{F_x}{\al} = \f{-\Pi_{xy}}{\al} = \tau_\times n k_B T}
+	\end{align*}
+\end{enumerate}
+
+
+\noindent \textbf{7. Effusion}
+\begin{enumerate}[label=(\alph*)]
+	\item Consider an area element on the wall containing the gas, $dA$. The particle flux through the wall is given by by the projection of $\vec{v}$ onto the normal vector to the wall. So, if $\vec{c}$ makes an angle $\theta$ to the wall then this flux is $c \cos\theta$. As a result, the number of particles strike the hole per unit area per unit time is $c\rho(c)\cos\theta$, and thus the probability  distribution for the speed of the escaping particles is proportional to $c^3 e^{-c^2/2\sigma^2}$. 
+	 
+	\item To find the average kinetic energy of the escaping particles we simply compute:
+	\begin{align*}
+	\langle p^2/2m \rangle = \langle  m c^2/2 \rangle  = \f{m}{2} \f{\int_0^\infty c^5 e^{-c^2/2\sigma^2}}{\int_0^\infty c^3 e^{-c^2/2\sigma^2}} = \boxed{2m\sigma^2}
+ 	\end{align*}
+ 	Here we don't worry about the angular parts because they get integrated out the same way in the numerator and denominator and cancel each other. 
+ 	
+	\item We want to find the fraction of particles with $p^2/2m > \mathcal{E} \iff mc^2/2 > \mathcal{E} \iff c > \sqrt{2\mathcal{E}/m}$. This fraction is given by 
+	\begin{align*}
+	\eta = \f{\int_{\sqrt{2\mathcal{E}/m}}^\infty c^3 \exp(-c^2/2\sigma^2)}{\int_0^\infty c^3 \exp(-c^2/2\sigma^2)} = \boxed{\lp 1+ \f{\mathcal{E}}{m\sigma^2} \rp\exp\lp \f{-\mathcal{E}}{m\sigma^2} \rp}
+	\end{align*}
+\end{enumerate}
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
