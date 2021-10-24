@@ -1,0 +1,612 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+	
+\begin{framed}
+	\noindent Name: \textbf{Huan Q. Bui}\\
+	Course: \textbf{8.309 - Classical Mechanics III}\\
+	Problem set: \textbf{\#6}
+\end{framed}
+
+
+
+
+\noindent \textbf{1. Charged Particle in a Plane}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item To get the Hamiltonian to the correct form involving $p_r, p_\theta$ we have to go through the Lagrangian. To get to the Lagrangian we have to find out the force (and thus the potential) associated with the Lorentz force. It turns out (from E\&M theory) that the scalar potential term associated with $\vec{A}$ that appears in the Lagrangian is $-q\vec{v}\cdot \vec{A}$. With this, we may write
+	\begin{align*}
+	\lag = \f{m}{2}(\dot x^2 + \dot y^2) + q \vec{v} \cdot \vec{A} - \f{1}{2}kr^2.
+	\end{align*}
+	Going into polar coordinates, we find that
+	\begin{align*}
+	\lag = \f{1}{2}\lp \dot{\vec{r}}^2 + r^2 \dot\theta^2 \rp + \f{qB }{2} r^2\dot\theta - \f{1}{2}kr^2 
+	\end{align*}
+	where we have used the fact that $\vec{A} = (1/2)\vec{B}\times \vec{r} = (1/2)(0,0,B)\times \vec{r}$. The Mathematica code for this simplification is 
+	\begin{lstlisting}
+	In[10]:= rVec[t] = {r[t]*Cos[\[Theta][t]], r[t]*Sin[\[Theta][t]], 0};
+	
+	In[19]:= vVec[t] = D[rVec[t], t];
+	
+	In[20]:= AVec[t] = (1/2)*Cross[{0, 0, B}, rVec[t]];
+	
+	In[21]:= L = (m/2)*Dot[vVec[t], vVec[t]] + 
+	q*Dot[vVec[t], AVec[t]] - (1/2)*k*r[t]^2;
+	
+	In[23]:= L // FullSimplify
+	
+	Out[23]= 1/2 (m Derivative[1][r][t]^2 + r[t]^2 (-k + B q Derivative[1][\[Theta]][t] 
+	+ m Derivative[1][\[Theta]][t]^2))
+	\end{lstlisting}
+	
+	With this Lagrangian, we may find the canonical momenta as 
+	\begin{align*}
+	&p_r = \f{\p \lag}{\p \dot r} =  m\dot r\\
+	&p_\theta = \f{\p \lag}{\p \dot \theta}  = \f{r^2}{2} (Bq + 2m\dot\theta).
+	\end{align*}
+	With this we can find the Hamiltonian in polar coordinates. 
+	\begin{align*}
+	\ham  
+	&= p_r \dot r + p_\theta \dot\theta - \lag \\
+	&= \f{1}{2}m\dot r^2+ \f{1}{2}r^2(k+m\dot\theta^2) \\
+	&= \f{p_r^2}{2m} + \f{mr^2}{2} \f{1}{4m^2}\lp \f{2p_\theta}{r^2} - Bq  \rp^2 + \f{1}{2}kr^2 \\
+	&= \f{p_r^2}{2m} + \f{1}{2mr^2}\lp p_\theta - \f{Bqr^2}{2} \rp^2 + \f{1}{2}kr^2.
+	\end{align*}
+	Let $S$ be the Jacobi's complete integral. Then we have
+	\begin{align*}
+	p_r = \f{\p S}{\p r} \quad \quad p_\theta = \f{\p S}{\p \theta}.
+	\end{align*}
+	Plugging this into the Hamiltonian we find the Hamilton-Jacobi equation:
+	\begin{align*}
+	\ham  - \f{\p S}{\p t}  =
+	\f{1}{2m}\lp \f{\p S}{\p r} \rp^2 + \f{1}{2mr^2}\lp \f{\p S}{\p \theta} - \f{Bqr^2}{2} \rp^2 + \f{1}{2}kr^2
+	 - \f{\p S}{\p t} =0. 
+	\end{align*}
+	Since $\theta$ is cyclic, let us call $p_\theta = \p S/\p \theta  = \al_\theta$ constant. With this, we may call
+	\begin{align*}
+	S(r,\theta,\al,\al_\theta,t) = W(r,\theta,\al,\al_\theta,t) + h(\al_\theta,t) + g(\al,t)
+	\end{align*}
+	which gives
+	\begin{align*}
+	S(r,\theta,\al,\al_\theta,t) = W(r,\theta,\al,\al_\theta,t) + \al_\theta \theta + \al t
+	\end{align*}
+	We now set up the integral which will let us solve for $p_r$:
+	\begin{align*}
+	\f{1}{2m}\lp \f{\p W}{\p r} \rp^2 + \f{1}{2mr^2}\lp \al_\theta- \f{Bqr^2}{2} \rp^2 + \f{1}{2}kr^2 = \al
+	\end{align*}
+	Solving for $\p W/\p r$ we find 
+	\begin{align*}
+	{\f{\p W}{\p r} = \pm \sqrt{2m\al - mkr^2 -   \lp \f{\al_\theta}{r}- \f{Bqr}{2} \rp^2 }}
+	\end{align*}
+	after some mental simplification. The desired integral is thus
+	\begin{align*}
+	\boxed{W = \pm \int \,dr' \, \sqrt{2m\al - mkr'^2 -   \lp \f{\al_\theta}{r'}- \f{Bqr'}{2} \rp^2 } } 
+	\end{align*}
+	
+	
+	\item When the canonical momentum $p_\theta = 0$ at $t=0$, then $\al_\theta = 0$ and the integral above reduces to 
+	\begin{align*}
+	{W} &= \pm \int \,dr' \, \sqrt{2m\al - mkr'^2 + \f{B^2q^2r'^2}{4} } \\
+	&= {\pm \int \,dr' \, \sqrt{2m\al - r'^2\lp mk - \f{B^2q^2}{4} \rp }}\\
+	&= \pm \int \,dr' \, \sqrt{2m\al - m^2r'^2\lp \f{k}{m} - \f{B^2q^2}{4m^2} \rp }
+	\end{align*}
+	where we have made simplifications so that the frequencies appear. Let us call $\omega = k/m$ and $\Omega = qB/2m$, and $\omega'^2 = \omega^2 - \Omega^2$, so that
+	\begin{align*}
+	W = \pm \int \,dr' \, \sqrt{2m\al - (m\omega'r')^2 }.
+	\end{align*}
+	The full solution is then (letting $\al = E$)
+	\begin{align*}
+	S = -Et \pm \int \,dr' \, \sqrt{2mE - (m\omega'r')^2  }.
+	\end{align*}
+	Notice that this is just like simple harmonic motion. The equations of motion come from taking the derivatives $\p S/\p \al_i$. Since $\al_\theta$ is already held constant, we just take the $\al=E$ derivative
+	\begin{align*}
+	\be = \f{\p S}{\p \al} = \f{\p S}{\p E} = -t \pm \int dr' \f{m}{\sqrt{2mE -  (m\omega'r')^2}} \implies 
+	t + \be = \pm \f{1}{\omega'}\arcsin\lp \sqrt{\f{m\omega'^2}{2E}} r\rp 
+	\end{align*}
+	Inverting gives
+	\begin{align*}
+	\boxed{r(t) = \pm \sqrt{\f{2E}{m\omega'^2}}\sin(\omega'(t+\be))}
+	\end{align*}
+	Now look at $p_r(t)$:
+	\begin{align*}
+	\boxed{p_r(t)} = \f{\p S}{\p r} = \f{\p W}{\p r} = \pm \sqrt{2mE - 2mE\cos^2(\omega'(t+\be))} = 
+	\boxed{\pm \sqrt{2mE} \cos(\omega'(t+\be))}
+	\end{align*}
+	as expected.
+\end{enumerate}
+
+
+
+
+
+\noindent \textbf{2. A Time Dependent $\ham$}
+The Hamiltonian is 
+\begin{align*}
+\ham = \f{p^2}{2m} - mAtx
+\end{align*}
+where $p = p_x$ only. Let $S$ denote the Hamiltoni's principal equation, then we have
+\begin{align*}
+\ham + \f{\p S}{\p t} = 0 \implies \f{1}{2m}\lp \f{\p S}{\p x} \rp^2 - mAtx + \f{\p S}{\p t} = 0.
+\end{align*}
+This means that $S$ is not separable. However, since the Hamiltonian is simple enough we may ``cheat'' a little bit and solve for the equations of motion directly using Hamiltonian's mechanics as follows:
+\begin{align*}
+&\dot x = \f{\p \ham}{\p p} = \f{p}{m}\\
+&\dot p = -\f{\p \ham }{\p x} = mAt. 
+\end{align*}
+From these, we may incorporate the initial conditions $x(0) = 0$ and $p(0) = mv_0$ and obtain the following equations of motion:
+\begin{align*}
+&p(t)= mv_0 + \f{1}{2}mAt^2 \\
+&x(t)= v_0t + \f{1}{6}At^3.
+\end{align*}
+Now, let's solve the problem in the manner requested. Since we know that $p = \p S/ \p x$, our guess solution for $S$ would be 
+\begin{align*}
+S= \lp mv_0 + \f{1}{2}mAt^2\rp x + g(t).
+\end{align*}
+So, to start fresh, let us set a general guess form for $S$ to be
+\begin{align*}
+\boxed{S(x,t) = f(t) x + g(t)}
+\end{align*}
+With $p = \p S/\p x$ the Hamilton-Jacobi equation is 
+\begin{align*}
+\ham + \f{\p S}{\p t} = 0 \implies \f{1}{2m} f(t)^2 - mA t x +  x\f{\p}{\p t} f(t)   + \f{\p}{\p t} g(t) = 0.
+\end{align*}
+Rearranging gives
+\begin{align*}
+\f{1}{2m}f(t)^2 + \f{\p}{\p t}g(t) = mAtx - x \f{\p}{\p t}f(t).
+\end{align*}
+Since this equation is true for all $x$, both sides have to be equal to zero. So,
+\begin{align*}
+\f{\p}{\p t}f(t) = mAt \implies f(t) = \f{1}{2}mAt^2 + f_0. 
+\end{align*}
+With this, we obtain from the other equation:
+\begin{align*}
+\f{1}{2m} \lp \f{1}{2}mAt^2 + f_0 \rp^2 = -\f{\p}{\p t}g(t)\implies g(t)
+ = -\f{1}{40}A^2 mt^5 - \f{1}{6}A f_0 t^3 - \f{f_0^2 t}{2m}.
+\end{align*}
+Mathematica code:
+\begin{lstlisting}
+In[45]:= Integrate[-1/(2*m)*((m/2)*A*t^2 + f0)^2, t] // FullSimplify
+
+Out[45]= -((f0^2 t)/(2 m)) - 1/6 A f0 t^3 - 1/40 A^2 m t^5
+\end{lstlisting}
+
+Putting everything together, we find the full Hamilton's principal function:
+\begin{align*}
+\boxed{S(x,f_0,t) = \lp \f{1}{2}m A t^2 + f_0 \rp x + \lp -\f{1}{40}A^2 mt^5 - \f{1}{6}A f_0 t^3 - \f{f_0^2 t}{2m}  \rp }
+\end{align*}
+where $f_0$ is a constant which depends on the initial conditions. With this $S$, we may follow the standard procedure to get the equations of motion:
+\begin{align*}
+\be = \f{\p S}{\p f_0} = -\f{f_0 t}{m} - \f{A t^3}{6} + x \implies x(t) = \be + \f{f_0 t}{m} + \f{1}{6} At^3.
+\end{align*}
+Since $x=0$ initially, we find that  $\be = 0$. Next, we get $p$ by $\p S/\p x$:
+\begin{align*}
+p = \f{\p S}{\p x} = f_0+ \f{1}{2}Amt^2.
+\end{align*}
+Since $p(0) = mv_0$, we see that $f_0 = mv_0$. With this, we have fully solved the problem:
+\begin{align*}
+\boxed{x(t) = v_0 t + \f{1}{6}A t^3} \quad\quad \text{and} \quad\quad \boxed{p(t) = mv_0  + \f{1}{2}Amt^2}
+\end{align*}
+which match the solution obtained from direct Hamiltonian mechanics!\\
+
+
+
+
+Mathematica code for the last few steps:
+\begin{lstlisting}
+In[47]:= S = ((1/2)*m*A*t^2 + f0)*x + g;
+
+In[48]:= D[S, f0]
+
+Out[48]= -((f0 t)/m) - (A t^3)/6 + x
+
+In[49]:= D[S, x]
+
+Out[49]= f0 + 1/2 A m t^2
+\end{lstlisting}
+
+
+
+
+
+
+\noindent \textbf{3. The $|x|$ Potential} (8.09 ONLY)
+
+
+\noindent \textbf{4. Two Potentials}
+
+\begin{enumerate}[label=(\alph*)]
+	\item The Hamiltonian is 
+	\begin{align*}
+	\ham = \f{p^2}{2m} + V(x) = \f{p^2}{2m} + F\abs{x} = E.
+	\end{align*}
+	The action variable $J$ is given by 
+	\begin{align*}
+	J = \oint p\,dq = \int \sqrt{2mE - 2m F\abs{x}}\,dx = 4\int_0^{x_t} \sqrt{2mE - 2m F x'}\,dx' = \f{8\sqrt{2}}{3 m F}\lb (mE)^{3/2} - (mE - mFx_t)^{3/2}\rb,
+	\end{align*}
+	where $x_t$ is the turning point at which $E = F x_t$, and so the second term vanishes. So,
+	\begin{align*}
+	J = \f{8\sqrt{2}}{3mF}(mE)^{3/2}.
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	4*Integrate[Sqrt[2*m*En - 2*m*F*x], {x, 0, X}]
+	
+	>>> (8 Sqrt[2] ((En m)^(3/2) - (m (En - F X))^(3/2)))/(3 F m)
+	\end{lstlisting}
+	Now we want the frequency $\nu$, which means we'll have to write $E = E(J)$. Invering the expression for $J$ gives
+	\begin{align*}
+	E = E(J) = \f{(3FJ)^{2/3}}{4(2m)^{1/3}}.
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[3]:= Solve[(8 Sqrt[2] ((En m)^(3/2)))/(3 F m) == J, En]
+	
+	Out[3]= {En -> (3^(2/3) F^(2/3) J^(2/3))/(4 2^(1/3) m^(1/3))}}
+	\end{lstlisting}
+	With this, we can easily calculate the frequency by replacing $J$ with all known variables:
+	\begin{align*}
+	\nu = \f{\p E}{\p J} = \f{F^{2/3}}{2(6Jm)^{1/3}} = \f{F^{2/3}}{4\sqrt{2} m^{1/3}\lp \f{E\sqrt{Em} }{F} \rp^{1/3}} = \f{F}{4\sqrt{2m E} }.
+	\end{align*}
+	So the period is 
+	\begin{align*}
+	\boxed{\tau = \f{1}{\nu} = \f{4\sqrt{2mE}}{F}}
+	\end{align*}
+	Now let's check if units make sense: $\sqrt{2mE}$ has units of momentum, while $F$ has units of force. They ratio has units of time, as expected.
+	
+	\item The Hamiltonian is 
+	\begin{align*}
+	\ham = \f{p^2}{2m} - \f{k}{\abs{x}} = E < 0. 
+	\end{align*}
+	The action variable is then 
+	\begin{align*}
+	J = \oint p\,dq = 4\int_0^{x_t} \sqrt{2mE + 2mk/\abs{x}}\,dx =  4\int_0^{x_t} \sqrt{-2m\abs{E} + 2mk/\abs{x}}\,dx.
+	\end{align*}
+	where once again $x_t$ denotes the turning point at which $-k/\abs{x_t} = -\abs{E} \implies \abs{x_t} =k/\abs{E}$. Let us take the positive solution so that $x_t = k/\abs{E}$. With this,
+	\begin{align*}
+	J = 4\int_0^{k/\abs{E}} \sqrt{-2m\abs{E} + 2mk/{x}}\,dx =  \f{2\sqrt{2} \pi km}{\sqrt{m\abs{E}}}.
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[10]:= 4*Integrate[Sqrt[-2 m*AE + 2 m*k/x], {x, 0, k/AE}]
+	
+	Out[10]= (2 Sqrt[2] k m \[Pi])/Sqrt[AE m]
+	\end{lstlisting}
+	Now inverting this lets us get ${E} = {E(J)}$, while enforcing $E<0$:
+	\begin{align*}
+	{E} = {E(J)} = -\f{8m k^2 \pi^2}{J^2}.
+	\end{align*}
+	So, the frequency is 
+	\begin{align*}
+	\nu = \f{\p {E}}{\p J} = \f{16 m k^2 \pi^2}{J^3} = \f{(m\abs{E})^{3/2}}{\sqrt{2} km^2 \pi} = \f{\abs{E}^{3/2}}{\pi k\sqrt{2m}}.
+	\end{align*}
+	The period of motion is therefore
+	\begin{align*}
+	\boxed{\tau = \f{1}{\nu} = \f{\pi k \sqrt{2m}}{\abs{E}^{3/2}}}
+	\end{align*}
+	Let's check that units make sense.
+	\begin{align*}
+	\tau = \f{[\text{energy}\times\text{distance}]\times \sqrt{[\text{mass}]}}{[\text{energy}]\times[\text{energy}]^{1/2}} = \f{[\text{distance}]\times \sqrt{[\text{mass}]}}{\sqrt{[\text{mass}]\times [\text{distance}]^2 \times [\text{time}]^{-2}}} = [\text{time}].\quad\quad\checkmark
+	\end{align*}
+	
+	
+	
+	
+	
+\end{enumerate}
+
+
+
+\noindent \textbf{5. The $\csc^2(x)$ Potential}
+
+\begin{enumerate}[label=(\alph*)]
+	\item The Hamiltonian is 
+	\begin{align*}
+	\ham = \f{p^2}{2m} + V(x) = \f{p^2}{2m} + a\csc^2\lp \f{x}{x_0} \rp.
+	\end{align*}
+	The Hamilton-Jacobi equation reads
+	\begin{align*}
+	\f{1}{2m}\lp \f{\p W}{\p x} \rp^2 + a\csc^2\lp \f{x}{x_0} \rp = - \f{\p S}{\p t} = E
+	\end{align*}
+	where $E$ is the energy of the particle. The equation for $W$ is:
+	\begin{align*}
+	\f{\p W}{\p x} = \pm \sqrt{2mE - 2m a\csc^2\lp \f{x}{x_0} \rp}
+	\end{align*}
+	and so we obtain the integral for the Hamilton's characteristic function:
+	\begin{align*}
+	\boxed{W = \pm \int \sqrt{2mE - 2ma\csc^2\lp x/x_0\rp}\,dx}
+	\end{align*}
+	we will worry about the bounds for this integral later.  
+	
+	
+	
+	\item In order to use action-angle variables, the motion of the particle has to be \textit{bounded} (cf. Goldstein's Chapter 10.8). We could consider the case where $a<0$ first. However, the action integral $J$ would be too singular, and the solutions (which might exist) would be unphysical anyway as momentum could diverge. We thus consider only $a>0$. For any given $E>0$ (obviously $E\geq 1$ for a solution to exist), the position $x$ of the particle must be between two turning points given by 
+	\begin{align*}
+	x_-(E) = n\pi x_0 +  x_0\sin^{-1}\sqrt{\f{a}{E}} \quad\quad \text{and}\quad\quad x_+(E) = (n+1)\pi x_0 -  x_0\sin^{-1}\sqrt{\f{a}{E}} 
+	\end{align*}
+	which are obtained by solving the equation
+	\begin{align*}
+	E = a\csc^2\lp \f{x}{x_0} \rp = \f{a}{\sin^2(x/x_0)} \implies \sin^2\lp \f{x}{x_0} \rp = \f{a}{E}\implies \sin\lp \f{x}{x_0} \rp = \pm\sqrt{\f{a}{E}}
+	\end{align*}
+	and noting that the midpoint between $x_-$ and $x_+$ must be $x_0\pi (2n+1)/2$ and $x_+ - x_-$ cannot exceed $\pi$. 
+	
+	
+	\item Assuming that these conditions are met, we may choose $n=0$ and get the following expression for the action integral:
+	\begin{align*}
+	J = \oint p\,dq = \oint \f{\p W}{\p x}\,dx = \oint \sqrt{2mE - a\csc^2(x/x_0)}\,dx = \oint \sqrt{2mE - \f{2ma}{\sin^2(x/x_0)}}\,dx.
+	\end{align*}
+	If we let
+	\begin{align*}
+	\cos i = \sqrt{\f{2ma}{2mE}} = \sqrt{\f{a}{E}},
+	\end{align*}
+	then the equation above can be written as
+	\begin{align*}
+	J = \sqrt{2mE}\oint \sqrt{1- \cos^2 i \csc^2(x/x_0)}\,dx
+	\end{align*}
+	Next, let $x' = x/x_0$ so that $dx = x_0 dx'$, and
+	\begin{align*}
+	J = x_0\sqrt{2mE}\oint \sqrt{1- \cos^2 i \csc^2 x'}\,dx'
+	\end{align*}
+	The complete circuital path can be written as 4 times the integral over from $0$ to upper turning point $x_t$. We can thus write
+	\begin{align*}
+	J = 4x_0\sqrt{2mE}\int_0^{x_t} \csc x' \sqrt{\sin^2 x' - \cos^2 i }\,dx'  = 4x_0\sqrt{2mE}\int_0^{x_t} \csc x' \sqrt{\sin^2 i - \cos^2 x' }\,dx'
+	\end{align*}
+	by using the trig identity $\sin^2\theta + \cos^2\theta = 1$ twice inside the square root. Now, the substitution 
+	\begin{align*}
+	\cos x' = \sin i \sin\psi
+	\end{align*}
+	transforms the integral to 
+	\begin{align*}
+	J = 4x_0\sqrt{2mE}\sin^2 i \int_0^{\pi/2} \f{\cos^2\psi }{1-\sin^2 i \sin^2\psi}   \,d\psi
+	\end{align*}
+	where we have used the fact that 
+	\begin{align*}
+	\sin x_t = \cos i = \sqrt{\f{a}{E}}\implies x_t = \f{\pi}{2} - i
+	\end{align*}
+	which is consistent with Part (b). Finally, with the substitution
+	\begin{align*}
+	u = \tan\psi
+	\end{align*}
+	the integral becomes
+	\begin{align*}
+	J = 4x_0\sqrt{2mE} \sin^2 i \int_0^\infty \f{du}{(1+u^2)(1+u^2cos^2i)} = 4x_0\sqrt{2mE} \int_0^\infty du\,\lp \f{1}{1+u^2} - \f{\cos^2 i}{1 + u^2\cos^2 i} \rp.
+	\end{align*}
+	The final expression contains well-known integrals. Upon looking these up we find 
+	\begin{align*}
+	J = 2\pi x_0 \sqrt{2mE} (1-\cos i ) = 2\pi x_0 (\sqrt{2mE} - \sqrt{2ma}) = 2\pi x_0 \sqrt{2m} (\sqrt{E} - \sqrt{a}).
+	\end{align*}
+	From here, we can solve for $E$ in terms of $J$:
+	\begin{align*}
+	E = \lp \f{J}{2\pi x_0\sqrt{2m}} + \sqrt{a} \rp^2.
+	\end{align*}
+	The frequency of oscillation as a function of energy is therefore
+	\begin{align*}
+	\boxed{\nu = \f{\p E}{\p J} = \f{J + 2\pi x_0\sqrt{2ma}}{4m\pi^2 x_0^2} = \f{\sqrt{E}}{x_0 \pi \sqrt{2m}}}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[24]:= D[(J/(2*Pi*x0*Sqrt[2*m]) + Sqrt[a])^2, 
+	J] /. {J -> 2*Pi*x0*Sqrt[2*m]*(Sqrt[En] - Sqrt[a])} // FullSimplify
+	
+	Out[24]= Sqrt[En]/(Sqrt[2] Sqrt[m] \[Pi] x0)
+	\end{lstlisting}
+	
+	
+	
+	\item Under the small amplitude approximation, we may approximate $V(x)$ by a quadratic centered at the minimum of $V(x)$. Let us consider $x/x_0 \in [0,\pi]$. By symmetry, we know that the potential minumum is at $x/x_0 = \pi/2$. Taylor expand $V(x) = a\csc^2(x/x_0)$ about $\pi/2$ gives
+	\begin{align*}
+	V(x)\approx a + a\lp \f{x}{x_0} + \f{\pi}{2} \rp^2 + \dots
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[27]:= Series[a*Csc[x]^2, {x, Pi/2, 2}] // FullSimplify
+	
+	Out[27]= a + a*(x-Pi/2)^2 + ...
+	\end{lstlisting}
+	
+	It is clear that the curvature of this new potential is $a$, and so by making the identification
+	\begin{align*}
+	a\lp \f{x}{x_0} \rp^2 = \f{1}{2}m\omega^2 x^2 
+	\end{align*}
+	we find that the frequency of oscillation is given by 
+	\begin{align*}
+	\omega = \sqrt{\f{2a}{mx_0^2}} \implies \nu = \f{\omega}{2\pi} = \f{\sqrt{a}}{\pi x_0\sqrt{2m}}
+	\end{align*}
+	At small oscillations, $a\approx E$ since the turning point would be near equilibrium, and so we can conclude that the result here matches with that in Part (c). 
+	
+\end{enumerate}
+
+
+\noindent \textbf{6. A Three Dimensional Oscillator}
+
+\begin{enumerate}[label=(\alph*)]
+	\item The Hamiltonian is completely separable:
+	\begin{align*}
+	\ham = \f{1}{2m}(p_x^2 + p_y^2 + p_z^2) + \f{1}{2}(k_xx^2 + k_y y^2 + k_z z^2) = E_x + E_y + E_z
+	\end{align*}
+	And so we may treat this problem as three independent harmonic oscillator problems and define 
+	\begin{align*}
+	J_i = \oint \sqrt{2mE_i - (m\omega_i x_i)^2}\,dx.
+	\end{align*}
+	where of course $\omega_i = \sqrt{k_i/m}$. If we introduce the Hamilton's characteristic function $W$ then again it is completely separable in the coordinates $x,y,z$ so that $\p W_j/\p J_i = (\p W_i/\p J_i) \delta_{ij} = \omega_i \delta_{ij}$. So the frequencies are simply those from the one-dimension problem:
+	\begin{align*}
+	&\nu_x =  \f{\omega_x}{2\pi} = \f{1}{2\pi}\sqrt{\f{k_x}{m}}\\
+	&\nu_y =  \f{\omega_y}{2\pi} = \f{1}{2\pi}\sqrt{\f{k_y}{m}}\\
+	&\nu_z =  \f{\omega_z}{2\pi} = \f{1}{2\pi}\sqrt{\f{k_z}{m}}
+	\end{align*} 
+	
+	
+	\item To verify that $(\omega_i,J_i)$ are canonical variables using Poisson brackets, we can check that the various poisson brackets for the variables $(x_i,p_i)$ satisfy the fundamental relations under the transformation to new variables $\omega_i,J_i$ given by 
+	\begin{align*}
+	x_i = \lp \f{J_i}{\pi \sqrt{k_im }}\rp^{1/2}\sin(2\pi \omega_i) \quad\quad\quad\quad 
+	p_i = \lp \f{J_i\sqrt{k_im}}{\pi} \rp^{1/2} \cos (2\pi \omega_i) 
+	\end{align*}
+	
+	
+	
+	To this end, we calculate:
+	\begin{align*}
+	\{x_i ,x_j \}_{\{\omega,J\}} 
+	&= \sum_{k=1}^3  \f{\p x_i}{\p \omega_k}\f{\p x_j}{\p J_k} - 
+	\f{\p x_i}{\p J_k}\f{\p x_j}{\p \omega_k} \\
+	&= \delta_{ij}2\pi \lp \f{J_i}{\pi \sqrt{k_im }}\rp^{1/2}\cos(2\pi \omega_i) 
+	\f{1}{2}J_j^{-1/2}\lp \f{1}{\pi \sqrt{k_jm }}\rp^{1/2}\sin(2\pi \omega_j) \\
+	&\quad\quad - \delta_{ij}
+	\f{1}{2}J_i^{-1/2}\lp \f{1}{\pi \sqrt{k_i m }}\rp^{1/2}\sin(2\pi \omega_i) 
+	2\pi \lp \f{J_j}{\pi \sqrt{k_j m }}\rp^{1/2}\cos(2\pi \omega_j) \\
+	&= 0. \quad\quad \checkmark 	
+	\end{align*}
+	\begin{align*}
+	\{p_i ,p_j \}_{\{\omega,J\}}
+	&=  \sum_{k=1}^3  \f{\p p_i}{\p \omega_k}\f{\p p_j}{\p J_k} - \f{\p p_i}{\p J_k}\f{\p p_j}{\p \omega_k} \\
+	&= -\delta_{ij}2\pi \lp \f{J_i\sqrt{k_im}}{\pi} \rp^{1/2} \sin (2\pi \omega_i) 
+	\f{1}{2}J_j^{-1/2}\lp \f{\sqrt{k_jm}}{\pi} \rp^{1/2} \cos (2\pi \omega_j) \\
+	&\quad +\delta_{ij}\f{1}{2}J_i^{-1/2}\lp \f{\sqrt{k_im}}{\pi} \rp^{1/2} \cos (2\pi \omega_i)2\pi \lp \f{J_j\sqrt{k_jm}}{\pi} \rp^{1/2} \sin (2\pi \omega_j)\\
+	&= 0. \quad\quad\checkmark
+	\end{align*}
+	And finally, 
+	\begin{align*}
+	\{x_i ,p_j \}_{\{\omega,J\}} 
+	&= \sum_{k=1}^3 \f{\p x_i}{\p \omega_k}\f{\p p_j}{\p J_k} - \f{\p x_i}{\p J_k}\f{\p p_j}{\p \omega_k} \\
+	&= \delta_{ij}2\pi \lp \f{J_i}{\pi \sqrt{k_im }}\rp^{1/2}\cos(2\pi \omega_i) \f{1}{2}J_j^{-1/2}\lp \f{\sqrt{k_jm}}{\pi} \rp^{1/2} \cos (2\pi \omega_j)\\
+	&\quad + \delta_{ij}
+	\f{1}{2}J_i^{-1/2}\lp \f{1}{\pi \sqrt{k_i m }}\rp^{1/2}\sin(2\pi \omega_i) \f{1}{2}J_i^{-1/2}\lp \f{\sqrt{k_im}}{\pi} \rp^{1/2} \cos (2\pi \omega_i)2\pi \lp \f{J_j\sqrt{k_jm}}{\pi} \rp^{1/2} \sin (2\pi \omega_j)\\
+	&= \delta_{ij}\lb \cos^2(2\pi \omega_j) + \sin^2(2\pi \omega_j) \rb \\
+	&= \delta_{ij}. \quad\quad \checkmark
+	\end{align*}
+	So, $(\omega_i, J_i)$ are canonical variables, as desired. 
+	
+	\item 
+	
+	
+	
+\end{enumerate}
+
+\end{document}
+
+
+
