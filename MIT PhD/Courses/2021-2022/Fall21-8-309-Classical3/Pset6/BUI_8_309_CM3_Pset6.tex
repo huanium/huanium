@@ -488,11 +488,16 @@ Out[49]= f0 + 1/2 A m t^2
 	\end{align*}
 	which is consistent with Part (b). Finally, with the substitution
 	\begin{align*}
-	u = \tan\psi
+	u = \tan\psi \implies du = \f{d\psi}{\cos^2\psi} \implies d\psi = \cos^2\psi \,du = \f{du}{1+\tan^2\psi} = \f{du}{1+u^2}
 	\end{align*}
-	the integral becomes
-	\textcolor{blue}{put steps here.}
-	\textcolor{red}{And thus,}
+	the integral becomes (using the equality $\sin^2 i \sin^2\psi = \sin^2 i (1-\cos^2\psi)$)
+	\begin{align*}
+	J &= 4x_0 \sqrt{2mE} \sin^2 i \int_0^\infty \f{du}{(1+u^2)^2\lp 1-\sin^2 i \lp 1- \f{1}{1+u^2}\rp\rp}\\
+	&=4x_0 \sqrt{2mE} \sin^2 i \int_0^\infty \f{du}{(1+u^2)^2(\cos^2 i + \sin^2 i /(1+u^2))}\\
+	&=4x_0 \sqrt{2mE} \sin^2 i \int_0^\infty \f{du}{(1+u^2)[(1+u^2)\cos^2 i + 1- \cos^2 i]}\\
+	&= 4x_0 \sqrt{2mE} \sin^2 i \int_0^\infty \f{du}{(1+u^2)(1+u^2\cos^2 i)}\\
+	\end{align*}
+	Separating the big fraction we get
 	\begin{align*}
 	J = 4x_0\sqrt{2mE} \sin^2 i \int_0^\infty \f{du}{(1+u^2)(1+u^2\cos^2i)} = 4x_0\sqrt{2mE} \int_0^\infty du\,\lp \f{1}{1+u^2} - \f{\cos^2 i}{1 + u^2\cos^2 i} \rp.
 	\end{align*}
@@ -553,7 +558,7 @@ Out[49]= f0 + 1/2 A m t^2
 	\begin{align*}
 	J_i = \oint \sqrt{2mE_i - (m\omega_i x_i)^2}\,dx.
 	\end{align*}
-	where of course $\omega_i = \sqrt{k_i/m}$. If we introduce the Hamilton's characteristic function $W$ then again it is completely separable in the coordinates $x,y,z$ so that $\p W_j/\p J_i = (\p W_i/\p J_i) \delta_{ij} = \omega_i \delta_{ij}$. So the frequencies are simply those from the one-dimension problem:
+	where of course $\omega_i = \sqrt{k_i/m}$. If we introduce the Hamilton's characteristic function $W$ then again it is completely separable in the coordinates $x,y,z$ so that $\p W_j/\p J_i = (\p W_i/\p J_i) \delta_{ij} = w_i \delta_{ij}$. So the frequencies are simply those from the one-dimension problem:
 	\begin{align*}
 	&\nu_x =  \f{\omega_x}{2\pi} = \f{1}{2\pi}\sqrt{\f{k_x}{m}}\\
 	&\nu_y =  \f{\omega_y}{2\pi} = \f{1}{2\pi}\sqrt{\f{k_y}{m}}\\
@@ -561,7 +566,7 @@ Out[49]= f0 + 1/2 A m t^2
 	\end{align*} 
 	
 	
-	\item \textcolor{blue}{Change $\omega$to $w$ for variables.}
+	\item 
 	
 	To verify that $(w_i,J_i)$ are canonical variables using Poisson brackets, we can check that the various poisson brackets for the variables $(x_i,p_i)$ satisfy the fundamental relations under the transformation to new variables $w_i,J_i$ given by 
 	\begin{align*}
@@ -574,37 +579,91 @@ Out[49]= f0 + 1/2 A m t^2
 	To this end, we calculate:
 	\begin{align*}
 	\{x_i ,x_j \}_{\{w,J\}} 
-	&= \sum_{k=1}^3  \f{\p x_i}{\p \omega_k}\f{\p x_j}{\p J_k} - 
-	\f{\p x_i}{\p J_k}\f{\p x_j}{\p \omega_k} \\
-	&= \delta_{ij}2\pi \lp \f{J_i}{\pi \sqrt{k_im }}\rp^{1/2}\cos(2\pi \omega_i) 
-	\f{1}{2}J_j^{-1/2}\lp \f{1}{\pi \sqrt{k_jm }}\rp^{1/2}\sin(2\pi \omega_j) \\
+	&= \sum_{k=1}^3  \f{\p x_i}{\p w_k}\f{\p x_j}{\p J_k} - 
+	\f{\p x_i}{\p J_k}\f{\p x_j}{\p w_k} \\
+	&= \delta_{ij}2\pi \lp \f{J_i}{\pi \sqrt{k_im }}\rp^{1/2}\cos(2\pi w_i) 
+	\times \f{1}{2}J_j^{-1/2}\lp \f{1}{\pi \sqrt{k_jm }}\rp^{1/2}\sin(2\pi w_j) \\
 	&\quad\quad - \delta_{ij}
-	\f{1}{2}J_i^{-1/2}\lp \f{1}{\pi \sqrt{k_i m }}\rp^{1/2}\sin(2\pi \omega_i) 
-	2\pi \lp \f{J_j}{\pi \sqrt{k_j m }}\rp^{1/2}\cos(2\pi \omega_j) \\
+	\f{1}{2}J_i^{-1/2}\lp \f{1}{\pi \sqrt{k_i m }}\rp^{1/2}\sin(2\pi w_i) 
+	\times 2\pi \lp \f{J_j}{\pi \sqrt{k_j m }}\rp^{1/2}\cos(2\pi w_j) \\
 	&= 0. \quad\quad \checkmark 	
 	\end{align*}
 	\begin{align*}
 	\{p_i ,p_j \}_{\{w,J\}}
-	&=  \sum_{k=1}^3  \f{\p p_i}{\p w_k}\f{\p p_j}{\p J_k} - \f{\p p_i}{\p J_k}\f{\p p_j}{\p \omega_k} \\
-	&= -\delta_{ij}2\pi \lp \f{J_i\sqrt{k_im}}{\pi} \rp^{1/2} \sin (2\pi \omega_i) 
-	\f{1}{2}J_j^{-1/2}\lp \f{\sqrt{k_jm}}{\pi} \rp^{1/2} \cos (2\pi \omega_j) \\
-	&\quad +\delta_{ij}\f{1}{2}J_i^{-1/2}\lp \f{\sqrt{k_im}}{\pi} \rp^{1/2} \cos (2\pi \omega_i)2\pi \lp \f{J_j\sqrt{k_jm}}{\pi} \rp^{1/2} \sin (2\pi \omega_j)\\
+	&=  \sum_{k=1}^3  \f{\p p_i}{\p w_k}\f{\p p_j}{\p J_k} - \f{\p p_i}{\p J_k}\f{\p p_j}{\p w_k} \\
+	&= -\delta_{ij}2\pi \lp \f{J_i\sqrt{k_im}}{\pi} \rp^{1/2} \sin (2\pi w_i) 
+	\times \f{1}{2}J_j^{-1/2}\lp \f{\sqrt{k_jm}}{\pi} \rp^{1/2} \cos (2\pi w_j) \\
+	&\quad +\delta_{ij}\f{1}{2}J_i^{-1/2}\lp \f{\sqrt{k_im}}{\pi} \rp^{1/2} \cos (2\pi w_i) 
+	\times 2\pi \lp \f{J_j\sqrt{k_j m}}{\pi} \rp^{1/2} \sin (2\pi w_j)\\
 	&= 0. \quad\quad\checkmark
 	\end{align*}
-	And finally, \textcolor{blue}{Correct this weirdness}
+	And finally, 
 	\begin{align*}
-	\{x_i ,p_j \}_{\{\omega,J\}} 
-	&= \sum_{k=1}^3 \f{\p x_i}{\p \omega_k}\f{\p p_j}{\p J_k} - \f{\p x_i}{\p J_k}\f{\p p_j}{\p \omega_k} \\
-	&= \delta_{ij}2\pi \lp \f{J_i}{\pi \sqrt{k_im }}\rp^{1/2}\cos(2\pi \omega_i) \f{1}{2}J_j^{-1/2}\lp \f{\sqrt{k_jm}}{\pi} \rp^{1/2} \cos (2\pi \omega_j)\\
+	\{x_i ,p_j \}_{\{w,J\}} 
+	&= \sum_{k=1}^3 \f{\p x_i}{\p w_k}\f{\p p_j}{\p J_k} - \f{\p x_i}{\p J_k}\f{\p p_j}{\p w_k} \\
+	&= \delta_{ij}2\pi \lp \f{J_i}{\pi \sqrt{k_im }}\rp^{1/2}\cos(2\pi w_i) 
+	\times \f{1}{2}J_j^{-1/2}\lp \f{\sqrt{k_jm}}{\pi} \rp^{1/2} \cos (2\pi w_j)\\
 	&\quad + \delta_{ij}
-	\f{1}{2}J_i^{-1/2}\lp \f{1}{\pi \sqrt{k_i m }}\rp^{1/2}\sin(2\pi \omega_i) \f{1}{2}J_i^{-1/2}\lp \f{\sqrt{k_im}}{\pi} \rp^{1/2} \cos (2\pi \omega_i)2\pi \lp \f{J_j\sqrt{k_jm}}{\pi} \rp^{1/2} \sin (2\pi \omega_j)\\
-	&= \delta_{ij}\lb \cos^2(2\pi \omega_j) + \sin^2(2\pi \omega_j) \rb \\
+	\f{1}{2}J_i^{-1/2}\lp \f{1}{\pi \sqrt{k_i m }}\rp^{1/2}\sin(2\pi w_i) 
+	\times 2\pi \lp \f{J_j\sqrt{k_j m}}{\pi} \rp^{1/2} \sin (2\pi w_j)\\
+	&= \delta_{ij}\lb \cos^2(2\pi w_j) + \sin^2(2\pi w_j) \rb \\
 	&= \delta_{ij}. \quad\quad \checkmark
 	\end{align*}
-	So, $(\omega_i, J_i)$ are canonical variables, as desired. 
+	So, $(w_i, J_i)$ are canonical variables, as desired. 
 	
-	\item 
-	
+	\item Let 
+	\begin{align*}
+	\begin{pmatrix}
+	w_a \\ w_b \\ w_c
+	\end{pmatrix}
+	= \begin{pmatrix}
+	a&b&c\\d&e&f\\g&h&i
+	\end{pmatrix}
+	\begin{pmatrix}
+	w_1\\w_2\\w_3
+	\end{pmatrix}.
+	\end{align*}
+	With 
+	\begin{align*}
+	\begin{pmatrix}
+	J_a \\ J_b \\ J_c
+	\end{pmatrix}
+	= \begin{pmatrix}
+	1&1&1\\1&1&0\\1&0&0
+	\end{pmatrix}
+	\begin{pmatrix}
+	J_1\\J_2\\j_3
+	\end{pmatrix},
+	\end{align*}
+	we can require that $\{ w_\mu, J_\mu \}_{w_{1,2,3},J_{1,2,3}} = \delta_{\mu\nu}$ for $\mu,\nu = a,b,c$ to get 9 equations. It turns out that they are all easy to solve since we know that $(w_{1,2,3}, J_{1,2,3})$ are canonical variables.
+	\begin{align*}
+	&\{w_a, J_a\} = \delta_{aa} = 1 \implies \{aw_1+ bw_2 + cw_3 , J_1+J_2+J_3\} = 1 \implies a+b+c = 1\\
+	&\{w_a, J_b\} = \delta_{ab} = 0 \implies \{aw_1+ bw_2 + cw_3 , J_1+J_2\} = 0 \implies a+b = 0\\
+	&\{w_a, J_c\} = \delta_{ac} = 0 \implies \{aw_1+ bw_2 + cw_3 , J_1\} = 0 \implies a = 0\\
+	&\{w_b, J_a\} = \delta_{ba} = 0 \implies \{dw_1+ ew_2 + fw_3 , J_1+J_2+J_3\} = 0 \implies d+e+f = 0\\
+	&\{w_b, J_b\} = \delta_{bb} = 1 \implies \{dw_1+ ew_2 + fw_3 , J_1+J_2\} = 1 \implies d+e = 1\\
+	&\{w_b, J_c\} = \delta_{bc} = 0 \implies \{dw_1+ ew_2 + fw_3 , J_1\} = 0 \implies d = 0\\
+	&\{w_c, J_a\} = \delta_{ca} = 1 \implies \{gw_1+ hw_2 + iw_3 , J_1+J_2+J_3\} = 0 \implies g+h+i = 0\\
+	&\{w_c, J_b\} = \delta_{cb} = 0 \implies \{gw_1+ hw_2 + iw_3 , J_1+J_2\} = 0 \implies g+h = 0\\
+	&\{w_c, J_c\} = \delta_{cc} = 1 \implies \{gw_1+ hw_2 + iw_3 , J_1\} = 1 \implies g = 1.
+	\end{align*}
+	From these we find
+	\begin{align*}
+	\boxed{\begin{pmatrix}
+	w_a \\ w_b \\ w_c
+	\end{pmatrix}
+	= \begin{pmatrix}
+	0&0&1\\0&1&-1\\1&-1&0
+	\end{pmatrix}
+	\begin{pmatrix}
+	w_1\\w_2\\w_3
+	\end{pmatrix}}
+	\end{align*}
+	If $k_1=k_2$ then we have
+	\begin{align*}
+	\f{d}{dt}w_c = \f{d}{dt}(w_1 - w_2) = \f{\p \ham}{\p J_1} - \f{\p \ham}{\p J_2} = \nu_1- \nu_2 = \f{1}{2\pi}\sqrt{\f{k_1}{m}} - \f{1}{2\pi}\sqrt{\f{k_2}{m}} = 0.
+	\end{align*}
+	So $w_c$ is conserved. Now, if $k_1=k_2=k_3$ then we will have $k_1 = k_2$ which leads to $w_c$ being conserved. Also since $k_2 =k_3$ and $w_b = w_2 - w_3$, we have $w_b$ being conserved as well by virtue of the same argument as for the $k_1=k_2$ case.  
 	
 	
 \end{enumerate}
