@@ -1,4 +1,4 @@
-% courtesy of 
+% inspired by 
 % https://blogs.mathworks.com/graphics/2015/03/16/how-the-tiger-got-its-stripes/
 
 clear
@@ -26,10 +26,10 @@ A = 3; % should be fixed
 % B = 10.2;
 
 % honeycomb
-% dV = 10*scaling_factor; % should be fixed
-% A = 3; % should be fixed
-% dU = 5.2*scaling_factor;
-% B = 10.2;
+dV = 10*scaling_factor; % should be fixed
+A = 3; % should be fixed
+dU = 5.2*scaling_factor;
+B = 10.2;
 
 % hexa_dots
 % dV = 10*scaling_factor; % should be fixed
@@ -59,8 +59,8 @@ A = 3; % should be fixed
 % oscillating squares?
 % mind the scaling_factor... large = better
 % small means more dots get crammed 
-dU = 6.0*scaling_factor;
-B = 10.25;
+% dU = 6.0*scaling_factor;
+% B = 10.25;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -147,6 +147,8 @@ while t<stoptime
     
     drawnow;
     
+%   for movie writing
+
 %     if loop_count > 500
 %          drawnow;
 %          loop_count = 0;
