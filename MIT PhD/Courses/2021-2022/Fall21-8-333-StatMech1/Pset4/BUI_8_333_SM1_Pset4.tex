@@ -438,7 +438,7 @@
 	\end{align*}
 	the partition function $\mathcal{Z}_a(N_1,T,V)$ is 
 	\begin{align*}
-	\mathcal{Z}_a(N_1,T,V) = \f{V^{N_1}}{N_1!h^{3N_1}}\lb \int \exp(-\be \f{p^2}{2m}) \,d^3p\rb^{N_1} = {\f{V^{N_1}}{N_1! h^{3N_1}} \lp \f{2\pi m}{\be} \rp^{3N_1/2}}
+	\mathcal{Z}_a(N_1,T,V) = \f{V^{N_1}}{N_1!h^{3N_1}}\lb \int \exp(-\be \f{p^2}{2m}) \,d^3p\rb^{N_1} = \boxed{{\f{V^{N_1}}{N_1! h^{3N_1}} \lp \f{2\pi m}{\be} \rp^{3N_1/2}}}
 	\end{align*}
 	
 	\item Given 
@@ -447,17 +447,73 @@
 	\end{align*}
 	in view of the previous problem. The external and internal degrees of freedom of the molecule completely decouple. Also, the extra factor of $\exp(\be\epsilon)$ simply carries along. So, we have
 	\begin{align*}
-	\mathcal{Z}_m(N_2,T,V) = {\f{V^{N_2}}{N_2! h^{3N_2}} \lp \f{4\pi m}{\be} \rp^{3N_2/2}} e^{N_2\be\epsilon} \mathcal{Z}_\text{rot}^{N_2}
+	\mathcal{Z}_m(N_2,T,V) = {\f{V^{N_2}}{N_2! h^{3N_2}} \lp \f{4\pi m}{\be} \rp^{3N_2/2}} e^{N_2\be\epsilon} \mathcal{Z}_\text{rot}
 	\end{align*}
 	where
 	\begin{align*}
 	\mathcal{Z}_\text{rot} 
-	&= 
-	 \f{1}{h^2}\int^{2\pi}_0 d\phi \int^\pi_0 d\theta \int dp_\phi\,dp_\theta \exp\lb -\f{\be}{2I} \lp p^2_\theta + \f{p_\phi^2}{\sin^2\theta}\rp \rb\\
-	&= 
+	= 
+	 \f{1}{h^{2N_2}}\lc \int^{2\pi}_0 d\phi \int^\pi_0 d\theta \int dp_\phi\,dp_\theta \exp\lb -\f{\be}{2I} \lp p^2_\theta + \f{p_\phi^2}{\sin^2\theta}\rp \rb \rc^{N_2}
+	=\lp\f{8I\pi^2}{h^2\be}\rp^{N_2}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[1]:= Integrate[
+	2*Pi*Exp[(-\[Beta]/(2*II))*(p\[Theta]^2 + 
+	p\[Phi]^2/Sin[\[Theta]]^2)], {\[Theta], 0, 
+	Pi}, {p\[Theta], -Infinity, Infinity}, {p\[Phi], -Infinity, 
+	Infinity}]
+	
+	Out[1]= (8 II \[Pi]^2)/\[Beta]
+	\end{lstlisting}
+	
+	So we have
+	\begin{align*}
+	\mathcal{Z}_m(N_2,T,V) = \boxed{{\f{V^{N_2}}{N_2! h^{3N_2}} \lp \f{4\pi m}{\be} \rp^{3N_2/2}}  \lp\f{8I\pi^2}{h^2\be}\rp^{N_2}e^{N_2\be\epsilon}}
 	\end{align*}
 	
-	\item 
+	
+	
+	\item At equilibrium, the total entropy is maximized. This implies that $\mathcal{Z}_a\mathcal{Z}_m$ is extremized i.e. $\ln \mathcal{Z}_a + \ln \mathcal{Z}_m$ is extremized (since the log is a monotically increasing function). Using the Stirling approximation we find 
+	\begin{align*}
+	&\ln \mathcal{Z}_a  = -N_1 \ln N_1 + \ln \f{V^{N_1}}{h^{3N_1}} + \f{3N_1}{2}\log \f{2\pi m }{\be}\\
+	&\ln \mathcal{Z}_m  = -N_2\ln N_2  + \ln \f{V^{N_2}}{h^{3N_2}} + \f{3N_2}{2}\log \f{4\pi m }{\be} + N_2\log \lb \f{8I\pi^2}{h^2\be} e^{\be\epsilon} \rb.
+	\end{align*}
+	Setting $N_2 = (N-N_1/2)$ and writing
+	\begin{align*}
+	\f{\p}{\p N_1}\lb  \ln \mathcal{Z}_a + \ln \mathcal{Z}_m \rb = 0
+	\end{align*}
+	gives us 
+	\begin{align*}
+	\ln \lb \f{2n_m}{n_a^2} \rb = \ln \lb \f{2N_2 V}{N_1^2} \rb = \ln \lb \f{(N-N_1)V}{N_1^2} \rb = 1 + 3\ln h + \f{1}{2}\ln (256\pi) + \f{3}{2}\ln (k_B m T) - \ln \lp \f{I k_BT e^{\epsilon/k_BT}}{h^2} \rp
+	\end{align*}
+	And so we have
+	\begin{align*}
+	\boxed{\f{n_m}{n_a^2} = \f{8\sqrt{\pi} hI  }{m^{3/2} \sqrt{k_BT}} e^{1+\epsilon/k_BT}}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[52]:= A = (8 II \[Pi]^2)/(h^2*\[Beta])*Exp[\[Beta]*e];
+	
+	In[56]:= N2 = (n - N1)/2;
+	
+	In[57]:= D[-N1*Log[N1] + 
+	Log[V^N1/(h^(3*N1))] + (3*N1/2) Log[2*Pi*m*k*T]
+	- N2*Log[N2] + Log[V^N2/(h^(3*N2))] + (3*N2/2)*Log[2*2*Pi*m*k*T] + 
+	N2*Log[A], N1] // FullSimplify
+	
+	Out[57]= 1/4 (-2 - 6 Log[h] + 2 Log[n - N1] - 4 Log[N1] - 
+	Log[256 \[Pi]] + 3 Log[k m T] + 2 Log[V] - 
+	2 Log[(E^(e \[Beta]) II)/(h^2 \[Beta])])
+	
+	In[62]:= B = -1 - 
+	3 Log[h] - (1/2) Log[256 \[Pi]] + (3/2) Log[k m T] - 
+	Log[(E^(e \[Beta]) II)/(h^2 \[Beta])];
+	
+	In[63]:= (1/2)*Exp[-B] /. {\[Beta] -> 1/(k*T)} // FullSimplify
+	
+	Out[63]= (8 E^(1 + e/(k T)) h II k Sqrt[\[Pi]] T)/(k m T)^(3/2)
+	\end{lstlisting}
 \end{enumerate}
 
 
@@ -465,13 +521,30 @@
 \noindent \textbf{4. Fluctuation-induced dipole interactions.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item We may rewrite $V(r)$ as 
+	\begin{align*}
+	V(r) 
+	&= \f{1}{r^3} \lb 3D_1 D_2 \cos\theta_1 \cos\theta_2  - \vec{D_1} \cdot \vec{D_2} \rb
+ 	\end{align*}
+ 	so that
+	\begin{align*}
+	\mathcal{Z}(r) = \f{1}{h^2}\int_0^\pi d\theta_1 \int_0^\pi d\theta_2 \exp(\be V) 
+	\end{align*}
 	
 	\item 
+	\begin{align*}
+	U(r) = -3k_BT \f{D_1^3D_2^3}{r^6}
+	\end{align*}
 	
 	\item 
+	\begin{align*}
+	blah
+	\end{align*}
 	
 	\item 
+	\begin{align*}
+	V_d(r) = -3k_BT \f{\chi_1\chi_2 }{r^6}
+	\end{align*}
 \end{enumerate}
 
 
@@ -767,37 +840,186 @@
 \noindent \textbf{8. (Optional) One dimensional polymer.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item The partition function here is similar to that of a two-level system:
+	\begin{align*}
+	\mathcal{Z}(T,N) = \sum_{s_1=0}^1\sum_{s_2=0}^1\dots \sum_{s_2=0}^1 \exp^{-\be \epsilon \sum_{i=1}^N s_i}  = \boxed{\lb 1 + \exp(-\be\epsilon) \rb^N}
+	\end{align*}
+	here we keep $\be = 1/k_BT$ for simplicity, but it's understood that the variables $\be$ and $T$ are equivalent.
 	
-	\item 
+	\item Consider a monomer. The probability that it is aligned along its short axis and along its long axis, respectively, are 
+	\begin{align*}
+	\boxed{p_\text{short} = \f{e^{-\be\epsilon }}{1+ e^{-\be\epsilon}}\quad\quad p_\text{long} = \f{1}{1+e^{-\be\epsilon}}}
+	\end{align*}
+	so the relative probability for short versus long alignment is simply the Boltzmann weight $\boxed{e^{-\be\epsilon}}$.
 	
-	\item
+	\item The average length of the polymer is $N$ times the average length of a monomer:
+	\begin{align*}
+	\langle L(T,N)\rangle = N\langle L_1(T) \rangle = \f{N}{1+e^{-\be\epsilon}}\lb a e^{-\be\epsilon} + 2a  \rb = \boxed{aN\f{{2+e^{-\be\epsilon}}}{1+e^{-\be\epsilon}}}
+	\end{align*}
 	
-	\item 
+	\item Since the links are independent, we have
+	\begin{align*}
+	\langle L(T,N)^2\rangle_c 
+	&= N\langle L_1(T) \rangle^2_c\\ 
+	&= N\lb \langle L_1(T)^2 \rangle - \langle L_1(T)\rangle^2 \rb \\ 
+	&= N\lb \f{a^2 e^{-\be\epsilon} + 4a^2}{1+e^{-\be\epsilon}} - a^2\lp \f{{2+e^{-\be\epsilon}}}{1+e^{-\be\epsilon}} \rp^2 \rb\\
+	&= \boxed{\f{Na^2}{2}\f{1}{1+\cosh(\be\epsilon)}}
+	\end{align*}
 	
-	\item  
+	\item  The central limit theorem says that in the $N\to \infty$ limit $L(T,N)$ follows the normal distribution with the same mean and variance as the binomial which $L(T,N)$ follows:
+	\begin{align*}
+	\boxed{L(T,N) \sim 
+	\mathcal{N}\lc  aN\f{{2+e^{-\be\epsilon}}}{1+e^{-\be\epsilon}} , \f{Na^2}{2}\f{1}{1+\cosh(\be\epsilon)} \rc 
+	\equiv 
+	\mathcal{N}\lc \f{Na}{2}\lb 3 + \tanh(\f{\be\epsilon}{2}) \rb , \f{Na^2}{2}\f{1}{1+\cosh(\be\epsilon)}\rc }
+	\end{align*}
+	where $\mathcal{N}\lc \mu,\sigma^2\rc$ denotes the normal distribution with mean $\mu$ and variance $\sigma^2$.\\
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[7]:= L = 
+	a*(2 + Exp[-\[Beta]*\[Epsilon]])/(1 + Exp[-\[Beta]*\[Epsilon]]);
+	
+	In[6]:= L2 = 
+	a^2*Exp[-\[Beta]*\[Epsilon]]/(1 + Exp[-\[Beta]*\[Epsilon]]) + 
+	4*a^2/(1 + Exp[-\[Beta]*\[Epsilon]]);
+	
+	In[9]:= N*(L2 - L^2) // FullSimplify
+	
+	Out[9]= (a^2 N)/(2 + 2 Cosh[\[Beta] \[Epsilon]])
+	
+	In[12]:= ExpToTrig[L] // FullSimplify
+	
+	Out[12]= 1/2 a (3 + Tanh[(\[Beta] \[Epsilon])/2])
+	\end{lstlisting}
 \end{enumerate}
 
 
 \noindent \textbf{9. (Optional) Classical virial theorem.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item We simply calculate, using the definition and integration by parts:
+	\begin{align*}
+	\bigg\langle \f{\p f}{\p X_i} \bigg\rangle 
+	&= \f{1}{\mathcal{Z}}\int \f{\p f}{\p X_i}\exp(-\be \ham)\,d\Gamma\\
+	&= -\f{1}{\mathcal{Z}}\int  f\f{\p}{\p X_i}\exp(-\be\ham)\,d\Gamma\\
+	&= \be\f{1}{\mathcal{Z}}\int  f\f{\p \ham}{\p X_i}\exp(-\be\ham)\,d\Gamma\\
+	&= \be\bigg\langle f\f{\p \ham}{\p X_i} \bigg\rangle
+	\end{align*}
 	
-	\item 
-	
+	\item With $f=q_j$ and $X_i = q_i$ we have
+	\begin{align*}
+	\boxed{k_B T\delta_{ij} = \bigg\langle q_j\f{\p \ham}{\p q_i} \bigg\rangle  = -\langle q_j \dot{p}_i \rangle }
+	\end{align*}
+	With $f = q_j$ and $X_i = p_i$ we have
+	\begin{align*}
+	\boxed{0 = \be\bigg\langle q_j\f{\p \ham}{\p p_i} \bigg\rangle \implies 0 = \langle q_j \dot{q}_i\rangle}
+	\end{align*}
 \end{enumerate}
 
 
-\noindent \textbf{10. (Optional) Disordered gas.}
+\noindent \textbf{10. (Optional) Disordered glass.}
 
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Partition function contribution from one defect:
+	\begin{align*}
+	\mathcal{Z}(T) 
+	=  \exp[{-\be\epsilon}] + \exp[-\be(\epsilon + \delta)] = \boxed{e^{-\be\epsilon}\lp 1 + e^{-\be \delta} \rp}
+	\end{align*}
+	If we want the full partition function then we simply put in indices and take the product of the individual partition functions.\\
 	
-	\item 
+	Average energy contribution from one defect:
+	\begin{align*}
+	E(T) = -\f{\p \ln \mathcal{Z} }{\p \be}= -\f{\p}{\p \be}\ln \lb e^{-\be\epsilon}\lp 1 + e^{-\be \delta} \rp \rb = 
+	\boxed{\epsilon + \f{\delta}{1 + e^{\be \delta}}}
+	\end{align*}
+	If we want the total average energy then we just sum over $N$ defects. \\
 	
-	\item 
+	
+	Heat capacity contribution from each defect:
+	\begin{align*}
+	C(T) = \f{\p E}{\p T} = 
+	\boxed{\f{\delta^2}{4k_BT^2}\sech^2\lp \f{\delta}{2k_BT} \rp}
+	\end{align*}
+	Again if we want the full heat capacity then we just add indices in an sum over all defects. \\
+	
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[25]:= Z = Exp[-\[Beta]*\[Epsilon]]*(1 + Exp[-\[Beta]*\[Delta]])
+	
+	Out[25]= E^(-\[Beta] \[Epsilon]) (1 + E^(-\[Beta] \[Delta]))
+	
+	In[26]:= -D[Log[Z], \[Beta]] // FullSimplify
+	
+	Out[26]= \[Delta]/(1 + E^(\[Beta] \[Delta])) + \[Epsilon]
+	
+	In[27]:= D[-D[Log[Z], \[Beta]] /. {\[Beta] -> 1/(k*T)}, 
+	T] // FullSimplify
+	
+	Out[27]= (\[Delta]^2 Sech[\[Delta]/(2 k T)]^2)/(4 k T^2)
+	\end{lstlisting}
+	
+	\item The heat capacity as an integral, assuming $\rho(\delta)\,d\delta = \rho \,d\delta$, is 
+	\begin{align*}
+	C(T) 
+	&= \int_0^\Delta d\delta\, \rho(\delta) \f{\delta^2}{4k_BT^2}\sech^2\lp \f{\delta}{2k_BT} \rp \\
+	&= \int_0^\Delta d\delta\, \rho \f{\delta^2}{4k_BT^2}\sech^2\lp \f{\delta}{2k_BT} \rp \\
+	&= \boxed{-2 k^2 \rho  T \text{Li}_2\left(-e^{\frac{\Delta }{k T}}\right)-\frac{1}{6} \pi^2 k^2 \rho  T+\f{1}{T}\Delta ^2 \rho  \left(1-\frac{1}{e^{\frac{\Delta }{kT}}+1}\right)-2 \Delta  k \rho  \log \left(e^{\frac{\Delta }{k T}}+1\right)}
+	\end{align*}
+	From here we find that
+	\begin{align*}
+	\boxed{\lim_{T\to 0}C(T) = \lim_{T\to \inf} C(T) = 0}
+	\end{align*}
+	
+	
+	
+	Schematically $C(T)$ looks like this 
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.5\textwidth]{problem10.eps}
+	\end{figure}
+
+
+
+	Mathematica code:
+	\begin{lstlisting}
+	In[30]:= Integrate[\[Rho]*
+	D[-D[Log[Z], \[Beta]] /. {\[Beta] -> 1/(k*T)}, T], {\[Delta], 
+	0, \[CapitalDelta]}] // FullSimplify
+	
+	Out[30]= ConditionalExpression[-(1/6)
+	k^2 \[Pi]^2 T \[Rho] + ((1 - 1/(
+	1 + E^(\[CapitalDelta]/(k T)))) \[CapitalDelta]^2 \[Rho])/T - 
+	2 k \[CapitalDelta] \[Rho] Log[1 + E^(\[CapitalDelta]/(k T))] - 
+	2 k^2 T \[Rho] PolyLog[2, -E^((\[CapitalDelta]/(k T)))], 
+	E^(\[CapitalDelta]/(k T)) >= -1]
+	
+	In[31]:= Limit[-(1/6)
+	k^2 \[Pi]^2 T \[Rho] + ((1 - 1/(
+	1 + E^(\[CapitalDelta]/(k T)))) \[CapitalDelta]^2 \[Rho])/T - 
+	2 k \[CapitalDelta] \[Rho] Log[1 + E^(\[CapitalDelta]/(k T))] - 
+	2 k^2 T \[Rho] PolyLog[2, -E^((\[CapitalDelta]/(k T)))], T -> 0]
+	
+	Out[31]= ConditionalExpression[0, \[Rho] \[Element] Reals && 
+	k \[CapitalDelta] > 0]
+	
+	In[32]:= Limit[-(1/6)
+	k^2 \[Pi]^2 T \[Rho] + ((1 - 1/(
+	1 + E^(\[CapitalDelta]/(k T)))) \[CapitalDelta]^2 \[Rho])/T - 
+	2 k \[CapitalDelta] \[Rho] Log[1 + E^(\[CapitalDelta]/(k T))] - 
+	2 k^2 T \[Rho] PolyLog[2, -E^((\[CapitalDelta]/(k T)))], 
+	T -> Infinity]
+	
+	Out[32]= 0
+	\end{lstlisting}
+	
+	
+
+	\item \textbf{\textcolor{blue}{No idea how to proceed here.}}
 \end{enumerate}
 
 
