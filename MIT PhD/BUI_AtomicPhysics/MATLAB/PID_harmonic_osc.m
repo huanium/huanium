@@ -74,9 +74,14 @@ function dxdt = ODESolver(t, x)
     omega0 = 2*pi;
 
     % PID tuning
-    Kp = 100;
-    Ki = 20;
-    Kd = 7;
+    % Kp = 100;
+    % Ki = 20;
+    % Kd = 7;
+    
+    % PID tuning
+    Kp = 70;
+    Ki = 2;
+    Kd = 10;
     
     % dr/dt: find the derivative of r(t) for D-gain:
     r_now = interp1(time_array,r,t);
