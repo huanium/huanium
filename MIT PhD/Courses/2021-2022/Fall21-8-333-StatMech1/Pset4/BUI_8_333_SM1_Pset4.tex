@@ -238,7 +238,7 @@
 	Hence, we have 
 	\begin{align*}
 	&\langle x^2 \rangle = \int x^2 \rho\,dV =  \f{1}{\mathcal{Z}^{1/N}} \f{1}{(N!)^{1/N}h^3}\f{8\pi^3}{\be^2\sqrt{K\be}( \be/m)^{3/2}(K-m\Omega^2)^2}  = \f{1}{\be(K-m\Omega^2)} = \boxed{\f{1}{\be m (\omega^2 - \Omega^2)}}\\
-	&\langle y^2 \rangle = \f{(N!)^{1/N}h^3}{\be(K-m\Omega^2)}= \boxed{\f{1}{\be m (\omega^2 - \Omega^2)}} \quad\quad \text{by symmetry}\\
+	&\langle y^2 \rangle = \f{1}{\be(K-m\Omega^2)}= \boxed{\f{1}{\be m (\omega^2 - \Omega^2)}} \quad\quad \text{by symmetry}\\
 	&\langle z^2 \rangle = \f{1}{\mathcal{Z}^{1/N}}\int z^2 \rho\,dV = \f{1}{\mathcal{Z}^{1/N}} \f{1}{(N!)^{1/N}h^3}\f{8\pi^3}{(K\be)^{3/2}(\be/m)^{3/2}\be (K-m\Omega^2)}   = \boxed{\f{1}{K\be}}
 	\end{align*}
 	
@@ -312,7 +312,7 @@
 	classical partition function is 
 	\begin{align*}
 	\mathcal{Z}_\text{rot} 
-	&= \f{1}{h^2}\int^{2\pi}_0 d\phi \int^\pi_0 \sin\theta\,d\theta \int dp_\phi\,dp_\theta \exp\lp -\f{\be}{2I} \lp p^2_\theta + \f{p_\phi^2}{\sin^2\theta}\rp + \be E\mu\cos\theta\rp\\
+	&= \f{1}{h^2}\int^{2\pi}_0 d\phi \int^\pi_0 \,d\theta \int dp_\phi\,dp_\theta \exp\lp -\f{\be}{2I} \lp p^2_\theta + \f{p_\phi^2}{\sin^2\theta}\rp + \be E\mu\cos\theta\rp\\
 	&= \boxed{\f{8I\pi^2\sinh(\be\mu E)}{Eh^2\be^2 \mu}}
  	\end{align*}
  	Mathematica code:
@@ -534,7 +534,7 @@
  	\begin{align*}
  	\vec{D}_1 \cdot \vec{D_2} = D_1D_2 (\cos\theta_1\cos\theta_2 + \sin\theta_1\sin\theta_2\cos(\phi_1-\phi_2))
  	\end{align*}
- 	With this we can calculate the partition function as follows (ignoring factors of $h$ for now):
+ 	when writing $\vec{D}_1$ and $\vec{D}_2$ in spherical coordinates.  With this we can calculate the partition function as follows (ignoring factors of $h$ for now):
  	\begin{align*}
 	\mathcal{Z}(r) = \int_0^{2\pi}\,d\phi_1 \int_0^{2\pi}\,d\phi_2 \int_0^\pi \sin\theta_1 \, d\theta_1 \int_0^\pi \sin\theta_2\, d\theta_2 \exp(-\be V) 
 	\end{align*}
@@ -586,7 +586,7 @@
 	Cos[\[Phi]1 - \[Phi]2] )^2, {\[Theta]1, 0, Pi}, {\[Theta]2, 0, 
 	Pi}, {\[Phi]1, 0, 2 Pi}, {\[Phi]2, 0, 2 Pi}]
 	
-	Out[25]= (9 D1^2 D2^2 \[Pi]^4 \[Beta]^2)/(4 R^6)
+	Out[25]= (16 D1^2 D2^2 \[Pi]^2 \[Beta]^2)/(3 R^6)
 	\end{lstlisting}
 	
 	\item From $\mathcal{Z}(r)$ we can find $U(r)$ as follows. Schematically we have
@@ -601,18 +601,23 @@
 	\item For this problem we just repeat the computation, but also integrating over $D_1, D_2$ with extra Boltzmann weights $\exp[-\be(D_1^2/2\chi_1 + D_2^2/2\chi_2)]$: 
 	\begin{align*}
 	\mathcal{Z}'(r) &= \int_0^\infty d D_1\int_0^\infty dD_2\int_0^{2\pi}\,d\phi_1 \int_0^{2\pi}\,d\phi_2 \\
-	&\quad\int_0^\pi \sin\theta_1 \, d\theta_1 \int_0^\pi \sin\theta_2\, d\theta_2 \exp(\be V) \exp[-\be(D_1^2/2\chi_1 + D_2^2/2\chi_2)]
+	&\quad\int_0^\pi \sin\theta_1 \, d\theta_1 \int_0^\pi \sin\theta_2\, d\theta_2 \exp(-\be V) \exp[-\be(D_1^2/2\chi_1 + D_2^2/2\chi_2)]
 	\end{align*}
 	where now we no longer treat $D_1,D_2$ as constants. Letting Mathematica do the work we get to low order
 	\begin{align*}
-	\mathcal{Z}'(r) \approx \f{8\pi^3}{\be \sqrt{\chi_1\chi_2}} + \f{8\pi^3 (\chi_1\chi_2)^{3/2}}{3\be r^6} + \dots \approx  \f{8\pi^3}{\be \sqrt{\chi_1 \chi_2}}\lp 1 + \f{(\chi_1\chi_2)^2}{3r^6} \rp
+	\mathcal{Z}'(r) \approx \f{8\pi^3 \sqrt{\chi_1\chi_2}}{\be } + \f{8\pi^3 (\chi_1\chi_2)^{3/2}}{3\be r^6} + \dots \approx \boxed{ \f{8\pi^3 \sqrt{\chi_1\chi_2}}{\be }\lp 1 + \f{\chi_1\chi_2}{3r^6} \rp}
 	\end{align*}
 	
 	
 	
-	\item Using the same approach as before, we can simply read off the effective potential:
+	\item Using the same approach as before, we write
 	\begin{align*}
-	U'(r) = -\f{1}{\be} \f{(\chi_1\chi_2)^2}{3r^6} = \boxed{-k_BT \f{\chi_1^2\chi_2^2}{3r^6}}
+	\mathcal{Z}'(r) = \int d\Omega \,dD_1 dD_2\, \exp(-D_1^2/2\chi_1)\exp(-D_2^2/2\chi_2)\exp(-\be V) = \f{8\pi^3 \sqrt{\chi_1\chi_2}}{\be }\lb 1- \be U'(r) \rb
+	\end{align*}
+	
+	from which we can read off the effective potential:
+	\begin{align*}
+	U'(r) = -\f{1}{\be} \f{\chi_1\chi_2}{3r^6} = \boxed{-k_BT \f{\chi_1\chi_2}{3r^6}}
 	\end{align*}
 	Mathematica code:
 	\begin{lstlisting}
@@ -620,12 +625,16 @@
 	(2*\[Chi]2)],{D1,0,Infinity},{D2,0,Infinity},{\[Theta]1,0,Pi},{\[Theta]2,0,Pi},{\[Phi]1,0,
 	2*Pi},{\[Phi]2,0,2*Pi}]
 	
+	ConditionalExpression[(8 \[Pi]^3 Sqrt[\[Beta]/\[Chi]2] \[Chi]2^2)/(
+	3 r^6 (\[Beta]/\[Chi]1)^(3/2)), Re[\[Beta]/\[Chi]1] > 0]
+	
 	Z2=Integrate[Sin[\[Theta]1]*Sin[\[Theta]2]*Exp[-\[Beta]*D1^2/(2*\[Chi]1)]*Exp[-\[Beta]*D2^2/(2*\[Chi]2)]
 	*(D1*D2)^2*(\[Beta]^2/2)*(2*Cos[\[Theta]1]*Cos[\[Theta]2]-Sin[\[Theta]1]
 	*Sin[\[Theta]2]*Cos[\[Phi]1-\[Phi]2])^2/r^6,{D1,0,Infinity}
 	,{D2,0,Infinity},{\[Theta]1,0,Pi},{\[Theta]2,0,Pi},{\[Phi]1,0,2*Pi},{\[Phi]2,0,2*Pi}]//FullSimplify
 	
-	
+	ConditionalExpression[(8 \[Pi]^3 Sqrt[\[Chi]1 \[Chi]2])/\[Beta], 
+	Re[\[Beta]] > 0]
 	\end{lstlisting}
 \end{enumerate}
 
@@ -1048,60 +1057,52 @@
 	\item The heat capacity as an integral, assuming $\rho(\delta)\,d\delta = \rho \,d\delta$, is 
 	\begin{align*}
 	C(T) 
-	&= \int_0^\Delta d\delta\, \rho(\delta) \f{\delta^2}{4k_BT^2}\sech^2\lp \f{\delta}{2k_BT} \rp \\
-	&= \int_0^\Delta d\delta\, \rho \f{\delta^2}{4k_BT^2}\sech^2\lp \f{\delta}{2k_BT} \rp \\
-	&= \boxed{-2 k^2 \rho  T \text{Li}_2\left(-e^{\frac{\Delta }{k T}}\right)-\frac{1}{6} \pi^2 k^2 \rho  T+\f{1}{T}\Delta ^2 \rho  \left(1-\frac{1}{e^{\frac{\Delta }{kT}}+1}\right)-2 \Delta  k \rho  \log \left(e^{\frac{\Delta }{k T}}+1\right)}
+	&= \int_0^\Delta d\delta\, \rho(\delta) \f{\delta^2}{4k_BT^2}\sech^2\lp \f{\delta}{2k_BT} \rp.
 	\end{align*}
-	From here we find that
+	In the \textbf{low temperature limit}, we may write the $\sech$ as 
 	\begin{align*}
-	\boxed{\lim_{T\to 0}C(T) = \lim_{T\to \infty} C(T) = 0}
+	\sech\lp \f{\delta}{ 2k_BT} \rp = \f{2e^{\delta/2k_BT}}{e^{2\delta/2k_BT}  + 1} \to  2e^{-\delta/2k_BT}.
 	\end{align*}
-	
-	
-	
-	Schematically $C(T)$ looks like this 
-	\begin{figure}[!htb]
-		\centering
-		\includegraphics[width=0.5\textwidth]{problem10.eps}
-	\end{figure}
-
-
-
+	With this, the integral becomes
+	\begin{align*}
+	C(T) = \int^\Delta_0 \,d\delta \,\rho(\delta)\f{\delta^2}{k_BT^2} e^{-\delta/k_BT} \sim \boxed{T}
+	\end{align*}
+	as $T\to 0$. We can show this by taking $\p C(T)/\p T$ and observe that we get a constant plus an exponential decay in $1/T$:
+	\begin{align*}
+	\f{\p C(T)}{\p T}\bigg\vert_{T\to 0} \sim 2 + e^{-\delta/k_BT}(\dots)
+	\end{align*}
 	Mathematica code:
 	\begin{lstlisting}
-	In[30]:= Integrate[\[Rho]*
-	D[-D[Log[Z], \[Beta]] /. {\[Beta] -> 1/(k*T)}, T], {\[Delta], 
-	0, \[CapitalDelta]}] // FullSimplify
+	In[25]:= D[Integrate[d^2*Exp[-d/T]/T^2, {d, 0, Delta}], 
+	T] // FullSimplify
 	
-	Out[30]= ConditionalExpression[-(1/6)
-	k^2 \[Pi]^2 T \[Rho] + ((1 - 1/(
-	1 + E^(\[CapitalDelta]/(k T)))) \[CapitalDelta]^2 \[Rho])/T - 
-	2 k \[CapitalDelta] \[Rho] Log[1 + E^(\[CapitalDelta]/(k T))] - 
-	2 k^2 T \[Rho] PolyLog[2, -E^((\[CapitalDelta]/(k T)))], 
-	E^(\[CapitalDelta]/(k T)) >= -1]
-	
-	In[31]:= Limit[-(1/6)
-	k^2 \[Pi]^2 T \[Rho] + ((1 - 1/(
-	1 + E^(\[CapitalDelta]/(k T)))) \[CapitalDelta]^2 \[Rho])/T - 
-	2 k \[CapitalDelta] \[Rho] Log[1 + E^(\[CapitalDelta]/(k T))] - 
-	2 k^2 T \[Rho] PolyLog[2, -E^((\[CapitalDelta]/(k T)))], T -> 0]
-	
-	Out[31]= ConditionalExpression[0, \[Rho] \[Element] Reals && 
-	k \[CapitalDelta] > 0]
-	
-	In[32]:= Limit[-(1/6)
-	k^2 \[Pi]^2 T \[Rho] + ((1 - 1/(
-	1 + E^(\[CapitalDelta]/(k T)))) \[CapitalDelta]^2 \[Rho])/T - 
-	2 k \[CapitalDelta] \[Rho] Log[1 + E^(\[CapitalDelta]/(k T))] - 
-	2 k^2 T \[Rho] PolyLog[2, -E^((\[CapitalDelta]/(k T)))], 
-	T -> Infinity]
-	
-	Out[32]= 0
+	Out[25]= 2 - (E^(-(Delta/T)) (Delta + T) (Delta^2 + 2 T^2))/T^3
 	\end{lstlisting}
 	
+	In the \textbf{high temperature limit}, we have
+	\begin{align*}
+	\f{1}{T^2} \sech\lp \f{\delta}{2k_BT} \rp \to \f{1}{T^2}
+	\end{align*}
+	and so 
+	\begin{align*}
+	C(T) \sim \boxed{T^{-2}}
+	\end{align*}
 	
-
-	\item \textbf{\textcolor{blue}{No idea how to proceed here.}}
+	\item Suppose that $\rho(\delta) \sim \delta^{n}$. Then we have
+	\begin{align*}
+	C(T) \sim \f{1}{T^2}\int_0^\Delta \delta^{n+2} e^{-\delta/T} \sim T^{n+1}
+	\end{align*}
+	at low temperatures. In order to ensure $C(T) \sim T$ at low temperatures, it is necessary that $\rho(\delta) \sim \delta^0$, i.e.  $\rho$ is uniform. \\
+	
+	
+	Mathematica code shown below. In this analysis, we take $\Delta \to \infty$ 
+	\begin{lstlisting}
+	In[60]:= Integrate[
+	d^(n + 2)*Exp[-d/T]/T^2, {d, 0, Infinity}] // FullSimplify
+	
+	Out[60]= ConditionalExpression[T^(1 + n) Gamma[3 + n], 
+	Re[n] > -3 && Re[T] > 0]
+	\end{lstlisting}
 \end{enumerate}
 
 
