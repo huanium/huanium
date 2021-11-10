@@ -312,7 +312,7 @@
 	classical partition function is 
 	\begin{align*}
 	\mathcal{Z}_\text{rot} 
-	&= \f{1}{h^2}\int^{2\pi}_0 d\phi \int^\pi_0 d\theta \int dp_\phi\,dp_\theta \exp\lp -\f{\be}{2I} \lp p^2_\theta + \f{p_\phi^2}{\sin^2\theta}\rp + \be E\mu\cos\theta\rp\\
+	&= \f{1}{h^2}\int^{2\pi}_0 d\phi \int^\pi_0 \sin\theta\,d\theta \int dp_\phi\,dp_\theta \exp\lp -\f{\be}{2I} \lp p^2_\theta + \f{p_\phi^2}{\sin^2\theta}\rp + \be E\mu\cos\theta\rp\\
 	&= \boxed{\f{8I\pi^2\sinh(\be\mu E)}{Eh^2\be^2 \mu}}
  	\end{align*}
  	Mathematica code:
@@ -474,7 +474,7 @@
 	
 	
 	
-	\item At equilibrium, the total entropy is maximized. This implies that $\mathcal{Z}_a\mathcal{Z}_m$ is extremized i.e. $\ln \mathcal{Z}_a + \ln \mathcal{Z}_m$ is extremized (since the log is a monotically increasing function). Using the Stirling approximation we find 
+	\item At equilibrium, the free energy is extremized. This implies that $\mathcal{Z}_a\mathcal{Z}_m$ is extremized i.e. $\ln \mathcal{Z}_a + \ln \mathcal{Z}_m$ is extremized (since the log is a monotically increasing function). Using the Stirling approximation we find 
 	\begin{align*}
 	&\ln \mathcal{Z}_a  = -N_1 \ln N_1 + \ln \f{V^{N_1}}{h^{3N_1}} + \f{3N_1}{2}\log \f{2\pi m }{\be}\\
 	&\ln \mathcal{Z}_m  = -N_2\ln N_2  + \ln \f{V^{N_2}}{h^{3N_2}} + \f{3N_2}{2}\log \f{4\pi m }{\be} + N_2\log \lb \f{8I\pi^2}{h^2\be} e^{\be\epsilon} \rb.
@@ -522,7 +522,7 @@
 
 \begin{enumerate}[label=(\alph*)]
 	\item We may rewrite $V(r)$ as 
-	\begin{align*}
+	\begin{align*} 
 	V(r) 
 	&= \f{1}{r^3} \lb 3D_1 D_2 \cos\theta_1 \cos\theta_2  - \vec{D_1} \cdot \vec{D_2} \rb
  	\end{align*}
@@ -536,15 +536,15 @@
  	\end{align*}
  	With this we can calculate the partition function as follows (ignoring factors of $h$ for now):
  	\begin{align*}
-	\mathcal{Z}(r) = \int_0^{2\pi}\,d\phi_1 \int_0^{2\pi}\,d\phi_2 \int_0^\pi d\theta_1 \int_0^\pi d\theta_2 \exp(\be V) 
+	\mathcal{Z}(r) = \int_0^{2\pi}\,d\phi_1 \int_0^{2\pi}\,d\phi_2 \int_0^\pi \sin\theta_1 \, d\theta_1 \int_0^\pi \sin\theta_2\, d\theta_2 \exp(-\be V) 
 	\end{align*}
 	Expanding 
 	\begin{align*}
-	\exp(\be V) \approx 1 + \be V + \f{1}{2}\be^2 V^2 + \dots 
+	\exp(\be V) \approx 1 - \be V + \f{1}{2}\be^2 V^2 + \dots 
 	\end{align*}
 	we get
 	\begin{align*}
-	\boxed{\mathcal{Z}(r) \approx 4\pi^4 + 0 + \f{9}{4}D_1^2D_2^2 \pi^4 \f{\beta^2}{r^6} + \dots}
+	\boxed{\mathcal{Z}(r) \approx 16\pi^2 + \f{16\pi^2}{3}D_1^2D_2^2 \f{\beta^2}{r^6} + \dots}
 	\end{align*}
 	Mathematica code:
 	\begin{lstlisting}
@@ -569,7 +569,7 @@
 	(*First order*)
 	In[33]:= (*First order*)
 	
-	In[34]:= Integrate[\[Beta] (D1*D2)/(R^3)*(2*Cos[\[Theta]1]*
+	In[34]:= Integrate[Sin[\[Theta]1]*Sin[\[Theta]2]*\[Beta] (D1*D2)/(R^3)*(2*Cos[\[Theta]1]*
 	Cos[\[Theta]2] - 
 	Sin[\[Theta]1]*Sin[\[Theta]2]*
 	Cos[\[Phi]1 - \[Phi]2] ), {\[Theta]1, 0, Pi}, {\[Theta]2, 0, 
@@ -580,7 +580,7 @@
 	(*Second order*)
 	In[32]:= (*Second order*)
 	
-	In[25]:= Integrate[(\[Beta]^2/
+	In[25]:= Integrate[Sin[\[Theta]1]*Sin[\[Theta]2]*(\[Beta]^2/
 	2)*(D1*D2)^2/(R^6)*(2*Cos[\[Theta]1]*Cos[\[Theta]2] - 
 	Sin[\[Theta]1]*Sin[\[Theta]2]*
 	Cos[\[Phi]1 - \[Phi]2] )^2, {\[Theta]1, 0, Pi}, {\[Theta]2, 0, 
@@ -589,20 +589,32 @@
 	Out[25]= (9 D1^2 D2^2 \[Pi]^4 \[Beta]^2)/(4 R^6)
 	\end{lstlisting}
 	
-	\item From $\mathcal{Z}(r)$ we can find $U(r)$ as follows:
+	\item From $\mathcal{Z}(r)$ we can find $U(r)$ as follows. Schematically we have
 	\begin{align*}
-	blah
+	\mathcal{Z}(r) = \int \exp(-\be U(r)) = \int d\Omega [1-\be U(r)] = 16\pi^2 [1-\be U(r)]
+	\end{align*}
+	we can now read off 
+	\begin{align*}
+	U(r) = -\f{1}{\be} \f{1}{3} D_1^2 D_2^2 \f{\be^2}{r^6} = \boxed{ -\f{D_1^2 D_2^2 }{3k_BT r^6 }} 
 	\end{align*}
 	
-	\item 
+	\item For this problem we just repeat the computation, but also integrating over $D_1, D_2$ with extra Boltzmann weights $\exp[-\be(D_1^2/2\chi_1 + D_2^2/2\chi_2)]$: 
 	\begin{align*}
-	blah
+	\mathcal{Z}'(r) &= \int_0^\infty d D_1\int_0^\infty dD_2\int_0^{2\pi}\,d\phi_1 \int_0^{2\pi}\,d\phi_2 \\
+	&\quad\int_0^\pi \sin\theta_1 \, d\theta_1 \int_0^\pi \sin\theta_2\, d\theta_2 \exp(\be V) \exp[-\be(D_1^2/2\chi_1 + D_2^2/2\chi_2)]
+	\end{align*}
+	where now we no longer treat $D_1,D_2$ as constants. Letting Mathematica do the work we get to low order
+	\begin{align*}
+	\mathcal{Z}'(r) \approx \f{8\pi^3}{\be \sqrt{\chi_1\chi_2}} + \f{8\pi^3 (\chi_1\chi_2)^{3/2}}{3\be r^6} + \dots \approx  \f{8\pi^3}{\be \sqrt{\chi_1 \chi_2}}\lp 1 + \f{(\chi_1\chi_2)^2}{3r^6} \rp
 	\end{align*}
 	
-	\item 
+	
+	
+	\item Using the same approach as before, we can simply read off the effective potential:
 	\begin{align*}
-	blah
+	U'(r) = -\f{1}{\be} \f{(\chi_1\chi_2)^2}{3r^6} = \boxed{-k_BT \f{\chi_1^2\chi_2^2}{3r^6}}
 	\end{align*}
+	Mathematica code:
 \end{enumerate}
 
 
@@ -1030,7 +1042,7 @@
 	\end{align*}
 	From here we find that
 	\begin{align*}
-	\boxed{\lim_{T\to 0}C(T) = \lim_{T\to \inf} C(T) = 0}
+	\boxed{\lim_{T\to 0}C(T) = \lim_{T\to \infty} C(T) = 0}
 	\end{align*}
 	
 	
