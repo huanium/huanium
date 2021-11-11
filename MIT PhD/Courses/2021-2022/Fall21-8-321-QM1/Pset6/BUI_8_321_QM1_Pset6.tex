@@ -135,29 +135,298 @@ Problem set: \textbf{\#6}
 
 
 
-\noindent \textbf{1. Correlation function.}
+\noindent \textbf{1. Correlation function.} The position operator in the Heisenberg picture is 
+\begin{align*}
+x(t) = e^{i\ham t/\hbar} x(0) e^{-i\ham t/\hbar}.
+\end{align*}
+The Hamiltonian of the 1D SHO is 
+\begin{align*}
+\ham = \f{p^2}{2m} + \f{1}{2}m\omega^2 x^2 = -\f{\hbar^2}{2m}\f{\p^2}{\p x^2} + \f{1}{2}m\omega^2 x^2
+\end{align*}
+Using the Baker-Hausdorff formula (the one introduced in Problem Set \#1), we find 
+\begin{align*}
+x(t) &=  e^{i\ham t/\hbar} x(0) e^{-i\ham t/\hbar}\\
+&= x(0) + \lp \f{it}{\hbar} \rp[\ham, x(0)] + \f{1}{2!}\lp \f{it}{\hbar} \rp^2 [\ham,[\ham,x(0)]] + \dots
+\end{align*} 
+Now we know that 
+\begin{align*}
+[\ham,x(0)] = -\f{i\hbar}{m} p(0)
+\end{align*}
+and 
+\begin{align*}
+[\ham, p(0)]= i\hbar m\omega^2 x(0)
+\end{align*}
+via the form of the Hamiltonian and the fact that
+\begin{align*}
+\f{[,]_\text{quantum}}{i\hbar} \to \{,\}_\text{classical}
+\end{align*}
+where $[,]$ is the quantum mechanical commutator and $\{\}$ is the classical Poisson bracket. \\
+
+In any case, with this, we find that
+\begin{align*}
+x(t) &= x(0) + \lp \f{p(0)}{m} \rp t - \f{1}{2!} \omega^2 x(0) t^2 - \f{1}{3!}\f{\omega^2 p(0)}{m} t^3 + \dots\\
+&= x(0)\lb 1 - \f{1}{2!}(\omega t)^2 + \f{1}{4!}(\omega t)^4 + \dots \rb + \f{p(0)}{m\omega}\lb \omega t - \f{1}{3!} (\omega t )^3 + \dots \rb  \\
+&= x(0)\cos\omega t + \f{p(0)}{m\omega}\sin\omega t.
+\end{align*}
+Now using the fact that 
+\begin{align*}
+x^H(0) = x^S = x 
+\end{align*}
+and 
+\begin{align*}
+p^H(0) = p^S = -i\hbar \f{\p}{\p x}
+\end{align*}
+we can now evaluate $\langle x(t) x(0)\rangle$ for the ground state of the 1D SHO which is given by 
+\begin{align*}
+\psi_0(x) = \lp \f{m\omega}{\pi \hbar} \rp^{1/4} \exp\lp -\f{m\omega x^2}{2\hbar} \rp
+\end{align*}
+\begin{align*}
+\langle x(t) x(0) \rangle 
+&= \cos\omega t \langle x^2  \rangle -i\hbar \f{\sin\omega t}{m\omega} \bigg\langle  \f{\p}{\p x} x\bigg\rangle\\
+&= \cos\omega t \int_{-\infty}^\infty \psi_0^* x^2 \psi_0 \,dx -i\hbar \f{\sin\omega t}{m\omega }\int_{-\infty}^\infty \psi_0^* \f{\p}{\p x}\lb x\psi_0 \rb\,dx \\
+&=  {\f{\hbar}{2m\omega} \cos\omega t - i\hbar\f{\sin \omega t}{2m\omega}}\\
+&= \boxed{\f{\hbar}{2m\omega}e^{-i\omega t}}
+\end{align*}
+Mathematica code:
+\begin{lstlisting}
+In[7]:= \[Psi] = ((m*\[Omega])/(Pi*hbar))^(1/4)*
+Exp[-m*\[Omega]*x^2/(2*hbar)];
+
+In[8]:= Integrate[\[Psi]*x^2*\[Psi], {x, -Infinity, 
+Infinity}] // FullSimplify
+
+Out[8]= ConditionalExpression[hbar/(2 m \[Omega]), 
+Re[(m \[Omega])/hbar] > 0]
+
+In[9]:= Integrate[\[Psi]*D[x*\[Psi], x], {x, -Infinity, 
+Infinity}] // FullSimplify
+
+Out[9]= ConditionalExpression[1/2, Re[(m \[Omega])/hbar] > 0]
+\end{lstlisting}
+
+\textbf{\textcolor{blue}{Alternatively we could also perform out calculation using ladder operators.}} In this case, $\bra{0} x^2 \ket{0} = (\hbar/2m\omega) \braket{0}$ while  $\bra{0} p x \ket{0} = -(i\hbar/2)\bra{0} \hat a \hat a^\dagger \ket{0} = -(i\hbar )/2 $, so that $\langle x(t)x(0)\rangle = (\hbar/2m\omega)(\cos\omega t - i\sin\omega t) = (\hbar/2m\omega)e^{-i\omega t}$.\\
+
 
 
 
 \noindent \textbf{2. SHO, but algebraically.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Let us consider a generic superposition between the ground and first excited state of the harmonic oscillator:
+	\begin{align*}
+	\ket{\psi} = \cos\theta \ket{0} + e^{i\phi}\sin\theta \ket{1}
+	\end{align*}
+	which ensures normalization. We know that the position operator can be written in terms of the creation and annihilation operators as 
+	\begin{align*}
+	\hat{x} = \sqrt{\f{\hbar}{2m\omega}}(\hat{a}^\dagger + \hat{a}),
+	\end{align*}
+	so 
+	\begin{align*}
+	\bra{\psi} \hat{x} \ket{\psi} &= \sqrt{\f{\hbar}{2m\omega}} \cos\theta \sin\theta  \lb  e^{i\phi} \bra{0} (\hat a^\dagger + \hat a) \ket{1} +  e^{-i\phi}\bra{1} (\hat a^\dagger + \hat a) \ket{0} \rb\\
+	&= 	\sqrt{\f{2\hbar}{m\omega}} \cos\theta \sin\theta  \cos \phi\\
+	&= 	\sqrt{\f{\hbar}{2m\omega}} \sin 2\theta  \cos \phi
+	\end{align*}
+	where we have used the orthonormality of the eigenstates to simplify our calculations. This product is maximized whenever $\sin 2\theta = 1$ and $\cos\phi = 1$, so let us pick $\theta = \pi/4$ and $\phi = 0$, so a possible linear combination is 
+	\begin{align*}
+	\boxed{\ket{\psi} = \f{1}{\sqrt{2}}\lb \ket{0} + \ket{1}\rb} 
+	\end{align*}
 	
-	\item 
+	\item In the Schr\"{o}dinger picture, the state vector evolves as
+	\begin{align*}
+	\boxed{\ket{\psi(t)} = e^{-i\ham t /\hbar} \ket{\psi} = \f{1}{\sqrt{2}}\lb e^{-i \omega t/2 } \ket{0} + e^{-3i\omega t/2}\ket{1}\rb}
+	\end{align*}
+	since the $0$-eigenstate energy is $\hbar \omega /2$ and the $1$-eigenstate energy is $3\hbar \omega/2$.
 	
-	\item 
+	\begin{itemize}
+		\item We evaluate $\langle x \rangle$ for $\ket{\psi(t)}$ (in the Schr\"{o}dinger picture) as follows
+		\begin{align*}
+		_t\langle x \rangle_t &= \sqrt{\f{\hbar}{2m\omega}}\bra{\psi(t)}  \hat a^\dagger + \hat a \ket{\psi(t)} \\
+		&= \sqrt{\f{\hbar}{2m\omega}} \lb \f{1}{2}  e^{i\omega t/2} e^{-3i\omega/2}  \bra{0} \hat a \ket{1} + \f{1}{2} e^{3i\omega/2} e^{-i\omega t/2}  \bra{1} \hat a^\dagger \ket{0} \rb\\
+		&= \boxed{\sqrt{\f{\hbar}{2m\omega}}\cos\omega t}
+		\end{align*}
+		
+		
+		\item We evaluate $\langle x \rangle$ for $\ket{\psi(t)}$ in the Heisenberg picture as follows:
+		\begin{align*}
+		\langle x(t) \rangle 
+		&= \bra{\psi} e^{i\ham t/\hbar} x e^{-i\ham t/\hbar} \ket{\psi} \\
+		&= \bra{\psi} x(0)\cos\omega t + \f{p(0)}{m\omega}\sin\omega t \ket{\psi} \\
+		&= \sqrt{\f{\hbar}{2m\omega}}\cos\omega t\bra{\psi}\hat a^\dagger + \hat a \ket{\psi} + i\sqrt{\f{\hbar m \omega}{2}}\f{\sin\omega t}{m\omega} \bra{\psi} \hat a^\dagger - \hat a \ket{\psi} \\
+		&= \sqrt{\f{\hbar}{2m\omega}}\cos\omega t \lb \f{1}{2}\braket{0} + \f{1}{2}\braket{1} \rb + i\sqrt{\f{\hbar m \omega}{2}} \f{\sin\omega t}{m\omega} \lb \f{1}{2}\braket{1} - \f{1}{2}\braket{0} \rb \\
+		&= \boxed{\sqrt{\f{\hbar}{2m\omega}}\cos\omega t}
+		\end{align*}
+	\end{itemize}
+	
+	Finally, we evaluate $\langle p \rangle$ as follows:
+	\begin{align*}
+	\langle p(t)\rangle = \,_t\langle p \rangle_t &= i\sqrt{\f{\hbar m \omega}{2}}\bra{\psi(t)}\hat a^\dagger - \hat a \ket{\psi(t)} \\
+	&=  i\sqrt{\f{\hbar m \omega}{2}}\lb \f{1}{2} e^{3i\omega t/2} e^{-i\omega t/2}\braket{1} - \f{1}{2}e^{i\omega t/2}e^{-3i\omega t/2}\braket{0} \rb \\
+	&= \boxed{-\sqrt{\f{\hbar m \omega}{2}}\sin \omega t}
+	\end{align*}
+	
+	Now we see that 
+	\begin{align*}
+	m \f{d}{dt} \langle x(t) \rangle = -m\omega \sqrt{\f{\hbar}{ 2 m \omega}} \sin\omega t = -\sqrt{\f{\hbar m \omega}{2}}\sin \omega t = \langle p(t) \rangle.
+	\end{align*}
+	And so Ehrenfest's theorem is satisfied.
+	
+	
+	
+	\item We calculate $\langle (\Delta x)^2\rangle$ as follows. We will do this inthe Schr\"{o}dinger picture
+	\begin{align*}
+	\langle (\Delta x)^2 \rangle &= \langle x(t)x(t) \rangle - \langle x(t)\rangle^2\\
+	&=  \bra{\psi(t)} x^2 \ket{\psi(t)} - \f{\hbar}{2m\omega}\cos^2\omega t \\
+	&= \f{\hbar}{2m\omega} \bra{\psi(t)} (\hat a^\dagger + \hat a)(\hat a^\dagger + \hat a) \ket{\psi(t)} - \f{\hbar}{2m\omega}\cos^2\omega t \\
+	&= \f{\hbar}{2m\omega} \bra{\psi(t)} \hat a^\dagger \hat a^\dagger + \hat a^\dagger a + \hat a \hat a^\dagger + \hat a \hat a\ket{\psi(t)} - \f{\hbar}{2m\omega}\cos^2\omega t\\
+	&= \f{\hbar}{2m\omega} \bra{\psi(t)}  \hat a^\dagger a + \hat a \hat a^\dagger \ket{\psi(t)} - \f{\hbar}{2m\omega}\cos^2\omega t \quad\quad\text{since } \hat a\hat a \ket{\psi(t)} = \hat a^\dagger \hat a^\dagger \ket{\psi(t)} = 0 \\
+	&= \f{\hbar }{2m\omega}\lp \f{1}{2}\bra{1}\hat a^\dagger \hat a\ket{1} + \cancel{\f{1}{2}\bra{0}\hat a^\dagger \hat a\ket{0}} + \f{1}{2}\bra{1}\hat a \hat a^\dagger\ket{1} + \f{1}{2}\bra{0}\hat a \hat a^\dagger\ket{0} \rp  - \f{\hbar}{2m\omega}\cos^2\omega t\\
+	&= \f{\hbar }{2m\omega}\lp \f{1}{2} + 1 + \f{1}{2} \rp  - \f{\hbar}{2m\omega}\cos^2\omega t\\
+	&= \boxed{	\f{\hbar}{2m\omega}\lb 2 - \cos^2\omega t \rb}
+	\end{align*}
 \end{enumerate}
 
 
-\noindent \textbf{3. Coherent SHO.}
+\noindent \textbf{3. Coherent SHO.} Initially we have
+\begin{align*}
+\ket{\psi(0)} = e^{-\abs{\phi_0}^2/2}e^{\phi_0 \hat a^\dagger}\ket{0} = e^{-\abs{\phi_0}^2/2}\sum_{n=0}^\infty \f{\phi_0^n}{\sqrt{n!}}\ket{n}
+,\quad\quad \phi_0 \in \mathbb{C} 
+\end{align*}
 	
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item The equation of motion for $\ket{\psi(t)}$ is the Schr\"{o}dnger equation:
+	\begin{align*}
+	i\hbar \f{d}{dt}\ket{\psi(t)} = \ham \ket{\psi(t)} \implies \ket{\psi(t)} &= e^{-i\ham t/\hbar}\ket{\psi(0)} \\
+	&= e^{-iE_n t/\hbar}e^{-\abs{\phi_0}^2/2}\sum_{n=0}^\infty \f{\phi_0^n}{\sqrt{n!}}\ket{n}\\
+	&= \boxed{{e^{-\abs{\phi_0}^2/2}\sum_{n=0}^\infty e^{-i (n+1/2) \omega t}\f{\phi_0^n}{\sqrt{n!}}\ket{n}}}
+	\end{align*}
 	
-	\item 
+	\item From Problem Set \#5, we know that given a coherent state $\ket{\phi}$ we have $\hat a \ket{\phi} = \phi \ket{\phi} \implies \bra{\phi}\hat a^\dagger = \bra{\phi}\phi^*$. Here, we want to find a similar relation for $\ket{\psi(t)}$. 
+	\begin{align*}
+	\hat a \ket{\psi(t)} &= {{e^{-\abs{\phi_0}^2/2}\sum_{n=0}^\infty e^{-i (n+1/2) \omega t}\f{\phi_0^n}{\sqrt{n!}}\hat a\ket{n}}}\\
+	&= {{e^{-\abs{\phi_0}^2/2}\sum_{n=0}^\infty e^{-i (n+1/2) \omega t}\f{\phi_0^n}{\sqrt{n!}} \sqrt{n} \ket{n-1}}}\\
+	&= {{e^{-\abs{\phi_0}^2/2}\sum_{n=0}^\infty e^{-i (n+1/2) \omega t}\f{\phi_0^{n}}{\sqrt{(n-1)!}} \ket{n-1}}}\\
+	&= {{e^{-\abs{\phi_0}^2/2}\sum_{n=0}^\infty e^{-i (n+1/2) \omega t}\f{\phi_0^{n}}{\sqrt{(n-1)!}} \ket{n-1}}}\\
+	&= \phi_0 e^{-i\omega t}e^{-\abs{\phi_0}^2/2}\sum_{n=1}^\infty e^{-i (n-1+1/2) \omega t}\f{\phi_0^{n-1}}{\sqrt{(n-1)!}} \ket{n-1} \\
+	&= \phi_0 e^{-i\omega t}\ket{\psi(t)}.
+	\end{align*}
 	
-	\item 
+	
+	
+	With this, we compute 
+	\begin{align*}
+	\langle x \rangle &= \sqrt{\f{\hbar}{2m\omega}} \bra{\psi(t)} \hat a^\dagger + \hat a \ket{\psi(t)}\\
+	&= \sqrt{\f{\hbar}{2m\omega}} (\phi_0^* e^{i\omega t} + \phi_0 e^{-i\omega t})\\ 
+	&= \sqrt{\f{2\hbar}{m\omega}}  \Re{\phi_0 e^{-i\omega t}}.
+	\end{align*}
+	Let us write $\phi_0 e^{-i\omega t} = \abs{\phi_0} e^{i\theta}e^{-i\omega t}$, then we have
+	\begin{align*}
+	\boxed{\langle x\rangle = \sqrt{\f{2\hbar}{m\omega}}\abs{\phi_0}\cos(\omega t- \theta)}
+	\end{align*}
+	
+	
+	Calculating $\langle p \rangle$ is similar:
+	\begin{align*}
+	\langle p \rangle 
+	&= i\sqrt{\f{\hbar m \omega}{2}} \bra{\psi(t)} \hat a^\dagger - \hat a \ket{\psi(t)}\\
+	&=  i\sqrt{\f{\hbar m \omega}{2}}(-2i)\Im{\phi_0 e^{-i\omega t}}\\
+	&= \sqrt{2\hbar m \omega} \abs{\phi_0}\sin(\theta - \omega t) \\
+	&= \boxed{- \sqrt{2\hbar m \omega} \abs{\phi_0}\sin(\omega t - \theta) }
+	\end{align*}
+	
+	\item We must first obtain the representation of $\ket{\psi(t)}$ in the position basis. To this end, we look at the eigenvalue equation: $\hat a \ket{\psi(t)} = \phi_0 e^{-i\omega t}\ket{\psi(t)}$. Now, we know that 
+	\begin{align*}
+	\hat a = \sqrt{\f{m\omega}{2\hbar}}\lp \hat x + \f{i}{m\omega} \hat p\rp = \sqrt{\f{m\omega}{2\hbar}}\lp x + \f{\hbar}{m\omega} \p_x \rp 
+	\end{align*}  
+	in the $x$-basis, so the eigenvalue equation above becomes
+	\begin{align*}
+	\sqrt{\f{m\omega}{2\hbar}}\lp x + \f{\hbar}{m\omega} \p_x \rp  \Psi(x,t) = \phi_0 e^{-i\omega t} \Psi(x,t).
+	\end{align*}
+	This is a solvable differential equation. Letting Mathematica do the work, we find that
+	\begin{align*}
+	\Psi(x,t) = C_0\exp\lb -\f{m\omega}{2\hbar}x^2 + \sqrt{\f{2m\omega}{\hbar}} \phi_0 e^{-i\omega t} x  \rb
+	\end{align*}
+	where $C_0$ is the normalization constant. Mathematica code for this:
+	\begin{lstlisting}
+	In[1]:= DSolve[
+	Sqrt[m*\[Omega]/(2*hbar)]*(x*\[Psi][x] + 
+	hbar/(m*\[Omega])*\[Psi]'[x]) == s*\[Psi][x], \[Psi][x], x]
+	
+	Out[1]= {{\[Psi][x] -> 
+	E^(-((m x^2 \[Omega])/(2 hbar)) + 
+	Sqrt[2] s x Sqrt[(m \[Omega])/hbar]) C[1]}}
+	\end{lstlisting}
+	
+	Normalizing gives
+	\begin{align*}
+	\Psi(x,t) 
+	&= \lp{\f{m\omega}{\pi \hbar}}\rp^{1/4} e^{-\abs{\phi_0}^2}\exp\lb -\f{m\omega}{2\hbar}x^2 + \sqrt{\f{2m\omega}{\hbar}} \phi_0 e^{-i\omega t} x  \rb \\
+	&= \lp{\f{m\omega}{\pi \hbar}}\rp^{1/4} \exp\lb -\f{m\omega}{2\hbar} \lp  x^2 - 2\sqrt{\f{2\hbar}{m\omega}} \abs{\phi_0}\cos(\omega t - \theta) x + \f{2 \hbar}{m\omega}  \abs{\phi_0}^2\cos^2(\omega t - \theta)\rp \rb \\
+	&\quad\quad\times  \exp\lb -i\sqrt{\f{2m\omega}{\hbar}}\abs{\phi_0}\sin(\omega t - \theta)  \rb \\
+	&= \lp{\f{m\omega}{\pi \hbar}}\rp^{1/4}
+	\exp\lb -\f{m\omega}{2\hbar}\lp x - \sqrt{\f{2\hbar}{m\omega}} \abs{\phi_0}\cos(\omega t- \theta) \rp^2 \rb  
+	\exp\lb -i\sqrt{\f{2m\omega}{\hbar}}\abs{\phi_0}x\sin(\omega t - \theta)  \rb\\
+	&= \boxed{\lp{\f{m\omega}{\pi \hbar}}\rp^{1/4}
+	\exp\lb -\f{m\omega}{2\hbar}\lp x - \langle x \rangle \rp^2 \rb  
+	\exp\lb i x \langle p \rangle \rb}
+	\end{align*}
+	
+	Mathematica code for finding the normalization factor:
+	\begin{lstlisting}
+	In[5]:= 1/
+	Sqrt[Integrate[(E^(-((m x^2 \[Omega])/(2 hbar)) + 
+	Sqrt[2] s x Sqrt[(m \[Omega])/hbar]))^2, {x, -Infinity, 
+	Infinity}]] // FullSimplify
+	
+	Out[5]= ConditionalExpression[1/(\[Pi]^(1/4) Sqrt[E^(2 s^2)/Sqrt[(
+	m \[Omega])/hbar]]), Re[(m \[Omega])/hbar] > 0]
+	\end{lstlisting}
+	
+	
+	With this we can read off the modulus $\rho(x)$:
+	\begin{align*}
+	\rho(x,t) = \abs{\Psi(x,t)}^2 = \sqrt{\f{m\omega}{\pi \hbar}} \exp\lb -\f{m\omega}{\hbar}\lp x - \sqrt{\f{2\hbar}{m\omega}} \abs{\phi_0}\cos(\omega t- \theta) \rp^2 \rb  =  \sqrt{\f{m\omega}{\pi \hbar}} \exp\lb - \f{m\omega}{\hbar}\lp x -\langle x \rangle \rp^2 \rb 
+	\end{align*}
+	and the phase $S(x,t)$:
+	\begin{align*}
+	S(x,t) = -\sqrt{2m\omega \hbar}\abs{\phi_0} x \sin(\omega t - \theta) = i\hbar x\langle p \rangle 
+	\end{align*}
+
+
+	\begin{itemize}
+		\item \textcolor{blue}{Physical interpretation of modulus:} The modulus is the probability density. Looking at the full probability density allows us to say something about the probability of finding the particle in space. The modulus of the coherent state wavefunction is a Gaussian whose mean oscillates sinusoidally around zero as a function of time -- just like a classical harmonic oscillator. 
+		
+		
+		\item \textcolor{blue}{Physical interpretation of phase:} We may interpret $\p S / \p x$ as the momentum which is related to the velocity of the particle. In our case, $\p S / \p x = \langle p \rangle$ which is also a sinusoid, which is also consistent with classical harmonic oscillator momentum. 
+		
+		
+		\item \textcolor{blue}{What happens to the wavefunction over time:} As described above, we a Gaussian-like wave packet which oscillates sinsoidally about the origin whose expected position and momentum follow those of a classical harmonic oscillator. We also notice that the \textbf{variance} of the said Gaussian is time-indepedent. As a result, we also have that the wave packet does not spread out in the space as it evolves in time. 
+		
+		
+		\item \textcolor{blue}{Comparison to time-development of a free particle initially in a Gaussian state:}  It is well-known that the \textbf{variance} of the Gaussian wave packet for a free particle increases as a function of time. To see this, we consider the following line of heuristic calculations. Given $\psi(x,0) \sim e^{-x^2/2}$ of a free particle whose energy is $E_k \sim k^2$ where $k$ is the wavenumber. Since the Hamiltonian has eigenvalues in terms of the wavenumber which is in the frequency domain, it is advantageous to express $\psi(x)$ in the momentum basis via the Fourier transform. The time evolution of $\psi(x)$ is gotten by inverting the momentum-basis representation of $\psi$, multiplied by the time-evolution operator:
+		\begin{align*}
+		\psi(x,t) \sim \int \,dk \phi(k) e^{-i E_k t/\hbar} e^{-ikx} \sim \sim \int \,dk \phi(k) e^{-i k^2 t/\hbar} e^{-ikx} 
+		\end{align*} 
+		Since $\psi(x)$ is a Gaussian, $\phi(k)$ is also a Gaussian, so $\phi(k)\sim e^{-k^2/2}$. So, $\psi(x,t)$ looks something like 
+		\begin{align*}
+		\psi(x,t) \sim \int dk e^{-b(t)k^2} e^{-ikx} \sim \f{1}{\sqrt{b(t)}} e^{-x^2/4b(t)}
+		\end{align*}
+		Since $b(t) \sim A+ Bt$ we now see that the variance of modulus increases quadratically in time, which is not the case for the coherent state, where the variance remains constant.    \\
+		
+		Moreover, it is clear that the expected value of the position of the particle increases linearly in time, and expected momentum being a constant (one can calculate this explicitly, heuristically, or even reason by intuition). But in any case, since there is no ``trapping'' potential the particle does not oscillate like in the case of the coherent state. 
+	\end{itemize}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 \end{enumerate}	
 	
 \end{document}

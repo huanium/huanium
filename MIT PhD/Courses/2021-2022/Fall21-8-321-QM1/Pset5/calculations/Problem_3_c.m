@@ -50,8 +50,8 @@ H = sparse(-(1/2)*(hbar^2/m)*Lap + diag(U(:))) ;
 
 
 % Find lowest nmodes eigenvectors and eigenvalues of sparse matrix.
-nmodes = 6; 
-[Psi,E] = eigs(H,nmodes,'SM'); % find two smallest eigenvalues
+nmodes = 4; 
+[Psi,E] = eigs(H,nmodes,'sr'); % find two smallest eigenvalues
 [E,ind] = sort(diag(E)); % convert E to vector and sort low to high.
 Psi = Psi(:,ind); % rearrange corresponding eigenvectors.
 
@@ -71,14 +71,14 @@ end
 
 % plot |psi|^2 for ground state only
 figure(1)
-surf(X,Y,abs(psi_result(:,:,3)).^2, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.0 , 'FaceAlpha',1)
+surf(X,Y,abs(psi_result(:,:,2)).^2, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.0 , 'FaceAlpha',1)
 title('|\psi|^2(x,y)')
 xlabel('x')
 ylabel('y')
 
 % plot \psi for ground state only
 figure(2)
-surf(X,Y,psi_result(:,:,3), 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.0 , 'FaceAlpha',1)
+surf(X,Y,psi_result(:,:,2), 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.0 , 'FaceAlpha',1)
 view([0 0 90])
 colorbar;
 title('Antisymmetric \psi(x,y)')

@@ -53,7 +53,7 @@ H = sparse(-(1/2)*(hbar^2/m)*Lap + diag(U(:))) ;
 
 % Find lowest nmodes eigenvectors and eigenvalues of sparse matrix.
 nmodes = 4; 
-[Psi,E] = eigs(H,nmodes,'SM'); % find two smallest eigenvalues
+[Psi,E] = eigs(H,nmodes,'sr'); % find two smallest eigenvalues
 [E,ind] = sort(diag(E)); % convert E to vector and sort low to high.
 Psi = Psi(:,ind); % rearrange corresponding eigenvectors.
 

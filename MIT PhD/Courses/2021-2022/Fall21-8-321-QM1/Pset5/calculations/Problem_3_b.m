@@ -10,11 +10,11 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-N = 1e6; % No. of points.
+N = 1e2; % No. of points.
 hbar = 1;
 m = 1;
-x_start = -10;
-x_end = 10;
+x_start = -6;
+x_end = 6;
 x = linspace(x_start, x_end, N).'; % Generate column vector with N 
 dx = x(2) - x(1); % Coordinate step
 
@@ -29,7 +29,7 @@ H = -(1/2)*(hbar^2/m)*Lap + spdiags(U,0,N,N); % 0 indicates main diagonal
 
 % Find lowest nmodes eigenvectors and eigenvalues of sparse matrix.
 nmodes = 2; 
-[V,E] = eigs(H,nmodes,'SM'); % find two smallest eigenvalues
+[V,E] = eigs(H,nmodes,'sr'); % find two smallest eigenvalues
 [E,ind] = sort(diag(E)); % convert E to vector and sort low to high.
 V = V(:,ind); % rearrange corresponding eigenvectors.
 
