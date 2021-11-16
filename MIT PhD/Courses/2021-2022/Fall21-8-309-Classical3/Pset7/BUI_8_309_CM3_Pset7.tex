@@ -139,56 +139,67 @@
 \begin{enumerate}[label=(\alph*)]
 	\item The best way to get the Hamiltonian is perhaps through the Lagrangian. The Lagrangian for this system is 
 	\begin{align*}
-	\lag = \f{1}{2}m \dot{x}^2 - k\lp a\sqrt{1 + \sin^2\theta}- b \rp ^2
+	\lag = \f{1}{2}m \dot{x}^2 - k\lp \f{a}{\cos\theta}- b \rp ^2
 	\end{align*}
-	where we don't have the factor of $1/2$ in front of $k$ because there are two springs. Since $x = a\sin\theta$ we have
+	where we don't have the factor of $1/2$ in front of $k$ because there are two springs. Since $x = a\tan\theta$ we have
 	\begin{align*}
-	\lag = \f{1}{2}m a^2\cos^2\theta\dot\theta^2 - k\lp a\sqrt{1 + \sin^2\theta} - b\rp ^2
+	\lag = \f{1}{2}m a^2\sec^2\theta\dot\theta^2 - k\lp \f{a}{\cos\theta} - b\rp ^2
 	\end{align*}
 	By definition, 
 	\begin{align*}
-	p_\theta = \f{\p \lag}{\p \dot{\theta}} = ma^2\cos^2\theta \dot\theta.
+	p_\theta = \f{\p \lag}{\p \dot{\theta}} = ma^2\sec^4\theta \dot\theta.
 	\end{align*}
 	With this, we can find $\dot\theta$ in terms of $p_\theta$. Once this is done, we can plug back into the Lagrangian and get the Hamiltonian as follows:
 	\begin{align*}
-	\boxed{\ham = \f{p_\theta^2}{2ma^2 \cos^2\theta} + k\lp a\sqrt{1+\sin^2\theta} -b \rp^2}
+	\boxed{\ham = \f{p_\theta^2 \cos^4\theta}{2ma^2} + k\lp \f{a}{\cos\theta} -b \rp^2}
 	\end{align*}
 	
 	Mathematica code:
 	\begin{lstlisting}
-	In[17]:= L = (1/2)*m*vx^2 - k*(b + a*Sqrt[1 + Sin[\[Theta][t]]^2])^2
+	(*Lagrangian setup*)
 	
-	Out[17]= -k (b + a Sqrt[1 + Sin[\[Theta][t]]^2])^2 + 
-	1/2 a^2 m Cos[\[Theta][t]]^2 Derivative[1][\[Theta]][t]^2
+	D[a*Tan[\[Theta][t]],t] 	
+	>>> a Sec[\[Theta][t]]^2(\[Theta]^\[Prime])[t] 
 	
-	In[18]:= vx = D[a*Sin[\[Theta][t]], t];
+	vx=D[a*Tan[\[Theta][t]],t]; 
 	
-	In[10]:= (*Velocities in terms of momenta*)
+	L=(1/2)*m*vx^2 - k*(a/Cos[\[Theta][t]] -b )^2 
+	>>> -k (-b+a Sec[\[Theta][t]])^2+1/2 a^2 m Sec[\[Theta][t]]^4 (\[Theta]^\[Prime])[t]^2 
 	
-	In[19]:= D[L, \[Theta]'[t]]
+	(*Hamiltonian setup*)
+	velocities = Solve[{p\[Theta][t] == D[L, \[Theta]'[t]]}, {\[Theta]'[t]}][[1]]; 
 	
-	Out[19]= a^2 m Cos[\[Theta][t]]^2 Derivative[1][\[Theta]][t]
+	H = p\[Theta][t]*\[Theta]'[t] - L /. velocities//FullSimplify 
+	>>> (Cos[\[Theta][t]]^4 p\[Theta][t]^2)/(2 a^2 m)+k (b-a Sec[\[Theta][t]])^2 
 	
-	In[20]:= velocities = 
-	Solve[{p\[Theta][t] == D[L, \[Theta]'[t]]}, {\[Theta]'[t]}][[1]];
 	
-	In[8]:= (*Hamiltonian*)
 	
-	In[21]:= H = p\[Theta][t]*\[Theta]'[t] - L /. velocities
-	
-	Out[21]= (p\[Theta][t]^2 Sec[\[Theta][t]]^2)/(2 a^2 m) + 
-	k (b + a Sqrt[1 + Sin[\[Theta][t]]^2])^2
 	\end{lstlisting}
 	
-	\item The expansion of $1/\cos^2(\theta)$ around $\theta = 0$ reads
+	\item The expansion of $\cos^4 \theta$ around $\theta = 0$ reads
 	\begin{align*}
-	\f{1}{\cos^2\theta} \approx 1 + \theta^2 + \f{2\theta^4}{3} + \dots 
+	\cos^4\theta \approx 1 -2\theta^2 + \f{5\theta^4}{3} + \dots 
 	\end{align*} 
+	Also, the expansion of the potential term reads
+	\begin{align*}
+	k \lp \f{a}{\cos\theta} - b \rp^2 \approx  k(a-b)^2 + ka(a-b)\theta^2 + \f{1}{12}ka(8a - 5b)\theta^4  + \dots
+	\end{align*}
 	Thus, the approximate Hamiltonian is 
 	\begin{align*}
-	\ham &\approx \f{p_\theta^2}{2ma^2}\lp 1 + \theta^2 + \f{2\theta^4}{3} + \dots  \rp \\
-	&\quad+ k(a-b)^2 + ka(a-b)\theta^2 + \f{1}{12}ka(7b -4a)\theta^4  + \dots
+	\ham &\approx \f{p_\theta^2}{2ma^2}\lp  1 -2\theta^2 + \f{5\theta^4}{3} + \dots \rp \\
+	&\quad+ k(a-b)^2 + ka(a-b)\theta^2 + \f{1}{12}ka(8a - 5b)\theta^4  + \dots
 	\end{align*}
+	
+	Mathematica code for the expansions:
+	\begin{lstlisting}
+	Series[Cos[x]^4,{x,0,4}]
+	>>> 1-2 x^2+(5 x^4)/3+O[x]^5
+	
+	Series[k (b-a Sec[\[Theta][t]])^2,{\[Theta][t],0,4}]
+	>>> (-a+b)^2 k+a (a-b) k \[Theta][t]^2+1/12 (8 a^2-5 a b) k \[Theta][t]^4+O[\[Theta][t]]^5
+	
+	
+	\end{lstlisting}
 	
 	
 	The constant does not change the dynamics of the system, so we may ignore it. We thus identify 
@@ -199,30 +210,11 @@
 	&= \f{1}{2ma^2}\lb p_\theta^2 + (ma^2)^2 \f{2k(a-b)}{ma}\theta^2  \rb\\
 	&= \boxed{\f{1}{2I}\lp p_\theta^2 + I^2 \Omega^2 \theta^2 \rp}
 	\end{align*}
-	has the form of the usual harmonic oscillator. Here we have defined the ``monentum of inertia'' $I = ma^2$ and frequency $\Omega^2 = 2k(a-b)/ma$. The first order correction for this Hamiltonian is 
+	has the form of the usual harmonic oscillator. Here we have defined the ``momentum of inertia'' $I = ma^2$ and frequency $\Omega^2 = 2k(a-b)/ma$. The first order correction for this Hamiltonian is 
 	\begin{align*}
-	\boxed{\Delta \ham = \f{p_\theta^2\theta^2}{2ma^2} + \f{ka}{12}(7b - 4a) \theta^4}
+	\boxed{\Delta \ham = -\f{p_\theta^2\theta^2}{ma^2} + \f{ka}{12}(8a - 5b) \theta^4}
 	\end{align*}
-	
-	Mathematica code:
-	\begin{lstlisting}
-	(*Expansion of potential in theta*)
-	
-	In[22]:= k*
-	Series[(a*Sqrt[1 + Sin[\[Theta]]^2] - b)^2, {\[Theta], 0, 6}]
-	
-	Out[22]= SeriesData[\[Theta], 0, {(a - b)^2 k, 0, a (a - b) k, 
-	0, (Rational[1, 4] a^2 + Rational[-7, 12] a (a - b)) k, 
-	0, (Rational[-7, 24] a^2 + Rational[121, 360] a (a - b)) k}, 0, 7,
-	1]
-	
-	In[26]:= (*Expand 1/cos^2*)
-	
-	In[28]:= Series[Sec[x]^2, {x, 0, 4}]
-	
-	Out[28]= SeriesData[x, 0, {1, 0, 1, 0, 
-	Rational[2, 3]}, 0, 5, 1]
-	\end{lstlisting}
+
 	
 	
 	\item From $\ham_0$ we find a suitable set of canonical variables corresponding to a vanishing $K$ for the unperturbed system as the usual action variable $J$ and the phase angle $\be$ in the angle variable $w$:
@@ -238,19 +230,20 @@
 	where $\nu = \Omega/2\pi$. Since $\be$ and $w$ are linearly related, the pair $(J,\be)$ is canonical. We can thus use $(J,\be)$ as new canonical variables. Let $J_0$ and $\be_0$ be constants fixed by initial conditions. Then in terms of the new variables, $\Delta \ham$ is 
 	\begin{align*}
 	\Delta \ham 
-	&= \f{p_\theta^2\theta^2}{2ma^2} + \f{ka}{12}(7b - 4a) \theta^4 \\
-	&= \f{J^2}{2ma^2\pi^2} \cos^2[2\pi(\nu t + \be)] \sin^2[2\pi(\nu t + \be)] + \f{(7b-4a)J^2}{24a^2(a-b)m\pi^2}   \sin^4[2\pi(\nu t + \be)].
+	&= -\f{p_\theta^2\theta^2}{ma^2} + \f{ka}{12}(8a - 5b) \theta^4 \\
+	&= -\f{J^2}{ma^2\pi^2} \cos^2[2\pi(\nu t + \be)] \sin^2[2\pi(\nu t + \be)] + \f{(8a-5b)J^2}{24 a^2(a-b)m\pi^2}   \sin^4[2\pi(\nu t + \be)].
 	\end{align*}
 	Next we compute the first order corrections to these new variables:
 	\begin{align*}
 	\dot\be^{(1)} &= \f{\p \Delta \ham}{\p J}\bigg\vert_0 \\
-	&=  \frac{J_0  }{24 \pi ^2 a^2 m (a-b)} [(16 a-19 b) \cos [4 \pi  (\beta_0 +\nu  t)] + 8 a-5
+	&=  \frac{J_0  }{24  a^2 (a-b) m \pi^2} [(-32 a + 29 b) \cos [4 \pi  (\beta_0 +\nu  t)] - 16 a + 19
 	b] \sin ^2[2 \pi  (\beta_0 +\nu  t)] 
 	\end{align*}
 	and 
 	\begin{align*}
 	\dot J^{(1)}&= -\f{\p \Delta \ham}{\p \be}\bigg\vert_0  \\
-	&=\frac{J_0^2  }{12 \pi  a^2 m (a-b)} [(19 b-16 a) \cos [4 \pi  (\beta_0 +\nu  t)]+4 a-7
+	&=\frac{J_0^2  }{12  a^2 (a-b) m \pi} 
+	[(32 a - 29b) \cos [4 \pi  (\beta_0 +\nu  t)] -8 a+5
 	b] \sin [4 \pi  (\beta_0 +\nu  t)]
 	\end{align*}
 	
@@ -258,9 +251,9 @@
 	\begin{align*}
 	\overline{\dot{J}^{(1)}} 
 	&= \f{1}{T}\int^T_0 \dot J^{(1)}\,dt \\
-	&= \frac{J^2  }{12 \pi  a^2 m (a-b)}  \nu \int^{1/\nu}_0 [(19 b-16 a) \cos [4 \pi  (\beta +\nu  t)]+4 a-7
-	b] \sin [4 \pi  (\beta +\nu  t)]\,dt\,\bigg\vert_0 \\
-	&= 0.
+	&= \frac{J^2  }{12   a^2  (a-b) m\pi^2}  \nu \int^{1/\nu}_0 	[(32 a - 29b) \cos [4 \pi  (\beta_0 +\nu  t)] -8 a+5
+	b] \sin [4 \pi  (\beta_0 +\nu  t)]\,dt\,\bigg\vert_0 \\
+	&= \boxed{0}
 	\end{align*}
 	from which we conclude that there is no secular change to amplitude. 
 	
@@ -270,14 +263,12 @@
 	
 	In[41]:= -D[\[Delta]H, \[Beta]] // FullSimplify
 	
-	Out[41]= (J^2 (4 a - 
-	7 b + (-16 a + 19 b) Cos[4 \[Pi] (\[Beta] + t \[Nu])]) Sin[
-	4 \[Pi] (\[Beta] + t \[Nu])])/(12 a^2 (a - b) m \[Pi])
+	Out[41]= (J^2 (-8 a+5 b+(32 a-29 b) Cos[4 \[Pi] (\[Beta]+t \[Nu])])
+	 Sin[4 \[Pi] (\[Beta]+t \[Nu])])/(12 a^2 (a-b) m \[Pi])
 	
 	In[50]:= (*time average for J, T = 1/nu*)
 	
-	In[47]:= (1/(1/\[Nu]))*
-	Integrate[-D[\[Delta]H, \[Beta]], {t, 0, (1/\[Nu])}] // FullSimplify
+	In[47]:= \[Nu]*Integrate[-D[\[Delta]H,\[Beta]],{t,0,1/\[Nu]}]
 	
 	Out[47]= 0
 	\end{lstlisting}
@@ -287,8 +278,8 @@
 	\overline{\be^{(1)}}
 	&= \f{1}{T} \int^T_0  \dot \be^{(1)}\,dt \\
 	&= \frac{J_0 \nu }{24 \pi ^2 a^2 m (a-b)}
-	\int_0^{1/\nu} [(16 a-19 b) \cos [4 \pi  (\beta_0 +\nu  t)] + 8 a-5
-	b] \sin ^2[2 \pi  (\beta_0 +\nu  t)] \,dt\,\bigg\vert_0\\
+	\int_0^{1/\nu} [(-32 a + 29 b) \cos [4 \pi  (\beta_0 +\nu  t)] - 16 a + 19
+	b] \sin ^2[2 \pi  (\beta_0 +\nu  t)]  \,dt\,\bigg\vert_0\\
 	&= \boxed{\f{3bJ_0 }{32 a^2 (a-b)m \pi^2}}
 	\end{align*}
 	We conclude on that on average the first order perturbation shifts the frequency by the amount boxed. 
@@ -299,17 +290,18 @@
 	
 	In[40]:= D[\[Delta]H, J] // FullSimplify
 	
-	Out[40]= (J (8 a - 
-	5 b + (16 a - 19 b) Cos[4 \[Pi] (\[Beta] + t \[Nu])]) Sin[
-	2 \[Pi] (\[Beta] + t \[Nu])]^2)/(24 a^2 (a - b) m \[Pi]^2)
+	Out[40]= (J (-16 a+19 b+(-32 a+29 b) Cos[4 \[Pi] (\[Beta]+t \[Nu])]) Sin[2 \[Pi]
+	 (\[Beta]+t \[Nu])]^2)/(24 a^2 (a-b) m \[Pi]^2)
 	
-	In[52]:= (1/(1/\[Nu]))*
-	Integrate[D[\[Delta]H, J], {t, 0, (1/\[Nu])}] // FullSimplify
+	In[52]:= \[Nu]*Integrate[D[\[Delta]H,J],{t,0,1/\[Nu]}] 
 	
 	Out[52]= (3 b J)/(32 a^2 (a - b) m \[Pi]^2)
 	\end{lstlisting}
 \end{enumerate}
 
+
+
+\newpage
 
 
 
@@ -340,7 +332,7 @@
 	\end{align*}
 	where we have ignored the constant term $-I\omega^2$ because it does not contribute to the dynamics.  This Hamiltonian is just a harmonic oscillator with moment of inertia $I = ma^2$ and frequency $\omega^2$. The action angle variables for $\ham_0$ are
 	\begin{align*}
-	\al = \ham_0 = \f{\omega}{2\pi} J ,\quad\quad\quad w = \nu t + \be
+	\al = \ham_0 = \f{\omega}{2\pi} J ,\quad\quad\quad w = \nu t + \be\quad\text{\textbf{\textcolor{red}{Careful: This is NOT omega!}}}
 	\end{align*}
 	where $\nu = \omega/2\pi$, $J$ is the action variable, $w$ is the angle variable. This gives
 	\begin{align*}
@@ -358,7 +350,7 @@
 	\end{align*}
 	We can integrate these to get $\be^{(1)}$ and $J^{(1)}$:
 	\begin{align*}
-	J^{(1)}(t) = \be_0 + \int \f{J_0^2}{3\pi I} \sin^3(\omega t)\cos(\omega t) \,dt = \boxed{J_0 + J_1(t)}
+	J^{(1)}(t) = J_0 + \int \f{J_0^2}{3\pi I} \sin^3(\omega t)\cos(\omega t) \,dt = \boxed{J_0 + J_1(t)}
 	\end{align*}
 	where
 	\begin{align*}
@@ -409,18 +401,18 @@
 	384 II \[Pi]^2 \[Omega])
 	\end{lstlisting}
 	
-	\item There are two second-order corrections. One coming from second order perturbation which comes from doing second order perturbation on $\Delta \ham_1$ and one from first order perturbation due to $\Delta \ham_2$. Let $\be^{(2)} = \be_a^{(2)} + \be^{(2)}_b$ and $J^{(2)} = J_a^{(2)} + J^{(2)}_b$ where $a,b$ denote the terms found from $\Delta \ham_1$ and $\Delta \ham_2$ respectively. In this part we find $\dot \be_b^{(2)}$ and $\dot J^{(2)}$ and find secular changes associated with them. This is just first-order perturation theory on $\Delta \ham_2$. Let's proceed as follows. \\
+	\item There are two second-order corrections. One coming from second order perturbation which comes from doing second order perturbation on $\Delta \ham_1$ and one from first order perturbation due to $\Delta \ham_2$. Let $\be^{(2)} = \be_a^{(2)} + \be^{(2)}_b$ and $J^{(2)} = J_a^{(2)} + J^{(2)}_b$ where $a,b$ denote the terms found from $\Delta \ham_1$ and $\Delta \ham_2$ respectively. In this part we find $\dot \be_b^{(2)}$ and $\dot J_b^{(2)}$ and find secular changes associated with them. This is just first-order perturation theory on $\Delta \ham_2$. Let's proceed as follows. \\
 	
 	With 
 	\begin{align*}
-	\Delta \ham_2 = \f{1}{720} I \omega^2 \theta^6 = \frac{J^3 \sin ^6(\omega t + \be)}{720 \pi ^3 I^2 \omega }
+	\Delta \ham_2 = \f{1}{720} I \omega^2 \theta^6 = \frac{J^3 \sin ^6(\omega t + 2\pi \be)}{720 \pi ^3 I^2 \omega }
 	\end{align*}
 	we find, using initial conditions $\be_0 = 0$ and $J^{(0)} = J_0$:
 	\begin{align*}
 	&\dot\be^{(2)}_b = \f{\p \Delta \ham_2}{\p J}\bigg\vert_0 = 
 	\boxed{\f{J_0^2}{240 I^2 \pi^3 \omega} \sin^6 ( \omega t)}\\
 	&\dot J^{(2)}_b  = -\f{\p \Delta \ham_2}{\p \be}\bigg\vert_0 = 
-	\boxed{- \f{J_0^3 }{120 I^2 \pi^3 \omega} \sin^5( \omega t) \cos \omega t  }
+	\boxed{- \f{J_0^3 }{60 I^2 \pi^2 \omega} \sin^5( \omega t) \cos \omega t  }
 	\end{align*}
 	Mathematica code:
 	\begin{lstlisting}
@@ -449,7 +441,7 @@
 	With these we can compute the time averages, using $T = 2\pi/\omega$:
 	\begin{align*}
 	&\overline{\dot \be^{(2)}_b} = \f{1}{T}\int^T_0 \f{J_0^2}{240 I^2 \pi^3 \omega} \sin^6 ( \omega t)\,dt = \boxed{\f{J_0^2}{768 I^2 \pi^3 \omega}} \\
-	&\overline{\dot J^{(2)}_b} = \f{1}{T} \int^T_0 - \f{J_0^3 }{120 I^2 \pi^3 \omega} \sin^5( \omega t) \cos \omega t\,dt = \boxed{0}
+	&\overline{\dot J^{(2)}_b} = \f{1}{T} \int^T_0 - \f{J_0^3 }{60 I^2 \pi^2 \omega} \sin^5( \omega t) \cos \omega t\,dt = \boxed{0}
 	\end{align*}
 	So, there is secular change in the frequency but not in amplitude due to $\Delta \ham_2$. 
 	
@@ -461,7 +453,7 @@
 	\end{align*}
 	\begin{align*}
 	&\dot \be^{(2)}_a = \f{\p \Delta \ham_1}{\p J}\bigg\vert_1 = \boxed{{- \f{J^{(1)}}{12\pi^2 I } \sin^4\lb 2\pi( \nu t + \be^{(1)})\rb}}\\
-	&\dot J^{(2)}_a = -\f{\p \Delta \ham_1}{\p \be} \bigg\vert_1 = \boxed{{\f{{J^{(1)}}^2}{3\pi I} \sin^3\lb 2\pi\lp \nu t + \be^{(1)}\rp \rb \cos\lb 2\pi(\nu t + \be^{(1)}\rb )}}
+	&\dot J^{(2)}_a = -\f{\p \Delta \ham_1}{\p \be} \bigg\vert_1 = \boxed{{\f{{J^{(1)}}^2}{3\pi I} \sin^3\lb 2\pi\lp \nu t + \be^{(1)}\rp \rb \cos\lb 2\pi(\nu t + \be^{(1)})\rb }}
 	\end{align*}
 	To get the full expression we will have to plug in what we found for $J^{(1)}$ and $\be^{(1)}(t)$, which makes everything very complicated, so I won't do that here. In any case, now let us write
 	\begin{align*}
@@ -558,24 +550,30 @@
 	\end{lstlisting}
 	
 	Now plugging in results from Part (b) we find 
+%	\begin{align*}
+%	\dot \be_a^{(2)}(t) = -\f{J_0 \sin^4(2\pi \nu^{(1)} t )}{1152 I^2 \pi^4 \nu}
+%	\lb 96 \pi ^2 I \nu - J_0(\sin (8 \pi  \nu  t)-8 \sin (4 \pi  \nu  t)) \cot (2
+%	\pi \nu^{(1)} t) + 4 J_0 \sin ^4(4 \pi  \nu  t)  \rb
+%	\end{align*}
 	\begin{align*}
-	\dot \be_a^{(2)}(t) = -\f{J_0 \sin^4(2\pi \nu^{(1)} t )}{1152 I^2 \pi^4 \nu}
-	\lb 96 \pi ^2 I \nu - J_0(\sin (8 \pi  \nu  t)-8 \sin (4 \pi  \nu  t)) \cot (2
-	\pi \nu^{(1)} t) + 4 J_0 \sin ^4(4 \pi  \nu  t)  \rb
+	\dot \be_a^{(2)}(t) = \f{J_0 \sin^4(2\pi \nu^{(1)} t)}{2304 I^2 \pi^4 \nu^{(1)}} \lb  -17 J_0 - 192 I \pi^2 \nu  - 8 J_0 \cos(4\pi \nu^{(1)}t ) + J_0  \cos(8\pi \nu^{(1)}t )\rb 
 	\end{align*}
 	and 
+%	\begin{align*}
+%	\dot J_a^{(2)}(t) &= 
+%	\frac{J_0^2 \sin ^2(2 \pi \nu^{(1)} t) }{{1152 \pi ^3 I^2 \nu }}\\
+%	&\quad\times \lb 16 \sin (4 \pi  \nu^{(1)}t) \lb 12 \pi ^2 I \nu + J_0 \sin ^4(4 \pi  \nu  t)\rb- J_0 (\sin (8 \pi  \nu  t)-8 \sin (4 \pi  \nu  t)) \lb 2 \cos (4 \pi  \nu^{(1)}t)+1\rb\rb
+%	\end{align*}
 	\begin{align*}
-	\dot J_a^{(2)}(t) &= 
-	\frac{J_0^2 \sin ^2(2 \pi \nu^{(1)} t) }{{1152 \pi ^3 I^2 \nu }}\\
-	&\quad\times \lb 16 \sin (4 \pi  \nu^{(1)}t) \lb 12 \pi ^2 I \nu + J_0 \sin ^4(4 \pi  \nu  t)\rb- J_0 (\sin (8 \pi  \nu  t)-8 \sin (4 \pi  \nu  t)) \lb 2 \cos (4 \pi  \nu^{(1)}t)+1\rb\rb
+	\dot J_a^{(2)}(t) = \f{J_0^2 \cos(2\pi \nu^{(1)}  t )  \sin^3(2\pi \nu^{(1)}  t )}{96 I^2 \pi^3 \nu^{(1)}} \lb 2J_0 + 32 I \pi^2 \nu^{(1)} + J_0 \cos(4\pi \nu^{(1)} t)   \rb
 	\end{align*}
 	
-	All the subtition and simplification is done in Mathematica to minimize errors:
+	All the substitution and simplification is done in Mathematica to minimize errors:
 	\begin{lstlisting}
 	(*Substitution rules*)
 	
 	In[45]:= substitution = {j0 -> J0, 
-	j1 -> (J0^2 Sin[2 t \[Omega] ]^4)/(12 II \[Pi] \[Omega]), 
+	j1 -> (J0^2 Sin[t \[Omega] ]^4)/(12 II \[Pi] \[Omega]), 
 	b1 -> (J0 Sin[2 t \[Omega]])/(48 II \[Pi]^2 \[Omega]) - (
 	J0 Sin[4 t \[Omega]])/(384 II \[Pi]^2 \[Omega])};
 	
@@ -584,23 +582,13 @@
 	In[48]:= Dot\[Beta]2a /. 
 	substitution /. {\[Omega] -> 2*Pi*\[Nu]} // FullSimplify
 	
-	Out[48]= -((
-	J0 (96 II \[Pi]^2 \[Nu] + 4 J0 Sin[4 \[Pi] t \[Nu]]^4 - 
-	J0 Cot[2 \[Pi] t \[Nu]1] (-8 Sin[4 \[Pi] t \[Nu]] + 
-	Sin[8 \[Pi] t \[Nu]])) Sin[2 \[Pi] t \[Nu]1]^4)/(
-	1152 II^2 \[Pi]^4 \[Nu]))
 	
 	(* J 2 a*)
 	
 	In[49]:= DotJ2a /. 
 	substitution /. {\[Omega] -> 2*Pi*\[Nu]} // FullSimplify
-	
-	Out[49]= (1/(1152 II^2 \[Pi]^3 \[Nu]))J0^2 Sin[
-	2 \[Pi] t \[Nu]1]^2 (-J0 (1 + 
-	2 Cos[4 \[Pi] t \[Nu]1]) (-8 Sin[4 \[Pi] t \[Nu]] + 
-	Sin[8 \[Pi] t \[Nu]]) + 
-	16 (12 II \[Pi]^2 \[Nu] + J0 Sin[4 \[Pi] t \[Nu]]^4) Sin[
-	4 \[Pi] t \[Nu]1])
+
+
 	\end{lstlisting}
 	
 	
@@ -610,9 +598,9 @@
 	\overline{\dot \be_a^{(2)}} 
 	&= \f{1}{\tau^{(1)}}\int_0^{\tau^{(1)}} \dot \be_a^{(2)}(t) \,dt\\
 	&= \nu^{(1)} \int_0^{1/\nu^{(1)}}   \dot \be_a^{(2)}(t) \,dt\\ 
-	&= \boxed{-\f{J_0 }{768 I^2 \pi^4 \nu^{(1)}}(J_0 + 24 I \pi^2 \nu^{(1)})}
+	&= \boxed{-\f{J_0(23J_0 + 384 I \pi^2 \nu^{(1)})}{12288 I^2 \pi^4 \nu^{(1)}}}
 	\end{align*}
-	and 
+	after substituting in $\nu^{(1)} = \nu + \nu_1$ and 
 	\begin{align*}
 	\overline{\dot J_a^{(2)}} 
 	&= \f{1}{\tau^{(1)}}\int_0^{\tau^{(1)}} \dot J_a^{(2)}(t) \,dt\\
@@ -638,15 +626,15 @@
 	
 	In[68]:= \[Nu]1*Integrate[D\[Beta]2a, {t, 0, 1/\[Nu]1}]
 	
-	Out[68]= -((J0 (J0 + 24 II \[Pi]^2 \[Nu]1))/(768 II^2 \[Pi]^4 \[Nu]1))
+	Out[68]= -((J0 (23 J0+384 II \[Pi]^2 \[Nu]))/(12288 II^2 \[Pi]^4 \[Nu])) 
 	\end{lstlisting}
 	
 	
 	Finally, we add this to the result in Part (c) to get the full $\overline{\dot\be^{(2)}} = \overline{\dot\be_a^{(2)}} + \overline{\dot\be_b^{(2)}}$ and $\overline{\dot J^{(2)}} = \overline{\dot  J_a^{(2)}} + \overline{\dot J_b^{(2)}}$. Re-writing the result in (c) with $\omega = 2\pi \nu$ we get:
 	\begin{align*}
-	\boxed{\overline{\dot\be^{(2)}} = -\f{J_0 (J_0 + 24 I \pi^2 \nu^{(1)}) }{768 I^2 \pi^4 \nu^{(1)}} + \f{J_0^2}{1536 I^2 \pi^4 \nu}} \quad\text{and} \quad \boxed{\overline{\dot J^{(2)}} = 0}
+	\boxed{\overline{\dot\be^{(2)}} =-\f{J_0(23J_0 + 384 I \pi^2 \nu^{(1)})}{12288 I^2 \pi^4 \nu^{(1)}} + \f{J_0^2}{1536 I^2 \pi^4 \nu}} \quad\text{and} \quad \boxed{\overline{\dot J^{(2)}} = 0}
 	\end{align*}
-	
+	where $\nu^{(1)} = \nu + \nu_1$ defined as before. 
 	
 	
 \end{enumerate}
@@ -698,7 +686,7 @@
 	v_{xy}^2 - v_e^2 =  v_{ex}^2 - v_e^2= -2gy_\text{max} \implies y_\text{max} = {\f{v_{ey}^2}{2g}} \implies \boxed{H_3 = \f{2gH_1 \sin^2\theta}{2g} = H_1 \sin^2\theta}
 	\end{align*}
 	
-	\item Since the question only asks for $y(x)$ for a streamline, we may pick the streamline which goes through the center of the tube and the free jet. In this case, $y(x)$ is a parabola from projectile motion. We know that
+	\item Here's a naive way of doing this problem. Since the question only asks for $y(x)$ for a streamline, we may pick the streamline which goes through the center of the tube and the free jet. In this case, $y(x)$ is a parabola from projectile motion. We know that
 	\begin{align*}
 	y(t) = y_0 + v_{ey} t - \f{1}{2}gt^2 = \sqrt{2g H_1} \sin\theta t - \f{1}{2} gt^2
 	\end{align*}
@@ -708,8 +696,30 @@
 	\end{align*}
 	Solving for $t$ in the $x$-equation and plugging into $y(t)$ gives
 	\begin{align*}
-	\boxed{y(x) = x\tan\theta - \f{1}{4 H_1  \cos\theta^2} x^2}
+	\boxed{y(x) = x\tan\theta - \f{1}{4 H_1  \cos^2\theta} x^2}
 	\end{align*}
+	
+	\textbf{A more legitimate way of doing this} is to use Euler's equation from which we get that $v_x = v_e\cos \theta$ is a constant (since there is no force in the horizontal direction): 
+	\begin{align*}
+	\f{\p \vec{v}}{\p t} + \vec{v}\cdot \nabla \vec{v} + \f{\grad \mathcal{P}}{\rho} = \vec{f}
+	\end{align*}
+	The flow is steady, so the pressure gradient and time derivative term both vanish, leaving $\vec{v}\cdot \nabla \vec{v} = \vec{f}$. But since there is no force in the $x$ direction, we must have $\p_x v_x = 0$, and so 
+	
+	The steady flow condition implies that 
+	\begin{align*}
+	\f{dy}{dx} = \f{v_y}{v_x} = \f{1}{v_e\cos\theta}\sqrt{v_e^2 \sin^2\theta - 2gy} 
+	\end{align*}
+	where we have used a relation from Part (c). From here, we may solve this differential equation subjected to the initial condition $y(x=0) = 0$ in Mathematica to find that
+	\begin{align*}
+	\boxed{y(x) = x\tan\theta - \f{1}{4 H_1  \cos^2\theta} x^2}
+	\end{align*}
+	
+	Mathematica code:
+	\begin{lstlisting}
+	DSolve[{y'[x]==(1/(Sqrt[2*g*H1]*Cos[\[Theta]]))*Sqrt[2*g*(H1*Sin[\[Theta]]^2-y[x])],y[0]==0},y[x],x]//FullSimplify
+	
+	>>> {{y[x]->-((x Sec[\[Theta]] (g x Sec[\[Theta]]-4 Sqrt[g H1] Sqrt[g H1 Sin[\[Theta]]^2]))/(4 g H1))}}
+	\end{lstlisting}
 \end{enumerate}
 
 
