@@ -321,11 +321,52 @@ where $\mathcal{Z}_\text{ideal gas} = V^N/(N! \lambda^{3N})$ is the partition fu
 	\item
 \end{enumerate}
 
-\noindent \textbf{4. Quantum-Classical correspondence.}
+\noindent \textbf{4. Quantum-Classical correspondence.} The Hamiltonian says 
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
-	\item 
+	\item BCH formula says
+	\begin{align*}
+	e^{-\be \ham} = e^{-\be p^2/2m} e^{-\be U({q})} e^{-\be^2 [p^2/2m, U({q})]} 
+	\end{align*}
+	In the high temperature limit, we have $\be^2 [p^2, U({q})] \to 0$, so effectively $p^2$ and $U({q})$ commute, just like in classical mechanics. Not surprisingly, the quantum mechanical partition function will also turn into the classical partition function:
+	\begin{align*}
+	\mathcal{Z}_\text{QM} 
+	&= \Tr\lp e^{-\be \ham}  \rp \approx  \Tr\lp e^{-\be p^2/2m} e^{-\be U({q})} \rp\quad\quad\quad \text{as  }\,\,\be \to 0 \\
+	&= \sum_{{q},{p}}\bra{q} e^{-\be p^2/2m} \ket{p} \bra{p} e^{-\be U({q})} \ket{{q}}\\
+	&\approx \int d^3  \vec{p} d^3 \vec{q} \underbrace{\abs{\bra{\vec{p}} \ket{\vec{q}}}^2}_{1} e^{-\be p^2/2m}  e^{-\be U(\vec{q})}\\
+	&= \int d^3  \vec{p} d^3 \vec{q}  e^{-\be p^2/2m}  e^{-\be U(\vec{q})} = \mathcal{Z}_\text{CM}
+	\end{align*}
+	where we have used the fact that $\bra{\vec{q}}\ket{\vec{p}} \sim e^{i \vec{p}\cdot \vec{q}}$. 
+	
+	
+	\item For a free particle in a box of volume $V$, we have that the integral over the positional phase space is just $V$. The Hamiltonian is diagonal in the $\vec{k}$ basis as
+	\begin{align*}
+	\ham \ket{\vec{k}} = \mathcal{E}(\vec{k}) \ket{\vec{k}} 
+	\end{align*}
+	where $\mathcal{E}(\vec{k}) = \hbar^2 k^2 / 2m$ and
+	\begin{align*}
+	\bra{\vec{q}} \ket{\vec{k}} = \f{e^{i \vec{k}\cdot \vec{q}}}{\sqrt{V}} 
+	\end{align*}
+	Let the box be of size $V^{1/3}$, then the allowed values of $\vec{k}$ are $(2\pi V^{1/3}) (l_x,l_y,l_z)$ where the $l_i$'s are integers. The partition function that follows is 
+	\begin{align*}
+	\mathcal{Z} = \tr(-\be \ham) = \sum_{\vec{k}} \exp\lp -\f{\be \hbar^2 k^2}{2m} \rp
+	\end{align*}
+	The large-box limit is analogous to the $\be \to 0$ limit, so we may use the result above to say that
+	\begin{align*}
+	\lim_{V\to \infty}\mathcal{Z} 
+	&= \mathcal{Z}_\text{CM} \\
+	&= \f{1}{h^3} \int d^3 \vec{p} \exp\lp \f{-\be p^2}{2m}\rp   \underbrace{{\int_V d^3\vec{q}}}_{V} \\
+	&= V \int \f{ d^3 \vec{k}}{(2\pi)^3} \exp\lp \f{-\be \hbar^2 k^2}{2m} \rp
+	\end{align*}
+	where we have used $\vec{p} = \hbar \vec{k} = (h/2\pi) \vec{k}$. From the above two equations we have
+	\begin{align*}
+	\lim_{V\to \infty} \mathcal{Z}= \lim_{V\to \infty } \sum_{\vec{k}} \exp\lp -\f{\be \hbar^2 k^2}{2m} \rp = V \int \f{ d^3 \vec{k}}{(2\pi)^3} \exp\lp \f{-\be \hbar^2 k^2}{2m} \rp
+	\end{align*}
+	from which we conclude that
+	\begin{align*}
+	\sum_{\vec{k}} \to V \int \f{d^3\vec{k}}{(2\pi)^3}
+	\end{align*}
+	as desired. 
 \end{enumerate}
 
 \noindent \textbf{5. Vibrational and rotational heat capacities at high temperatures.}
@@ -339,31 +380,205 @@ where $\mathcal{Z}_\text{ideal gas} = V^N/(N! \lambda^{3N})$ is the partition fu
 	\item 
 \end{enumerate}
 
-\noindent \textbf{6. van Leeuwen's Theorem.}
+\noindent \textbf{6. van Leeuwen's Theorem.} The Hamiltonian for a gas of charged particles subjected to an external magnetic field $\vec{B} = \curl \vec{a}$ is 
+\begin{align*}
+\ham = \sum^N_{i=1} \f{1}{2m}(\vec{p}_i - e\vec{A})^2 + U(\vec{q}_1, \dots, \vec{q}_N).
+\end{align*}
+We wish to show that the thermodynamics of the problem is independent of $\vec{B}$. To this end, let us consider the partition functions $\mathcal{Z}_0$ and $\mathcal{Z}_{\vec{B}}$ corresponding to the system without and with the external magnetic field. Let us treat this problem classically, as quantum effects are ignored. With this, 
+\begin{align*}
+\mathcal{Z}_0 
+&= \f{1}{h^3} \int \prod^N_{i=1} d^3\vec{p}_i d^3 \vec{q}_i \exp\lb -\be \lp 
+\sum^N_{i=1} \f{1}{2m}\vec{p}_i^2 + U(\vec{q}_1, \dots, \vec{q}_N) \rp \rb.
+\end{align*}
+\begin{align*}
+\mathcal{Z}_{\vec{B}}
+&= \f{1}{h^3} \int \prod^N_{i=1} d^3\vec{p}_i d^3 \vec{q}_i \exp\lb -\be \lp 
+\sum^N_{i=1} \f{1}{2m}(\vec{p}_i - e\vec{A})^2 + U(\vec{q}_1, \dots, \vec{q}_N) \rp \rb.
+\end{align*}
+By a change of variables $p'_i = p_i - e\vec{A}$, we see that the integration measure in $\mathcal{Z}_{\vec{B}}$ does not change, and the integrand now matches that of $\mathcal{Z}_0$. As a result, we find that
+\begin{align*}
+\mathcal{Z}_0 = \mathcal{Z}_{\vec{B}}
+\end{align*}
+for any $\vec{B}$. Therefore, $\mathcal{Z}$ is independent of $\vec{B}$. This implies that the thermodynamic properties of the problem (all of which are derived from $\mathcal{Z}$) are also independent of $\vec{B}$. \\ 
 
 
-\noindent \textbf{7. (Optional) Zero-point energy.}
+
+
+\noindent \textbf{7. (Optional) Zero-point energy.} The Hamiltonian is 
+\begin{align*}
+\ham_\text{cl} = \f{p^2}{2m} + \f{m\omega^2 q^2}{2}. 
+\end{align*}
+We will assume that in quantum mechanics the energy levels are quantized as $\ham_\text{qm} = x + yn$ where $n\in \mathbb{Z}$. 
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
-	\item 
-	\item 
+	\item The classical partition function is 
+	\begin{align*}
+	\mathcal{Z}_\text{cl}(\be) = \f{1}{h}\int^\infty_{-\infty}\int^\infty_{-\infty}  dp\,dq\, \exp\lp -\f{\be p^2}{2m} - \f{\be m \omega^2 q^2}{2} \rp =  \f{2\pi}{\be h\omega} = \boxed{\f{1}{\be \hbar \omega}}
+	\end{align*}
+
+	
+	The energy is 
+	\begin{align*}
+	E(T) = -\f{\p }{\p \be} \ln \mathcal{Z}_\text{cl} = \boxed{\f{1}{\be}}
+	\end{align*}
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[3]:= Z = 
+	Integrate[(1/h)*Exp[-b*p^2/(2 m) - b*m*w^2*q^2/2], {p, -Infinity, 
+	Infinity}, {q, -Infinity, Infinity}] // FullSimplify
+	
+	Out[3]= ConditionalExpression[(2 \[Pi])/(h Sqrt[b/m] Sqrt[b m w^2]), 
+	Re[b/m] > 0]
+	
+	In[5]:= En = D[-Log[Z], b] // FullSimplify
+	
+	Out[5]= ConditionalExpression[1/b, Re[b/m] > 0]
+	\end{lstlisting}
+	
+	\item The quantum partition function is 
+	\begin{align*}
+	\mathcal{Z}_\text{qm} = \Tr\lp e^{-\be(x+yn)} \rp = \sum_{n=0}^\infty e^{-\be(x+yn)} = {\f{e^{-\be(x-y)}}{e^{\be y} - 1} } = \boxed{\f{e^{-\be x}}{ 1 - e^{-\be y}}}
+	\end{align*}
+	At high temperatures, we may match $\mathcal{Z}_\text{cl}$ to $\mathcal{Z}_\text{qm}$ to find $y$ by \textcolor{red}{eliminating} $x$ (\textcolor{blue}{this feels very wrong...})
+	\begin{align*}
+	\lim_{\be \to 0} \mathcal{Z}_\text{qm} \approx \f{1}{ 1 - (1- \be y)} = \mathcal{Z}_\text{cl} = \f{1}{\be \hbar \omega} \implies \boxed{y = \hbar \omega} 
+	\end{align*}
+
+	
+	
+	\item The quantum energy is 
+	\begin{align*}
+	E_\text{qm} = -\f{\p}{\p \be}\ln \mathcal{Z}_\text{qm} = -\f{\p}{\p \be} \lb \f{e^{-\be x}}{ 1 - e^{-\be y}}  \rb = \boxed{x + \f{y}{e^{\be y} - 1}}
+	\end{align*}
+	When $\be \to 0$, we may expand $E\text{qm}$ as follows 
+	\begin{align*}
+	E_\text{qm} \approx \f{1}{\be} + \lp x - \f{y}{2}  \rp + \mathcal{O}(\be)	
+	\end{align*}
+	Matching this result to $E_\text{cl} = 1/\be$, we find that
+	\begin{align*}
+	x = \f{y}{2} = \boxed{\f{\hbar \omega}{2}}
+	\end{align*}
+	so the quantum Hamiltonian is 
+	\begin{align*}
+	\ham_n = \hbar \omega\lp n + \f{1}{2} \rp
+	\end{align*}
+	as expected, with $\hbar\omega/2$ being the zero point energy. 
 \end{enumerate}
 
 \noindent \textbf{8. (Optional) Quantum mechanical entropy.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
-	\item 
-	\item 
+	\item The density matrix $\rho(t)$ solves the Liouville's equation, so we have
+	\begin{align*}
+	\f{d\rho }{dt} = \f{\p \rho}{\p t} + \f{1}{i\hbar} [\rho, \ham] = 0 \implies \boxed{i\hbar \f{\p}{\p t}\rho = [\ham,\rho]}
+	\end{align*}
+	From here, we can calculate $dS/dt$ as follows:
+	\begin{align*}
+	\f{dS}{dt} &= -\Tr \lb \f{\p \rho(t)}{\p t}(\ln \rho(t) + \mathbb{I} ) \rb \\
+	&= -\f{1}{i\hbar}\Tr\lb (\ham \rho  - \rho \ham)(\ln \rho + \mathbb{I})  \rb\\
+	&= \cancel{-\f{1}{i\hbar}\Tr\lb \ham \rho - \rho \ham \rb} + -\f{1}{i\hbar}\Tr\lb \ham \rho \ln \rho - \rho \ham \ln \rho \rb\\
+	&= -\f{1}{i\hbar}\lb \Tr(\ham \rho \ln \rho)- \Tr(\ln \rho \rho \ham)  \rb\\
+	&= \boxed{0}
+	\end{align*}
+	where we have used the fact that $\Tr(ABC)$ is invariant under cyclic permutations and that $[\rho,\ln \rho]  = 0$. \textcolor{blue}{I suppose this makes sense, since the quantum time evolution operator is unitary.}
+	
+	
+	\item The functional $S[\rho]$ subject to the constraint $\tr(\rho \ham) = E$ and normalization $\Tr \rho = 1$ is:  
+	\begin{align*}
+	S[\rho] = \Tr(\rho \ln \rho)  + \be\lb E - \Tr(\rho \ham) \rb + \al[1 - \Tr\rho]
+	\end{align*}
+	where $\al,\be$ are our Lagrange multipliers. With this, we can extremize $S$ with respect to $\rho$ to find $\rho_\text{max}$:
+	\begin{align*}
+	\f{\p S[\rho]}{\p \rho}\bigg\vert_{\rho_\text{max}} = \Tr(\ln \rho_\text{max} + \mathbb{I}) - \be \Tr(\ham) -\al \Tr\mathbb{I} = 0
+	\end{align*}
+	from which we find 
+	\begin{align*}
+	\ln \rho_\text{max} = -\be\ham - \al\mathbb{I} - \mathbb{I} \implies \boxed{\rho_\text{max} = e^{-(\al + 1)}e^{-\be\ham}} 
+	\end{align*}
+	To the correct normalization we must have $e^{-(\al + 1)} = \Tr(e^{-\be \ham}) $, but since we started with two Lagrange multipliers we could leave our answer as that in the box. 
+	
+	
+	
+	\item Since $\rho_\text{max} = \rho_\text{max}(\ham)$, it commutes with $\ham$. Thus,
+	\begin{align*}
+	\f{\p \rho_\text{max}}{\p t} = \f{1}{i\hbar} [\ham, \rho_\text{max}] = \boxed{0}
+	\end{align*} 
+	
+	
+	
 \end{enumerate}
 
 \noindent \textbf{9. (Optional) Electron spin. }
 
 \begin{enumerate}[label=(\alph*)]
+	\item When $\vec{B} = B\hat{z}$ we have
+	\begin{align*}
+	\ham_z = -\mu_B B \sigma_z.
+	\end{align*}
+	The density matrix for the canonical ensemble is therefore
+	\begin{align*}
+	\rho_z = \f{1}{\tr(e^{-\be\ham_z })}\exp\lp -\be \ham_z \rp = \boxed{\f{1}{e^{-\be B \mu_B} + e^{\be B \mu_B}}\begin{pmatrix}
+	e^{\be B \mu_B} & 0 \\ 0 & e^{-\be B \mu_B}
+	\end{pmatrix}}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[47]:= sz = PauliMatrix[3];
+	
+	In[48]:= Hz = -mu*B*sz;
+	
+	In[49]:= rhoz = MatrixExp[-b*Hz];
+	
+	In[50]:= rhoz = rhoz/Tr[rhoz];
+	
+	In[58]:= rhoz
+	
+	Out[58]= {{E^(b B mu)/(E^(-b B mu) + E^(b B mu)), 0}, {0, 
+	E^(-b B mu)/(E^(-b B mu) + E^(b B mu))}}
+	\end{lstlisting}
+	
+	\item When $\vec{B} = B\hat{x}$ we have
+	\begin{align*}
+	\ham_x = -\mu_B B \sigma_x.
+	\end{align*}
+	The density matrix for the canonical ensemble is therefore
+	\begin{align*}
+	\rho_x = \f{1}{\tr(e^{-\be\ham_x })}\exp\lp -\be \ham_x \rp = 
+	\boxed{\f{1}{2}\begin{pmatrix}
+		1 & \tanh(\be B \mu_B) \\ \tanh(\be B \mu_B) & 1 
+		\end{pmatrix}}
+	\end{align*}
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[62]:= Hx = -mu*B*PauliMatrix[1];
+	
+	In[63]:= rhox = MatrixExp[-b*Hx]; // FullSimplify
+	
+	In[64]:= rhox = rhox/Tr[rhox] // FullSimplify
+	
+	Out[64]= {{1/2, 1/2 Tanh[b B mu]}, {1/2 Tanh[b B mu], 1/2}}
+	\end{lstlisting}
+	
 	\item 
-	\item 
-	\item 
+	\begin{align*}
+	&\langle \ham_z \rangle = \tr(\rho_z \ham_z) = \boxed{- B \mu_B \tanh(\be B \mu_B )}\\
+	&\langle \ham_x \rangle = \tr(\rho_x \ham_x) = \boxed{- B \mu_B \tanh(\be B \mu B)}
+	\end{align*}
+	which is not surprising as there's nothing to distinguish between which way is $z$ or $x$. 
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[66]:= Ez = Tr[rhoz . Hz] // FullSimplify
+	
+	Out[66]= -B mu Tanh[b B mu]
+	
+	In[67]:= Ex = Tr[rhox . Hx] // FullSimplify
+	
+	Out[67]= -B mu Tanh[b B mu]
+	\end{lstlisting}
 \end{enumerate}
 
 
