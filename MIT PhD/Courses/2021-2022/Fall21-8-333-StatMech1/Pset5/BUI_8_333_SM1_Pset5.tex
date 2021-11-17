@@ -372,10 +372,55 @@ where $\mathcal{Z}_\text{ideal gas} = V^N/(N! \lambda^{3N})$ is the partition fu
 \noindent \textbf{5. Vibrational and rotational heat capacities at high temperatures.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
-	\item 
-	\item 
-	\item 
+	\item The energy spectrum of a quantum harmonic oscillator is $E_n = \hbar \omega (n + 1/2)$, so the vibrational partition function is 
+	\begin{align*}
+	\mathcal{Z}_\text{qm,vib} = \sum^\infty_{n=0} \exp\lb -\be \hbar \omega\lp n + \f{1}{2} \rp \rb = \boxed{\f{1}{2}\csch(\f{\be \hbar \omega}{2})}
+	\end{align*}
+	Expanding $\ln \mathcal{Z}_\text{qm,vib}$ gives
+	\begin{align*}
+	\boxed{\ln \mathcal{Z}_\text{qm,vib} \approx \ln \f{1}{\be \hbar \omega} - \f{(\be \hbar \omega)^2}{24} + \mathcal{O}((\be \hbar \omega)^3)}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[3]:= Zq = 
+	Sum[Exp[-b*hbar*w*(n + 1/2)], {n, 0, Infinity}] // FullSimplify
+	
+	Out[3]= 1/2 Csch[(b hbar w)/2]
+	
+	In[6]:= Series[Log[Zq], {w, 0, 2}]
+	
+	Out[6]= SeriesData[w, 0, {
+	Log[b^(-1) hbar^(-1)/w], 0, Rational[-1, 24] b^2 hbar^2}, 0, 3, 1]
+	\end{lstlisting}
+	
+	
+	\item Heat capacity is calculated through 
+	\begin{align*}
+	C = \f{\p E}{\p T} = \f{\p }{\p T}\lb - \f{\p \ln \mathcal{Z}_\text{qm,vib} }{\p \be} \rb = \f{\p }{\p T}\lb k_BT + \f{\hbar^2 \omega^2}{12 k_BT}\rb = k_B - \f{\hbar^2 \omega^2}{12 k_B T^2}
+	\end{align*}
+	So, the first correction to vibrational heat capacity at high temperatures due to quantization is $\boxed{- \hbar^2 \omega^2/12 k_B T^2}$
+	
+	\item Checking the Abel-Plana formula. The formula claims that
+	\begin{align*}
+	\sum^\infty_{n=0} e^{-nu} 
+	&= \int^\infty_0 e^{-xu}\,dx + \f{1}{2} + i\int^\infty_0 \f{e^{-iut} - e^{iut}}{e^{2\pi t} - 1}\,dt \\
+	&= \f{1}{u} + \f{1}{2} - \f{1}{u} + \f{1}{2}\coth(\f{u}{2})\\
+	&=  \f{1}{2} + \f{1}{2}\coth(\f{u}{2}) \\
+	&= \f{1}{2} + \f{1}{2}\lp \f{e^u + 1}{ e^u - 1} \rp \\
+	&= 1 + \f{1}{e^u - 1} 
+	\end{align*}
+	while the geometric series $\sum_n e^{-nu}$ is 
+	\begin{align*}
+	\sum^\infty_{n=0} e^{-nu} = 1 + \f{1}{e^u - 1}.
+	\end{align*}
+	So, the formula provides the correct expansion for the series above. 
+	
+	\item Using the formula, we find that 
+	\begin{align*}
+	\sum^\infty_{l=0} (2l+1) e^{-ul(l+1)} 
+	&=   \int^\infty_0 (2x+1) e^{-ux(x+1)} \,dx + \f{1}{2} + i\int^\infty_0 \f{(2it+1) e^{-uit(it+1)}  - (-2it+1) e^{+uit(-it+1)} }{e^{2\pi t} - 1}\,dt \\
+	&= \f{1}{u} + \f{1}{2} + 
+	\end{align*}
 	\item 
 	\item 
 \end{enumerate}
