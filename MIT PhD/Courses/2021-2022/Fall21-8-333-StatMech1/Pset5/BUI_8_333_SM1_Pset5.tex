@@ -168,9 +168,7 @@ u, \quad a < r < b,\\
 	\begin{align*}
 	\Omega_\text{hard shell} = \lim_{u\to \infty} \Omega = \boxed{\f{2\pi}{3} (b^3 - a^3) }
 	\end{align*}
-	I suppose the dependence on $a$ makes sense. When $a=0$, we get the result for hard-sphere potential. When $a\neq 0$ like this case, the excluded volume is smaller since the potential acts on a more limited range. \textbf{\textcolor{blue}{Not sure how to interpret what happens inside the shell... I guess once a particles makes it inside the shell, it gets trapped there since there is no repulsion.}}\\
-	
-	But if we think about the low density limit, then particles are far apart, and the excluded volume shouldn't depend on $a$, so in this case the dependence does not make sense.
+	I suppose the dependence on $a$ makes sense. When $a=0$, we get the result for hard-sphere potential. When $a\neq 0$ like this case, the excluded volume is smaller since the potential acts on a more limited range. \textbf{\textcolor{blue}{Not sure how to interpret what happens inside the shell... I guess once a particles makes it inside the shell, it gets trapped there since there is no repulsion.}} However, if we think about the low density limit, then particles are far apart, and the excluded volume shouldn't depend on $a$, so in this case the dependence does not make sense.
 \end{enumerate}
 
 \noindent \textbf{2. Surfactant condensation.}
@@ -217,7 +215,7 @@ u, \quad a < r < b,\\
 	\begin{align*}
 	\mathcal{Z}(N,T,A) = \f{1}{N! \lambda^{2N}} \mathcal{A} \exp(-\be \overline{\mathcal{U}})
 	\end{align*}
-	where $\overline{\mathcal{U}}$ represents the total (average) potential (\textcolor{blue}{I think the problem meant ``attractive'' rather than ``potential''}) energy, obtained by assuming a uniform density $n=N/V$ as
+	where $\overline{\mathcal{U}}$ represents the total (average) potential (\textcolor{blue}{I think the problem meant ``attractive'' rather than ``potential'', but it doesn't matter all that much}) energy, obtained by assuming a uniform density $n=N/V$ as
 	\begin{align*}
 	\overline{\mathcal{U}} &= \f{1}{2} \sum_{i,j} \mathcal{V}(\vec{q}_i - \vec{q}_j) \\
 	&= \f{1}{2} \int d^2 \vec{q_1} d^2 \vec{q}_2 n(\vec{q}_1) n(\vec{q}_2) \mathcal{V}(\vec{q}_1 - \vec{q}_2) \\
@@ -316,11 +314,89 @@ where $\mathcal{Z}_\text{ideal gas} = V^N/(N! \lambda^{3N})$ is the partition fu
 	\end{align*}
 	
 	
-	\item The critical temperature can be located by setting $blah$
+	\item The critical temperature can be located by setting $\p P / \p n = 0$ and $\p^2 P /\p n^2 = 0$ and solve for $n_c, T_c$ simultaneously. 
+	\begin{align*}
+	&\f{\p P}{\p n} = -bn_c + cn_c^2 + k_BT_c = 0 \\
+	&\f{\p^2 P}{\p n^2} = -b + 2cn_c = 0
+	\end{align*}
+	from which we get
+	\begin{align*}
+	\boxed{n_c = \f{b}{2c}; \quad\quad T_c = \f{b^2}{4ck_B}}
+	\end{align*}
 	\item 
-	\item 
-	\item 
-	\item
+	The pressure at critical point is therefore
+	\begin{align*}
+	P_c = n_ck_BT_c + \f{cn_c^3}{3} - \f{b n_c^2}{2} = \boxed{\f{b^3}{24c^2}} \implies \boxed{\f{k_B T_c n_c}{P_c} = 3 }
+	\end{align*}
+	\item Since $V = N/n$ we have (after remembering $(\p y/\p x)^{-1} = \p x/\p y$ and doing a substitution $m =1/n$ to bring the derivative back to $\p P / \p n$):
+	\begin{align*}
+	\kappa_T = -\f{1}{V}\f{\p V}{\p P}\bigg\vert_T = -\f{n}{N}\f{N\p (1/n)}{\p P}\bigg\vert_T = +n n^{-2}\f{\p P}{\p n}\bigg\vert_T = \boxed{\f{-1}{n(-bn + cn^2 + k_BT)}}
+	\end{align*}
+	At $n = n_c = b/2c$, we have
+	\begin{align*}
+	\kappa_T = \f{8c^2}{b^3 - 4bc k_B T} = \boxed{\f{2c}{k_Bb(T_c-T)}}
+	\end{align*} 
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.5\textwidth]{sketch}
+		\caption{Sketch of $\kappa_T$, which diverges at $T_c$.}
+	\end{figure}
+
+
+	\item ``On the critical isotherm'' means keeping $T = T_c$. So this part just asks us to write $P-P_c$ in terms of $n-n_c$, where $n_c = b/2c, T_c = b^2/4ck_B$, and $P_c = b^3/24c^2$
+	\begin{align*}
+	P - P_c &= \lp nk_BT_c + \f{cn^3}{3} - \f{b n^2}{2}\rp - \f{b^3}{24c^2} \\
+	&= -\f{(b-2cn)^3}{24c^2} \\
+	&= \boxed{\f{c}{3}(n-n_c)^3}
+	\end{align*}
+	\item Along an isotherm, variations of chemical potential obey
+	\begin{align*}
+	d\mu = \f{ d P }{n}
+	\end{align*}
+	Now, since the chemical potential of the two phases are the same at the phase transition, we have
+	\begin{align*}
+	\mu(n_+) - \mu(n_-) &= 0 \\
+	&= \int\,d\mu \\
+	&= \int \f{1}{n} dP \\
+	&= \int^{n_+}_{n_-} \f{1}{n}\f{\p P}{\p n}\,dn\\
+	&= \int^{n_c(1+\delta)}_{n_c(1-\delta)} \f{1}{n}\f{\p P}{\p n}\,dn \\
+	&= \int^{n_c(1+\delta)}_{n_c(1-\delta)}\lb -b + cn + \f{k_B T}{n} \rb\,dn \\
+	&= \f{b^2\delta}{2c} + k_BT \ln \f{1+\delta}{1-\delta}.
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[10]:= Integrate[-b + c n, {n, nc (1 + d), 
+	nc (1 - d)}] // FullSimplify
+	
+	Out[10]= (b^2 d)/(2 c)
+	\end{lstlisting}
+	The implicit equation for $\delta$ is thus
+	\begin{align*}
+	\boxed{\delta} = \f{2k_B Tc}{b^2}\ln \f{1+\delta}{1-\delta} = \boxed{\f{T}{2T_c} \ln \f{1+\delta}{1-\delta} }
+	\end{align*}
+	This is a transcendental equation, so we can't solve it analytically. However, we may assume that $\delta \ll 1$ and expand the log to get
+	\begin{align*}
+	\delta \approx \f{T}{T_c}\lp \delta + \f{\delta^3}{3} + \mathcal{O}(\delta^5) \rp
+	\end{align*} 
+	Mathematica code:
+	\begin{lstlisting}
+	In[16]:= Series[Log[(1 + x)/(1 - x)], {x, 0, 4}]
+	
+	Out[16]= SeriesData[x, 0, {2, 0, 
+	Rational[2, 3]}, 1, 5, 1]
+	\end{lstlisting}
+	
+	With this, we can now solve for $\delta$ in terms of $T$ and $T_c$ (assuming $T>T_c$)
+	\begin{align*}
+	\boxed{\delta \approx \f{\sqrt{3(T/T_c-1)}}{\sqrt{T/T_c}} = \sqrt{3\lp 1 - \f{T_c}{T} \rp}}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[17]:= Solve[x == r*(x + x^3/3), x]
+	
+	Out[17]= {{x -> 0}, {x -> -((Sqrt[3] Sqrt[1 - r])/Sqrt[r])}, {x -> (
+	Sqrt[3] Sqrt[1 - r])/Sqrt[r]}}
+	\end{lstlisting}
 \end{enumerate}
 
 \noindent \textbf{4. Quantum-Classical correspondence.} The Hamiltonian says 
@@ -335,12 +411,14 @@ where $\mathcal{Z}_\text{ideal gas} = V^N/(N! \lambda^{3N})$ is the partition fu
 	\mathcal{Z}_\text{QM} 
 	&= \Tr\lp e^{-\be \ham}  \rp \approx  \Tr\lp e^{-\be p^2/2m} e^{-\be U({q})} \rp\quad\quad\quad \text{as  }\,\,\be \to 0 \\
 	&= \sum_{n}\bra{n} e^{-\be p^2/2m} e^{-\be U({q})} \ket{{n}}\\
-	&= \int d^3  \vec{p} d^3 \vec{q} \, \bra{n}e^{-\be p^2/2m} \ketbra{p}  e^{-\be U(\vec{q})} \ketbra{q} \ket{n}\\
+	&= \int d^3  \vec{p} d^3 \vec{q} \, \bra{n}e^{-\be p^2/2m} \ketbra{p}  e^{-\be U(\vec{q})} \ketbra{q} \ket{n},\quad\quad \{ \ket{n} \}\text{ is, say, the energy basis}\\
 	&= \int d^3  \vec{p} d^3 \vec{q} \,
 	e^{-\be p^2/2m} e^{-\be U(\vec{q})} \bra{n}\ketbra{p}   \ketbra{q} \ket{n}\\
-	&= \int d^3  \vec{p} d^3 \vec{q}  e^{-\be p^2/2m}  e^{-\be U(\vec{q})} = \mathcal{Z}_\text{CM}
+	&= \int d^3  \vec{p} d^3 \vec{q}  e^{-\be p^2/2m}  e^{-\be U(\vec{q})} \abs{\bra{p}\ket{q}}^2\\
+	&= \f{1}{h^3}\int d^3  \vec{p} d^3 \vec{q}  e^{-\be p^2/2m}  e^{-\be U(\vec{q})}\\
+	&= \mathcal{Z}_\text{CM}
 	\end{align*}
-	where we have used the fact that $\bra{\vec{q}}\ket{\vec{p}} \sim e^{i \vec{p}\cdot \vec{q}}$. 
+	where we have used the fact that $\bra{\vec{q}}\ket{\vec{p}} \sim e^{i \vec{p}\cdot \vec{q}}/(2\pi \hbar)^{3/2}       $. 
 	
 	
 	\item For a free particle in a box of volume $V$, we have that the integral over the positional phase space is just $V$. The Hamiltonian is diagonal in the $\vec{k}$ basis as
@@ -382,7 +460,7 @@ where $\mathcal{Z}_\text{ideal gas} = V^N/(N! \lambda^{3N})$ is the partition fu
 	\end{align*}
 	Expanding $\ln \mathcal{Z}_\text{qm,vib}$ gives
 	\begin{align*}
-	\boxed{\ln \mathcal{Z}_\text{qm,vib} \approx \ln \f{1}{\be \hbar \omega} - \f{(\be \hbar \omega)^2}{24} + \mathcal{O}((\be \hbar \omega)^3)}
+	\boxed{\ln \mathcal{Z}_\text{qm,vib} \approx \ln \lp \f{1}{\be \hbar \omega}\rp - \f{(\be \hbar \omega)^2}{24} + \mathcal{O}((\be \hbar \omega)^3)}
 	\end{align*}
 	Mathematica code:
 	\begin{lstlisting}
@@ -398,11 +476,11 @@ where $\mathcal{Z}_\text{ideal gas} = V^N/(N! \lambda^{3N})$ is the partition fu
 	\end{lstlisting}
 	
 	
-	\item Heat capacity is calculated through 
+	\item The first correction due to heat capacity due to quantized vibration is
 	\begin{align*}
-	C = \f{\p E}{\p T} = \f{\p }{\p T}\lb - \f{\p \ln \mathcal{Z}_\text{qm,vib} }{\p \be} \rb = \f{\p }{\p T}\lb k_BT + \f{\hbar^2 \omega^2}{12 k_BT}\rb = k_B - \f{\hbar^2 \omega^2}{12 k_B T^2}
+	C = \f{\p E}{\p T} = \f{\p }{\p T}\lb - \f{\p \ln \mathcal{Z}_\text{qm,vib} }{\p \be} \rb = \f{\p }{\p T}\lb k_BT + \f{\hbar^2 \omega^2}{12 k_BT}\rb = k_B - \f{\hbar^2 \omega^2}{12 k_B T^2} \to \boxed{k_B}
 	\end{align*}
-	So, the first correction to vibrational heat capacity at high temperatures due to quantization is $\boxed{- \hbar^2 \omega^2/12 k_B T^2}$
+	as $T\to \infty$. 
 	
 	\item Checking the Abel-Plana formula. The formula claims that
 	\begin{align*}
@@ -423,10 +501,70 @@ where $\mathcal{Z}_\text{ideal gas} = V^N/(N! \lambda^{3N})$ is the partition fu
 	\begin{align*}
 	\sum^\infty_{l=0} (2l+1) e^{-ul(l+1)} 
 	&=   \int^\infty_0 (2x+1) e^{-ux(x+1)} \,dx + \f{1}{2} + i\int^\infty_0 \f{(2it+1) e^{-uit(it+1)}  - (-2it+1) e^{+uit(-it+1)} }{e^{2\pi t} - 1}\,dt \\
-	&= \f{1}{u} + \f{1}{2} + 
+	&= \f{1}{u} + \f{1}{2} + i\int_0^\infty \lb 2it (\coth \pi t - 1) + it(2t^2 - 1)(\coth \pi t - 1) u + \mathcal{O}(u^2)  \rb \,dt \\
+	&= \f{1}{u} + \f{1}{2} - \f{1}{6} + \f{u}{15} + \mathcal{O}(u^2)\\
+	&= \boxed{\f{1}{u} + \f{1}{3} + \f{u}{15} + \mathcal{O}(u^2)}
 	\end{align*}
-	\item 
-	\item 
+	Mathematica code:
+	\begin{lstlisting}
+	In[1]:= Integrate[(2*x + 1)*Exp[-u*x (x + 1)], {x, 0, Infinity}]
+	
+	Out[1]= ConditionalExpression[1/u, Re[u] > 0]
+	
+	In[2]:= M = (2*I*t + 1)*Exp[-u*I*t (I*t + 1)] - (2*-I*t + 1)*
+	Exp[-u*-I*t (-I*t + 1)] // FullSimplify
+	
+	Out[2]= 2 I E^(t^2 u) (2 t Cos[t u] - Sin[t u])
+	
+	In[3]:= K = M/(Exp[2*Pi*t] - 1) // FullSimplify
+	
+	Out[3]= I E^(t^2 u) (-1 + Coth[\[Pi] t]) (2 t Cos[t u] - Sin[t u])
+	
+	In[4]:= Series[K, {u, 0, 1}] // FullSimplify
+	
+	Out[4]= SeriesData[u, 0, {
+	Complex[0, 2] t (-1 + Coth[Pi t]), 
+	Complex[0, 1] t (-1 + 2 t^2) (-1 + Coth[Pi t])}, 0, 2, 1]
+	
+	In[6]:= I*Integrate[2 I t (-1 + Coth[\[Pi] t]), {t, 0, Infinity}]
+	
+	Out[6]= -(1/6)
+	
+	In[12]:= I*
+	Integrate[I t (-1 + 2 t^2) (-1 + Coth[\[Pi] t]), {t, 0, Infinity}]
+	
+	Out[12]= 1/15
+	\end{lstlisting}
+	
+	\item From the lecture notes, the partition function associated with the quantum rotor is 
+	\begin{align*}
+	\mathcal{Z}_{\text{qm, rot}} 
+	&= \sum^\infty_{l=0} \exp
+	\lb -\f{\be\hbar^2 l(l+1)}{2I} \rb (2l+1) \\
+	&\approx \f{1}{\be \hbar^2/2I} + \f{1}{3} + \f{\be\hbar^2}{30I} \\
+	&= {\f{2I}{\be \hbar^2} + \f{1}{3} + \f{\be\hbar^2}{30 I}}
+	\end{align*}
+	from which we find the energy:
+	\begin{align*}
+	E_\text{qm,rot} = -\f{\p \ln \mathcal{Z}_{\text{qm,rot}}}{\p \be} = {\f{1}{\be} - \f{2(\be \hbar^4 + 5 \hbar^2 I )}{\be^2 \hbar^4 + 10 \be \hbar^2 I + 60 I^2}}
+	\end{align*}
+	In the $\be \to 0$ limit, we find that
+	\begin{align*}
+	E_\text{qm,rot} \to \f{1}{\be} - \f{\hbar^2}{6I} = \boxed{k_B T - \f{\hbar^2}{6I}}
+	\end{align*}
+	
+	
+	\item To find the first order correction in rotational heat capacity, we may write
+	\begin{align*}
+	E_\text{qm, rot} = \f{1}{\be} - \f{2(\be \hbar^4 + 5 \hbar^2 I )}{\be^2 \hbar^4 + 10 \be \hbar^2 I + 60 I^2}  = E_0 + E_1
+	\end{align*}
+	where $E_0 = 1/\be$. Writing the heat capacity as $C = C_0 + C_1$ where $C_0 = k_B$ we see that the desired correction is 
+	\begin{align*}
+	C_1 = \f{\p E_1}{\p T} = -\frac{2 \hbar^4 k_B \left(\hbar^4+10 \hbar^2 I
+		k_B T -10 I^2 k_B^2 T^2\right)}{\left(\hbar^4+10
+		\hbar^2 I k_B T + 60 I^2 k_B^2 T^2\right)^2} \to 0 
+	\end{align*}
+	as $T\to \infty$. So, the first order correction to the heat capacity due to quantized rotation is $\boxed{k_B}$ as $T\to \infty$. \textbf{\textcolor{blue}{We could have used the expression for $E$ in the high temperature limit -- I'm just being careful here.}}
 \end{enumerate}
 
 \noindent \textbf{6. van Leeuwen's Theorem.} The Hamiltonian for a gas of charged particles subjected to an external magnetic field $\vec{B} = \curl \vec{a}$ is 
