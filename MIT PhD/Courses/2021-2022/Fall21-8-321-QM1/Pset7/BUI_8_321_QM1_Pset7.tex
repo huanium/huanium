@@ -1,0 +1,450 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{subfig}
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.321 - Quantum Theory I}\\
+Problem set: \textbf{\#7}
+\end{framed}
+	
+
+	
+	
+	
+\noindent \textbf{1. WKB.} Just so we don't get lost, I will use normal units $\hbar,m$ and only go to $\hbar = m = 1$ for part (c).
+
+\begin{enumerate}[label=(\alph*)]
+	\item To calculate the energy spectrum using WKB, we first impose the condition
+	\begin{align*}
+	\int^{x_2}_{x_1} \sqrt{2m \lp E_n - \f{1}{2}x^2 \rp}\,dx =  \hbar \pi \lp n + \f{1}{2}\rp 
+	\end{align*}
+	where $x_2 = \sqrt{2E}$ and $x_1 = -\sqrt{2E}$ are the classical turning points. Integrating this in Mathematica gives
+	\begin{align*}
+	E_n \sqrt{m} \pi = \hbar \pi \lp n + \f{1}{2}\rp \implies \boxed{ E_n = \hbar \omega \lp n + \f{1}{2} \rp}
+	\end{align*}
+	as expected, where we have called $\omega = \sqrt{k/m} = \sqrt{1/m}$. 
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[9]:= Sqrt[2*m]*
+	Integrate[Sqrt[En - (1/2)*x^2], {x, -Sqrt[2*En], Sqrt[2*En]}]
+	
+	Out[9]= En Sqrt[m] \[Pi]
+	\end{lstlisting}
+	
+	\item For this part we do the same:
+	\begin{align*}
+	\int_0^L \sqrt{2mE_n}\,dx = \hbar \pi \lp n + \f{1}{2} \rp \implies \sqrt{2m E_n} L =  \hbar \pi \lp n + \f{1}{2} \rp \implies \boxed{E_n = \f{\hbar^2 \pi^2}{2m L^2}\lp n + \f{1}{2} \rp^2}
+	\end{align*}
+	\textcolor{blue}{We note that there are improvements to the WKB method for cases like this problem where the classically disallowed regions have $\psi = 0$ (ie $V = \infty$). In these methods we also take into account boundary conditions. For this problem, however, we use the most primitive version presented in Sakurai.}
+	
+	\item Repeating:
+	\begin{align*}
+	\int_{x_1}^{x_2} \sqrt{2m\lp E_n - \abs{kx^\al} \rp}\,dx = \hbar \pi \lp n + \f{1}{2} \rp
+	\end{align*}
+	The classical turning points are $\pm (E_n/k)^{1/\al}$. This integral can be simplified by a change of variables $x = (E_n/k)^{1/\al} y$ where $y \in [-1,1]$. Once this simplification is made, it is possible to use Mathematica to evaluate the integral:
+	\begin{align*}
+	\hbar \pi \lp n + \f{1}{2} \rp 
+	&= \int_{-(E_n/k)^{1/\al}}^{(E_n/k)^{1/\al}} \sqrt{2m\lp E_n - kx^\al \rp}\,dx\\ 
+	&= \lp \f{E_n}{k} \rp^{1/\al}\sqrt{2mE_n}\int^{1}_{-1} \sqrt{1- \abs{y^\al}}\,dy\\  
+	&= {\lp \f{E_n}{k} \rp^{1/\al}\sqrt{2\pi mE_n}  \f{\Gamma(1+1/\al)}{\Gamma(3/2+1/\al)}}
+	\end{align*}
+	from which we find
+	\begin{align*}
+	\boxed{E_n = \lp\f{\pi}{8}\rp^{\f{\al}{2+\al}} \lb  \f{\hbar k^{1/\al}(1+2n)}{\sqrt{m}}  \f{\Gamma(3/2+1/\al)}{\Gamma(1+1/\al)}\rb^{\f{2\al}{2+\al}}}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	(*Compute integral*)
+	In[17]:= Integrate[Sqrt[1 - Abs[y^n]], {y, -1, 1}]
+	
+	Out[17]= ConditionalExpression[(Sqrt[\[Pi]] Gamma[1 + 1/n])/
+	Gamma[3/2 + 1/n], n > 0]
+	
+	(*Solve for En*)
+	In[24]:= Solve[
+	hbar*Pi*(n + 1/2) == (En/k)^(1/a)*Sqrt[2*Pi*m*En]* Gamma[1 + 1/a]/
+	Gamma[3/2 + 1/a], En] // FullSimplify
+	
+	Out[24]= {{En -> (\[Pi]/8)^(a/(
+	2 + a)) ((hbar k^(1/a) (1 + 2 n) Gamma[3/2 + 1/a])/(
+	Sqrt[m] Gamma[1 + 1/a]))^((2 a)/(2 + a))}}
+	\end{lstlisting}
+	
+	
+	\item 
+	\begin{itemize}
+		\item In the first case, it is easy to see that the WKB method gives the exact spectrum for the SHO. $E_0 = E_{0,WKB}= \hbar \omega/2 = \boxed{1/2}$ and $E_1 =E_{1,WKB} = 3\hbar\omega/2 = \boxed{3/2}$. 
+		
+		\item In the second case, we compare to the correct values $\hbar^2 \pi^2 n^2/2mL^2$ where $n \geq 1$. There is a subtle point here where the $n$'s in the WKB method runs from zero, so we compare $E_{0,WKB} = \boxed{\pi^2/8L^2}$ to  $E_1 = \pi^2/2L^2$, and $E_{2,WKB} = \boxed{9\pi^2/8L^2} $ to $E_2 = 2\pi^2/L^2$. So, the approximated ground state energy is off by $125\%$, while the first excited state energy is off by $56.3\%$.
+		
+		\item In the third case, we have $E_{0,WKB} = \boxed{0.344127}$ and $E_{1,WKB} = \boxed{1.48895}$. Comparing to $E_0 = 0.4208$ and $E_1 = 1.5079$, the approximated ground state energy is off by $-18\%$, while the first excited state energy is off by $1.3\%$, very impressive. \\
+		
+		
+		With these, we see that WKB did best the first case, followed by the last case, and did worst in the second case. The reason, as stated in the note in Part (b), is possibly due to bondary conditions. I believe that as $\al \to \infty$ (corresponding to the potential wall becoming sharper and $V(x)$ looking more like the square well in (b)), the WKB method will get worse. Intuitively, it becomes more and more difficult to match solutions between the classically allowed and disallowed region as the potential well sharpens. \\
+		
+		
+		Mathematica calculations:
+		\begin{lstlisting}
+		In[40]:= E0WKB = (Pi^2/(2*L^2))*(0 + 1/2)^2
+		
+		Out[40]= \[Pi]^2/(8 L^2)
+		
+		In[20]:= E1 = (Pi^2/(2*L^2))*(1)^2
+		
+		Out[20]= \[Pi]^2/(2 L^2)
+		
+		In[39]:= N[(E1WKB - E1)/E1]
+		
+		Out[39]= 1.25
+		
+		In[41]:= E2WKB = (Pi^2/(2*L^2))*(1 + 1/2)^2
+		
+		Out[41]= (9 \[Pi]^2)/(8 L^2)
+		
+		In[22]:= E2 = (Pi^2/(2*L^2))*(2)^2
+		
+		Out[22]= (2 \[Pi]^2)/L^2
+		
+		In[38]:= N[(E2WKB - E2)/E2]
+		
+		Out[38]= 0.5625
+		
+		In[29]:= EN[n_, k_, a_] := (\[Pi]/8)^(a/(
+		2 + a)) ((hbar k^(1/a) (1 + 2 n) Gamma[3/2 + 1/a])/(
+		Sqrt[m] Gamma[1 + 1/a]))^((2 a)/(2 + a));
+		
+		In[32]:= E0c = N[EN[0, 1/4, 4] /. {hbar -> 1, m -> 1} // FullSimplify]
+		
+		Out[32]= 0.344127
+		
+		In[33]:= E1c = N[EN[1, 1/4, 4] /. {hbar -> 1, m -> 1} // FullSimplify]
+		
+		Out[33]= 1.48895
+		\end{lstlisting}
+	\end{itemize}
+\end{enumerate}	
+	
+	
+	
+	
+	
+\noindent \textbf{2. Energy spectrum from partition function.} Let the partition function be defined as in the problem and consider the energy ONB basis $\{\ket{n}\}$, we have
+\begin{align*}
+\mathcal{Z} 
+&= \int d^3 \vec{x}' K(\vec{x}',t;\vec{x}',0)\bigg\vert_{\be=it/\hbar}\\
+&= \int d^3 \vec{x}' \bra{\vec{x}'} \exp\lb \f{-i \ham(t)}{\hbar}  \rb\ket{\vec{x}'}\\
+&= \int d^3 \vec{x}' \bra{\vec{x}'} \exp\lb \f{-i \ham(t)}{\hbar}   \rb \sum_{n}\ket{n}\bra{n}\ket{\vec{x}'}\\
+&= \int d^3\vec{x}' \sum_n \abs{\bra{\vec{x}'}\ket{n}}^2 \exp\lp \f{-i E_n t}{\hbar} \rp \\
+&= \sum_n \ketbra{n} \exp\lp \f{-i E_n t}{\hbar} \rp \int d^3 \vec{x} \ketbra{\vec{x}} \\
+&= \sum_n \exp(-\be E_n)
+\end{align*}
+from which we find
+\begin{align*}
+\lim_{\be\to \infty}\mathcal{Z} 
+&= \lim_{\be \to \infty} -\f {1}{\mathcal{Z}} \f{\p \mathcal{Z}}{\p \be}\\
+&= \lim_{\be \to \infty} -\f {1}{\mathcal{Z}} \f{\p \mathcal{Z}}{\p \be}\\
+&= \lim_{\be\to\infty} \f{\sum_n E_n e^{-\be E_n}}{\sum_n e^{-\be E_n}}\\
+&= E_0
+\end{align*}
+since in the $\be\to \infty$ limit, the term with the smallest $E_n$ in the numerator dominates (this is analogous to the saddle point approximation). So, the provided expression gives us the ground state energy in the $\be\to \infty$ limit. \\
+
+As an aside, we notice that by setting $\be \to it/\hbar$ and treating $\be$ like a real number, we are effectively going into imaginary time, where the unitary time evolution becomes exponential relaxation. It makes sense that we obtain the ground state energy as $\be\to \infty$. \\ 
+
+For the particle in a 1D box, the energy spectrum is $\pi^2 n^2/2$ where we have set $\hbar = m = 1$ and the box size $L=1$ as well (\textcolor{blue}{alternatively we could also let $\be$ absorb all constants since we're sending it to infinity anyway}). With this, we can compute the partition function 
+\begin{align*}
+\mathcal{Z} = \sum^\infty_{n=1} \exp(-\be \pi^2 n^2/2).
+\end{align*}
+Evaluating this sum requires introducing the Jacobi $\theta$-functions, so let us avoid this by using the $\be\to \infty$ limit right away. In this limit, we may write the infinite sum as an integral (assuming uniform density of states and ignoring all leading factors -- which will go away since $(-1/\mathcal{Z})\p \mathcal{Z}/\p \be = -\p \ln\mathcal{Z}/\p \be$):
+\begin{align*}
+\mathcal{Z} \to \int_1^\infty e^{-\be \pi^2 n^2/2}\,dn = \f{1}{\sqrt{2\pi \be}} \erf\lb \f{\pi \sqrt{b}}{\sqrt{2}}\rb.
+\end{align*}
+From here, we may use Mathematica to compute 
+\begin{align*}
+\lim_{b\to \infty}-\f{1}{\mathcal{Z}} \f{\p \mathcal{Z}}{\p \be} = \lim_{\be\to \infty} \f{1}{2b}\lb {\frac{\sqrt{2 \pi } e^{-\frac{\pi ^2 b}{2}} \sqrt{b}}{\text{erfc}\left(\frac{\pi  \sqrt{b}}{\sqrt{2}}\right)}+1}\rb = \boxed{\f{\pi^2}{2}}
+\end{align*}
+which agrees with what we would expect if we plug $n=1$ into $\pi^2 n^2 /2$. \\
+
+
+Mathematica code:
+\begin{lstlisting}
+In[85]:= ZSHO = Integrate[Exp[-b*Pi^2*n^2/2], {n, 1, Infinity}]
+
+Out[85]= ConditionalExpression[Erfc[(Sqrt[b] \[Pi])/Sqrt[2]]/(
+Sqrt[b] Sqrt[2 \[Pi]]), Re[b] > 0]
+
+In[84]:= Limit[-(1/ZSHO)*D[ZSHO, b] // FullSimplify, b -> Infinity]
+
+Out[84]= 0
+\end{lstlisting}
+
+
+
+
+\noindent \textbf{3. SHO Propagator.}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item The action is 
+	\begin{align*}
+	S = \int_0^{t'} \lp \f{m \dot x^2}{2} - \f{1}{2}m\omega^2 x^2  \rp\,dt
+	\end{align*}
+	
+	\item With the action we find 
+	\begin{align*}
+	\bra{x_{n},t_n}\ket{x_{n-1},t_{n-1}} = \f{1}{w(\Delta t) } \exp\lb \f{iS(n,n-1)}{\hbar} \rb.
+	\end{align*}
+	As stated in Sakurai, $w(\Delta t)$ is assumed to be independent of the potential $V$, and therefore can be calculated by considering the free particle case to give $1/w(\Delta t) = \sqrt{m/2\pi i \hbar \Delta t}$. From here, we find that for $\Delta t$ small, 
+	\begin{align*}
+	\bra{x_{n},t_n}\ket{x_{n-1},t_{n-1}} 
+	&= \sqrt{\f{m}{2\pi i \hbar \Delta t}} \exp\lb \f{i}{\hbar}  \int_{t_{n-1}}^{t_n} \lp \f{m \dot x^2}{2} - \f{1}{2}m\omega^2 x^2  \rp\,dt \rb \\
+	&\approx \sqrt{\f{m}{2\pi i \hbar \Delta t}} \exp\lb \f{i}{\hbar}  
+	\Delta t \lc \f{m}{2}\lb \f{(x_n - x_{n-1})}{\Delta t} \rb^2 - \f{m\omega^2}{2}\lb \f{x_n + x_{n+1}}{2} \rb^2 \rc \rb \\
+	&= \underbrace{\sqrt{\f{m}{2\pi i \hbar \Delta t}} 
+	\exp  \underbrace{\lb\f{im}{2\hbar\Delta t }(x_n - x_{n-1})^2\rb}_{iS_\text{free}/\hbar}}_{K_\text{free}} \times \exp\lb \f{-i\Delta t}{\hbar} \f{m\omega^2}{2} \lb\f{x_n + x_{n+1}}{2} \rb^2\rb.
+	\end{align*}
+	Expand in the right-most exponential in $\Delta t$ we find 
+	\begin{align*}
+	\exp\lb \f{-i\Delta t}{\hbar} \f{m\omega^2}{2} \lb\f{x_n + x_{n+1}}{2} \rb^2\rb 
+	\approx 
+	1 - \f{i\Delta t}{\hbar} \f{m\omega^2}{2} \lb\f{x_n + x_{n+1}}{2} \rb^2 + \mathcal{O}{(\Delta t)^2}.
+	\end{align*}
+	With this, we can now write
+	\begin{align*}
+	K(x',x,\Delta t) = K_\text{free} (x',x,\Delta t) \lb 1 -   \f{i m\omega^2}{8\hbar} (x + x')^2\Delta t + \mathcal{O}((\Delta t)^2)\rb
+	\end{align*}
+	and identify
+	\begin{align*}
+	&c_0(x,x') = 1 \\
+	&c_1(x,x') = -   \f{i m\omega^2}{8\hbar} (x + x')^2
+	\end{align*}
+	
+	Now, in the Hamiltonian picture we have (using the fact that the $x(t)$'s commute with each other):
+	\begin{align*}
+	K(x,x',\Delta) 
+	&= \bra{x',t + \Delta t}\ket{x,t} \\
+	&= \bra{\psi(t+\Delta t)} x' e^{-i \ham \Delta t / \hbar}  x \ket{\psi(t)}\\
+	&= \bra{\psi(t+\Delta t)} x' \exp\lc \f{-i \Delta t }{ \hbar} \lp \f{m}{2}\lb \f{(x - x')}{\Delta t} \rb^2 + \f{m\omega^2}{2}\lb \f{x + x'}{2} \rb^2 \rp \rc x \ket{\psi(t)}\\
+	&= \bra{\psi(t+\Delta t)} x' \exp\lc \f{-i \Delta t }{ \hbar}  \f{m}{2}\lb \f{(x - x')}{\Delta t} \rb^2\rc  \exp\lc  \f{-i \Delta t }{ \hbar} \f{m\omega^2}{2}\lb \f{x + x'}{2} \rb^2  \rc  x \ket{\psi(t)}\\
+	&= \bra{x'} \exp\lc \f{-i \Delta t }{ \hbar}  \f{m}{2}\lb \f{(x - x')}{\Delta t} \rb^2\rc  \exp\lc  \f{-i \Delta t }{ \hbar} \f{m\omega^2}{2}\lb \f{x + x'}{2} \rb^2  \rc \ket{x}\\
+	&= \underbrace{\bra{x'} \exp\lc -\f{im}{2\hbar\Delta t }(x- x')^2\rc   \ket{x}}_{K_\text{free}(x,x',\Delta t) }\exp\lc  \f{-i \Delta t }{ \hbar} \f{m\omega^2}{2}\lb \f{x + x'}{2} \rb^2  \rc\\
+	&\approx K_\text{free}(x,x',t)\lb 1 -   \f{i m\omega^2}{8\hbar} (x + x')^2 \Delta t + \mathcal{O}((\Delta t)^2) \rb \quad\quad \checkmark
+	\end{align*}
+	which matches what we have before. 
+	
+	
+	\textcolor{blue}{A more elegant way to do this problem is to notice that the Lagrangian and the Hamiltonian differ at the minus sign in front of the potential. However, when going from the Lagrangian-Action formulation to Hamiltonian, there is also an extra minus sign which comes from the definition of the unitary time evolution operator. These minus signs ``cancel out'' their effects, leaving the answer unchanged.}
+\end{enumerate}	
+
+
+
+\noindent \textbf{4. WKB for nuclear fusion}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item Consider a barrier potential $V$. Consider the solution for a particle before entering the barrier (The particle is in a classically allowed region). The solution is a plane wave:
+	\begin{align*}
+	\psi_1 =  Ae^{ikx}
+	\end{align*}
+	where $k=\sqrt{2m(E-V)/\hbar}$. To the right of the barrier, the solution is again a plane wave
+	\begin{align*}
+	\psi_3 = Be^{ikx}.
+	\end{align*}
+	The tunneling probability is given by the ratio $\abs{B}^2/\abs{A}^2$. To find this, we must know what the solution looks like inside the barrier. This is where semiclassical theory comes in. By WKB, the amplitude of the solution inside the barrier is
+	\begin{align*}
+	\abs{\psi_2} = \abs{\psi_1} \exp \lb \f{-1}{\hbar} \int^{x_1} \sqrt{2m(V-E(x))} \,dx' \rb
+	\end{align*}
+	When the particle exits the barrier, the new amplitude is 
+	\begin{align*}
+	\abs{\psi_3} = \abs{\psi_2} \exp \lb \f{-1}{\hbar} \int^{x_2} \sqrt{2m(V-E(x))} \,dx' \rb.
+	\end{align*}
+	So, 
+	\begin{align*}
+	P_T = \f{\abs{B}^2}{\abs{A}^2} = \f{\abs{\psi_3}^2}{\abs{\psi_1}^2} = \exp\lp -\f{2}{\hbar}\int_{x_1}^{x_2} \sqrt{2m(V-E(x))}\,dx \rp 
+	\end{align*}
+	
+	
+	
+	\item The classical turning point is $r_E = k e^2/E $. Let us evaluate the integral first
+	\begin{align*}
+	\f{2}{\hbar}\int_{r_1}^{r_2} \sqrt{M_p \lp  \f{k e^2}{r} - E \rp}\,dr &= \f{2\sqrt{M_p E}}{\hbar} r_E   \int^1_{r_0/r_E} \sqrt{\f{1}{x} - 1}\,dx \\
+	&\approx \f{2\sqrt{M_p E}}{\hbar} r_E   \int^1_{0} \sqrt{\f{1}{x} - 1}\,dx \\
+	&=  \f{2\sqrt{M_p E}}{\hbar} r_E \f{\pi}{2} \\
+	&= \f{\pi ke^2}{E} \f{\sqrt{M_p E}}{\hbar} \\
+	&= \f{e^2}{4\epsilon_0 \hbar} \sqrt{\f{M_p}{E}}.
+	\end{align*}
+	With this, the tunneling rate is gotten by exponentiating the quantity above. 
+	
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[95]:= Integrate[Sqrt[1/x - 1], {x, 0, 1}]
+	
+	Out[95]= \[Pi]/2
+	\end{lstlisting}
+	
+	
+	
+	\item To get the energy distribution, we have to transform the (known) momentum distribution into that of energy. To do this, we require that
+	\begin{align*}
+	f_E\,dE &= f_p \,d^3\vec{p}\\
+	&= \f{1}{(2\pi m k_B T)^{3/2}}\exp\lp \f{-\be p^2}{2m} \rp \,d^3\vec{p}\\
+	&= \f{1}{(2\pi m k_B T)^{3/2}}e^{-E/k_B  T} 4\pi   p^2 \, dp \\
+	&= \f{4\pi m\sqrt{2mE}}{(2\pi m k_B T)^{3/2}} e^{-E/k_B T}\,dE \\
+	&= \lp \f{2\pi}{(\pi k_B T)^{3/2}}\rp \sqrt{E} e^{-E/k_BT}\,dE
+	\end{align*}
+	And so 
+	\begin{align*}
+	\boxed{f_E = \f{d P_B}{ d E} = \lp \f{2\pi}{(\pi k_B T)^{3/2}}\rp \sqrt{E} e^{-E/k_BT}}
+	\end{align*}
+	where $d P_E / dE$ is not really a derivative but more like a Jacobian. \textbf{\textcolor{blue}{I couldn't really approach this problem by taking $d P_B/dE$ directly, but this approach from the momentum distribution works. }}
+	
+	
+	
+	\item Using results from Parts (b) and (c) we find 
+	\begin{align*}
+	dP_\text{Gamow} = P_T \times dP_B = \exp\lp - \f{e^2}{4\epsilon_0 \hbar} \sqrt{\f{M_p}{E}}\rp  \exp\lp -\f{E}{k_BT}\rp \lp \f{2\pi}{(\pi k_B T)^{3/2}}\rp \sqrt{E} \,dE.
+	\end{align*}
+	To make the required estimation, we will integrate this from $E=k_BT_\text{Sun}$ to $E=\infty$.  \textbf{\textcolor{purple}{I'm running low on time so I won't do this part and the next.}}
+	
+	\item \textbf{\textcolor{purple}{See comment above.}}
+\end{enumerate}	
+
+	
+	
+\end{document}
+
+
+
+
+
+
+
+
