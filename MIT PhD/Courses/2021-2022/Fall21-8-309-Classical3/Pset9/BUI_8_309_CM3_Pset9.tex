@@ -249,7 +249,7 @@ ic = {x1[0] == x10, x2[0] == x20, x3[0] == phase};
 	
 	\begin{figure}[!htb]
 		\centering
-		\includegraphics[width=0.35\textwidth]{2a.eps}
+		\includegraphics[width=0.4	\textwidth]{2a.eps}
 		\caption{Problem 2a -- Bifurcation plot showing at least $6 < B < 11$. Notice a bifurcation at $6a = 1.6$.}
 		\label{fig:problem-2a}
 	\end{figure}
@@ -571,30 +571,174 @@ ic = {x1[0] == x10, x2[0] == x20, x3[0] == phase};
 \begin{enumerate}[label=(\alph*)]
 	\item Expanding $\sin\theta$ about $n\pi$ gives
 	\begin{align*}
-	\sin\theta \approx (-1)^n( \theta - n\pi) - \f{(-1)^n}{6} (\theta - n\pi)^3 + \mathcal{O}(\theta^5)
+	\sin\theta \approx (-1)^n( \theta - n\pi) +  \mathcal{O}(\theta^3)
 	\end{align*}
-	For simplicity, let us pick $n=0$, so that we get
+	If $n$ even then we have
 	\begin{align*}
-	\sin\theta \approx \theta - \f{\theta^3}{6} + \mathcal{O}(\theta^5). 
+	\dot\theta = \omega, \quad\quad\quad \dot \omega = -\f{1}{q}\omega - ( \theta - n\pi)
 	\end{align*}
-	With this we get the following system
+	If $n$ odd then we have
 	\begin{align*}
-	\boxed{\dot\theta = \omega, \quad\quad\quad \dot \omega = -\f{1}{q} \omega - \theta + \f{\theta^3}{6}}
+	\dot\theta = \omega, \quad\quad\quad \dot \omega = -\f{1}{q}\omega + ( \theta - n\pi)
 	\end{align*}
 	
 	
-	\item Setting $q=\infty$. Then we have
+	
+	\item Setting $q=\infty$. Then for $n$ even, the differential equation and its solution are
 	\begin{align*}
-	\dot\theta = \omega, \quad\quad\quad \dot \omega = - \theta + \f{\theta^3}{6}
+	\ddot\theta = -(\theta - n\pi) \implies \theta(t) = n\pi + C_1 \cos t + C_2 \sin t \implies \text{ elliptical oscillation about fixed point}.
 	\end{align*}
+	For $n$ odd, the differential equation and its solution are 
+	\begin{align*}
+	\ddot\theta = (\theta - n\pi) \implies \theta(t) = n\pi + C_1 e^t + C_2 e^{-t}  \implies \text{ fixed point is a saddle point}.
+	\end{align*}
+	For the saddle point solution, we have
+	\begin{align*}
+	\omega(t) = \dot\theta(t) = C_1 e^t - C_2 e^{-t}\quad\quad \text{and}\quad\quad \theta(t) = n\pi + C_1 e^t + C_2 e^{-t} 
+	\end{align*}
+	Therefore the direction in phase space for which $(\omega,\theta)$ are purely exponentially growing/decaying solution is along the $\omega= \pm(\theta - n\pi)$ line. \\
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[69]:= (*n even*)
+	
+	In[43]:= DSolve[\[Theta]''[t] == -(\[Theta][t] - n*Pi), \[Theta][t], t]
+	
+	Out[43]= {{\[Theta][t] -> n \[Pi] + C[1] Cos[t] + C[2] Sin[t]}}
+	
+	In[70]:= (*n odd*)
+	
+	In[44]:= DSolve[\[Theta]''[t] == (\[Theta][t] - n*Pi), \[Theta][t], t]
+	
+	Out[44]= {{\[Theta][t] -> n \[Pi] + E^t C[1] + E^-t C[2]}}
+	
+	In[45]:= D[n \[Pi] + E^t C[1] + E^-t C[2], t]
+	
+	Out[45]= E^t C[1] - E^-t C[2]
+	\end{lstlisting}
 	
 	
 	
+	\item Now consider $q\neq 0$. We may solve the differential equations in Part (a) again to find that for $n$ even,
+	\begin{align*}
+	\theta(t) = \pi  n+c_1 e^{\frac{1}{2}
+		\left(-\sqrt{\frac{1}{q^2}-4}-\frac{1}{q}\right) t}+c_2
+	e^{\frac{1}{2} \left(\sqrt{\frac{1}{q^2}-4}-\frac{1}{q}\right) t}
+	\end{align*}
+	and for $n$ odd,
+	\begin{align*}
+	\theta(t) = \pi  n+c_1 e^{\frac{1}{2}
+		\left(-\sqrt{\frac{1}{q^2}+4}-\frac{1}{q}\right) t}+c_2
+	e^{\frac{1}{2} \left(\sqrt{\frac{1}{q^2}+4}-\frac{1}{q}\right) t}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[76]:= (*n even, with q*)
+	
+	In[79]:= DSolve[\[Theta]''[
+	t] == -(1/q)*\[Theta]'[t] - (\[Theta][t] - n*Pi), \[Theta][t], t]
+	
+	Out[79]= {{\[Theta][t] -> 
+	n \[Pi] + E^(1/2 (-Sqrt[-4 + 1/q^2] - 1/q) t) C[1] + 
+	E^(1/2 (Sqrt[-4 + 1/q^2] - 1/q) t) C[2]}}
+	
+	In[81]:= (*n odd, with q*)
+	
+	In[82]:= DSolve[\[Theta]''[
+	t] == -(1/q)*\[Theta]'[t] + (\[Theta][t] - n*Pi), \[Theta][t], t]
+	
+	Out[82]= {{\[Theta][t] -> 
+	n \[Pi] + E^(1/2 (-Sqrt[4 + 1/q^2] - 1/q) t) C[1] + 
+	E^(1/2 (Sqrt[4 + 1/q^2] - 1/q) t) C[2]}}
+	\end{lstlisting}
+	
+	We see that if $q > 1/2$ then $1/q < 2$ which means 
+	\begin{align*}
+	\sqrt{\frac{1}{q^2}-4} 
+	\end{align*}
+	is imaginary (and we will call this quantity $i\Omega$), and the solution is oscillatory. We therefore see that for $n$ odd, all fixed points are saddle points, but for $n$ even, fixed points are attractors for both cases $q > 1/2$ (underdamped) and $q < 1/2$ (overdamped).\\
+	
+	We thus consider only the $n$ even case.  If $q > 1/2$ (underdamped) then we have
+	\begin{align*}
+	\theta(t) = n\pi + c_1 e^{-t/2q} e^{-i\Omega t/2} + c_2 e^{-t/2q} e^{i\Omega t/2}.
+	\end{align*}
+	The solution is obtained by taking the real part. If $q < 1/2$ (overdamped), then we just leave the solution as it is presented in Part (c). 
 	
 	
-	\item 
+	\begin{figure}[!htb]
+		\centering
+		\subfloat[Underdamped]{
+			\includegraphics[width=0.4\textwidth]{underdamped.eps}
+		}
+		\subfloat[Overdamped]{
+			\includegraphics[width=0.4\textwidth]{overdamped.eps}
+		}
+	\end{figure}
+
+	Mathematica code:
+	\begin{lstlisting}
+	(*underdamped*)
 	
-	\item 
+	StreamPlot[{y, -1/(1/1)*y - (x - 0 Pi)}, {x, -1, 1}, {y, -1, 1}, 
+	FrameLabel -> {"\[Theta]", "w"}]
+	
+	(*Overdamped*)
+	
+	StreamPlot[{y, -1/(1/4)*y - (x - 0 Pi)}, {x, -1, 1}, {y, -1, 1}, 
+	FrameLabel -> {"\[Theta]", "w"}]
+	\end{lstlisting}
+	
+	
+	
+	\item For the saddle fixed points we consider $n$ odd. The solution is once again
+	\begin{align*}
+	\theta(t) = \pi  n+
+	c_1 \underbrace{e^{\frac{1}{2}
+		\left(-\sqrt{\frac{1}{q^2}+4}-\frac{1}{q}\right) t}}_{\text{exp. decay}}
+	+c_2
+	\underbrace{e^{\frac{1}{2} \left(\sqrt{\frac{1}{q^2}+4}-\frac{1}{q}\right) t}}_{\text{exp. growth}}
+	\end{align*}
+	Since $q>0$, we must have that the $c_1$ term corresponds to the exponential decay while the $c_2$ term corresponds to the exponential growth term. The exponential \textbf{growth} rate is 
+	\begin{align*}
+	\boxed{\kappa = \frac{1}{2} \left(\sqrt{\frac{1}{q^2}+4}-\frac{1}{q}\right)}
+	\end{align*}
+	The angle $\phi$ between the direction of purely growing solution and the $\theta$ axis can be found by in the $t\to \infty$ regime where
+	\begin{align*}
+	\tan\phi = \lim_{t\to \infty} \f{\dot \omega(t)}{\dot \theta(t)} = \lim_{t\to \infty} \f{\ddot \theta(t)}{\dot \theta(t)} = \kappa \implies \boxed{\phi = \arctan(\kappa)}
+	\end{align*}
+
+	
+	
+	Mathematica code to check calculation:
+	\begin{lstlisting}
+	In[104]:= dw = 
+	D[n \[Pi] + E^(1/2 (-Sqrt[4 + 1/q^2] - 1/q) t) C[1] + 
+	E^(1/2 (Sqrt[4 + 1/q^2] - 1/q) t) C[2], {t, 2}]
+	
+	Out[104]= 
+	1/4 E^(1/2 (-Sqrt[4 + 1/q^2] - 1/q) t) (-Sqrt[4 + 1/q^2] - 1/q)^2 C[
+	1] + 1/4 E^(
+	1/2 (Sqrt[4 + 1/q^2] - 1/q) t) (Sqrt[4 + 1/q^2] - 1/q)^2 C[2]
+	
+	In[103]:= d\[Theta] = 
+	D[n \[Pi] + E^(1/2 (-Sqrt[4 + 1/q^2] - 1/q) t) C[1] + 
+	E^(1/2 (Sqrt[4 + 1/q^2] - 1/q) t) C[2], t]
+	
+	Out[103]= 
+	1/2 E^(1/2 (-Sqrt[4 + 1/q^2] - 1/q) t) (-Sqrt[4 + 1/q^2] - 1/q) C[
+	1] + 1/2 E^(
+	1/2 (Sqrt[4 + 1/q^2] - 1/q) t) (Sqrt[4 + 1/q^2] - 1/q) C[2]
+	
+	In[107]:= Limit[dw/d\[Theta], t -> Infinity] // FullSimplify
+	
+	Out[107]= ConditionalExpression[
+	1/2 (Sqrt[4 + 1/q^2] - 1/
+	q), (ConditionalExpression[1, \[Placeholder]] | 
+	ConditionalExpression[2, \[Placeholder]]) \[Element] Reals && 
+	q + Sqrt[4 + 1/q^2] q^2 > 0]
+	\end{lstlisting}
+	
 \end{enumerate}
 
 \noindent \textbf{5. Lorenz Equations.}
