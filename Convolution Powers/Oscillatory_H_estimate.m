@@ -3,9 +3,9 @@
 %%% Date: Aug 07, 2020
 
 
-if max(size(gcp)) == 0 % parallel pool needed
-   parpool('local',2); % create the parallel pool
-end
+% if max(size(gcp)) == 0 % parallel pool needed
+%    parpool('local',2); % create the parallel pool
+% end
 
 %%%%%%%%%%%%%%%%%%%
 % clock starts
@@ -13,8 +13,8 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-X = -100:1:100;
-Y = -100:1:100;
+X = -50:1:50;
+Y = -50:1:50;
 
 [II,JJ] = meshgrid(X,Y);
 H = zeros(length(II),length(JJ));

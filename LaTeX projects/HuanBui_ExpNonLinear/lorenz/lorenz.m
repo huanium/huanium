@@ -1,49 +1,49 @@
 % % pick a time interval
-% tspan = [0, 100];
-% % pick initial values of y(1), y(2), y(3)
-% init = [0, 0.001, 0];
-% % choose a value for r
-% r = 28;
-% 
-% figure(1)
-% figure(2)
-% figure(3)
+tspan = [0, 100];
+% pick initial values of y(1), y(2), y(3)
+init = [0, 0.001, 0];
+% choose a value for r
+r = 28;
+
+figure(1)
+figure(2)
+figure(3)
 % figure(4)
 % figure(5)
 % figure(6)
-% for j = 1:length(r)
-% % use the equations you defined
-% ode = @(t,y) lorenzeqns(t,y,r(j));
-% % solve the equations
-% options = odeset('RelTol',1e-8);
-% [t,y] = ode45(ode,tspan,init,options);
-% % plot results
-% hold on
-% figure(1)
-% plot(y(:,1),y(:,2))
-% hold on
-% figure(2)
-% plot(y(:,2),y(:,3))
-% hold on
-% figure(3)
-% plot(y(:,1),y(:,3))
+for j = 1:length(r)
+% use the equations you defined
+ode = @(t,y) lorenzeqns(t,y,r(j));
+% solve the equations
+options = odeset('RelTol',1e-8);
+[t,y] = ode45(ode,tspan,init,options);
+% plot results
+hold on
+figure(1)
+plot(y(:,1),y(:,2))
+hold on
+figure(2)
+plot(y(:,2),y(:,3))
+hold on
+figure(3)
+plot(y(:,1),y(:,3))
 % hold on 
 % figure(4)
 % plot(t,y(:,1))
 % hold on 
 % figure(5)
 % plot(t,y(:,2))
-% hold on 
-% figure(6)
-% plot(t,y(:,3))
-% end
+%hold on 
+%figure(6)
+%plot(t,y(:,3))
+end
 
 
 
 
 
 
-% pick initial values of y(1), y(2), y(3)
+% % pick initial values of y(1), y(2), y(3)
 % init_0 = [0, 0.001, 0];
 % r = 28;
 % tspan = [0, 100];
@@ -68,41 +68,41 @@
 % plot(X0-X9);
 % xlabel('Time')
 % ylabel('Difference in solution')
-%title('X_perturbed-X_0')
+% title('X_perturbed-X_0')
 
 
 
 
 
-%%%%% bifurcation diagram %%%%%%
-% pick a time interval
-tspan = [0, 1000];
-% pick initial values of y(1), y(2), y(3)
-init = [0, 1, 2];
-% create an array in which to store X steady state values
-n = 1000;
-x = zeros(n,1);
-r = x;
-% loop over n values of r
-rmax = 28;
-for j = 1:n
-% choose a value for r
-disp('Progress');
-disp(j);
-r(j) = rmax*j/n;
-% define "ode" using the actual lorenz eqns for your chosen r
-ode = @(t,y) lorenzeqns(t,y,r(j));
-% solve the lorenz eqns
-options = odeset('RelTol',1e-6);
-[t,y] = ode45(ode,tspan,init,options);
-% store a result
-x(j) = y(end,1);
-end
-% plot results
-plot(r,x)
-title('Steady state of y(1) as a function of r')
-xlabel('r')
-ylabel('steady state of y(1)')
+% %%%%% bifurcation diagram %%%%%%
+% % pick a time interval
+% tspan = [0, 1000];
+% % pick initial values of y(1), y(2), y(3)
+% init = [0, 1, 2];
+% % create an array in which to store X steady state values
+% n = 200;
+% x = zeros(n,1);
+% r = x;
+% % loop over n values of r
+% rmax = 28;
+% for j = 1:n
+% % choose a value for r
+% disp(['Progress/',num2str(n)]);
+% disp(j);
+% r(j) = rmax*j/n;
+% % define "ode" using the actual lorenz eqns for your chosen r
+% ode = @(t,y) lorenzeqns(t,y,r(j));
+% % solve the lorenz eqns
+% options = odeset('RelTol',1e-6);
+% [t,y] = ode45(ode,tspan,init,options);
+% % store a result
+% x(j) = y(end,1);
+% end
+% % plot results
+% plot(r,x)
+% title('Steady state of y(1) as a function of r')
+% xlabel('r')
+% ylabel('steady state of y(1)')
 
 
 
