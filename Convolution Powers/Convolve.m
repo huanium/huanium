@@ -64,135 +64,147 @@ tic
 
 %%%%%% PLOT THE CONVOLUTION POWER %%%%%%%
 
-h = figure(1)
-h.Position = [100 100 1200 500];
-n_times = 1005;
+h = figure(1);
+% h.Position = [100 100 1200 500];
+n_times = 400;
 support_bound = 150;
 
-%disp('Calculating...');
-%data = real(fast_convolve(n_times, support_bound));    % plot the real part
-%data = imag(fast_convolve(n_times, support_bound));    % plot the img part
-%data = abs(fast_convolve(n_times, support_bound));      % plot the abs
-%dim = size(data);
-%x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
-%y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
-%[X, Y] = meshgrid(x, y);
-%s = surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',0.5);
-% xlabel('X', 'FontSize',16);
-% ylabel('Y', 'FontSize',16);
-% % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-% title(['|\phi^{(', num2str(n_times), ')}|'], 'FontSize', 16 );
-% % colorbar;
-% % s = meshc(X, Y, data);
-% xlabel('X');
-% ylabel('Y');
-% xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-% ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-
-% xlim([-floor(dim(1)/4)  floor(dim(2)/4)]);
-% ylim([-floor(dim(1)/4)  floor(dim(2)/4)]);
-box off
-
-
-%filename = 'C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\CLAS 2021 Math\Ex10_minmax.gif';
-filename = 'test.gif';
-
-data = real(fast_convolve(1, support_bound));    % plot the real part
+disp('Calculating...');
+data = real(fast_convolve(n_times, support_bound));    % plot the real part
+% data = imag(fast_convolve(n_times, support_bound));    % plot the img part
+% data = abs(fast_convolve(n_times, support_bound));      % plot the abs
 dim = size(data);
 x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
 y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
 [X, Y] = meshgrid(x, y);
-
-
-subplot(1,2,1)
-surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0, 'FaceAlpha',1);
-%mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
-view([+30 20])
-%view([+140 30]) %gaussian
-xlabel('X', 'FontSize',16);
-ylabel('Y', 'FontSize',16);
+s = surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.15 , 'FaceAlpha',1);
+xlabel('x', 'FontSize',14);
+ylabel('y', 'FontSize',14);
 % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
-%title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+% title(['|\phi^{(', num2str(n_times), ')}|'], 'FontSize', 16 );
 % colorbar;
 % s = meshc(X, Y, data);
-xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-% zlim([0 0.004]);
-zlim([min(data(:)) max(data(:))]);
+%xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+%ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
 
-subplot(1,2,2)
-surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
-%mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
-view([+0 90])
-xlabel('X', 'FontSize',16);
-ylabel('Y', 'FontSize',16);
-title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-%title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
-title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
-% colorbar;
-% s = meshc(X, Y, data);
-xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-drawnow
+% xlim([-floor(dim(1)/4)  floor(dim(2)/4)]);
+% ylim([-floor(dim(1)/4)  floor(dim(2)/4)]);
+
+% Evan's configs
+axis([-floor(dim(1)/2) floor(dim(2)/2) -floor(dim(1)/2) floor(dim(2)/2) -0.012 0.016])
+view(44,12)
+%xlabel('x','fontsize',38)                                                      
+%ylabel('y','fontsize',38)                                                      
+%set(gca,'fontsize',38)
+%set(gcf,'papersize',[20,12])
+%set(gcf,'paperposition',[0,0,20,12])
+
+box off
 
 
 
-for i=1:5:n_times
-    data = real(fast_convolve(i, support_bound));    % plot the real part
-    dim = size(data);
-    x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
-    y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
-    [X, Y] = meshgrid(x, y);
-    subplot(1,2,1)
-    surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.0 , 'FaceAlpha',1);
-    view([+30 20])
-    %view([+140 30]) %gaussian
-    xlabel('X', 'FontSize',16);
-    ylabel('Y', 'FontSize',16);
-    title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
-    %title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
-    % colorbar;
-    % s = meshc(X, Y, data);
-    xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-    ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-    zlim([min(data(:)) max(data(:))]);
-
-
-
-    subplot(1,2,2)
-    surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
-    view([+0 90])
-    %view(2)
-    xlabel('X', 'FontSize',16);
-    ylabel('Y', 'FontSize',16);
-    % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
-    %title(['|\phi^{(', num2str(i-1), ')}|'], 'FontSize', 16 );
-    title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
-    %title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
-    % colorbar;
-    % s = meshc(X, Y, data);
-    xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-    ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
-    drawnow
-    
-    
-    %sgtitle('Simple Random Walk in Z^2', 'FontSize', 16 ) 
-    
-    
-    % save as GIF
-    % Capture the plot as an image
-    frame = getframe(h);
-    im = frame2im(frame);
-    [imind,cm] = rgb2ind(im,256);
-    % Write to the GIF File
-    if i == 1
-        imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime', 0.075);
-    else
-        imwrite(imind,cm,filename,'gif','WriteMode','append','DelayTime', 0.075);
-    end
-    
-end
+% %%%% generate evolution %%%%%
+% 
+% 
+% %filename = 'C:\Users\buiqu\Documents\GitHub\huanium\LaTeX projects\CLAS 2021 Math\Ex10_minmax.gif';
+% filename = 'test.gif';
+% 
+% data = real(fast_convolve(1, support_bound));    % plot the real part
+% dim = size(data);
+% x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
+% y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
+% [X, Y] = meshgrid(x, y);
+% 
+% 
+% subplot(1,2,1)
+% surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0, 'FaceAlpha',1);
+% %mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
+% view([+30 20])
+% %view([+140 30]) %gaussian
+% xlabel('X', 'FontSize',16);
+% ylabel('Y', 'FontSize',16);
+% % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+% title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+% %title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+% % colorbar;
+% % s = meshc(X, Y, data);
+% xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+% ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+% % zlim([0 0.004]);
+% zlim([min(data(:)) max(data(:))]);
+% 
+% subplot(1,2,2)
+% surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
+% %mesh(X,Y,data, 'LineWidth',1,'edgecolor','black', 'EdgeAlpha', 0.5 , 'FaceAlpha',1);
+% view([+0 90])
+% xlabel('X', 'FontSize',16);
+% ylabel('Y', 'FontSize',16);
+% title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+% %title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+% title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+% % colorbar;
+% % s = meshc(X, Y, data);
+% xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+% ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+% drawnow
+% 
+% 
+% 
+% for i=1:5:n_times
+%     data = real(fast_convolve(i, support_bound));    % plot the real part
+%     dim = size(data);
+%     x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
+%     y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
+%     [X, Y] = meshgrid(x, y);
+%     subplot(1,2,1)
+%     surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.0 , 'FaceAlpha',1);
+%     view([+30 20])
+%     %view([+140 30]) %gaussian
+%     xlabel('X', 'FontSize',16);
+%     ylabel('Y', 'FontSize',16);
+%     title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+%     %title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+%     % colorbar;
+%     % s = meshc(X, Y, data);
+%     xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+%     ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+%     zlim([min(data(:)) max(data(:))]);
+% 
+% 
+% 
+%     subplot(1,2,2)
+%     surf(X, Y, data, 'LineWidth',0.25,'edgecolor','black', 'EdgeAlpha', 0.1 , 'FaceAlpha',1);
+%     view([+0 90])
+%     %view(2)
+%     xlabel('X', 'FontSize',16);
+%     ylabel('Y', 'FontSize',16);
+%     % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
+%     %title(['|\phi^{(', num2str(i-1), ')}|'], 'FontSize', 16 );
+%     title(['Re(\phi^{(', num2str(i-1), ')})'], 'FontSize', 16 );
+%     %title(['\phi^{(', num2str(i-1), ')}'], 'FontSize', 16 );
+%     % colorbar;
+%     % s = meshc(X, Y, data);
+%     xlim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+%     ylim([-floor(dim(1)/2)  floor(dim(2)/2)]);
+%     drawnow
+%     
+%     
+%     %sgtitle('Simple Random Walk in Z^2', 'FontSize', 16 ) 
+%     
+%     
+%     % save as GIF
+%     % Capture the plot as an image
+%     frame = getframe(h);
+%     im = frame2im(frame);
+%     [imind,cm] = rgb2ind(im,256);
+%     % Write to the GIF File
+%     if i == 1
+%         imwrite(imind,cm,filename,'gif', 'Loopcount',inf, 'DelayTime', 0.075);
+%     else
+%         imwrite(imind,cm,filename,'gif','WriteMode','append','DelayTime', 0.075);
+%     end
+%     
+% end
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -291,6 +303,7 @@ function conv_power = fast_convolve(n_times, support_bound)
 
 
 %%%%% EXAMPLE 2 in PAPER %%%%%%%%%%%
+%%%%% Example Nov 29, 2021 %%%%%%%%%
 Phi = zeros(9,9);
 shift = floor(9/2)+1;
 

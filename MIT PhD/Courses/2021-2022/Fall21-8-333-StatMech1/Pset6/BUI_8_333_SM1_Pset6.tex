@@ -12,6 +12,7 @@
 \usepackage[makeroom]{cancel}
 \usepackage{dsfont}
 \usepackage{centernot}
+\usepackage{siunitx}
 \usepackage{mathtools}
 \usepackage{bigints}
 \usepackage{amsthm}
@@ -137,99 +138,501 @@
 \noindent \textbf{1. Numerical Estimates.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item For a typical metal, the ratio of the electron and phonon heat capacities at room temperature is 
+	\item The heat capacity 
+	
+	
+	The Fermi temperature for typical metal is $T_F = 5 \times 10^{4} $K which is much higher than room temperature. Thus, we may calculate the heat capacity using the formula (VII.49) in the lecture notes:
 	\begin{align*}
-	blah
+	C_\text{electron} = \f{\pi^2}{2}Nk_B \f{T}{T_F} \implies C_V \approx  0.03 \, Nk_B 
+	\end{align*}
+	where we have used $T_F = 5\times 10^4$K and $T = 300K$. Mathematica code:
+	\begin{lstlisting}
+	In[14]:= N[Pi^2/2*300/(5*10^4)]
+	
+	Out[14]= 0.0296088
+	\end{lstlisting}
+	
+	Let us consider the metal Aluminum, whose Debye temperature is 428 K. Since room temperature is approximately the Debye temperature, we can't use the high- or low-temperature limits to calculate heat capacity. To do this, we have to use the exact formula:
+	\begin{align*}
+	C_\text{phonon, Al} = \f{dE}{dT} = \f{d}{dT} Nk_B \lb 9 T \f{T^3}{T_D^3} \int_0^{T_D/T} \f{x^3}{e^x - 1}\,dx \rb \bigg\vert_{T = 300 \text{K}}\approx 2.7\, Nk_B
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[17]:= N[
+	D[9*T*(T/428)^3*Integrate[x^3/(Exp[x] - 1), {x, 0, 428/T}], 
+	T] /. {T -> 300}]
+	
+	Out[17]= 2.71557
+	\end{lstlisting}
+	
+	
+	The desired ratio is therefore
+	\begin{align*}
+	\f{C_\text{electron}}{C_\text{phonon,Al}} \approx \f{0.03}{2.7} \approx \boxed{10^{-2}}
 	\end{align*}
 	
-	\item 
+	\item The thermal wavelength of a neutron at room temperature is 
+	\begin{align*}
+	\lambda_n = \f{h}{\sqrt{2\pi m_n k_B T}} \approx \boxed{\SI{1}{\angstrom}}
+	\end{align*}
+	Wolfram Alpha command:
+	\begin{lstlisting}
+	planck's constant/Sqrt[2*Pi*mass of neutron*boltzmann constant*300 kelvin]
 	
-	\item 
+	>>>> 1.00361194x10^-10 meters
+	\end{lstlisting}
+	The minimum wavelength of a phonon in a typical crystal is on the order of the atomic spacing, so let us say $1-\SI{10}{\angstrom}$. Therefore, we have
+	\begin{align*}
+	\f{\lambda_n}{\lambda_\text{phonon}} \approx \boxed{1} 
+	\end{align*}
 	
-	\item \textbf{(Optional)}
+	
+	
+	
+	\item We calculate $n\lambda^3$ for H, He, and O\textsubscript{2} under the assumption that the gas densities $n$ follow from the ideal gas law $P= n k_B T$ where $P = 1$ atm. (this is valid since we're assuming room temperature $T = 300$ K).
+	\begin{align*}
+	n_{H}\lambda_{H}^3 =  \f{P}{k_B T}\f{h^3}{(2\pi m_H k_B T)^{3/2}} = \boxed{2.4\times 10^{-5}}
+	\end{align*}
+	\begin{align*}
+	n_{He}\lambda_{He}^3 =  \f{P}{k_B T}\f{h^3}{(2\pi m_{He} k_B T)^{3/2}} = \boxed{3.1\times 10^{-6}}
+	\end{align*}
+	where $m_{He} \approx 4 m_H$, and 
+	\begin{align*}
+	n_{O_2}\lambda_{O_2}^3 =  \f{P}{k_B T}\f{h^3}{(2\pi m_{O_2} k_B T)^{3/2}} = \boxed{1.4\times 10^{-7}}
+	\end{align*}
+	where $m_{O_2} \approx 32 m_H$. 
+	
+	Wolfram Alpha code:
+	\begin{lstlisting}
+	(1 atm/(300 kelvin *Boltzmann constant)) * planck's constant^3/(2*Pi*mass of
+	 proton*Boltzmann constant*300 kelvin)^(3/2)
+	
+	>>> 0.0000247803181
+	
+	
+	(1 atm/(300 kelvin *Boltzmann constant)) * planck's constant^3/(2*Pi*4*mass of
+	 proton*Boltzmann constant*300 kelvin)^(3/2)
+	
+	>>> 3.09753976x10^-6
+	
+	(1 atm/(300 kelvin *Boltzmann constant)) * planck's constant^3/(2*Pi*32*mass of
+	 proton*Boltzmann constant*300 kelvin)^(3/2)
+	
+	>>> 1.36893211x10^-7
+	\end{lstlisting}
+	
+	\item \textbf{(Optional)} The since the heat capacity scales like $C_V \sim T^3$, the enerty spectrum must scale like $\mathcal{E}(k) \sim \abs{k}$, consistent with the results discussed on page 131 of Lecture Notes \#19. In full form, 
+	\begin{align*}
+	\mathcal{E} = \hbar v \abs{k} 
+	\end{align*}
+	where $v$ is the speed of sound. With 
+	\begin{align*}
+	C_V = k_B V \f{2\pi^2}{5} \lp \f{k_B T}{\hbar v} \rp^3 
+	\end{align*}
+	we find 
+	\begin{align*}
+	v = \lp \f{2 k_B^4 \pi^2 T^3 V}{5 C_V \hbar^3}\rp^{1/3} \implies \mathcal{E} = \hbar v k \approx \boxed{k \times (2\times 10^{-31})\, J m}
+	\end{align*}
+	where we have used $C_V/T^3 = 20.4 \, JKg^{-1}K^{-1}$. Wolfram Alpha code:
+	\begin{lstlisting}
+	hbar*(2*boltzmann constant^4*Pi^2/(5*20.4*hbar^3))^(1/3)
+	\end{lstlisting}
+	
 \end{enumerate}
 
 
 \noindent \textbf{2. Solar Interior.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item With $T = 1.6 \times 10^7$ K we have
+	\begin{align*}
+	\lambda_{e} =  \f{h}{(2\pi m_p k_B T)^{1/2}} = \boxed{1.8\times 10^{-11} \text{ m}}
+	\end{align*}
+	\begin{align*}
+	\lambda_{p} =  \f{h}{(2\pi m_{e} k_B T)^{1/2}} = \boxed{4.3\times 10^{-13} \text{ m}} 
+	\end{align*}
+	where $m_{He} \approx 4 m_H$, and 
+	\begin{align*}
+	\lambda_{\al} = \f{h}{(2\pi m_\al k_B T)^{1/2}} = \boxed{2.7\times 10^{-13} \text{ m}}
+	\end{align*}
+	where $m_{O_2} \approx 32 m_H$. 
 	
-	\item 
 	
-	\item 
 	
-	\item 
+	\item Assuming ideal gas. Quantum mechanical effects kick in whenever $n\lambda^3 \geq 1$. We calculate $n$'s from the $\rho$'s:
+	\begin{align*}
+	&n_H = \f{\rho_H}{m_H} = \boxed{3.59\times 10^{31} \, \text{m}^{-3}}\\
+	&n_{He} = \f{\rho_{He}}{m_{He}} = \boxed{1.50\times 10^{31} \, \text{m}^{-3}} \\
+	&n_e = 2n_{He} + n_{H} = \boxed{6.6 \times 10^{31}\, \text{m}^{-3}}
+	\end{align*}
+	With these we find that
+	\begin{align*}
+	&n_H \lambda_H^3 \approx 2.9 \times 10^{-6} \ll 1\\
+	&n_{He}\lambda^{3}_{He} \approx 1.54\times 10^{-7} \ll 1\\
+	&n_e \lambda_e^3 \approx 0.42 \sim 1.
+	\end{align*}
+	So H, He are not degenerate in the QM sense, but electrons are close to QM degeneracy. 
+	
+	
+	
+	\item Assume ideal gas, then 
+	\begin{align*}
+	P \sim (n_H + n_{He} + n_e) k_BT \approx \boxed{2.6\times 10^{16} \text{ Pa}}
+	\end{align*}
+	
+	
+	
+	
+	\item Radiation pressure is given by 
+	\begin{align*}
+	P = \f{4\sigma}{3c}T^4 = \boxed{1.65\times 10^{13} \,\text{Pa}}
+	\end{align*} 
+	where $\sigma$ is the Stefan-Boltzmann constant. Since this pressure is much less than the matter pressure, it is \textbf{matter pressure} that prevents the gravitational collapse of the sun. 
 \end{enumerate}
 
 
 
-\noindent \textbf{3. Density of States.}
+\noindent \textbf{3. Density of States.} In this problem we will treat $N=n$ i.e. we will implicitly understand that $V=1$ and treat the particle number the same as particle density, due to the definition of $N$ in the problem (the definition doesn't have $V$ in it).
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Since $N$ has the form
+	\begin{align*}
+	N = \int f(\epsilon)\rho(\epsilon)\,d\epsilon
+	\end{align*}
+	we have that the total energy is 
+	\begin{align*}
+	E = \int \epsilon f(\epsilon) \rho(\epsilon) \,d\epsilon = \boxed{\int_0^\infty \,d\epsilon\, \rho(\epsilon) \f{\epsilon}{e^{\be(\epsilon-\mu) }- \eta}}
+	\end{align*}
 	
-	\item 
+	\item For bosons, $\eta = 1$. The critical temperature $T_c$ for Bose-Einstein condensation is where the average particle number $N$ is equal to the average particle number in the excited states $N = N_e$ but with the chemical potential approaching its vanishing limit $\mu=0$. The critical temperature $T_c$ therefore solves the equation
+	\begin{align*}
+	N_e(\mu=0, T_c) = N \implies \boxed{N = \int_0^\infty d\epsilon \rho(\epsilon) \f{1}{e^{\epsilon/k_BT_c} - 1 }}
+	\end{align*}
 	
-	\item 
+	\item We're working with Fermions now, so let us set $\eta = -1$. The Sommerfield expansion says that as $\be\to \infty$, we have
+	\begin{align*}
+	\lim_{\be\to \infty}\int_0^\infty \,dx \f{g(x)}{ e^{\be(x-\mu)} + 1} \approx \int_0^\mu \,dx \, g(x) + \f{\pi^2}{6\be^2} g'(\mu) + \dots 
+	\end{align*}
+	Let us choose $g(\epsilon) = \rho(\epsilon)$, so that we have
+	\begin{align*}
+	\lim_{\be\to \infty} N &= \lim_{\be\to \infty}\int_0^\infty \,d\epsilon \f{\rho(\epsilon)}{ e^{\be(\epsilon-\mu)} + 1} \\
+	&\approx \int_0^\mu \,d\epsilon \, \rho(\epsilon) + \f{\pi^2}{6\be^2} \rho'(\mu) + \dots \\
+	&= \int_0^{E_F} d\epsilon \, \rho(\epsilon) + \int_{E_F}^\mu d\epsilon \,\rho(\epsilon) + \f{\pi^2}{6\be^2} \rho'(\mu).
+	\end{align*}
+	With $E_F = \lim_{T\to 0} \mu(T)$ we may assume that $\rho(\mu)\approx \rho(E_F)$ and $\rho'(\mu) \approx \rho'(E_F)$. From this, we have
+	\begin{align*}
+	\int_{E_F}^\mu d\epsilon \,\rho(\epsilon)\approx (\mu - E_F) \rho(E_F).
+	\end{align*} 
+	Moreover, by definition for Fermi energy, 
+	\begin{align*}
+	\lim_{\be \to \infty} N = \int^{E_F}_0 \rho(\epsilon)\,d\epsilon.
+	\end{align*}
+	We thus conclude that
+	\begin{align*}
+	\boxed{\mu - E_F \approx - \f{\pi^2}{6\be^2} \f{\rho'(E_F)}{\rho(E_F)}  }
+	\end{align*}
 	
-	\item 
+	\item For this part, we simply repeat but using the expression for $E$ as a starting point. Let us choose $g(\epsilon) = \epsilon \rho(\epsilon)$, so that 
+	\begin{align*}
+	E
+	&= \int_0^\infty d\epsilon \f{\epsilon \rho(\epsilon)}{e^{\be(\epsilon-\mu)} + 1} \\
+	&\approx \int^\mu_0 d\epsilon\, \epsilon\rho(\epsilon) + \f{\pi^2}{6\be^2} [\rho(\mu) + \mu \rho'(\mu)]  + \dots \\
+	&= \int^{E_F}_0 d\epsilon\, \epsilon\rho(\epsilon) + \int^{\mu}_{E_F} d\epsilon\, \epsilon\rho(\epsilon) + \f{\pi^2}{6\be^2} [\rho(\mu) + \mu \rho'(\mu)]  + \dots \\
+	&= E(T=0) + (\mu - E_F) E_F \rho(E_F) + \f{\pi^2}{6\be^2}[\rho(E_F) + E_F \rho'(E_F)]
+	\end{align*}
+	where we have used
+	\begin{align*}
+	E(T=0) = \int^{E_F}_0 d\epsilon\, \epsilon\rho(\epsilon).
+	\end{align*}
+	Using the relation for $\mu - E_F$ from the last part, we have
+	\begin{align*}
+	\boxed{E - E(T=0)} = -\f{\pi^2}{6\be^2}E_F \rho'(E_F) + \f{\pi^2}{6\be^2}[\rho(E_F) + E_F \rho'(E_F)] =\boxed{ \f{\pi^2}{6\be^2} \rho(E_F) }
+	\end{align*}
 	
-	\item 
+	\item The low temperature heat capacity is simply
+	\begin{align*}
+	C_V = \f{dE}{dT} = \boxed{\f{\pi^2  k_B^2 T }{3} \rho(E_F)}
+	\end{align*}
 \end{enumerate}
 
 
 
 
-\noindent \textbf{4. Quantum Point Particle Condensation.}
+\noindent \textbf{4. Quantum Point Particle Condensation.} The particles are spinless, so $g = 2\times 0+1 = 1$. 
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item The partition function has an extra factor $\exp(\be u N^2/2V)$, and so the pressure, which has the form $\be P \sim -\p \ln Z/\p V$ gets a correction term which deviates it from the ideal gas pressure:
+	\begin{align*}
+	P(n,t) = P_0(n,t) - \f{\be u N^2/2V}{\be V} = P_0(n,t) - \f{u n^2}{2}
+	\end{align*} 
 	
-	\item 
+	\item While there are probably analytic approaches, we can check that the formula holds symbollically using Mathematica. From standard theory for ideal quantum gas, we have
+	\begin{align*}
+	P_0(z) = \f{1}{\be \lambda^3} f^\eta_{5/2}(z) \quad \text{and}\quad n_\eta = \f{1}{\lambda^3}f^\eta_{3/2}(z)
+	\end{align*}
+	where
+	\begin{align*}
+	f^\eta_m(z) = \f{1}{(m-1)!}\int_0^\infty \f{x^{m-1}}{z^{-1} e^x - \eta}\,dx.
+	\end{align*}
+	While we can do this by hand, we can also quickly simply compute in Mathematica using 
+	\begin{align*}
+	\f{\p P}{\p n}\bigg\vert_T 
+	&= -un + \f{\p P_0}{\p z} \lp \f{\p n}{\p z} \rp^{-1} = -un + \f{1}{\be} \f{\text{PolyLog}(3/2, \eta z)}{\text{PolyLog}(1/2,\eta z)}
+	\end{align*}
+	while 
+	\begin{align*}
+	k_BT \f{f^\eta_{3/2}(z)}{f^\eta_{1/2}(z)} = \f{1}{\be} \f{\text{PolyLog}(3/2, \eta z)}{\text{PolyLog}(1/2,\eta z)}
+	\end{align*}
+	So, 
+	\begin{align*}
+	\f{\p P}{\p n}\bigg\vert_T = -un + k_BT \f{f^\eta_{3/2}(z)}{f^\eta_{1/2}(z)}
+	\end{align*}
+	as desired. 
 	
-	\item 
 	
-	\item 
 	
-	\item 
+	Mathematica code:
+	\begin{lstlisting}
+	(*define f*)
+	In[49]:= F[\[Eta]_, m_, z_] := (1/Factorial[m - 1])*
+	Integrate[x^(m - 1)/(z^(-1)*Exp[x] - \[Eta]), {x, 0, Infinity}]
+	
+	(*find ratio*)
+	In[52]:= D[F[\[Eta], 5/2, z], z]/D[F[\[Eta], 3/2, z], z]
+	
+	Out[52]= PolyLog[3/2, z \[Eta]]/PolyLog[1/2, z \[Eta]]
+	
+	(*find second ratio*)
+	In[53]:= F[\[Eta], 3/2, z]/F[\[Eta], 1/2, z]
+	
+	Out[53]= PolyLog[3/2, z \[Eta]]/PolyLog[1/2, z \[Eta]]
+	\end{lstlisting}
+	
+	
+	\item The gas becomes unstable when $\p P / \p n = 0$, so we have
+	\begin{align*}
+	u_c(n_\eta,T) = \f{k_B T}{n_\eta}\f{f^\eta_{3/2}(z)}{f^\eta_{1/2}(z)}
+	\end{align*}
+	In the low density (non-degenerate) limit $n\lambda^3 \ll 1$, we take $z\to 0$ and compute $f^\eta_{3/2}(z)/f^{\eta}_{1/2}(z)$ as a series in $z$. We shall do this in Mathematica, using the series definition for $f^\eta_m(z)$ at low $z$:
+	\begin{align*}
+	f^\eta_m(z) = \sum_{a = 0}^\infty \eta^{\text{Mod}(a,2)} \f{z^{a+1}}{(a+1)^m}
+	\end{align*} 
+	This definition is equivalent to that in the textbook, but more convenient for Mathematica use.  After the expansion, we also have to plug in $z$ as a perturbative expansion in $n$, given in the textbook:
+	\begin{align*}
+	z = \lp n_\eta \lambda^3 \rp - \f{\eta}{2^{3/2}}\lp n_\eta \lambda^3 \rp^2 + \lp \f{1}{4} - \f{1}{3^{3/2}}  \rp \lp n_\eta \lambda^3 \rp^3 - \dots
+	\end{align*}
+	
+	
+	The result, up to first-order correction, is
+	\begin{align*}
+	\boxed{u_c(n_\eta,T) = \f{k_B T}{n_\eta}\lb  1   - \f{\eta}{2^{3/2}}\lp n_\eta\lambda^3\rp + \f{\eta^2}{4^{3/2}}(n_\eta\lambda^3)^2  + \mathcal{O}\left[(n_\eta\lambda^3)^3\right]\rb}
+	\end{align*}
+	A few observations, when $\eta = 0$ we get $u_c = k_B T /n$. The first correction that distinguishes between Fermi and Bose statistics is 
+	\begin{align*}
+	-\f{\eta}{2^{3/2}}k_BT\lambda^3
+	\end{align*}
+	which is independent of density $n_\eta$.\\
+	
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	(*Define f as a series*)
+	In[12]:= f[\[Eta]_, m_, z_] := 
+	Sum[\[Eta]^a*z^(a + 1)/(a + 1)^m, {a, 0, 5}]
+	
+	(*define z as a function of n*)
+	In[17]:= Z = (n*\[Lambda]^3) - \[Eta]/
+	2^(3/2)*(\[Eta]*\[Lambda]^3)^2 + (1/4 - 
+	1/3^(3/2))*(n*\[Lambda]^3)^3;
+	
+	(*compute uc, with the kBT/n factor*)
+	In[18]:= ucPrime = 
+	Series[f[\[Eta], 3/2, z]/f[\[Eta], 1/2, z], {z, 0, 1}] // FullSimplify
+	
+	Out[18]= SeriesData[z, 0, {
+	1, Rational[-1, 2] 2^Rational[-1, 2] \[Eta]}, 0, 2, 1]
+	
+	(*plug in z = z(n)*)
+	In[22]:= 1 - (\[Eta] z)/(2 Sqrt[2]) /. {z -> Z} // Expand
+	
+	Out[22]= 1 - (n \[Eta] \[Lambda]^3)/(2 Sqrt[2]) + 
+	1/8 n^2 \[Eta]^2 \[Lambda]^6 - (n^3 \[Eta] \[Lambda]^9)/(
+	8 Sqrt[2]) + (n^3 \[Eta] \[Lambda]^9)/(6 Sqrt[6])
+	\end{lstlisting}
+	
+	
+	
+	\item For fermions, $\eta = -1$, so we have
+	\begin{align*}
+	u_c(n_-,T) \approx \f{k_BT}{\eta_-}\lb   1  + \f{n_- \lambda^3}{2^{3/2}} \rb.
+	\end{align*}
+	Recall the Fermi energy:
+	\begin{align*}
+	\mathcal{E}_F = \f{\hbar^2}{2m} \lp 6\pi^2 n_- \rp^{2/3} \implies n_- = \f{\sqrt{2}}{3\pi^2} \lp \f{m E_F}{\hbar^2} \rp^{3/2}
+	\end{align*}
+	With this, we get
+	\begin{align*}
+	u_c(\mathcal{E}_F,T) = \boxed{k_BT \lp \f{ \lambda^3}{2\sqrt{2}} + \f{3\hbar^3  \pi^2}{\sqrt{2} (\mathcal{E}_F m)^{3/2}}\rp}
+	\end{align*}
+	
+	\item For bosons, 
+	\begin{align*}
+	u_c(n_+,T) \approx \f{k_BT}{\eta_+}\lb   1  - \f{n_+ \lambda^3}{2^{3/2}} \rb.
+	\end{align*}
+	As temperature is decreased towards the quantum degeneracy regime, the coupling $u_c(n_+,T)$ will vanish and become negative. 
 \end{enumerate}
 
 
 
 
-\noindent \textbf{5. Harmonic Confinement of Fermions.}
+\noindent \textbf{5. Harmonic Confinement of Fermions.} The potential is 
+\begin{align*}
+U(r) = \f{m}{2}\sum_\al^d \omega_\al^2 x_\al^2.
+\end{align*}
 
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Let $N(E)$ be the number of states with energy between 0 and $E$. In one dimension $\al$, the energies are spaced by $\hbar \omega_\al$. Assuming that we could consider an infinitesimal change $dE$, we can generalize to $d$ dimensions to find 
+	\begin{align*}
+	N(E) 
+	&= \prod^d_\al \f{1}{\hbar \omega_\al}\int_0^E \int_0^{E-E_1}\int_0^{E-E_1-E_2} \dots \int _0^{E - \sum_\al^{d-1}}\,\prod^d dE_\al \\
+	&= \boxed{\f{1}{d!}\prod_{\al=1}^d\lp \f{E}{\hbar \omega_\al} \rp}
+	\end{align*}
+	where we have used the fact that the value of the interated integral is $E^d/d!$ which can be readily checked by hand or Mathematica. From here, the density of states is straightforward:
+	\begin{align*}
+	\rho(E) = \f{dN(E)}{dE} = \boxed{\f{1}{(d-1)!} \f{E^{d-1}}{\prod_\al^d \hbar \omega_\al} }
+	\end{align*}
+	(one way to think about $N(E)$ and $\rho(E)$ is that the former is a cdf and latter is a pdf, ignoring normalization).
 	
-	\item 
 	
-	\item 
 	
-	\item 
 	
-	\item 
+	\item In a grand canonical ensemble, the number of particles in the trap is obtained by using the fact that the particles follows Fermi-Dirac statistics: 
+	\begin{align*}
+	\langle N \rangle 
+	&= \int_0^\infty \f{1}{e^{\be(E-\mu)} + 1} \rho(E)\,dE \\
+	&= \f{1}{(d-1)!} \f{1}{\prod_\al^d \hbar \omega_\al} \int_0^\infty \f{E^{d-1}}{e^{\be(E-\mu)} + 1} \,dE
+	\end{align*}
+	By the change of variables $x = \be E = E/k_BT$ and letting $z = e^{\be \mu}$, we find 
+	\begin{align*}
+	\langle N \rangle 
+	&= \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp \f{1}{(d-1)!}\int_0^\infty \f{x^{d-1}}{z^{-1}e^x +1 }\,dx = 
+	\boxed{f^-_d(z) \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al} \rp}
+	\end{align*}
+	as desired. 
 	
-	\item 
+	
+	
+	
+	\item The energy is given by 
+	\begin{align*}
+	\langle E \rangle 
+	&= \int_0^\infty  \f{E}{e^{\be(E-\mu)} + 1} \rho(E)\,dE \\
+	&= k_B T\prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp \f{1}{(d-1)!}\int_0^\infty \f{x^{d}}{z^{-1}e^x +1 }\,dx\\
+	&= k_B T d  \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp \f{1}{d!}\int_0^\infty \f{x^{d}}{z^{-1}e^x +1 }\,dx\\
+	&= \boxed{k_B T d  \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp f^-_{d+1}(z)}
+	\end{align*}
+	
+	
+	
+	
+	\item The limit forms for $\langle E\rangle$ and $\langle N\rangle$ are
+	\begin{align*}
+	\langle N \rangle 
+	&=\prod_\al^d \lp \f{k_BT}{\hbar \omega_\al} \rp f^-_d(z) \\
+	&= \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp     \sum_{m=1}^\infty (-1)^{m+1}\f{z^m}{m^d}\quad\text{ as } \be \to 0\\
+	&\approx \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp \lb z -\f{z^2}{2^d} + \f{z^3}{3^d} - \dots  \rb
+	\end{align*}
+	\begin{align*}
+	\langle E\rangle 
+	&=  k_B T d  \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp f^-_{d+1}(z) \\
+	&=  k_B T d  \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp \sum_{m=1}^\infty (-1)^{m+1}\f{z^m}{m^{d+1}}\quad\text{ as } \be \to 0\\
+	&\approx  k_B T d  \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp  \lb z -\f{z^2}{2^{d+1}} + \f{z^3}{3^{d+1}} - \dots  \rb
+	\end{align*}
+	With these, we may compute the energy per particle in the high temperature limit:
+	\begin{align*}
+	\boxed{\f{\langle E\rangle}{\langle N\rangle}\bigg\vert_{\be \to 0} \approx k_B T d \lb 1 + \f{z}{2^{d+1}} + \dots \rb}
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[49]:= Series[f[-1, d + 1, z]/f[-1, d, z], {z, 0, 3}]
+	
+	Out[49]= SeriesData[z, 0, {
+	1, 2^(-1 - d), -2^(-1 - 2 d) + 2^((-2)
+	d) + 3^(-1 - d) - 3^(-d), -2^(-2 - 3 d) 3^(-1 - d) (
+	7 2^(1 + 2 d) - 2 3^(1 + d) - 2^d 3^(2 + d))}, 0, 4, 1]
+	\end{lstlisting}
+	
+	\item $\mu$ approaches the Fermi energy $\mathcal{E}_F$ at zero temperature. At $T=0$, let us take the Fermi occupation number to be unity. So that
+	\begin{align*}
+	\langle N \rangle = \f{1}{(d-1)!} \f{1}{\prod_\al^d \hbar \omega_\al} \int_0^{\mu \equiv \mathcal{E}_F} E^{d-1} \,dE = \f{1}{(d-1)!} \f{1}{\prod_\al^d \hbar \omega_\al} \f{\mathcal{E}_F^d}{d} = \f{\mathcal{E}_F^d}{d!} \f{1}{\prod_\al^d \hbar \omega_\al}.
+	\end{align*}
+	From here we have
+	\begin{align*}
+	f^-_d(z) \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al} \rp = \f{\mathcal{E}_F^d}{d!} \f{1}{\prod_\al^d \hbar \omega_\al} \implies \f{1}{d!} \lp \f{\mathcal{E}_F}{k_BT}\rp^d =  f_d^-(z).
+	\end{align*}
+	Now we will use the Sommerfeld expansion  to find 
+	\begin{align*}
+	\lim_{\be\to \infty} f_d^-(z) = \f{(\ln z)^d}{d!}\lb 1 + \f{\pi^2}{6} \f{d(d-1)}{(\ln z)^2} + \dots \rb.
+	\end{align*}
+	Since $z = e^{\be \mu}$ we have $\ln z = \be \mu$, so 
+	\begin{align*}
+	\be \mathcal{E}_F = \be \mu \lb 1 + \f{\pi^2}{6} \f{d(d-1)}{(\be \mu)^2} + \dots \rb^{1/d}
+	\end{align*}
+	For the correction part, we may as well call $\mu = \mathcal{E}_F$, so that we get
+	\begin{align*}
+	\boxed{\mu} = \mathcal{E}_F \lb 1 + d(d-1) \f{\pi^2}{6}\lp \f{k_B T}{\mathcal{E}_F}\rp^2 + \dots \rb^{-1/d} \approx \boxed{\mathcal{E}_F \lb 1 - (d-1) \f{\pi^2}{6} \lp \f{k_BT}{\mathcal{E}_F} \rp^2 + \dots \rb}
+	\end{align*}
+	
+	\item The heat capacity is given by 
+	\begin{align*}
+	C_V &= \f{d\langle E\rangle }{dT} \\
+	&= \f{d}{dT} \lc k_B T d  \prod_\al^d \lp \f{k_BT}{\hbar \omega_\al}\rp f^-_{d+1}(z)  \rc
+	\end{align*}
+	where
+	\begin{align*}
+	\lim_{\be\to \infty } f_{d+1}^-(z) =  \f{(\ln z)^{d+1}}{(d+1)!}\lb 1 + \f{\pi^2}{6} \f{d(d+1)}{(\ln z)^2} + \dots \rb.
+	\end{align*}
+	\textbf{\textcolor{purple}{I can continue here with the expansion, but I won't, as it will be a big mess with unsimplified $d$'s everywhere and multiplication of series, etc. This is also the last pset, so I'll let this slide...}}
 \end{enumerate}
 
 
 \noindent \textbf{6. Anharmonic Trap.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item From the Hamiltonian 
+	\begin{align*}
+	\ham = \f{p^2}{2m} + K r^n
+	\end{align*}
+	we can calculate... \textbf{\textcolor{red}{No idea how to do this.}} 
 	
-	\item 
+	\item Using 
+	\begin{align*}
+	\rho(\epsilon) = \f{C}{(p-1)!} \epsilon^{p-1},
+	\end{align*}
+	we get
+	\begin{align*}
+	N = \f{C}{(p-1)!} \int_0^\infty \f{\epsilon^{p-1}}{e^{\be(\epsilon-\mu) - \eta}} d\epsilon
+	\end{align*}
+	Let $x = \be \epsilon$ and $z = e^{\be\mu}$, then we have
+	\begin{align*}
+	N = \f{C (k_BT)^p}{ (p-1)!}\int_0^\infty \f{x^{p-1}}{z^{-1}e^x - \eta}\,dx = \boxed{C(k_BT)^p f_p^\eta(z)}
+	\end{align*}
 	
-	\item 
+	\item Just like the previous problem, we find that the total energy is 
+	\begin{align*}
+	E = \f{C}{(p-1)!} \int_0^\infty \f{\epsilon^{p}}{e^{\be(\epsilon-\mu) - \eta}} d\epsilon = \boxed{C p (k_B T)^{p+1} f_{p+1}^\eta(z)}
+	\end{align*}
 	
-	\item 
+	\item At $T=0$, the Fermi occupation number is unitary. The Fermi energy is given by 
+	\begin{align*}
+	N = \f{C}{(p-1)!} \int_0^{\mathcal{E}_F} \epsilon^{p-1} d\epsilon \implies {N =  \f{C}{p!}\mathcal{E}_F^p} \implies  \boxed{\mathcal{E}_F = \lp \f{Np!}{C}\rp^{1/p}}
+	\end{align*}
 	
-	\item 
+	\item The heat capacity is given by $C_V = dE/dT$. There are two $T$-dependence from $E$. The first is the $T^{p+1}$ factor. However, since $E$ is also proportional to $f^\eta_{p+1}(z)$ whose low-temperature expansion has leading term which scales like $\be^{p+1} \sim T^{-(p+1)}$ multiplied by a correction factor of the form $(1+ \Lambda (T/T_F)^2 + \dots )$. So, when we take $dE/dT$, we will be left with a term that is linear in $T$. Therefore, the low-temperature heat capacity is \textbf{linear} in temperature.    
 	
-	\item 
+	\item For bosons, we set $\eta = 1$. \textbf{\textcolor{red}{To be continued.}}
 \end{enumerate}
 
 
@@ -248,12 +651,90 @@
 \noindent \textbf{8. (Optional) Partition of Integers.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Let some energy $E = \sum_k k n_k$ be given, where $k$ is an integer and $n_k$ is its associated multiciplicity in the partition. The partition function is given by 
+	\begin{align*}
+	\mathcal{Z}(\be) = \sum_{\psi } e^{-\be E_\psi}
+	\end{align*}
+	where $\sum_\psi$ denotes the sum over all configurations. We may expand $\mathcal{z}(\be)$ to simplify it
+	\begin{align*}
+	\mathcal{Z}(\be)
+	&= \sum_{n_1=0}^\infty \sum_{n_2=0}^\infty \dots \exp\lp -\be (1 n_1 + 2  n_2 + \dots )\rp \\
+	&= \sum_{n_1=0}^\infty e^{-\be n_1} \sum_{n_2= 0}^\infty e^{-2\be n_2 } \dots \\
+	&= \prod_{l=1}^\infty \lb \sum_{n_l=0}^\infty \exp\lp -\be l n_l \rp \rb \\
+	&= \prod_{l=1}^\infty \f{1}{1 - e^{-\be l}}
+	\end{align*} 
+	after using geometric series. \textbf{\textcolor{purple}{This seems nice and doesn't require going to $\be\to 0$? }}
 	
-	\item 
 	
-	\item 
 	
+	\item We \textbf{now} change the sum into an integral. The average energy is 
+	\begin{align*}
+	E = -\f{\p \ln \mathcal{Z}}{\p \be} = -\f{\p}{\p \be}\sum_{l=1}^\infty \ln \lp \f{1}{1 - e^{-\be l}}  \rp = \f{\p}{\p \be}\sum_{l=1}^\infty \ln \lp 1 - e^{-\be l} \rp \approx \f{\p}{\p \be}\int_1^\infty \ln \lp 1 - e^{-\be l} \rp 
+	\end{align*}	
+	The integral can be approximated by the following trick:
+	\begin{align*}
+	\int_1^\infty \ln \lp 1 - e^{-\be l} \rp 
+	&= \int_0^\infty \ln \lp 1 - e^{-\be l} \rp - \int_0^1 \ln \lp 1 - e^{-\be l} \rp \\
+	&= -\f{\pi^2}{6\be} - \lp \int_0^1 \ln(\be l) - \f{\be l}{2} + \dots \,dl \rp.
+	\end{align*}
+	Letting Mathematica do the work, we find that
+	\begin{align*}
+	\boxed{E \approx \f{\pi^2}{6\be^2} - \f{1}{\be}}
+	\end{align*}
+	where we have dropped terms with zeroth and higher orders in $\be$. 
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[79]:= Int = Integrate[Log[1 - Exp[-b*l]], {l, 0, Infinity}]
+	
+	Out[79]= ConditionalExpression[-(\[Pi]^2/(6 b)), Re[b] > 0]
+	
+	In[93]:= integral = 
+	Int - Integrate[Series[Log[1 - Exp[-b*l]], {b, 0, 1}], {l, 0, 1}];
+	
+	In[94]:= energy = D[integral, b]
+	
+	Out[94]= ConditionalExpression[1/4 - 1/b + \[Pi]^2/(6 b^2), Re[b] > 0]
+	\end{lstlisting}
+	
+	We can also tell Mathematica to solve for $T(E)$. By taking $E \gg 1$, we find that
+	\begin{align*}
+	\boxed{T(E) \approx \f{\sqrt{{6E}}}{k_B \pi} }
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+	In[95]:= Solve[EE == \[Pi]^2/(6 b^2) - 1/b, b] // FullSimplify
+	
+	Out[95]= {{b -> -((3 + Sqrt[9 + 6 EE \[Pi]^2])/(6 EE))}, {b -> (-3 + 
+	Sqrt[9 + 6 EE \[Pi]^2])/(6 EE)}}
+	\end{lstlisting}
+	
+	
+	\item The entropy is 
+	\begin{align*}
+	S = \f{\p }{\p T} (k_B T \ln \mathcal{Z}) = \f{\p}{\p T}\lb k_B T \int_{1}^\infty \ln \lp \f{1}{1 - e^{- l/k_B T}}  \rp \,dl \rb 
+	\end{align*}
+	Using the same trick we find 
+	\begin{align*}
+	S(T) \approx \f{1}{3}k_B^2 \pi^2 T + k_B \ln \lp \f{1}{k_B T}\rp \implies S(E) = k_B \pi\sqrt{\f{2E}{3}} + k_B \ln\lp \f{\pi}{\sqrt{6E}} \rp
+	\end{align*}
+	where we have used $T(E)$ from Part (b). Now, we want a relation between the entropy and the number of microstates. According to this paper \href{https://arxiv.org/pdf/1603.01049.pdf}{https://arxiv.org/pdf/1603.01049.pdf}, the multiplicity is related to the entropy by 
+	\begin{align*}
+	W(E) = \f{e^{S(\be_0)}}{\sqrt{2\pi S''(\be_0)}}
+	\end{align*}
+	where $\be_0 = 1/k_B T(E)$, with $T(E)$ being the answer from Part (b). So,
+	\begin{align*}
+	S''(\be) =-\f{k_B}{\be^2} + \f{2k_B \pi^2}{3\be^3} \approx \f{4\sqrt{6} E^{3/2} k_B}{\pi }.
+	\end{align*}
+	To avoid complications let us set $k_B = 1$, so that 
+	\begin{align*}
+	S(E) = \pi \sqrt{\f{2E}{3}}, \quad\quad S''(E) = \f{4\sqrt{6} E^{3/2}}{\pi}
+	\end{align*}
+	So, 
+	\begin{align*}
+	W(E) \sim \f{1}{E^{5/4}} \exp\lp \pi \sqrt{\f{2E}{3}} \rp.
+	\end{align*}
+	\textbf{\textcolor{purple}{Hmm... I'm getting close but something is off here. I think the error is from very early on when I try to go from the sum to the integral.}} \textbf{\textcolor{blue}{Initially I did this problem without referencing the paper and got the leading factor to go like $1/E^{3/4}$, which is not quite $1/E$. I think the $\ln(1/\be)$ correction in the expression for entropy is quite delicate, and any factor that lands there will decide the leading factor $1/E^x$ in the final expression. In any case, the exponential part is at least consistent.}}
 \end{enumerate}
 
 
@@ -289,15 +770,67 @@
 \noindent \textbf{11. (Optional) Relativistic Bose Gas in $d$-dimensions.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item The grand potential is 
+	\begin{align*}
+	\mathcal{G}
+	&= -k_B T \ln \mathcal{Q} \\
+	&= k_B T \sum_{i} \ln \lb 1 - e^{\be(\mu - \epsilon_i)} \rb \\
+	&\to k_B T \int_0^\infty V \f{d^d k }{(2\pi)^d} \ln \lb 1 - e^{\be(\mu -  ck)} \rb \\
+	&= \f{k_B T V S_d }{(2\pi)^d}\int_0^\infty  dk\, k^{d-1} \ln \lb 1 - z e^{-\be  ck)} \rb \\
+	&= \f{k_B T V S_d }{(2\pi)^d}\lp \f{k_B T}{c} \rp^d\int_0^\infty  dx\, x^{d-1} \ln \lb 1 - z e^{-x} \rb \\
+	&= -\f{1}{d}\f{k_B T V S_d }{(2\pi)^d}\lp \f{k_B T}{c} \rp^d\int_0^\infty 
+	\,dx \, x^d \f{ze^{-x}}{1 - ze^{-z}}  
+	\quad\quad \text{int. by parts.}\\
+	&= -\f{1}{d}\f{k_B T V S_d }{(2\pi)^d}\lp \f{k_B T}{c} \rp^d
+	\int_0^\infty \,dx \, \f{x^d}{z^{-1}e^x - 1}  \\
+	&= \boxed{-\f{1}{d}\f{k_B T V S_d }{(2\pi)^d}\lp \f{k_B T}{c} \rp^d d! f_{d+1}^+(z)}
+	\end{align*}
+	The density is therefore
+	\begin{align*}
+	n &= \f{N}{V} \\
+	&= -\f{1}{V}\f{\p \mathcal{G}}{\p \mu} \\
+	&= -\f{1}{V}\f{\p \mathcal{G}}{\p z}\f{\p z}{\p \mu} \\
+	&= -\f{\be z}{V}\f{\p \mathcal{G}}{\p z} \\
+	&= \f{1}{d}\f{S_d }{(2\pi)^d}\lp \f{k_B T}{c} \rp^d d![ z\p_zf_{d+1}^+(z)]\\
+	&= \boxed{\f{1}{d}\f{S_d }{(2\pi)^d}\lp \f{k_B T}{c} \rp^d d! f_d^+(z)}
+	\end{align*}
 	
-	\item 
 	
-	\item 
 	
-	\item 
+	\item Since $\mathcal{G} = -PV$, it suffices to just calculate the pressure, 
+	\begin{align*}
+	P = \f{\ln \mathcal{Q}}{\be V} = \f{-\mathcal{G}}{V} = -\f{1}{d}\f{k_B T S_d }{(2\pi)^d}\lp \f{k_B T}{c} \rp^d d! f_{d+1}^+(z)
+	\end{align*}
+	Following the section on non-relativistic gas in the book, we find that the energy is (this part is not affected by relativity): 
+	\begin{align*}
+	E = d \times P V = -d\times \mathcal{G}.
+	\end{align*}
+	With these, we have
+	\begin{align*}
+	\f{E}{PV} = \f{dP V}{P V} =  \boxed{d}
+	\end{align*}
+	which is the same as the classical value. 
 	
-	\item 
+	
+	\item The critical temperature $T_c$ for BEC is given by 
+	\begin{align*}
+	n = \f{1}{d}\f{S_d }{(2\pi)^d}\lp \f{k_B T_c}{c} \rp^d d! f_d^+(z=1) = \f{1}{d}\f{S_d }{(2\pi)^d}\lp \f{k_B T_c}{c} \rp^d d! \zeta_d
+	\end{align*}
+	which gives
+	\begin{align*}
+	\boxed{T_c = \f{c}{k_B} \lp \f{d (2\pi)^d}{ S_d d!\zeta_d}  \rp^{1/d}}
+	\end{align*}
+	The Riemann zeta-function is finite only for $d>1$, so BEC transition occurs only in $\boxed{d>1}$ dimensions. 
+	
+	
+	
+	\item Below the critical temperature we have $z=1$ ($z$ gets stuck there) which is independent of temperature and $E\sim \mathcal{G} \propto T^{d+1}$. So $\boxed{C_V \propto T^d}$.
+	
+	\item With $C(T_c) = dE/dT\vert_{T_c} = -d(d+1)\mathcal{G}/T$, we find
+	\begin{align*}
+	\f{C(T_c)}{N k_B} = -\f{d(d+1)}{T}\f{1}{k_B} \lp V \f{1}{d}\f{S_d }{(2\pi)^d}\lp \f{k_B T}{c} \rp^d d! f_d^+(1) \rp^{-1}\lp -\f{1}{d}\f{k_B T V S_d }{(2\pi)^d}\lp \f{k_B T}{c} \rp^d d! f_{d+1}^+(1) \rp = \boxed{\f{d(d+1) \zeta_{d+1}}{\zeta_d}}
+	\end{align*}
+	In the high temperature limit, $C_V/Nk_B \propto d$, due to the partition theorem (\textbf{\textcolor{purple}{I'm actually not sure or know how to show that this is true... Only heard this in a pset session.}}), so there is a difference. 
 \end{enumerate}
 
 

@@ -13,8 +13,8 @@ tic
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-X = -50:1:50;
-Y = -50:1:50;
+X = -75:1:75;
+Y = -75:1:75;
 
 [II,JJ] = meshgrid(X,Y);
 H = zeros(length(II),length(JJ));
@@ -26,12 +26,22 @@ for r = 1:length(II)
 end
 % add contour underneath
 %h = surfc(II,JJ,H);
+
+
 h = surf(II,JJ,H);
-set(h, 'edgealpha',0.2, 'FaceAlpha',1)
-xlabel('X', 'FontSize',16);
-ylabel('Y', 'FontSize',16);
-title('Re(H)', 'FontSize', 16 );
-colorbar;
+set(h, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.15 , 'FaceAlpha',1);
+xlabel('x', 'FontSize',14);
+ylabel('y', 'FontSize',14);
+% title('Re(H)', 'FontSize', 16 );
+% colorbar;
+
+% Evan's configs
+%axis([-50 50 -50 50])
+%axis([-50 50 -50 50 -0.008 0.008])
+axis([-75 75 -75 75 -0.012 0.016])
+view(44,12)
+
+
 
 %%%%%%%%%%%%%%%%%%%
 % clock ends
@@ -45,7 +55,7 @@ disp(' ');
 
 
 
-% -- Integration --
+% -- Integration --1000
 
 function Hxy = Hxy(II,JJ)
 xmin = -9;
@@ -56,8 +66,13 @@ t = 1000;
 d=2;
 muE = 1/2+1/4;
 % note: the following definitions of "fun" are equivalent under change of vars
-fun = @(x,y) cos( (-II.*x./(t^(1/2)) - JJ.*y./(t^(1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96) ...
-+ 1i*sin( (-II.*x./(t^(1/2)) - JJ.*y./(t^(1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96);
-Hxy = real((t^(-muE)/(2*pi)^d)*integral2(fun, xmin,xmax, ymin, ymax, 'AbsTol',1e-4, 'RelTol',1e-4));
+% we're only interested in the real part, so just do Cos() for this example
+% since we only have iQ, ie things in the exp is purely imaginary
+fun = @(x,y) cos( (-II.*x.*(t^(-1/2)) - JJ.*y.*(t^(-1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96); %...
+%        + 1i*sin( (-II.*x.*(t^(-1/2)) - JJ.*y.*(t^(-1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96);
+
+% no need to call real() here 
+Hxy = (t^(-muE)/(2*pi)^d)*integral2(fun, xmin,xmax, ymin, ymax, 'AbsTol',1e-5, 'RelTol',1e-5);
+
 end
 
