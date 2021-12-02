@@ -66,8 +66,8 @@ tic
 
 h = figure(1);
 % h.Position = [100 100 1200 500];
-n_times = 400;
-support_bound = 150;
+n_times = 4000;
+support_bound = 400;
 
 disp('Calculating...');
 data = real(fast_convolve(n_times, support_bound));    % plot the real part
@@ -91,7 +91,8 @@ ylabel('y', 'FontSize',14);
 % ylim([-floor(dim(1)/4)  floor(dim(2)/4)]);
 
 % Evan's configs
-axis([-floor(dim(1)/2) floor(dim(2)/2) -floor(dim(1)/2) floor(dim(2)/2) -0.012 0.016])
+%axis([-floor(dim(1)/2) floor(dim(2)/2) -floor(dim(1)/2) floor(dim(2)/2) -0.012 0.016])
+axis([-75 75 -75 75 -0.007 0.007])
 view(44,12)
 %xlabel('x','fontsize',38)                                                      
 %ylabel('y','fontsize',38)                                                      
