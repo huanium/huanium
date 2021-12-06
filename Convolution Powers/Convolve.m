@@ -4,7 +4,7 @@
 
 
 
-clear
+clear all
 close all
 
 %%%%%%%%%%%%%%%%%%%
@@ -66,8 +66,8 @@ tic
 
 h = figure(1);
 % h.Position = [100 100 1200 500];
-n_times = 4000;
-support_bound = 400;
+n_times = 200;
+support_bound = 60;
 
 disp('Calculating...');
 data = real(fast_convolve(n_times, support_bound));    % plot the real part
@@ -77,7 +77,7 @@ dim = size(data);
 x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
 y = floor(-dim(2)/2)+1:1:floor(dim(2)/2);
 [X, Y] = meshgrid(x, y);
-s = surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.15 , 'FaceAlpha',1);
+s = surf(X, Y, data, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.25 , 'FaceAlpha',1);
 xlabel('x', 'FontSize',14);
 ylabel('y', 'FontSize',14);
 % title(['Re(\phi^{(', num2str(n_times), ')})'], 'FontSize', 16 );
@@ -92,8 +92,8 @@ ylabel('y', 'FontSize',14);
 
 % Evan's configs
 %axis([-floor(dim(1)/2) floor(dim(2)/2) -floor(dim(1)/2) floor(dim(2)/2) -0.012 0.016])
-axis([-75 75 -75 75 -0.007 0.007])
-view(44,12)
+axis([-30 30 -30 30 -0.015 0.03])
+view(25,15)
 %xlabel('x','fontsize',38)                                                      
 %ylabel('y','fontsize',38)                                                      
 %set(gca,'fontsize',38)
@@ -224,6 +224,43 @@ disp(' ');
 
 function conv_power = fast_convolve(n_times, support_bound)
 
+
+
+%%% Dec 3 2021 
+%%% Example 4
+%%% E = diag(1/4,1/4)
+Phi = zeros(13,13);
+shift = floor(13/2)+1;
+Phi( 1+shift, 0+shift)  = complex(552,-540);
+Phi(-1+shift, 0+shift)  = complex(552,-540);
+Phi( 2+shift, 0+shift)  = -complex(177,-499/2);
+Phi(-2+shift, 0+shift)  = -complex(177,-499/2);
+Phi( 3+shift, 0+shift)  = complex(-28,+10);
+Phi(-3+shift, 0+shift)  = complex(-28,+10);
+Phi( 4+shift, 0+shift)  = complex(42,-59);
+Phi(-4+shift, 0+shift)  = complex(42,-59);
+Phi( 5+shift, 0+shift)  = complex(-12,18);
+Phi(-5+shift, 0+shift)  = complex(-12,18);
+Phi( 6+shift, 0+shift)  = complex(1,-3/2);
+Phi(-6+shift, 0+shift)  = complex(1,-3/2);
+
+Phi( 0+shift, 0+shift)  = complex(2584,1292);
+Phi( 0+shift, 1+shift)  = complex(552,-540);
+Phi( 0+shift,-1+shift)  = complex(552,-540);
+Phi( 0+shift, 2+shift)  = -complex(177,-499/2);
+Phi(-0+shift,-2+shift)  = -complex(177,-499/2);
+Phi( 0+shift, 3+shift)  = complex(-28,+10);
+Phi(-0+shift,-3+shift)  = complex(-28,+10);
+Phi( 0+shift, 4+shift)  = complex(42,-59);
+Phi(-0+shift,-4+shift)  = complex(42,-59);
+Phi( 0+shift, 5+shift)  = complex(-12,18);
+Phi(-0+shift,-5+shift)  = complex(-12,18);
+Phi( 0+shift, 6+shift)  = complex(1,-3/2);
+Phi(-0+shift,-6+shift)  = complex(1,-3/2);
+
+Phi = Phi/2^12;
+
+
 % % 
 % Phi = zeros(3,3);
 % shift = floor(3/2)+1;
@@ -303,31 +340,31 @@ function conv_power = fast_convolve(n_times, support_bound)
 
 
 
-%%%%% EXAMPLE 2 in PAPER %%%%%%%%%%%
-%%%%% Example Nov 29, 2021 %%%%%%%%%
-Phi = zeros(9,9);
-shift = floor(9/2)+1;
-
-% mono terms 
-Phi( 0+shift, 0+shift)  = (301/384-7i/48);
-Phi(-1+shift,-0+shift)  = (7/96+1i/24);
-Phi( 1+shift, 0+shift)  = (3/32+1i/24);
-Phi( 2+shift, 0+shift)  = -1/48;
-Phi(-2+shift,-0+shift)  = -1/48;
-Phi( 0+shift, 1+shift)  = (7/96+1i/24);
-Phi(-0+shift,-1+shift)  = (7/96+1i/24);
-Phi( 0+shift, 2+shift)  = -(7/192+1i/96);
-Phi(-0+shift,-2+shift)  = -(7/192+1i/96);
-Phi( 0+shift, 3+shift)  = 1/96;
-Phi(-0+shift,-3+shift)  = 1/96;
-Phi( 0+shift, 4+shift)  = -1/768;
-Phi(-0+shift,-4+shift)  = -1/768;
-
-% cross terms
-Phi(-1+shift,-1+shift)  =  1/192;
-Phi(-1+shift, 1+shift)  =  1/192;
-Phi( 1+shift, 1+shift)  = -1/192;
-Phi( 1+shift,-1+shift)  = -1/192;
+% %%%%% EXAMPLE 2 in PAPER %%%%%%%%%%%
+% %%%%% Example Nov 29, 2021 %%%%%%%%%
+% Phi = zeros(9,9);
+% shift = floor(9/2)+1;
+% 
+% % mono terms 
+% Phi( 0+shift, 0+shift)  = (301/384-7i/48);
+% Phi(-1+shift,-0+shift)  = (7/96+1i/24);
+% Phi( 1+shift, 0+shift)  = (3/32+1i/24);
+% Phi( 2+shift, 0+shift)  = -1/48;
+% Phi(-2+shift,-0+shift)  = -1/48;
+% Phi( 0+shift, 1+shift)  = (7/96+1i/24);
+% Phi(-0+shift,-1+shift)  = (7/96+1i/24);
+% Phi( 0+shift, 2+shift)  = -(7/192+1i/96);
+% Phi(-0+shift,-2+shift)  = -(7/192+1i/96);
+% Phi( 0+shift, 3+shift)  = 1/96;
+% Phi(-0+shift,-3+shift)  = 1/96;
+% Phi( 0+shift, 4+shift)  = -1/768;
+% Phi(-0+shift,-4+shift)  = -1/768;
+% 
+% % cross terms
+% Phi(-1+shift,-1+shift)  =  1/192;
+% Phi(-1+shift, 1+shift)  =  1/192;
+% Phi( 1+shift, 1+shift)  = -1/192;
+% Phi( 1+shift,-1+shift)  = -1/192;
 
 % % EXAMPLE 3 in the paper
 % Phi = zeros(17,17);
@@ -408,6 +445,8 @@ while k < n_times
     if dim_f(1) > support_bound || dim_f(2) > support_bound
         conv_power = cropND(conv_power, support_bound);
     end
+    
+    disp(['Calculated ' num2str(k) ' out of ' num2str(n_times) ' times'])
 end
 
 

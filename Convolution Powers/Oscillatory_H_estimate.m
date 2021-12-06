@@ -7,55 +7,117 @@
 %    parpool('local',2); % create the parallel pool
 % end
 
+clear all 
+close all
+
 %%%%%%%%%%%%%%%%%%%
 % clock starts
 tic 
 % clock starts
 %%%%%%%%%%%%%%%%%%%
 
-X = -75:1:75;
-Y = -75:1:75;
+% bound = 75;
+bound = 30;
+
+X = -bound:1:bound;
+Y = -bound:1:bound;
 
 % integrate over [-bd,bd]x[-bd,bd]
-bd  = 12;
+bd  = 8;
+% bd = 13;
 % define \tau for renormalized integral
-tau = 130;
+tau = 90;
+% tau = 281;
 % dilation factor
-t = 4000;
+t = 200;
 %dimension
 d=2;
 % trace of E
-muE = 1/2+1/4;
-
+%muE = 1/2+1/4;
+E11 = 1/4;
+E22 = 1/4;
+muE = E11 + E22;
 
 [II,JJ] = meshgrid(X,Y);
-H = zeros(length(II),length(JJ));
+H1 = zeros(length(II),length(JJ));
+H2 = zeros(length(II),length(JJ));
 R = length(II);
 C = length(JJ);
-for r = 1:R
-   parfor c = 1:C
-        H(r,c) = Hxy(II(1,r), JJ(c,1), bd, tau ,t , d, muE );
+
+
+% parfor always goes on the outer loop
+parfor r = 1:R
+   for c = 1:C
+        H1(r,c) =  Hxy1(II(1,r), JJ(c,1), bd, tau ,t , d, muE );
+        H2(r,c) = iHxy2(II(1,r), JJ(c,1), bd, tau ,t , d, muE );
         disp(['Calculated: ' num2str((r-1)*C + c) ' out of ' num2str(R*C)]);
-        % for parfor computing
-        %disp(['Calculated rows: ' num2str(r) ' out of ' num2str(length(II))])
+        
+        [msg, id] = lastwarn;
+        warning('off', id)
    end
 end
-% add contour underneath
-%h = surfc(II,JJ,H);
 
 
-h = surf(II,JJ,H);
-set(h, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.15 , 'FaceAlpha',1);
+
+%%%%%%%%%%%%%%% plot original H %%%%%%%%%%%%%%%
+
+
+% just in case we need to extract data from figure
+% fig = gcf;
+% axObjs=fig.Children;
+% dataObjs=axObjs.Children;
+
+
+figure(1)
+h1 = surf(II,JJ,H1);
+set(h1, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.25 , 'FaceAlpha',1);
 xlabel('x', 'FontSize',14);
 ylabel('y', 'FontSize',14);
-% title('Re(H)', 'FontSize', 16 );
-% colorbar;
+%axis([-60 60 -60 60 -0.007 0.014])
+axis([-30 30 -30 30 -0.015 0.03])
+%axis([-75 75 -75 75 -0.007 0.007])
+view(25,15)
 
-% Evan's configs
-%axis([-50 50 -50 50])
-%axis([-50 50 -50 50 -0.008 0.008])
-axis([-75 75 -75 75 -0.007 0.007])
-view(44,12)
+
+figure(2)
+h2 = surf(II,JJ,H2);
+set(h2, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.25 , 'FaceAlpha',1);
+xlabel('x', 'FontSize',14);
+ylabel('y', 'FontSize',14);
+%axis([-60 60 -60 60 -0.007 0.014])
+axis([-30 30 -30 30 -0.015 0.03])
+
+view(25,15)
+
+
+figure(3)
+H3 = H1+H2;
+h3 = surf(II,JJ,H3);
+set(h3, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.25 , 'FaceAlpha',1);
+xlabel('x', 'FontSize',14);
+ylabel('y', 'FontSize',14);
+%axis([-60 60 -60 60 -0.007 0.014])
+axis([-30 30 -30 30 -0.015 0.03])
+
+view(25,15)
+
+
+% %%%%%%%%%%%%%%%% H2 %%%%%%%%%%%%%%%%%%%%
+% 
+% % convert Ht to Hm where m is something else
+% m = 2000;
+% H2000 = (t/m)^muE.*H;
+% newX = (m/t)^E11.*X;
+% newY = (m/t)^E22.*Y;
+% [newII,newJJ] = meshgrid(newX,newY);
+% figure(2)
+% h2 = surf(newII,newJJ,H2000);
+% set(h2, 'LineWidth',0.1,'edgecolor','black', 'EdgeAlpha', 0.15 , 'FaceAlpha',1);
+% xlabel('x', 'FontSize',14);
+% ylabel('y', 'FontSize',14);
+% 
+% axis([-70 70 -70 70 -0.01 0.01])
+% view(44,12)
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -68,26 +130,42 @@ disp(' ');
 % clock ends
 %%%%%%%%%%%%%%%%%%%
 
+% save workspace
+save('dec_5_2021_Ex4_2.mat')
+
 
 
 
 % -- Integration --
 
-function Hxy = Hxy(II,JJ, bd, tau ,t , d, muE )
+function Hxy1 = Hxy1(II,JJ, bd, tau ,t , d, muE )
 
 % note: the following definitions of "fun" are equivalent under change of vars
 % we're only interested in the real part, so just do Cos() for this example
 % since we only have iQ, ie things in the exp is purely imaginary
-fun = @(x,y) cos( (-II.*x.*(t^(-1/2)) - JJ.*y.*(t^(-1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96);
+%fun = @(x,y) cos( (-II.*x.*(t^(-1/2)) - JJ.*y.*(t^(-1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96);
+
+% renormalized integral approach
 %fun = @(x,y) (abs(x.^2/24 - x.*y.^2./96 + y.^4/96) < tau).*...%
-%   cos( (-II.*x.*(t^(-1/2)) - JJ.*y.*(t^(-1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96); %...
+%        cos( II.*x.*t^(-1/2) + JJ.*y.*t^(-1/4) + x.^2/24 - x.*y.^2./96 + y.^4/96); %...
 %        + 1i*sin( (-II.*x.*(t^(-1/2)) - JJ.*y.*(t^(-1/4))) - x.^2/24 + x.*y.^2./96 - y.^4/96);
 
+fun = @(x,y) (abs(x.^4/32 + y.^4/32) < tau).*...%
+   cos( (-II.*x.*(t^(-1/4)) - JJ.*y.*(t^(-1/4))) - x.^4/32 - y.^4/32); %...
+
 % no need to call real() here 
-Hxy = (t^(-muE)/(2*pi)^d)*integral2(fun,-bd,bd,-bd,bd, 'AbsTol',1e-4, 'RelTol',1e-4);
+Hxy1 = (t^(-muE)/(2*pi)^d)*integral2(fun,-bd,bd,-bd,bd, 'AbsTol',1e-5, 'RelTol',1e-5, 'method', 'iterated');
 
 end
 
+
+function iHxy2 = iHxy2(II,JJ, bd, tau ,t , d, muE )
+% renormalized integral approach
+fun = @(x,y) (abs((1/2+3i/8).*(x.^4 + y.^4)) < tau).*(cos(II.*x.*t^(-1/4) + JJ.*y.*t^(-1/4)+(3/8).*(x.^4+y.^4)).*exp(-(1/2).*(x.^4+y.^4))...
+            -sin(II.*x.*t^(-1/4) + JJ.*y.*t^(-1/4)+(3/8).*(x.^4+y.^4)).*exp(-(1/2).*(x.^4+y.^4)));
+iHxy2 = (t^(-muE)/(2*pi)^d)*real((1i^(t+2.*(II+JJ)))*integral2(fun,-bd,bd,-bd,bd, 'AbsTol',1e-5, 'RelTol',1e-5,'method', 'iterated'));
+
+end
 
 
 %%%%%% Mathematica code for finding \tau:
