@@ -67,11 +67,11 @@ tic
 h = figure(1);
 % h.Position = [100 100 1200 500];
 n_times = 200;
-support_bound = 60;
+support_bound = 400;
 
 disp('Calculating...');
 data = real(fast_convolve(n_times, support_bound));    % plot the real part
-% data = imag(fast_convolve(n_times, support_bound));    % plot the img part
+%data = imag(fast_convolve(n_times, support_bound));    % plot the img part
 % data = abs(fast_convolve(n_times, support_bound));      % plot the abs
 dim = size(data);
 x = floor(-dim(1)/2)+1:1:floor(dim(1)/2);
@@ -92,8 +92,13 @@ ylabel('y', 'FontSize',14);
 
 % Evan's configs
 %axis([-floor(dim(1)/2) floor(dim(2)/2) -floor(dim(1)/2) floor(dim(2)/2) -0.012 0.016])
-axis([-30 30 -30 30 -0.015 0.03])
-view(25,15)
+%axis([-50 50 -50 50 -0.007 0.014])
+%view(40,40)
+
+axis([-50 50 -50 50 -0.014 0.016])
+view(50,20)
+
+
 %xlabel('x','fontsize',38)                                                      
 %ylabel('y','fontsize',38)                                                      
 %set(gca,'fontsize',38)
@@ -226,39 +231,39 @@ function conv_power = fast_convolve(n_times, support_bound)
 
 
 
-%%% Dec 3 2021 
-%%% Example 4
-%%% E = diag(1/4,1/4)
-Phi = zeros(13,13);
-shift = floor(13/2)+1;
-Phi( 1+shift, 0+shift)  = complex(552,-540);
-Phi(-1+shift, 0+shift)  = complex(552,-540);
-Phi( 2+shift, 0+shift)  = -complex(177,-499/2);
-Phi(-2+shift, 0+shift)  = -complex(177,-499/2);
-Phi( 3+shift, 0+shift)  = complex(-28,+10);
-Phi(-3+shift, 0+shift)  = complex(-28,+10);
-Phi( 4+shift, 0+shift)  = complex(42,-59);
-Phi(-4+shift, 0+shift)  = complex(42,-59);
-Phi( 5+shift, 0+shift)  = complex(-12,18);
-Phi(-5+shift, 0+shift)  = complex(-12,18);
-Phi( 6+shift, 0+shift)  = complex(1,-3/2);
-Phi(-6+shift, 0+shift)  = complex(1,-3/2);
-
-Phi( 0+shift, 0+shift)  = complex(2584,1292);
-Phi( 0+shift, 1+shift)  = complex(552,-540);
-Phi( 0+shift,-1+shift)  = complex(552,-540);
-Phi( 0+shift, 2+shift)  = -complex(177,-499/2);
-Phi(-0+shift,-2+shift)  = -complex(177,-499/2);
-Phi( 0+shift, 3+shift)  = complex(-28,+10);
-Phi(-0+shift,-3+shift)  = complex(-28,+10);
-Phi( 0+shift, 4+shift)  = complex(42,-59);
-Phi(-0+shift,-4+shift)  = complex(42,-59);
-Phi( 0+shift, 5+shift)  = complex(-12,18);
-Phi(-0+shift,-5+shift)  = complex(-12,18);
-Phi( 0+shift, 6+shift)  = complex(1,-3/2);
-Phi(-0+shift,-6+shift)  = complex(1,-3/2);
-
-Phi = Phi/2^12;
+% %%% Dec 3 2021 
+% %%% Example 4
+% %%% E = diag(1/4,1/4)
+% Phi = zeros(13,13);
+% shift = floor(13/2)+1;
+% Phi( 1+shift, 0+shift)  = complex(552,-540);
+% Phi(-1+shift, 0+shift)  = complex(552,-540);
+% Phi( 2+shift, 0+shift)  = -complex(177,-499/2);
+% Phi(-2+shift, 0+shift)  = -complex(177,-499/2);
+% Phi( 3+shift, 0+shift)  = complex(-28,+10);
+% Phi(-3+shift, 0+shift)  = complex(-28,+10);
+% Phi( 4+shift, 0+shift)  = complex(42,-59);
+% Phi(-4+shift, 0+shift)  = complex(42,-59);
+% Phi( 5+shift, 0+shift)  = complex(-12,18);
+% Phi(-5+shift, 0+shift)  = complex(-12,18);
+% Phi( 6+shift, 0+shift)  = complex(1,-3/2);
+% Phi(-6+shift, 0+shift)  = complex(1,-3/2);
+% 
+% Phi( 0+shift, 0+shift)  = complex(2584,1292);
+% Phi( 0+shift, 1+shift)  = complex(552,-540);
+% Phi( 0+shift,-1+shift)  = complex(552,-540);
+% Phi( 0+shift, 2+shift)  = -complex(177,-499/2);
+% Phi(-0+shift,-2+shift)  = -complex(177,-499/2);
+% Phi( 0+shift, 3+shift)  = complex(-28,+10);
+% Phi(-0+shift,-3+shift)  = complex(-28,+10);
+% Phi( 0+shift, 4+shift)  = complex(42,-59);
+% Phi(-0+shift,-4+shift)  = complex(42,-59);
+% Phi( 0+shift, 5+shift)  = complex(-12,18);
+% Phi(-0+shift,-5+shift)  = complex(-12,18);
+% Phi( 0+shift, 6+shift)  = complex(1,-3/2);
+% Phi(-0+shift,-6+shift)  = complex(1,-3/2);
+% 
+% Phi = Phi/2^12;
 
 
 % % 
@@ -406,33 +411,33 @@ Phi = Phi/2^12;
 
 
 
-% % NEW EXAMPLE! Example 10, in the paper
-% Phi = zeros(21,21);
-% shift = floor(21/2)+1;
-% % interesting example where \Omega = {(0,0), (pi,pi)} (see paper)
-% Phi(  0+shift, 0+shift)  = 346751/524288 - 341i/1024;
-% Phi( -1+shift, 0+shift)  = 15/128 + 15i/128;
-% Phi(  1+shift, 0+shift)  = 15/128 + 15i/128;
-% Phi( -2+shift, 0+shift)  = -53361/1048576 - 19i/256;
-% Phi(  2+shift, 0+shift)  = -53361/1048576 - 19i/256;
-% Phi( -3+shift, 0+shift)  = 1/128 + 1i/128;
-% Phi(  3+shift, 0+shift)  = 1/128 + 1i/128;
-% Phi( -4+shift, 0+shift)  = 495/262144 + 7i/512;
-% Phi(  4+shift, 0+shift)  = 495/262144 + 7i/512;
-% Phi( -6+shift, 0+shift)  = -1045/2097152 - 1i/256;
-% Phi(  6+shift, 0+shift)  = -1045/2097152 - 1i/256;
-% Phi( -8+shift, 0+shift)  = 69/1048576 + 1i/2048;
-% Phi(  8+shift, 0+shift)  = 69/1048576 + 1i/2048;
-% Phi(-10+shift, 0+shift)  = -9/2097152;
-% Phi( 10+shift, 0+shift)  = -9/2097152;
-% Phi(  0+shift, 1+shift)  = 1/8 + 1i/8;
-% Phi(  0+shift,-1+shift)  = 1/8 + 1i/8;
-% Phi(  0+shift, 2+shift)  = -1/32 - 15i/512;
-% Phi(  0+shift,-2+shift)  = -1/32 - 15i/512;
-% Phi(  0+shift, 4+shift)  = 3i/256;
-% Phi(  0+shift,-4+shift)  = 3i/256;
-% Phi(  0+shift, 6+shift)  = -1i/512;
-% Phi(  0+shift,-6+shift)  = -1i/512;
+% NEW EXAMPLE! Example 10, in the paper
+Phi = zeros(21,21);
+shift = floor(21/2)+1;
+% interesting example where \Omega = {(0,0), (pi,pi)} (see paper)
+Phi(  0+shift, 0+shift)  = 346751/524288 - 341i/1024;
+Phi( -1+shift, 0+shift)  = 15/128 + 15i/128;
+Phi(  1+shift, 0+shift)  = 15/128 + 15i/128;
+Phi( -2+shift, 0+shift)  = -53361/1048576 - 19i/256;
+Phi(  2+shift, 0+shift)  = -53361/1048576 - 19i/256;
+Phi( -3+shift, 0+shift)  = 1/128 + 1i/128;
+Phi(  3+shift, 0+shift)  = 1/128 + 1i/128;
+Phi( -4+shift, 0+shift)  = 495/262144 + 7i/512;
+Phi(  4+shift, 0+shift)  = 495/262144 + 7i/512;
+Phi( -6+shift, 0+shift)  = -1045/2097152 - 1i/256;
+Phi(  6+shift, 0+shift)  = -1045/2097152 - 1i/256;
+Phi( -8+shift, 0+shift)  = 69/1048576 + 1i/2048;
+Phi(  8+shift, 0+shift)  = 69/1048576 + 1i/2048;
+Phi(-10+shift, 0+shift)  = -9/2097152;
+Phi( 10+shift, 0+shift)  = -9/2097152;
+Phi(  0+shift, 1+shift)  = 1/8 + 1i/8;
+Phi(  0+shift,-1+shift)  = 1/8 + 1i/8;
+Phi(  0+shift, 2+shift)  = -1/32 - 15i/512;
+Phi(  0+shift,-2+shift)  = -1/32 - 15i/512;
+Phi(  0+shift, 4+shift)  = 3i/256;
+Phi(  0+shift,-4+shift)  = 3i/256;
+Phi(  0+shift, 6+shift)  = -1i/512;
+Phi(  0+shift,-6+shift)  = -1i/512;
 
 conv_power = Phi;
 
