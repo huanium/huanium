@@ -146,11 +146,11 @@ where $A \in \mathbb{R}$ is the amplitude and $\phi \in \mathbb{R}$ is the phase
 \begin{align*}
 x(t) = A e^{i\omega t} e^{i\phi} \implies -A e^{i \omega t + i\phi} \lp \omega^2 -\omega_0^2 - i\gamma \omega \rp = \f{F_0}{m}e^{i\omega t} \implies A = \f{F_0/m}{-\omega^2 + \omega_0^2 + i\gamma \omega} e^{-i\phi}.
 \end{align*}
-Since $A$ is real, the denominator of $A$, must be a complex number of the form $R e^{-i\phi}$ where $R$ is real and equal to its modulus:
+Since $A$ is real, the denominator of $A$ must be a complex number of the form $\abs{A} e^{-i\phi}$ where
 \begin{align*}
-R = \sqrt{{(\omega_0^2 - \omega^2)}^2 + (\gamma \omega)^2}.
+\abs{A} = \sqrt{{(\omega_0^2 - \omega^2)}^2 + (\gamma \omega)^2}.
 \end{align*}
-And the phase $\phi$, modulo $n\pi$, is
+And the phase $\phi$ is\footnote{I should have used $e^{-i\phi}$ so that $\phi$ in this definition would be the phase \textit{lag}...}
 \begin{align*}
 \boxed{\phi = -\arctan(\f{\gamma\omega}{\omega_0^2 - \omega^2})}
 \end{align*}
@@ -180,21 +180,21 @@ to be complex (to get oscillations on top of an exponential decay). As a result,
 		\begin{align*}
 		A =  \lp \f{F_0}{m \omega_0^2}\rp \f{1}{\sqrt{(1-\rho^2)^2 + (f\rho)^2}}
 		\end{align*}
-		Finding $\omega$ for which $A$ is maximal requires finding $\rho$ for which the denominator of $A$ is minimal:
+		Finding $\omega$ so that $A$ is maximal requires finding $\rho$ for which the denominator of $A$ is minimal:
 		\begin{align*}
-		\f{d}{d\rho}\lb (1-\rho^2)^2 + (f\rho)^2 \rb = 2\rho(-2 + f^2 + 2\rho^2),
+		\f{d}{d\rho}\lb (1-\rho^2)^2 + (f\rho)^2 \rb = 2\rho(-2 + f^2 + 2\rho^2).
 		\end{align*}
-		setting the expression above to zero tells us that $\rho$ could be $0$ or $\sqrt{1-f^2/2}$ (we must also verify that $A$ has a global maximum, but I won't go into the details here). Since $f = \gamma/\omega_0 \in (0,2)$ we must consider two cases:
+		Setting the expression above to zero tells us that $\rho$ could be $0$ or $\sqrt{1-f^2/2}$ (we must also verify that $A$ has a global maximum, but I won't go into the details here). Since $f = \gamma/\omega_0 \in (0,2)$ we must consider two cases:
 		\begin{itemize}
-			\item If ${0 < f < \sqrt{2}}$ then the solution $\rho = \sqrt{1-f^2/2}$ is real and we have 
+			\item If ${0 < f \leq \sqrt{2}}$ then the solution $\rho = \sqrt{1-f^2/2}$ is real and we have 
 			\begin{align*}
 			A(0)= \f{F_0}{m\omega_0^2} <  \f{F_0}{m\omega_0^2} \lp \f{2}{f\sqrt{4-f^2}}\rp  = A\lp \sqrt{1-f^2/2}\rp
 			\end{align*}
-			because $f\sqrt{4-f^2} \leq 2$ for $f\in (0,2)$. We therefore see that $A$ attains its maximum at $$\omega = \omega_0 \sqrt{1- \gamma^2/2\omega_0^2}$$.
+			because $f\sqrt{4-f^2} \leq 2$ for $f\in (0,2)$. We therefore see that $A$ attains its maximum at $$\omega = \omega_0 \sqrt{1- \gamma^2/2\omega_0^2}.$$
 			
 			
 			
-			\item Otherwise, if ${\sqrt{2} \leq f < 2}$ then the solution $\rho = \sqrt{1-f^2/2}$ is imaginary and $A$ attains its maximum of $F_0/m\omega_0^2$ at $$\omega = 0.$$
+			\item Otherwise, if ${\sqrt{2} < f < 2}$ then the solution $\rho = \sqrt{1-f^2/2}$ is imaginary and $A$ attains its maximum of $F_0/m\omega_0^2$ at $$\omega = 0.$$
 		\end{itemize}
 	
 	
@@ -210,7 +210,7 @@ to be complex (to get oscillations on top of an exponential decay). As a result,
 	\langle P \rangle 
 	&= \f{\omega}{2\pi}\int_{0}^{2\pi/\omega} F_0 \cos(\omega t) \f{d}{dt} \Re{x(t)} \,dt \\
 	&= \f{F_0 A \omega}{2\pi}  \int_{0}^{2\pi/\omega} \cos(\omega t)  \f{d}{dt} \cos\lp \omega t + \phi \rp \,dt \\
-	&= -\f{F_0 A \omega^2}{2\pi}  \cos(\omega t) \sin\lp \omega t + \phi \rp \,dt \\
+	&= -\f{F_0 A \omega^2}{2\pi}  \int_{0}^{2\pi/\omega} \cos(\omega t) \sin\lp \omega t + \phi \rp \,dt \\
 	&= -\f{1}{2}F_0 A \omega \sin \phi.
 	\end{align*} 
 	Plugging in the expressions for $\phi$ and $\omega$ we find 
@@ -220,13 +220,13 @@ to be complex (to get oscillations on top of an exponential decay). As a result,
 	We recognize that $P$ has the form of a Lorentzian (or a Cauchy distribution) with FWHM $\gamma$ which attains the maximum $\langle P \rangle_\text{max} = F_0^2/2m\gamma$ at $\omega = \omega_0$.  \textcolor{blue}{One may also use standard calculus techniques to get this result.}
 	
 	
-	$\boxed{!}$ It is not immediately obvious why the power delivered by the drive to the oscillator, averaged over one cycle, is actually the same as the power dissipated by the damping, averaged one cycle. This can be illustrated by repeating the calculation above explicitly, but for the damping. The work done by drag force is $-m\gamma x'(t)$, from which we find the dissipated power is $P_\text{dis} = Fv = m\gamma v(t)^2$. From here, we have
+	$\boxed{\textbf{!}}$ It makes sense that the power delivered by the drive to the oscillator, averaged over one cycle, is the same as the power dissipated by the damping, averaged one cycle, since the system is in equilibrium in steady state. This can be verified by repeating the calculation above explicitly, but for the damping force. The work done by drag force is $-m\gamma x'(t)$, from which we find the dissipated power is $P_\text{dis} = Fv = m\gamma v(t)^2$. From here, we have
 	\begin{align*}
 	\langle P_\text{dis}\rangle = \f{\omega}{2\pi}m\gamma A^2\int_0^{2\pi/\omega} \lp \f{d}{dt}\cos(\omega t + \phi)\rp^2\,dt = \f{1}{2}m\gamma A^2\omega^2.
 	\end{align*}
 	Plugging in the expression for $A$ we find that
 	\begin{align*}
-	\langle P_\text{dis}\rangle = \f{F_0^2}{2m\gamma} \f{(\gamma\omega)^2}{(\omega_0^2 - \omega^2)^2 + (\gamma \omega)^2} = \langle P \rangle. 
+	\langle P_\text{dis}\rangle = \f{F_0^2}{2m\gamma} \f{(\gamma\omega)^2}{(\omega_0^2 - \omega^2)^2 + (\gamma \omega)^2} = \langle P \rangle \,\,\,\checkmark
 	\end{align*}
 	\qed
 	
@@ -246,7 +246,10 @@ to be complex (to get oscillations on top of an exponential decay). As a result,
 	\begin{align*}
 	\langle P \rangle_\text{near res.} \approx \f{F_0}{2m\gamma} \propto \gamma^{-1}.
 	\end{align*}
-	$\boxed{\textbf{?}}$ \textbf{Why does reducing the damping increase the power dissipated on resonance?} The fact that the power dissipated increases as the damping rate decreases makes sense when we see that the power dissipated is the same as the power delivered by the drive.  The smaller the damping, the more power is delivered to the drive, and vice versa. 
+	$\boxed{\textbf{?}}$ \textbf{Why does reducing the damping increase the power dissipated on resonance?} 
+	
+	
+	
 	
 	\item Now we have resonant driving, so $\omega = \omega_0$. The steady-state average energy stored in the oscillator is the sum of kinetic and potential energy. 
 	\begin{align*}
@@ -257,7 +260,7 @@ to be complex (to get oscillations on top of an exponential decay). As a result,
 	\begin{align*}
 	\langle E \rangle = \langle KE \rangle + \langle PE \rangle = \f{F_0^2}{2m\gamma^2}.
 	\end{align*}
-	On the other hand, the energy dissipated in one cycle may be calculated by computing the integrating the dissipated power over a cycle $E_\text{lost} = \int P_\text{dis}\,dt$ where $P_\text{dis} = F_\text{damp} v(t)$: 
+	On the other hand, the energy dissipated in one cycle may be calculated by integrating the dissipated power over a cycle $E_\text{lost} = \int P_\text{dis}\,dt$ where $P_\text{dis} = F_\text{damp} v(t)$: 
 	\begin{align*}
 	E_\text{lost} = \int_0^{2\pi/\omega_0} \gamma m x'(t) x'(t)\,dt = \f{F_0^2 \pi}{m\gamma \omega_0}.
 	\end{align*}
@@ -311,15 +314,15 @@ to be complex (to get oscillations on top of an exponential decay). As a result,
 	\end{align*}
 	we have
 	\begin{align*}
-	Q = \f{3\lambdabar}{2r_0} \quad\quad \Gamma_\text{rad} = \f{\omega_0}{Q} = \f{2r_0c}{3\lambdabar^2}
+	Q = \f{3\lambdabar}{2r_0} \quad\quad \text{and}\quad\quad \Gamma_\text{rad} = \f{\omega_0}{Q} = \f{2r_0c}{3\lambdabar^2}
 	\end{align*}
 	
 	\item With $\lambda = 589 $ nm, we have
 	\begin{align*}
 	Q &\approx 5.0 \times 10^7 \\
-	\Gamma_\text{red} &\approx 2\pi \times 10 \text{ MHz}
+	\Gamma_\text{red} &\approx 2\pi \times 10.2 \text{ MHz}
 	\end{align*}
-	which is in remarkable agreement with the experimentally measured natural line width for the D2 line of Na which is $2\pi \times 9.795(11)$ MHz. 
+	which is in remarkable agreement with the experimentally measured natural line width for the D2 line of Na which is $2\pi \times 9.795(11)$ MHz. The calculation is within $\sim 5$\% of the measured value.  
 \end{enumerate}
 
 
@@ -359,30 +362,30 @@ x = \sqrt{\f{\hbar}{2 m\omega}}(a^\dagger + a) \quad\quad p = i\sqrt{\f{\hbar m\
 	\begin{align*}
 	\bra{n} p \ket{n} = i\sqrt{\f{\hbar m\omega }{2}}\bra{n} a^\dagger - a \ket{n} = 0
 	\end{align*}
-	since both $a^\dagger$ and $a$ respectively send $\ket{n}$ to $\ket{n+1}$ and $\ket{n-1}$ which are orthonormal to $\ket{n}$. 
+	since both $a^\dagger$ and $a$ respectively send $\ket{n}$ to $\ket{n+1}$ and $\ket{n-1}$ which are orthonormal to $\ket{n}$. Next, 
 	
 	
 	\begin{align*}
 	\sqrt{\bra{n}p^2 \ket{n}} &= \sqrt{-\f{\hbar m\omega}{2}\bra{n} (a^\dagger - a)^2 \ket{n} }\\
 	&= \sqrt{-\f{\hbar m\omega}{2} \bra{n} a^\dagger a^\dagger -a^\dagger a - aa^\dagger + a^2 \ket{n} }\\
-	&= \sqrt{(2n+1)\f{\hbar m\omega}{2}}.
+	&= \sqrt{\hbar m\omega \lp n+ \f{1}{2} \rp}.
 	\end{align*}
 	
 	\begin{align*}
 	\sqrt{\bra{n}x^2 \ket{n}} &= \sqrt{\f{\hbar}{2 m\omega}\bra{n} (a^\dagger + a)^2 \ket{n} }\\
 	&= \sqrt{\f{\hbar}{2 m\omega}\bra{n} a^\dagger a^\dagger +a^\dagger a + aa^\dagger + a^2 \ket{n} }\\
-	&= \sqrt{(2n+1)\f{\hbar}{2 m\omega}}.
+	&= \sqrt{\f{\hbar}{m\omega}\lp n+ \f{1}{2} \rp}.
 	\end{align*}
 	
 	
 	\item The total energy is 
 	\begin{align*}
-	\langle  E\rangle  = \f{\langle p^2\rangle }{2m} + \f{1}{2}m\omega^2 \langle x^2\rangle = \f{1}{2m} (2n+1)\f{\hbar m\omega}{2} + \f{1}{2}m\omega^2 (2n+1) \f{\hbar }{2m\omega} = \f{\hbar \omega}{2}(2n+1) = \hbar \omega\lp n+ \f{1}{2}\rp \,\,\, \checkmark
+	\langle  E\rangle  = \f{\langle p^2\rangle }{2m} + \f{1}{2}m\omega^2 \langle x^2\rangle = \f{1}{2m}\hbar m\omega \lp n+ \f{1}{2} \rp + \f{1}{2}m\omega^2 \f{\hbar}{m\omega}\lp n+ \f{1}{2} \rp  = \hbar \omega\lp n+ \f{1}{2}\rp \,\,\, \checkmark
 	\end{align*}
 	
 	Virial theorem: Since $V\propto x^2$, the virial theorem states that $\langle T \rangle  = \langle V \rangle$. From the calculation above, we see that this holds:
 	\begin{align*}
-	\langle T \rangle = \f{1}{2m} (2n+1)\f{\hbar m\omega}{2}  =  \f{1}{2}m\omega^2 (2n+1) \f{\hbar }{2m\omega} = \langle V \rangle \,\,\, \checkmark
+	\langle T \rangle =  \f{1}{2m}\hbar m\omega \lp n+ \f{1}{2} \rp  = \f{1}{2}m\omega^2 \f{\hbar}{m\omega}\lp n+ \f{1}{2} \rp = \langle V \rangle \,\,\, \checkmark
 	\end{align*}
 	
 	\item Sketch of $\psi_0(x)$ and $\psi_1(x)$. Here the harmonic potential is proportional to $x^2$. 
