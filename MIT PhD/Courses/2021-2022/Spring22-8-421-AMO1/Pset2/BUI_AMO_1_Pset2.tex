@@ -1,0 +1,498 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+\newcommand{\diag}{\text{diag}}
+\newcommand{\psirot}{\ket{\psi_\text{rot}(t)} }
+\newcommand{\RWA}{\ham_\text{rot}^\text{RWA}}
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.421 - AMO I}\\
+Problem set: \textbf{\#1}\\
+Due: Friday, Feb 11, 2022.
+\end{framed}
+	
+	
+\noindent \textbf{1. Rabi problem.}
+
+
+\begin{enumerate}[label=\alph*)]
+	\item The Hamitonian of the system in the Schr\"{o}dinger picture is 
+	\begin{align*}
+	\ham_S(t) &= \hbar \begin{pmatrix}
+	\omega_1 & \omega_R \cos \omega t \\ \omega_R \cos\omega t & \omega_2
+	\end{pmatrix} \\
+	&= \f{\hbar}{2} \begin{pmatrix}
+	2\omega_1 & \omega_R (e^{-i\omega t} + e^{i\omega t}) \\ \omega_R (e^{-i\omega t} + e^{i\omega t}) & 2\omega_2
+	\end{pmatrix}.
+	\end{align*}
+	where we chosen a basis where $\ket{1} = (1 \,\,\, 0)^\top$ and $\ket{2} = (0 \,\,\, 1)^\top$ and used the fact that the coupling between state $\ket{2}$ and state $\ket{1}$ is $\hbar \omega_R \cos\omega t$. Let us go to rotating frame via the operator
+	\begin{align*}
+	T = e^{i\sigma_z \omega t/2} = \begin{pmatrix}
+	e^{i\omega t/2} &  0 \\0  & e^{-i\omega t/2}
+	\end{pmatrix} 
+	\end{align*}
+	We have the following relations between the rest frame and rotating frame:
+	\begin{align*}
+	\text{States: } \ket{\psi_\text{rot}(t)} = T^\dagger \ket{\psi(t)} \quad\quad \text{Operators: }  A_\text{rot}(t) = T^\dagger A(t) T
+	\end{align*}
+	
+	The Schr\"{o}dinger equation in the rotating frame can thus be obtained from the Schr\"{o}dinger equation in the rest frame. From
+	\begin{align*}
+	i\hbar \f{d}{dt}\ket{\psi(t)} 
+	&= i\hbar \f{d}{dt}\lp T\psirot \rp \\
+	&= i\hbar \dot T \psirot + i\hbar T \f{d}{dt}\psirot\\
+	&= \ham_S(t)\ket{\psi} \\
+	&= \ham_S(t) T\psirot
+	\end{align*}
+	we deduce that $\psirot$ satisfies the equation
+	\begin{align*}
+	i\hbar \f{d}{dt}\psirot = \lp T^\dagger \ham_S(t) T -i\hbar T^\dagger \dot T \rp \psirot.
+	\end{align*} 
+	With this we may define the rotating frame Hamiltonian:
+	\begin{align*}
+	\ham_\text{rot}(t) = T^\dagger \ham_S(t) T -i\hbar T^\dagger \dot T
+	\end{align*}
+	so that
+	\begin{align*}
+	i\hbar \f{d}{dt}\psirot = \ham_\text{rot}(t) \psirot.
+	\end{align*}
+	Since both $T$ and $\ham_S(t)$ are given, we may compute $\ham_\text{rot}(t)$ explicitly. Using Mathematica, we find
+	\begin{align*}
+	\ham_\text{rot}(t) = \f{\hbar}{2} \begin{pmatrix}
+	 \omega +  2\omega_1 & \omega_R (1+e^{-2i\omega t}) \\ 
+	 \omega_R (1+e^{+2i\omega t}) & -\omega + 2\omega_2
+	\end{pmatrix}.
+	\end{align*}
+	
+	Before going any further with the calculation, we may make the \textbf{rotating wave approximation} and drop the rapidly rotating term $e^{\pm 2i\omega t}$ in the $\ham_\text{rot}(t)$. Following this step, the approximate rotating frame Hamiltonian is time-independent:
+	\begin{align*}
+	\RWA =  \f{\hbar}{2} \begin{pmatrix}
+	\omega +  2\omega_1 & \omega_R \\ 
+	\omega_R  & -\omega + 2\omega_2
+	\end{pmatrix}
+	\end{align*}
+	Moreover, let us make the following symmetrization. Let $\omega_\text{avg} = (\omega_1 + \omega_2)/2$ and $\omega_0 = \omega_2 - \omega_1$, then we have
+	\begin{align*}
+	\RWA = \f{\hbar}{2} \begin{pmatrix}
+	\omega +  2\omega_1 & \omega_R \\ 
+	\omega_R  & -\omega + 2\omega_2
+	\end{pmatrix}
+	= 
+	\f{\hbar}{2} \begin{pmatrix}
+	\omega -  \omega_0 & \omega_R \\ 
+	\omega_R  & -\omega +\omega_0 
+	\end{pmatrix}
+	+ \hbar \begin{pmatrix}
+	\omega_\text{avg} & 0 \\ 0 & \omega_\text{avg}
+	\end{pmatrix}.
+	\end{align*}
+	Let us go a step further and define the \textbf{detuning} $\delta = \omega - \omega_0$ to get
+	\begin{align*}
+	\RWA = \f{\hbar}{2}\begin{pmatrix}
+	\delta & \omega_R \\  \omega_R & -\delta
+	\end{pmatrix} + \hbar \omega_\text{avg} \mathbb{I}.
+	\end{align*}
+	The eigenvalues of this Hamiltonian are
+	\begin{align*}
+	E_\pm \pm \f{\hbar}{2}\sqrt{\delta^2 + \omega_R^2} + \hbar \omega_\text{avg} = \pm \f{\hbar \Omega}{2} + \hbar \omega_\text{avg}
+	\end{align*}
+	where we have defined the generalized Rabi frequency $\Omega_R = \sqrt{\delta^2 + \omega_R^2}$. To get eigenvectors, we solve the system 
+	\begin{align*}
+	\RWA \begin{pmatrix}
+	c_1 \\ c_2
+	\end{pmatrix} = E_\pm \begin{pmatrix}
+	c_1 \\ c_2
+	\end{pmatrix}
+	\end{align*}	
+	under the normalization condition $\abs{c_1}^2 + \abs{c_2}^2 = 1$. By inspection, we must have that
+	\begin{align*}
+	c_2 &=  \f{E_\pm - \hbar \omega_\text{avg} - \hbar \delta/2}{\hbar \omega_R/2} c_1 \\
+	&\implies \lb 1 + \lp \f{2E_\pm}{\hbar \omega_R}  - \f{2\omega_\text{avg}}{\omega_R} - \f{\delta}{\omega_R}\rp^2 \rb \abs{c_1}^2 = \lb 1 + \lp  \f{\pm \sqrt{\delta^2+\omega_R^2}}{\omega_R} - \f{\delta}{\omega_R}\rp^2 \rb \abs{c_1}^2 = 1
+	\end{align*}
+	Let us call $\cos\phi = \delta/\Omega_R$ and $\sin\phi = \omega_R / \Omega_R$. For $E_+$, we can simplify:
+	\begin{align*}
+	1 = \abs{c_1}^2 \lb 1+ \lp \f{1}{\sin\phi} - \cot\phi \rp^2 \rb = \f{1}{\cos^2(\phi/2)} \implies c_1 = \cos\f{\phi}{2} \implies c_2 = \sin\f{\phi}{2}.
+	\end{align*}
+	We can do the same for $E_-$ and get
+	\begin{align*}
+	&c_1 = +\cos\f{\phi}{2} \implies c_2 = \sin\f{\phi}{2} \quad\quad\text{for } E_+\\
+	&c_1 = -\sin\f{\phi}{2} \implies c_2 = \cos\f{\phi}{2} \quad\quad\text{for } E_-
+	\end{align*}
+	from which we can express the eigenvectors in terms of the stationary basis vectors $\ket{1}$ and $\ket{2}$:
+	\begin{align*}
+	&\ket{+_\text{rot}(t)} = +\cos \f{\phi}{2} \ket{1} + \sin\f{\phi}{2}\ket{2} \\
+	&\ket{-_\text{rot}(t)} = -\sin \f{\phi}{2} \ket{1} + \cos\f{\phi}{2}\ket{2}
+	\end{align*}
+	where we have arbitrarily picked a phase to get "nice" results. This lets us write the wavefunction in the rotating frame at $t=0$ as 
+	\begin{align*}
+	\ket{\psi_\text{rot}(0)} = \ket{\psi(0)} = \ket{1} = \cos\f{\phi}{2}\ket{+_\text{rot}(t)} -\sin\f{\phi}{2}\ket{-_\text{rot}(t)},
+	\end{align*}
+	from which we can derive its time evolution (also in the rotating frame). 
+	\begin{align*}
+	\psirot 
+	&= e^{-i \RWA t/\hbar} \ket{\psi_\text{rot}(0)} \\
+	&= \cos\f{\phi}{2}e^{-i E_+ t/\hbar} \ket{+_\text{rot}(t)} -\sin\f{\phi}{2}e^{-i E_- t/\hbar}\ket{-_\text{rot}(t)}\\
+	&= e^{-i\omega_\text{avg} t}\lb \cos\f{\phi}{2} e^{-i\Omega_R t/2} \ket{+_\text{rot}(t)} - \sin\f{\phi}{2}e^{+i\Omega_R t/2} \ket{-_\text{rot}(t)} \rb\\
+	&= e^{-i\omega_\text{avg} t}\lb \cos\f{\phi}{2} e^{-i\Omega_R t/2} \textcolor{blue}{\lp \cos \f{\phi}{2} \ket{1} + \sin\f{\phi}{2}\ket{2} \rp}- \sin\f{\phi}{2}e^{+i\Omega_R t/2} \textcolor{blue}{\lp -\sin \f{\phi}{2} \ket{1} + \cos\f{\phi}{2}\ket{2}  \rp } \rb \\
+	&= e^{-i\omega_\text{avg} t}\lb \lp \cos^2\f{\phi}{2} e^{-i\Omega_R t/2}+\sin^2\f{\phi}{2} e^{i\Omega_R t/2}  \rp \ket{1} + \lp e^{-i\Omega_R t/2} - e^{i\Omega_R t/2}  \rp \cos\f{\phi}{2}\sin\f{\phi}{2}\ket{2} \rb \\
+	&= e^{-i\omega_\text{avg} t}\lb \lp \cos\f{\Omega_R t}{2} - i\cos \phi \sin\f{\Omega_R t}{2} \rp \ket{1} - i\sin\phi \sin\f{\Omega_R t}{2} \ket{2} \rb \\
+	&= e^{-i\omega_\text{avg}t }\lb \lp \cos\f{\Omega_R t}{2} - i\f{\delta}{\Omega_R} \sin\f{\Omega_R t}{2}   \rp \ket{1} - i\f{\omega_R}{\Omega_R} \sin\f{\Omega_R t}{2} \ket{2}\rb.
+ 	\end{align*}
+	
+	Note that the answer above is in the rotating frame. To obtain the wavefunction in the lab frame we have to transform it back via
+	\begin{align*}
+	\ket{\psi(t_1)} &= T \ket{\psi_\text{rot}(t_1)}\\
+	&= \boxed{e^{-i\omega_\text{avg}t }\lb e^{i\omega t/2} \lp \cos\f{\Omega_R t}{2} - i\f{\delta}{\Omega_R} \sin\f{\Omega_R t}{2}   \rp \ket{1} - i e^{-i\omega t/2}\f{\omega_R}{\Omega_R} \sin\f{\Omega_R t}{2} \ket{2}\rb}
+	\end{align*}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	(*define rest Hamiltonian*)
+	In[2]:= H = 
+	h/2*{{2*w1, 
+	wR*(E^(-I*w*t) + E^(I*w*t))}, {wR*(E^(+I*w*t) + E^(-I*w*t)), 
+	2*w2}};
+	
+	(*define T*)
+	In[3]:= T = MatrixExp[I*PauliMatrix[3]*w*t/2];
+	
+	(*calculate rotating Hamiltonian*)
+	In[23]:= H1 = 
+	FullSimplify[ConjugateTranspose[T] . H . T, 
+	Assumptions -> {w > 0, t > 0}];
+	
+	In[24]:= H2 = 
+	FullSimplify[-I*h*ConjugateTranspose[T] . D[T, t], 
+	Assumptions -> {w > 0, t > 0}];
+	
+	(*Hrot, with RWA*)
+	In[22]:= Hrot = H1 + H2 /. {t -> 0}
+	
+	Out[22]= {{(h w)/2 + h w1, h wR}, {h wR, -((h w)/2) + h w2}}
+	\end{lstlisting}
+	
+	
+	\item 
+	
+	
+	The probability of finding the system in state $\ket{2}$ at time $t_1$ is 
+	\begin{align*}
+	\boxed{P_2(t_1) = \abs{\bra{2}\ket{\psi_\text{rot}(t_1)}}^2 = \f{\omega_R^2}{\Omega_R^2}\sin^2 \lp \f{\Omega_R t}{2} \rp}
+	\end{align*}
+	
+	
+	
+	
+	\item To do this problem, we first have to go back to the rest frame:
+	\begin{align*}
+	\ket{\psi(t)} = e^{-i\omega_\text{avg}t }\lb e^{i\omega t/2} \lp \cos\f{\Omega_R t}{2} - i\f{\delta}{\Omega_R} \sin\f{\Omega_R t}{2}   \rp \ket{1} - i e^{-i\omega t/2}\f{\omega_R}{\Omega_R} \sin\f{\Omega_R t}{2} \ket{2}\rb.
+	\end{align*}
+	
+	The field is turned off, so the system evolves under the field-free time-independent Hamiltonian 
+	\begin{align*}
+	\ham_\text{free} = \hbar \begin{pmatrix}
+	\omega_1 & 0 \\ 0 & \omega_2
+	\end{pmatrix}.
+	\end{align*}
+	It is clear that with the associated unitary time evolution operator
+	\begin{align*}
+	U(t) = e^{-i \ham_\text{free} t /\hbar} 
+	\end{align*}
+	we have, for $t > t_1$,
+	\begin{align*}
+	\boxed{\ket{\psi(t > t_1)} = e^{-i\omega_\text{avg}t }\lb e^{-i\omega_1 t} e^{i\omega t/2} \lp \cos\f{\Omega_R t}{2} - i\f{\delta}{\Omega_R} \sin\f{\Omega_R t}{2}   \rp \ket{1} - i e^{-i\omega_2 t} e^{-i\omega t/2}\f{\omega_R}{\Omega_R} \sin\f{\Omega_R t}{2} \ket{2}\rb}
+	\end{align*}
+\end{enumerate}
+	
+	
+	
+	
+	
+	
+
+\noindent \textbf{2. Density Matrix Formalism.} We may parameterize the Hamiltonian
+\begin{align*}
+\ham = -\vec{\mu} \cdot \vec{B} = \f{\hbar}{2}\begin{pmatrix}
+\omega_0 & \omega_R e^{-i\omega t} \\ \omega_R e^{i\omega t} & -\omega_0
+\end{pmatrix}
+\end{align*}
+in terms of the Pauli matrices as 
+\begin{align*}
+\ham = \f{\hbar}{2}\lp 
+\omega_R \cos(\omega t) \, \hat \sigma_x + 
+\omega_R \sin(\omega t) \, \hat \sigma_y + 
+\omega_0 \, \hat\sigma_z \rp.
+\end{align*}
+In view of the von Neumann equation, we have
+\begin{align*}
+i\hbar \dot \rho &= \f{i\hbar}{2} (\dot r_x \,\hat\sigma_x + \dot r_y \,\hat\sigma_y + \dot r_z \,\hat\sigma_z ) \\
+&= [\ham, \rho] \\
+&= \f{\hbar}{4}[\omega_R \cos(\omega t) \, \hat \sigma_x + 
+\omega_R \sin(\omega t) \, \hat \sigma_y + 
+\omega_0 \, \hat\sigma_z , r_x\,\hat\sigma_x + r_y \, \hat \sigma_y + r_z \, \hat \sigma_z].
+\end{align*}
+where we have used the fact that $\rho = (\mathbb{I} + \vec{r}\cdot \vec{\sigma})/2$. By calculating each $\hat \sigma_i$ term in the commutator, we can find three differential equations for $\vec{r}$, each associated with a component $r_i$. Using the fact that
+\begin{align*}
+[\sigma_i, \sigma_j] = 2i \epsilon_{ijk} \sigma_k
+\end{align*}
+we immediately find the following three equations:
+\begin{align*}
+\hat \sigma_x : &\quad\quad \dot r_x = \omega_R \sin(\omega t) r_z - \omega_0 r_y \\
+\hat \sigma_y : &\quad\quad \dot r_y = \omega_0 r_x - \omega_R \cos(\omega t) r_z \\
+\hat \sigma_z : &\quad\quad \dot r_z = \omega_R \cos(\omega t) r_y - \omega_R \sin(\omega t) r_x
+\end{align*}
+If we now call
+\begin{align*}
+\vec{\Omega} = (\Omega_x, \Omega_y, \Omega_z)  =(\omega_R \cos(\omega t), \omega_R \sin(\omega t), \omega_0)^\top
+\end{align*}
+then it is clear that
+\begin{align*}
+\dot r_i = \epsilon_{ijk} \Omega_j r_k.
+\end{align*}
+In other words, 
+\begin{align*}
+\f{d\vec{r}}{dt} = \vec{\Omega} \times \vec{r},
+\end{align*}
+as desired. This is a nice result which states that the motion of the \textbf{Bloch vector} $\vec{r}$ for a generic two-level system whose Hamiltonian takes the form $\ham = - \vec{\Omega} \cdot \vec{B}$ is given by $d\vec{r}/dt = \vec{\Omega}\times \vec{r}$ where $\abs{\vec{r}}$ is a constant and $\vec{r}$ precesses about $\vec{\Omega}$. Through this particular example we also see that the motion of the Bloch vector for a two-level system subjected to some off-diagonal perturbation corresponds exactly to that of a classical magnetic moment in a magnetic field. \\
+
+
+Notice further that we have made no assumption about the purity of the system. The fact that $\abs{\vec{r}}$ remains constant in time implies that the purity $\Tr(\rho^2) = (1 + \abs{\vec{r}}^2)/2$ is also constant, i.e. unitary (Hamiltonian) time evolution preserves the purity. In the special case where $\rho$ describes a pure state, we see immediately that the system remains a pure state. \\
+
+
+
+
+
+
+
+
+
+
+
+
+
+\noindent \textbf{3. Atomic Units.}
+
+\begin{enumerate}[label=\alph*)]
+	\item Given $E_A = e/a_0^2$, the energy of the electrostatic potential is given by 
+	\begin{align*}
+	\mathcal{E}_\text{stat} = \f{e}{a_0^2} \times (e a_0) = \f{e^2}{a_0}.
+	\end{align*}
+	The energy due to quantum confinement may be assumed to be the kinetic energy of the electron, which comes from an angular momentum of $\sim \hbar$, and so 
+	\begin{align*}
+	\mathcal{E} \sim mv^2 = m \lp \f{L}{ma_0}\rp^2 = \f{\hbar^2}{m a_0^2}.
+	\end{align*}
+	Equating these two energies we find 
+	\begin{align*}
+	a_0 = \f{\hbar^2}{m_e e^2}.
+	\end{align*}
+	For comparison, the SI-unit definition for the Bohr radius is 
+	\begin{align*}
+	a_0 = \f{4\pi \epsilon_0\hbar^2}{ m_e  e^2},
+	\end{align*} 
+	which we would have gotten if we were using SI units instead. 
+	
+	\item Suppose that we have an electron is orbiting a proton in a circle of radius $a_0$. We may treat this as a current and calculate the magnetic field produced at the center. Biot-Savart law says that
+	\begin{align*}
+	dB = \f{\mu_0 I d\vec{l}\times \vec{r}}{4\pi r^2} = \f{\mu_0 I }{4\pi a_0^2}\,dl
+	\end{align*}
+	at the center. Here the current $I$ may be computed via
+	\begin{align*}
+	I = \f{e}{\tau} = \f{e v}{2\pi a_0} = \f{e}{2\pi a_0} \f{\hbar}{ma_0} = \f{e \hbar }{2\pi ma_0^2}
+	\end{align*}
+	where we have assumed once again that the electron has angular momentum $L = \hbar =  mva_0$. Plugging $I$ into the preceding equation and integrate over the electron orbit we find that
+	\begin{align*}
+	B_N = \oint dB = 2\pi a_0 \f{\mu_0 }{4\pi a_0^2}\f{e \hbar }{2\pi m_e a_0^2} = \f{\mu_0 e \hbar}{4\pi m_e a_0^3}.
+	\end{align*}
+	
+	\item The interaction energy between a Bohr magneton and a magnetic field $B_H$ is given by 
+	\begin{align*}
+	E = \mu_B B_H = \f{e \hbar}{2 m_e c} B_H
+	\end{align*}
+	The Hartree is given by 
+	\begin{align*}
+	E_H = \f{\hbar^2}{m_e a_0^2}.
+	\end{align*}
+	Setting $E_H = E$ gives
+	\begin{align*}
+	B_H = \f{\hbar^2}{m_ea_0^2} \f{2m_e c}{e\hbar} = 2\lp \f{\hbar c}{e^2} \rp \f{e}{a_0^2}.
+	\end{align*} 
+	
+	\item In Part (c) we have written our answer to suggest that 
+	\begin{align*}
+	\boxed{B_H = \f{2}{\al}E_A}
+	\end{align*}
+	where $\al = e^2/\hbar c$ is the fine structure constant. It remains to work out what $B_N$ is in terms of $E_A$. To do this, we will substitute in the expression for $a_0$: 
+	\begin{align*}
+	B_N = \f{\mu_0 }{4\pi } \f{\hbar}{m_e} \f{m_e e^2}{4\pi \epsilon_0 \hbar^2}   \f{e}{a_0^2} = \f{\mu_0 }{4\pi }  \f{e^2}{4\pi \epsilon_0 \hbar}   \f{e}{a_0^2} = \lp \f{\mu_0 }{4\pi }  \f{e^2}{4\pi \epsilon_0 \hbar}  \rp E_A. 
+	\end{align*}
+	In atomic units, $\hbar = m_e = e = 4\pi\epsilon_0 = 1$, and so we have
+	\begin{align*}
+	B_N = \f{\mu_0}{4\pi} E_A.
+	\end{align*}
+	Finally, recall that
+	\begin{align*}
+	\f{1}{\sqrt{\mu_0 \epsilon_0}} = c \implies c = \f{1}{\sqrt{\f{\mu_0}{4\pi} 4\pi \epsilon_0}} \implies \f{\mu_0}{4\pi} = \f{1}{4\pi \epsilon_0 } \f{1}{c^2}.
+	\end{align*}
+	Now, the speed of light $c$ can be written in terms of the fine structure constant:
+	\begin{align*}
+	c = \f{e^2}{4\pi \epsilon_0 \hbar \al} = \f{1}{\al}
+	\end{align*}
+	in atomic units. As a result, we have that
+	\begin{align*}
+	\f{\mu_0}{4\pi} = \al^2.
+	\end{align*}
+	From here, we find  
+	\begin{align*}
+	\boxed{B_N = \al^2 E_A}
+	\end{align*}
+	
+	
+	\item Since the 
+\end{enumerate}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
