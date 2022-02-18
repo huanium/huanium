@@ -193,7 +193,31 @@ Due: Friday, Feb 11, 2022.
 	\omega_R  & -\omega + 2\omega_2
 	\end{pmatrix}.
 	\end{align*}
-	This approach is \textbf{ dubious}, since it implicitly assumes that $\omega$ is large and does not make use of the requirement that the driving field is near resonance. We should use a more legitimate method to simplify the problem:  \textbf{rotating frame approximation} (RWA).  The steps are as follows: we first transform the original Hamiltonian into the interaction picture, make the RWA, then transform the Hamiltonian back, and then go to the rotating frame. \\
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[2]:= (*dubious approach*)
+	
+	(*define H*)
+	In[5]:= H = h*{{w1, wR*Cos[w*t]}, {wR*Cos[w*t], w2}};
+	
+	(*go to rotating frame*)
+	In[10]:= Hrot = 
+	TrigToExp[
+	FullSimplify[
+	ConjugateTranspose[T] . H . T - 
+	I*h*ConjugateTranspose[T] . D[T, t], 
+	Assumptions -> {w > 0, t > 0}]] // FullSimplify
+	
+	Out[10]= {{1/2 h (w + 2 w1), 
+	1/2 (1 + E^(-2 I t w)) h wR}, {1/2 (1 + E^(2 I t w)) h wR, 
+	h (-(w/2) + w2)}}
+	\end{lstlisting}
+	
+	
+	
+	
+	While the result is nice, this approach is \textbf{dubious} since it implicitly assumes that $\omega$ is large and does not utilize the requirement that the driving field is near resonance. We should use a more legitimate method to simplify the problem:  \textbf{rotating frame approximation} (RWA).  The steps are as follows: we first transform the original Hamiltonian into the interaction picture, make the RWA, then transform the Hamiltonian back, and then go to the rotating frame. \\
 	
 	The original Hamiltonian may be decomposed into a field-free part and a perturbation part: 
 	\begin{align*}
