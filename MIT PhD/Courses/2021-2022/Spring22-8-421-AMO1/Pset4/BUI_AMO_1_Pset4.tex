@@ -137,23 +137,152 @@ Due: Friday, March 5, 2022.
 \noindent \textbf{1. Sum rule for fine structure}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item For classical $\vec{L}, \vec{S}$, we simply have
+	\begin{align*}
+	\langle \vec{L} \cdot \vec{S} \rangle = LS\langle \cos\theta\rangle_\theta = \f{LS}{2\pi} \int_0^{2\pi}\cos\theta\,d\theta = 0
+	\end{align*}
+	as expected. 
 	
 	
-	\item 
+	\item It turns out that the same thing happens in quantum mechanics, but there are subtleties. $\vec{L}$ and $\vec{S}$ are now operators, and we have
+	\begin{align*}
+	\vec{L}\cdot \vec{S} = \f{1}{2}\lb (\vec{J} + \vec{S})^2 - \vec{L}^2 - \vec{S}^2\rb = \f{1}{2}(J^2 - L^2 - S^2)
+	\end{align*}
+	where
+	\begin{align*}
+	\vec{J} = \vec{L} + \vec{S}.
+	\end{align*}
+	Note that a more explicit notation for the kets would be $\ket{L,S,J,m_J}$ which has all of the good quantum numbers and suggests that we are working in the $\{J,m_J\}$ basis. From here is it clear that $\ket{J,m_J}$'s are eigenstates of $J^2, L^2,S^2$.   In any case, we have 
+	\begin{align*}
+	\sum_{J,m_J} \bra{J,m_J} \vec{L}\cdot \vec{S} \ket{J,m_J} 
+	&= \f{1}{2}\sum_{J,m_J} \bra{J,m_J} J^2 - L^2 - S^2 \ket{J,m_J}\\
+	&= \f{1}{2}\sum_{J,m_J} [J(J+1) - L(L+1) - S(S+1)] \\
+	&= \f{1}{2}\sum_{J} \underbrace{\sum_{m_J = -J}^J}_{2J+1 \text{ terms}}[J(J+1) - L(L+1) - S(S+1)] \\
+	&= \f{1}{2} \sum_{J=\abs{L-S}}^{\abs{L+S}} (2J+1) [J(J+1) - L(L+1) - S(S+1)].
+	\end{align*}
+	Just for fun, let us prove this statement directly. Assume without loss of generality that $L\geq S$, so we could drop the absolute value sign to write
+	\begin{align*}
+	\sum_{J,m_J} \bra{J,m_J} \vec{L}\cdot \vec{S} \ket{J,m_J} = \f{1}{2} \sum_{J={L-S}}^{{L+S}} (2J+1) [J(J+1) - L(L+1) - S(S+1)].
+	\end{align*}
+	To simplify, let's introduce $J' = J-L$, so that we can write
+	\begin{align*}
+	\sum_{J,m_J} \bra{J,m_J} \vec{L}\cdot \vec{S} \ket{J,m_J} = \f{1}{2} \sum_{J'={-S}}^{{S}} (2 (J' + L) + 1)[(J' + L) ((J' + L) + 1) - L (L + 1) - S (S + 1)]
+	\end{align*}
+	Now we take $S = n/2$ where $n\in \mathbb{N}$. We will show that the sum above vanishes by induction on $S$ (not $n$! This is a subtle point). For $S=0$, the sum is trivially zero (which makes sense since there is no $\vec{S}$ to couple with $\vec{L}$). Now assume that the sum is zero for $S=N/2$ for some $N\in \mathbb{N}$. We will show that the sum is also zero for $S' = N/2+1$. To this end, we simply calculate:
+	\begin{align*}
+	\sum_{J,m_J} \bra{J,m_J} \vec{L}\cdot \vec{S}' \ket{J,m_J} 
+	&= \f{1}{2} \sum_{J'={-S'}}^{{S'}} (2 (J' + L) + 1)[(J' + L) ((J' + L) + 1) - L (L + 1) - S' (S' + 1)] \\
+	&= \f{1}{2} \sum_{J'={-N/2-1}}^{{N/2+1}} (2 (J' + L) + 1)\lb (J' + L) ((J' + L) + 1) - L (L + 1) - \lp \f{N}{2} + 1\rp \lp \f{N}{2} + 1 + 1\rp \rb \\
+	&= \f{1}{2} \sum_{J'={-N/2-1}}^{{N/2+1}} (2 (J' + L) + 1)\lb (J' + L) ((J' + L) + 1) - L (L + 1) - \f{N}{2}\lp \f{N}{2} + 1 \rp - 2\lp \f{N}{2} + 1 \rp\rb \\
+	\text{(inductive hypothesis)  }&= \f{2 (-N/2-1 + L) + 1}{2}\lb (-N/2-1 + L) ((-N/2-1 + L) + 1) - L (L + 1) - N/2\lp N/2 + 1 \rp\rb \\
+	&\quad\quad + \f{2 (N/2+1 + L) + 1}{2}\lb (N/2+1 + L) ((N/2+1 + L) + 1) - L (L + 1) - N/2\lp N/2 + 1 \rp\rb \\
+	&\quad\quad + \f{1}{2}\sum_{J'=-N/2-1}^{N/2+1} (2 (J' + L) + 1) \lb -2\lp \f{N}{2}+1 \rp \rb + 0 \\
+	&= -L (-1 + 2 L - N) (2 + N) + (1 + L) (2 + N) (3 + 2 L + N) -((1 + 2 L) (2 + N) (3 + N)) \\
+	&= 0. 
+	\end{align*}
+	Therefore, by the principle of induction we have shown that 
+	\begin{align*}
+	\sum_{J,m_J} \bra{J,m_J} \vec{L}\cdot \vec{S} \ket{J,m_J}  = 0.
+	\end{align*}
+	Notice that by picking $N$ to be odd and even we can cover all cases. The proof for the case where $S$ is fixed and $L$ varies is similar.  As a result, the sum rule is proved. 
 	
-	\item  
+	\item  That was tedious! An elegant way to prove the statement above is to notice that 
+	\begin{align*}
+	\sum_{J,m_J} \bra{J,m_J} \vec{L}\cdot \vec{S} \ket{J,m_J} = \Tr(\vec{L}\cdot \vec{S}).
+	\end{align*}
+	Since the trace of an operator is invariant under a basis change, we may move to the $\ket{Lm_L S m_S}$ basis: 
+	\begin{align*}
+	\sum_{J,m_J} \bra{J,m_J} \vec{L}\cdot \vec{S} \ket{J,m_J} &= \Tr(\vec{L}\cdot \vec{S}) \\
+	&= \sum_{m_L,m_S} \bra{m_L m_S} \vec{L}\cdot \vec{S} \ket{m_L m_S} \\
+	&= \sum_{m_L,m_S} \bra{m_L m_S} L_xS_x+L_yS_y+L_zS_z \ket{m_L m_S} \\
+	&= \sum_{m_L,m_S} \bra{m_L m_S} \f{1}{2}(L_+S_- + L_-S_+)   +L_zS_z \ket{m_L m_S} \\
+	&= \sum_{m_L,m_S} \bra{m_L m_S} L_zS_z \ket{m_L m_S} \\
+	&= \sum_{m_L=-L}^L\sum_{m_S=-S}^S m_L m_S \\
+	&= 0,
+	\end{align*} 
+	where we have expressed $L_x,L_y,S_x,S_y$ in terms of the associated lowering and raising operators:
+	\begin{align*}
+	L_x &= \f{1}{2}(L_+ + L_-)\\
+	L_y &= \f{1}{2i}(L_+ - L_-)\\
+	S_x &= \f{1}{2}(S_+ + S_-)\\
+	S_y &= \f{1}{2i}(S_+ - S_-).
+	\end{align*}
+	And we're done with the proof of the sum rule. 
 \end{enumerate}
 
-\noindent \textbf{2. Atoms with two valance electrons: From $LS$-coupling to $jj$-coupling.} 
+\noindent \textbf{2. Atoms with two valance electrons: From $LS$-coupling to $jj$-coupling.} We have two atoms with spins $\vec{s}_1,\vec{s}_2$ and angular momenta $\vec{l}_1, \vec{l}_2$. There is the exchange interaction $\vec{s}_1 \cdot \vec{s}_2$ which makes $\vec{s}_1, \vec{s}_2$ precess about their sum $\vec{S}$ which makes $S,m_S$ good quantum numbers. There is also the spin-orbit interaction with contributions from both atoms, so the term in the Hamiltonian looks like $\be_1 \vec{l}_1 \cdot \vec{s}_1 + \be_2 \vec{l}_2 \cdot \vec{s}_2$. When this is only a small perturbation, we couple the individual spins and individual angular momenta and rewrite the Hamiltonian as $\vec{L}\cdot \vec{S}$. This is the $LS$-coupling.  However, if the spin-orbit coupling is strong than the exchange interaction, then $\vec{l}_i, \vec{s}_i$ precess about their sum $\vec{j}_i$'s which are now conserved. In this regime, we have $\vec{j}_1 \cdot \vec{j}_2$ coupling.  \\
+
+
+We want to work out the details across all regimes. This requires exact solutions. We will look at the $nsn'p$ example ($n'\neq n$ so that the Pauli exclusion principle is satisfied). Here, we have $l_1 = 0, l_2 = 1, s_1 = s_2 = 1/2$.  The Hamiltonian for this problem is 
+\begin{align*}
+\ham = \vec{s}_1 \cdot \vec{s}_2 + \be \vec{l}_1 \cdot \vec{s}_2. 
+\end{align*}
+We will work through the extreme cases first, then go to the intermediate regimes. 
 
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Suppose $\be = 0$, then we only have
+	\begin{align*}
+	\ham_{\be = 0} = \vec{s}_1 \cdot \vec{s}_2. 
+	\end{align*}
+	In this case, there is no spin-orbit coupling. As discussed, the spins precess about their sum $\vec{S} = \vec{s}_1 + \vec{s}_2$ which is conserved. As a result, $S, m_S$ are good quantum numbers. The suitable eigenbasis is therefore $\ket{s_1,s_2,S,m_S}$. In this basis, the Hamiltonian is diagonal, with matrix elements along the diagonal:
+	\begin{align*}
+	\bra{s_1,s_2,S,m_S} \vec{s}_1 \cdot \vec{s}_2 \ket{s_1,s_2, S, m_S} 
+	&= \f{1}{2}\bra{s_1,s_2,S,m_S} S^2 - s_1^2 - s_2^2 \ket{s_1,s_2, S, m_S} \\
+	&= \f{1}{2} [S(S+1) - s_1(s_1+1) - s_2(s_2+1)]\\
+	&= \f{1}{2}\lb S(S+1)- \f{3}{4} - \f{3}{4} \rb \\
+	&= \f{1}{2}\lb S(S+1) - \f{3}{2} \rb.
+	\end{align*} 
+	Since we have $S=0$ and $S = 1$, the eigenvalues are $-3/4$ (singlet, $m_S = 0$) and $1/4$ (triplet, $m_S = -1,0,1$) respectively. 
 	
-	\item 
 	
-	\item 
+	
+	The sum rule holds:
+	\begin{align*}
+	\sum_{S,m_S} \bra{S,m_S} \vec{s_1}\cdot \vec{s}_2 \ket{S,m_S} 
+	&= \f{1}{2}\sum_{S,m_S} \lb S(S+1) - \f{3}{2} \rb \\
+	&= \sum_{S = 0}^1\f{(2S+1)}{2}  \lb S(S+1) - \f{3}{2} \rb \\
+	&= -\f{1}{2}   \f{3}{2}  + \f{3}{2}  \lp  2 - \f{3}{2} \rp\\
+	&= 0,
+	\end{align*}
+	as desired. 
+	
+	
+	
+	\item Now we go to the other extreme where $\be\gg 1$. Here we ignore the exchange interaction completely. As discuss, $\vec{l}_2, \vec{s}_2$ precess about their sum $\vec{j}_2$ which is conserved. So, the good quantum numbers are $j_2, m_{j_2}$. We note that $j_1 = m_{j_1} = 0$ trivially. In this basis, the Hamiltonian is diagonal,
+	with matrix elements along the diagonal:
+	\begin{align*}
+	\bra{j_2,m_{j_2}} \vec{l}_2 \cdot \vec{s}_2 \ket{j_2,m_{j_2}} 
+	&= \f{1}{2}\bra{j_2,m_{j_2}} j_2^2 - l_2^2 - s_2^2 \ket{j_2,m_{j_2}} \\
+	&= \f{1}{2} [j_2(j_2+1) - l_2(l_2+1) - s_2(s_2+1)] \\
+	&= \f{1}{2}\lb j_2(j_2+1) - 1(1+1) - \f{1}{2}\lp \f{1}{2}+1\rp  \rb \\
+	&= \f{1}{2}\lb j_2(j_2+1) - \f{11}{4} \rb.
+	\end{align*}
+	Since we have $j_2 = 1/2$ and $j_2 = 3/2$, the eigenvalues are $-1$ and $1/2$ respectively. 
+	
+	
+	
+	The sum rule holds:
+	\begin{align*}
+	\sum_{j_2,m_{j_2}} \bra{j_2,m_{j_2}} \vec{l}_2 \cdot \vec{s}_2 \ket{j_2,m_{j_2}} 
+	&= \f{1}{2}\sum_{j_2,m_{j_2}} \lb j_2(j_2+1) - \f{11}{4} \rb \\
+	&= \sum_{j_2 = 1/2}^{3/2} \f{(2j_2+1)}{2}  \lb j_2(j_2+1) - \f{11}{4} \rb \\
+	&= \f{(2(1/2)+1)}{2}  \lb (1/2)(1/2+1) - \f{11}{4} \rb + \f{(3+1)}{2}  \lb (3/2)(3/2+1) - \f{11}{4} \rb\\
+	&= 0,
+	\end{align*}
+	as desired. 
+	
+	
+	\item Now we will work in the regime where the spin-orbit coupling is a perturbation.  We wish to calculate the energy shifts due to $\be \ll 1$. To this end, we use perturbation theory to find the eigenenergies to first order in $\be$. But which basis do we use? We shall follow the hint and make a replacement using 
+	\begin{align*}
+	\vec{l}_2 \cdot \vec{s}_2 = \f{\langle \vec{s}_2 \cdot \vec{S}\rangle}{\langle \vec{S}\cdot \vec{S}\rangle} \vec{L} \cdot \vec{S}
+	\end{align*}
+	where 
+	\begin{align*}
+	&\vec{L} = \vec{l}_1 + \vec{l}_2 = \vec{l}_2\\
+	&\vec{S} = \vec{s}_1 + \vec{s}_2.
+	\end{align*}
+	We may choose a basis in which $\vec{L}\cdot \vec{S}$ is diagonal. Let us call this basis $\ket{J m_J}$, where $\vec{J} = \vec{L} + \vec{S}$. 
 	
 	\item 
 	
