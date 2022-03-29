@@ -1,0 +1,330 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+\setcounter{MaxMatrixCols}{20}
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+\newcommand{\diag}{\text{diag}}
+\newcommand{\psirot}{\ket{\psi_\text{rot}(t)} }
+\newcommand{\RWA}{\ham_\text{rot}^\text{RWA}}
+
+% 3j symbol
+\newcommand{\tj}[6]{ \begin{pmatrix}
+		#1 & #2 & #3 \\
+		#4 & #5 & #6 
+\end{pmatrix}}
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.421 - AMO I}\\
+Problem set: \textbf{\#7}\\
+Due: Friday, April 1, 2022.
+\end{framed}
+	
+	
+\noindent \textbf{1. Spherical Harmony.} We want to evaluate matrix elements
+\begin{align*}
+\langle J' m'_J| Y_{LM} |Jm_J\rangle = \int \,d\Omega \, Y^*_{J'm'_J} Y_{LM} Y_{Jm_J} .
+\end{align*}
+To do this, we consider two particles with angular momenta $\bm{j}_1$ and $\bm{j}_2$. The total angular momentum is $\bm{J} = \bm{j}_1 + \bm{j}_2$. We can go between the coupled and uncoupled basis via 
+\begin{align*}
+| (j_1j_2) JM\rangle &= \sum_{m_1,m_2} |j_1m_1\rangle | j_2m_2\rangle \langle j_1m_1j_2m_2 | JM\rangle\\
+|j_1m_1\rangle | j_2m_2\rangle &= \sum_{J,M} |(j_1j_2)JM\rangle \langle JM| j_1m_1j_2m_2\rangle.
+\end{align*}
+
+The sum over $M$ has only one nonzero term $M=m_1+m_2$, and $|j_1-j_2| < J < j_1+j_2$. We also have the wavefunction of each particle at polar angle $\Omega_i = (\theta_1,\phi_i)$ is
+\begin{align*}
+\langle \Omega_i | j_i m_i \rangle = Y_{j_im_i}(\Omega_i).
+\end{align*}
+For the state of definite total angular momentum, we have
+\begin{align*}
+\Phi_{JM}(\Omega_1,\Omega_2) = \langle \Omega_1 ,\Omega_2| (j_1j_2)JM\rangle.
+\end{align*}
+Now consider the function 
+\begin{align*}
+F_{JM}(\Omega) \equiv \langle \Omega,\Omega| (j_1j_2)JM\rangle
+\end{align*}
+where $\Omega_1 = \Omega_2 = \Omega$. This is a wavefunction of an effective particle with angular momentum quantum numbers $J,M$. Indeed, it inherits its eigenvalues $\bm{J}^2$ and $J_z$ from $\Phi_{JM}(\Omega_1,\Omega_2)$. We conclude that $F_{JM}(\Omega)$ must be proportional to the spherical harmonic $Y_{JM}(\Omega)$. Let us call
+\begin{align*}
+F_{JM}(\Omega) = A_{(j_1j_2)J} Y_{JM}(\Omega). 
+\end{align*}
+The factor $A_{(j_1j_2)J}$ cannot depend on $M$ as $F_{JM}$ must behave exactly like $Y_{JM}$, in particular when acted upon by $J_{\pm}$ which changes $M$. From here we have that
+\begin{align*}
+A_{(j_1j_2)J} Y_{JM}(\Omega) = \sum_{m_1,m_2}  \langle j_1m_1j_2m_2 | JM\rangle Y_{j_1m_1}(\Omega) Y_{j_2m_2}(\Omega).
+\end{align*}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item To find $A_{(j_1j_2)J}$ we consider the special case where $\Omega = (\theta=0,\phi)$. In this case, we have that
+	\begin{align*}
+	Y_{j_im_i}(\Omega) = Y_{j_im_i}(\theta=0,\phi) = \sqrt{\f{2j_i+1}{4\pi}} \delta_{m_i0}.
+	\end{align*}
+	From the equation above we find that
+	\begin{align*}
+	A_{(j_1j_2)J} \sqrt{\f{2J+1}{4\pi}} \delta_{M0} = \sum_{m_1,m_2}  \langle j_1m_1j_2m_2 | JM\rangle \sqrt{\f{2j_1+1}{4\pi}} \delta_{m_10} \sqrt{\f{2j_2+1}{4\pi}} \delta_{m_20}.
+	\end{align*}
+	This equation is nontrivial if $M=m_1=m_2 = 0$, in which case we can solve for $A_{(j_1j_2)J}$:
+	\begin{align*}
+	\boxed{A_{(j_1,j_2)J} =   \sqrt{\f{(2j_1+1)(2j_2+1)}{4\pi(2J+1)}} \langle j_1 0 j_2 0 | J 0  \rangle }
+	\end{align*}
+	
+	
+	\item By applying $\langle \Omega,\Omega|$ to the LHS of 
+	\begin{align*}
+	|j_1m_1\rangle | j_2m_2\rangle = \sum_{J,M} |(j_1j_2)JM\rangle \langle JM| j_1m_1j_2m_2\rangle
+	\end{align*}
+	we find that
+	\begin{align*}
+	\boxed{Y_{j_1m_1} (\Omega) Y_{j_2m_2} (\Omega) }
+	&= \sum_{J,M} F_{JM}(\Omega) \langle JM| j_1m_1j_2m_2\rangle \\
+	&= \sum_{J,M} A_{(j_1j_2)J} Y_{JM}(\Omega) \langle JM| j_1m_1j_2m_2\rangle\\
+	&= \boxed{\sum_{J,M} \sqrt{\f{(2j_1+1)(2j_2+1)}{4\pi(2J+1)}} \langle j_1 0 j_2 0 | J 0  \rangle  \langle JM| j_1m_1j_2m_2\rangle Y_{JM}(\Omega)}
+	\end{align*}
+	
+	\item It remains to find the matrix element given at the top. To do this, we simply plug things in and use orthonormality of spherical harmonics:
+	\begin{align*}
+	\boxed{\langle j_3 m_3| Y_{j_2m_2} |j_1m_1\rangle }
+	&= \int \,d\Omega \, Y^*_{j_3m_3}(\Omega) Y_{j_2m_2}(\Omega) Y_{j_1m_1}(\Omega) \\
+	&= \int \,d\Omega \, Y^*_{j_3m_3}(\Omega) \textcolor{blue}{\sum_{J,M} \sqrt{\f{(2j_1+1)(2j_2+1)}{4\pi(2j_3+1)}} \langle j_1 0 j_2 0 | j_3 0  \rangle  \langle j_3 m_3| j_1 m_1 j_2m_2\rangle Y_{JM}(\Omega)}\\
+	&= \sqrt{\f{(2j_1+1)(2j_2+1)}{4\pi(2j_3+1)}} \langle j_1 0 j_2 0 | j_3 0  \rangle  \langle j_3 m_3| j_1 m_1 j_2m_2\rangle \underbrace{\int \, d\Omega Y^*_{j_3m_3}(\Omega) Y_{j_3m_3}(\Omega) }_{1}\\
+	&= \boxed{ \sqrt{\f{(2j_1+1)(2j_2+1)}{4\pi(2j_3+1)}} \langle j_1 0 j_2 0 | j_3 0  \rangle  \langle j_3 m_3| j_1 m_1 j_2m_2\rangle}
+	\end{align*}
+	
+	
+\end{enumerate}
+
+
+\noindent \textbf{2. Dipole Operator.} A symmetric top molecule has a Hamiltonian $\ham = B\bm{J}^2$, with $B$ the rotational constant. The dipole moment operator is $\hat{\bm{d}} = d \hat{\bm{r}}$, with $d$ the value of the ``permanent dipole moment'' (in the molecular frame). 
+
+\begin{enumerate}[label=(\alph*)]
+	\item We will prove the spherical tensor decomposition:
+	\begin{align*}
+	\sum_m C_{1m}^* \hat{\bm{e}}_m = \sum_m C_{1m} \hat{\bm{e}}_m = \hat{\bm{r}}
+	\end{align*}
+	where $C_{1m}(\theta,\phi) = \sqrt{4\pi/3} Y_{1m}(\theta,\phi)$,
+	\begin{align*}
+	\hat{\bm{e}}_\pm = \mp \f{\hat{\bm{e}}_x \pm i \hat{\bm{e}}_y}{\sqrt{2}} \quad\quad \hat{\bm{e}}_0 = \hat{\bm{e}}_z
+	\end{align*}
+	To this end, we simply write everything out explicitly. We will show that the left-most term is equal to $\hat{\bm{r}}$. Once done, the other equality follows immediately from the fact that $\hat{\bm{r}}$ is real (and therefore the second term is equal to the (conjugate of) the first term). 
+	\begin{align*}
+	&C_{1-}^* \hat{\bm{e}}_{-} + 
+	C_{10}^* \hat{\bm{e}}_{0}  + 
+	C_{1+}^* \hat{\bm{e}}_{+}\\
+	=\,\, &\f{1}{2}e^{+i\phi} \sqrt{\f{3}{2\pi}} \sqrt{\f{4\pi}{3}} \sin\theta  \f{\hat{\bm{e}}_x - i \hat{\bm{e}}_y}{\sqrt{2}} 
+	+ \f{1}{2}\sqrt{\f{3}{\pi}} \sqrt{\f{4\pi}{3}} \cos\theta  \hat{\bm{e}}_z 
+	+ \f{1}{2}e^{-i\phi} \sqrt{\f{3}{2\pi}} \sqrt{\f{4\pi}{3}} \sin\theta  \f{\hat{\bm{e}}_x + i \hat{\bm{e}}_y}{\sqrt{2}} \\
+	=\,\, & \sin\theta\cos\phi\, {\hat{\bm{e}}}_x + \sin\theta\sin\phi\, {\hat{\bm{e}}}_y + \cos\theta \,{\hat{\bm{e}}}_z\\
+	=\,\, & \hat{\bm{r}}. \quad\quad\quad \checkmark
+	\end{align*}
+	
+	
+	\item Now we will show that 
+	\begin{align*}
+	\hat{\bm{e}}_m^* \cdot \hat{\bm{e}}_n = \sum_p \delta_{mp}\delta_{np} = \delta_{mn}.
+	\end{align*}
+	It suffices to demonstrate the following cases:
+	\begin{align*}
+	\hat{\bm{e}}_+^*\cdot \hat{\bm{e}}_- = - \f{\hat{\bm{e}}_x - i \hat{\bm{e}}_y}{\sqrt{2}} \cdot  \f{\hat{\bm{e}}_x - i \hat{\bm{e}}_y}{\sqrt{2}} = 0  \iff \hat{\bm{e}}_-^*\cdot \hat{\bm{e}}_+ = 0
+	\end{align*}
+	and
+	\begin{align*}
+	\hat{\bm{e}}_\pm^*\cdot \hat{\bm{e}}_\pm =   \f{\hat{\bm{e}}_x \mp i \hat{\bm{e}}_y}{\sqrt{2}} \cdot  \f{\hat{\bm{e}}_x \mp i \hat{\bm{e}}_y}{\sqrt{2}} = \f{2}{2} = 1. 
+	\end{align*}
+	With these we are done. 
+	
+	
+	\item Suppose we have two unit vectors $\hat{\bm{r}}$ and $\hat{\bm{r}}'$ pointing in the direction of solid angle $(\theta,\phi)$ and $(\theta',\phi')$. Let us call $\Theta$ the angle between the vectors, then we have
+	\begin{align*}
+	\cos\Theta &= \hat{\bm{r}} \cdot \hat{\bm{r}}' \\
+	&= \sum_{m,n} C_{1m}(\theta,\phi)C_{1n}^*(\theta',\phi')\, \hat{\bm{e}}_m^* \cdot  \hat{\bm{e}}_{n}\\
+	&= \sum_{m,n} C_{1m}(\theta,\phi)C_{1n}^*(\theta',\phi')\delta_{mn}\\
+	&= \sum_m C_{1m}(\theta,\phi)C_{1m}^*(\theta',\phi')\\
+	&= \cos\theta \cos\theta' + \f{1}{2}e^{-i\phi-i\phi'}\sin\theta\sin\theta'+\f{1}{2}e^{i\phi + i\phi'}\sin\theta\sin\theta' \\
+	&= \cos\theta\cos\theta' + \cos(\phi - \phi')\sin\theta\sin\theta',
+	\end{align*}
+	as expected from standard geometry. A generalization of this result (for which $l=1$) is 
+	\begin{align*}
+	\textcolor{black}{P_l(\cos\Theta) = \sum_m C_{lm}^*(\theta,\phi) C_{lm}(\theta',\phi') }
+	\end{align*}
+	where 
+	\begin{align*}
+	C_{lm}(\theta,\phi) = \sqrt{\f{4\pi}{2l+1}}Y_{lm}(\theta,\phi).
+	\end{align*}
+	The proof is done by setting one of the unit vectors the $z$-axis, and the angles simplify.
+	
+	\item The electric field can be written 
+	\begin{align*}
+	\bm{E} 
+	&= E_z \hat{\bm{e}}_z + E_x \hat{\bm{e}}_x + E_y \hat{\bm{e}}_y\\
+	&= E_0 \hat{\bm{e}}_0 + E_+ \hat{\bm{e}}_+ + E_- \hat{\bm{e}}_-\\
+	&= \sum_m E_m^* \hat{\bm{e}}_m = \sum_m E_m \hat{\bm{e}}_m^* 
+ 	\end{align*}
+ 	where $E_0, E_\pm$ defined in terms of $E_{x,y,z}$ in a similar way as the $\hat{\bm{e}}_{m}$'s are defined in terms of $\hat{\bm{e}}_{x,y,z}$. The dipole operator may be decomposed into spherical harmonics as 
+ 	\begin{align*}
+ 	-\hat{\bm{d}} \cdot \bm{E} &= -d \hat{\bm{r}} \cdot \mathbf{E} \\
+ 	&= -d \sum_{m,n} C_{1m}^* E_n \hat{\bm{e}}_m \cdot  \hat{\bm{e}}_n^* = -d \sum_{m,n} C_{1m} E_n^* \hat{\bm{e}}_m^* \cdot  \hat{\bm{e}}_n\\
+ 	&= -d\sum_m C^*_{1m}E_m = -d\sum_m C_{1m}E_m^*.
+ 	\end{align*}
+	
+	\item (Extra credit) Take $\bm{E} = E\hat{\bm{e}}_z$. The matrix elements of the Hamiltonian $\ham = B \bm{J}^2 - \hat{\bm{d}} \cdot \bm{E}$ in the $\{ |J m_J\rangle  \}$ basis are given by 
+	\begin{align*}
+	\langle J' m_{J'} | \ham | J m_J \rangle &=  B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} - dE^* \langle J' m_{J'} | C_{10} | J m_J \rangle\\
+	&= B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} - dE \underbrace{\int \,d\Omega \, Y_{J' m_{J'}}^* C_{10} Y_{J m_J}} \\
+	&= B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} -dE  \sqrt{\f{(2J+1)(2+1)}{4\pi(2J'+1)}} \langle (J, 0) (1,0) | (J', 0)  \rangle  \langle J' m_{J'}|(J m_J)(1,0)\rangle\\
+	&= B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} -dE  \sqrt{\f{(2J+1)(2+1)}{4\pi(2J'+1)}} \langle (J, 0) (1,0) | (J', 0)  \rangle  \langle J' m_{J'}|(J m_J)(1,0)\rangle.
+	\end{align*}
+	where we have used the fact that $C_{10} = C_{10}^*$ and remove the conjugation symbol. To get the matrix elements in the second term, we must use Wigner's 3-j symbols:
+	\begin{align*}
+	\langle j_1 m_1 j_2 m_2 | J M \rangle = (-1)^{-j_1 +j_2 -M} \sqrt{2J+1} 
+	\tj{j_1}{j_2}{J}{m_1}{m_2}{-M}
+	\end{align*}
+	which with we write the Hamiltonian matrix elements as 
+	\begin{align*}
+	\langle J' m_{J'} | \ham | J m_J \rangle = &\,\,B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} 
+	\\
+	&-dE \sqrt{\f{(2J+1)(2+1)}{4\pi(2J'+1)}} 
+	(-1)^{-J + 1} (-1)^{-J + 1 -m_{J'}} \sqrt{2J'+1} \sqrt{2J'+1} \tj{J}{1}{J'}{0}{0}{0} 
+	 \tj{J}{1}{J'}{m_J}{0}{-m_{J'}} \\
+	= &\,\, B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J}  -dE (-1)^{-m_{J'}} \sqrt{\f{(2J+1)(2+1)(2J'+1)}{4\pi}} \tj{J}{1}{J'}{0}{0}{0} 
+	\tj{J}{1}{J'}{m_J}{0}{-m_{J'}}.
+	\end{align*}
+	Using Mathematica, we can generate this matrix and diagonalize to find the eigenstates and their energies.
+	
+\end{enumerate}
+
+\noindent \textbf{3. The Stark Effect in Hydrogen.}
+
+\begin{enumerate}[label=(\alph*)]
+	\item \textbf{Stark quenching of the $2S$ state}
+	
+	\item \textbf{Effect of the Lamb shift on quenching}
+	
+\end{enumerate}
+
+\end{document}
+
+
+
+
+
+
+
+
