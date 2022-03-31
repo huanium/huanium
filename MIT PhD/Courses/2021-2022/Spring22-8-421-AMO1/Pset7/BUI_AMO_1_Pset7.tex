@@ -286,10 +286,10 @@ A_{(j_1j_2)J} Y_{JM}(\Omega) = \sum_{m_1,m_2}  \langle j_1m_1j_2m_2 | JM\rangle 
 	
 	\item (Extra credit) Take $\bm{E} = E\hat{\bm{e}}_z$. The matrix elements of the Hamiltonian $\ham = B \bm{J}^2 - \hat{\bm{d}} \cdot \bm{E}$ in the $\{ |J m_J\rangle  \}$ basis are given by 
 	\begin{align*}
-	\langle J' m_{J'} | \ham | J m_J \rangle &=  B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} - dE^* \langle J' m_{J'} | C_{10} | J m_J \rangle\\
-	&= B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} - dE \underbrace{\int \,d\Omega \, Y_{J' m_{J'}}^* C_{10} Y_{J m_J}} \\
-	&= B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} -dE  \sqrt{\f{(2J+1)(2+1)}{4\pi(2J'+1)}} \langle (J, 0) (1,0) | (J', 0)  \rangle  \langle J' m_{J'}|(J m_J)(1,0)\rangle\\
-	&= B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} -dE  \sqrt{\f{(2J+1)(2+1)}{4\pi(2J'+1)}} \langle (J, 0) (1,0) | (J', 0)  \rangle  \langle J' m_{J'}|(J m_J)(1,0)\rangle.
+	\langle J' m_{J'} | \ham | J m_J \rangle &=  B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} - dE \langle J' m_{J'} | C_{10} | J m_J \rangle\\
+	&= B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} - dE \sqrt{\f{4\pi}{3}} \underbrace{\int \,d\Omega \, Y_{J' m_{J'}}^* Y_{10} Y_{J m_J}} \\
+	&= B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} -dE  \sqrt{\f{(2J+1)(2+1)}{3(2J'+1)}} \langle (J, 0) (1,0) | (J', 0)  \rangle  \langle J' m_{J'}|(J m_J)(1,0)\rangle\\
+	&= B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} -dE  \sqrt{\f{(2J+1)(2+1)}{3(2J'+1)}} \langle (J, 0) (1,0) | (J', 0)  \rangle  \langle J' m_{J'}|(J m_J)(1,0)\rangle.
 	\end{align*}
 	where we have used the fact that $C_{10} = C_{10}^*$ and remove the conjugation symbol. To get the matrix elements in the second term, we must use Wigner's 3-j symbols:
 	\begin{align*}
@@ -300,20 +300,310 @@ A_{(j_1j_2)J} Y_{JM}(\Omega) = \sum_{m_1,m_2}  \langle j_1m_1j_2m_2 | JM\rangle 
 	\begin{align*}
 	\langle J' m_{J'} | \ham | J m_J \rangle = &\,\,B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J} 
 	\\
-	&-dE \sqrt{\f{(2J+1)(2+1)}{4\pi(2J'+1)}} 
+	&-dE \sqrt{\f{(2J+1)(2+1)}{3(2J'+1)}} 
 	(-1)^{-J + 1} (-1)^{-J + 1 -m_{J'}} \sqrt{2J'+1} \sqrt{2J'+1} \tj{J}{1}{J'}{0}{0}{0} 
 	 \tj{J}{1}{J'}{m_J}{0}{-m_{J'}} \\
-	= &\,\, B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J}  -dE (-1)^{-m_{J'}} \sqrt{\f{(2J+1)(2+1)(2J'+1)}{4\pi}} \tj{J}{1}{J'}{0}{0}{0} 
+	= &\,\, B J(J+1)\delta_{JJ'}\delta_{m_{J'}m_J}  -dE (-1)^{-m_{J'}} \sqrt{\f{(2J+1)(2+1)(2J'+1)}{3}} \tj{J}{1}{J'}{0}{0}{0} 
 	\tj{J}{1}{J'}{m_J}{0}{-m_{J'}}.
 	\end{align*}
-	Using Mathematica, we can generate this matrix and diagonalize to find the eigenstates and their energies.
+	Using MATLAB, we can generate this matrix and diagonalize to find the eigenstates and their energies. Since it is convenient, I actually generated the Hamiltonian and carried out exact diagonalization in MATLAB but then plotted the probabilities in using \texttt{SphericalPlot3D[]} in Mathematica. Perhaps the grader will tell me that this solution is \textit{cursed}. Figure \ref{fig:energies} shows the first six energy levels up to an electric field $E \approx 10B/d$. For this calculation, I have picked $J_\text{max} = 10$.\\
+	
+	
+	Using Mathematica, we plot $\abs{\bra{\theta,\phi}\ket{\Psi}}^2$ of the lowest state for $dE/B = 0, 1, 10$. To do this, I have used MATLAB to find the lowest energy eigenstate for each value of $dE/B$. Then, I express these states in terms of spherical harmonics by identifying each entry of the state vector with the correct $\ket{Jm_J}$ state in the basis. For this part of the problem, I have used $J_\text{max}=4$.  See Figures \ref{fig:0}, \ref{fig:1}, \ref{fig:10} for the results.	
+	
+	
+	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.8\textwidth]{energies.eps}
+		\caption{Energies of the first six energy levels p to an electric field $E \approx 10 B/d$.}
+		\label{fig:energies}
+	\end{figure}
+
+
+	\begin{figure}[!htb]
+		\centering
+		\begin{subfigure}{.5\textwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{e0.eps}
+			\caption{$\abs{\bra{\theta,\phi}\ket{\Psi}}^2$ for $dE/B=0$.}
+			\label{fig:0}
+		\end{subfigure}%
+		\begin{subfigure}{.5\textwidth}
+			\centering
+			\includegraphics[width=.9\linewidth]{e1.eps}
+			\caption{$\abs{\bra{\theta,\phi}\ket{\Psi}}^2$ for $dE/B=1$.}
+			\label{fig:1}
+		\end{subfigure}
+	\end{figure}
+
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.5\textwidth]{e10.eps}
+		\caption{$\abs{\bra{\theta,\phi}\ket{\Psi}}^2$ for $dE/B=10$.}
+		\label{fig:10}
+	\end{figure}
+	
+	
+	MATLAB code for calculating:
+	\begin{lstlisting}
+	clear all
+	close all
+	
+	J = 10;
+	strength = 0:0.05:10;
+	size = (J+1)^2;
+	H = zeros(size,size);
+	
+	% creat a basis for the Hamiltonian
+	basis = [];
+	
+	for j = 0:1:J
+	for mj = -j:1:j
+	basis = [basis; [j mj]];
+	end
+	end
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	%%% first plot energies as a fn of dE/B
+	
+	stark = figure(1);
+	for a = strength % loop over field strengths
+	% create the Hamiltonian, element-by-element
+	for r = 1:size
+	j = basis(r,1);
+	mj = basis(r,2);
+	for c = 1:size     
+	jj = basis(c,1);  
+	mjj = basis(c,2);
+	
+	H(r,c) = j*(j+1)*(j==jj)*(mj==mjj)...
+	-a*(-1)^(-mjj)*sqrt((2*j+1)*(2*1+1)*(2*jj+1)/3)...
+	*Wigner3j([j,1,jj],[0,0,0])*Wigner3j([j,1,jj],[mj,0,-mjj]);             
+	end
+	end
+	% diag n plot eigenvalues associated with field strength a = dE/B
+	energies = eig(H);
+	hold on 
+	plot(a*ones(size), energies, '.', 'Color', 'red', 'MarkerSize',4);
+	end
+	
+	% disp(H)
+	
+	% plot includes up to 6 lowest energies only
+	
+	hold off
+	%title('Energy vs dE/B')
+	ylim([-6.5 10])
+	xlabel('dE/B')
+	ylabel('Energy/B')
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	
+	% now find the lowest state and associated energy for various a = dE/B
+	% then take result over to mathematica to plot wavefunction^2
+	
+	strength = [0 1 10];
+	wavefunction = 0;
+	
+	for a = strength % loop over field strengths
+	% create the Hamiltonian, element-by-element
+	for r = 1:size
+	j = basis(r,1);
+	mj = basis(r,2);
+	for c = 1:size     
+	jj = basis(c,1);  
+	mjj = basis(c,2);
+	
+	H(r,c) = j*(j+1)*(j==jj)*(mj==mjj)...
+	-a*(-1)^(-mjj)*sqrt((2*j+1)*(2*1+1)*(2*jj+1)/3)...
+	*Wigner3j([j,1,jj],[0,0,0])*Wigner3j([j,1,jj],[mj,0,-mjj]);             
+	end
+	end
+	% diag n plot eigenvalues associated with field strength a = dE/B
+	[state,energy] = eigs(H,1,'SA');
+	disp('Ground state energy:')
+	disp(energy)
+	disp('Ground state:')
+	disp(state) 
+	
+	end
+	
+	\end{lstlisting}
+	
+	
+	Mathematica code for plotting:
+	\begin{lstlisting}
+	(*dE/B=0 ---> |0,0> state*)
+	
+	Energy1 = 0;
+	
+	State1 = SphericalHarmonicY[0, 0, \[Theta], \[Phi]];
+	
+	SphericalPlot3D[
+	Conjugate[State1]*State1, {\[Theta], 0, Pi}, {\[Phi], 0, 2 Pi}, 
+	PlotRange -> All]
+	
+	
+	(*dE/B=1 ---> get superposition state*)
+	
+	Jmax2 = 4;
+	
+	Base2 = Flatten[
+	Table[SphericalHarmonicY[J, mJ, \[Theta], \[Phi]], {J, 0, 
+	Jmax2}, {mJ, -J, J}], 1];
+	
+	Energy2 = -0.1577;
+	
+	State2 = {-0.9644, 0.0000, -0.2634, -0.0000, -0.0000,
+	0.0000, -0.0222, -0.0000, -0.0000, 0.0000, 0.0000, 
+	0.0000, -0.0009, -0.0000, 0.0000, 0.0000, 0.0000, -0.0000, -0.0000,
+	0.0000, -0.0000, -0.0000, 0.0000, -0.0000, 0.0000};
+	
+	State2 = State2/Norm[State2];
+	
+	wfn2 = Dot[Base2, State2]
+	
+	-0.27206 - 0.128702 Cos[\[Theta]] - 
+	0.0070019 (-1 + 3 Cos[\[Theta]]^2) - 
+	0.000335869 (-3 Cos[\[Theta]] + 5 Cos[\[Theta]]^3)
+	
+	SphericalPlot3D[
+	Conjugate[wfn2]*wfn2, {\[Theta], 0, Pi}, {\[Phi], 0, 2 Pi}, 
+	AspectRatio -> Full]
+	
+	
+	(*dE/B=10 ---> get superposition state*)
+	
+	Jmax3 = 4;
+	
+	Base3 = Flatten[
+	Table[SphericalHarmonicY[J, mJ, \[Theta], \[Phi]], {J, 0, 
+	Jmax2}, {mJ, -J, J}], 1];
+	
+	Energy3 = -6.0448;
+	
+	State3 = {-0.6477, 0.0000, -0.6782, -0.0000, 
+	0.0000, -0.0000, -0.3323, -0.0000, 0.0000, -0.0000, 0.0000, 
+	0.0000, -0.0987, -0.0000, -0.0000, 0.0000, 0.0000, 0.0000, -0.0000,
+	0.0000, -0.0191, -0.0000, 0.0000, -0.0000, 0.0000};
+	
+	State3 = State3/Norm[State3];
+	
+	wfn3 = Dot[Base3, State3]
+	
+	-0.182713 - 0.33137 Cos[\[Theta]] - 
+	0.104805 (-1 + 3 Cos[\[Theta]]^2) - 
+	0.0368325 (-3 Cos[\[Theta]] + 5 Cos[\[Theta]]^3) - 
+	0.0020205 (3 - 30 Cos[\[Theta]]^2 + 35 Cos[\[Theta]]^4)
+	
+	SphericalPlot3D[
+	Conjugate[wfn3]*wfn3, {\[Theta], 0, Pi}, {\[Phi], 0, 2 Pi}, 
+	PlotRange -> All, AspectRatio -> Full]
+	
+	
+	\end{lstlisting}
+
 	
 \end{enumerate}
 
 \noindent \textbf{3. The Stark Effect in Hydrogen.}
 
 \begin{enumerate}[label=(\alph*)]
-	\item \textbf{Stark quenching of the $2S$ state}
+	\item \textbf{Stark quenching of the $2S$ state.} In hydrogen, the $2S$ state is metastable. In the absence of external electric fields, its lifetime is $1/8$ seconds. When an external electric field is applied, the $2S$ becomes mixed with the $2P$ state, which is strongly coupled to the ground state. The $2P$ state lifetime is only 1.6 ns. Depending on the strength of the electric field, the lifetime of the $2S$ state can be shortened by many orders og magnitude. This process is known as ``quenching.'' To see how this works, we will look at how the amplitude $a(t)$ of $\ket{a} $ ($2S$ state) evolves ocer time in the presenece of a DC Stark perturbation with matrix element $\hbar V  =\bra{b} e\bm{E}\cdot \bm{r} \ket{a}$ where $\ket{b}$ stands for the $2P$ state.\\
+	
+	
+	Assuming that the atom is initially in the $2S$ state, i.e., $a(0) = 1, b(0) = 0$. Working in the interaction picture, we can derive the following differential equations for $a(t)$ and $b(t)$: 
+	\begin{align*}
+	i\dot a &= V^* e^{i\omega_0 t} b - i \f{\Gamma_a}{2}a\\
+	i\dot b &= V e^{-i\omega_0 t} a - i \f{\Gamma_b}{2}b
+	\end{align*}
+	where $\Gamma_a = 8$ s$^{-1}$ and $\Gamma_b = 6.3 \times 10^8$ s$^{-1}$. Here, $\hbar \omega_0$ is the energy difference $E_a - E_b$. To solve these equations, we make the following ansatz
+	\begin{align*}
+	a(t) &= a_1 e^{-\mu_1 t} + a_2 e^{-\mu_2 t}\\
+	b(t) &= b_1 e^{-(\mu_1 + i\omega_0)t} + b_2 e^{-(\mu_2 + i\omega_0)t}
+	\end{align*}
+	where $a_1,a_2,b_1,b_2$ are constants. Applying the initial condition $a(0) = 1, b(0) = 0$ we find that
+	\begin{align*}
+	a_1 + a_2 = 1 \quad\quad \quad b_1 + b_2 =0.
+	\end{align*}
+	With this, we may write our ansatz as 
+	\begin{align*}
+	a(t) &= a_1 e^{-\mu_1 t} + (1-a_1) e^{-\mu_2 t}\\
+	b(t) &= b_1 e^{-(\mu_1 + i\omega_0)t} -b_1 e^{-(\mu_2 + i\omega_0)t}
+	\end{align*}
+	From this point, we may proceed using Mathematica. Plugging this ansatz into the system of differential equations above and set $t=0$, we can solve for $\mu_1$ and $\mu_2$ in terms of $a_1,b_1$. The result is 
+	\begin{align*}
+	{\mu_1 = \f{\Gamma_a}{2} - \f{i(a_1-1)V}{b_1} \quad\quad \mu_2 = \f{\Gamma_a}{2} - \f{ia_1V}{b_1}}
+	\end{align*}
+	
+	It remains to find $a_1,b_1$. To this end, we pick $t=1/V$. By writing $\mu_1,\mu_2$ in terms of $a_1,b_1$, we can solve for $a_1,b_1$. The result is 
+	\begin{align*}
+	a_1 &= \f{1}{2} + \frac{ i (\Gamma_a- \Gamma_b) - 2 \omega_0}{2 \sqrt{-(\Gamma_a-\Gamma_b-4
+			V+2 i \omega_0) (\Gamma_a-\Gamma_b+4 V+2 i \omega_0)}}\\
+	b_1 &= 	-\frac{2 V}{\sqrt{-(\Gamma_a-\Gamma_b-4 V+2 i \omega_0) (\Gamma_a-\Gamma_b+4 V+2 i\omega_0)}}
+	\end{align*}
+	We should simplify this even more by writing the denominator as 
+	\begin{align*}
+	\sqrt{-(\Gamma_a-\Gamma_b-4 V+2 i \omega_0) (\Gamma_a-\Gamma_b+4 V+2 i\omega_0)}
+	&= \sqrt{16V^2 - ((\Gamma_a-\Gamma_b)+2 i\omega_0)^2}\\
+	&= \sqrt{16V^2 - (\Gamma_a- \Gamma_b)^2 +4 \omega_0^2  - 4i\omega_0(\Gamma_a - \Gamma_b)}.
+	\end{align*}
+	Now recall that for $x,y\in \mathbb{R}$, 
+	\begin{align*}
+	\sqrt{x+iy} = \sqrt{\f{\sqrt{x^2+y^2} + x }{2}} + i\text{sgn}(y)\sqrt{\f{\sqrt{x^2+y^2} - x}{2}}.
+	\end{align*}
+	Let $x = 16V^2 - (\Gamma_a- \Gamma_b)^2 +4 \omega_0^2$ and $y = -4\omega_0(\Gamma_a - \Gamma_b) > 0$, then we have
+	\begin{align*}
+	\sqrt{-(\Gamma_a-\Gamma_b-4 V+2 i \omega_0) (\Gamma_a-\Gamma_b+4 V+2 i\omega_0)} &= \sqrt{x+iy} \\
+	&=\sqrt{\f{\sqrt{x^2+y^2} + x }{2}} + i\sqrt{\f{\sqrt{x^2+y^2} - x}{2}}.
+	\end{align*}
+	From here we can calculate $\mu_1,\mu_2$:
+	\begin{align*}
+	\mu_1 &= \f{\Gamma_a}{4} + \f{\Gamma_b}{4} + \f{i}{4}\sqrt{x+iy} - \f{i\omega_0}{2} \\
+	\mu_2 &= \f{\Gamma_a}{4} + \f{\Gamma_b}{4} - \f{i}{4}\sqrt{x+iy} - \f{i\omega_0}{2} 
+	\end{align*}
+	From here, we can find the real and imaginary parts of $\mu_1, \mu_2$:
+	\begin{align*}
+	\Re(\mu_1) 
+	&= \f{\Gamma_a}{4} + \f{\Gamma_b}{4} - \f{1}{4}\sqrt{\f{\sqrt{x^2+y^2} - x}{2}}\\
+	\Im(\mu_1) &= \f{1}{4} \sqrt{\f{\sqrt{x^2+y^2} + x }{2}}- \f{\omega_0}{2}\\
+	\Re(\mu_2) &= \f{\Gamma_a}{4} + \f{\Gamma_b}{4}  + \f{1}{4}\sqrt{\f{\sqrt{x^2+y^2} - x}{2}}\\
+	\Im(\mu_2) &=  -\f{1}{4} \sqrt{\f{\sqrt{x^2+y^2} + x }{2}}- \f{\omega_0}{2}
+	\end{align*}
+	
+	Here, the real parts of $\mu_1,\mu_2$ give the decay rate of the $2S$ state, and the imaginary parts tell us the level shifts. With these expressions, we can write down the full solution for $a(t)$. While it is possible, I won't do that here since this is  simply plugging things into the ansatz. \\
+	
+	
+	In the small $V$ limit, we may Taylor expand these expressions about $V = 0$ to second order in $V$ to find 
+	\begin{align*}
+	\Re(\mu_1) 
+	&\approx \f{\Gamma_a}{4} + \f{\Gamma_b}{4} + \f{\Gamma_a}{4} - \f{\Gamma_b}{4} - \f{8(\Gamma_b-\Gamma_a)}{(\Gamma_b-\Gamma_a)^2+4\omega_0^2}V^2\\
+	\Im(\mu_1) &\approx  2\omega_0 + \f{16\omega_0}{(\Gamma_b - \Gamma_a)^2+4\omega_0^2}  - \f{\omega_0}{2} = \f{3\omega_0}{2} + \f{16\omega_0}{(\Gamma_b - \Gamma_a)^2+4\omega_0^2} V^2 \\
+	\Re(\mu_2) &\approx \f{\Gamma_a}{4} + \f{\Gamma_b}{4} - \f{\Gamma_a}{4} + \f{\Gamma_b}{4} + \f{8(\Gamma_b-\Gamma_a)}{(\Gamma_b-\Gamma_a)^2+4\omega_0^2}V^2\\
+	\Im(\mu_2) &\approx  -2\omega_0 - \f{16\omega_0}{(\Gamma_b - \Gamma_a)^2+4\omega_0^2}  - \f{\omega_0}{2} = \f{-5\omega_0}{2} + \f{16\omega_0}{(\Gamma_b - \Gamma_a)^2+4\omega_0^2} V^2
+	\end{align*}
+	
+	On the other hand, we have in the large $V$ limit, $x \to 16V^2$ and $x \gg y$, and so 
+	\begin{align*}
+	\Re(\mu_1) &\approx \f{\Gamma_a}{4} + \f{\Gamma_b}{4} \\
+	\Im(\mu_1) &\approx  V - \f{\omega_0}{2}\\
+	\Re(\mu_2) &\approx \f{\Gamma_a}{4} + \f{\Gamma_b}{4} \\
+	\Im(\mu_2) &\approx  -V - \f{\omega_0}{2}
+	\end{align*}
+	
+	
+	We see that these results agree well with perturbation theory results for Stark shift energies. 
+	
+	
+	
 	
 	\item \textbf{Effect of the Lamb shift on quenching}
 	
