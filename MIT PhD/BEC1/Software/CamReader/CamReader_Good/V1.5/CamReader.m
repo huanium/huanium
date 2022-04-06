@@ -123,16 +123,6 @@ imgname=get(handles.Imagelist,'String');
 img=fitsreadRL(handles.list{var1});
 setappdata(gcf,   'CurrentImage'    , img); 
 num=var2-1;
-% img=fitsread([handles.outfolder,'\',imgname{var1}]);
-% if num==0
-%     frame=real(-log((img(:,:,1)-img(:,:,3))./(img(:,:,2)-img(:,:,3))));
-% else
-%     if num==4
-%         frame=real(((img(:,:,1)-img(:,:,3))./(img(:,:,2)-img(:,:,3))));
-%     else
-%         frame=img(:,:,num);
-%     end
-% end
 
 if num==0
     frame=real(-log((img(:,:,1)-img(:,:,3))./(img(:,:,2)-img(:,:,3))));
