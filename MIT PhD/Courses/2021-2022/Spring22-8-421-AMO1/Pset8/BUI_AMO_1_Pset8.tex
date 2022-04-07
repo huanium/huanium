@@ -254,7 +254,7 @@ Due: Friday, April 8, 2022.
 			R_\text{sc,ii}= \f{8\pi I\omega_L^3 e^4}{3 c^4 \hbar^3} |\bra{nS} z \ket{nP}|^4 \lp \f{1}{\omega_0 - \omega_L} \rp^2.
 		\end{align*}
 		
-		\item Let us write $R_\text{cs,i}$ and $R_\text{sc,ii}$ in terms of the spontaneous emission rate $\Gamma = 4e^2 \omega_0^3 |\bra{nS}z\ket{nP}|^2/\hbar c^3$: 
+		\item Let us write $R_\text{cs,i}$ and $R_\text{sc,ii}$ in terms of the spontaneous emission rate $\Gamma = 4e^2 \omega_0^3 |\bra{nS}z\ket{nP}|^2/3\hbar c^3$: 
 		\begin{align*}
 			R_\text{sc,i} &= \f{8\pi I\omega_L^3 e^4}{3 c^4 \hbar^3} |\bra{nS} z \ket{nP}|^4 \lp \f{1}{\omega_0 - \omega_L} + \f{1}{\omega_0 + \omega_L} \rp^2 \\
 			&= \f{8\pi I\omega_L^3 }{3 c^4 \hbar^3} \f{9\Gamma^2 \hbar^2 c^6}{16\omega_0^6}  \lp \f{1}{\omega_0 - \omega_L} + \f{1}{\omega_0 + \omega_L} \rp^2\\
@@ -291,7 +291,7 @@ Due: Friday, April 8, 2022.
 	\item 
 	
 	\begin{enumerate}[label=(\roman*)]
-		\item  The $D_{1,2}$ lines of Na have $\omega_0 \approx 2\pi \cdot 508 $ THz. Now the infrared laser at 985 nm has $\omega_L = 2\pi \cdot 304$ THz, which corresponds to a detuning of $2\pi\cdot 204$ THz, which is much larger than the detuning of the yellow laser (a few GHz). From the RWA expression, we see that the trap depth goes like $I(0)/\delta$. Assuming that the waist radius is the same for both lasers, we see that to get the same trap depth, a far detuned laser requires more power and vice versa. However, the scattering rate goes like $I(0)/\delta^2$. The most ideal optical trap requires sufficient trap depth plus low scattering rate. From the two factors ($U,R_\text{sc}$) and their dependence on $I$ and $\delta$ we conclude that infrared laser is more suitable than the yellow laser. 
+		\item  The $D_{1,2}$ lines of Na have $\omega_0 \approx 2\pi \cdot 508 $ THz. Now the infrared laser at 985 nm has $\omega_L = 2\pi \cdot 304$ THz, which corresponds to a detuning of $2\pi\cdot 204$ THz, which is much larger than the detuning of the yellow laser (a few GHz). This means that the RWA expression is more suitable for the yellow laser. 
 		
 		\item Here we want to calculate the required power and scattering rate for each of the two types of lasers. Using results from time-dependent perturbation theory, we have two equations:
 		\begin{align*}
@@ -301,13 +301,44 @@ Due: Friday, April 8, 2022.
 	where we have converted to CGS units in the first line. To solve for $P,R_{\text{sc,ii}}$, we will use $I(0)=2P/\pi w^2$ and Mathematica. For each laser, we will have:
 	\begin{align*}
 		\text{Yellow laser: } \,\,& 
-		P = 0.102 \,\text{mW}; \quad 
-		R_{\text{sc,ii}} = 7637 \,\text{s}^{-1}\\
+		P = 0.102 \,\mu\text{W}; \quad 
+		R_{\text{sc,ii}} = 7700 \,\text{Hz}\\
 		\text{Infrared laser:}\,\,&  
 		P = 9.871 \, \text{mW}; \quad 
-		R_{\text{sc,ii}} = 17.11 \,\text{s}^{-1}
+		R_{\text{sc,ii}} = 0.017 \,\text{Hz}
 	\end{align*}
 
+	Mathematica calculations:
+	\begin{lstlisting}
+		In[1]:= Solve[(2*P/(Pi*w^2))*3*Pi*c^2*
+		Gam*(1/(omega0 - omegaL) + 1/(omega0 + omegaL))/(2*omega0^3) == 
+		kB*T, P]
+		
+		Out[1]= {{P -> (
+				kB omega0^2 (omega0 - omegaL) (omega0 + omegaL) T w^2)/(6 c^2 Gam)}}
+		
+		In[15]:= numbers = {kB -> 1.3806*10^(-23),
+			omega0 -> 2*Pi*3*10^8/(589*10^-9),
+			omegaL -> 2*Pi*3*10^8/(985*10^-9),
+			T -> 10*10^(-6),
+			w -> 6*10^(-6),
+			Gam -> 2*Pi*10*10^6,
+			c -> 3*10^8,
+			hbar -> 1.0545*10^(-34)};
+		
+		In[16]:= (kB omega0^2 (omega0 - omegaL) (omega0 + omegaL) T w^2)/(
+		6 c^2 Gam) /. numbers
+		
+		Out[16]= 0.00987114
+		
+		In[17]:= R = ((3*Pi*c^2)/(2*hbar*omega0^3))*(omegaL/
+		omega0)^3*(Gam/(omega0 - omegaL) + Gam/(omega0 + omegaL))^2*2*
+		P/(Pi*w^2);
+		
+		In[18]:= R /. numbers /. {P -> 0.009871144461932576`}
+		
+		Out[18]= 0.0171102
+	\end{lstlisting}
 	\end{enumerate}
 \end{enumerate}
 
@@ -359,7 +390,21 @@ Due: Friday, April 8, 2022.
 	\item Here we consider a linearly polarized dipole trap laser with electric field polarization along the $x$ direction propagating along the $z$ direction. 
 	
 	\begin{enumerate}[label=(\roman*)]
-		\item 
+		\item For this part we want to find the laser wavelength for which the AC Stark shift in state $\ket{S}_{1/2}$ is zero. The AC Stark shift is given by 
+		\begin{align*}
+			\Delta E_S = -\f{1}{4\hbar} \sum_i \abs{C_{1,i}}^2 \lb \f{1}{\omega_1 - \omega} + \f{1}{\omega_1+\omega} \rb  -\f{1}{4\hbar} \sum_i |C_{2,i}|^2 \lb \f{1}{\omega_2 - \omega} + \f{1}{\omega_2+\omega} \rb
+		\end{align*}
+	where $C_{1,i}, C_{2,i}$ are the dipole matrix elements. For the $D_1$ line, we have that
+	\begin{align*}
+		 &\sum_i \abs{C_{1,i}}^2 = \f{1}{2}|e\bra{S_{1/2},+1/2} \hat{\sigma}_-\cdot \bm{r} \ket{}|^2 + \f{1}{2} |e\bra{} \ket{}|^2\\
+		 &\sum_i \abs{C_{2,i}}^2 = \f{1}{2}|e\bra{} \ket{}|^2 + \f{1}{2} |e\bra{} \ket{}|^2
+	\end{align*}
+	where we have used
+	\begin{align*}
+		\bra{a} \hat{x} \cdot \bm{r} \ket{b} = \f{1}{\sqrt{2}}  \bra{a} \hat{\sigma}_+ \cdot \bm{r} \ket{b} + \f{1}{\sqrt{2}} \bra{a} \hat{\sigma}_- \cdot \bm{r} \ket{b}
+	\end{align*}
+	and fact that the inference terms between the different polarizations vanish for this problem. 
+		
 		
 		\item 
 		
