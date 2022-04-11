@@ -1,129 +1,184 @@
+#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
+#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+
 // Define global variables
-float taskTime = 200; // do some task for taskTime millisecs.
 unsigned long startTime; //start time
-unsigned long endTime; //end time
-float val = 0.0; //voltage read
-float oldVal = 0.0; //voltage read
 float FPsignal = 0.0; //voltage read
 float maxVoltage = 0.0; // maxVoltage
-float trigLevel = 1.0; //trigger level
-float threshold = 0; // lock threshold, 90% of absolute max
+float trigLevel = 1.2; //trigger level
+float threshold = 1.53; // lock threshold, 90% of absolute max
 int booster = 9;  // booster lock
-int currentOffset = 0; 
-int currentAdjust = 0;
+int currentOffset = 0;
 int currentDelta = 0; // used in ACTIVE STABILIZATION
-float period = 1000. / 48.72; // period of FP scan in millisecs
+float period = 1000. / 48.688; // period of FP scan in millisecs
+float peakThreshold = 1.0;
+int taskCounter = 340;
+
+
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200); //setup serial connection
+  Serial.begin(230400); //setup serial connection
   pinMode(LED_BUILTIN, OUTPUT);
+
+  sbi(ADCSRA, ADPS2);
+  cbi(ADCSRA, ADPS1);
+  cbi(ADCSRA, ADPS0);
 }
+
 
 
 void loop() {
 
   // find trigger
-  oldVal = analogRead(A0) * 5. / 1023.;
-  delay(3); //wait 3 ms before finding next val
-  val = analogRead(A0) * 5. / 1023.;
+  float oldVal = analogRead(A0) * 5. / 1023.;
+  delay(2); //wait 3 ms before finding next val
+  float val = analogRead(A0) * 5. / 1023.;
+
 
   if (val >= trigLevel and oldVal <= trigLevel) // rising edge
   {
     // if trigger condition is met...
-    startTime = millis();
-    endTime = startTime;
-
-    // find maxVoltage over two periods of FP scan
-    while (endTime - startTime <= 2 * period)
+    float FParray[taskCounter];
+    for (int i = 0; i <= taskCounter; i++)
     {
-      digitalWrite(LED_BUILTIN, HIGH);
       FPsignal = analogRead(A1) * 5. / 1023.;
       if (FPsignal > maxVoltage)
       {
         maxVoltage = FPsignal;
       }
-      Serial.println(FPsignal);
-      endTime = millis();
+      FParray[i] = FPsignal;
     }
 
-    // once done, write only 0's for 500 ms
-    endTime = startTime;
-    while (endTime - startTime <= 500)
-    {
-      digitalWrite(LED_BUILTIN, HIGH);
-      Serial.println(1.0);
-    }
+//    // for reading only
+//    for (int i = 0; i <= taskCounter - 1; i++)
+//    {
+//      Serial.println(FParray[i]);
+//    }
+//
+//    startTime = millis();
+//    while (millis() - startTime <= 50)
+//    {
+//      Serial.println(2.0);
+//    }
 
-    // implement lock logic here
-    if (maxVoltage < threshold)  // probably have to set threshold manually first
-    {
-      // RECOVERY MODE
-
-      // first jump current to something high for 100 ms
-      // voltage to current control: 0.1 mA = 5 mV
-      // voltage resolution of Uno: 5/255 = 0.02 V = 20 mW --> 0.4 mA per stop
-      analogWrite(booster, currentOffset + 10); // adding about 4 mA, keep on for 100 ms
-      delay(100);
-      // then slowly ramp down in steps of 0.4 mA (smallest possible)
-      // ramping down is important due to hysteresis
-
-      while (currentAdjust >= 0)
-      {
-        currentAdjust = currentOffset--;
-        analogWrite(booster, currentAdjust); // set a lower current offset
-        delay(300); // wait for thermalization
-
-        // find new maxVoltage over two periods of FP scan
-        startTime = millis();
-        endTime = startTime;
-        maxVoltage = 0;
-        
-        while (endTime - startTime <= 2 * period)
-        {
-          FPsignal = analogRead(A1) * 5. / 1023.;
-          if (FPsignal > maxVoltage)
-          {
-            maxVoltage = FPsignal;
-          }
-          endTime = millis();
-        }
-        endTime = startTime;
-
-        // compare this against threshold, check if threshold is attained...
-        if (maxVoltage >= threshold)
-        {
-          // locked ==> exit the recovery loop
-          currentOffset = currentAdjust; // change the offset current to currentAdjust
-          continue;
-        }
-        else
-        {
-          // if not locked yet, then repeat untill good
-          currentAdjust--;
-        }
-        
-      }
-    }
+    // put peak detect logic here
+    // very simple algorithm for now...
     
-    else // if maxVoltage >= threshold --> still locked
+    Serial.println(" ");
+    float peaks[20]; // accomodates 20 peaks... or more IDK!
+    int freePosition = 0;
+    
+    for (int j = 0; j <= taskCounter-3; j++)
     {
-      // ACTIVE STABILIZATION MODE
-      // samples for peaks at currentOffset & currentOffset +/- currentDelta
-      // if the peak detected at (+) decreases by no more than p1 percent --> set offset to (+)
-
-      // if peak detected at (-) increases by p2 percent --> set offset to (-)
-      threshold = 0;
+      float val1 = FParray[j];
+      float val2 = FParray[j+1];
+      float val3 = FParray[j+2];
+     
+      if (val1 < val2 and val3 < val2) // is a peak!
+      {
+        if (val2 >= peakThreshold)
+        {
+          //Serial.println(val2);
+          peaks[freePosition] = val2;
+          freePosition++;
+        }
+      }
+      //Serial.println(FParray[j]);
     }
 
-    // reset everything except for currentOffset
-    Serial.println(maxVoltage);
-    endTime = 0;
-    startTime = 0;
+    // now sort the peaks into correct categories:
+    float boosterPeaks[6];
+    float slowerPeaks[6];
+    int boosterFreePosition = 0;
+    int slowerFreePosition = 0;
+
+    // print out peaks!
+    for (int i = 0; i <= freePosition-1; i++)
+    {
+      if (i==0 or i==2 or i==5 or i==7 or i==9)
+      {
+        slowerPeaks[slowerFreePosition] = peaks[i];
+        slowerFreePosition++;
+      }
+      if (i==1 or i==3 or i==4 or i==6 or i==8)
+      {
+        boosterPeaks[boosterFreePosition] = peaks[i];
+        boosterFreePosition++;
+      }
+      //Serial.println(peaks[i]);
+    }
+
+    // print out slower peaks!
+    Serial.println("Slower peaks:");
+    for (int i=0; i <= slowerFreePosition-1;i++)
+    {
+      Serial.println(slowerPeaks[i]);
+    }
+
+    // print out booster peaks!
+    Serial.println("Booster peaks:");
+    for (int i=0; i <= boosterFreePosition-1;i++)
+    {
+      Serial.println(boosterPeaks[i]);
+    }       
+
+    //Serial.println(maxVoltage);
+
+
+    ///////////////////////////////////////////////////////////////////////////
+
+
+//    // implement lock logic here
+//    if (maxVoltage < threshold)  // if lock is lost
+//    {
+//      // RECOVERY MODE
+//
+//      // first jump current to something high for 100 ms
+//      // voltage to current control: 0.1 mA = 5 mV
+//      // voltage resolution of Uno: 5/255 = 0.02 V = 20 mW --> 0.4 mA per stop
+//      // then slowly ramp down in steps of 0.4 mA (smallest possible)
+//      // ramping down is important due to hysteresis
+//
+//      startTime = millis();
+//
+//      //analogWrite(booster, currentOffset + 10); // adding about 4 mA, keep on for 100 ms
+//      delay(200); // wait to thermalize
+//
+//      maxVoltage = 0;
+//
+//      for (int i = 0; i <= taskCounter; i++)
+//      {
+//        FPsignal = analogRead(A1) * 5. / 1023.;
+//        if (FPsignal > maxVoltage)
+//        {
+//          maxVoltage = FPsignal;
+//        }
+//      }
+//
+//      if (maxVoltage >= threshold) // if lock is regained
+//      {
+//        digitalWrite(LED_BUILTIN, HIGH);
+//        Serial.println(currentOffset);
+//      }
+//      else // if lock not regained, try again
+//      {
+//        digitalWrite(LED_BUILTIN, LOW);
+//        currentOffset--;
+//        Serial.println(currentOffset);
+//      }
+//    }
+//    else // if still locked
+//    {
+//      //Serial.println(maxVoltage);
+//      currentOffset = 0;
+//      Serial.println(currentOffset);
+//    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
     maxVoltage = 0;
 
-    delay(200);
+    delay(1000);
   }
-  // if trigger condition not met then do nothing, loop repeats...
-
 }
