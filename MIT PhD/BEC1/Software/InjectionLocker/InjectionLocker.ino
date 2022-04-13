@@ -26,8 +26,8 @@ int SlowerLowerBound = 400; // prevents wrong slower analogReads()...
 int MOTLowerBound = 400; // prevents wrong slower analogReads()...
 int peakThreshold = 204; // corres to 1.0 V
 int taskCounter = 350; // good time span = 340
-int boosterI = 80;
-int boosterF = 120;
+int trigger = 0; // 0 means GO, 1 means STOP
+const byte interruptPin = 2;
 
 // 0 for true, 1 for false
 int boosterLocked = 0;
@@ -41,10 +41,17 @@ void setup()
   // put your setup code here, to run once:
   Serial.begin(115200); //setup serial connection
   pinMode(LED_BUILTIN, OUTPUT);
+  attachInterrupt(digitalPinToInterrupt(interruptPin), trig, RISING);
 
   sbi(ADCSRA, ADPS2);
   cbi(ADCSRA, ADPS1);
   cbi(ADCSRA, ADPS0);
+}
+
+
+void trig()
+{
+  trigger = 0;
 }
 
 int peakBetween(int FParray[], int I, int F)
@@ -76,9 +83,6 @@ int peakBetween(int FParray[], int I, int F)
   }
   return 1;
 }
-
-
-
 
 
 int peakValBetween(int FParray[], int I, int F)
@@ -142,11 +146,142 @@ int peakIndBetween(int FParray[], int I, int F)
 }
 
 
+void loop()
+{
+  if (trigger == 0) // on RISING EDGE of TTL
+  {
+    // do task
+    // store FParray and its max
+    delayMicroseconds(1000); // wait time depends on trigger location
+    
+    int maxVoltage = 0;
+    int FParray[taskCounter];
+    for (int i = 0; i <= taskCounter; i++)
+    {
+      int FPsignal = analogRead(A1);
+      if (FPsignal > maxVoltage)
+      {
+        maxVoltage = FPsignal;
+      }
+      FParray[i] = FPsignal;
+    }
+
+    // peak detect
+    int boosterPeak = 0;
+    int slowerPeak = 0;
+    int MOTPeak = 0;
+    int repumpPeak = 0;
+
+    int boosterLoc = 0;
+    int slowerLoc = 0;
+    int MOTLoc = 0;
+    int repumpLoc = 0;
+
+
+    // find window containing the booster
+    // always assuming that the booster is locked
+    // always assuming that the booster is the first peak
+    
+    int boosterI = 0;
+    int boosterF = 0;
+    for (int i = 0; i <= taskCounter-2; i++)
+    {
+      if (FParray[i-1] < FParray[i] and FParray[i] > FParray[i+1]) // if peak @ [i]
+      {
+        if (i >= 30) // for safety purposes... don't want to trigger too early
+        {
+          boosterI = i - 20;
+          boosterF = i + 20;
+          boosterPeak = FParray[i];
+          boosterLoc = i;
+        }
+        else
+        {
+          boosterI = 0;
+          boosterF = i+20;
+        }
+        // only interested in first peak, so once occurred, we stop looking
+        continue;
+      }
+    }
+
+    // look for slower
+    if (peakBetween(FParray, boosterI + 50, boosterF + 50) == 0)
+    {
+      // if there is slower
+      slowerPeak = peakValBetween(FParray, boosterI + 50, boosterF + 50);
+      slowerLoc = peakIndBetween(FParray, boosterI + 50, boosterF + 50);
+      slowerLocked = 0;
+
+      if (slowerPeak < peakThresholdSlower and slowerPeak > 0)
+      {
+        Serial.println("Slower Unlocked!");
+        Serial.println(slowerPeak);
+        slowerLocked = 1;
+      }
+    }
+
+    // look for repump
+    if (peakBetween(FParray, boosterI + 105, boosterF + 105) == 0)
+    {
+      // there is repump.
+      repumpPeak = peakValBetween(FParray, boosterI + 105, boosterF + 105);
+      repumpLoc = peakIndBetween(FParray, boosterI + 105, boosterF + 105);
+      repumpLocked = 0;
+
+      if (repumpPeak < peakThresholdRepump and repumpPeak > 0)
+      {
+        Serial.println("Repump Unlocked!");
+        Serial.println(repumpPeak);
+        repumpLocked = 1;
+      }
+    }
+
+    // look for MOT
+    if (peakBetween(FParray, boosterI + 156, boosterF + 156) == 0)
+    {
+      // there is MOT.
+      MOTPeak = peakValBetween(FParray, boosterI + 156, boosterF + 156);
+      MOTLoc = peakIndBetween(FParray, boosterI + 156, boosterF + 156);
+      MOTLocked = 0;
+
+      if (MOTPeak < peakThresholdMOT and MOTPeak > 0)
+      {
+        Serial.println("MOT Unlocked!");
+        Serial.println(MOTPeak);
+        MOTLocked = 1;
+      }
+    }
+
+    // print everything only if all is good
+    if (boosterPeak * slowerPeak * repumpPeak * MOTPeak > 0)
+    {
+      Serial.println(boosterPeak);
+      Serial.println(slowerPeak);
+      Serial.println(repumpPeak);
+      Serial.println(MOTPeak);
+    }
+
+    // wait a bit before continuing
+    delay(1000);
+    Serial.println("====");
+    // reset trigger
+    trigger = 1;
+
+    // lock logic
+    
+  }
+}
+
+
+
+/*
 
 
 void loop()
 {
-  // find trigger
+
+  // find trigger analog
   int oldVal = analogRead(A0);
   delay(1); //wait 1 ms before finding next val
   int val = analogRead(A0);
@@ -257,108 +392,13 @@ void loop()
       }
     }
 
-    if (boosterPeak*slowerPeak*repumpPeak*MOTPeak > 0)
+    if (boosterPeak * slowerPeak * repumpPeak * MOTPeak > 0)
     {
       Serial.println(boosterPeak);
       Serial.println(slowerPeak);
       Serial.println(repumpPeak);
       Serial.println(MOTPeak);
     }
-
-
-    //    if (peakLocs[0] >= boosterI and peakLocs[0] < boosterF) // if booster exists and at correct place...
-    //    {
-    //
-    //      if (peaks[0] >= peakThresholdBooster)
-    //      {
-    //        boosterPeak = peaks[0];
-    //        boosterLoc = peakLocs[0];
-    //      }
-    //
-    //      for (int i = 1; i <= 3; i++)
-    //      {
-    //        // scan peak list for a peak at the slower location
-    //        if (peakLocs[i] >= boosterI + 50 and peakLocs[i] <= boosterF + 50)
-    //        {
-    //          if (peaks[i] != 0)
-    //          {
-    //            if (peaks[i] >= peakThresholdSlower)
-    //            {
-    //              slowerPeak = peaks[i];
-    //              slowerLoc = peakLocs[i];
-    //              slowerLocked = 0; // locked
-    //            }
-    //            else
-    //            {
-    //              slowerLocked = 1; // change status to unlocked;
-    //            }
-    //          }
-    //
-    //        }
-    //        // scan peak list for a peak at the repump location
-    //        else if (peakLocs[i] >= boosterI + 105 and peakLocs[i] <= boosterF + 105)
-    //        {
-    //          if (peaks[i] != 0)
-    //          {
-    //            if (peaks[i] >= peakThresholdRepump)
-    //            {
-    //              repumpPeak = peaks[i];
-    //              repumpLoc = peakLocs[i];
-    //              repumpLocked = 0; // locked
-    //            }
-    //            else
-    //            {
-    //              repumpLocked = 1; // change status to unlocked
-    //            }
-    //          }
-    //
-    //        }
-    //        // scan peak list for a peak at the MOT location
-    //        else if (peakLocs[i] >= boosterI + 165 and peakLocs[i] <= boosterF + 165)
-    //        {
-    //          if (peaks[i] != 0)
-    //          {
-    //            if (peaks[i] >= peakThresholdMOT)
-    //            {
-    //              MOTPeak = peaks[i];
-    //              MOTLoc = peakLocs[i];
-    //              MOTLocked = 0; // locked
-    //            }
-    //            else
-    //            {
-    //              MOTLocked=1; // change status to unlocked
-    //            }
-    //          }
-    //        }
-    //      }
-    //
-    //      if (boosterPeak * slowerPeak * repumpPeak * MOTPeak != 0)
-    //      {
-    //        Serial.println(boosterPeak);
-    //        Serial.println(slowerPeak);
-    //        Serial.println(repumpPeak);
-    //        Serial.println(MOTPeak);
-    //        Serial.println(" ");
-    //      }
-    //
-    //      if (slowerLocked == 1)
-    //      {
-    //        Serial.println("Slower Unlocked!");
-    //      }
-    //
-    //      if (repumpLocked == 1)
-    //      {
-    //        Serial.println("Repump Unlocked!");
-    //      }
-    //
-    //      if (MOTLocked == 1)
-    //      {
-    //        Serial.println("MOT Unlocked!");
-    //      }
-    //
-    //    }
-
-
 
 
 
@@ -417,3 +457,4 @@ void loop()
     Serial.println("====");
   }
 }
+*/
