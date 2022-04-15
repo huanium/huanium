@@ -5,6 +5,21 @@
    This program is intended for stabilizing the Li injection lock setup.
    There are two modes: recovery and active stabilization.
    Inspiration: arXiv:1602.03504
+
+
+   Current modulation specs:
+   Thorlabs 205C: 50 mA/V
+   Thorlabs 210C: 100 mA/V
+
+   want current mod range of 6 mA --> want Voltage range (205C) of 0.12 V
+   arduino due has range of (2.75-0.55) = 2.2V
+   ==> need attenuation factor of 18.3
+   ==> in dB: ~25 dB
+
+   want current mod range of 6 mA --> want Voltage range (210C) of 0.06 V
+   arduino due has range of (2.75-0.55) = 2.2V
+   ==> need attenuation factor of 36.7
+   ==> in dB: ~30 dB
 */
 
 
@@ -248,7 +263,7 @@ void loop()
   /////////////////////////////////////////////////////////
 
   int oldVal = analogRead(A0);
-  delay(2); //wait 2 ms before finding next val
+  delayMicroseconds(2000); //wait 2 ms before finding next val
   int val = analogRead(A0);
 
   delayMicroseconds(2000);
@@ -305,10 +320,10 @@ void loop()
 
 
     /////////////////////////////////////////////////////////////////
-    // LOCK LOGIC HERE  /////////////////////////////////////////////
+    ///////// LOCK LOGIC  ///////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
 
-    // slower
+    // SLOWER
     slowerPeak = peakValBetween(FParray, boosterI + slowerOffset, boosterF + slowerOffset);
 
     if (slowerPeak < peakThresholdSlower)
@@ -318,25 +333,32 @@ void loop()
       {
         slowerLocked++;
       }
-      
-      if (slowerLocked == 3 and currentOffsetSlower <= slowerCurrentJump) // only act after 3 strikes
+
+      if (slowerLocked == 3) // act after 3 strikes
       {
-        adjustSlower();
-        currentOffsetSlower-=2;
-      }
-      else
-      {
-        // if after one cycle doesn't work... reset and try again
-        currentOffsetSlower = 0;
+        // if currentOffset can still be lowered
+        if (currentOffsetSlower <= slowerCurrentJump)
+        {
+          adjustSlower();
+          currentOffsetSlower-=2;
+        }
+        // if not, then reset
+        else
+        {
+          currentOffsetSlower = 0;
+        }
       }
     }
-    else
+    else // if Peak is good, then reset strikes
     { 
-      // stop adjusting
       slowerLocked = 0;
     }
 
-    // repump
+
+
+
+
+    // REPUMP
     repumpPeak = peakValBetween(FParray, boosterI + repumpOffset, boosterF + repumpOffset);
 
     if (repumpPeak < peakThresholdRepump)
@@ -347,18 +369,22 @@ void loop()
         repumpLocked++;
       }
       
-      if (repumpLocked == 3 and currentOffsetRepump <= repumpCurrentJump) // only act after 3 strikes
+      if (repumpLocked == 3) // act after 3 strikes
       {
-        adjustRepump();
-        currentOffsetRepump-=2;
-      }
-      else
-      {
-        // if after one cycle doesn't work... reset and try again
-        currentOffsetRepump = 0;
+        // if currentOffset can still be lowered
+        if (currentOffsetRepump <= repumpCurrentJump)
+        {
+          adjustRepump();
+          currentOffsetRepump-=2;
+        }
+        // if not, then reset
+        else
+        {
+          currentOffsetRepump = 0;
+        }
       }
     }
-    else
+    else // if Peak is good, then reset strikes
     {
       repumpLocked = 0;
     }
@@ -373,9 +399,22 @@ void loop()
       {
         MOTLocked++;
       }
-      adjustMOT();
+      if (MOTLocked == 3) // act after 3 strikes
+      {
+        // if currentOffset can still be lowered
+        if (currentOffsetMOT <= MOTCurrentJump)
+        {
+          adjustMOT();
+          currentOffsetMOT-=2;
+        }
+        // if not, then reset
+        else
+        {
+          currentOffsetMOT = 0;
+        }
+      }
     }
-    else
+    else // // if Peak is good, then reset strikes
     {
       MOTLocked = 0;
     }
