@@ -25,16 +25,25 @@
 
 // Define global variables
 int trigLevel = 600; // trigger level
+
+int currentOffsetBooster = 0;
 int currentOffsetSlower = 0;
 int currentOffsetRepump = 0;
 int currentOffsetMOT = 0;
 int currentDelta = 0; // used in ACTIVE STABILIZATION
 
-int peakThresholdBooster = 500; //
-int peakThresholdSlower = 1300; //
-int peakThresholdRepump = 350; //
+int peakThresholdBooster = 600; //
+int peakThresholdSlower = 1400; //
+int peakThresholdRepump = 580; //
 int peakThresholdMOT = 1500; //
 int peakThreshold = 300; // has to be this big to be considered a peak!
+int boosterPeakMax = 1000; // if booster exceeds this, then trigger is wrong!
+
+// use these to compare results between loops
+float boosterMAX = 700;
+float slowerMAX = 1600;
+float repumpMAX = 670;
+float MOTMAX = 1700;
 
 // how many samples per scan
 int taskCounter = 275; // good time span
@@ -51,8 +60,23 @@ int repumpLocked = 0;
 int MOTLocked = 0;
 
 // initial current jumps:
-int slowerCurrentJump = 1000;
-int repumpCurrentJump = 1000;
+int boosterCurrentJump = 4095;
+int slowerCurrentJump = 4095;
+int repumpCurrentJump = 4095;
+int MOTCurrentJump = 4095;
+
+int currentAdjustStepSize = 7; // range: 0-4095
+int delta = 1;
+int boosterOptimizeCounter = 0; // only optimize after 5 consective strikes
+int repumpOptimizeCounter = 0; // only optimize after 5 consective strikes
+int slowerOptimizeCounter = 0; // only optimize after 5 consecutive strikes
+int MOTOptimizeCounter = 0; // only optimize after 5 consecutive strikes
+
+// use these to compare between consecutive runs
+int boosterPeakOld = 0;
+int slowerPeakOld = 0;
+int repumpPeakOld = 0;
+int MOTPeakOld = 0;
 
 
 // find peak between two indices in an array, returns 0 if none
@@ -115,8 +139,6 @@ int peakValBetween(int FParray[], int I, int F)
   }
   return 0;
 }
-
-
 
 
 void testScope(int taskCounter, int FParray[])
@@ -201,7 +223,7 @@ void printLockStatus(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPea
   {
     Serial.println("MOT unlocked!");
   }
-  Serial.println("============");
+  Serial.println("==================");
 }
 
 
@@ -215,31 +237,30 @@ void locateBooster(int boosterI, int boosterF, int boosterPeak)
   delay(1000);
 }
 
+void adjustBooster()
+{
+  // do nothing for now
+}
+
 
 void adjustSlower()
 {
-  Serial.println("Adjusting Slower...");
-  Serial.println("  ");
+  //Serial.println("Adjusting Slower...");
+  //Serial.println("  ");
   analogWrite(DAC0, currentOffsetSlower + slowerCurrentJump); //DAC0 = DAC2 on board
-  delay(1000); // wait to thermalize
 }
-
 
 
 void adjustRepump()
 {
-  Serial.println("Adjusting Repump...");
-  Serial.println("  ");
+  //Serial.println("Adjusting Repump...");
+  //Serial.println("  ");
   analogWrite(DAC1, currentOffsetRepump + repumpCurrentJump); // DAC1 = DAC1 on board
-  delay(1000); // wait to thermalize
 }
 
 void adjustMOT()
 {
-  Serial.println("Adjusting MOT...");
-  Serial.println("  ");
-  //analogWrite(MOT, currentOffsetMOT + 1000); // do something for now
-  delay(1000); // wait to thermalize
+  // do nothing for now
 }
 
 
@@ -249,11 +270,12 @@ void setup()
   Serial.begin(115200); //setup serial connection
   pinMode(LED_BUILTIN, OUTPUT);
   analogReadResolution(12);
+  analogWriteResolution(12); // write values from 0-4095... 0.55 - 2.75 V
 
   // initialize current offset on all lasers to mid range of DAC:
-  analogWrite(DAC0, 500);  // DAC2 on the board = slower
-  analogWrite(DAC1, 500);  // DAC1 on the board = repump
-  
+  analogWrite(DAC0, 2048);  // DAC2 on the board = slower
+  analogWrite(DAC1, 2048);  // DAC1 on the board = repump
+
 }
 
 void loop()
@@ -315,115 +337,266 @@ void loop()
         }
       }
     }
-    // print out booster info
-    // locateBooster(boosterI, boosterF, boosterPeak);
 
-
-    /////////////////////////////////////////////////////////////////
-    ///////// LOCK LOGIC  ///////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////
-
-    // SLOWER
-    slowerPeak = peakValBetween(FParray, boosterI + slowerOffset, boosterF + slowerOffset);
-
-    if (slowerPeak < peakThresholdSlower)
+    if (boosterPeak <= boosterPeakMax) // if booster exceeds this, then trigger is wrong --> do nothing
     {
-      Serial.println("Slower Unlocked...");
-      if (slowerLocked < 3)
-      {
-        slowerLocked++;
-      }
+      // print out booster info
+      // locateBooster(boosterI, boosterF, boosterPeak);
 
-      if (slowerLocked == 3) // act after 3 strikes
+
+      /////////////////////////////////////////////////////////////////
+      ///////// LOCK LOGIC  ///////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////
+
+      // BOOSTER
+      if (boosterPeak < peakThresholdBooster)
       {
-        // if currentOffset can still be lowered
-        if (currentOffsetSlower <= slowerCurrentJump)
+        Serial.println("Booster Unlocked...");
+        if (boosterLocked < 3)
         {
-          adjustSlower();
-          currentOffsetSlower-=2;
+          if (boosterPeakOld < peakThresholdBooster)
+          {
+            boosterLocked++; // only add if previous shot also bad
+          }
+          else
+          {
+            boosterLocked = 0; // if last shot was good then reset, probably noise
+          }
         }
-        // if not, then reset
-        else
+
+        if (boosterLocked == 3) // act after 3 CONSECUTIVE strikes
         {
-          currentOffsetSlower = 0;
-        }
-      }
-    }
-    else // if Peak is good, then reset strikes
-    { 
-      slowerLocked = 0;
-    }
-
-
-
-
-
-    // REPUMP
-    repumpPeak = peakValBetween(FParray, boosterI + repumpOffset, boosterF + repumpOffset);
-
-    if (repumpPeak < peakThresholdRepump)
-    {
-      Serial.println("Repump Unlocked...");
-      if (repumpLocked < 3)
-      {
-        repumpLocked++;
-      }
-      
-      if (repumpLocked == 3) // act after 3 strikes
-      {
-        // if currentOffset can still be lowered
-        if (currentOffsetRepump <= repumpCurrentJump)
-        {
-          adjustRepump();
-          currentOffsetRepump-=2;
-        }
-        // if not, then reset
-        else
-        {
-          currentOffsetRepump = 0;
+          // if currentOffset can still be lowered
+          if (currentOffsetBooster <= boosterCurrentJump)
+          {
+            adjustBooster();
+            currentOffsetBooster -= currentAdjustStepSize;
+          }
+          // if not, then reset
+          else
+          {
+            currentOffsetBooster = 0;
+          }
         }
       }
-    }
-    else // if Peak is good, then reset strikes
-    {
-      repumpLocked = 0;
-    }
-
-    // MOT
-    MOTPeak = peakValBetween(FParray, boosterI + MOTOffset, boosterF + MOTOffset);
-
-    if (MOTPeak < peakThresholdMOT)
-    {
-      Serial.println("MOT Unlocked...");
-      if (MOTLocked < 3)
+      else // if Peak is good, then reset strikes and optimize
       {
-        MOTLocked++;
-      }
-      if (MOTLocked == 3) // act after 3 strikes
-      {
-        // if currentOffset can still be lowered
-        if (currentOffsetMOT <= MOTCurrentJump)
+        boosterLocked = 0;
+        if (boosterPeak / boosterMAX <= 0.95)
         {
-          adjustMOT();
-          currentOffsetMOT-=2;
-        }
-        // if not, then reset
-        else
-        {
-          currentOffsetMOT = 0;
+          if (boosterOptimizeCounter == 3) // act when 3 CONSECUTIVE strikes exceeded:
+          {
+            // for now, optimize means lower the current just a bit to stay away from the edge
+            currentOffsetBooster -= delta;
+            adjustBooster();
+            // reset strikes
+            boosterOptimizeCounter = 0;
+          }
+          else // counter only reaches 3 only for 3 consecutive shots
+          {
+            if (boosterPeakOld / boosterMAX <= 0.95)
+            {
+              boosterOptimizeCounter++;
+            }
+            else
+            {
+              boosterOptimizeCounter = 0;
+            }
+          }
         }
       }
-    }
-    else // // if Peak is good, then reset strikes
-    {
-      MOTLocked = 0;
+
+      // SLOWER
+      slowerPeak = peakValBetween(FParray, boosterI + slowerOffset, boosterF + slowerOffset);
+
+      if (slowerPeak < peakThresholdSlower)
+      {
+        Serial.println("Slower Unlocked...");
+        if (slowerLocked < 3)
+        {
+          if (slowerPeakOld < peakThresholdSlower)
+          {
+            slowerLocked++; // only add if previous shot also bad
+          }
+          else
+          {
+            slowerLocked = 0; // if last shot was good then reset, probably noise
+          }
+        }
+
+        if (slowerLocked == 3) // act after 3 CONSECUTIVE strikes
+        {
+          // if currentOffset can still be lowered
+          if (currentOffsetSlower <= slowerCurrentJump)
+          {
+            adjustSlower();
+            currentOffsetSlower -= currentAdjustStepSize;
+          }
+          // if not, then reset
+          else
+          {
+            currentOffsetSlower = 0;
+          }
+        }
+      }
+      else // if Peak is good, then reset strikes and optimize
+      {
+        slowerLocked = 0;
+        if (slowerPeak / slowerMAX <= 0.95)
+        {
+          if (slowerOptimizeCounter == 3) // act when 3 CONSECUTIVE strikes exceeded:
+          {
+            // for now, optimize means lower the current just a bit to stay away from the edge
+            currentOffsetSlower -= delta;
+            adjustSlower();
+            // reset strikes
+            slowerOptimizeCounter = 0;
+          }
+          else // counter only reaches 3 only for 3 consecutive shots
+          {
+            if (slowerPeakOld / slowerMAX <= 0.95)
+            {
+              slowerOptimizeCounter++;
+            }
+            else
+            {
+              slowerOptimizeCounter = 0;
+            }
+          }
+        }
+      }
+
+      // REPUMP
+      repumpPeak = peakValBetween(FParray, boosterI + repumpOffset, boosterF + repumpOffset);
+
+      if (repumpPeak < peakThresholdRepump)
+      {
+        Serial.println("Repump Unlocked...");
+        if (repumpLocked < 3)
+        {
+          if (repumpPeakOld < peakThresholdRepump)
+          {
+            repumpLocked++; // only add if previous shot also bad
+          }
+          else
+          {
+            repumpLocked = 0; // if last shot was good then reset, probably noise
+          }
+        }
+
+        if (repumpLocked == 3) // act after 3 CONSECUTIVE strikes
+        {
+          // if currentOffset can still be lowered
+          if (currentOffsetRepump <= repumpCurrentJump)
+          {
+            adjustRepump();
+            currentOffsetRepump -= currentAdjustStepSize;
+          }
+          // if not, then reset
+          else
+          {
+            currentOffsetRepump = 0;
+          }
+        }
+      }
+      else // if Peak is good, then reset strikes and optimize to 0.95 of MAX
+      {
+        repumpLocked = 0;
+        if (repumpPeak / repumpMAX <= 0.95)
+        {
+          if (repumpOptimizeCounter == 3) // act when 3 CONSECUTIVE strikes exceeded:
+          {
+            // for now, optimize means lower the current just a bit to stay away from the edge
+            currentOffsetRepump -= delta;
+            adjustRepump();
+            // reset strikes
+            repumpOptimizeCounter = 0;
+          }
+          else // counter only reaches 3 only for 3 consecutive shots
+          {
+            if (repumpPeakOld / repumpMAX <= 0.95)
+            {
+              repumpOptimizeCounter++;
+            }
+            else
+            {
+              repumpOptimizeCounter = 0;
+            }
+          }
+        }
+      }
+
+      // MOT
+      MOTPeak = peakValBetween(FParray, boosterI + MOTOffset, boosterF + MOTOffset);
+
+      if (MOTPeak < peakThresholdMOT)
+      {
+        Serial.println("MOT Unlocked...");
+        if (MOTLocked < 3)
+        {
+          if (MOTPeakOld < peakThresholdMOT)
+          {
+            MOTLocked++; // only add if previous shot also bad
+          }
+          else
+          {
+            MOTLocked = 0; // if last shot was good then reset, probably noise
+          }
+        }
+        if (MOTLocked == 3) // act after 3 strikes
+        {
+          // if currentOffset can still be lowered
+          if (currentOffsetMOT <= MOTCurrentJump)
+          {
+            adjustMOT();
+            currentOffsetMOT -= currentAdjustStepSize;
+          }
+          // if not, then reset
+          else
+          {
+            currentOffsetMOT = 0;
+          }
+        }
+      }
+      else // if peak is good, then enters optimization
+      {
+        MOTLocked = 0;
+        if (MOTPeak / MOTMAX <= 0.95)
+        {
+          if (MOTOptimizeCounter == 3) // act when 3 CONSECUTIVE strikes exceeded:
+          {
+            // for now, optimize means lower the current just a bit to stay away from the edge
+            currentOffsetMOT -= delta;
+            adjustMOT();
+            // reset strikes
+            MOTOptimizeCounter = 0;
+          }
+          else // counter only reaches 3 only for 3 consecutive shots
+          {
+            if (MOTPeakOld / MOTMAX <= 0.95)
+            {
+              MOTOptimizeCounter++;
+            }
+            else
+            {
+              MOTOptimizeCounter = 0;
+            }
+          }
+        }
+      }
+
+      // print status
+      printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak);
+
+      // the end
+      boosterPeakOld = boosterPeak;
+      slowerPeakOld = slowerPeak;
+      repumpPeakOld = repumpPeak;
+      MOTPeakOld = MOTPeak;
+      delay(25);
     }
 
-    // print status
-    printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak);
 
-    // the end
-    delay(500);
   }
-  
+
 }
