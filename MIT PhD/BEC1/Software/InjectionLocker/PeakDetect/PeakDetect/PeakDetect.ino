@@ -22,35 +22,36 @@
    ==> in dB: ~30 dB
 */
 
-// manually dialed-in parameters:
-int trigLevel = 200; // trigger level
-int peakThreshold = 300; // has to be this big to be considered a peak!
-int boosterPeakMax = 1000; // if booster exceeds this, then trigger is wrong!
-// some absolute MAX values for now
-float boosterMAX = 500;
-float slowerMAX = 1650;
-float repumpMAX = 2200;
-float MOTMAX = 1600;
 
-int peakThresholdBooster = round(boosterMAX*0.75); 
-int peakThresholdSlower = round(slowerMAX*0.75); 
-int peakThresholdRepump = round(repumpMAX*0.75); 
-int peakThresholdMOT = round(MOTMAX*0.75); 
+// Define global variables
+int trigLevel = 200; // trigger level
 
 int currentOffsetBooster = 0;
 int currentOffsetSlower = 0;
 int currentOffsetRepump = 0;
 int currentOffsetMOT = 0;
+int currentDelta = 0; // used in ACTIVE STABILIZATION
+
+int peakThresholdBooster = 600; //
+int peakThresholdSlower = 1300; //
+int peakThresholdRepump = 1900; //
+int peakThresholdMOT = 1300; //
+int peakThreshold = 300; // has to be this big to be considered a peak!
+int boosterPeakMax = 1000; // if booster exceeds this, then trigger is wrong!
+
+// use these to compare results between loops
+float boosterMAX = 700;
+float slowerMAX = 1700;
+float repumpMAX = 2400;
+float MOTMAX = 1800;
 
 // how many samples per scan
 int taskCounter = 350; // good time span
-int trigCount = 0; // use this to adjust trigger level
-int boosterLocAvg = 0;
 
 // offset from Booster time stamp
 int slowerOffset = 53;
-int repumpOffset = slowerOffset + 62;
-int MOTOffset = repumpOffset + 53;
+int repumpOffset = 53 + 62;
+int MOTOffset = 53 + 62 + 53;
 
 // 0 for true, 1 for false... but only call adjust() when reaches 2 (3 strikes and you're out!)
 int boosterLocked = 0;
@@ -59,21 +60,17 @@ int repumpLocked = 0;
 int MOTLocked = 0;
 
 // initial current jumps:
-int boosterCurrentJump = 4070;
-int slowerCurrentJump = 4070;
-int repumpCurrentJump = 4070;
-int MOTCurrentJump = 4070;
+int boosterCurrentJump = 4095;
+int slowerCurrentJump = 4095;
+int repumpCurrentJump = 4095;
+int MOTCurrentJump = 4095;
 
-int currentAdjustStepSize = 4; // range: 0-4095
+int currentAdjustStepSize = 7; // range: 0-4095
 int delta = 1;
-int boosterOptimizeCounter = 0; // only optimize after n consective strikes
-int repumpOptimizeCounter = 0; // only optimize after n consective strikes
-int repumpOptimizeCounterMinus = 0;
-int slowerOptimizeCounter = 0; // only optimize after n consecutive strikes
-int MOTOptimizeCounter = 0; // only optimize after n consecutive strikes
-int MOTOptimizeCounterMinus = 0;
-
-
+int boosterOptimizeCounter = 0; // only optimize after 5 consective strikes
+int repumpOptimizeCounter = 0; // only optimize after 5 consective strikes
+int slowerOptimizeCounter = 0; // only optimize after 5 consecutive strikes
+int MOTOptimizeCounter = 0; // only optimize after 5 consecutive strikes
 
 // use these to compare between consecutive runs
 int boosterPeakOld = 0;
@@ -190,14 +187,25 @@ void peakDetect(int taskCounter, int FParray[])
 }
 
 
-void printLockStatus(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPeak, int boosterLoc)
+void printStatus(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPeak)
+{
+  Serial.print("Booster peak: ");
+  Serial.println(boosterPeak);
+  Serial.print("Slower peak: ");
+  Serial.println(slowerPeak);
+  Serial.print("Repump peak: ");
+  Serial.println(repumpPeak);
+  Serial.print("MOT peak: ");
+  Serial.println(MOTPeak);
+}
+
+
+void printLockStatus(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPeak)
 {
   // print status
   // booster
   Serial.print("Booster peak: ");
   Serial.println(boosterPeak);
-  Serial.print("Booster location:");
-  Serial.println(boosterLoc);
   // slower
   if (slowerLocked == 0 or slowerLocked == 1 or slowerLocked == 2)
   {
@@ -252,7 +260,7 @@ void adjustSlower()
 {
   //Serial.println("Adjusting Slower...");
   //Serial.println("  ");
-  //analogWrite(DAC0, currentOffsetSlower + slowerCurrentJump); //DAC0 = DAC2 on board
+  analogWrite(DAC0, currentOffsetSlower + slowerCurrentJump); //DAC0 = DAC2 on board
 }
 
 
@@ -266,7 +274,6 @@ void adjustRepump()
 void adjustMOT()
 {
   // do nothing for now
-  analogWrite(DAC0, currentOffsetMOT + MOTCurrentJump); //DAC0 = DAC2 on board
 }
 
 
@@ -279,8 +286,8 @@ void setup()
   analogWriteResolution(12); // write values from 0-4095... 0.55 - 2.75 V
 
   // initialize current offset on all lasers to mid range of DAC:
-  analogWrite(DAC0, 2048);  // DAC2 on the board = MOT
-  analogWrite(DAC1, 2048);  // DAC1 on the board = repump
+  // analogWrite(DAC0, 2048);  // DAC2 on the board = slower
+  // analogWrite(DAC1, 2048);  // DAC1 on the board = repump
 
 }
 
@@ -308,8 +315,9 @@ void loop()
       delayMicroseconds(20);
     }
 
-    // testScope(taskCounter, FParray);
+    testScope(taskCounter, FParray);
     // peakDetect(taskCounter, FParray);
+
 
 
     // peak detect
@@ -344,37 +352,23 @@ void loop()
       }
     }
 
-    // adjust the trigger to respond to correct for change in boosterLoc
-    if (trigCounter < 60)
-    {
-      boosterLocAvg += round(boosterLoc/60);
-      trigCounter++;
-    }
-    else
-    {
-      trigCounter = 0; // reset
-      if (boosterLocAvg <= 120) // trigger too late
-      {
-        trigLevel -= 10;
-      }
-      if (boosterLocAvg >= 170) // trigger too soon
-      {
-        trigLevel += 10 ;
-      }
-    }
+
 
     if (boosterPeak <= boosterPeakMax) // if booster exceeds this, then trigger is wrong --> do nothing
     {
       // print out booster info
       // locateBooster(boosterI, boosterF, boosterPeak);
 
+
       /////////////////////////////////////////////////////////////////
       ///////// LOCK LOGIC  ///////////////////////////////////////////
       /////////////////////////////////////////////////////////////////
 
+   
       // BOOSTER
       if (boosterPeak < peakThresholdBooster)
       {
+        Serial.println("Booster Unlocked...");
         if (boosterLocked < 3)
         {
           if (boosterPeakOld < peakThresholdBooster)
@@ -415,7 +409,7 @@ void loop()
             // reset strikes
             boosterOptimizeCounter = 0;
           }
-          else // counter only reaches here after some consecutive shots
+          else // counter only reaches 3 only for 3 consecutive shots
           {
             if (boosterPeakOld / boosterMAX <= 0.95)
             {
@@ -434,6 +428,7 @@ void loop()
 
       if (slowerPeak < peakThresholdSlower)
       {
+        Serial.println("Slower Unlocked...");
         if (slowerLocked < 3)
         {
           if (slowerPeakOld < peakThresholdSlower)
@@ -493,6 +488,7 @@ void loop()
 
       if (repumpPeak < peakThresholdRepump)
       {
+        Serial.println("Repump Unlocked...");
         if (repumpLocked < 3)
         {
           if (repumpPeakOld < peakThresholdRepump)
@@ -533,7 +529,7 @@ void loop()
             // reset strikes
             repumpOptimizeCounter = 0;
           }
-          else // counter only reaches only for n consecutive shots
+          else // counter only reaches 3 only for 3 consecutive shots
           {
             if (repumpPeakOld / repumpMAX <= 0.95)
             {
@@ -545,26 +541,6 @@ void loop()
             }
           }
         }
-        else
-        {
-          if (repumpOptimizeCounterMinus == 3)
-          {
-            currentOffsetRepump += delta;
-            adjustRepump();
-            repumpOptimizeCounterMinus = 0;
-          }
-          else
-          {
-            if (repumpPeakOld / repumpMAX > 0.95)
-            {
-              repumpOptimizeCounterMinus++;
-            }
-            else
-            {
-              repumpOptimizeCounterMinus = 0;
-            }
-          }
-        }
       }
 
       // MOT
@@ -572,6 +548,7 @@ void loop()
 
       if (MOTPeak < peakThresholdMOT)
       {
+        Serial.println("MOT Unlocked...");
         if (MOTLocked < 3)
         {
           if (MOTPeakOld < peakThresholdMOT)
@@ -623,67 +600,20 @@ void loop()
             }
           }
         }
-        else // if peak is actually bigger than MAX
-        {
-          if (MOTOptimizeCounterMinus == 3)
-          {
-            currentOffsetMOT += delta;
-            adjustMOT();
-            MOTOptimizeCounterMinus = 0;
-          }
-          else
-          {
-            if (MOTPeakOld / MOTMAX > 0.95)
-            {
-              MOTOptimizeCounterMinus++;
-            }
-            else
-            {
-              MOTOptimizeCounterMinus = 0;
-            }
-          }
-        }
       }
 
+
       // print status
-      printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak, boosterLoc);
+      // printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak);
 
       // the end
       boosterPeakOld = boosterPeak;
       slowerPeakOld = slowerPeak;
       repumpPeakOld = repumpPeak;
       MOTPeakOld = MOTPeak;
-
-      // auto update MAX values, only if everything is locked
-      if (boosterLocked*slowerLocked*repumpLocked*MOTLocked==0)
-      {
-        if (boosterPeak >= boosterMAX)
-        {
-          boosterMAX = round(0.95 * boosterPeak);
-          peakThresholdBooster = round(0.7 * boosterPeak);
-        }
-
-        if (slowerPeak >= slowerMAX)
-        {
-          slowerMAX = round(0.95 * slowerPeak);
-          peakThresholdSlower = round(0.7 * slowerPeak);
-        }
-
-        if (repumpPeak >= repumpMAX)
-        {
-          repumpMAX = round(0.95 * repumpPeak);
-          peakThresholdRepump = round(0.7 * repumpPeak);
-        }
-
-        if (MOTPeak >= MOTMAX)
-        {
-          MOTMAX = round(0.95 * MOTPeak);
-          peakThresholdMOT = round(0.7 * MOTPeak);
-        }
-      }
-
-      delayMicroseconds(25*1000);
+      delay(25);
     }
+   
 
 
   }
