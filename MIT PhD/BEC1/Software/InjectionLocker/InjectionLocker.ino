@@ -190,9 +190,11 @@ void peakDetect(int taskCounter, int FParray[])
 }
 
 
-void printLockStatus(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPeak, int boosterLoc)
+void printLockStatus(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPeak, int boosterLoc, int trigLevel)
 {
   // print status
+  Serial.print(Trigger Level:")
+  Serial.println(trigLevel);
   // booster
   Serial.print("Booster peak: ");
   Serial.println(boosterPeak);
@@ -353,15 +355,16 @@ void loop()
     else
     {
       trigCounter = 0; // reset
-      if (boosterLocAvg <= 120) // trigger too late
+      if (boosterLocAvg <= 120) // trigger is too late
       {
-        trigLevel -= 10;
+        trigLevel -= 10; // make trigger earlier
       }
-      if (boosterLocAvg >= 170) // trigger too soon
+      if (boosterLocAvg >= 170) // trigger is too soon
       {
-        trigLevel += 10 ;
+        trigLevel += 10 ; // make trigger later
       }
     }
+    
 
     if (boosterPeak <= boosterPeakMax) // if booster exceeds this, then trigger is wrong --> do nothing
     {
@@ -646,7 +649,7 @@ void loop()
       }
 
       // print status
-      printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak, boosterLoc);
+      printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak, boosterLoc, trigLevel);
 
       // the end
       boosterPeakOld = boosterPeak;
