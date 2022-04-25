@@ -39,10 +39,11 @@ float repumpMAX = 800;
 float MOTMAX = 400;
 
 // trigPoints
-int trigPointOne = 50;
-int trigPointTwo = 150;
+int trigPointOne = 70;
+int trigPointTwo = 140;
 int prepCounter = 0;
-float quality = 0.97;
+float quality = 0.96;
+int updateMAXCounter = 100;
 
 int peakThresholdBooster = round(boosterMAX * 0.75);
 int peakThresholdSlower = round(slowerMAX * 0.75);
@@ -211,7 +212,7 @@ void printLockStatus(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPea
   Serial.println(boosterLoc);
   Serial.print("Booster peak: ");
   Serial.println(boosterPeak);
-  
+
   // slower
   Serial.print("Slower peak:");
   Serial.println(slowerPeak);
@@ -290,25 +291,25 @@ void adjustMOT()
 
 void updateMAX(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPeak)
 {
-  if (boosterPeak >= boosterMAX and boosterPeak <= 1.2 * boosterMAX) //safety mechanism
+  if (boosterPeak >= boosterMAX and boosterPeak <= 1.005 * boosterMAX) //safety mechanism
   {
     boosterMAX = boosterPeak;
     peakThresholdBooster = round(0.75 * boosterPeak);
   }
 
-  if (slowerPeak >= slowerMAX and slowerPeak <= 1.2 * slowerMAX) // safety mechanism
+  if (slowerPeak >= slowerMAX and slowerPeak <= 1.005 * slowerMAX) // safety mechanism
   {
     slowerMAX = slowerPeak;
     peakThresholdSlower = round(0.75 * slowerPeak);
   }
 
-  if (repumpPeak >= repumpMAX and repumpPeak <= 1.2 * repumpMAX) // safety mechanism
+  if (repumpPeak >= repumpMAX and repumpPeak <= 1.005 * repumpMAX) // safety mechanism
   {
     repumpMAX = repumpPeak;
     peakThresholdRepump = round(0.75 * repumpPeak);
   }
 
-  if (MOTPeak >= MOTMAX and MOTPeak <= 1.2 * MOTMAX) // safety mechanism
+  if (MOTPeak >= MOTMAX and MOTPeak <= 1.005 * MOTMAX) // safety mechanism
   {
     MOTMAX = MOTPeak;
     peakThresholdMOT = round(0.75 * MOTPeak);
@@ -319,19 +320,19 @@ void updateMAX(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPeak)
 
 void updateMAXRAW(int boosterPeak, int slowerPeak, int repumpPeak, int MOTPeak)
 {
-  if (boosterPeak >= boosterMAX) 
+  if (boosterPeak >= boosterMAX)
   {
     boosterMAX = round(0.98 * boosterPeak);
     peakThresholdBooster = round(0.75 * boosterPeak);
   }
 
-  if (slowerPeak >= slowerMAX) 
+  if (slowerPeak >= slowerMAX)
   {
     slowerMAX = round(0.98 * slowerPeak);
     peakThresholdSlower = round(0.75 * slowerPeak);
   }
 
-  if (repumpPeak >= repumpMAX) 
+  if (repumpPeak >= repumpMAX)
   {
     repumpMAX = round(0.98 * repumpPeak);
     peakThresholdRepump = round(0.75 * repumpPeak);
@@ -420,9 +421,9 @@ void loop()
     }
 
     // adjust the trigger to respond to correct for change in boosterLoc
-    if (trigCounter < 1000)
+    if (trigCounter < 500)
     {
-      boosterLocAvg += boosterLoc / 1000.0; // cast into float type...
+      boosterLocAvg += boosterLoc / 500.0; // cast into float type...
       trigCounter++;
     }
     else
@@ -449,8 +450,8 @@ void loop()
       repumpPeak = peakValBetween(FParray, boosterI + repumpOffset, boosterF + repumpOffset);
       MOTPeak = peakValBetween(FParray, boosterI + MOTOffset, boosterF + MOTOffset);
 
-      // in the first 5 triggers, update MAX values
-      if (prepCounter <= 5)
+      // in the first 20 triggers, update MAX values
+      if (prepCounter <= 20)
       {
         prepCounter++;
         updateMAXRAW(boosterPeak, slowerPeak, repumpPeak, MOTPeak);
@@ -583,7 +584,7 @@ void loop()
         {
           if (repumpLocked < 3)
           {
-            if (repumpPeakOld < peakThresholdRepump) 
+            if (repumpPeakOld < peakThresholdRepump)
             {
               repumpLocked++; // only add if previous shot also bad
             }
@@ -741,9 +742,21 @@ void loop()
         MOTPeakOld = MOTPeak;
 
         // auto update MAX values, only if everything is locked
-        if (boosterLocked * slowerLocked * repumpLocked * MOTLocked == 0)
+        // also do this only for every 100 shots, to stay conservative
+
+        // ignore the slower for now
+        //if (boosterLocked * slowerLocked * repumpLocked * MOTLocked == 0)
+        if (boosterLocked * repumpLocked * MOTLocked == 0)
         {
-          updateMAX(boosterPeak, slowerPeak, repumpPeak, MOTPeak);
+          if (updateMAXCounter > 25)
+          {
+            updateMAX(boosterPeak, slowerPeak, repumpPeak, MOTPeak);
+            updateMAXCounter = 0; //reset
+          }
+          else
+          {
+            updateMAXCounter++;
+          }
         }
 
         delayMicroseconds(25 * 1000);
