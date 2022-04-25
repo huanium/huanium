@@ -20,21 +20,27 @@
    arduino due has range of (2.75-0.55) = 2.2V
    ==> need attenuation factor of 36.7
    ==> in dB: ~30 dB
+
+
+   Next update (incoming). Update as of April 25, 2022.
+
+   implement physical switch to toggle between peak detect mode and lock mode
+   Peak detect mode allows one to set the parameters to properly initialize the lock servo
 */
 
 // manually dialed-in parameters:
-int trigLevel = 400; // trigger level
+int trigLevel = 200; // trigger level
 int peakThreshold = 250; // has to be this big to be considered a peak!
 int boosterPeakMax = 2000; // if booster exceeds this, then trigger is wrong!
 // some absolute MAX values for now
-float boosterMAX = 900;
-float slowerMAX = 800;
+float boosterMAX = 800;
+float slowerMAX = 600;
 float repumpMAX = 800;
-float MOTMAX = 300;
+float MOTMAX = 400;
 
 // trigPoints
-int trigPointOne = 120;
-int trigPointTwo = 170;
+int trigPointOne = 50;
+int trigPointTwo = 150;
 int prepCounter = 0;
 float quality = 0.97;
 
@@ -416,7 +422,7 @@ void loop()
     // adjust the trigger to respond to correct for change in boosterLoc
     if (trigCounter < 1000)
     {
-      boosterLocAvg += boosterLoc / 1000;
+      boosterLocAvg += boosterLoc / 1000.0; // cast into float type...
       trigCounter++;
     }
     else
@@ -430,6 +436,8 @@ void loop()
       {
         trigLevel += 5 ; // make trigger later
       }
+
+      boosterLocAvg = 0; //reset
     }
 
 
@@ -441,8 +449,8 @@ void loop()
       repumpPeak = peakValBetween(FParray, boosterI + repumpOffset, boosterF + repumpOffset);
       MOTPeak = peakValBetween(FParray, boosterI + MOTOffset, boosterF + MOTOffset);
 
-      // in the first 10 triggers, update MAX values
-      if (prepCounter <= 10)
+      // in the first 5 triggers, update MAX values
+      if (prepCounter <= 5)
       {
         prepCounter++;
         updateMAXRAW(boosterPeak, slowerPeak, repumpPeak, MOTPeak);

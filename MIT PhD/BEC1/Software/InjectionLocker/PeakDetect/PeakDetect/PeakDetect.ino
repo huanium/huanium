@@ -24,7 +24,7 @@
 
 
 // Define global variables
-int trigLevel = 400; // trigger level
+int trigLevel = 200; // trigger level
 
 int currentOffsetBooster = 0;
 int currentOffsetSlower = 0;
@@ -315,8 +315,8 @@ void loop()
       delayMicroseconds(20);
     }
 
-    testScope(taskCounter, FParray);
-    // peakDetect(taskCounter, FParray);
+    // testScope(taskCounter, FParray);
+    peakDetect(taskCounter, FParray);
 
   }
 
