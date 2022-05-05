@@ -14,6 +14,7 @@ aps]{revtex4-1}
 \usepackage{physics}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{subfigure}
 \usepackage{bm}
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{framed}
@@ -28,11 +29,11 @@ aps]{revtex4-1}
 \usepackage{empheq}
 \usepackage{tensor}
 \usepackage{xcolor}
-%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
-%\definecolor{MIT}{RGB}{163, 31, 52}
-%\usepackage[pdftex]{hyperref}
-%\hypersetup{colorlinks,urlcolor=colby}
+\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
 %\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\hypersetup{colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue}  
 %\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
 %\setcounter{MaxMatrixCols}{20}
 % \usepackage{newpxtext,newpxmath}
@@ -94,16 +95,16 @@ aps]{revtex4-1}
 \author{Huan Q. Bui}
 \email{huanbui@mit.edu}
 \affiliation{
-	Department of Physics, Massachusetts Institute of Technology\\}
+	MIT-Harvard Center for Ultracold Atoms, Research Laboratory of Electronics, and Department of Physics, Massachusetts Institute of Technology, Cambridge, Massachusetts 02139, USA}
 \date{\today}
 
 
 \begin{abstract}
-	Blah
-	\begin{description}
-		\item[Keywords]
-		Berry phase, Aharonov-Bohm effect, Atom interferometry 
-	\end{description}
+	Following the conception of the Aharonov-Bohm effect due to Ehrenberg, Siday, Aharonov, and Bohm in the mid-20$^\text{th}$ century, experimental verifications of the effect emerged in the late 1980s and opened up developments in matter-wave interferometry. Starting in the 1990s, interests in atom interferometry grew as physicists realized the atom's remarkable ability as a quantum sensor for precision metrology. Recently Overstreet \textit{et al.} at Stanford University reported an observation of the gravitational analog of the Aharonov-Bohm effect. In this paper, we review the notion of Berry phase and interpret the Aharonov-Bohm effect as an example. Then, we will review two atom-light interactions instrumental to modern atom interferometers and briefly survey and contextualize Overstreet's result.
+%	\begin{description}
+%		\item[Keywords]
+%		Berry phase, Aharonov-Bohm effect, Atom interferometry 
+%	\end{description}
 \end{abstract}
 
 %\keywords{Suggested keywords}%Use showkeys class option if keyword
@@ -117,21 +118,11 @@ aps]{revtex4-1}
 \section{Introduction}
 
 
-
-Section \ref{sect:1}... outlines some theory. While these topics well-known and are standard subjects of many quantum mechanics textbooks, the author feels compelled to present a short summary to have the essentials at our fingertips. 
-
-
-Section \ref{sect:2}... presents the experimental observation of the gravitational Aharonov-Bohm effect. The theory and results are addressed. A proposal is reviewed and a recently published work is described. However, the main focus is the experimental technique: atom interferometry. 
-
-
-The author wants this paper to be pedagogical. While some recent observations are discussed, the paper is meant to be an exposition on the theory behind the Berry phase and some underlying principles of atom interferometry. 
+The outline of this paper is as follows.  Section \ref{sect:berry} is a review of the Berry phase and the Aharonov-Bohm effect. While these topics are well-known and are standard subjects of many quantum mechanics textbooks, there is a wide variability in the style and context in which they are presented and therefore the author feels compelled to provide a self-contained exposition here, to have the theory right at our fingertips. Section \ref{sect:atom} presents review the principles of atom interferometry, with an emphasis on two atom-light interactions that crucial for modern atom interferometers: stimulated Raman transitions and Bragg diffraction. Section \ref{sect:grav} is a brief review of the recent observation of a gravitational analog of the Aharonov-Bohm effect due to Overstreet \textit{et al.}.
 
 
 
-
-
-
-\section{Berry phase}\label{sect:1}
+\section{Berry phase}\label{sect:berry}
 Consider $\mathcal{H}(\bm{R}(t))$, a time-dependent Hamiltonian parameterized by a family of variables $\bm{R}(t)$. Let $\ket{\psi(0)} = \ket{n(\bm{R}(0))}$ where $\ket{n(\bm{R}(0))}$ is the $n^\text{th}$ eigenstate of $\mathcal{H}(\bm{R}(0))$. By the adiabatic theorem, $\ket{\psi(t)}$ is $\ket{n(\bm{R}(t))}$, the $n^\text{th}$ instantaneous eigenstate of $\mathcal{H}(t)$, up to a phase factor, i.e.,
 \begin{align*}
 \ket{\psi(t)} = e^{ -\f{i}{\hbar }\int_0^t E_n(\bm{R} (t'))\,dt' } \exp(i\gamma_n(t)) \ket{n(\bm{R}(t))},
@@ -150,26 +141,28 @@ which depends only on the path in parameter space over which the evolution takes
 \end{align*} 
 and consider gauge transformation in parameter phase of instantaneous eigenstates $\ket{n(\bm{R})} \to \ket{\widetilde{n}(\bm{R})} = e^{-i\beta(\bm{R})}\ket{n(\bm{R})}$. The Berry connection transforms like the electromagnetic  vector potential:
 \begin{align*}
-\bm{A}_n(\bm{R}) \to  \widetilde{\bm{A}_n}(\bm{R}) = \bm{A}_n(\bm{R}) + \nabla_{\bm{R}} \beta (\bm{R}). 
+\bm{A}_n(\bm{R}) \to  \widetilde{\bm{A}_n}(\bm{R}) = \bm{A}_n(\bm{R}) + \nabla_{\bm{R}} \beta (\bm{R}),
 \end{align*}
-and therefore is also known as the Berry potential. Meanwhile the Berry phase transforms as
+while the Berry phase transforms as
 \begin{align*}
 \widetilde{\gamma_n} (\bm{R}) = \int_{\bm{R}_i}^{\bm{R}_f} \widetilde{A_n}(\bm{R})\cdot d\bm{R} = \gamma_n(\bm{R}_f)  + \beta(\bm{R}_f) - \beta({\bm{R}_i})
 \end{align*}
-which is gauge-invariant exactly when the Hamiltonian evolution is cyclical in parameter space, i.e., $\bm{R}(t_f) = \bm{R}(0)$. A remarkable consequence of cyclic evolutions is that the Berry phase is well-defined and is measurable by means of interferometry. 
+which is gauge-invariant exactly when the Hamiltonian evolution is cyclical, i.e., $\bm{R}(t_f) = \bm{R}(0)$. A consequence of cyclic evolutions is that the Berry phase is well-defined and is measurable by means of interferometry. 
 
-The Berry phase is topological in the sense that it depends on the topology of the parameter space containing the path $C$ along which the system evolves. Consider a closed path $C$ in a parameter space $\mathfrak{R}$. If $\mathfrak{R}$ is one-dimensional, the Berry phase vanishes. In the case that $\mathfrak{R}$ is three-dimensional, Stokes' theorem states that 
+The Berry phase depends on the topology of the parameter space containing the path $C$. Let $\mathfrak{R}$ denote the parameter space. If $\mathfrak{R}$ is one-dimensional, the Berry phase vanishes. In the case that $\mathfrak{R}$ is three-dimensional, Stokes' theorem states that 
 \begin{align*}
 \gamma_n(C) &=  \oint_C \bm{A}_n(\bm{R}) \cdot d{\bm{R}} \\
 &= \iint_{S} \lb  \nabla_{\bm{R}} \times \bm{A}_n(\bm{R}) \rb  \cdot d\vec{S} \equiv \iint_S \bm{D}_n \cdot d\vec{S}
 \end{align*}
-where $S$ is the surface with boundary $C$ and $\bm{D}_n \equiv \nabla_{\bm{R}} \times \bm{A}(\bm{R}) $ is the \textit{Berry curvature}. We immediately see that if we think of the Berry connection as the electromagnetic vector potential, then the Berry curvature plays the role of the associated magnetic field, which is gauge-invariant. \textcolor{red}{Say something about topological behavior etc and how the notions are separate and Berry phase in topological matter is beyond the scope of the paper.}
+where $S$ is the surface with boundary $C$ and $\bm{D}_n \equiv \nabla_{\bm{R}} \times \bm{A}(\bm{R}) $ is the \textit{Berry curvature}. 
+
+%We immediately see that if we think of the Berry connection as the electromagnetic vector potential, then the Berry curvature plays the role of the associated magnetic field, which is gauge-invariant.
 
 
 
 \subsection{Example: Spin-1/2 in a magnetic field}
 
-The Hamiltonian for a spin-1/2 in a magnetic field has the form
+The Hamiltonian for a spin-1/2 in a magnetic field is
 \begin{align*}
 \mathcal{H}(\bm{B}) = \bm{B}\cdot \bm{\sigma} = r \begin{pmatrix}
 \cos\theta & \sin\theta e^{-i\phi} \\ \sin\theta e^{i\phi} & -\cos\theta
@@ -187,9 +180,9 @@ We require that $r  \neq 0$ for the adiabatic theorem to hold. The components of
 \begin{align*}
 &A_r = i\bra{+}\p_r \ket{+} = 0\\
 &A_\theta = i\bra{+}\p_\theta\ket{+} = 0\\
-&A_\phi = i\bra{+}\p_\phi \ket{+} = \f{\cos\theta - 1}{2}. 
+&A_\phi = i\bra{+}\p_\phi \ket{+} = (\cos\theta - 1)/2.
 \end{align*}
-Here, $\bm{A}(\bm{B})$ is actually not defined on the negative $z$-axis. Consider a closed, piece-wise smooth path $C$ enclosing a surface $S$ such that no point of $S$ lies on the negative $z$-axis. The Berry phase is 
+Consider a closed, piece-wise smooth path $C$ enclosing a surface $S$ such that no point of $S$ lies on the negative $z$-axis\footnote{Here, $\bm{A}(\bm{B})$ is actually not defined on the negative $z$-axis.}. The Berry phase is 
 \begin{align*}
 \gamma[C] = \oint_C \bm{A}(\bm{B}) \cdot d\bm{B} = \iint_S \nabla \times \bm{A}(\bm{B})  \, d\bm{S} = -\f{\Omega}{2} 
 \end{align*}
@@ -201,10 +194,20 @@ where $\Omega$ is nothing but the solid angle enclosed by $S$. If we had chosen 
 \subsection{Aharonov-Bohm Effect}
 
 
-The Aharonov-Bohm effect is often discussed in the context of the path integral formulation of quantum mechanics where one compares the wavefunctions passing along two (distinct) paths in a vector potential associated with some magnetic field $\bm{B}$.  Here, the author presents M. V. Berry's interpretation of the Aharonov-Bohm effect as a Berry phase change \cite{berry1984quantal}. This presentation is not only a highly illustrative application of \eqref{eq:def}, but also avoids issues with single-valuedness of wavefunctions that arise in \cite{aharonov1959significance} and \cite{ehrenberg1949refractive}. 
+The Aharonov-Bohm effect is often discussed in the context of the path integral formulation of quantum mechanics where one compares the wavefunctions passing along two (distinct) paths in a vector potential associated with some magnetic field $\bm{B}$.  Here, the author presents M. V. Berry's interpretation of the Aharonov-Bohm effect as a Berry phase change\footnote{The presentation due to \cite{griffiths2018introduction}, based on Berry's paper \cite{berry1984quantal}, fills in mathematical steps skipped by Berry and is highly pedagogical.}. This presentation is not only a highly illustrative application of \eqref{eq:def}, but also avoids issues with single-valuedness of wavefunctions that arise in \cite{aharonov1959significance} and \cite{ehrenberg1949refractive} as suggested by Berry. 
 
 
-To start, consider particles of mass $m$ and charge $q$ in a magnetic field $\bm{B}$ generated by a thin long solenoid. For positions $\bm{R}$ outside the solenoid and enclosing it by a closed path $C$, the magnetic field is zero but the circulation of $\bm{A}$ along $C$ is the total magnetic flux:
+
+%\begin{figure}
+%	\includegraphics[width=0.3\textwidth]{AB_Effect.png}
+%	\caption{Taken from \cite{griffiths2018introduction}.}
+%	\label{fig:ABfx}
+%\end{figure}
+
+
+
+
+Consider a particle of mass $m$ and charge $q$ in a magnetic field $\bm{B}$ generated by a thin long solenoid. For positions $\bm{R}$ outside the solenoid and enclosing it by a closed path $C$, the magnetic field is zero but the circulation of $\bm{A}$ along $C$ is the total magnetic flux:
 \begin{align*}
 \oint_C \bm{A}(\bm{R}) \cdot d\bm{R} = \Phi_B.
 \end{align*}
@@ -230,60 +233,91 @@ Note that that $\psi_n(C)$ is independent of both $n$ and $C$, so long as $C$ en
 
 
 
-\section{Atom Interferometry} \label{sect:2}
+\section{Atom Interferometry} \label{sect:atom}
+
+It is clear from the theoretical description of the (classically inconceivable) Aharonov-Bohm effect that in order to observe it, the experimenter must allow matter to \textit{interfere}. This is possible by the use of an interferometer for matter. ``Interferometers'' often refer to \textit{optical interferometers} where light waves from a single source travel different paths and interfere constructively or destructively when recombined depending on the relative phase they have accumulated along their paths. The interference pattern allows one to extract information about difference in the path length or refractive index. Some of the most well-known optical interferometers are the Michelson interferometer and the Laser Interferometer Gravitational-Wave Observatory (LIGO)\footnote{LIGO is a Michelson interferometer with additional components such as Fabry-P\'{e}rot cavities.}. 
+
+
+Matter-wave interferometry works based on similar principles, but relies on the wave-like nature of particles. Following the first\footnote{\cite{tonomura1986evidence} is the first undisputed observation of the Aharonov-Bohm effect, where superconductors were used to completely shield electron waves from leakage magnetic fields. Previous observations due to \cite{chambers1960shift}, \cite{fowler1961electron} and others in the early 1960s might have suffered from leakage fields, as suggested by \cite{bocchieri1978nonexistence} and \cite{roy1980condition}.   } observation of the magnetic Aharonov-Bohm effect in the late 1980s using electron matter-waves \cite{tonomura1986evidence}, new developments in atomic, molecular, and optical physics led to interferometry using neutral atoms (some early examples include \cite{keith1991interferometer} and \cite{carnal1991young}). Atom interferometry are well-suited for precision measurements, gravitational wave sensors, and tests of tests of relativity due to their short de Brogile wavelengths compared to their optical counterpart as well as having nonzero mass, which allows them to interact with gravity \cite{mueller2014quantum}, \cite{dimopoulos2009gravitational}, \cite{stray2022quantum}. Moreover, atoms possess high controllability thanks to their internal structure and lack electric charge, making them incredible sensors which are immune to undesired environmental influences such as stray electric or magnetic fields \cite{bongs2019taking}. 
+
+
+While early atom interferometers such as that developed by \cite{keith1991interferometer} used slits and wires to split and reflect atoms, modern iterations manipulate atoms using light forces \cite{rasel1995atom}. These are called light-pulse atom interferometers \cite{kasevich1992measurement}. In atom interferometers, light and matter invert their roles: when light resonantly interacts with an atom, Rabi oscillations occur. A $\pi/2$ pulse puts an atom in a 50:50 superposition of the ground and excited state and therefore act as a beamsplitter, while a $\pi$ pulse inverts the population of the ground and excited states, acting as a mirror.  To see how atoms are deflected using light, we must take into account the photon momentum. The light pulses correlate the internal states of an atom to its momentum states. For example, an atom in its ground state $\ket{g}$ with momentum $\bm{p}$ (denoted by $\ket{g,\bm{p}}$) is coupled to an excited state $\ket{e}$ with momentum $\bm{p} + \hbar \bm{k}$ (denoted by $\ket{e,\bm{p} + \hbar\bm{k}}$).  
 
 
 
-In optical interferometry, light waves from a single source travel different paths and interfere constructively or destructively when recombined depending on the relative phase they have accumulated along their paths. The interference pattern allows one to extract information about difference in the path length or refractive index.
-
-
-Matter-wave interferometry works based on similar principles, relying on the wave-like nature of particles. Following the first\footnote{\cite{tonomura1986evidence} is the first undisputed observation of the Aharonov-Bohm effect, where superconductors were used to completely shield electron waves from leakage magnetic fields. Previous observations due to \cite{chambers1960shift}, \cite{fowler1961electron} and others in the early 1960s might have suffered from leakage fields, as suggested by \cite{bocchieri1978nonexistence} and \cite{roy1980condition}.   } observation of the magnetic Aharonov-Bohm effect in the late 1980s using electron matter-waves \cite{tonomura1986evidence}, new developments in atomic, molecular, and optical physics led to interferometry using neutral atoms (an early example is \cite{keith1991interferometer}). Atom interferometry are well-suited for precision measurements, gravitational wave sensors, and tests of tests of relativity due to their short de Brogile wavelengths compared to their optical counterpart as well as having nonzero mass, which allows them to interact with gravity \cite{mueller2014quantum}, \cite{dimopoulos2009gravitational}, \cite{stray2022quantum}. Moreover, atoms possess high controllability thanks to their internal structure and lack electric charge, making them incredible sensors which are immune to undesired environmental influences such as stray electric or magnetic fields \cite{bongs2019taking}. 
-
-
-While early atom interferometers such as that developed by \cite{keith1991interferometer} used slits and wires to split and reflect atoms, modern iterations manipulate atoms using light forces \cite{rasel1995atom}. These are called light-pulse atom interferometers \cite{kasevich1992measurement}. In atom interferometers, light and matter invert their roles: when light resonantly interacts with an atom, Rabi oscillations occur. A $\pi/2$ pulse put an atom in a 50:50 superposition of the ground and excited state and therefore act as a beamsplitter, while a $\pi$ pulse inverts the population of the ground and excited states, acting as a mirror.  To see how atoms are deflected using light, we must take into account the photon momentum. The light pulses correlate the internal states of an atom to its momentum states: an atom in its ground state $\ket{g}$ with momentum $\bm{p}$ (denoted by $\ket{g,\bm{p}}$) is coupled to an excited state $\ket{e}$ with momentum $\bm{p} + \hbar \bm{k}$ (denoted by $\ket{e,\bm{p} + \hbar\bm{k}}$).  
-
-
-
-In the upcoming subsections, some basic principles of atom interferometry are outlined. Subsections \ref{sect:MZI} and \ref{sect:RBI} describe the most common atom interferometer configurations. Subsections \ref{sect:SRT} and \ref{sect:BD} present the theory behind stimulated Raman transitions and Bragg diffraction, two powerful mechanisms for splitting and reflecting atoms using laser light.  
-
+In the upcoming subsections, some basic principles of atom interferometry are outlined. Subsections \ref{sect:MZI} describes the Mach-Zehnder atom interferometer. Subsections \ref{sect:SRT} and \ref{sect:BD} present the theory of stimulated Raman transitions and Bragg diffraction, two main mechanisms for splitting and reflecting atoms using laser light in (light-pulse) atom interferometers.  
 
 
 
 
-\subsection{Mach-Zehnder (MZ) atom interferometer}\label{sect:MZI}
 
-Many atom interferometers have the MZ configuration. In an optical MZ interferometers,  a light beam is split by a beamsplitter into two beams which travel different paths and are then redirected towards each other by mirrors and recombined by a beamsplitter, making the beams interfere with each other. The following description of an MZ atom interferometer follows from \cite{kasevich1992measurement}. In an MZ atom interferometer (see Figure \ref{fig:MZI}), a $\pi/2-\pi-\pi/2$ pulse sequence is used to coherently split, reflect, and recombine an atomic wavepacket. The initial $\pi/2$ puts $\ket{g,\bm{p}}$ into $\ket{g,\bm{p}} + \ket{e,\bm{p} + \hbar \bm{k}}$, corresponding to two wavepackets. While $\ket{e}$ is stable against spontaneous decay to $\ket{g}$, the two wavepackets drift apart by a distance $\hbar kT /m$ over a duration $T$. Then, the $\pi$ pulse inverts the population: $\ket{e,\bm{p} + \hbar \bm{k}} \to \ket{g, \bm{p}}$ and $\ket{g,\bm{p}} \to \ket{e,\bm{p} + \hbar \bm{k}}$, and the wavepackets overlap after another interval $T$. The second $\pi/2$ pulse ``recombines'' the wavepackets and causes them to interfere.
+\subsection{Mach-Zehnder (MZ) atom interferometer\footnote{In addition to Mach-Zehnder, the Ramsey-Bord\'{e} configuration is standard in atom interferometry. While its working principles are similar to MZ interferometers, Ramsey-Bord\'{e} interferometers have differences in design and purpose that are beyond the scope of this paper. The reader may refer to \cite{mueller2014quantum} for more information.  }}\label{sect:MZI}
+
+In an optical MZ interferometer,  a light beam is split by a beamsplitter into two beams which travel different paths and are then redirected towards each other by mirrors and recombined by a beamsplitter, making the beams interfere. Similarly, in an MZ atom interferometer (see Figure \ref{fig:MZI}), a $\pi/2-\pi-\pi/2$ pulse sequence is used to coherently split, reflect, and recombine an atomic wavepacket. The initial $\pi/2$ puts $\ket{g,\bm{p}}$ into $\ket{g,\bm{p}} + \ket{e,\bm{p} + \hbar \bm{k}}$, corresponding to two wavepackets. While $\ket{e}$ is stable against spontaneous decay to $\ket{g}$, the two wavepackets drift apart by a distance $\hbar kT /m$ over a duration $T$. Then, the $\pi$ pulse inverts the population: $\ket{e,\bm{p} + \hbar \bm{k}} \to \ket{g, \bm{p}}$ and $\ket{g,\bm{p}} \to \ket{e,\bm{p} + \hbar \bm{k}}$, and the wavepackets overlap after another interval $T$. The second $\pi/2$ pulse ``recombines'' the wavepackets and causes them to interfere.\cite{kasevich1992measurement}.
 
 
 \begin{figure}
-	\includegraphics[width=0.2\textwidth]{MZI.png}
+	\includegraphics[width=0.18\textwidth]{MZI.png}
 	\caption{Lines show the (mean) paths of an atom in an MZ atom interferometer. The solid (dash) lines correspond to the ground (excited) state of the atom.  Taken from \cite{kasevich1992measurement}.}
 	\label{fig:MZI}
 \end{figure}
 
 
-\subsection{Ramsey-Bord\'{e} atom interferometer}\label{sect:RBI}
+As is the case in optical interferometry where longer arm lengths increase the instrument's sensitivity, in atom interferometry the larger the wavepacket separation $\hbar k T /m$ the better. However, there is delicate trade-off between drift time and recoil velocities. Drift times on the order of 1s generally require metastable atomic transitions. While hyperfine transitions easily fulfill this requirement, the recoil velocities are small ($\sim 0.1 \mu\text{m}$ for the Na $F=1, 3S_{1/2}\to F=2,3S_{1/2}$). Metablestable optical transitions have large recoil velocities, but they need ultra-stable lasers to drive. The forthcoming subsections \ref{sect:SRT} and \ref{sect:BD} describe two methods for obtaining large wavepacket separations in atom interferometers. 
 
-\textcolor{red}{Let's not go into this probably... Tell the reader they can read about  this stuff at the end of the MZI section, but let's got tangled here. This stuff is actually more complicated than I thought.}
+
 
 \subsection{Stimulated Raman Transition}\label{sect:SRT}
 
 
 
-As is the case in optical interferometry where longer arm lengths increase the instrument's sensitivity, in atom interferometry the larger the wavepacket separation $\hbar k T /m$ the better. However, there is delicate trade-off between drift time and recoil velocities. Drift times on the order of 1s generally require metastable atomic transitions. While hyperfine transitions easily fulfill this requirement, the recoil velocities are small ($\sim 0.1 \mu\text{m}$ for the Na $F=1, 3S_{1/2}\to F=2,3S_{1/2}$). Metablestable optical transitions have large recoil velocities, but they need ultra-stable lasers to drive. 
+Stimulated Raman Transitions (SRT) is one of the first techniques developed for obtaining large recoil kicks while simultaneously meeting the metastability criterion. The following treatment of the theory follows from \cite{kasevich1992measurement}. The Hamiltonian for the three-level system is 
+\begin{align*}
+\mathcal{H} = \f{\vec{p}\,^2}{2m} + \hbar \omega_1^A \ketbra{1} + \hbar \omega_2^A \ketbra{2} + \hbar \omega_i^A \ketbra{i} - e\vec{r}\cdot \vec{E}
+\end{align*}
+where $\hat{V}$ is the atom-field interaction and $\vec{E} = \vec{E}_1 \cos(k_1 x - \omega_1 t + \Phi_1) + \vec{E}_2 \cos(k_2 x - \omega_2 t + \Phi_2)$. Here, $\omega_1, \omega_2 \sim \omega^A_i - \omega_1^A$, and $\omega_1 - \omega_2 \sim \omega_2^A - \omega_1^A$ (see Figure \ref{fig:Raman}). For counter-propagating beams, $k_1 \sim -k_2$. We look for solutions to the Schr\"{o}dinger equation of the form 
+\begin{align*}
+\ket{\Psi} = \int dp\, \sum_\al a_{\al,p}(t) e^{-i(\omega_\al^A + p^2/2m) t } \ket{\al,p}
+\end{align*}
+where $\ket{\al,p}$ denotes an atom in internal state $\ket{\al}$ and momentum eigenstate $\sim \phi_p(x) \sim e^{ipx/\hbar}$. For a given $p$, the Schr\"{o}dinger equation after the rotating wave approximation\footnote{The procedure is standard: Go to the frame rotating at $\omega_L$, eliminate the rapidly rotating term $e^{\pm i(\omega_L+\omega_0)t}$, then transform back to the stationary frame.} reduces to 
+\begin{align*}
+\dot{a}_{1,p} &= \f{i}{2}e^{i\Delta_1 t} \Omega^*_{1i} a_{i,p+\hbar k_1}\\
+\dot{a}_{i,p + \hbar k_1} &= \f{i}{2}\lb \Omega_{i1}e^{-i\Delta_1 t } a_{1,p}+ \Omega_{i2} e^{-i\Delta_2 t}a_{2,p+\hbar k_1 - \hbar k_2} \rb \\
+\dot{a}_{2,p+\hbar k_1 - \hbar k_2} &= \f{i}{2}e^{i\Delta_2 t}\Omega_{1i}^* a_{i,p+\hbar k_1},
+\end{align*}
+where we have assumed that the electric field $\vec{E}_j$ only couples to the $\ket{j} \to \ket{i}$ transitions and 
+\begin{align*}
+\Omega_{ji} &= e\bra{i} \vec{r}\cdot \vec{E}_j \ket{j} e^{i\Phi_j}/\hbar\\
+\Delta_j &= (\omega_j^A + \omega_j - \omega_i^A) + p_j^2/2m - p_i^2/2m
+\end{align*}
+with $j=1,2$ and $i$ denotes the intermediate state. Adiabatic elimination\footnote{Adiabatic elimination is a tool in quantum optics often used to extract effective two-level dynamics from a three-level system driven by off-resonant light. See \cite{brion2007adiabatic} for more information. } of $\ket{i}$ and settings $p_1 = p, p_j = p_1 + \hbar k_1, p_2 = p+ \hbar k_1 - \hbar k_2$, we obtain 
+\begin{align}
+\dot{a}_{1,p_1} &\approx -\f{i}{2}\Omega_1^{\text{AC}} a_{1,p_1} - \f{i}{2}e^{i\delta_{12} t} \Omega_\text{eff} a_{2,p_2}\label{eq:raman1}\\
+\dot{a}_{2,p_2} &\approx -\f{i}{2}\Omega_2^{\text{AC}} a_{2,p_2} - \f{i}{2}e^{-i\delta_{12} t} \Omega_{\text{eff}}^* a_{1,p_1}\label{eq:raman2}.
+\end{align}
+where  
+\begin{align*}
+\Omega_\text{eff} &= \Omega_{1i}^* \Omega_{i2}/2\Delta, \quad \Omega_j^{\text{AC}} = |\Omega_{ji}|^2/2\Delta, \quad \text{and}\\
+\delta_{12} &= (\omega_1 - \omega_2) - (\omega_2^A - \omega_1^A)\\
+&\quad- \lb  v_x(k_1-k_2) + \f{\hbar (k_1 - k_2)^2}{ m} \rb.
+\end{align*}
+Here $v_x$ is the velocity of the atoms along the beams. The firsts on the right of \eqref{eq:raman1} and \eqref{eq:raman2} lead to AC Stark shifts in $\ket{1}$ and $\ket{2}$. The second terms lead to Rabi flopping between the two levels. The effective detuning $\delta_{12}$ from the Raman resonance contains the AC Stark shifts, Doppler shifts, and recoil shifts. A resonant process transfers an atom initially in $\ket{1,\bm{p}}$ to $\ket{2, \bm{p} + \hbar \bm{k}_1 - \hbar \bm{k}_2}$. Figure \ref{fig:Raman} shows the relevant parameters for this process. 
+ 
+
+\begin{figure}
+	\subfigure[]{\includegraphics[width=0.23\textwidth]{Raman.png}}\quad
+	\subfigure[]{\includegraphics[width=0.23\textwidth]{Raman1.png}}
+	\caption{(a) shows the Energy diagram for stimulated Raman transitions between $\ket{1}$ and $\ket{2}$. Raman beams are detuned by $\Delta$ from the transitions to $\ket{i}$. Resonant population transfer occurs when $\omega_1 - \omega_2 \approx \omega_2^A - \omega_1^A$. The detuning $\delta_{12}$ is velocity-dependent. Following $\ket{1} \to \ket{2}$, the atom's momentum changes by $\hbar \bm{k}_1 - \hbar \bm{k}_2$. (b) shows the geometry for the velocity-selective configuration. Taken from \cite{kasevich1992measurement}.}
+	\label{fig:Raman}
+\end{figure}
 
 
-Stimulated Raman Transitions (SRT) is one of the first techniques developed for obtaining large recoil kicks while simultaneously meeting the metastability criterion. The following treatment of the theory follows from \cite{kasevich1992measurement}. 
-
-
-
-\textcolor{red}{load theory here!}
 
 
 \subsection{Bragg Diffraction}\label{sect:BD}
 
 
-Bragg diffraction is another tool for generating large momentum transfers for atom interferometry. Due to the (to be described) multi-photon nature of the process, it may be viewed as an improvement over the two-photon stimulated Raman process.  The following treatment of Bragg diffraction follows from \cite{estey2016precision}. Let $\omega_0$ be the transition frequency, $\ket{g}$  the ground state, and $\ket{e}$  the excited state and $\Omega \equiv \vec{d}_\text{ge}\cdot \vec{E}_0/\hbar$ be the Rabi frequency, where $\vec{d}_\text{ge}$ is the dipole moment matrix element of the atom. Consider the interaction between the atom and an electric field of the form $\vec{E} = \vec{E}_0(e^{ikz - i \omega_Lt} + e^{-ikz+i\omega_Lt}) /2 $.  In the near-resonance limit where $\Delta \equiv \omega_L - \omega_0 \ll \omega_0$, we may make the rotating wave approximation\footnote{The procedure is standard: Go to the frame rotating at $\omega_L$, eliminate the rapidly rotating term $e^{\pm i(\omega_L+\omega_0)t}$, then transform back to the stationary frame.} to obtain 
+Bragg diffraction, partially invented and developed by the Holger M\"{u}ller group at UC Berkeley, is another tool for generating (large) momentum transfers for atom interferometry. It may be viewed as an improvement over the two-photon stimulated Raman process since an atom generally absorbs the momentum of more than two photons while remaining in its electronic ground state.  The following treatment of Bragg diffraction follows from \cite{estey2016precision}. Let $\omega_0$ be the transition frequency, $\ket{g}$  the ground state, and $\ket{e}$  the excited state and $\Omega \equiv \vec{d}_\text{ge}\cdot \vec{E}_0/\hbar$ be the Rabi frequency, where $\vec{d}_\text{ge}$ is the dipole moment matrix element of the atom. Consider the interaction between the atom and an electric field of the form $\vec{E} = \vec{E}_0(e^{ikz - i \omega_Lt} + e^{-ikz+i\omega_Lt}) /2 $.  In the near-resonance limit where $\Delta \equiv \omega_L - \omega_0 \ll \omega_0$, we may make the rotating wave approximation to obtain 
 \begin{align*}
 \mathcal{H} = \underbrace{\f{\vec{p}\,^2}{2m} + \hbar \omega_0 \ketbra{e}}_{\equiv\mathcal{H}_0} - \lp \f{\hbar\Omega}{2}e^{ikz - i\omega_Lt} \ket{e}\bra{g} + h.c.\rp.
 \end{align*}
@@ -313,7 +347,7 @@ Plugging this ansatz into the Schr\"{o}dinger equation with $\mathcal{H}^\text{r
 i\hbar \dot{e}(z,t) &= \f{\vec{p}\,^2}{2m} e(z,t) - \hbar \Delta e(z,t) - \f{\hbar\Omega}{2}ug(z,t)\label{eq:2}\\
 i\hbar \dot{g}(z,t) &= \f{\vec{p}\,^2}{2m} g(z,t) - \f{\hbar\Omega^*}{2}u^*e(z,t)\label{eq:3}.
 \end{align}
-Since $\Delta \gg \Omega$, we may set $\dot{e}(z,t) = 0$. Moreover, $\Delta \gg \omega_r = \hbar k^2/2m$, the recoil frequency, and so $\vec{p}\,^2/2m\ll \hbar \Delta$ in \eqref{eq:2}. Solving for $e(z,t)$ and substituting into \eqref{eq:3} gives
+Since $\Delta \gg \Omega$, we may set $\dot{e}(z,t) = 0$ by adiabatic elimination. Moreover, $\Delta \gg \omega_r = \hbar k^2/2m$, the recoil frequency, and so $\vec{p}\,^2/2m\ll \hbar \Delta$ in \eqref{eq:2}. Solving for $e(z,t)$ and substituting into \eqref{eq:3} gives
 \begin{align}\label{eq:de}
 i\dot{g}(z,t) = -\f{\hbar}{2m}\p_z^2 g(z,t) + \f{|\Omega|^2}{4\Delta} uu^* g(z,t).
 \end{align}
@@ -344,43 +378,87 @@ i\dot{g}_{n} &= \f{\bar{\Omega}}{2} g_{n+1} e^{i2\delta t} e^{-i4(2n+1)\omega_r 
 %i\dot{g}_{-n_-} &= \f{\bar{\Omega}}{2}\lb g_{-n_- + 1} e^{i2\delta t} e^{-i4(-2n_-+1)\omega_r t}\rb\\
 i\dot{g}_{-n_--1} &= 0,
 \end{align*}
-which can be solved numerically. Figure \ref{fig:Bragg}, taken from \cite{estey2016precision}, shows the relevant momentum states of an atom and laser fields for Bragg diffraction, transferring atoms from $\ket{g,0\hbar k}$ to $\ket{g,6\hbar k}$. The detuning of the undesired $2m$-photon process $\ket{g,0,\hbar k} \to \ket{g,2m\hbar k}$ is $2m\delta - 4m^2 \omega_r$. So the undesired intermediate states (solid blue, $m\neq n$) to remain unpopulated, $\delta_m$ for $m\neq n$ must be much greater than $\bar{\Omega}$. In practice, efficient transfers are determined by a number of factors including the time-dependence of the two-photon Rabi frequency, pulse width, shape, and the momentum spread of the atoms. A detailed discussion of these parameters in \cite{estey2016precision} is beyond the scope of this paper, but it is important to mention the last point regarding moving atoms. Our discussion so far has been confined to the case where the atoms are at rest relative to the standing wave $(\delta = 0)$ caused by the Bragg beams. When $g_0(t)$ has some velocity $\Delta v$, then the ansatz \eqref{eq:ansatz} is modified, and the system of coupled differential equations becomes
+which can be solved numerically. Figure \ref{fig:Bragg} shows the relevant momentum states of an atom and laser fields for Bragg diffraction, transferring atoms from $\ket{g,0\hbar k}$ to $\ket{g,6\hbar k}$. The detuning of the undesired $2m$-photon process $\ket{g,0,\hbar k} \to \ket{g,2m\hbar k}$ is $2m\delta - 4m^2 \omega_r$. So the undesired intermediate states (solid blue, $m\neq n$) to remain unpopulated, $\delta_m$ for $m\neq n$ must be much greater than $\bar{\Omega}$. In practice, efficient transfers are determined by a number of factors including the time-dependence of the two-photon Rabi frequency, pulse width, shape, and the momentum spread of the atoms. A detailed discussion of these parameters in \cite{estey2016precision} is beyond the scope of this paper, but it is important to mention the last point regarding moving atoms. Our discussion so far has been confined to the case where the atoms are at rest relative to the standing wave $(\delta = 0)$ caused by the Bragg beams. When $g_0(t)$ has some velocity $\Delta v$, then the ansatz \eqref{eq:ansatz} is modified, and the system of coupled differential equations becomes
 \begin{align*}
 i\dot{g}_n &= \f{\bar{\Omega}}{2}\lb g_{n+1} e^{i2(\delta - 2\omega_r \Delta v/v_r)t} e^{-i4(2n+1)\omega_r t} \rb \\ 
 & \quad + \f{\bar{\Omega}}{2}g_{n-1} e^{-i2(\delta - 2\omega_r \Delta v/v_r) t} e^{i4(2n-1)\omega_r t} ,
 \end{align*}
-where $v_r = \hbar k/m$ is the recoil velocity. In this case we see that atoms with net velocity $\Delta v$ are out of resonance with the Bragg condition $\delta = 2(n_F + n_I)\omega_r$ by $2\omega_r \Delta / v_r$, but still only couple to higher or lower momentum states by multiples of $2\hbar k$. This is crucial since in practice atoms for an interferometer always have a finite velocity distribution. 
+where $v_r = \hbar k/m$ is the recoil velocity. In this case atoms with net velocity $\Delta v$ are out of resonance with the Bragg condition $\delta = 2(n_F + n_I)\omega_r$ by $2\omega_r \Delta / v_r$, but still only couple to higher or lower momentum states by multiples of $2\hbar k$. This is important since atoms for real interferometers always have some finite velocity distribution. 
 
 \begin{figure}
 	\includegraphics[width=0.47\textwidth]{Bragg.png}
-	\caption{Relevant momentum states of an atom and laser fields for Bragg diffraction. $2\delta$ is the detuning between counter-propagating Bragg beams. $\Delta$ is the single-photon detuning of the lasers from $\ket{e}$. $\delta_m$ is the multi-photon detuning to an arbitrary intermediate ground state $\ket{g,m\hbar k}$.  Figure taken from \cite{estey2016precision}.}
+	\caption{Relevant momentum states of an atom and laser fields for Bragg diffraction. $2\delta$ is the detuning between counter-propagating Bragg beams. $\Delta$ is the single-photon detuning of the lasers from $\ket{e}$. $\delta_m$ is the multi-photon detuning to an arbitrary intermediate ground state $\ket{g,m\hbar k}$. From \cite{estey2016precision}.}
 	\label{fig:Bragg}
 \end{figure}
 
 
 
-\section{Observation of a Gravitational Aharonov-Bohm Effect}
+\section{Observation of a Gravitational Aharonov-Bohm Effect}\label{sect:grav}
+Several experimental verifications of the Aharonov-Bohm effect and the (more general) existence of the Berry phase have been realized since their theoretical conceptions (\cite{tonomura1986evidence}, \cite{cimmino1989observation}). However, these experiments, which were conducted around the 1980s-1990s, have exclusively been in the electromagnetic domain and used electrons and neutrons rather than neutral atoms as matter-wave sources. Analogous measurements for the much weaker gravitational analog have only been possible since around 2010 due to recent advances in light-pulse atom interferometers and growing interests in their role as ultraprecise quantum sensors in metrology, geophysics, space, civil engineering, oil and mineral exploration, and navigation \cite{bongs2019taking}, for which a notable example is the measurement of the gravitational acceleration to $3\times 10^{-8} g$ by M. Kasevich and S. Chu \cite{kasevich1992measurement}. 
 
 
-Talk about HM's proposal 10 years ago and talk about the observation today. \cite{hohensee2012force}, \cite{overstreet2022observation}. 
+In 2018, H. M\"{u}ller and colleagues proposed a hypothetical experiment for measuring the gravitational analog of the Aharonov-Bohm effect \cite{hohensee2012force}. The setup  
+%(see Figure \ref{fig:proposal}) 
+consists of two identical spheres whose combined gravitational potential has a saddle point between the spheres $x_A$ and two other points $\pm x_B$ near the spheres' centers. Atoms of mass $m$ in the two arms of a Mach-Zehnder interferometer are moved to the two saddle points $x_A,x_B$ by a moving optical lattice and spend a sufficiently long time $T = t_2- t_1$ there, during which they accumulate phase shifts $\phi_A, \phi_B$. When the states are interfered at $t_3$, the phase difference $\Delta \phi = \phi_A - \phi_B$ is measured by detecting the population in the outputs of the interferometer, which is given by $\cos^2\Delta \phi/2$. The contribution to $\Delta \phi$ due to the gravitational Aharonov-Bohm effect, $\delta \phi_G$, is given by $m\Delta U T/\hbar$, where $\Delta U$ is the potential difference between $x_A$ and $x_B$.  While plausible, this proposal has not been realized since perturbations in the optical lattice required to transporting and suspending the atoms in the Earth's gravitational field would contaminate the interference signal \cite{roura2022quantum}.  
+
+
+%\begin{figure}
+%	\includegraphics[width=0.35\textwidth]{proposal.png}
+%	\caption{Blah. From \cite{hohensee2012force}}
+%	\label{fig:proposal}
+%\end{figure}
+
+
+
+
+
+
+
+
+\subsection{Observation of the gravitational Aharonov-Bohm effect}
+
+
+In their recent work (\cite{overstreet2022observation}), Overstreet \textit{et al.} used an atom interferometer in a ``fountain'' configuration, as shown in Figure \ref{fig:overstreet1}, which does not require an optical lattice for suspending atoms during phase accumulation stage.  A simplified\footnote{In the actual experiment, two interferometers are used, with one serving as a reference for removing contributions to the phase shift due to phase fluctuations in the laser fields. The interferometer also has additional components to account for deflections in the atom trajectories due to gravitational effects.} description of their experiment is as follows: $^{87}$Rb atoms at $1 \mu$K are launched into a 10-m vacuum tube by an optical lattice. The matter-wave beamsplitters and mirrors transfer momentum to the atoms via Bragg diffraction, the process described in Section \ref{sect:BD}.  Here, the Bragg beamsplitter pulse transfers large momenta $(52\hbar k)$ and wavepacket separation ($25$ cm), enhancing the sensitivity to the effect of the tungsten source mass at the top of the tube. The atoms receiving the 52$\hbar k$ momentum kick travel upwards to a distance $R_x$ from the tungsten mass. Finally, a mirror pulse followed by a beamsplitter pulse redirect and recombine the atoms and allow them to interfere. The atoms are then imaged by resonant scattering, and the interference pattern is observed. The measured phase shifts are in good agreement with ab-initio quantum mechanical calculations (see Figure \ref{fig:data}). 
+
+
+
+
+
+
+\begin{figure}
+	\includegraphics[width=0.25\textwidth]{overstreet1.png}
+	\caption{A fountain atom interferometer. $^{87}$Rb atoms are launched vertically from the bottom of a 10-meter vacuum tube and follow a free-fall trajectory. Laser pulses were applied at three different times to split, redirect, and recombine the wavepackets. The gravitational influence of the ring mass on the upper inteferometer arm is measured from the interference signal. From \cite{roura2022quantum}.}
+	\label{fig:overstreet1}
+\end{figure}
+
+
+
+
+\begin{figure}
+	\includegraphics[width=0.4\textwidth]{52hbark_edited.png}
+	\caption{Plot of the phase shift induced by the tungsten mass as a function of $R_x$. The red and gray curves are theoretical predictions. From \cite{overstreet2022observation}.}
+	\label{fig:data}
+\end{figure}
+
+
+
+
+
 
 
 \section{Conclusions}
 
 
-
-The subject is incredibly rich... can't possibly by covered in a few pages. There are deep theory calculating phase shifts which is beyond the scope here. There are also applications, techniques, etc that I have not mentioned.
-
-Probably list a bunch of places where the reader can read stuff. 
+In this paper, we re-introduce the notion of the Berry phase and interpret the Aharonov-Bohm effect as an example. Mirroring the role of matter-wave interferometers in the experimental verification of the magnetic Aharonov-Bohm effect, (light-pulse) atom interferometers have recently successfully detected the much weaker gravitational analog of this effect. In our brief introduction to atom interferometry, we review two atom-light interactions, stimulated Raman transitions and Bragg diffraction, which are the key ingredients to the workings of a modern light-pulse atom interferometer. The field of atom interferometry is incredibly rich with atom-light interaction theory and clever experimental techniques that are vastly beyond the scope of this paper. However, the author hopes that this paper can serve as a good starting point for those interested in the subject. 
 
 
 
 \begin{acknowledgments}
-	The author would like to thank Professor Martin Zwierlein for the exciting AMO physics lectures. 8.421: AMO I is the first \textit{official} course in atomic physics for the author. The author very much looks forward to continuing his studies in 8.422: AMO II. 
+	The author would like to thank Professor Zwierlein for the exciting AMO I lectures. 8.421 is the first \textit{official} course in atomic physics for the author, and he looks forward to continuing his studies in 8.422: AMO II. 
 \end{acknowledgments}
 
 
-
+\bibliographystyle{apsrev4-1}
 \bibliography{term_paper_references}% Produces the bibliography via BibTeX.
 
 
