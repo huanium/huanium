@@ -11,8 +11,8 @@ J = 1/2;
 I = 1;
 L = 0; 
 S = 1/2;
-B = 686:0.2:690; % units is Gauss
-Ahf = 152.1e6; % Ahf coef in Hz 
+B = 811.138:0.001:811.140; % units is Gauss
+Ahf = 152.137e6; % Ahf coef in Hz 
 %Bhf = 0.870e6; % Bhf coef in Hz
 Bhf=0;
 
