@@ -56,5 +56,12 @@ app.UIAxes.XLim = [0 x_limit];
 app.UIAxes.YLim = [0 y_limit];
 
 
-
+% check if show mark is on
+if app.ShowmarkCheckBox.Value == 1
+    % if show mark is ticked, then 
+    if not(isempty(app.x_mark_data))
+    % if there is mark data, then add mark to image
+        hold(app.UIAxes, 'on'); % Don't blow away the image.
+        app.mark_plot = plot(app.x_mark_data, app.y_mark_data, 'LineWidth', 2,'Color','green','Parent', app.UIAxes);
+    end
 end
