@@ -1,7 +1,7 @@
 function display_image(app)
 
 % make axis toolbar visible:
-app.UIAxes.Toolbar.Visible = 'on';
+app.UIAxes.Toolbar.Visible = 'off';
 app.UIAxes.Toolbar.HandleVisibility = 'on';
 
 % read the fits file
@@ -78,7 +78,7 @@ else % else reset zoom
 end
 
 % check if show mark is on
-if app.ShowmarkCheckBox.Value == 1
+if app.ShowCheckBox.Value == 1
     % if show mark is ticked, then 
     if not(isempty(app.x_mark_data))
     % if there is mark data, then add mark to image
@@ -86,6 +86,7 @@ if app.ShowmarkCheckBox.Value == 1
         app.mark_plot = plot(app.x_mark_data, app.y_mark_data, 'LineWidth', 2,'Color','green','Parent', app.UIAxes);
     end
 end
+
 
 % set limit to compare to next image
 app.oldSizeX = x_limit;
