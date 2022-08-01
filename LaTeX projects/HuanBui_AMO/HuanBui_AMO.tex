@@ -707,7 +707,7 @@ We see that for the case of a charged particle in a magnetic field $B_0$, by goi
 So far we have considered static magnetic fields and transformed between inertial and rotating frames whose angular velocity is dependent on the field strength and the gyromagnetic ratio (remember that $\Omega = \gamma B$). Now, we will consider what happens when the magnetic field itself rotates. \\
 
 
-The setup is as follows. Consider a magnetic moment $\bm{\mu}$ precessing about a static field $\bm{B}_0 = B_0 \hat{\bm{z}}$. The rate of precession, a.k.a. the Larmor frequency, is $\omega_0 = -\gamma B_0$. The motion of the moment is given by 
+The setup is as follows. Consider a magnetic moment $\bm{\mu}$ precessing about a static field $\bm{B}_0 = B_0 \hat{\bm{z}}$. The rate of precession, a.k.a. the Larmor frequency, is $\omega_0 = \gamma B_0$. The motion of the moment is given by 
 \begin{align*}
 	\mu_z = \mu\cos\theta, \quad \mu_x = \mu\sin\theta \cos\omega_0t, \quad \mu_y = -\mu\sin\theta \sin\omega_0 t.
 \end{align*}
@@ -717,7 +717,7 @@ Now we introduce an additional magnetic field $\bm{B}_1$ in the $xy$-plane which
 
 
 
-\noindent \textbf{Exact resonance:} In this case, $\omega = \omega_0 = -\gamma B_0$. In this case, the full magnetic field is 
+\noindent \textbf{Exact resonance:} In this case, $\omega = \omega_0 = \gamma B_0$. In this case, the full magnetic field is 
 \begin{align*}
 	\bm{B}(t) = B_1(\cos\omega_0 t \,\, \hat{\bm{x}} -\sin\omega_0 t \,\, \hat{\bm{y}}) + B_0 \hat{\bm{z}}
 \end{align*}
@@ -727,21 +727,100 @@ What is the motion of $\bm{\mu}$? To do this, we go the frame rotating with $\bm
 \begin{align*}
 	\bm{B}_\text{eff}(t) 
 	&= \bm{B}(t) - (\omega_0/\gamma) \hat{\bm{z}}\\
-	&= B_1(\cos\omega_0 t \,\, \hat{\bm{x}} +\sin\omega_0 t \,\, \hat{\bm{y}}) + (B_0 - \omega_0/\gamma) \hat{\bm{z}}
-	&=  
+	&= B_1(\cos\omega_0 t \,\, \hat{\bm{x}} -\sin\omega_0 t \,\, \hat{\bm{y}}) + (B_0 - \omega_0/\gamma) \hat{\bm{z}}\\
+	&= B_1 \hat{\bm{x}}'  + (B_0 - \omega_0/\gamma) \hat{\bm{z}}\\
+	&= B_1 \hat{\bm{x}}'.
 \end{align*}
 
+Notice that all time dependence is removed. In the rotating frame, the magnetic field is static in the $x$-axis and has value $B_1$, the strength of the rotating magnetic field. The motion of the moment in the rotating frame is then very simple: the problem is reduced to that for a moment in a static field. It is clear that the moment, in this rotating frame, precesses around the $B_1 \hat{\bm{x}'}$ field at angular velocity:
+\begin{align*}
+	\omega_R = \gamma B_1.
+\end{align*}
+This is called the \textbf{Rabi frequency}. Remember the difference between Larmor and Rabi frequency! If the moment initially points along the positive $z$-axis, then after $t = \pi/\omega_R$, the moment points the negative $z$-axis: it has completely turned over. 
+
+\begin{figure*}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{figures/rotatingB.png}
+\end{figure*}
 
 
-\noindent \textbf{Off-resonant behavior:} 
+In the inertial frame, the motion of the moment is a combination of precession around the $\hat{\bm{x}}'$ axis (at Rabi frequency $\omega_R = \gamma B_1$) and the rotation of $\hat{\bm{x}}'$ around the $z$-axis (at rate $\omega = \gamma B_0$). 
+
+
+ 
+
+
+
+
+\noindent \textbf{Off-resonant behavior:}  In this case, the rotating magnetic field rotates at a rate $\omega \neq \omega_0 = \gamma B_0$, and therefore:
+\begin{align*}
+	\bm{B}_\text{eff}(t) = B_1 \hat{\bm{x}}' + (B_0 - \omega_0/\gamma) \hat{\bm{z}}.
+\end{align*}
+
+There is still no time dependence, so the effective magnetic field is still static. However, this field makes an angle $\theta$ with the $z$-axis. Since the field is static, we also know that the moment (in the rotating frame) precesses about it, at a rate given by the gyromagnetic ratio $\gamma$ multiplied by the strength of the effective field: 
+\begin{align*}
+	\boxed{\Omega_R = \gamma B_\text{eff} = \gamma \sqrt{(B_0 - \omega/\gamma)^2 + B_1^2} = \sqrt{(\omega_0 - \omega)^2 + \omega_R^2}}
+\end{align*}
+This quantity is called the \textbf{generalized Rabi frequency}.\\
+
+
+Suppose the moment points along the positive $z$-axis like before. What, then, is its motion? The motion of its $x$-component is more complicated and less relevant so we will ignore that. Motivated by quantum mechanics, we will only care about its $z$-component. Finding $\mu_z(t)$ is a simple geometry problem. The answer is 
+\begin{align*}
+	\boxed{\mu_z(t) = \mu\lb 1 - 2\f{\omega_R^2}{\Omega_R^2}\sin^2 \f{\Omega_R t}{2} \rb}
+\end{align*}
+Notice that $\mu_z(t)$ never completely flips sign unless $\omega = \omega_0$. It turns out that the quantum mechanical result (which we will soon find) is identical. 
 
 
 
 
 \subsection{Rapid Adiabatic Passage: Landau-Zener Crossing}
 
+Rapid adiabatic passage is a technique for spin-flipping a population by sweeping through resonance. This ``sweeping through resonance'' is achieved when the frequency of the oscillating field ($\omega$) or the transition frequency ($\omega_0$) is \textit{slowly} varied. \\
+
+
+The problem is essentially solved in view of the last two subsections, so here we present a qualitative solution to strengthen our intuition. Consider the setup as before, with the exception that the rotating field $\bm{B}_1$ initially rotates slowly and far from resonance $\omega \ll \omega_0 = \gamma B_0$. In the rotating frame, the effective magnetic field $\bm{B}_\text{eff}$ is approximately the field in the inertial frame, but without rotation. The magnetic moment precesses about $\bm{B}_\text{eff}$, making a tight angle with it (Here we assume that the moment is initially aligned with the $z$-axis). \\
+
+Now, if we slowly sweep $\omega$ through resonance ($\omega_0$), the magnetic moment will continue to precess tightly around $\bm{B}_\text{eff}$ and will follow it adiabatically.  Eventually, when $\omega \gg \omega_0  = \gamma B_0$, the magnetic moment will be inverted. 
+
+
+\begin{figure*}[!htb]
+	\centering
+	\includegraphics[width=0.75\textwidth]{figures/LZ_following}
+\end{figure*}
+
+
+How slow is \textit{slow}? In order for this adiabatic following to happen, we must require that within one precession period $2\pi/\Omega_R$, the angle that $\bm{B}_\text{eff}$ makes with the $z$-axis must not have advanced by more than a few degrees (Remember that in the expression $B_\text{eff} = B_0 - \omega/\gamma$, the rotation rate $\omega$ is changing.) So, we must have that
+\begin{align*}
+	\Delta \theta = \dot{\theta} \cdot \Delta t = \dot \theta \f{2\pi}{\Omega_R}  \ll 2\pi \implies \dot \theta \ll \Omega_R,
+\end{align*}
+i.e., the generalized Rabi frequency $\Omega_R$ must be large compared to the rate at which $\bm{B}_\text{eff}$ is changing direction. Since $B_\text{eff}(t)= B_0 - \omega(t)/\gamma$, and the fact that this requirement is most severe near exact resonance where $\omega = \omega_0 \implies \theta = \pi/2$. So we want:
+\begin{align*}
+	\f{1}{\gamma B_1} \f{d\omega}{dt} \ll \omega_R.
+\end{align*}
+But since $\omega_R = \gamma B_1$, the condition is 
+\begin{align*}
+	\boxed{\dot{\omega} \ll \omega_R^2}
+\end{align*}
+To summarize, in order for rapid adiabatic passage to occur, we want to slowly sweep from far off-resonance through resonance. To do this, we have to compare $\omega$ to $\omega_0$ and $\dot \omega$ to $\omega_R^2$ and make sure the conditions above hold. \\
+
+
+
+
+A few things to notice. First, the argument above applies for the case where we sweep $\omega$ from above ($\gg \omega_0$) to below ($\ll \omega_0$). Second, rapid adiabatic passage is generally \textit{slower} than a spin-flip using an on-resonance $\pi$-pulse. This is because $\dot \omega$ must be small compared to $\omega_R^2$ (and thus $\omega_R$). 
+
 
 \subsection{Adiabatic Following in a Magnetic Trap}
+
+
+As an aside, LZ-crossing explains atom-losses in magneto-optical traps. This happens when an atom traverses through the zero-field region in the MOT. As it does, the rate of change of the field becomes infinitely large, and the atoms fails to follow the field adiabatically and undergoes a spin flip which removes it from the trap. The size of this region is dictated by the speed of the atom $v$ and the gyromagnetic ratio $\gamma$, and the field gradient $B'$:
+\begin{align*}
+	r = \sqrt{\f{v}{\gamma B'}}.
+\end{align*}
+This region is also called the \textbf{Majorana hole}.
+
+
+
+
 
 
 
@@ -753,6 +832,10 @@ What is the motion of $\bm{\mu}$? To do this, we go the frame rotating with $\bm
 
 
 \subsection{Expectation value of magnetic moment behaves classically}
+
+
+Now we treat this problem quantum mechanically. First, we will show that the expectation value of magnetic moment behaves classically. 
+
 
 
 \subsection{The Rabi Problem}
