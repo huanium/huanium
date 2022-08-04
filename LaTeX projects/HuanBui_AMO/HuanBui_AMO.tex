@@ -1171,7 +1171,47 @@ We see that if we sweep very quickly, then the probability that the spin remains
 \section{Density Matrix Formalism}
 
 
+In this section we will outline only some basic results. Given a state $\ket{\psi(t)} = \sum c_n(t) \ket{\psi_n}$, the \textit{density operator} associated with this (pure) state is 
+\begin{align*}
+	\rho(t) = \ket{\psi(t)} \bra{\psi(t)},
+\end{align*}
+where its matrix elements are
+\begin{align*}
+	\rho_{nm}(t) = c_m^*(t) c_n(t). 
+\end{align*}
 
+Given some operator $A$, then its matrix elements are $A_{nm} = \bra{\psi_n} A \ket{\psi_m}$. Its expectation at time $t$ is 
+\begin{align*}
+	\langle A \rangle_t = \bra{\psi(t)} A \ket{\psi(t)}. 
+\end{align*}
+
+It is clear, then, that
+\begin{align*}
+	\langle A \rangle_t = \sum_{nm} \rho_{nm}A_{mn} = \Tr[\rho(t) A]
+\end{align*}
+
+So, the density operator allows for easy evaluation of expectation values. \\
+
+States evolve in time, and so do density operators. Applying the SE for the states, we find that the time evolution of density operators is given by the von Neumann equation:
+\begin{align*}
+	i\hbar \dot \rho = [H,\rho].
+\end{align*}
+
+
+For normalized systems, $\Tr[\rho] = 1$. However, the purity of the system, given by $\Tr[\rho^2]$, is not necessarily unity:
+\begin{align*}
+	\Tr[\rho^2] \leq \Tr[\rho] = 1.
+\end{align*}
+
+$\rho$ is a more general way to represent quantum states since it does not only represent pure states but also statistical ensemble of systems similarly prepared. 
+
+For a two-level system, the density operator has the form
+\begin{align*}
+	\rho = \begin{pmatrix}
+		\rho_{11} & \rho_{12} \\ \rho_{21} & \rho_{22}
+	\end{pmatrix}.
+\end{align*}
+Generically, on-diagonal entries are called \textit{population}, while the off-diagonal entries are called \textit{coherences}. In practice, associated with these quantities are time constants representing their decay. $T_1$ and $T_2$ respectively denote these times. \\
 
 \noindent \textbf{Example:} We may parameterize the Hamiltonian
 \begin{align*}
@@ -1232,6 +1272,11 @@ Notice further that we have made no assumption about the purity of the system. T
 
 
 \section{Atomic Units}
+
+
+
+Units in AMO physics could be \textit{weird} and difficult to familiarize oneself with. These things take some time to get used to and are really only important when one needs to be careful (like doing some meticulous calculation or writing a paper). Personally I like to stick to SI units as much as possible, but Gaussian units could be neat too sometimes. \\
+
 
 
 
@@ -1335,7 +1380,480 @@ Notice further that we have made no assumption about the purity of the system. T
 \chapter{The Basics of an Atom}
 
 
+Our treatment of this chapter will be brief, as its content is better provided by standard quantum mechanics textbooks. 
 
+
+\section{Spectrosopic notation}
+
+I will assume the reader is familiar with this. 
+
+
+
+\section{Hydrogen \& One-electron atoms}
+
+Bohr postulates: 
+\begin{itemize}
+	\item Electrons protons are point charges whose interaction is coulombic at all distances
+	\item Electrons move in circular orbit about the center of mass in stationary states with orbital angular momentum $L = n\hbar$.
+	\item One quantum of radiation is emitted when the system changes between these energy levels. From here and basic physics, one finds the energy levels for hydrogen:
+	\begin{align*}
+		E_n = -\f{1}{2n^2}\lb \f{m}{h^2} \f{e^2}{(4\pi \epsilon_0)^2} \f{M}{m+M} \rb = -\f{hcR_H}{n^2}.
+	\end{align*}
+	\item The wave number of the radiation is given by the Bohr frequency criterion
+	\begin{align*}
+		\sigma_{n\to m} = (E_n - E_m)/hc.
+	\end{align*}
+\end{itemize}
+
+In this part, it is most important to remember that $E \sim 13.6 \text{ eV}/n^2 $ where $n$ is the principal quantum number. For heavier atoms, there an extra factor of $Z^2$, where $Z$ is the number of protons minus the number of inner electrons.\\
+
+
+
+\subsection{The Sch\"{o}dinger equation}
+
+I will skip most the build-up in this section and jump directly to important results to remember: In trying to solve for the wavefunctions of hydrogen, one invokes separation of variables, which introduces 3 quantum numbers $n,l,m$.
+\begin{align*}
+	\psi_{nlm}(\vec{r}) = R_{nl}(r) Y_{lm}(\theta,\phi).
+\end{align*} 
+Here $R(r)$ is the radial wavefunction, and $Y(\theta,\phi)$ is the radial wavefunction.\\
+
+
+More specifically, $Y_{lm}(\theta,\phi)$ are spherical harmonics, with $l$ being the eigenvalue of the operator for the orbital angular momentum $\bm{L}$:
+\begin{align*}
+	\boxed{L^2 Y_{lm} = l(l+1) \hbar^2 Y_{lm}}
+\end{align*}
+and $m$ is the eigenvalue of the operator for the $z$-projection of the angular momentum operator $L_z$:
+\begin{align*}
+	\boxed{L_z Y_{lm} = m\hbar Y_{lm}}
+\end{align*} 
+
+While we will not write down the differential equation for the radial part here, it is important to remember that in order to simplify it we define the \textit{reduced radial wavefunction} via 
+\begin{align*}
+	\boxed{R_{nl} = \f{y_{nl}}{r}}
+\end{align*} 
+From which the original radial equation turns into a new radial equation with an effective radial potential:
+\begin{align*}
+	\boxed{V_\text{eff}(r) = V(r) + \f{\hbar^2 l(l+1)}{2\mu r^2}}
+\end{align*}
+where $\mu$ is the reduced mass factor and $V(r)$ is the original radial potential. The second term here is sometimes called the centrifugal potential. This terms adds to the actual potential the kinetic energy of the circular motion that must be present to conserve angular momentum. \\
+
+It is nice to remember that generically, hydrogen-like atoms have wavefunctions of the form
+\begin{align*}
+	\psi_{nlm} \sim r^l e^{-Zr/na_0} f\lp \f{Zr}{na_0} \rp
+\end{align*}
+where $a_0$ is the Bohr radius. \\
+
+
+Also remember that for a given $n$, we have $l = \{0,1,2,\dots, n-1\}$. We require that $l<n$ because no bound state exists for $l \geq n$. In addition, we have that $m = \{ -l,-l+1,\dots, l-1,l \}$.
+
+
+\subsection{Expectation values of $\langle 1/r^k\rangle$ for hydrogen wavefunctions}
+
+The process for solving for the radial wavefunctions of hydrogen can be found in many intro-to-quantum mechanics textbooks, so we will not worry about it here. However, it is important to remember a few scaling rules for expectation values of $1/r^k$ for the hydrogen wavefunction, as these quantities are often related to other relevant AMO quantities. \\
+
+$k=0$ is the trivial case because that is just the normalization of the wavefunction. \\
+
+For $k=1$, we use the Virial theorem, 
+\begin{align*}
+	\bigg\langle \f{a_0}{r}\bigg\rangle = \f{1}{n^2}.
+\end{align*}
+Here, the LHS is related to the potential energy.\\
+
+For $k \geq 2$, we use Feynman-Hellmann theorem, which states that
+\begin{align*}
+	\f{dE(\lambda)}{d\lambda} = \bra{\psi(\lambda)} \f{dH(\lambda)}{d\lambda} \ket{\psi(\lambda)},
+\end{align*}
+where $E(\lambda)$ and $\psi(\lambda)$ are the eigenvalue and eigenstate of $H(\lambda)$, respectively. It turns out that
+\begin{align*}
+	\bigg\langle \f{1}{r^2} \bigg\rangle =   \f{1}{(l+1/2) n^3 a_0^2}
+\end{align*}
+
+It also turns out that there is a recursion relation for generating $\langle 1/r^k\rangle$, but only the first couple of outputs are relevant. For $k=3$:
+\begin{align*}
+	\bigg\langle \f{a_0^3}{n^3} \bigg\rangle &=  \f{1}{l(l+1/2)(l+1) n^3}.
+\end{align*}
+
+One more scaling rule: for hydrogenic atoms,
+\begin{align*}
+	\boxed{\abs{\psi_{n00}(0)}^2 \sim \lp \f{Z}{a_0 n} \rp^3}
+\end{align*}
+
+
+\subsection{Quantum defects}
+
+We won't worry about this, but just to summarize: Consider a hydrogenic atom. We may ask how $E_n$ scales to lowest order. The answer is 
+\begin{align*}
+	E_n \sim \f{Z^2}{(n-\delta)^2}
+\end{align*}
+or equivalently, 
+\begin{align*}
+	E_n  = \f{Z^2R}{n^2} + 2R\f{\delta}{n^3} + \dots 
+\end{align*}
+for small $\delta$, which is called the \textit{quantum defect}. Here $Z$ is the number of protons minus the number of inner electrons. \\
+
+
+How does one derive this? The answer is perturbation theory. Suppose that the Hamiltonian for this atom is the usual hydrogen Hamiltonian plus a perturbative part. 
+\begin{align*}
+	H = H_0 + H',
+\end{align*}
+where $H'$ is relevant for \textbf{stuff localized near the nucleus}. As a result, the energy shift is 
+\begin{align*}
+	\Delta E = \bra{\psi_{nl}} H' \ket{\psi_{nl}} \sim \abs{\psi_{nlm}(0)}^2 \sim \f{1}{n^3} \implies \Delta E = 2R\f{\delta}{n^3}
+\end{align*}
+
+
+\section{Some exercises:}
+
+\noindent \textbf{1. Determination of the fine structure constant, $\al$}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item Our goal is to write $\al$ in terms of $f_\infty = cR_\infty$ and $f_e = m_ec^2/h$. This can be done using the definitions. From $\al =e^2/4\pi \epsilon_0 \hbar c$ we find 
+	\begin{align*}
+		\al^2 = \f{e^4}{(4\pi \epsilon_0)^2 \hbar^2 c^2} = \f{1}{c^2} f_\infty \f{4\pi \hbar}{m_e} = f_\infty \f{2h}{m_ec^2} = \f{2f_\infty}{f_e}
+	\end{align*} 
+	where we have used the definition:
+	\begin{align*}
+		f_\infty = c R_\infty = c\f{m_ee^4}{8 \epsilon_0^2 h^3 c }  =\f{m_ee^4}{8 \epsilon_0^2 h^3 } = \f{m_ee^4}{(4\pi\epsilon_0 \hbar )^2 4\pi \hbar }.
+	\end{align*}
+	So, 
+	\begin{align*}
+		\boxed{\al = \sqrt{\f{2f_\infty}{f_e} }}
+	\end{align*}
+	From here, we see that 
+	\begin{align*}
+		\al = \sqrt{\f{2cR_\infty}{m_e c^2/h}}
+	\end{align*}
+	which depends only on the experimental values $R_\infty$ and $h/m_e$. The speed of light $c$ is \textit{defined}. 
+	
+	
+	
+	
+	\item The de Broglie wavelength for a neutron beam of velocity $v$ is 
+	\begin{align*}
+		\lambda = \f{h}{m_n v}. 
+	\end{align*}
+	Therefore we see that by measuring $v$ and $\lambda$ we can measure the ratio $h/m_n$. 
+	
+	\item The momentum that an atom attains when absorbing a photon of frequency $\nu$ can be derived from conservation of momentum: 
+	\begin{align*}
+		mv_R = \f{h\nu}{c} \implies \f{h}{m} = \f{cv_R}{\nu}.
+	\end{align*}
+	
+	\item Let's say that an atom absorbs a photon and gets a velocity $v_R$. Assuming that we are working in the non-relativistic limit, the atom sees oppositely Doppler-shifted $\nu_2$ and $\nu_1$:
+	\begin{align*}
+		&\nu_2' = \nu_2 \lp 1 + \f{v_R}{c} \rp\\
+		&\nu_1' = \nu_1 \lp 1 - \f{v_R}{c} \rp
+	\end{align*}
+	Since we want $\nu_2' = \nu_1'$ which is on resonance with the atoms, we find that
+	\begin{align*}
+		v_R = c\lp \f{\nu_1- \nu_2}{\nu_1 + \nu_2}\rp.
+	\end{align*}
+	In the limit where $v_R \ll c$, we may take $\nu = \nu_1 \approx \nu_2$, so that $v_R = h\nu / mc$ and 
+	\begin{align*}
+		v_R = \f{h\nu}{mc} = \f{c}{2\nu}\Delta \nu \implies \Delta \nu = \f{2h\nu^2}{mc^2} \implies \Delta \omega = \f{2\hbar k^2}{m} \implies \boxed{\f{\hbar}{m} = \f{\Delta \omega}{2k^2}}
+	\end{align*}
+	where $\nu = \omega/2\pi$ and $k = \omega/c$.
+	
+	
+	
+	
+	\item By conservation of energy, we must have, for the $m \to m' + \gamma$ transition,
+	\begin{align*}
+		mc^2 = m'c^2 + pc \implies p = \f{h}{\lambda} = c \Delta m  \implies \boxed{\f{h}{\Delta m} = c\lambda}
+	\end{align*}
+	where $p$ is the momentum of the photon and $m'<m$. 
+\end{enumerate}
+
+
+
+\noindent \textbf{2. Ground state energy of the helium atom.}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item Suppose that both electrons are in the 1s state and that the spin wavefunction is anti-symmetric, then the two-electron spatial wavefunction is the product of the single-electron (normalized) wavefunctions $\psi_{100}(\vec{r})$:
+	\begin{align*}
+		\Psi(\vec{r}_1, \vec{r}_2) 
+		&= \psi_{100}(\vec{r}_1)\psi_{100}(\vec{2})\\
+		&= \lb \f{1}{\sqrt{\pi}} \lp \f{Z_\text{He}}{a_0} \rp^{3/2}  e^{-Z_\text{He} r_1/a_0}\rb 
+		\lb \f{1}{\sqrt{\pi}} \lp \f{Z_\text{He}}{a_0} \rp^{3/2}  e^{-Z_\text{He} r_2/a_0} \rb\\
+		&= \f{1}{\pi} \lp \f{Z_\text{He}}{a_0} \rp^3 e^{-Z_\text{He}(r_1 + r_2)/a_0}.
+	\end{align*}
+	With this, we may calculate the interaction energy $\langle e^2/r_{12}\rangle$ as follows: 
+	\begin{align*}
+		\bigg\langle \f{e^2}{r_{12}}\bigg\rangle 
+		&= \f{1}{\pi^2}\lp \f{2}{a_0} \rp^6 \int d\phi_1 d\theta_1 dr_1    d\phi_2 d\theta_2 dr_2 \, r_1^2\sin\theta_1  r_2^2\sin\theta_2 \, \f{1}{\abs{\vec{r}_1 - \vec{r}_2}}\exp\lb \f{-4 (r_1 + r_2)}{a_0} \rb.
+	\end{align*}
+	This is rather complicated, so we make the following simplification. Since we only care about the difference $\vec{r}_1 - \vec{r}_2$, we may take $\vec{r}_1$ to be the $\hat z$-axis for the $\vec{r}_2$ integration. As we integrate through $\vec{r}_1$, this $\hat{z}$-axis will change, but the variables $\theta_1,\phi_1$ will simply integrate out. The point is that with this logic we may take
+	\begin{align*}
+		\abs{\vec{r}_1 - \vec{r}_2} = \sqrt{r_1^2 + r_2^2 - 2r_1r_2\cos(\theta_2)} 
+	\end{align*}
+	rather than a complicated formula for the distance between two points in spherical coordinates (which involves all angles $\theta_1,\theta_2,\phi_1,\phi_2$ -- I won't show the full formula here, but it can be derived by going back to Cartesian coordinates). In any case, the integral can be rewritten and evaluated in Mathematica (or by hand if the problem-solver is feeling adventurous):
+	\begin{align*}
+		\bigg\langle \f{e^2}{r_{12}}\bigg\rangle 
+		= \f{1}{\pi^2}\lp \f{2}{a_0} \rp^6  \int_{\mathbb{R}^3} d\phi_1 d\theta_1 dr_1 r_1^2\sin\theta_1  \int_{\mathbb{R}^3}   \, 
+		\f{d\phi_2 d\theta_2 dr_2 r_2^2\sin\theta_2}{\sqrt{r_1^2 + r_2^2 - 2r_1r_2\cos(\theta_2)}}\exp\lb \f{-4 (r_1 + r_2)}{a_0} \rb
+		= \boxed{\f{5e^2}{4a_0}}
+	\end{align*}  
+	
+	What is this energy in eV? Working in SI units, the energy is given by 
+	\begin{align*}
+		\bigg\langle \f{e^2}{r_{12}}\bigg\rangle = \f{1}{4\pi \epsilon_0} \lp \f{5e^2}{4a_0} \rp \approx 34.014 \text{ eV}. 
+	\end{align*}
+	The ground state energy is therefore 
+	\begin{align*}
+		E_g = -108.848 \text{ eV} + 34.014 \text{ eV} = \boxed{-74.831 \text{ eV}}
+	\end{align*}
+	which is much closer to the measured value of $-79.006 \text{ eV}$.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+		(*define \psi_total^2*)
+		In[1]:= f = (1/Sqrt[Pi])*(2/a0)^(3/2)*
+		Exp[-2 r1/a0]*(1/Sqrt[Pi])*(2/a0)^(3/2)*Exp[-2 r2/a0]
+		
+		Out[1]= (8 E^(-((2 r1)/a0) - (2 r2)/a0))/(a0^3 \[Pi])
+		
+		(*Evaluate integral*)
+		In[2]:= e^2*
+		Integrate[
+		f^2*1/Sqrt[r1^2 + r2^2 - 2 r1*r2*Cos[t2]]*r2^2*Sin[t2]*r1^2*
+		Sin[t1], {r1, 0, Infinity}, {r2, 0, Infinity}, {t1, 0, Pi}, {t2, 0,
+			Pi}, {p1, 0, 2*Pi}, {p2, 0, 2*Pi}]
+		
+		Out[2]= ConditionalExpression[(5 e^2)/(4 a0), Re[a0] > 0]
+	\end{lstlisting}
+	
+	
+	
+	
+	
+	\item Let us now use variational method to obtain the ground state energy for helium, assuming only the interaction energy $\langle e^2/r_{12}\rangle$ is present. To this end, let us take the trial wavefunction:
+	\begin{align*}
+		\psi(\vec{r}_1, \vec{r}_2) = \phi(\vec{r}_1)\phi{\vec{r}_2} = \lb \f{1}{\sqrt{\pi} } \lp \f{Z'}{a_0}\rp^{3/2} e^{-Z'r_1/a_0} \rb \lb \f{1}{\sqrt{\pi} } \lp \f{Z'}{a_0}\rp^{3/2} e^{-Z'r_2/a_0} \rb = \f{1}{\pi}\lp \f{Z'}{a_0} \rp^3 e^{-Z'(r_1 + r_2)/a_0}.
+	\end{align*}
+	The original Hamiltonian in SI units is 
+	\begin{align*}
+		\ham = -\f{\hbar^2}{2m}\lp \nabla^2_1 + \nabla_2^2  \rp - \f{e^2}{4\pi \epsilon_0}\lp \f{2}{r_1} + \f{2}{r_2}\rp  +  \f{e^2}{4\pi \epsilon_0}\lp \f{1}{\abs{\vec{r}_1 - \vec{r}_2}}\rp 
+	\end{align*}
+	Now since we are introducing the variational parameter $Z'$, we may rewrite the Hamiltonian to include $Z'$ as 
+	\begin{align*}
+		\ham = \underbrace{-\f{\hbar^2}{2m}\lp \nabla^2_1 + \nabla_2^2  \rp - \f{e^2}{4\pi \epsilon_0}\lp \f{Z'}{r_1} + \f{Z'}{r_2}\rp}_{\ham_0}  +  \f{e^2}{4\pi \epsilon_0}\lp \f{Z'-2}{r_1} + \f{Z'-2}{r_2} + \f{1}{\abs{\vec{r}_1 - \vec{r}_2}}\rp.
+	\end{align*}
+	which has been intentionally put in the form where the trial wavefunction is an eigenstate of $\ham_0$, which we may refer to as the ``unperturbed'' Hamiltonian. With this, we may evaluate the expectation value of the energy, in Gaussian units\footnote{The conversion to Gaussian units is fairly easy: we simply rescale the Hamiltonian so that energy is counted in units of $e^2/a_0$ -- I won't show the details here.}:
+	\begin{align*}
+		\langle \ham \rangle 
+		&= \langle \ham_0 \rangle + e^2 \bigg\langle \f{Z'-2}{r_1} + \f{Z'-2}{r_2} + \f{1}{\abs{\vec{r}_1 - \vec{r}_2}} \bigg\rangle \\
+		&= 2Z'^2 \lp \f{-e^2}{2a_0} \rp + e^2 \lb \f{2Z'(Z'-2)}{a_0} + \f{5Z'}{8a_0}  \rb
+	\end{align*} 
+	where we have evaluated the terms $\langle 1/r_1\rangle = \langle 1/r_2\rangle$ in Mathematica. The interaction term is also evaluated in Mathematica in a similar way as in the preceeding part. 
+	
+	
+	\textbf{Interpretation:} The free parameter $Z'$ can be thought of as an effective nuclear charge. By having $Z'\neq 2$ we are saying that the electrons influence each other not just through the Coulomb interaction but also through the \textit{shielding} the nucleus: One electron always sees the nucleus plus a negative cloud due to the other electron, hence it sees an effective nuclear charge of less than 2. 
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+		(*evaluate integral for <1/r1> = <1/r2> terms*)
+		
+		In[25]:= e^2*
+		Integrate[
+		g^2*(Z - 2)/r1*r2^2*Sin[t2]*r1^2*Sin[t1], {r1, 0, Infinity}, {r2, 0,
+			Infinity}, {t1, 0, Pi}, {t2, 0, Pi}, {p1, 0, 2*Pi}, {p2, 0, 2*Pi},
+		Assumptions -> {Z/a0 > 0}]
+		
+		Out[25]= (e^2 (-2 + Z) Z)/a0
+	\end{lstlisting}
+	
+	
+	\item Using calculus, we find the improved ground state energy:
+	\begin{align*}
+		E_g = \min_{Z'} \lp -Z'^2 +2Z'(Z'-2) + \f{5 Z'}{8} \rp \f{e^2}{a_0} = -\f{729}{256}\f{e^2}{a_0} \approx \boxed{-77.489 \text{ eV}}
+	\end{align*}
+	which is attained at $Z' = 27/16 = 1.6875 < 2$.\\
+	
+	Mathematica code:
+	\begin{lstlisting}
+		In[27]:= h[Z_] := -Z^2 + (5 Z)/8 + 2 Z (Z - 2);
+		
+		In[29]:= Solve[D[h[z], z] == 0, z]
+		
+		Out[29]= {{z -> 27/16}}
+		
+		In[30]:= h[27/16]
+		
+		Out[30]= -(729/256)
+		
+		In[32]:= N[27/16]
+		
+		Out[32]= 1.6875
+	\end{lstlisting}
+	
+	
+	%	\item \textbf{(Just for Fun) } What if we introduce correlations into the trial wavefunctions? Consider the following trial (unnormalized) wavefunction:
+	%	\begin{align*}
+		%	\psi = e^{-c_1(r_1+r_2)}(1+c_2r_{12} + c_3(r_1 - r_2)^2).
+		%	\end{align*}
+	%	Using the Hamiltonian:
+	%	\begin{align*}
+		%	\ham = -\f{\hbar^2}{2m}\lp \nabla^2_1 + \nabla_2^2  \rp - \f{e^2}{4\pi \epsilon_0}\lp \f{2}{r_1} + \f{2}{r_2}\rp  +  \f{e^2}{4\pi \epsilon_0}\lp \f{1}{\abs{\vec{r}_1 - \vec{r}_2}}\rp 
+		%	\end{align*}
+	%	Going to Gaussian units, we find 
+	%	\begin{align*}
+		%	\ham^G = -\f{e^2}{2a_0} \lp \nabla^2_1 + \nabla_2^2  \rp - \f{e^2}{a_0}\lp \f{2}{r_1} + \f{2}{r_2} + \f{1}{\abs{\vec{r}_1 - \vec{r}_2}} \rp.
+		%	\end{align*}
+	%	Now we calculate $\langle \ham \rangle$:
+	%	\begin{align*}
+		%	blah
+		%	\end{align*}
+\end{enumerate}
+
+
+
+
+
+
+\noindent \textbf{3. Energy shifts in hydrogen due to the size of the proton.}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item The potential $\phi(r)$ produced by a uniformly charged sphere with
+	\begin{align*}
+		\rho = \begin{cases}
+			\rho_0 &\quad (r<a) \\ 
+			0 &\quad (r>a)
+		\end{cases}
+	\end{align*}
+	is the solution to the following boundary-value problem:
+	\begin{align*}
+		\begin{cases}
+			\nabla^2 \phi = \rho/\epsilon_0 \\
+			\phi(\infty) = 0
+		\end{cases}
+	\end{align*}
+	Obviously we may solve this problem in two regions: inside and outside the sphere. However, it is probably easiest to do this by looking at the electric field $\vec{E}(\vec{r})$. By Gauss's law, we have
+	\begin{align*}
+		\vec{E}(r>a) = \f{Q}{4\pi \epsilon_0 r^2} \hat{r} = \f{\rho}{3 \epsilon_0 } \f{a^3}{r^2} \hat{r}
+	\end{align*}
+	and 
+	\begin{align*}
+		\vec{E}(r<a) = \f{Q_\text{encl}}{4\pi \epsilon_0 r^2} \hat{r} = \f{\rho}{ 3\epsilon_0} \f{r^3}{r^2} \hat{r} = \f{\rho}{3\epsilon_0} r \hat{r}.
+	\end{align*}
+	From here we have calculate the electric potential:
+	\begin{align*}
+		\phi(r>a) = -\int_\infty^r \f{\rho}{3 \epsilon_0 } \f{a^3}{r^2} \,dr = \f{\rho}{3\epsilon_0} \f{a^3}{r}  
+	\end{align*}
+	\begin{align*}
+		\phi(r<a) = -\int_\infty^a \f{\rho}{3 \epsilon_0 } \f{a^3}{r^2} \,dr -\int_a^r \f{\rho}{3\epsilon_0} r\,dr = \f{\rho}{3\epsilon_0} \lp a^2 - \f{1}{2}r^2 + \f{1}{2}a^2 \rp = \f{\rho a^2}{6\epsilon_0} \lp 3 - \f{r^2}{a^2} \rp. 
+	\end{align*}
+	For convenience, let us rewrite the potentials in terms of the total charge on the sphere $Q = 4\pi \rho a^3/3$:
+	\begin{align*}
+		&\phi(r>a) = \f{kQ}{r} \\
+		&\phi(r<a) = \f{kQ}{2a}\lp 3 - \f{r^2}{a^2} \rp  
+	\end{align*}
+	
+	
+	\item 
+	We are interested in the Hamiltonian
+	\begin{align*}
+		\ham = -\f{\hbar^2}{2m} \nabla^2 + V_\text{finite}(r)
+	\end{align*}
+	where $V_\text{finite}(r)$ represents the total potential energy of the electron after including the effects due to the finite size of the proton. To find the energy shift due to this effect from energy due to $V(r) \sim e^2/r$, we must first find $\ham_\text{pert}$, the pertubation Hamiltonian. To this end, we may write
+	\begin{align*}
+		\ham = \underbrace{-\f{\hbar^2}{2m} \nabla^2 - \f{e^2}{4\pi \epsilon_0 r}}_{\ham_0} + \underbrace{\f{e^2}{4\pi \epsilon_0 r} + V_\text{finite}(r)}_{\ham_\text{pert}}.
+	\end{align*}
+	
+	Consider the $\psi_{100}$ wavefunction for hydrogen. To first-order, the energy shift (in Gaussian units) is given by 
+	\begin{align*}
+		\Delta E(n=1,l=0) &= \bra{\psi_{100}} \ham_\text{pert} \ket{\psi_{100}} \\ 
+		&= \int \psi_{100}^*(\vec{r}) \lb \f{e^2}{r} + e\phi(r)  \rb  \psi_{100}(\vec{r})  r^2\sin\theta \,dr d\theta d\phi  \\
+		&= \cancel{\int_\text{out} \psi_{100}^*(\vec{r}) \lb \f{e^2}{r} - \f{e^2}{r}  \rb \psi_{100}(\vec{r}) r^2\sin\theta \,dr d\theta d\phi} \\
+		&\quad\quad\quad\quad + \int_\text{in} \psi_{100}^*(\vec{r}) \lb \f{e^2}{r} - \f{e^2}{2r_p}\lp 3 - \f{r^2}{r_p^2} \rp  \rb \psi_{100}(\vec{r})  r^2\sin\theta \,dr d\theta d\phi \\
+		&= \f{1}{\pi a_0^3}\int_0^{r_p} \int_0^{\pi}\int_0^{2\pi} e^{-2r/a_0} \lb \f{e^2}{r} - \f{e^2}{2r_p}\lp 3 - \f{r^2}{r_p^2} \rp  \rb  r^2 \sin\theta\,dr d\theta d\phi \\
+		&= \f{e^2}{2a_0 r_p^3}\lb 3a_0^3 - 3a_0 r_p^2 + 2r_p^3 - 3a_0 e^{-2r_p/a_0}(a_0 + r_p)^2 \rb \\
+		&\approx \boxed{\f{2e^2}{5a_0} \lp \f{r_p}{a_0} \rp^2} - \f{e^2}{3a_0}\lp \f{r_p}{a_0} \rp^3 + \mathcal{O}\lp \lp \f{r_p}{a_0}\rp ^4\rp 
+	\end{align*}
+	where we have used the fact that the radius of the proton $r_p$, which is on the order of femtometers, is much smaller than the Bohr radius, which is the order of an Angstrom.  We observe that the finite-size nucleus shifts the 1S  state energy \textbf{up}. 
+	
+	
+	The numerical value for this first order correction is
+	\begin{align*}
+		\Delta E(n=1,l=0) = \f{4}{5} \times 13.6 \text{ eV } \times  \lp \f{0.9 \times 10^{-15} \text{ m}}{5.29 \times 10^{-11} \text{ m}} \rp^2 \approx \boxed{3.148 \times 10^{-9} \text{ eV}} 
+	\end{align*}
+	Converting this to frequency we find $\omega (n=1,l=0) \approx 2\pi \cdot 761 \text{ kHz}$. \\
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+		(*define psi_100*)
+		In[4]:= psi100 = (1/Sqrt[Pi])*(1/a0)^(3/2)*Exp[-r/a0];
+		
+		(*Evaluate integral*)
+		In[5]:= Integrate[
+		psi100*psi100*(e^2/r - (e^2/(2*rp))*(3 - r^2/rp^2))*r^2*Sin[t], {r, 
+			0, rp}, {t, 0, Pi}, {p, 0, 2 Pi}] // FullSimplify
+		
+		Out[5]= (e^2 (3 a0^3 - 3 a0 rp^2 + 2 rp^3 - 
+		3 a0 E^(-((2 rp)/a0)) (a0 + rp)^2))/(2 a0 rp^3)
+		
+		(*get corrections term by term by expanding the exponential*)
+		In[29]:= FullSimplify[Series[Exp[-x], {x, 0, 6}]] /. {x -> 2*rp/a0}
+		
+		Out[29]= SeriesData[2 a0^(-1) rp, 0, {1, -1, 
+			Rational[1, 2], 
+			Rational[-1, 6], 
+			Rational[1, 24], 
+			Rational[-1, 120], 
+			Rational[1, 720]}, 0, 7, 1]
+		
+		In[32]:= 1/(2 a0 rp^3)
+		e^2 (3 a0^3 - 3 a0 rp^2 + 2 rp^3 - 
+		3 a0 (1 - (2 rp)/a0 + 1/2 ((2 rp)/a0)^2 - 1/6 ((2 rp)/a0)^3 + 
+		1/24 ((2 rp)/a0)^4 - 1/120 ((2 rp)/a0)^5 + 
+		1/720 ((2 rp)/a0)^6) (a0 + rp)^2) // Expand
+		
+		Out[32]= (2 e^2 rp^2)/(5 a0^3) - (e^2 rp^3)/(3 a0^4) + (2 e^2 rp^4)/(
+		15 a0^5) - (2 e^2 rp^5)/(15 a0^6)
+	\end{lstlisting}
+	
+	
+	
+	\item For the 2S state, we may repeat the calculation above but for $n=2$. The wavefunction is 
+	\begin{align*}
+		\psi_{200}(\vec{r}) = \f{1}{4\sqrt{2 \pi} a_0^{3/2}} \lb 2 - \f{r}{a_0} \rb e^{-r/2a_0}.
+	\end{align*}
+	Using the same technique as above we find that
+	\begin{align*}
+		\Delta E(n=2,l=0) 
+		&= \bra{\psi_{200}} \ham_\text{pert} \ket{\psi_{200}} \\
+		&= \int_0^{r_p} \int_0^{\pi}\int_0^{2\pi} \psi^*_{200}(\vec{r}) \lb \f{e^2}{r} - \f{e^2}{2r_p}\lp 3 - \f{r^2}{r_p^2} \rp  \rb \psi_{200}(\vec{r}) r^2 \sin\theta\,drd\theta d\phi \\
+		&= \frac{e^2 \left(336 a_0^7-24 a_0^5 r_p^2+4 a_0^4 r_p^3-6
+			a_0^3 e^{-r_p/a_0} \left(56 a_0^4+56 a_0^3
+			r_p+24 a_0^2 r_p^2+6 a_0
+			r_p^3+r_p^4\right)\right)}{16 a_0^5 r_p^3}\\
+		&\approx \boxed{\f{e^2}{20a_0} \lp \f{r_p}{a_0} \rp^2} - \f{e^2}{24 a_0}\lp \f{r_p}{a_0} \rp^3 + \mathcal{O}\lp \lp \f{r_p}{a_0}\rp ^4\rp 
+	\end{align*}
+	
+	
+	
+	Now let us look at the full energy level diagram for the 1S-2S transition. Without the finite-size nucleus effect, the spacing between the 1S and 2S can be calculated using the Rydberg formula:
+	\begin{align*}
+		E_{12} = \f{hc}{\lambda_{12}} = hc R_H \lp \f{1}{1^2} - \f{1}{2^2} \rp = \f{3}{4} \times  13.6 \text{ eV}.
+	\end{align*}
+	We may convert $E_{12}$ to $\omega_{12} = 2\pi \cdot 2.466 \times 10^{15} \text{ Hz}$. With the finite-size nucleus, the 1S state energy is up-shifted more than 2S. Therefore, spacing between 1S and 2S is reduced. This reduction is 
+	\begin{align*}
+		\Delta = \Delta E(n=1,l=0) - \Delta E(n=2,l=0) = \lp \f{2}{5} - \f{1}{20} \rp \f{e^2}{a_0} \lp \f{r_p^2}{a_0} \rp^2 = \f{7e^2}{20a_0} \lp \f{r_p}{a_0} \rp^2. 
+	\end{align*}
+	
+\end{enumerate}
 
 
 
@@ -1435,6 +1953,18 @@ Notice further that we have made no assumption about the purity of the system. T
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\chapter{My Favorite Atoms}
+
+\section{Sodium-23}
+
+
+\section{Lithium-6}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 \chapter{Miscellaneous}
@@ -1443,17 +1973,23 @@ This chapter is dedicated to miscellaneous topics that are typically not ``stand
 
 \section{Atom interferometry and related topics}
 
-\section{Avoided crossing}
-
 \section{Feshbach resonance}
 
+\section{Evaporative Cooling}
 
+\section{Raman Sideband Cooling}
 
+\section{How does a MOT work?}
 
+\section{Common Magnetic Traps}
 
+\section{Absorption Imaging}
 
+\section{Polarization Rotation Imaging}
 
+\section{How to count atoms?}
 
+\section{How to lock a laser?}
 
 
 
