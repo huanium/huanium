@@ -7,9 +7,21 @@ if ~exist('thres','var')
     % third parameter does not exist, so default it to something
     thres = 0;
 end
+
+% turn nan and inf to 0 so that they don't count
+OD(isinf(OD)) = 0;
+OD(isnan(OD)) = 0;
+
+IC(isinf(IC)) = 0;
+IC(isnan(IC)) = 0;
+
+% count
 num=(OD+IC)*pixelsize/sigma;
 woa=img(:,:,2)-img(:,:,3);
 num(woa<thres)=0;
 % num(num>50)=0;
+
+
+
 end
 
