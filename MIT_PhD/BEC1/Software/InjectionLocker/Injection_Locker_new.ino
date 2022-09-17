@@ -36,7 +36,6 @@ int trigPointTwo = 140;
 int prepCounter = 0;
 float quality = 0.96;
 float qualityRAW = quality + 0.02;
-int updateMAXCounter = 100;
 float peakToThres = 0.75;
 
 int peakThresholdBooster = round(boosterMAX * peakToThres);
@@ -90,6 +89,12 @@ int MOTPeakOld = 0;
 
 // updateMAX is run once every some iterations 
 int updateMAX_after = 200;
+// print lock status once every some iterations:
+int printLockStatus_after = 200;
+
+// counters:
+int updateMAXCounter = 0;
+int printLockStatus_COUNTER = 0;
 
 
 /////////////////////////////////////////////////////////////////////
@@ -381,10 +386,10 @@ void loop()
   /////////////////////////////////////////////////////////
 
   int oldVal = analogRead(A0);
-  delayMicroseconds(10000); //wait 10 ms before finding next val
+  delayMicroseconds(2000); //wait 2 ms before finding next val
   int val = analogRead(A0);
 
-  delayMicroseconds(1500);
+  delayMicroseconds(1000);
 
   if (val >= trigLevel and oldVal <= trigLevel) // rising edge
   {
@@ -470,7 +475,7 @@ void loop()
         ///////// LOCK LOGIC ////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////
 
-        // SLOWER
+        // SLOWER        
         if (slowerPeak < peakThresholdSlower)
         {
           if (slowerLocked < 3)
@@ -682,7 +687,15 @@ void loop()
 
         ///////////// UPDATE LOCK STATE & PREP FOR NEXT ITERATION ///////
         // print status
-        printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak, boosterLoc, trigLevel);
+        if (printLockStatus_COUNTER > printLockStatus_after)
+        {
+          printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak, boosterLoc, trigLevel);
+          printLockStatus_COUNTER = 0; // reset
+        }
+        else
+        {
+          printLockStatus_COUNTER++;
+        }
 
         // the end
         boosterPeakOld = boosterPeak;
@@ -709,5 +722,7 @@ void loop()
       }
     }
   }
+
+  delayMicroseconds(10000);  // wait 10 ms
 
 }
