@@ -130,7 +130,8 @@
 \noindent Name: \textbf{Huan Q. Bui}\\
 Course: \textbf{8.370 - QC}\\
 Problem set: \textbf{\#1}\\
-Due: Wednesday, Sep 21, 2022.
+Due: Wednesday, Sep 21, 2022\\
+Collaborators: None
 \end{framed}
 
 
@@ -251,7 +252,8 @@ Mathematica code:
 \end{enumerate}
 
 
-\noindent \textbf{3. \textbf{von Neumann measurement}}
+\noindent \textbf{3. \textbf{von Neumann measurement}}\\
+
 We have 
 \begin{align*}
 	\ket{\psi} = \f{1}{\sqrt{3}} \ket{0} + \f{1+i}{\sqrt{3}} \ket{1}.
@@ -260,32 +262,124 @@ Suppose we make a von Neumann measurement in the basis
 \begin{align*}
 	\lc \f{1}{\sqrt{2}} (\ket{0} + i\ket{1}), \f{1}{\sqrt{2}} (\ket{0} - i\ket{1})     \rc
 \end{align*}
+then
+\begin{align*}
+	&\Pr\lp  \f{1}{\sqrt{2}} (\ket{0} + i\ket{1}) \rp = \abs{\lp \f{1}{\sqrt{2}} (\bra{0} - i\bra{1}) \rp \lp \f{1}{\sqrt{3}} \ket{0} + \f{1+i}{\sqrt{3}} \ket{1} \rp }^2 = \abs{\f{1}{\sqrt{6}} - i \f{i+1}{\sqrt{3}}}^2 = \abs{\f{2-i}{\sqrt{6}}}^2 = \boxed{\f{5}{6}}\\
+	&\Pr\lp \f{1}{\sqrt{2}} (\ket{0} - i\ket{1})  \rp = \abs{\lp \f{1}{\sqrt{2}} (\bra{0} + i\bra{1}) \rp\lp \f{1}{\sqrt{3}} \ket{0} + \f{1+i}{\sqrt{3}} \ket{1} \rp}^2 = \abs{\f{1}{\sqrt{6}} + i \f{1+i}{\sqrt{3}}}^2 = \abs{\f{i}{\sqrt{6}}}^2 = \boxed{\f{1}{6}} 
+\end{align*}
+
+
 
 
 \noindent \textbf{4. Qutrit}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item The quickest way to do this problem is writing the down matrix $U$ that transforms $\{\ket{0},\ket{1},\ket{2}\}$ to $\{\ket{a},\ket{b}, \ket{c}\}$ and check that it is unitary. Since unitary matrices are invertible and preserve orthonormality, we can conclude that $\{\ket{a},\ket{b}, \ket{c}\}$ is an orthonormal basis. From the problem statement, we immediately that 
+	\begin{align*}
+		U = \begin{pmatrix}
+			1/2 & 1/2 & 1/\sqrt{2} \\
+			1/\sqrt{2} & -1\sqrt{2} & 0 \\
+			1/2 & 1/2 & -1/\sqrt{2}
+		\end{pmatrix}
+	\end{align*}
+	Since $U^\dagger U = \mathbb{I}$ (checked in Mathematica), $U$ is indeed unitary and we're done. 
 	
-	\item 
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+		In[26]:= U = {{1/2, 1/2, 1/Sqrt[2]}, {1/Sqrt[2], -1/Sqrt[2], 0}, {1/2,
+				1/2, -1/Sqrt[2]}};
+		
+		In[25]:= ConjugateTranspose[U] . U
+		
+		Out[25]= {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}
+	\end{lstlisting}
+	
+	Alternatively, we could also verify that $\bra{a}\ket{b}= \bra{b}\ket{c}= \bra{c}\ket{a}=0$ and $\braket{a} = \braket{b} = \braket{c} = 1$:
+	\begin{align*}
+		&\bra{a}\ket{b} = \f{1}{2}\f{1}{2} - \f{1}{\sqrt{2}} \f{1}{\sqrt{2}} + \f{1}{2}\f{1}{2} = 0 \,\,\checkmark\\
+		&\bra{b}\ket{c} = \f{1}{2}\f{1}{\sqrt{2}} - \f{1}{\sqrt{2}} 0 - \f{1}{2}\f{1}{\sqrt{2}} = 0 \,\,\checkmark \\
+		&\bra{c}\ket{a} = \f{1}{\sqrt{2}}\f{1}{2} + 0 \f{1}{\sqrt{2}} - \f{1}{\sqrt{2}} \f{1}{2} = 0 \,\,\checkmark\\
+		&\braket{a} = \f{1}{2}\f{1}{2} + \f{1}{\sqrt{2}} \f{1}{\sqrt{2}} + \f{1}{2}\f{1}{2} = 1 \,\,\checkmark\\
+		&\braket{b} = \f{1}{2}\f{1}{2} + \f{-1}{\sqrt{2}} \f{-1}{\sqrt{2}} + \f{1}{2}\f{1}{2} = 1 \,\,\checkmark\\
+		&\braket{c} = \f{1}{\sqrt{2}} \f{1}{\sqrt{2}} + \f{-1}{\sqrt{2}} \f{-1}{\sqrt{2}} = 0\,\,\checkmark 
+	\end{align*}
+	
+	
+	
+	\item Given 
+	\begin{align*}
+		\ket{\psi} = \f{1}{\sqrt{3}} (\ket{0} + \ket{1} - \ket{2}),
+	\end{align*}
+	we find 
+	\begin{align*}
+		&\Pr(\ket{a}) = \abs{\bra{a}\ket{\psi}}^2 = \abs{ \f{1}{2}\f{1}{\sqrt{3}} + \f{1}{\sqrt{2}}\f{1}{\sqrt{3}} + \f{1}{2}\f{-1}{\sqrt{3}}}^2 = \boxed{\f{1}{6}} \\
+		&\Pr(\ket{b}) = \abs{\bra{b}\ket{\psi}}^2 = \abs{ \f{1}{2}\f{1}{\sqrt{3}} + \f{-1}{\sqrt{2}}\f{1}{\sqrt{3}} + \f{1}{2}\f{-1}{\sqrt{3}}}^2 = \boxed{\f{1}{6}}  \\
+		&\Pr(\ket{c}) = \abs{\bra{c}\ket{\psi}}^2 = \abs{\f{1}{\sqrt{2}}\f{1}{\sqrt{3}} +\f{-1}{\sqrt{2}}\f{-1}{\sqrt{3}}  }^2 = \boxed{\f{2}{3}} 
+	\end{align*}
 \end{enumerate}
 
 \noindent \textbf{5. Perfect polarizing filter } 
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Suppose the incoming photons have polarization state $\ket{\psi} = \cos\theta \ket{H} + e^{i\phi}\sin\theta \ket{V}$ (where $H$ stands for horizontal and $V$ stands for vertical). The first polarizing filter is horizontal, so $\cos^2\theta$ of the photons make it through and become $\ket{H}$. The second filter is at 45$^\circ$ relative to the first polarizing filter (and thus $\ket{H}$). So, half the photons make it through and their state becomes $\ket{D}$ where $D$ stands for diagonal. A similar scenario applies for the last polarizing filter. So, \textbf{25\%} of photons coming out of the first polarizing filter make it out of the final one. 
 	
-	\item 
+	\item Intuition tells us that we get the most light through if the angle of the polarizing filter relative to the polarization state is as small as possible, so we want to put the 30$^\circ$-rotated polarizing filter after the horizontal polarizing filter, followed by the 60$^\circ$-rotated one. Let's check. 
+	
+	For the case described above, $\cos^2 30^\circ = 3/4$ of the photons coming through the horizontal filter make it through the 30$^\circ$-rotated filter. Next 60$^\circ$-rotated filter is at $60^\circ - 30^\circ = 30^\circ$ relative to the polarization state of photons leaving the 30$^\circ$-rotated filter, so we once again lose $1/4$ of the incoming photons. Finally, the vertical polarizing filter is at $30^\circ$ relative to the incoming photons, so we lose yet another $1/4$. So, 
+	\begin{align*}
+		\f{3}{4} \times \f{3}{4} \times \frac{3}{4} = \f{27}{64}
+	\end{align*}
+	of the photons coming out of the first polarizing filter make it out of the final one. Assuming the incoming photons are randomly polarized, we end up with $\textbf{27/128}$ of the initial light. \\
+	
+	
+	On the other hand, if we put the $60^\circ$-rotated filter first, then only $\cos^2 60^\circ = 1/4$ of the photons leaving the horizontally rotated filter make it through. The subsequent $30^\circ$-rotated filter is $-30^\circ$ relative to the polarization state leaving the $60^\circ$-rotated filter, so $3/4$ of the incoming photon make it through. Finally, the vertical filter is at $60^\circ$ relative to the polarization state leaving the $30^\circ$ filter, so $1/4$ of the incoming photons make it through. We see that only 
+	\begin{align*}
+		\f{1}{4}\times \f{3}{4} \times \f{1}{4} = \f{3}{64}
+	\end{align*}
+	of the photons coming out of the first polarizing filter make it out of the final one, which is less than what we have in the first case.   
 \end{enumerate}
 
-\noindent \textbf{6. }
+\noindent \textbf{6. Copying a qubit?}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item After measuring the challenger's qubit in the $\{ \ket{0}, \ket{1} \}$ basis and and making two copies of the resulting state, we are guaranteed to hand the challenger either two qubits in state $\ket{0}$ or two qubits in state $\ket{1}$. 
 	
-	\item 
+	With probability $1/4$ the challenger gives us a qubit in state $\ket{0}$. After our measurement, we return two qubits in state $\ket{0}$ to the challenger with probability 1. The challenger measures both qubits in the $\{\ket{0}, \ket{1}\}$ basis and finds both to be in $\ket{0}$ with probability 1. We succeed. In this scenario we always succeed.
+		
+	A similar argument applies if the challenger gives us a qubit in $\ket{1}$. We also always succeed
 	
-	\item 
+	With probability $1/4$ the challenger gives us a qubit in $\ket{+}$. We measure this qubit and obtain $\ket{0}$ with probability $1/2$ and $\ket{1}$ with probability $1/2$. No matter which two qubits we give the challenger ($\ket{0}\ket{0}$ or $\ket{1}\ket{1}$), he measures and finds them both in $\ket{+}$ with probability $1/4$. In this scenario, we succeed $ 1/4 $ of the time.  
+	
+	A similar argument applies if the challenger gives us a qubit in $\ket{-}$. We also succeed with probability $1/4$ in this scenario. 
+	
+	In summary, we pass the test with probability
+	\begin{align*}
+		\Pr(\text{pass}) = \f{1}{4}\times 1 + \f{1}{4}\times 1 + \f{1}{4}\times \f{1}{4} + \f{1}{4}\times \f{1}{4} = \boxed{\f{5}{8}}
+	\end{align*}
+	
+	\item Suppose that we now measure the provided qubits in the basis 
+	\begin{align*}
+		\lc \ket{\theta_+}, \ket{\theta_-} \rc \equiv \lc \cos\theta \ket{0} + \sin\theta \ket{1}, -\sin\theta\ket{0} + \cos\theta \ket{1} \rc.
+	\end{align*}
+	
+	With probability $1/4$ the challenger gives us a qubit in $\ket{0}$. With probability $\cos^2\theta$ we find it in $\ket{\theta_+}$ and $\sin^2\theta$ in $\ket{\theta_-}$. If we give two $\ket{\theta_+}$ to the challenger, he finds them both in $\ket{0}$ with probability $\cos^4\theta$. If we give two $\ket{\theta_-}$, he finds them both in $\ket{1}$ with probability $\sin^4\theta$. So, in this scenario we succeed with probability $\cos^6\theta+\sin^6\theta$. 
+	
+	By the same analysis, we will also succeed the probability $\cos^6\theta+\sin^6\theta$ if the challenger give us $\ket{1}$. 
+	
+	With probability $1/4$ the challenger gives us a qubit in $\ket{+}$. With probability $(\cos\theta+\sin\theta)^2/2$ we find it in $\ket{\theta_+}$ and $(\cos\theta-\sin\theta)^2/2$ in $\ket{\theta_-}$. If we give two $\ket{\theta_+}$ to the challenger, he finds them both in $\ket{0}$ with probability $(\cos\theta+\sin\theta)^4/4$. If we give two $\ket{\theta_-}$, he finds them both in $\ket{1}$ with probability $(\cos\theta-\sin\theta)^4/4$. So, in this scenario we succeed with probability $(\cos\theta+\sin\theta)^6/8 + (\cos\theta-\sin\theta)^6/8$.\\
+	
+	By the same analysis, we will also succeed the probability $(\cos\theta+\sin\theta)^6/8 + (\cos\theta-\sin\theta)^6/8$ if the challenger give us $\ket{-}$. 
+	
+	In summary, we pass the test with probability:
+	\begin{align*}
+		\Pr(\text{pass}) =& \f{1}{4}\times (\cos^6\theta+\sin^6\theta) + \f{1}{4}\times (\cos^6\theta+\sin^6\theta) \\
+		&\quad + \f{1}{4}\times \lb \f{(\cos\theta+\sin\theta)^6}{8} + \f{(\cos\theta-\sin\theta)^6}{8}\rb  + \f{1}{4}\times \lb \f{(\cos\theta+\sin\theta)^6}{8} + \f{(\cos\theta-\sin\theta)^6}{8}\rb\\
+		=& \,\boxed{\f{5}{8}}
+	\end{align*}
+	
+	\item From this analysis in Part (b), the choice of $\theta$ does not matter. 
 \end{enumerate}
 
 

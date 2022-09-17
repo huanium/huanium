@@ -4,12 +4,15 @@ import time
 import winsound # Windows only
 import requests
 
-# ARDUINO 
-arduino = serial.Serial(port='COM3', baudrate=115200, timeout=.1)
+
+# SOUND
 slower_frequency = 256*4  # C in Hz
 repump_frequency = 330*4  # E in Hz (311 for Eb)
 MOT_frequency = 392*4  # G in Hz
+beep_frequency = 440  # A in Hz
 beep_duration = 200 # ms
+# ARDUINO 
+arduino = serial.Serial(port='COM3', baudrate=115200, timeout=.1)
 
 def read_arduino():
     data = arduino.readline()
@@ -27,30 +30,50 @@ def slack(message: str):
 
 def main():
     try:
+        unlock_instances = 0
+        previous_lock_state = True
         while True:
             lines = []
+            lock_state = True
             arduino_printout = read_arduino()
             if "Trigger Level" in arduino_printout:
                 lines.append(arduino_printout)
-                # collect printouts until the next trigger level line comes in
                 arduino_printout = read_arduino()
-                while not("Trigger Level" in arduino_printout):
+                while not("===================" in arduino_printout): # signals end of output
                     lines.append(arduino_printout)
                     arduino_printout = read_arduino()
                         
                 for s in lines:
                     if not(s==''):
                         print(s)
-                        time.sleep(0.1)
-                        if "Slower unlocked!" in s:
-                            winsound.Beep(slower_frequency, beep_duration)
-                        elif "Repump unlocked!" in s:
-                            winsound.Beep(repump_frequency, beep_duration)
-                        elif "MOT unlocked!" in s:
-                            winsound.Beep(MOT_frequency, beep_duration)
-                            # slack(message = "MOT unlocked!")	
+                        if "unlocked!" in s:
+                            lock_state = False
+                print("===================")
+                        
+                if lock_state == False:
+                    unlock_instances += 1
+                    winsound.Beep(beep_frequency, beep_duration)
+                    if  unlock_instances%10==1:
+                        # slack if Li lasers are previously locked or every 50 shots if still unlocked
+                        # slack("Something unlocked! Recovering...")
+                        print(" ")
+                        print("Recovering...")
+                        print(" ")
+                    previous_lock_state = False
+
+                elif previous_lock_state == False:
+                    unlock_instances = 0
+                    print(" ")
+                    print("Recovered!")
+                    print(" ")
+                    previous_lock_state = True
+                    # slack("Recovered!")
+
+
     except KeyboardInterrupt:
+        print(" ")
         print("Stopping monitor... Done")
+        print(" ")
 
 if __name__ == "__main__":
 	main()
