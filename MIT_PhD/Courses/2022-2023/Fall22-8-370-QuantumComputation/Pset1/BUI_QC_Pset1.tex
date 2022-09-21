@@ -131,7 +131,7 @@
 Course: \textbf{8.370 - QC}\\
 Problem set: \textbf{\#1}\\
 Due: Wednesday, Sep 21, 2022\\
-Collaborators: None
+Collaborators: None, but reviewed answers with Christina Yu and Shira Asa-El
 \end{framed}
 
 
@@ -169,6 +169,12 @@ Collaborators: None
 	\end{pmatrix},
 	\end{align*}
 	which is also unitary since $U^\dagger U = U_A U_B^\dagger U_B U_A^\dagger = U_AU_A^\dagger = \mathbb{I}$. It is clear that $U\ket{j} = \ket{v_j}$, but to see explicitly, suppose we apply $U$ to $\ket{1}$. The application of $U_A^\dagger$ returns the column vector $\ket{e_1} = (1\,\, 0 \,\,0 \,\, \dots)^\top$. The subsequent application of $U_B$ therefore returns its first column, which is $\ket{v_1}$, as desired. 
+	
+	More succinctly, we can write
+	\begin{align*}
+		\boxed{U = \sum_{i=1}^d \ket{v_i}\bra{i}}
+	\end{align*}
+	It is clear that $U\ket{j} = \sum_i \ket{v_i}\delta_{i,j} = \ket{v_j} $, as desired. 
 
 	
 	
@@ -184,7 +190,7 @@ Collaborators: None
 	\begin{align*}
 		\sum_{i=1}^d \ket{v_i} \bra{v_i} = \sum_{i=1}^d \sum_{k=1}^d  |(v_i)_k|^2 \Pi_k = \sum_{k=1}^d \sum_{i=1}^d  |(v_i)_k|^2 \Pi_k = \sum_{k=1}^d\Pi_k = \mathbb{I},
 	\end{align*}
-	where we have used the fact that the given basis is orthonormal in the third equality and resolution of identity with standard projections in the last equality. 
+	where we have used the fact that the given basis is orthonormal in the third equality and resolution of identity with standard projections $\Pi_k$ in the last equality. 
 	
 \end{enumerate}
 
@@ -197,13 +203,13 @@ Collaborators: None
 	\begin{align*}
 		\ket{v_i}\bra{v_i} - \ket{\bar{v}_i} \bra{\bar{v}_i} = x_i \sigma_x + y_i \sigma_y + z_i \sigma_z
 	\end{align*}
-	where $\ket{\bar{v}_i}$ is orthogonal to $\ket{v_i}$. Because the quantum system is 2-dimensional and $\ket{v_i}\perp \ket{\bar{v_i}}$, we have that $\{ \ket{v_i}, \ket{\bar{v}_i} \}$ is an orthonormal basis. This implies
+	where $\ket{\bar{v}_i}$ is orthogonal to $\ket{v_i}$. Because the quantum system is 2-dimensional and $\ket{v_i}\perp \ket{\bar{v_i}}$ are normalized quantum states, we have that $\{ \ket{v_i}, \ket{\bar{v}_i} \}$ is an orthonormal basis. This implies
 	\begin{align*}
 		\ket{v_i}\bra{v_i} + \ket{\bar{v}_i}\bra{\bar{v}_i} = \mathbb{I}.
 	\end{align*}
-	Combine this with the equation above, we find that
+	Combine this with the equation above, we find
 	\begin{align*}
-		\ket{v_i} \bra{v_i} = \f{\mathbb{I} + x_i \sigma_x + y_i \sigma_y + z_i \sigma_z }{2} = \f{\mathbb{I} + \vec{p}_i\cdot \vec{\sigma}}{2}.
+		\ket{v_i} \bra{v_i} = \f{\mathbb{I} + x_i \sigma_x + y_i \sigma_y + z_i \sigma_z }{2} = \boxed{\f{\mathbb{I} + \vec{p}_i\cdot \vec{\sigma}}{2}}
 	\end{align*}
 
 
@@ -218,9 +224,11 @@ Collaborators: None
 	\end{align*}
 	Let $\theta$ denote the angle between $\ket{v_1}$ and $\ket{v_2}$ and $\theta'$ denote the angle between $\vec{p}_1$ and $\vec{p}_2$, then 
 	\begin{align*}
-		\theta = \arccos \abs{\bra{v_1}\ket{v_2}} = \arccos \lp \sqrt{ \f{1 + \cos\theta'}{2} } \rp = \arccos \lp \abs{\cos\f{\theta'}{2}} \rp \to \f{\theta'}{2}
+		\theta = \arccos \abs{\bra{v_1}\ket{v_2}} =
+		\arccos \lp \sqrt{ \f{1 + \abs{\vec{p}_1}\abs{\vec{p}_2}\cos\theta'}{2} } \rp
+		= \arccos \lp \sqrt{ \f{1 + \cos\theta'}{2} } \rp = \arccos \lp \abs{\cos\f{\theta'}{2}} \rp \to \f{\theta'}{2}
 	\end{align*}
-	If we ignore a possible minus sign due to relative orientation, the angle $\theta$ between quantum states is \textbf{half} the angle between associated points on the Bloch sphere. This makes sense, as \textit{orthogonal} quantum states occupy opposite poles on the Bloch sphere. \\
+	If we ignore a possible minus sign due to relative orientation, the angle $\theta$ between quantum states is \textbf{half} the angle between associated points on the Bloch sphere. This makes sense, as \textit{orthogonal} quantum states occupy \textit{opposite poles} on the Bloch sphere. \\
 	
 	
 	
@@ -254,7 +262,7 @@ Mathematica code:
 
 \noindent \textbf{3. \textbf{von Neumann measurement}}\\
 
-We have 
+\noindent We have 
 \begin{align*}
 	\ket{\psi} = \f{1}{\sqrt{3}} \ket{0} + \f{1+i}{\sqrt{3}} \ket{1}.
 \end{align*} 
@@ -274,7 +282,7 @@ then
 \noindent \textbf{4. Qutrit}
 
 \begin{enumerate}[label=(\alph*)]
-	\item The quickest way to do this problem is writing the down matrix $U$ that transforms $\{\ket{0},\ket{1},\ket{2}\}$ to $\{\ket{a},\ket{b}, \ket{c}\}$ and check that it is unitary. Since unitary matrices are invertible and preserve orthonormality, we can conclude that $\{\ket{a},\ket{b}, \ket{c}\}$ is an orthonormal basis. From the problem statement, we immediately that 
+	\item The quickest way to do this problem is writing the down matrix $U$ that transforms $\{\ket{0},\ket{1},\ket{2}\}$ to $\{\ket{a},\ket{b}, \ket{c}\}$ and check that it is unitary. Since unitary matrices are invertible and preserve orthonormality, we can conclude that $\{\ket{a},\ket{b}, \ket{c}\}$ is an orthonormal basis. From the problem statement, we immediately have that 
 	\begin{align*}
 		U = \begin{pmatrix}
 			1/2 & 1/2 & 1/\sqrt{2} \\
@@ -376,8 +384,17 @@ then
 	\begin{align*}
 		\Pr(\text{pass}) =& \f{1}{4}\times (\cos^6\theta+\sin^6\theta) + \f{1}{4}\times (\cos^6\theta+\sin^6\theta) \\
 		&\quad + \f{1}{4}\times \lb \f{(\cos\theta+\sin\theta)^6}{8} + \f{(\cos\theta-\sin\theta)^6}{8}\rb  + \f{1}{4}\times \lb \f{(\cos\theta+\sin\theta)^6}{8} + \f{(\cos\theta-\sin\theta)^6}{8}\rb\\
-		=& \,\boxed{\f{5}{8}}
+		=& \,\boxed{\f{5}{8}} \quad\quad \text{(simplified in Mathematica)}
 	\end{align*}
+
+	Mathematica code:
+	\begin{lstlisting}
+		In[50]:= P = (1/2)*(Cos[\[Theta]]^6 + Sin[\[Theta]]^6) + 
+		2*((1/4)*(1/8)*(Cos[\[Theta]] + Sin[\[Theta]])^6 + (1/4)*(1/
+		8)*(Cos[\[Theta]] - Sin[\[Theta]])^6) // FullSimplify
+		
+		Out[50]= 5/8
+	\end{lstlisting}
 	
 	\item From this analysis in Part (b), the choice of $\theta$ does not matter. 
 \end{enumerate}
