@@ -1,0 +1,692 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.370 - QC}\\
+Problem set: \textbf{\#2}\\
+Due: Wednesday, Sep 28, 2022\\
+Collaborators: 
+\end{framed}
+
+\noindent \textbf{1. Tensor products}\\
+
+\noindent Starting with
+\begin{align*}
+	\ket{\psi} = \f{1}{\sqrt{2}}\lp \ket{01} - \ket{10} \rp
+\end{align*}
+we have
+\begin{align*}
+	&\ket{\psi_x} = \sigma_x \otimes \mathbb{I} \ket{\psi} = \f{1}{\sqrt{2}}\lp \ket{11} - \ket{00} \rp\\
+	&\ket{\psi_y} = \sigma_y \otimes \mathbb{I} \ket{\psi} = \f{1}{\sqrt{2}}\lp i \ket{11} + i \ket{00}   \rp = \f{i}{\sqrt{2}}\lp \ket{11} + \ket{00} \rp\\
+	&\ket{\psi_z} = \sigma_z\otimes \mathbb{I} \ket{\psi} = \f{1}{\sqrt{2}}\lp \ket{01} + \ket{10} \rp  
+\end{align*}
+Now we check that they are all orthogonal:
+\begin{align*}
+	&\braket{\psi_x} = \f{1}{2}\lp \braket{11} + \braket{00} - \bra{00}\ket{11} - \bra{11}\ket{00}  \rp  = 1 \\
+	&\braket{\psi_y} = \frac{1}{2}\lp  \braket{11} + \braket{00}  +  \bra{00}\ket{11} + \bra{11}\ket{00}  \rp = 1\\
+	&\braket{\psi_z} = \frac{1}{2}\lp \braket{01} + \braket{10} + \bra{01}\ket{10} + \bra{10}\ket{01}  \rp = 1 \\
+	&\bra{\psi_x}\ket{\psi_y} =  \f{i}{2}\lp \braket{11} - \braket{00} + \bra{11}\ket{00} - \bra{00}\ket{11} \rp = 0\\
+	& \bra{\psi_y} \ket{\psi_z} = \f{-i}{2}\lp \bra{11}\ket{01} + \bra{11}\ket{10} + \bra{00}\ket{01} +  \bra{00}\ket{10}\rp = 0 \\
+	&\bra{\psi_z}\ket{\psi_x} = \f{1}{2}\lp \bra{01}\ket{11} + \bra{10}\ket{11} - \bra{01}\ket{00} - \bra{10}\ket{00} \rp = 0
+\end{align*}
+
+
+
+\noindent \textbf{2. Observable with repeated eigenvalues}
+
+\begin{align*}
+	M = \begin{pmatrix}
+		2 & 2 & 2 \\
+		2 & -1 & 1 \\
+		2 & 1 & -1 
+	\end{pmatrix}
+\end{align*}
+\begin{enumerate}[label=(\alph*)]
+	\item Computing the eigenvalues associated with the with given eigenvalues is easy:
+	\begin{align*}
+		\vec{v}_1 = (2\,\,1\,\,1)^\top: &\quad\quad \lambda = 4\\
+		\vec{v}_2 = (1\,\,-1\,\,-1)^\top: &\quad\quad \lambda = -2\\
+		\vec{v}_3 = (0\,\,1\,\,-1)^\top: &\quad\quad \lambda = -2
+	\end{align*}
+	Before forming orthogonal projections, we need to make sure that the provided vectors form an orthogonal basis. By inspection, we need to first normalize the vectors to get
+	\begin{align*}
+		\ket{\psi_1} = \f{\vec{v}_1}{\norm{\vec{v}_1}} = \f{1}{\sqrt{6}}(2\,\,1\,\,1)^\top , 
+		\quad \ket{\psi_2} = \f{\vec{v}_2}{\norm{\vec{v}_2}} = \f{1}{\sqrt{3}}  (1\,\,-1\,\,-1)^\top, 
+		\quad 
+		\ket{\psi_3} = \f{\vec{v}_3}{\norm{\vec{v}_3}} = \f{1}{\sqrt{2}} (0\,\,1\,\,-1)^\top.
+	\end{align*}
+	Now we check for orthonormality. We can do this by inspection so I won't write out the algebra. 
+	\begin{align*}
+		&\braket{\psi_1} = \braket{\psi_2} = \braket{\psi_3} = 1\\
+		&\bra{\psi_1}\ket{\psi_2} = \bra{\psi_2}\ket{\psi_3} = \bra{\psi_3}\ket{\psi_1} = 0.
+	\end{align*}
+	With these conditions satisfied, the orthogonal projections are:
+	\begin{align*}
+		&\Pi_1 = \ketbra{\psi_1} = \f{1}{6}\begin{pmatrix}
+			4 & 2 & 2 \\
+			2 & 1 & 1\\
+			2 & 1 & 1
+		\end{pmatrix}\\
+		&\Pi_2 = \ketbra{\psi_2} = \f{1}{3}\begin{pmatrix}
+			1 & -1 & -1 \\
+			-1 & 1 & 1\\
+			-1 & 1 & 1
+		\end{pmatrix}\\
+		&\Pi_3 = \ketbra{\psi_3} = \f{1}{2}\begin{pmatrix}
+			0 & 0 & 0 \\
+			0 & 1 & -1 \\
+			0 & -1 & 1
+		\end{pmatrix}
+	\end{align*}
+	Sanity check:
+	\begin{align*}
+		\Pi_1 + \Pi_2 + \Pi_3 = \mathbb{I} \,\, \checkmark\\
+		\Pi_1 \Pi_2 = \Pi_2 \Pi_3 = \Pi_3 \Pi_1 = \mathcal{O} \,\, \checkmark
+	\end{align*}
+
+
+
+	All the algebra is from above is verified in Matheatica. Mathematica calculations:
+	\begin{lstlisting}
+		(*eigv check*)
+		In[53]:= M = {{2, 2, 2}, {2, -1, 1}, {2, 1, -1}};
+		In[5]:= Eigenvalues[M]
+		Out[5]= {4, -2, -2}
+		
+		(*vectors in the ONB*)
+		p1 = {2, 1, 1}/Norm[{2, 1, 1}];
+		p2 = {1, -1, -1}/Norm[{1, -1, -1}];
+		p3 = {0, 1, -1}/Norm[{0, 1, -1}];
+		
+		(*check ONB*)
+		In[14]:= Dot[p1, p2]
+		Out[14]= 0
+		In[15]:= Dot[p2, p3]
+		Out[15]= 0
+		In[16]:= Dot[p3, p1]
+		Out[16]= 0
+		In[21]:= Dot[p1, p1]
+		Out[21]= 1
+		In[22]:= Dot[p2, p2]
+		Out[22]= 1
+		In[23]:= Dot[p3, p3]
+		Out[23]= 1
+		
+		(*Compute projectors*)
+		In[46]:= M1 = KroneckerProduct[p1, p1]
+		Out[46]= {{2/3, 1/3, 1/3}, {1/3, 1/6, 1/6}, {1/3, 1/6, 1/6}}
+		In[47]:= M2 = KroneckerProduct[p2, p2]
+		Out[47]= {{1/3, -(1/3), -(1/3)}, {-(1/3), 1/3, 1/3}, {-(1/3), 1/3, 1/3}}
+		In[48]:= M3 = KroneckerProduct[p3, p3]
+		Out[48]= {{0, 0, 0}, {0, 1/2, -(1/2)}, {0, -(1/2), 1/2}}
+		
+		(*Check resolution of identity:*)
+		In[52]:= M1 + M2 + M3
+		Out[52]= {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}
+		In[205]:= M1 . M2
+		Out[205]= {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}
+		In[206]:= M2 . M3
+		Out[206]= {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}
+		In[207]:= M3 . M1
+		Out[207]= {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}
+	\end{lstlisting}
+	
+	
+	\item We are given 
+	\begin{align*}
+		\ket{\psi} = \f{2}{3}\ket{0} + \f{2}{3}\ket{1} - \f{1}{3}\ket{2}.
+	\end{align*}
+	When this qutrit is measured, the possible outcomes are $4$ and $-2$, with probabilities:
+	\begin{align*}
+		\Pr(4) = \bra{\psi}\Pi_1 \ket{\psi} = \f{4}{9}\quad \text{and} \quad
+		\Pr(-2) = \bra{\psi}\Pi_2 \ket{\psi} + \bra{\psi}\Pi_3 \ket{\psi} = \f{5}{9}.
+	\end{align*}
+	There are two ways to get the answer. By inspection, we can immediately see that the probability of measuring $4$ is $4/9$, since the coefficient for $\ket{0}$ is $2/3$. From there, we can conclude that the probability of measuring $-2$ is simply $1-4/9=5/9$. The other way to find these values is by directly doing the algebra. The Mathematica code below has the explicit calculations.
+	
+	\begin{lstlisting}
+		In[58]:= \[Psi] = (2/3)*p1 + (2/3)*p2 - (1/3)*p3;
+		
+		(*Pr(4)*)
+		In[71]:= Transpose[\[Psi]] . M1 . \[Psi] // FullSimplify
+		Out[71]= 4/9
+		
+		(*Pr(-2)*)
+		In[72]:= Transpose[\[Psi]] . M2 . \[Psi] +  Transpose[\[Psi]] . M3 . \[Psi] // FullSimplify
+		Out[72]= 5/9
+	\end{lstlisting} 	
+\end{enumerate}
+
+\noindent \textbf{3. Spin-1 particle}\\
+
+\noindent We are given a spin-1 particle with three quantum states $\ket{1},\ket{0},\ket{-1}$. The observables corresponding to the spin along the three spatial directions are $J_x,J_y,J_z$:
+\begin{align*}
+	J_z = \begin{pmatrix}
+		1 & 0 & 0 \\
+		0 & 0 & 0 \\
+		0 & 0 & -1
+	\end{pmatrix}, \quad 
+	J_x = \f{1}{\sqrt{2}}\begin{pmatrix}
+		0 &1 &0 \\ 
+		1 &0 &1 \\
+		0 &1 &0 
+	\end{pmatrix}, \quad 
+	J_y = \f{1}{\sqrt{2}}\begin{pmatrix}
+		0 &-i &0 \\
+		i &0 &-i \\
+		0 &i &0 
+	\end{pmatrix}
+\end{align*}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item We will show that $J_x,J_z$ cannot be measured simultaneously by showing that they do not commute:
+	\begin{align*}
+		[J_x,J_z] = J_xJ_z - J_zJ_x = \f{1}{\sqrt{2}}\begin{pmatrix}
+			0 & -1 & 0 \\
+			1 & 0 & -1 \\
+			0 & 1 & 0
+		\end{pmatrix} = -i J_y \neq \mathcal{O}.
+	\end{align*}
+	Mathematica code:
+	\begin{lstlisting}
+		In[83]:= Jz = {{1, 0, 0}, {0, 0, 0}, {0, 0, -1}};
+		In[84]:= Jx = (1/Sqrt[2])*{{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
+		In[85]:= Jy = (1/Sqrt[2])*{{0, -I, 0}, {I, 0, -I}, {0, I, 0}};
+		In[87]:= Jx . Jz - Jz . Jx
+		Out[87]= {{0, -(1/Sqrt[2]), 0}, {1/Sqrt[2], 0, -(1/Sqrt[2])}, {0, 1/Sqrt[2], 0}}
+	\end{lstlisting}
+	
+	\item However, the observables $J_x^2, J_y^2,J_z^2$ all commute. We can do this by hand or use Mathematica again:
+	\begin{lstlisting}
+		(*[Jx^2,Jy^2]*)
+		In[91]:= (Jx . Jx) . (Jy . Jy) - (Jy . Jy) . (Jx . Jx)
+		Out[91]= {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}
+		
+		(*[Jy^2,Jz^2]*)	
+		In[92]:= (Jy . Jy) . (Jz . Jz) - (Jz . Jz) . (Jy . Jy)
+		Out[92]= {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}
+		
+		(*[Jz^2,Jx^2]*)
+		In[93]:= (Jz . Jz) . (Jx . Jx) - (Jx . Jx) . (Jz . Jz)
+		Out[93]= {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}
+	\end{lstlisting}
+	There are possibly multiple ways (including clever math tricks) to find the simultaneous eigenvectors for $J_x^2,J_y^2,J_z^2$. However, it turns out that we could also do this by inspection:
+	\begin{align*}
+		J_x^2 = \f{1}{2}\begin{pmatrix}
+			1 & 0 & 1 \\
+			0 & 2 & 0 \\
+			1 & 0 & 1
+		\end{pmatrix}, \quad 
+		J_y^2 = \f{1}{2}\begin{pmatrix}
+			1 & 0 &- 1 \\
+			0 & 2 & 0 \\
+			-1 & 0 & 1
+		\end{pmatrix}, \quad
+		J_z^2 = \begin{pmatrix}
+			1 & 0 & 0 \\
+			0 & 0 & 0 \\
+			0 & 0 & 1
+		\end{pmatrix}.
+	\end{align*}
+	By the form of the matrices, we can guess that the three normalized simultaneous eigenvectors are
+	\begin{align*}
+		\ket{+} = \f{1}{\sqrt{2}}(\ket{1} + \ket{-1}), \quad 
+		\ket{-} = \f{1}{\sqrt{2}}(\ket{1} - \ket{-1}), \quad
+		\ket{0} = \ket{0}.
+	\end{align*}
+	The corresponding eigenvalues can be found from the results below:
+	\begin{align*}
+		J_x^2 \ket{+} &= \ket{+} \\
+		J_x^2 \ket{-} &= 0\\
+		J_x^2 \ket{0} &= \ket{0}\\
+		J_y^2 \ket{+} &= 0\\
+		J_y^2 \ket{-} &= \ket{-}\\
+		J_y^2 \ket{0} &= \ket{0}\\
+		J_z^2 \ket{+} &= \ket{+}\\
+		J_z^2 \ket{-} &= \ket{-}\\
+		J_z^2 \ket{0} &= 0
+	\end{align*}
+	So, $J_i^2$ has spectrum $\{0,1\}$ for all $i=x,y,z$. Finally, we have
+	\begin{align*}
+		J^2 = J_x^2 + J_y^2 + J_z^2 = 2\mathbb{I}.
+	\end{align*}
+	
+	
+	
+	
+	While a lot of the calculations in this problem could be done by hand, it is faster and more accurate to do them in Mathematica:
+	\begin{lstlisting}
+		(*squaring*)
+		Jx2 = Jx . Jx;
+		Jy2 = Jy . Jy;
+		Jz2 = Jz . Jz;
+		
+		In[117]:= Jx2
+		Out[117]= {{1/2, 0, 1/2}, {0, 1, 0}, {1/2, 0, 1/2}}
+		In[118]:= Jy2
+		Out[118]= {{1/2, 0, -(1/2)}, {0, 1, 0}, {-(1/2), 0, 1/2}}
+		In[119]:= Jz^2
+		Out[119]= {{1, 0, 0}, {0, 0, 0}, {0, 0, 1}}
+		
+		
+		(*eigenvalues calcs*)
+		In[140]:= plus = (1/Sqrt[2]) {1, 0, 1};
+		In[152]:= minus = (1/Sqrt[2])*{1, 0, -1};
+		In[153]:= zero = {0, 1, 0};	
+		In[145]:= Jx2 . plus
+		Out[145]= {1/Sqrt[2], 0, 1/Sqrt[2]}
+		In[154]:= Jx2 . minus
+		Out[154]= {0, 0, 0}
+		In[149]:= Jx2 . zero
+		Out[149]= {0, 1, 0}
+		In[150]:= Jy2 . plus
+		Out[150]= {0, 0, 0}
+		In[155]:= Jy2 . minus
+		Out[155]= {1/Sqrt[2], 0, -(1/Sqrt[2])}
+		In[156]:= Jy2 . zero
+		Out[156]= {0, 1, 0}
+		In[157]:= Jz2 . plus
+		Out[157]= {1/Sqrt[2], 0, 1/Sqrt[2]}
+		In[159]:= Jz2 . minus
+		Out[159]= {1/Sqrt[2], 0, -(1/Sqrt[2])}
+		In[160]:= Jz2 . zero
+		Out[160]= {0, 0, 0}
+		
+		(*finally, total spin*)
+		In[94]:= Jx . Jx + Jy . Jy + Jz . Jz
+		Out[94]= {{2, 0, 0}, {0, 2, 0}, {0, 0, 2}}
+	\end{lstlisting}
+
+\end{enumerate}
+
+
+
+
+
+\noindent \textbf{4. Deriving Spin-1 Observables}\\
+
+\noindent In this problem we derive the matrix $J_x$ in the previous problem. Suppose we have two qubits $A$ and $B$. The observable giving the spin in the $x$-direction is 
+\begin{align*}
+	S_x = \f{1}{2}\lp \sigma_x^A\otimes \mathbb{I}^B + \mathbb{I}^A \otimes \sigma_x^B \rp.
+\end{align*}
+The 3-dimensional subspace of the 4-dimensional state space of two qubits which corresponds to the state space of a spin-1 particle is the subspace orthogonal to the state $(\ket{01}- \ket{10})/\sqrt{2}$. To avoid confusion, let us replace $0$ with $\uparrow$ and $1$ with $\downarrow$\\
+
+Since we have two qubits, we can treat them as two spin-1/2 particles, each denoted by $\ket{s,m_s}$. In this notation, we have
+\begin{align*}
+	\ket{\uparrow\uparrow} &= \ket{1/2,+1/2} \otimes \ket{1/2,+1/2}\\
+	\ket{\uparrow\downarrow} &= \ket{1/2,+1/2} \otimes \ket{1/2,-1/2}\\
+	\ket{\downarrow\uparrow} &= \ket{1/2,-1/2}\otimes \ket{1/2,+1/2}\\
+	\ket{\downarrow\downarrow} &= \ket{1/2,-1/2}\otimes \ket{1/2,-1/2}
+\end{align*}
+When the spins are added, we can express the total spin and its projection as $\ket{s,m}\in \mathcal{H}^{\otimes 2}$ where
+\begin{align*}
+	\ket{s,m} = \sum_{m_{s,1}=-s_1}^{s_1} \sum_{m_{s,2}=-s_2}^{s_2} C^{s,m}_{s_1,m_{s,1},s_2,m_{s,2}} \ket{s_1,m_{s,1}}\ket{s_2,m_{s,2}}
+\end{align*}
+where $C^{\dots}_{\dots}$'s are the Clebsch-Gordan coefficients. For this problem, the solution is rather simple. In the two-qubit Hilbert space, there is one state (the singlet) for which the total spin is zero ($s=0$), and this state is one given in the problem: $(\ket{\uparrow\downarrow}- \ket{\downarrow\uparrow})/\sqrt{2}$, and there are three states (triplet) which correspond to $s=1$ (total spin equal to 1). It turns out that these are
+\begin{align*}
+	\ket{s=1,m=+1} &= \ket{\uparrow\uparrow}\\
+	\ket{s=1,m=\,\,\,\,0} &= \f{1}{\sqrt{2}}\lp \ket{\uparrow\downarrow} + \ket{\downarrow\uparrow} \rp\\
+	\ket{s=1,m=-1} &= \ket{\downarrow\downarrow}
+\end{align*} 
+With this information, we can now construct a unitary matrix which transforms the standard basis $\{\ket{\uparrow\uparrow}, \ket{\uparrow\downarrow}, \ket{\downarrow\uparrow}, \ket{\downarrow\downarrow}\}$ into the new basis where the first elements has spin 0 and the subsequent three has spin 1: $\{ \ket{0,0}, \ket{1,1},\ket{1,0},\ket{1,-1} \}$. By inspection, this matrix is 
+\begin{align*}
+	U = \begin{pmatrix}
+		 0 & 1 & 0& 0\\
+		 1/\sqrt{2} & 0 & 1/\sqrt{2}& 0\\
+		-1/\sqrt{2} & 0 & 1/\sqrt{2}& 0\\
+		 0 & 0 & 0& 1
+	\end{pmatrix}
+\end{align*}
+We expect that a similarity transformation on $S_x$ by $U$ will take the form of a $(2\times 2)$-block diagonal matrix of the form $\text{diag}(0,Jx)$. And indeed, using Mathematica, we find that
+\begin{align*}
+	U^\dagger S_x U = \f{1}{\sqrt{2}}\begin{pmatrix}
+		0&0&0&0\\
+		0&0&1&0\\
+		0&1&0&1\\
+		0&0&1&0
+	\end{pmatrix} = \begin{pmatrix}
+	0 & \\
+	& J_x
+\end{pmatrix}.
+\end{align*}
+With this, we have
+\begin{align*}
+		J_x = \f{1}{\sqrt{2}}\begin{pmatrix}
+		0 &1 &0 \\ 
+		1 &0 &1 \\
+		0 &1 &0 
+	\end{pmatrix}, 
+\end{align*}
+as desired. \\
+
+
+Mathematica calculations:
+\begin{lstlisting}
+	In[220]:= 
+	U = {{0, 1, 0, 0}, 1/Sqrt[2]*{1, 0, 1, 0}, 
+		1/Sqrt[2]*{-1, 0, 1, 0}, {0, 0, 0, 1}};
+	
+	In[222]:= ConjugateTranspose[U] . SX . U
+	Out[222]= {{0, 0, 0, 0}, {0, 0, 1/Sqrt[2], 0}, {0, 1/Sqrt[2], 0, 1/
+			Sqrt[2]}, {0, 0, 1/Sqrt[2], 0}}
+		
+	(*displaying the result in matrix form gives Jx*)
+\end{lstlisting}
+
+
+\noindent \textbf{5. Generalized Measurements}\\
+
+
+Here we derive an example of a non-von Neumann measurement. We're given one of the three states
+\begin{align*}
+	\ket{\psi_1} = \ket{0} , \quad \ket{\psi_2} = -\f{1}{2} \ket{0} + \f{\sqrt{3}}{2}\ket{1}, \quad \ket{\psi_3} = -\f{1}{2}\ket{0} - \f{\sqrt{3}}{2}\ket{1}
+\end{align*}
+with equal probabilities. 
+
+\begin{enumerate}[label=(\alph*)]
+	\item Suppose that we make a measurement of the state in the following arbitrary basis:
+	\begin{align*}
+		\{ \ket{A} = \cos\theta \ket{0} + \sin\theta \ket{1} , \ket{B} =  -\sin\theta\ket{0} + \cos\theta\ket{1}    \}
+	\end{align*}
+	Let us focus on when we find state $\ket{A}$ after the measurement. Suppose we guess that the input state is $\ket{\psi_1}$ whenever we see state $\ket{A}$, then the probability of success is given by
+	\begin{align*}
+		\Pr_{\ket{A}\implies \ket{\psi_1}} = \f{\abs{\bra{\psi_1} \ket{A}}^2}{\abs{\bra{\psi_1} \ket{A}}^2+\abs{\bra{\psi_2} \ket{A}}^2+\abs{\bra{\psi_3} \ket{A}}^2}
+	\end{align*}
+	which comes from the fact that there are three ways we could find state $\ket{A}$ after the measurement, each contributing some probability. Plugging in the numbers, we find that
+	\begin{align*}
+		\Pr_{\ket{A}\implies \ket{\psi_1}} = \f{2}{3}\cos^2\theta \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi]
+	\end{align*}
+	Similarly, if we guess it is state $\ket{\psi_2}$ or $\ket{\psi_3}$ then the probability of success in each case is 
+	\begin{align*}
+		&\Pr_{\ket{A}\implies \ket{\psi_2}} = \f{1}{6}\lp\cos\theta - \sqrt{3}\sin\theta\rp^2 \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi] \\
+		&\Pr_{\ket{A}\implies \ket{\psi_3}} = \f{1}{6}\lp\cos\theta + \sqrt{3}\sin\theta\rp^2 \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi] 
+	\end{align*}
+	From the last three inequalities, we see that the best success probability is 2/3. \\
+	
+	Since there's nothing special about whether we pick $\ket{A}$ or $\ket{B}$ as the ''indicator,'' we expect the same result to hold if we use $\ket{B}$ instead of $\ket{A}$ and can stop here. However, it doesn't hurt to be explicit. So, following the same notation as in the argument above, we have
+	\begin{align*}
+		&\Pr_{\ket{B}\implies \ket{\psi_1}} = \f{2}{3}\sin^2\theta \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi]\\
+		&\Pr_{\ket{B}\implies \ket{\psi_2}} = \f{1}{6}\lp\sqrt{3}\cos\theta + \sin\theta\rp^2 \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi] \\
+		&\Pr_{\ket{B}\implies \ket{\psi_3}} = \f{1}{6}\lp-\sqrt{3} \cos\theta + \sin\theta\rp^2 \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi] 
+	\end{align*}
+	which is not surprisingly the same as before. \\
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+		In[159]:= (*Problem 5a*)
+		In[133]:= (*define input states*)		
+		In[128]:= v0 = {1, 0};		
+		In[129]:= v1 = {-1/2, Sqrt[3]/2};		
+		In[130]:= v2 = {-1/2, -Sqrt[3]/2};
+		
+		In[134]:= (*define measurement basis*)		
+		In[131]:= A = {Cos[\[Theta]], Sin[\[Theta]]};
+		B = {-Sin[\[Theta]], Cos[\[Theta]]};		
+		In[142]:= (*calculate inner products*)		
+		In[143]:= A0 = Dot[A, v0]^2 // FullSimplify		
+		Out[143]= Cos[\[Theta]]^2		
+		In[144]:= B0 = Dot[B, v0]^2 // FullSimplify		
+		Out[144]= Sin[\[Theta]]^2		
+		In[145]:= A1 = Dot[A, v1]^2 // FullSimplify		
+		Out[145]= 1/4 (Cos[\[Theta]] - Sqrt[3] Sin[\[Theta]])^2		
+		In[146]:= B1 = Dot[B, v1]^2 // FullSimplify		
+		Out[146]= 1/4 (Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2		
+		In[147]:= A2 = Dot[A, v2]^2 // FullSimplify		
+		Out[147]= 1/4 (Cos[\[Theta]] + Sqrt[3] Sin[\[Theta]])^2		
+		In[148]:= B2 = Dot[B, v2]^2 // FullSimplify		
+		Out[148]= 1/4 (-Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2
+		
+		In[155]:= (*if pick second basis vector as indicator*)
+		(*calculate success probabilities*)		
+		In[151]:= PrBv0 = B0/(B0 + B1 + B2) // FullSimplify		
+		Out[151]= (2 Sin[\[Theta]]^2)/3		
+		In[152]:= PrBv1 = B1/(B0 + B1 + B2) // FullSimplify		
+		Out[152]= 1/6 (Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2		
+		In[153]:= PrBv2 = B2/(B0 + B1 + B2) // FullSimplify		
+		Out[153]= 1/6 (-Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2
+		
+		In[154]:= (*if pick first basis vector as indicator*)
+		(*calculate success probabilities*)		
+		In[156]:= PrAv0 = A0/(A0 + A1 + A2) // FullSimplify		
+		Out[156]= (2 Cos[\[Theta]]^2)/3		
+		In[157]:= PrAv1 = A1/(A0 + A1 + A2) // FullSimplify		
+		Out[157]= 1/6 (Cos[\[Theta]] - Sqrt[3] Sin[\[Theta]])^2		
+		In[158]:= PrAv2 = A2/(A0 + A1 + A2) // FullSimplify		
+		Out[158]= 1/6 (Cos[\[Theta]] + Sqrt[3] Sin[\[Theta]])^2
+		
+		(*find Max*)
+		In[161]:= MaxValue[PrAv0, \[Theta]]		
+		Out[161]= 2/3		
+		In[162]:= MaxValue[PrAv1, \[Theta]]		
+		Out[162]= 2/3		
+		In[163]:= MaxValue[PrAv2, \[Theta]]		
+		Out[163]= 2/3		
+		In[164]:= MaxValue[PrBv0, \[Theta]]		
+		Out[164]= 2/3		
+		In[165]:= MaxValue[PrBv1, \[Theta]]		
+		Out[165]= 2/3		
+		In[166]:= MaxValue[PrBv2, \[Theta]]		
+		Out[166]= 2/3
+	\end{lstlisting}
+
+
+
+	
+	\item Now we take the first qubit and tensor it with a second qubit in $\ket{0}$. Consider the following states:
+	\begin{align*}
+		\{ \ket{a}, \ket{b}, \ket{c}, \ket{d}  \} = \lc \ket{11}, -\f{\al}{2}\ket{00}+\f{\sqrt{3}\al}{2}\ket{10} + \be\ket{01}, \al\ket{00} + \be\ket{01}, -\f{\al}{2}\ket{00} - \f{\sqrt{3}\al}{2}\ket{10} + \be\ket{01} \rc.
+	\end{align*}
+	In order for these to form an orthonormal basis, $\al$ and $\be$ must satisfy the following conditions:
+	\begin{align*}
+		\abs{\al}^2 + \abs{\be}^2 &= 1\\
+		-\f{\abs{\al}^2}{2} + \abs{\be}^2 &= 0 
+	\end{align*}
+	From the first two equations, we find that $\abs{\al}^2 = 2/3$ and $\abs{\be}^2 = 1/3$. Assuming $\al,\be\in \mathbb{R}$, we can let $\al = \sqrt{2/3}$ and $\be = \sqrt{1/3}$. 
+	
+	
+	\item With probability 1/3 we are given $\ket{\psi_1}$, which we transform to $\ket{\psi_1}\ket{0}$. Measuring this state in the basis above, we find 
+	\begin{align*}
+		\Pr(\ket{a}) &= 0\\
+		\Pr(\ket{b}) &= 1/6\\
+		\Pr(\ket{c}) &= 2/3 \\
+		\Pr(\ket{d}) &= 1/6 
+	\end{align*}
+	With probability 1/3 we are given $\ket{\psi_2}$, which we transform to $\ket{\psi_2}\ket{0}$. Measuring this state in the basis above, we find 
+	\begin{align*}
+		\Pr(\ket{a}) &= 0\\
+		\Pr(\ket{b}) &= 2/3\\
+		\Pr(\ket{c}) &= 1/6 \\
+		\Pr(\ket{d}) &= 1/6
+	\end{align*}
+	With probability 1/3 we are given $\ket{\psi_3}$, which we transform to $\ket{\psi_3}\ket{0}$. Measuring this state in the basis above, we find 
+	\begin{align*}
+		\Pr(\ket{a}) &= 0\\
+		\Pr(\ket{b}) &= 1/6\\
+		\Pr(\ket{c}) &= 1/6 \\
+		\Pr(\ket{d}) &= 2/3
+	\end{align*}
+	Now we make the following rules for guessing:
+	\begin{itemize}
+		\item If we measure and find $\ket{b}$ then guess $\ket{\psi_2}$
+		
+		\item If we measure and find $\ket{c}$ then guess $\ket{\psi_1}$ 
+		
+		\item If we measure and find $\ket{d}$ then guess $\ket{\psi_3}$
+	\end{itemize}
+
+	Since the cases are symmetric, the success probability is simply given by 
+	\begin{align*}
+		\Pr(\text{success}) = \f{2/3}{2/3+1/6+1/6} = \f{2}{3}
+	\end{align*}
+
+	Mathematica calculations:
+	\begin{lstlisting}
+		In[17]:= (*5b*)
+		In[60]:= a1 = {0, 0, 0, 1};
+		In[59]:= a3 = {\[Alpha], \[Beta], 0, 0};
+		In[56]:= a2 = {-\[Alpha]/2, \[Beta], \[Alpha]*Sqrt[3]/2, 0};
+		In[57]:= a4 = {-\[Alpha]/2, \[Beta], -\[Alpha]*Sqrt[3]/2, 0};
+		In[64]:= Psi1 = {1, 0, 0, 0};
+		In[62]:= Psi2 = {-1/2, 0, Sqrt[3]/2, 0};
+		In[63]:= Psi3 = {-1/2, 0, -Sqrt[3]/2, 0};
+		In[65]:= Dot[Psi2, a1]^2
+		Out[65]= 0
+		In[66]:= Dot[Psi2, a2]^2
+		Out[66]= \[Alpha]^2		
+		In[67]:= Dot[Psi2, a3]^2		
+		Out[67]= \[Alpha]^2/4		
+		In[68]:= Dot[Psi2, a4]^2		
+		Out[68]= \[Alpha]^2/4		
+		In[52]:= Dot[Psi3, a1]^2		
+		Out[52]= 0		
+		In[53]:= Dot[Psi3, a2]^2		
+		Out[53]= \[Alpha]^2/4		
+		In[54]:= Dot[Psi3, a3]^2		
+		Out[54]= \[Alpha]^2/4		
+		In[55]:= Dot[Psi3, a4]^2	
+		Out[55]= \[Alpha]^2
+	\end{lstlisting}
+
+
+\end{enumerate}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
