@@ -503,99 +503,72 @@ Mathematica calculations:
 \noindent \textbf{5. Generalized Measurements}\\
 
 
-Here we derive an example of a non-von Neumann measurement. We're given one of the three states
+\noindent Here we derive an example of a non-von Neumann measurement. We're given one of the three states
 \begin{align*}
 	\ket{\psi_1} = \ket{0} , \quad \ket{\psi_2} = -\f{1}{2} \ket{0} + \f{\sqrt{3}}{2}\ket{1}, \quad \ket{\psi_3} = -\f{1}{2}\ket{0} - \f{\sqrt{3}}{2}\ket{1}
 \end{align*}
 with equal probabilities. 
 
 \begin{enumerate}[label=(\alph*)]
-	\item Suppose that we make a measurement of the state in the following arbitrary basis:
+	
+	\item If we choose our measurement basis at arbitrary angles then whenever we measure $\ket{0}$ or $\ket{1}$, we have no way of telling which state is the input with certainty. So we may begin by  making a random guess, and the probability of getting it right is just $1/3$, since we have no extra information. \\
+	
+	\textcolor{purple}{Can we improve?} Now suppose we try to be clever and pick a special basis, say without loss of generality we pick $\{\ket{0}, \ket{1}\}$. If we measure $\ket{0}$, then again we have no way of knowing for sure which state was the input. However, if we guess that it is state $\ket{0}$ then the probability of getting that right is:
+	\begin{align*}
+		\Pr(\text{correctly guess $\ket{0}$}\,\, | \,\, \text{see} \ket{0}) =  \f{1}{1+1/4+1/4} = \f{2}{3},
+	\end{align*}
+	where $1/4$ is the probability of measuring $\ket{0}$ if the other two states were the input, and $1$ is the probability of measuring $\ket{0}$ when the input state is $\ket{0}$. 
+	
+	On the other hand, if we measure $\ket{1}$, then we know for sure the input is not $\ket{0}$. However, since the other two states are equally like to give $\ket{1}$ as the measurement result, we have no way of distinguishing which state is the input. The probability of correctly guessing it is one of the other two states, provided that our measurement results in $\ket{1}$ is $1/2$:
+	\begin{align*}
+		\Pr(\text{correctly guess $\ket{\psi_2}$}\,\, | \,\, \text{see} \ket{1}) = \Pr(\text{correctly guess $\ket{\psi_3}$}\,\, | \,\, \text{see} \ket{1}) = \f{1}{2}.
+	\end{align*}
+	So, the probability that we make a correct guess cannot exceed
+	\begin{align*}
+		\f{1}{2}\times \f{2}{3} + \f{1}{2}\times \f{1}{2} = \f{7}{12} < \f{2}{3},
+	\end{align*}
+	as desired. Here, $1/2$ is the probability of measuring $\ket{0}$ or $\ket{1}$ \textit{overall}. 
+	
+	\textcolor{purple}{But is this the best we can do?} We could be suspicious and say that perhaps we did not choose the most clever basis. So let us consider an arbitrary basis 
 	\begin{align*}
 		\{ \ket{A} = \cos\theta \ket{0} + \sin\theta \ket{1} , \ket{B} =  -\sin\theta\ket{0} + \cos\theta\ket{1}    \}
 	\end{align*}
-	Let us focus on when we find state $\ket{A}$ after the measurement. Suppose we guess that the input state is $\ket{\psi_1}$ whenever we see state $\ket{A}$, then the probability of success is given by
+	Without loss of generality, suppose we guess the input is $\ket{0}$ if our measurement results in $\ket{A}$. Then, 
 	\begin{align*}
-		\Pr_{\ket{A}\implies \ket{\psi_1}} = \f{\abs{\bra{\psi_1} \ket{A}}^2}{\abs{\bra{\psi_1} \ket{A}}^2+\abs{\bra{\psi_2} \ket{A}}^2+\abs{\bra{\psi_3} \ket{A}}^2}
+		\Pr(\text{correctly guess $\ket{0}$}\,\, | \,\, \text{see} \ket{A}) =  \f{\cos^2\theta}{\cos^2\theta + \f{1}{4}(\cos\theta - \sqrt{3}\sin\theta)^2 + \f{1}{4}(\cos\theta + \sqrt{3}\sin\theta)^2} = \f{2\cos\theta^2}{3},
 	\end{align*}
-	which comes from the fact that there are three ways we could find state $\ket{A}$ after the measurement, each contributing some probability. Plugging in the numbers, we find that
-	\begin{align*}
-		\Pr_{\ket{A}\implies \ket{\psi_1}} = \f{2}{3}\cos^2\theta \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi]
-	\end{align*}
-	Similarly, if we guess it is state $\ket{\psi_2}$ or $\ket{\psi_3}$ then the probability of success in each case is 
-	\begin{align*}
-		&\Pr_{\ket{A}\implies \ket{\psi_2}} = \f{1}{6}\lp\cos\theta - \sqrt{3}\sin\theta\rp^2 \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi] \\
-		&\Pr_{\ket{A}\implies \ket{\psi_3}} = \f{1}{6}\lp\cos\theta + \sqrt{3}\sin\theta\rp^2 \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi] 
-	\end{align*}
-	From the last three inequalities, we see that the best success probability is 2/3. \\
-	
-	Since there's nothing special about whether we pick $\ket{A}$ or $\ket{B}$ as the ''indicator,'' we expect the same result to hold if we use $\ket{B}$ instead of $\ket{A}$ and can stop here. However, it doesn't hurt to be explicit. So, following the same notation as in the argument above, we have
-	\begin{align*}
-		&\Pr_{\ket{B}\implies \ket{\psi_1}} = \f{2}{3}\sin^2\theta \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi]\\
-		&\Pr_{\ket{B}\implies \ket{\psi_2}} = \f{1}{6}\lp\sqrt{3}\cos\theta + \sin\theta\rp^2 \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi] \\
-		&\Pr_{\ket{B}\implies \ket{\psi_3}} = \f{1}{6}\lp-\sqrt{3} \cos\theta + \sin\theta\rp^2 \leq \f{2}{3}, \quad \forall \theta \in [0,2\pi] 
-	\end{align*}
-	which is not surprisingly the same as before. \\
+	where the denominator is the sum of the probabilities of measuring $\ket{A}$. 
 	
 	
-	Mathematica code:
+	We can further assume that $\theta$ is small by symmetry, so that $\cos^2\theta > \sin^2\theta$, so that this is the more optimal way to guess. If we find $\ket{1}$ after our measurement, then we will want to guess one of the two states $\ket{\psi_2}$ or $\ket{\psi_3}$ that would maximize our chance of being correct. This probability is at most
+	\begin{align*}
+		\Pr(\text{correctly guess $\ket{\psi_i}, i = 2,3$}\,\, | \,\, \text{see} \ket{B}) =
+		\f{\max\lb \f{1}{4}(\sqrt{3}\cos\theta + \sin\theta)^2 , \f{1}{4}(-\sqrt{3}\cos\theta + \sin\theta)^2\rb}{\sin^2\theta + \f{1}{4}(\sqrt{3}\cos\theta + \sin\theta)^2 + \f{1}{4}(-\sqrt{3}\cos\theta + \sin\theta)^2},
+	\end{align*}
+	where the denominator is the sum of the probabilities of measuring $\ket{B}$. Since the probabilities of measuring $\ket{A}$ or $\ket{B}$ are equally 1/2, the probability that we succeed cannot exceed:
+	\begin{align*}
+		\max_{\theta\in [0,\pi/2]}\lb \f{1}{2}\Pr(\text{correctly guess $\ket{0}$}\,\, | \,\, \text{see} \ket{A}) + \f{1}{2}	\Pr(\text{correctly guess $\ket{\psi_i}, i = 2,3$}\,\, | \,\, \text{see} \ket{B}) \rb = 0.622 < \f{2}{3}.
+	\end{align*}
+	Here, the calculation was done using Mathematica. From this result, we conclude that the probability that we make a correct guess is strictly less than $2/3$, as desired. 
+	
+	It turns out that any guessing strategy yields the same result. This is due to the symmetry of the original three states (the polarizations are spaced by $120^\circ$). This makes the whole argument general. \\
+	
+	
+	Mathematica calculation:
 	\begin{lstlisting}
-		In[159]:= (*Problem 5a*)
-		In[133]:= (*define input states*)		
-		In[128]:= v0 = {1, 0};		
-		In[129]:= v1 = {-1/2, Sqrt[3]/2};		
-		In[130]:= v2 = {-1/2, -Sqrt[3]/2};
+		In[28]:= FindMaxValue[
+		Cos[\[Theta]]^2/(2*(Cos[\[Theta]]^2 + 
+		1/4 (Cos[\[Theta]] - Sqrt[3] Sin[\[Theta]])^2 + 
+		1/4 (Cos[\[Theta]] + Sqrt[3] Sin[\[Theta]])^2)) + (1/
+		2)*(Max[1/4 (Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2, 
+		1/4 (-Sqrt[3] Cos[\[Theta]] + 
+		Sin[\[Theta]])^2])/(Sin[\[Theta]]^2 + 
+		1/4 (Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2 + 
+		1/4 (-Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2), \[Theta]]
 		
-		In[134]:= (*define measurement basis*)		
-		In[131]:= A = {Cos[\[Theta]], Sin[\[Theta]]};
-		B = {-Sin[\[Theta]], Cos[\[Theta]]};		
-		In[142]:= (*calculate inner products*)		
-		In[143]:= A0 = Dot[A, v0]^2 // FullSimplify		
-		Out[143]= Cos[\[Theta]]^2		
-		In[144]:= B0 = Dot[B, v0]^2 // FullSimplify		
-		Out[144]= Sin[\[Theta]]^2		
-		In[145]:= A1 = Dot[A, v1]^2 // FullSimplify		
-		Out[145]= 1/4 (Cos[\[Theta]] - Sqrt[3] Sin[\[Theta]])^2		
-		In[146]:= B1 = Dot[B, v1]^2 // FullSimplify		
-		Out[146]= 1/4 (Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2		
-		In[147]:= A2 = Dot[A, v2]^2 // FullSimplify		
-		Out[147]= 1/4 (Cos[\[Theta]] + Sqrt[3] Sin[\[Theta]])^2		
-		In[148]:= B2 = Dot[B, v2]^2 // FullSimplify		
-		Out[148]= 1/4 (-Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2
-		
-		In[155]:= (*if pick second basis vector as indicator*)
-		(*calculate success probabilities*)		
-		In[151]:= PrBv0 = B0/(B0 + B1 + B2) // FullSimplify		
-		Out[151]= (2 Sin[\[Theta]]^2)/3		
-		In[152]:= PrBv1 = B1/(B0 + B1 + B2) // FullSimplify		
-		Out[152]= 1/6 (Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2		
-		In[153]:= PrBv2 = B2/(B0 + B1 + B2) // FullSimplify		
-		Out[153]= 1/6 (-Sqrt[3] Cos[\[Theta]] + Sin[\[Theta]])^2
-		
-		In[154]:= (*if pick first basis vector as indicator*)
-		(*calculate success probabilities*)		
-		In[156]:= PrAv0 = A0/(A0 + A1 + A2) // FullSimplify		
-		Out[156]= (2 Cos[\[Theta]]^2)/3		
-		In[157]:= PrAv1 = A1/(A0 + A1 + A2) // FullSimplify		
-		Out[157]= 1/6 (Cos[\[Theta]] - Sqrt[3] Sin[\[Theta]])^2		
-		In[158]:= PrAv2 = A2/(A0 + A1 + A2) // FullSimplify		
-		Out[158]= 1/6 (Cos[\[Theta]] + Sqrt[3] Sin[\[Theta]])^2
-		
-		(*find Max*)
-		In[161]:= MaxValue[PrAv0, \[Theta]]		
-		Out[161]= 2/3		
-		In[162]:= MaxValue[PrAv1, \[Theta]]		
-		Out[162]= 2/3		
-		In[163]:= MaxValue[PrAv2, \[Theta]]		
-		Out[163]= 2/3		
-		In[164]:= MaxValue[PrBv0, \[Theta]]		
-		Out[164]= 2/3		
-		In[165]:= MaxValue[PrBv1, \[Theta]]		
-		Out[165]= 2/3		
-		In[166]:= MaxValue[PrBv2, \[Theta]]		
-		Out[166]= 2/3
+		Out[28]= 0.622008
 	\end{lstlisting}
-
+	
 
 
 	
