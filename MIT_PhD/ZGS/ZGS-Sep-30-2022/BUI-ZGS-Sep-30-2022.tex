@@ -1,0 +1,307 @@
+\documentclass{beamer}
+ 
+\usepackage[utf8]{inputenc}
+
+
+\usetheme{Madrid}
+\usecolortheme{default}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hhline}
+\usepackage{graphicx}
+\usepackage{physics}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage{bbold}
+\usepackage{mathtools}
+\usepackage{dsfont}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage{amssymb}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Properties}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{proposition}{Proposition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{MnSymbol,wasysym}
+
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\pOne}{\text{5p}_\text{1/2}}
+\newcommand{\pThree}{\text{5p}_\text{3/2}}
+\newcommand{\potassium}{^\text{39}\text{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+\newcommand{\p}{\partial}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\iprod}{\mathbin{\lrcorner}}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\FT}{\mathcal{F}}
+\newcommand{\LT}{\mathcal{L}}
+\usepackage{hyperref}
+\usepackage{tensor}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={black!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
+% 3j symbol
+\newcommand{\tj}[6]{ \begin{pmatrix}
+		#1 & #2 & #3 \\
+		#4 & #5 & #6 
+\end{pmatrix}}
+% 6j symbol
+\newcommand{\Gj}[6]{ \begin{Bmatrix}
+		#1 & #2 & #3 \\
+		#4 & #5 & #6 
+\end{Bmatrix}}
+
+\setbeamerfont{title}{size=\large}
+
+ 
+ 
+%Information to be included in the title page:
+\title[\textcolor{white}{{}}]
+{
+	How to truncate big Hilbert spaces? 
+}
+
+
+
+\author[Bui] % (optional)
+{Huan Q. Bui
+	}
+\institute[MIT] % (optional)
+{
+}
+\date{ZGS, Jan 28, 2022}
+ 
+%\logo{\includegraphics[height=0.3cm]{colby.png}}
+ 
+\begin{document}
+ 
+\frame{\titlepage}
+
+
+\begin{frame}
+	\frametitle{Outline}
+	\begin{itemize}
+		\item Motivation
+		\item Compressing $\ket{\Psi}$ with SVD
+		\item MPS and DMRG
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Motivation}
+	
+	$N$ sites, each is a spin-$1/2$. Find ground state of:
+	\begin{align*}
+		\mathcal{H} = - J \sum_{i=1}^N \sigma_i^z \sigma_{i+1}^z - h \sum_{i=1}^N \sigma^x_i
+	\end{align*}	
+	
+	
+	Hilbert space dimension $\sim 2^N$\\
+	
+	\vspace{8pt}
+	
+	Exact diagonalization O.K. for $N \lessapprox 20$ on laptop\\
+	
+	\vspace{8pt}
+	
+	$N \to \infty$ (thermodynamic limit): needle in the haystack\\
+	
+	\vspace{8pt}
+	
+	{$\boxed{!!}$ For most relevant Hamiltonians, haystack $\ll$ full Hilbert space }\\
+	\vspace{2pt}
+	{$\quad\,\,\,\,$e.g. haystack $\sim$ subspace of states with low entanglement entropy }\\
+	\vspace{2pt}
+	{$\quad\,\,\implies$ Clever parameterization + efficient algorithms = \smiley{}?}
+	
+		
+	
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Compressing $\ket{\Psi}$ with SVD}
+	
+	\begin{theorem}[Singular value decomposition]
+		blah
+	\end{theorem}
+	
+	
+	
+	Low-rank approximation: 
+	\begin{theorem}[Low-rank approximation]
+		
+	\end{theorem}
+	
+	
+	Applications: image compression
+\end{frame}
+
+\begin{frame}
+	\frametitle{Compressing $\ket{\Psi}$ with SVD}
+	\underline{Idea}: represent $\ket{\Psi}$ as a matrix, then SVD\\
+	
+	\vspace{8pt}
+	
+	Split $N$ spins on a 1d chain into $L+R$: 
+	\begin{align*}
+		\ket{\Psi} = \sum_{l,r} \psi_{lr} \ket{l}\ket{r}, \quad\quad\quad \ket{l}\in \mathbb{H}_L
+	\end{align*}
+	$\psi_{lr}$ has two indices $\implies$ treat as a matrix (NOT an operator!) \\ 
+	
+	\vspace{8pt} 
+	
+	Apply SVD: $\quad\psi_{lr} = [\mathbf{U}\,\,\mathbf{D}\,\,\mathbf{V}]_{lr}$\\
+	
+	\vspace{8pt}
+	
+	$\mathbf{U}, \mathbf{V}$ are unitary. $\mathbf{D} = \text{diag}(\lambda_1,\lambda_2,\dots)$:
+	\begin{align*}
+		\lambda_i\text{'s} 
+		&= \text{singular values of } \psi_{lr} \\
+		&= \text{eigenvalues of } \sqrt{\psi^\dagger\psi} = \sqrt{\rho} \implies \lambda_i^2 = \text{eigenvalues of } \rho
+	\end{align*}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Compressing $\ket{\Psi}$ with SVD}
+	
+	After SVD:
+	\begin{align*}
+		\ket{\Psi} &= \sum_{l,r} \sum_{i} \mathbf{U}_{li}\mathbf{D}_{ii} \mathbf{V}_{ir} \ket{l}\ket{r}\\
+		&= \sum_{i} \sum_{\textcolor{blue}{l},\textcolor{red}{r}}  \textcolor{blue}{\mathbf{U}_{li}}\mathbf{D}_{ii} \textcolor{red}{\mathbf{V}_{ir} } \textcolor{blue}{\ket{l}}\textcolor{red}{\ket{r}}\\
+		&= \sum_i \lambda_i \ket{i}_L \ket{i}_R \,\,\,\leftarrow \text{ Schmidt decomposition}
+	\end{align*}
+	Normalization:
+	\begin{align*}
+		\Tr(\psi^\dagger\psi) = \sum_i \lambda_i^2 = 1 \implies \lambda_i^2 \text{: probability for i$^\text{th}$ Schmidt state pair}
+	\end{align*}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Compressing $\ket{\Psi}$ with SVD}
+	
+	Why SVD and Schmidt decomposition? \\
+	
+	\vspace{8pt}
+	
+	$\quad$ SVD compression $\equiv$ make states with low entanglement entropy\\
+	
+	\vspace{8pt}
+	
+	von Neumann entanglement entropy between $L$ and $R$:
+	\begin{align*}
+		S(\rho_L) = -\Tr[\rho_L \ln \rho_L] = -\Tr[\rho_R \ln \rho_R] = S(\rho_R) 
+	\end{align*}
+	\begin{align*}
+		[\rho_L]_{ll'} = \sum_r \psi^*_{lr}\psi_{l'r} \quad\quad [\rho_R]_{rr'} = \sum_l \psi^*_{lr}\psi_{lr'}
+	\end{align*}
+	Fact: Eigenvalues of $\rho_L, \rho_R$ are exactly the $\lambda_i$'s. So,
+	\vspace{-7pt}
+	\begin{align*}
+		&\quad\quad \quad \,\, S = S(\rho_L) = S(\rho_R) = -\sum_i^{\sim 2^{N/2}} \lambda_i^2 \ln \lambda_i^2 \to -\sum_i^m \lambda_i^2 \ln \lambda_i^2\\
+		&\text{\textcolor{blue}{Drop small $\lambda_i$'s $\implies$ reduce $S$ and exponential compression, $m\sim \mathcal{O}(100)$}}
+	\end{align*}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Compressing $\ket{\Psi}$ with SVD}
+	
+	\underline{Example}:  
+	\begin{align*}
+		\ket{\Psi} = \f{1}{\sqrt{2}}\lp \ket{\uparrow\uparrow} - \ket{\uparrow\downarrow} \rp
+	\end{align*}
+	Matrixify and SVD:
+	\begin{align*}
+	&\ket{\Psi} = \sum_{ij}\psi_{ij}\ket{i}\ket{j} \quad \text{ with } \quad   [\psi_{ij}] = \begin{pmatrix}
+			\f{1}{\sqrt{2}} & -\f{1}{\sqrt{2}} \\ 0 & 0
+		\end{pmatrix}\\
+	&\quad\quad \,\,\,[\psi_{ij}] = \begin{pmatrix}
+			1 & 0 \\ 0 & 1
+		\end{pmatrix}
+	\underbrace{\begin{pmatrix}
+		1 & 0 \\ 0 & 0 
+	\end{pmatrix}}_D
+	\begin{pmatrix}
+		\f{1}{\sqrt{2}} & -\f{1}{\sqrt{2}} \\ 	\f{1}{\sqrt{2}} & \f{1}{\sqrt{2}}
+	\end{pmatrix}
+	\end{align*}
+	Entanglement entropy is 0 $\implies$ not entangled (makes sense)
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{But wait...}
+	
+	We need $\ket{\Psi}$ to compress. But we want to find/approximate such a $\ket{\Psi}$. \\
+	
+	\vspace{8pt}
+	
+	Insert chicken and egg here.\\
+	
+	\vspace{8pt}
+	
+	Solution:
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{MPS and DMRG}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ 
+%\begin{frame}
+%\frametitle{Layout}
+%\tableofcontents
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\begin{frame}
+\textcolor{purple}{{Phys. Rev. Lett. \textbf{127}, 073604 – Published 13 August 2021}}
+\end{frame}
+
+
+
+
+
+\end{document}
