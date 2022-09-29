@@ -91,7 +91,7 @@
 \institute[MIT] % (optional)
 {
 }
-\date{ZGS, Jan 28, 2022}
+\date{ZGS, Oct 6, 2022}
  
 %\logo{\includegraphics[height=0.3cm]{colby.png}}
  
@@ -147,19 +147,58 @@
 	\frametitle{Compressing $\ket{\Psi}$ with SVD}
 	
 	\begin{theorem}[Singular value decomposition]
-		blah
+		For any $M \in \mathbb{M}_{A\times B}$, there are "unitary" $U,V$ for which  $M = U S V^\dagger$, where $S = \text{diag}(s_1,s_2,\dots,0,0)$.\\
+		\vspace{5pt}
+		$s_i$: \textit{singular values of} $M \equiv$  eigenvalues of $\sqrt{M^\dagger M }$. $s_i$ $\geq 0$
 	\end{theorem}
 	
 	
-	
-	Low-rank approximation: 
 	\begin{theorem}[Low-rank approximation]
-		
+		The HS-distance from a rank-$m$ matrix $A\in \mathbb{M}_{n\times n}$ to the nearest $n\times n$ matrix of rank $k \leq m$ is the square root of the sum of the squares of the smallest $n-k$ singular values of $A$.
 	\end{theorem}
+
+	Hilbert-Schmidt norm:
+	\begin{align*}
+		\norm{A}_{HS} = \sqrt{\sum \abs{A_{ij}}^2} =  \sqrt{\Tr(A^\dagger A)} = \sqrt{\sum s_i^2}
+	\end{align*} 
 	
-	
-	Applications: image compression
 \end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Compressing $\ket{\Psi}$ with SVD}
+	
+	\underline{Application}: image compression
+	
+	\begin{figure}[!htb]
+		\centering
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\includegraphics[scale=0.34]{svd1.png}
+		\end{minipage}
+	$\to$
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\includegraphics[scale=0.34]{svd2.png}
+		\end{minipage}
+	\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.03]{mit.jpg}
+	\end{minipage}
+	$\to$
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.03]{mit_compressed.png}
+	\end{minipage}
+\end{figure}
+\end{frame}
+
+
 
 \begin{frame}
 	\frametitle{Compressing $\ket{\Psi}$ with SVD}
@@ -169,7 +208,7 @@
 	
 	Split $N$ spins on a 1d chain into $L+R$: 
 	\begin{align*}
-		\ket{\Psi} = \sum_{l,r} \psi_{lr} \ket{l}\ket{r}, \quad\quad\quad \ket{l}\in \mathbb{H}_L
+		\ket{\Psi} = \sum_{l,r}^{\min(N_L,N_R)} \psi_{lr} \ket{l}\ket{r}
 	\end{align*}
 	$\psi_{lr}$ has two indices $\implies$ treat as a matrix (NOT an operator!) \\ 
 	
@@ -198,6 +237,10 @@
 		&= \sum_{i} \sum_{\textcolor{blue}{l},\textcolor{red}{r}}  \textcolor{blue}{\mathbf{U}_{li}}\mathbf{D}_{ii} \textcolor{red}{\mathbf{V}_{ir} } \textcolor{blue}{\ket{l}}\textcolor{red}{\ket{r}}\\
 		&= \sum_i \lambda_i \ket{i}_L \ket{i}_R \,\,\,\leftarrow \text{ Schmidt decomposition}
 	\end{align*}
+	Can simply read off reduced density matrices:
+	\begin{align*}
+		\rho_L = \psi\psi^\dagger = \sum_i \lambda_i^2 \ket{i}_L \bra{i}_L \quad\quad\quad \rho_R = \psi^\dagger\psi = \sum_i \lambda_i^2 \ket{i}_R \bra{i}_R
+	\end{align*}
 	Normalization:
 	\begin{align*}
 		\Tr(\psi^\dagger\psi) = \sum_i \lambda_i^2 = 1 \implies \lambda_i^2 \text{: probability for i$^\text{th}$ Schmidt state pair}
@@ -208,7 +251,7 @@
 \begin{frame}
 	\frametitle{Compressing $\ket{\Psi}$ with SVD}
 	
-	Why SVD and Schmidt decomposition? \\
+	\underline{Why SVD and Schmidt decomposition?} \\
 	
 	\vspace{8pt}
 	
@@ -220,10 +263,7 @@
 	\begin{align*}
 		S(\rho_L) = -\Tr[\rho_L \ln \rho_L] = -\Tr[\rho_R \ln \rho_R] = S(\rho_R) 
 	\end{align*}
-	\begin{align*}
-		[\rho_L]_{ll'} = \sum_r \psi^*_{lr}\psi_{l'r} \quad\quad [\rho_R]_{rr'} = \sum_l \psi^*_{lr}\psi_{lr'}
-	\end{align*}
-	Fact: Eigenvalues of $\rho_L, \rho_R$ are exactly the $\lambda_i$'s. So,
+	Eigenvalues of $\rho_L, \rho_R$ are exactly $\{\lambda_i\}$. So,
 	\vspace{-7pt}
 	\begin{align*}
 		&\quad\quad \quad \,\, S = S(\rho_L) = S(\rho_R) = -\sum_i^{\sim 2^{N/2}} \lambda_i^2 \ln \lambda_i^2 \to -\sum_i^m \lambda_i^2 \ln \lambda_i^2\\
@@ -282,23 +322,6 @@
 	\frametitle{MPS and DMRG}
 \end{frame}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
- 
-%\begin{frame}
-%\frametitle{Layout}
-%\tableofcontents
-%\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-\begin{frame}
-\textcolor{purple}{{Phys. Rev. Lett. \textbf{127}, 073604 – Published 13 August 2021}}
-\end{frame}
 
 
 
