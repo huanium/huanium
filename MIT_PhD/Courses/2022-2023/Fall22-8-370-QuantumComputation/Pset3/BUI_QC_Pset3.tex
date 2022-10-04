@@ -191,7 +191,7 @@ So $N$ is a matrix whose square is $\sigma_x$.\\
 		0 & 1 & 0 & 0 
 	\end{pmatrix}
 \end{align*}
-The SWAO gate is then given by 
+The SWAP gate is then given by 
 \begin{align*}
 	SWAP = CNOT_2 \cdot  CNOT_1 \cdot  CNOT_2 = \begin{pmatrix}
 		1 & 0 & 0 & 0 \\
@@ -233,14 +233,14 @@ Here we have used
 \begin{enumerate}[label=(\alph*)]
 	\item The Fredkin gate is a controlled SWAP gate. If $x=0$, we do nothing. If $x=1$, we swap $y$ and $z$. 
 	\begin{itemize}
-		\item AND gate: obtained by fixing $y=0$. $(x_\text{in},0,z_\text{in}) \to (x_\text{in},\text{output}, \text{junk})$. Truth table:
+		\item AND gate: obtained by fixing $y_\text{in}=0$. $(x_\text{in},0,z_\text{in}) \to (x_\text{in},\text{output}, \text{junk})$. Truth table:
 		\begin{align*}
 			(\mathbf{0},0,\mathbf{0}) \to (0,\mathbf{0},0)\\
 			(\mathbf{0},0,\mathbf{1}) \to (0,\mathbf{0},1)\\
 			(\mathbf{1},0,\mathbf{0}) \to (1,\mathbf{0},0)\\
 			(\mathbf{1},0,\mathbf{1}) \to (1,\mathbf{1},0)
 		\end{align*}
-		\item OR gate: obtained by fixing $y=1$. $(x_\text{in},1,z_\text{in}) \to (x_\text{in},\text{junk}, \text{output})$. Truth table:
+		\item OR gate: obtained by fixing $y_\text{in}=1$. $(x_\text{in},1,z_\text{in}) \to (x_\text{in},\text{junk}, \text{output})$. Truth table:
 		\begin{align*}
 			(\mathbf{0},1,\mathbf{0}) \to (0,{1},\mathbf{0})\\
 			(\mathbf{0},1,\mathbf{1}) \to (0,{1},\mathbf{1})\\
@@ -285,7 +285,20 @@ Here we have used
 		(1,1) \to (1,0) 
 	\end{align*}
 	Consider the following circuit using 03 Fredkin gates and 4 bits $a,b,c,d$, where $a,b$ are inputs and $c=1,d=0$ are ancillary bits. The output bits will be $(b,d)$. 
-	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.2]{fredkin.jpg}
+	\end{figure}
+
+
+
+	The circuit works as follows:
+	\begin{align*}
+		(a,b,c,d) = (\mathbf{0},\mathbf{0},1,0) \to (0,0,1,0) \to (0,0,1,0) \to (0,\mathbf{0},1,\mathbf{0}) \\
+		(a,b,c,d) = (\mathbf{0},\mathbf{1},1,0) \to (0,1,1,0) \to (0,0,1,1) \to (0,\mathbf{0},1,\mathbf{1}) \\
+		(a,b,c,d) = (\mathbf{1},\mathbf{0},1,0) \to (1,0,0,1) \to (1,0,0,1) \to (1,\mathbf{0},0,\mathbf{1}) \\
+		(a,b,c,d) = (\mathbf{1},\mathbf{1},1,0) \to (1,1,0,1) \to (1,1,0,1) \to (1,\mathbf{1},1,\mathbf{0})
+	\end{align*}
 	
 	
 	
@@ -311,7 +324,7 @@ Here we have used
 			&&&&&&-i&0 
 		\end{pmatrix}
 	\end{align*}
-	which is almost a Toffoli gate. The unitary transformation this circuit implements is a controlled-controlled-NOT with an extra phase shift of $e^{-i\pi/2}$ relative to the control qubits. A Toffoli gate is simply a controlled-controlled-NOT, without the extra phase shift. 
+	which is almost a Toffoli gate. The unitary transformation this circuit implements is a controlled-controlled-NOT with an extra phase shift of $e^{-i\pi/2}$. A Toffoli gate is simply a controlled-controlled-NOT, without the extra phase shift. \\
 
 	Mathematica code:
 	\begin{lstlisting}
@@ -341,7 +354,7 @@ Here we have used
 				0, 0, 0, -I, 0}}
 	\end{lstlisting}
 
-	\item To correct for the undesired phase shift, we also have to applying some sort of phase shift on the first two quantum wires as well. However, since we don't want to add the phase shift for all inputs, it has to be a controlled-phase shift gate. Consider the ansatz:
+	\item To correct for the undesired phase shift, we also have to apply some sort of phase shift on the first two quantum wires as well. However, since we don't want to add the phase shift for all inputs, it has to be a controlled-phase shift gate. Consider the ansatz:
 	\begin{align*}
 		CP_{12}(\phi) = \begin{pmatrix}
 			1 &0&0&0\\
@@ -352,7 +365,7 @@ Here we have used
 	\end{align*}
 	Apply this before the circuit given by the problem, we find 
 	\begin{align*}
-		M\cdot ( CP_{12}(\phi) \otimes \mathbb{I}) = \begin{pmatrix}
+		M\cdot ( CP_{12}(\phi) \otimes \mathbb{I}_3) = \begin{pmatrix}
 			1&&&&&&& \\
 			&1&&&&&& \\
 			&&1&&&&& \\
@@ -393,21 +406,28 @@ We observe that $CP_{12}(\pi/2)$ is close to a controlled-$R_z(\pi/2)$, but not 
 	&&&e^{i\pi/4}
 \end{pmatrix} = M_1 \cdot M_2
 \end{align*}
-$M_2$ is simply a controlled-$R_z(\pi/2)$, which can be constructed via
+$M_2$ is simply a controlled-$R_z(\pi/2)$, which can be constructed through the procedure given in lecture
 \begin{align*}
-	M_2 = \mathbb{I}\otimes R_z(-\pi/4) \cdot CNOT_{12} \cdot \mathbb{I}\otimes R_z(\pi/4)
+	M_2 = \mathbb{I}_1\otimes R_z(-\pi/4) \cdot CNOT_{12} \cdot \mathbb{I}_1\otimes R_z(\pi/4) \cdot CNOT_{12}
 \end{align*}
+where
+\begin{align*}
+	R_z(\theta) = \begin{pmatrix}
+		e^{i\theta/2} & 0 \\ 0 & e^{-i\theta/2}
+	\end{pmatrix}.
+\end{align*}
+
 $M_1$ is given by 
 \begin{align*}
-	M_1 &= SWAP \cdot (\mathbb{I}\otimes P(\pi/4)) \cdot SWAP \\
-	&= CNOT_{12}\,CNOT_{21}\, CNOT_{12} \cdot \mathbb{I}\otimes P(\pi/4) \cdot CNOT_{12}\, CNOT_{21}\, CNOT_{12}.
+	M_1 &= SWAP \cdot (\mathbb{I}_1\otimes P(\pi/4)) \cdot SWAP \\
+	&= CNOT_{12}\,CNOT_{21}\, CNOT_{12} \cdot \mathbb{I}_1\otimes P(\pi/4) \cdot CNOT_{12}\, CNOT_{21}\, CNOT_{12}.
 \end{align*}
-Here I'm following $CNOT_{12} = CNOT_1$ and $CNOT_{21} = CNOT_2$, with $CNOT_i$ defined as in Problem 2. With this, we're done:
+Here I'm following $CNOT_{12} = CNOT_1$ and $CNOT_{21} = CNOT_2$, with $CNOT_i$ defined as in Problem 2. With this, we're done. The Toffoli gate can now be constructed from the circuit provided by the problem and single qubit gates and CNOTs on the first two quantum wires:
 \begin{align*}
 	\text{Toff} 
-	&= M\cdot ( CP_{12}(\pi/2) \otimes \mathbb{I})\\
-	&= M\cdot  [ (M_1\cdot M_2) \otimes \mathbb{I}] \\
-	&= M\cdot [ (C_{12}\,C_{21}\, C_{12} \cdot \mathbb{I}\otimes P(\pi/4) \cdot C_{12}\, C_{21}\, C_{12}\cdot \mathbb{I}\otimes R_z(-\pi/4) \cdot C_{12} \cdot \mathbb{I}\otimes R_z(\pi/4) ) \otimes \mathbb{I}]
+	&= M\cdot ( CP_{12}(\pi/2) \otimes \mathbb{I}_3)\\
+	&= M\cdot  [ (M_1\cdot M_2) \otimes \mathbb{I}_3] \\
+	&= M\cdot [ (C_{12}\,C_{21}\, C_{12} \cdot \mathbb{I}_1\otimes P(\pi/4) \cdot C_{12}\, C_{21}\, C_{12}\cdot \mathbb{I}_1\otimes R_z(-\pi/4) \cdot C_{12} \cdot \mathbb{I}_1\otimes R_z(\pi/4)\cdot C_{12} ) \otimes \mathbb{I}_3]
 \end{align*}
 where I've abbreviated $CNOT_i$ with $C_i$.
 
