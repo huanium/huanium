@@ -131,7 +131,7 @@
 Course: \textbf{8.370 - QC}\\
 Problem set: \textbf{\#3}\\
 Due: Wednesday, Oct 5, 2022\\
-Collaborators: 
+Collaborators/References: Christina Yu (on the alternative solution to 5b), Nielsen and Chuang
 \end{framed}
 
 \noindent \textbf{1. Find a matrix whose square is $\sigma_x$.}\\
@@ -363,9 +363,9 @@ Here we have used
 			0&0&0&e^{i\phi}
 		\end{pmatrix}
 	\end{align*}
-	Apply this before the circuit given by the problem, we find 
+	Apply this after the circuit given by the problem, we find 
 	\begin{align*}
-		M\cdot ( CP_{12}(\phi) \otimes \mathbb{I}_3) = \begin{pmatrix}
+		 ( CP_{12}(\phi) \otimes \mathbb{I}_3) \cdot M = \begin{pmatrix}
 			1&&&&&&& \\
 			&1&&&&&& \\
 			&&1&&&&& \\
@@ -425,14 +425,37 @@ $M_1$ is given by
 Here I'm following $CNOT_{12} = CNOT_1$ and $CNOT_{21} = CNOT_2$, with $CNOT_i$ defined as in Problem 2. With this, we're done. The Toffoli gate can now be constructed from the circuit provided by the problem and single qubit gates and CNOTs on the first two quantum wires:
 \begin{align*}
 	\text{Toff} 
-	&= M\cdot ( CP_{12}(\pi/2) \otimes \mathbb{I}_3)\\
-	&= M\cdot  [ (M_1\cdot M_2) \otimes \mathbb{I}_3] \\
-	&= M\cdot [ (C_{12}\,C_{21}\, C_{12} \cdot \mathbb{I}_1\otimes P(\pi/4) \cdot C_{12}\, C_{21}\, C_{12}\cdot \mathbb{I}_1\otimes R_z(-\pi/4) \cdot C_{12} \cdot \mathbb{I}_1\otimes R_z(\pi/4)\cdot C_{12} ) \otimes \mathbb{I}_3]
+	&= ( CP_{12}(\pi/2) \otimes \mathbb{I}_3) \cdot M \\
+	&=   [ (M_1\cdot M_2) \otimes \mathbb{I}_3] \cdot M \\
+	&=  [ (C_{12}\,C_{21}\, C_{12} \cdot \mathbb{I}_1\otimes P(\pi/4) \cdot C_{12}\, C_{21}\, C_{12}\cdot \mathbb{I}_1\otimes R_z(-\pi/4) \cdot C_{12} \cdot \mathbb{I}_1\otimes R_z(\pi/4)\cdot C_{12} ) \otimes \mathbb{I}_3] \cdot M
 \end{align*}
-where I've abbreviated $CNOT_i$ with $C_i$.
+where I've abbreviated $CNOT_i$ with $C_i$.\\
 
 
-
+It appears that we're using a lot of gates to accomplish something that seems very simple. It turns out that we are indeed. Following the decomposition rule given on page 181 of Nielsen and Chuang's, we want to find matrices $A,B,C$ and some angle $\alpha$ for which 
+\begin{align*}
+P(\pi/2) = e^{i\al} A\sigma_x B\sigma_x C \quad\quad\quad ABC = \mathbb{I}.
+\end{align*}
+By hook or by crook, one may find the following solution:
+\begin{align*}
+\al = \f{\pi}{4}, \quad\quad A=\mathbb{I}, \quad \quad B = C = \begin{pmatrix}
+0 & e^{-i\pi/8} \\ e^{i\pi/8} & 0
+\end{pmatrix}.
+\end{align*}
+And the desired circuit takes the form:
+\begin{align*}
+(P(\pi/4)\otimes \mathbb{I}) \cdot CNOT_{12} \cdot (\mathbb{I} \otimes B) \cdot CNOT_{12} \cdot (\mathbb{I} \otimes C)
+\end{align*}
+Calculating the expression above, we find that it is equal to
+\begin{align*}
+\begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & i
+\end{pmatrix}
+\end{align*}
+which is equal to $CP_{12}(\pi/2)$, as desired. Notice that we use way fewer gates than before. 
 \end{enumerate}
 
 
