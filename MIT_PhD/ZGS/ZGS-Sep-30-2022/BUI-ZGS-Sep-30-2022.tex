@@ -80,7 +80,7 @@
 %Information to be included in the title page:
 \title[\textcolor{white}{{}}]
 {
-	How to truncate big Hilbert spaces? 
+	How to make big Hilbert spaces small
 }
 
 
@@ -218,11 +218,11 @@
 	
 	\vspace{8pt}
 	
-	$\mathbf{U}, \mathbf{V}$ are unitary. $\mathbf{D} = \text{diag}(\lambda_1,\lambda_2,\dots)$:
+	$\mathbf{U}, \mathbf{V}$ are unitary. $\mathbf{D} = \text{diag}(s_1,s_2,\dots)$:
 	\begin{align*}
-		\lambda_i\text{'s} 
+		s_i\text{'s} 
 		&= \text{singular values of } \psi_{lr} \\
-		&= \text{eigenvalues of } \sqrt{\psi^\dagger\psi} = \sqrt{\rho} \implies \lambda_i^2 = \text{eigenvalues of } \rho
+		&= \text{eigenvalues of } \sqrt{\psi^\dagger\psi} = \sqrt{\rho} \implies s_i^2 = \text{eigenvalues of } \rho
 	\end{align*}
 	
 \end{frame}
@@ -235,15 +235,15 @@
 	\begin{align*}
 		\ket{\Psi} &= \sum_{l,r} \sum_{i} \mathbf{U}_{li}\mathbf{D}_{ii} \mathbf{V}_{ir} \ket{l}\ket{r}\\
 		&= \sum_{i} \sum_{\textcolor{blue}{l},\textcolor{red}{r}}  \textcolor{blue}{\mathbf{U}_{li}}\mathbf{D}_{ii} \textcolor{red}{\mathbf{V}_{ir} } \textcolor{blue}{\ket{l}}\textcolor{red}{\ket{r}}\\
-		&= \sum_i \lambda_i \ket{i}_L \ket{i}_R \,\,\,\leftarrow \text{ Schmidt decomposition}
+		&= \sum_i s_i \ket{i}_L \ket{i}_R \,\,\,\leftarrow \text{ Schmidt decomposition}
 	\end{align*}
 	Can simply read off reduced density matrices:
 	\begin{align*}
-		\rho_L = \psi\psi^\dagger = \sum_i \lambda_i^2 \ket{i}_L \bra{i}_L \quad\quad\quad \rho_R = \psi^\dagger\psi = \sum_i \lambda_i^2 \ket{i}_R \bra{i}_R
+		\rho_L = \psi\psi^\dagger = \sum_i s_i^2 \ket{i}_L \bra{i}_L \quad\quad\quad \rho_R = \psi^\dagger\psi = \sum_i s_i^2 \ket{i}_R \bra{i}_R
 	\end{align*}
 	Normalization:
 	\begin{align*}
-		\Tr(\psi^\dagger\psi) = \sum_i \lambda_i^2 = 1 \implies \lambda_i^2 \text{: probability for i$^\text{th}$ Schmidt state pair}
+		\Tr(\psi^\dagger\psi) = \sum_i s_i^2 = 1 \implies s_i^2 \text{: probability for i$^\text{th}$ Schmidt state pair}
 	\end{align*}
 \end{frame}
 
@@ -296,11 +296,11 @@
 	\begin{align*}
 		S(\rho_L) = -\Tr[\rho_L \ln \rho_L] = -\Tr[\rho_R \ln \rho_R] = S(\rho_R) 
 	\end{align*}
-	Eigenvalues of $\rho_L, \rho_R$ are exactly $\{\lambda_i\}$. So,
+	Eigenvalues of $\rho_L, \rho_R$ are exactly $\{s_i\}$. So,
 	\vspace{-7pt}
 	\begin{align*}
-		&\quad\quad \quad \,\, S = S(\rho_L) = S(\rho_R) = -\sum_i^{\sim 2^{N/2}} \lambda_i^2 \ln \lambda_i^2 \to -\sum_i^m \lambda_i^2 \ln \lambda_i^2\\
-		&\text{\textcolor{blue}{Drop small $\lambda_i$'s $\implies$ reduce $S$ and exponential compression, $m\sim \mathcal{O}(100)$}}
+		&\quad\quad \quad \,\, S = S(\rho_L) = S(\rho_R) = -\sum_i^{\sim 2^{N/2}} s_i^2 \ln s_i^2 \to -\sum_i^m s_i^2 \ln s_i^2\\
+		&\text{\textcolor{blue}{Drop small $s_i$'s $\implies$ reduce $S$ and exponential compression, $m\sim \mathcal{O}(100)$}}
 	\end{align*}
 	
 \end{frame}
@@ -313,7 +313,7 @@
 	\begin{align*}
 		\ket{\Psi} = \f{1}{\sqrt{2}}\lp \ket{\uparrow\uparrow} - \ket{\uparrow\downarrow} \rp
 	\end{align*}
-	Matrixify and SVD:
+	Matrixify and SVD
 	\begin{align*}
 		&\ket{\Psi} = \sum_{ij}\psi_{ij}\ket{i}\ket{j} \quad \text{ with } \quad   [\psi_{ij}] = \begin{pmatrix}
 			\f{1}{\sqrt{2}} & -\f{1}{\sqrt{2}} \\ 0 & 0
@@ -361,15 +361,342 @@
 	
 	DMRG: Density matrix renormalization group\\
 	
+	\vspace{8pt}
+	
+	
 	
 	\vspace{12pt}
 	
-	Matrix product state 
+	MPS: 
+	\begin{itemize}
+		\item expresses wavefunctions in terms of products of matrices
+		
+		\item natural way to generate states with low entanglement entropy
+	\end{itemize}
+
+	DMRG:
+\textbf{}	\begin{itemize}
+		\item numerical variational technique for finding ground states
+		
+		\item works with MPS, not $\ket{\Psi}$
+		
+		\item most efficient method for 1d systems
+	\end{itemize}
+	
 	
 \end{frame}
 
 
 
+\begin{frame}
+	\frametitle{MPS}
+	\textbf{Every $\ket{\Psi}$ can be written as an MPS.} From Schmidt decomposition:
+	\begin{align*}
+		\ket{\Psi} = \sum_{i} s_i \ket{i}_L \ket{i}_R = \sum_{i_m} s_i \ket{i_m}_L \ket{i_m}_R
+	\end{align*}
+	$m:$ position on the 1d chain where the $L-R$ split occurs. \\
+	
+	\vspace{15pt}
+	
+	\underline{$\ket{i_m}_L$ can be built recursively}:
+	\begin{align*}
+		&\ket{i_1}_L = \sum_{\sigma_1}A^{\sigma_1}_{i_1}\ket{\sigma_1}\\
+		&\ket{i_2}_L = \sum_{i_1,\sigma_2} A^{\sigma_2}_{i_2,i_1}  \ket{i_1}_L \ket{\sigma_2} = \sum_{i_1,\sigma_1,\sigma_2} A^{\sigma_1}_{i_1}   A^{\sigma_2}_{i_2,i_1} \ket{\sigma_1\sigma_2} = \sum_{\sigma_1,\sigma_2} (A^{\sigma_1}A^{\sigma_2})_{1,i_2} \ket{\sigma_1\sigma_2}\\
+		&\ket{i_3}_L = \sum_{\sigma_1,\sigma_2,\sigma_3}(A^{\sigma_1}A^{\sigma_2}A^{\sigma_3})_{1,i_3} \ket{\sigma_1\sigma_2\sigma_3}\\
+		&\quad\vdots
+	\end{align*}
+
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{MPS}
+	Schmidt states:
+	\begin{align*}
+		&\ket{i_m}_L = \sum_{\{\sigma\}_1^N} (A^{\sigma_1}A^{\sigma_2}\dots A^{\sigma_m})_{1,i_m}  \ket{\sigma_1 \sigma_2\dots\sigma_m} \\
+		&\ket{i_m}_R = \sum_{\{\sigma\}_{m+1}^N} (B^{\sigma_{m+1}}B^{\sigma_{m+2}}\dots B^{\sigma_N})_{i_m,1}  \ket{\sigma_{m+1}\sigma_{m+2}\dots\sigma_N} 
+	\end{align*}
+	Full wavefunction:
+	\begin{align*}
+		\boxed{\ket{\Psi} = \sum_{\{\sigma\}}    A^{\sigma_1}A^{\sigma_2}\dots A^{\sigma_m}  \,\,{S}\,\, B^{\sigma_{m+1}}B^{\sigma_{m+2}}\dots B^{\sigma_N}  \ket{\sigma_1\sigma_2\dots \sigma_N}}
+	\end{align*}
+	Matrix dimensions?
+	\begin{align*}
+		\underbrace{(1\times d), (d\times d^2), \dots }_{A}, \underbrace{(d^{N/2}\times d^{N/2})}_{S},  \underbrace{\dots (d^2\times d), (d\times 1)}_{B}
+	\end{align*}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{MPS}
+	
+	\underline{Example}: 
+	\begin{align*}
+		\ket{\text{GHZ}_4} = \f{\ket{0000} + \ket{1111}}{\sqrt{2}}= \f{1}{\sqrt{2}}
+		\sum_{\{\sigma\}} A_1^{\sigma_1} A_2^{\sigma_2} A_3^{\sigma_3} A_4^{\sigma_4}  \ket{\sigma_1\sigma_2\sigma_3\sigma_4}
+	\end{align*}
+	where
+	\begin{align*}
+		A^{0}_1 =\begin{pmatrix}
+			1 & 0
+		\end{pmatrix}, \,\,\,\,
+	A^{0}_2 = \begin{pmatrix}
+		1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0
+	\end{pmatrix}, \,\,\,\,
+	A^{0}_3 = \begin{pmatrix}
+		1 & 0 \\ 0 & 0 \\ 0 & 0 \\ 0 & 0
+	\end{pmatrix},\,\,\,\,
+	A^{0}_4 = \begin{pmatrix}
+		1 \\ 0 
+	\end{pmatrix}
+	\end{align*}
+\vspace{-20pt}
+\begin{align*}
+	A^{1}_1 =\begin{pmatrix}
+		0 & 1
+	\end{pmatrix}, \,\,\,\,
+	A^{1}_2 = \begin{pmatrix}
+		0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 1
+	\end{pmatrix}, \,\,\,\,
+	A^{1}_3 = \begin{pmatrix}
+		0 & 0 \\ 0 & 0 \\ 0 & 0 \\ 0 & 1
+	\end{pmatrix},\,\,\,\,
+	A^{1}_4 = \begin{pmatrix}
+		0 \\ 1
+	\end{pmatrix}
+\end{align*}
+\end{frame}
+
+
+
+
+\begin{frame}
+	\frametitle{MPS \& Hilbert space decimation}
+	\underline{Idea}: Motivated by, not allowing matrix dimensions exceed a fixed $D$\\
+	
+	\vspace{10pt}
+	
+	From:
+	\begin{align*}
+		{(1\times d), (d\times d^2), \dots }, {(d^{N/2}\times d^{N/2})},  {\dots (d^2\times d), (d\times 1)}
+	\end{align*}
+	To:
+	\begin{align*}
+		{(1\times d), (d\times d^2), \dots (D\times D)}, {(D \times D)},  { (D\times D)\dots (d^2\times d), (d\times 1)}
+	\end{align*}
+	
+	\vspace{10pt}
+	
+	To generalize, can make all matrices to $D\times D$, so that
+	\begin{align*}
+		\boxed{\ket{\Psi} = \sum_{\{\sigma\}}   \Tr\lb  A_{\textcolor{gray}{1}}^{\sigma_1}A_{\textcolor{gray}{2}}^{\sigma_2}\dots A_{\textcolor{gray}{m}}^{\sigma_m}  A_{{\textcolor{gray}{m+1}}}^{\sigma_{m+1}}A_{{\textcolor{gray}{m+2}}}^{\sigma_{m+2}}\dots A_{\textcolor{gray}{N}}^{\sigma_N} \rb  \ket{\sigma_1\sigma_2\dots \sigma_N}}
+	\end{align*}
+	
+	
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{MPS}
+		\underline{Example}: 
+	\begin{align*}
+		\ket{\text{GHZ}_4} = \f{\ket{0000} + \ket{1111}}{\sqrt{2}}= \f{1}{\sqrt{2}}
+		\sum_{\{\sigma\}} \Tr \lb  A^{\sigma_1} A^{\sigma_2} A^{\sigma_3} A^{\sigma_4} \rb \ket{\sigma_1\sigma_2\sigma_3\sigma_4}
+	\end{align*}
+	where
+	\begin{align*}
+		A^0 = \begin{pmatrix}
+			1 & 0 \\ 0 & 0 
+		\end{pmatrix} \quad\quad \quad 
+	A^1 = \begin{pmatrix}
+		0 & 0 \\ 0 & 1
+	\end{pmatrix}
+	\end{align*}
+	Can see that
+	\begin{align*}
+		\Tr \lb  A^{\sigma_1} A^{\sigma_2} A^{\sigma_3} A^{\sigma_4} \rb = 1 \iff \sigma_1 = \sigma_2 = \sigma_3 = \sigma_4
+	\end{align*}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{So far}
+	\begin{itemize}
+		\item SVD \& Schmidt decomposition allows for compressing $\ket{\Psi}$ 
+		\vspace{10pt}
+		
+		\item From Schmidt decomposition to MPS for general $\ket{\Psi}$
+		\vspace{10pt}
+		
+		\item Decimate Hilbert space by keeping matrices in MPS at $(D\times D)$
+		\vspace{10pt}
+		
+		\item Hilbert space ``smaller'' ($ND^2 \text{ vs } d^N$) and MPS  corresponds to $\ket{\Psi}$ with lower entanglement entropy
+		\vspace{10pt}
+		
+		\item MPS: natural way to describe ground states of relevant Hamiltonians 
+	\end{itemize}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Graphical notation}
+	Matrices:
+	\vspace{-10pt}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{matrix.png}
+	\end{figure}
+\vspace{-10pt}
+	MPS:
+	\vspace{-10pt}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.32]{mps.png}
+	\end{figure}
+	Overlap for two MPS's (arrows indicate sum over indices)
+	\vspace{-6pt}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.28]{overlap.png}
+	\end{figure}
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Graphical notation}
+	\underline{MPO}: Matrix product operators. \\
+	
+	\vspace{10pt}
+	If $\bra{\sigma_1\sigma_2\dots \sigma_N} \ket{\Psi} = A^{\sigma_1}A^{\sigma_2}\dots A^{\sigma_N}$, then
+	\begin{align*}
+		\bra{\sigma_1\dots \sigma_N} \hat{O} |\sigma_1'\dots \sigma_N'\rangle = W^{\sigma_1\sigma'_1}W^{\sigma_2\sigma'_2}\dots W^{\sigma_{N-1}\sigma'_{N-1}}W^{\sigma_N\sigma'_N}
+	\end{align*} 
+	or
+	\begin{align*}
+		\hat{O} = \sum_{\{\sigma,\sigma'\}} W^{\sigma_1\sigma'_1}W^{\sigma_2\sigma'_2}\dots W^{\sigma_{N-1}\sigma'_{N-1}}W^{\sigma_N\sigma'_N} \ket{\sigma}\langle \sigma'|
+	\end{align*}
+	$\implies$ can calculate $\bra{\Psi} H \ket{\Psi}$ in MPS language!
+\end{frame}
+
+\begin{frame}
+	\frametitle{Graphical notation}
+	MPO on MPS:
+	\begin{align*}
+		\hat{O}\ket{\Psi} 
+		= \sum_{\{\sigma,\sigma'\}} (W^{\sigma_1\sigma_1'}W^{\sigma_2\sigma_2'}\dots)(A^{\sigma_1}A^{\sigma_2}\dots) \ket{\sigma} 
+		= \sum_{\{\sigma\}} N^{\sigma_1}N^{\sigma_2}\dots \ket{\sigma}
+ 	\end{align*}
+ 	\begin{figure}[!htb]
+ 		\centering
+ 		\includegraphics[scale=0.3]{mpo_on_mps.png}
+ 	\end{figure}
+\end{frame}
+
+
+
+
+\begin{frame}
+	\frametitle{Ground state search}
+	Variationally extremize 
+	\begin{align*}
+		\bra{\Psi} H \ket{\Psi} - \lambda \braket{\Psi}, \text{ so that }  \ket{\Psi} \to \ket{\Psi_g},\,\, \lambda \to E_0
+	\end{align*}
+
+	
+	\vspace{10pt}
+	
+	Graphically,
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.3]{gnd_state_search.png}
+	\end{figure}
+	\underline{Idea}: Keep matrices on all sites but one $(l)$ constant, optimize elements of $A^{\sigma_l}_{l}$. Sweep through $l$.
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Ground state search}
+	Minimizing
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.25]{gnd_state_search.png}
+	\end{figure}
+	$\equiv$ solving
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.25]{gnd_state_search1.png}
+	\end{figure}
+	$\implies$ a generalized eigenvalue problem, where we treat $A^{\sigma_l}_l$ as a vector $v$
+\end{frame}
+
+\begin{frame}
+	\frametitle{Ground state search}
+	
+	\underline{Aside}: left-/right-normalized
+	\begin{align*}
+		\sum_{\sigma_l} A^{\sigma_l\dagger} A^{\sigma_l} = I \quad\quad \sum_{\sigma_l} B^{\sigma_l\dagger} B^{\sigma_l} = I
+	\end{align*}
+	
+	If $\ket{\Psi}$ is both left- and right-normalized,
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[scale=0.25]{gnd_state_search2.png}
+\end{figure}
+	$\implies$ standard eigenvalue problem 
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Ground state search: DMRG}
+	Algorithm (DMRG): \vspace{5pt}
+	\begin{itemize}
+		\item Start with initial guess for $\ket{\Psi}$, which is right-normalized $\ket{\Psi} \sim BBBBB\dots$
+		\vspace{5pt}
+		\item Calculate current state of network for sites $N-1$ through $1$
+		\vspace{5pt}
+		\item \textit{Right-sweep}: From $l=1$ through $L-1$: at $l$, solve for $M^{\sigma_l}$ then left-normalize into $A^{\sigma_l}$ by SVD; remaining matrices of the SVD are multiplied into $M^{\sigma_{l+1}}$ 
+		\vspace{5pt}
+		
+		\item \textit{Left-sweep}: From $l=L$ through $l=2$: at $l$, solve for $M^{\sigma_l}$ then right-normalize into $B^{\sigma_l} by SVD$; remaining matrices of the SVD are multiplied into $M^{\sigma_{l-1}}$
+		\vspace{5pt}
+		
+		\item Repeat right and left sweeps until convergence
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Ground state search (DMRG)}
+	
+	Algorithm, formalized: Subscript denotes the number of updates
+	\begin{align*}
+		M_0 B_0 B_0 B_0 &\xrightarrow{\text{diag}} M_1 B_0 B_0 B_0  \xrightarrow{\text{SVD}} A_1 M_0 B_0 B_0  \\
+		&\xrightarrow{\text{diag}} A_1 M_1 B_0 B_0  \xrightarrow{\text{SVD}} A_1 A_1 M_0 B_0  \\
+		&\xrightarrow{\text{diag}} A_1 A_1 M_1 B_0  \xrightarrow{\text{SVD}} A_1 A_1 A_1 M_0  \\
+		&\xrightarrow{\text{diag}} A_1 A_1 A_1 M_1  \xrightarrow{\text{SVD}} A_1 A_1 M_1 B_1  \\
+		&\xrightarrow{\text{diag}} A_1 A_1 M_2 B_1  \xrightarrow{\text{SVD}} A_1 M_1 B_2 B_1  \\
+		&\xrightarrow{\text{diag}} A_1 M_2 B_2 B_1   \xrightarrow{\text{SVD}} M_1 B_2 B_2 B_1  \\
+		&\quad\vdots
+	\end{align*}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{References}
+	
+	\nocite{*}
+	\bibliographystyle{unsrt}
+	\bibliography{references}
+\end{frame}
 
 
 
