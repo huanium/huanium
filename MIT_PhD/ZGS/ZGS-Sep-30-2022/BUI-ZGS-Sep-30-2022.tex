@@ -86,11 +86,8 @@
 
 
 \author[Bui] % (optional)
-{Huan Q. Bui
-	}
-\institute[MIT] % (optional)
-{
-}
+{Huan Bui}
+\institute[MIT]{} % (optional)
 \date{ZGS, Oct 6, 2022}
  
 %\logo{\includegraphics[height=0.3cm]{colby.png}}
@@ -99,14 +96,13 @@
  
 \frame{\titlepage}
 
-
 \begin{frame}
 	\frametitle{Outline}
 	\begin{itemize}
 		\item Motivation
 		\item Compressing $\ket{\Psi}$ with SVD
 		\item Matrix Product States (MPS)
-		\item Density matrix renormalization group (DMRG), roughly
+		\item Ground state calculation (roughly)
 	\end{itemize}
 \end{frame}
 
@@ -411,7 +407,7 @@ So, \vspace{-30pt}
 	
 	MPS: 
 	\begin{itemize}
-		\item expresses wavefunctions in terms of products of matrices
+		\item expresses wavefunctions as products of matrices
 		
 		\item natural way to generate states with low entanglement entropy
 	\end{itemize}
@@ -524,8 +520,8 @@ So, \vspace{-30pt}
 	\begin{align*}
 		\ket{\text{GHZ}_4} = \f{\ket{0000} + \ket{1111}}{\sqrt{2}}= \f{1}{\sqrt{2}}
 		\sum_{\{\sigma\}} A_1^{\sigma_1} A_2^{\sigma_2} A_3^{\sigma_3} A_4^{\sigma_4}  \ket{\sigma_1\sigma_2\sigma_3\sigma_4}
-	\end{align*}
-	where \pause
+	\end{align*}\pause
+	where 
 	\begin{align*}
 		A^{0}_1 =\begin{pmatrix}
 			1 & 0
@@ -562,7 +558,7 @@ So, \vspace{-30pt}
 
 \begin{frame}
 	\frametitle{MPS \& Hilbert space decimation}
-	\underline{Idea}: Motivated by, not allowing matrix dimensions exceed a fixed $D$\\
+	\underline{Idea}: Motivated by SVD, not allow matrix dimensions to exceed a fixed $D$\\ \pause
 	
 	\vspace{10pt}
 	
@@ -575,7 +571,7 @@ So, \vspace{-30pt}
 		{(1\times d), (d\times d^2), \dots (D\times D)}, {(D \times D)},  { (D\times D)\dots (d^2\times d), (d\times 1)}
 	\end{align*}
 	
-	\vspace{10pt}
+	\vspace{10pt} \pause
 	
 	To generalize, can make all matrices to $D\times D$, so that
 	\begin{align*}
@@ -615,16 +611,16 @@ So, \vspace{-30pt}
 	\frametitle{So far}
 	\begin{itemize}
 		\item SVD \& Schmidt decomposition allows for compressing $\ket{\Psi}$ 
-		\vspace{10pt}
+		\vspace{10pt} \pause
 		
 		\item From Schmidt decomposition to MPS for general $\ket{\Psi}$
-		\vspace{10pt}
+		\vspace{10pt} \pause
 		
 		\item Decimate Hilbert space by keeping matrices in MPS at $(D\times D)$
-		\vspace{10pt}
+		\vspace{10pt} \pause
 		
-		\item Hilbert space ``smaller'' ($ND^2 \text{ vs } d^N$) and MPS  corresponds to $\ket{\Psi}$ with lower entanglement entropy
-		\vspace{10pt}
+		\item Smaller Hilbert space ($ND^2 \text{ vs } d^N$) and MPS  corresponds to $\ket{\Psi}$ with lower entanglement entropy
+		\vspace{10pt} \pause
 		
 		\item MPS: natural way to describe ground states of relevant Hamiltonians 
 	\end{itemize}
@@ -659,18 +655,18 @@ So, \vspace{-30pt}
 
 \begin{frame}
 	\frametitle{Graphical notation}
-	\underline{MPO}: Matrix product operators. \\
+	\underline{MPO}: Matrix product operators \\
 	
 	\vspace{10pt}
 	If $\bra{\sigma_1\sigma_2\dots \sigma_N} \ket{\Psi} = A^{\sigma_1}A^{\sigma_2}\dots A^{\sigma_N}$, then
 	\begin{align*}
 		\bra{\sigma_1\dots \sigma_N} \hat{O} |\sigma_1'\dots \sigma_N'\rangle = W^{\sigma_1\sigma'_1}W^{\sigma_2\sigma'_2}\dots W^{\sigma_{N-1}\sigma'_{N-1}}W^{\sigma_N\sigma'_N}
 	\end{align*} 
-	or
+	or \pause
 	\begin{align*}
 		\hat{O} = \sum_{\{\sigma,\sigma'\}} W^{\sigma_1\sigma'_1}W^{\sigma_2\sigma'_2}\dots W^{\sigma_{N-1}\sigma'_{N-1}}W^{\sigma_N\sigma'_N} \ket{\sigma}\langle \sigma'|
 	\end{align*}
-	$\implies$ can calculate $\bra{\Psi} H \ket{\Psi}$ in MPS language!
+	$\implies$ can calculate $\bra{\Psi} H \ket{\Psi}$ in MPS language
 \end{frame}
 
 \begin{frame}
@@ -700,12 +696,14 @@ So, \vspace{-30pt}
 	
 	\vspace{10pt}
 	
+	\pause
+	
 	Graphically,
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[scale=0.3]{gnd_state_search.png}
 	\end{figure}
-	\underline{Idea}: Keep matrices on all sites but one $(l)$ constant, optimize elements of $A^{\sigma_l}_{l}$. Sweep through $l$.
+	\underline{Idea}: Keep matrices on all sites but one $(\ell)$ constant, optimize elements of $A^{\sigma_\ell}_{\ell}$. Sweep through $\ell$.
 \end{frame}
 
 
@@ -716,12 +714,12 @@ So, \vspace{-30pt}
 		\centering
 		\includegraphics[scale=0.25]{gnd_state_search.png}
 	\end{figure}
-	$\equiv$ solving
+	$\equiv$ solving (gradient descent)
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[scale=0.25]{gnd_state_search1.png}
 	\end{figure}
-	$\implies$ a generalized eigenvalue problem, where we treat $A^{\sigma_l}_l$ as a vector $v$
+	$\implies$ a generalized eigenvalue problem, where we treat $A^{\sigma_\ell}_\ell$ as a vector $v$
 \end{frame}
 
 \begin{frame}
@@ -729,7 +727,7 @@ So, \vspace{-30pt}
 	
 	\underline{Aside}: left-/right-normalized
 	\begin{align*}
-		\sum_{\sigma_l} A^{\sigma_l\dagger} A^{\sigma_l} = I \quad\quad \sum_{\sigma_l} B^{\sigma_l\dagger} B^{\sigma_l} = I
+		\sum_{\sigma_\ell} A^{\sigma_\ell\dagger} A^{\sigma_\ell} = I \quad\quad \sum_{\sigma_\ell} B^{\sigma_\ell\dagger} B^{\sigma_\ell} = I
 	\end{align*}
 	
 	If $\ket{\Psi}$ is both left- and right-normalized,
@@ -742,18 +740,18 @@ So, \vspace{-30pt}
 
 
 \begin{frame}
-	\frametitle{Ground state search: DMRG}
-	Algorithm (DMRG): \vspace{5pt}
+	\frametitle{Ground state search}
+	Algorithm: \vspace{5pt}
 	\begin{itemize}
-		\item Start with initial guess for $\ket{\Psi}$, which is right-normalized $\ket{\Psi} \sim BBBBB\dots$
+		\item Start with initial guess for $\ket{\Psi}$, which is right-normalized $\ket{\Psi} \sim BBBBB\dots$ \pause
 		\vspace{5pt}
-		\item Calculate current state of network for sites $N-1$ through $1$
+		\item Calculate current state of network for sites $N-1$ through $1$ \pause
 		\vspace{5pt}
-		\item \textit{Right-sweep}: From $l=1$ through $L-1$: at $l$, solve for $M^{\sigma_l}$ then left-normalize into $A^{\sigma_l}$ by SVD; remaining matrices of the SVD are multiplied into $M^{\sigma_{l+1}}$ 
+		\item \textit{Right-sweep}: From $\ell=1$ through $N-1$: at $\ell$, solve for $M^{\sigma_\ell}$ then left-normalize into $A^{\sigma_\ell}$ by SVD; remaining matrices of the SVD are multiplied into $M^{\sigma_{\ell+1}}$  \pause
 		\vspace{5pt}
 		
-		\item \textit{Left-sweep}: From $l=L$ through $l=2$: at $l$, solve for $M^{\sigma_l}$ then right-normalize into $B^{\sigma_l} by SVD$; remaining matrices of the SVD are multiplied into $M^{\sigma_{l-1}}$
-		\vspace{5pt}
+		\item \textit{Left-sweep}: From $\ell=L$ through $\ell=2$: at $l$, solve for $M^{\sigma_\ell}$ then right-normalize into $B^{\sigma_\ell}$ by SVD; remaining matrices of the SVD are multiplied into $M^{\sigma_{\ell-1}}$
+		\vspace{5pt} \pause
 		
 		\item Repeat right and left sweeps until convergence
 	\end{itemize}
@@ -761,7 +759,7 @@ So, \vspace{-30pt}
 
 
 \begin{frame}
-	\frametitle{Ground state search (DMRG)}
+	\frametitle{Ground state search}
 	
 	Algorithm, formalized: Subscript denotes the number of updates
 	\begin{align*}
@@ -774,6 +772,38 @@ So, \vspace{-30pt}
 		&\quad\vdots
 	\end{align*}
 	
+\end{frame}
+
+\begin{frame}
+
+\frametitle{DMRG}
+
+\pause
+\begin{itemize}
+\item Introduce left and right blocks $A$ and $B$, with one spin in each \pause
+\vspace{8pt}
+\item Insert a pair between $A$ and $B$, so chain looks like $A \circ \circ B$ \pause
+\vspace{8pt}
+\item Diagonalize Hamiltonian to get $\ket{\Psi_0}$ and $E_0$ \pause
+\vspace{8pt}
+\item Find reduced Hilbert space for $A\circ$ and $\circ B$. How? \vspace{5pt}  \pause
+	\begin{itemize}
+	\item Schmidt-decompose $\ket{\Psi_0}$ and truncate \vspace{5pt}
+	\item Get approximate $\ket{\tilde{\psi}_0}$ with rank $D$ (out of $Dd$) \vspace{5pt}\\
+	$\implies$  $D$ most relevant states in $A\circ$, same for $\circ B$
+	\end{itemize} 
+	\vspace{8pt} \pause
+\item Repeat
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{DMRG}
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.33]{DMRG.PNG}
+\end{figure}
 \end{frame}
 
 \begin{frame}
