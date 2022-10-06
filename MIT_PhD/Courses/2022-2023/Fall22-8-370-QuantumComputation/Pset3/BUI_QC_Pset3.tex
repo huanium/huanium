@@ -131,7 +131,7 @@
 Course: \textbf{8.370 - QC}\\
 Problem set: \textbf{\#3}\\
 Due: Wednesday, Oct 5, 2022\\
-Collaborators/References: Christina Yu (on the alternative solution to 5b), Nielsen and Chuang
+Collaborators/References: Christina Yu (alternative approach to 5b, by Nielsen and Chuang)
 \end{framed}
 
 \noindent \textbf{1. Find a matrix whose square is $\sigma_x$.}\\
@@ -439,7 +439,7 @@ P(\pi/2) = e^{i\al} A\sigma_x B\sigma_x C \quad\quad\quad ABC = \mathbb{I}.
 By hook or by crook, one may find the following solution:
 \begin{align*}
 \al = \f{\pi}{4}, \quad\quad A=\mathbb{I}, \quad \quad B = C = \begin{pmatrix}
-0 & e^{-i\pi/8} \\ e^{i\pi/8} & 0
+0 & e^{+i\pi/8} \\ e^{-i\pi/8} & 0
 \end{pmatrix}.
 \end{align*}
 And the desired circuit takes the form:
@@ -455,7 +455,24 @@ Calculating the expression above, we find that it is equal to
 0 & 0 & 0 & i
 \end{pmatrix}
 \end{align*}
-which is equal to $CP_{12}(\pi/2)$, as desired. Notice that we use way fewer gates than before. 
+which is equal to $CP_{12}(\pi/2)$, as desired. Notice that we use way fewer gates than before. \\
+
+
+Mathematica code:
+\begin{lstlisting}
+	In[18]:= b = {{0, Exp[I*Pi/8]}, {Exp[-I*Pi/8], 0}};
+	
+	In[19]:= \[Sigma]x = PauliMatrix[1];
+	
+	In[20]:= \[Sigma]x . b
+	
+	Out[20]= {{E^(-((I \[Pi])/8)), 0}, {0, E^((I \[Pi])/8)}}
+	
+	In[24]:= KroneckerProduct[P[Pi/4], Id] . CNOT . 
+	KroneckerProduct[Id, b] . CNOT . KroneckerProduct[Id, b]
+	
+	Out[24]= {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, I}}
+\end{lstlisting}
 \end{enumerate}
 
 

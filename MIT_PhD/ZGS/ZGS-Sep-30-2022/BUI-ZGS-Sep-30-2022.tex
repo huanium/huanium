@@ -105,7 +105,8 @@
 	\begin{itemize}
 		\item Motivation
 		\item Compressing $\ket{\Psi}$ with SVD
-		\item MPS and DMRG
+		\item Matrix Product States (MPS)
+		\item Density matrix renormalization group (DMRG), roughly
 	\end{itemize}
 \end{frame}
 
@@ -113,7 +114,7 @@
 \begin{frame}
 	\frametitle{Motivation}
 	
-	$N$ sites, each is a spin-$1/2$. Find ground state of:
+	$N$ sites, each with spin-$1/2$. Find ground state of:
 	\begin{align*}
 		\mathcal{H} = - J \sum_{i=1}^N \sigma_i^z \sigma_{i+1}^z - h \sum_{i=1}^N \sigma^x_i
 	\end{align*}	
@@ -121,20 +122,22 @@
 	
 	Hilbert space dimension $\sim 2^N$\\
 	
-	\vspace{8pt}
+	\vspace{10pt}
 	
 	Exact diagonalization O.K. for $N \lessapprox 20$ on laptop\\
 	
-	\vspace{8pt}
+	\vspace{10pt}
 	
-	$N \to \infty$ (thermodynamic limit): needle in the haystack\\
+	$N \to \infty$: needle in the haystack\\
 	
-	\vspace{8pt}
+	\vspace{10pt}
 	
-	{$\boxed{!!}$ For most relevant Hamiltonians, haystack $\ll$ full Hilbert space }\\
-	\vspace{2pt}
+	\pause
+	
+	{$\boxed{!!}$ For many relevant Hamiltonians, haystack $\ll$ full Hilbert space }\\
+	\vspace{5pt}
 	{$\quad\,\,\,\,$e.g. haystack $\sim$ subspace of states with low entanglement entropy }\\
-	\vspace{2pt}
+	\vspace{5pt}
 	{$\quad\,\,\implies$ Clever parameterization + efficient algorithms = \smiley{}?}
 	
 		
@@ -144,17 +147,35 @@
 
 
 \begin{frame}
+	\frametitle{Compressing $\ket{\Psi}$?}
+	\begin{align*}
+		\ket{\Psi} = \sum_{\{ \sigma \}} \psi_{\sigma_1\sigma_2\dots \sigma_N} \ket{\sigma_1\sigma_2\dots \sigma_N}
+	\end{align*}
+
+	\vspace{10pt}
+	
+	
+	\begin{itemize}
+		\item \pause How to approximate $\ket{\Psi}$ well without storing $d^N$ coefficients?
+		
+		\vspace{10pt}
+		\item \pause Possible to reduce entanglement entropy after approximation?
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
 	\frametitle{Compressing $\ket{\Psi}$ with SVD}
 	
 	\begin{theorem}[Singular value decomposition]
-		For any $M \in \mathbb{M}_{A\times B}$, there are "unitary" $U,V$ for which  $M = U S V^\dagger$, where $S = \text{diag}(s_1,s_2,\dots,0,0)$.\\
+		For any $M$, there are unitary $U,V$ for which  $M = U S V^\dagger$, where $S = \text{diag}(s_1,s_2,\dots)$.\\
 		\vspace{5pt}
 		$s_i$: \textit{singular values of} $M \equiv$  eigenvalues of $\sqrt{M^\dagger M }$. $s_i$ $\geq 0$
 	\end{theorem}
 	
 	
 	\begin{theorem}[Low-rank approximation]
-		The HS-distance from a rank-$m$ matrix $A\in \mathbb{M}_{n\times n}$ to the nearest $n\times n$ matrix of rank $k \leq m$ is the square root of the sum of the squares of the smallest $n-k$ singular values of $A$.
+		The HS-distance from a rank-$m$ matrix $A_{n\times n}$ to the nearest $n\times n$ matrix of rank $k \leq m$  is the square root of the sum of the squares of the smallest $n-k$ singular values of $A$.
 	\end{theorem}
 
 	Hilbert-Schmidt norm:
@@ -169,7 +190,7 @@
 \begin{frame}
 	\frametitle{Compressing $\ket{\Psi}$ with SVD}
 	
-	\underline{Application}: image compression
+	
 	
 	\begin{figure}[!htb]
 		\centering
@@ -183,6 +204,12 @@
 			\includegraphics[scale=0.34]{svd2.png}
 		\end{minipage}
 	\end{figure}
+
+\pause
+
+\vspace{10pt}
+
+\underline{Application}: image compression
 
 \begin{figure}[!htb]
 	\centering
@@ -204,6 +231,8 @@
 	\frametitle{Compressing $\ket{\Psi}$ with SVD}
 	\underline{Idea}: represent $\ket{\Psi}$ as a matrix, then SVD\\
 	
+	\pause
+	
 	\vspace{8pt}
 	
 	Split $N$ spins on a 1d chain into $L+R$: 
@@ -211,6 +240,8 @@
 		\ket{\Psi} = \sum_{l,r}^{\min(N_L,N_R)} \psi_{lr} \ket{l}\ket{r}
 	\end{align*}
 	$\psi_{lr}$ has two indices $\implies$ treat as a matrix (NOT an operator!) \\ 
+	
+	\pause
 	
 	\vspace{8pt} 
 	
@@ -237,10 +268,12 @@
 		&= \sum_{i} \sum_{\textcolor{blue}{l},\textcolor{red}{r}}  \textcolor{blue}{\mathbf{U}_{li}}\mathbf{D}_{ii} \textcolor{red}{\mathbf{V}_{ir} } \textcolor{blue}{\ket{l}}\textcolor{red}{\ket{r}}\\
 		&= \sum_i s_i \ket{i}_L \ket{i}_R \,\,\,\leftarrow \text{ Schmidt decomposition}
 	\end{align*}
+\pause 
 	Can simply read off reduced density matrices:
 	\begin{align*}
 		\rho_L = \psi\psi^\dagger = \sum_i s_i^2 \ket{i}_L \bra{i}_L \quad\quad\quad \rho_R = \psi^\dagger\psi = \sum_i s_i^2 \ket{i}_R \bra{i}_R
 	\end{align*}
+\pause
 	Normalization:
 	\begin{align*}
 		\Tr(\psi^\dagger\psi) = \sum_i s_i^2 = 1 \implies s_i^2 \text{: probability for i$^\text{th}$ Schmidt state pair}
@@ -258,12 +291,17 @@
 	\begin{align*}
 		\ket{\Psi} = \f{1}{\sqrt{2}}\lp \ket{\uparrow\uparrow} - \ket{\uparrow\downarrow} \rp
 	\end{align*}
+	\pause 
 	Matrixify and SVD:
 	\begin{align*}
-	&\ket{\Psi} = \sum_{ij}\psi_{ij}\ket{i}\ket{j} \quad \text{ with } \quad   [\psi_{ij}] = \begin{pmatrix}
+	\ket{\Psi} = \sum_{ij}\psi_{ij}\ket{i}\ket{j} \quad \text{ with } \quad   [\psi_{ij}] = \begin{pmatrix}
 			\f{1}{\sqrt{2}} & -\f{1}{\sqrt{2}} \\ 0 & 0
-		\end{pmatrix}\\
-	&\quad\quad \,\,\,[\psi_{ij}] = \begin{pmatrix}
+		\end{pmatrix}
+	\end{align*}
+\vspace{-10pt}
+\pause
+\begin{align*}
+	[\psi_{ij}] = \begin{pmatrix}
 			1 & 0 \\ 0 & 1
 		\end{pmatrix}
 	\underbrace{\begin{pmatrix}
@@ -286,22 +324,23 @@
 	
 	$\quad$ SVD compression $\equiv$ make states with low entanglement entropy\\
 	
-	\vspace{8pt}
 	
-	\indent $\quad\quad$ i.e., SVD gives \textit{low-entanglement approximation}\\
-	
-	\vspace{8pt}
+	\vspace{8pt} \pause
 	
 	\underline{How?} von Neumann entanglement entropy between $L$ and $R$:
 	\begin{align*}
 		S(\rho_L) = -\Tr[\rho_L \ln \rho_L] = -\Tr[\rho_R \ln \rho_R] = S(\rho_R) 
 	\end{align*}
-	Eigenvalues of $\rho_L, \rho_R$ are exactly $\{s_i\}$. So,
-	\vspace{-7pt}
+\pause
+	Eigenvalues of $\rho_L, \rho_R$ are exactly $\{s_i\}$.
 	\begin{align*}
-		&\quad\quad \quad \,\, S = S(\rho_L) = S(\rho_R) = -\sum_i^{\sim 2^{N/2}} s_i^2 \ln s_i^2 \to -\sum_i^m s_i^2 \ln s_i^2\\
-		&\text{\textcolor{blue}{Drop small $s_i$'s $\implies$ reduce $S$ and exponential compression, $m\sim \mathcal{O}(100)$}}
+		\rho_L = \psi\psi^\dagger = \sum_i s_i^2 \ket{i}_L \bra{i}_L \quad\quad\quad \rho_R = \psi^\dagger\psi = \sum_i s_i^2 \ket{i}_R \bra{i}_R
 	\end{align*}
+So, \vspace{-30pt}
+	\begin{align*}
+		S = S(\rho_L) = S(\rho_R) = -\sum_i^{\sim 2^{N/2}} s_i^2 \ln s_i^2 \to -\sum_i^m s_i^2 \ln s_i^2
+	\end{align*}
+\text{\textcolor{blue}{Drop small $s_i$'s $\implies$ reduce $S$ and exponential compression, $m\sim \mathcal{O}(100)$}}
 	
 \end{frame}
 
@@ -328,7 +367,7 @@
 			\f{1}{\sqrt{2}} & -\f{1}{\sqrt{2}} \\ 	\f{1}{\sqrt{2}} & \f{1}{\sqrt{2}}
 		\end{pmatrix}
 	\end{align*}
-	Entanglement entropy is 0 $\implies$ not entangled (makes sense)
+	\pause Entanglement entropy is 0 $\implies$ not entangled (makes sense)
 \end{frame}
 
 
@@ -337,6 +376,8 @@
 	\frametitle{But wait...}
 		
 	We need $\ket{\Psi}$ to compress. But we want to find such a $\ket{\Psi}$ for some $H$. \\
+	
+	\pause
 	
 	\vspace{15pt}
 	
@@ -363,6 +404,7 @@
 	
 	\vspace{8pt}
 	
+	\pause
 	
 	
 	\vspace{12pt}
@@ -373,9 +415,10 @@
 		
 		\item natural way to generate states with low entanglement entropy
 	\end{itemize}
+\pause
 
 	DMRG:
-\textbf{}	\begin{itemize}
+	\begin{itemize}
 		\item numerical variational technique for finding ground states
 		
 		\item works with MPS, not $\ket{\Psi}$
@@ -397,17 +440,59 @@
 	$m:$ position on the 1d chain where the $L-R$ split occurs. \\
 	
 	\vspace{15pt}
+	\pause
 	
 	\underline{$\ket{i_m}_L$ can be built recursively}:
 	\begin{align*}
-		&\ket{i_1}_L = \sum_{\sigma_1}A^{\sigma_1}_{i_1}\ket{\sigma_1}\\
-		&\ket{i_2}_L = \sum_{i_1,\sigma_2} A^{\sigma_2}_{i_2,i_1}  \ket{i_1}_L \ket{\sigma_2} = \sum_{i_1,\sigma_1,\sigma_2} A^{\sigma_1}_{i_1}   A^{\sigma_2}_{i_2,i_1} \ket{\sigma_1\sigma_2} = \sum_{\sigma_1,\sigma_2} (A^{\sigma_1}A^{\sigma_2})_{1,i_2} \ket{\sigma_1\sigma_2}\\
-		&\ket{i_3}_L = \sum_{\sigma_1,\sigma_2,\sigma_3}(A^{\sigma_1}A^{\sigma_2}A^{\sigma_3})_{1,i_3} \ket{\sigma_1\sigma_2\sigma_3}\\
-		&\quad\vdots
+		&\ket{i_1}_L = \sum_{\sigma_1}A^{\sigma_1}_{i_1}\ket{\sigma_1}\\ 
+		&\textcolor{white}{\ket{i_2}_L = \sum_{i_1,\sigma_2} A^{\sigma_2}_{i_2,i_1}  \ket{i_1}_L \ket{\sigma_2} = \sum_{i_1,\sigma_1,\sigma_2} A^{\sigma_1}_{i_1}   A^{\sigma_2}_{i_2,i_1} \ket{\sigma_1\sigma_2} = \sum_{\sigma_1,\sigma_2} (A^{\sigma_1}A^{\sigma_2})_{1,i_2} \ket{\sigma_1\sigma_2}}\\
+		&\textcolor{white}{\ket{i_3}_L = \sum_{\sigma_1,\sigma_2,\sigma_3}(A^{\sigma_1}A^{\sigma_2}A^{\sigma_3})_{1,i_3} \ket{\sigma_1\sigma_2\sigma_3}}\\
+		&\textcolor{white}{\quad\vdots}
 	\end{align*}
-
-	
 \end{frame}
+
+
+\begin{frame}
+	\frametitle{MPS}
+	\textbf{Every $\ket{\Psi}$ can be written as an MPS.} From Schmidt decomposition:
+	\begin{align*}
+		\ket{\Psi} = \sum_{i} s_i \ket{i}_L \ket{i}_R = \sum_{i_m} s_i \ket{i_m}_L \ket{i_m}_R
+	\end{align*}
+	$m:$ position on the 1d chain where the $L-R$ split occurs. \\
+	
+	\vspace{15pt}
+	
+	\underline{$\ket{i_m}_L$ can be built recursively}:
+	\begin{align*}
+		&\ket{i_1}_L = \sum_{\sigma_1}A^{\sigma_1}_{i_1}\ket{\sigma_1}\\ 
+		&\textcolor{black}{\ket{i_2}_L = \sum_{i_1,\sigma_2} A^{\sigma_2}_{i_2,i_1}  \ket{i_1}_L \ket{\sigma_2} = \sum_{i_1,\sigma_1,\sigma_2} A^{\sigma_1}_{i_1}   A^{\sigma_2}_{i_2,i_1} \ket{\sigma_1\sigma_2} = \sum_{\sigma_1,\sigma_2} (A^{\sigma_1}A^{\sigma_2})_{1,i_2} \ket{\sigma_1\sigma_2}}\\
+		&\textcolor{white}{\ket{i_3}_L = \sum_{\sigma_1,\sigma_2,\sigma_3}(A^{\sigma_1}A^{\sigma_2}A^{\sigma_3})_{1,i_3} \ket{\sigma_1\sigma_2\sigma_3}}\\
+		&\textcolor{white}{\quad\vdots}
+	\end{align*}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{MPS}
+	\textbf{Every $\ket{\Psi}$ can be written as an MPS.} From Schmidt decomposition:
+	\begin{align*}
+		\ket{\Psi} = \sum_{i} s_i \ket{i}_L \ket{i}_R = \sum_{i_m} s_i \ket{i_m}_L \ket{i_m}_R
+	\end{align*}
+	$m:$ position on the 1d chain where the $L-R$ split occurs. \\
+	
+	\vspace{15pt}
+	
+	\underline{$\ket{i_m}_L$ can be built recursively}:
+	\begin{align*}
+		&\ket{i_1}_L = \sum_{\sigma_1}A^{\sigma_1}_{i_1}\ket{\sigma_1}\\ 
+		&\textcolor{black}{\ket{i_2}_L = \sum_{i_1,\sigma_2} A^{\sigma_2}_{i_2,i_1}  \ket{i_1}_L \ket{\sigma_2} = \sum_{i_1,\sigma_1,\sigma_2} A^{\sigma_1}_{i_1}   A^{\sigma_2}_{i_2,i_1} \ket{\sigma_1\sigma_2} = \sum_{\sigma_1,\sigma_2} (A^{\sigma_1}A^{\sigma_2})_{1,i_2} \ket{\sigma_1\sigma_2}}\\
+		&\textcolor{black}{\ket{i_3}_L = \sum_{\sigma_1,\sigma_2,\sigma_3}(A^{\sigma_1}A^{\sigma_2}A^{\sigma_3})_{1,i_3} \ket{\sigma_1\sigma_2\sigma_3}}\\
+		&\textcolor{black}{\quad\vdots}
+	\end{align*}
+\end{frame}
+
+
+
 
 
 \begin{frame}
@@ -417,11 +502,12 @@
 		&\ket{i_m}_L = \sum_{\{\sigma\}_1^N} (A^{\sigma_1}A^{\sigma_2}\dots A^{\sigma_m})_{1,i_m}  \ket{\sigma_1 \sigma_2\dots\sigma_m} \\
 		&\ket{i_m}_R = \sum_{\{\sigma\}_{m+1}^N} (B^{\sigma_{m+1}}B^{\sigma_{m+2}}\dots B^{\sigma_N})_{i_m,1}  \ket{\sigma_{m+1}\sigma_{m+2}\dots\sigma_N} 
 	\end{align*}
+	\pause
 	Full wavefunction:
 	\begin{align*}
 		\boxed{\ket{\Psi} = \sum_{\{\sigma\}}    A^{\sigma_1}A^{\sigma_2}\dots A^{\sigma_m}  \,\,{S}\,\, B^{\sigma_{m+1}}B^{\sigma_{m+2}}\dots B^{\sigma_N}  \ket{\sigma_1\sigma_2\dots \sigma_N}}
 	\end{align*}
-	Matrix dimensions?
+	Matrix dimensions:
 	\begin{align*}
 		\underbrace{(1\times d), (d\times d^2), \dots }_{A}, \underbrace{(d^{N/2}\times d^{N/2})}_{S},  \underbrace{\dots (d^2\times d), (d\times 1)}_{B}
 	\end{align*}
@@ -439,7 +525,7 @@
 		\ket{\text{GHZ}_4} = \f{\ket{0000} + \ket{1111}}{\sqrt{2}}= \f{1}{\sqrt{2}}
 		\sum_{\{\sigma\}} A_1^{\sigma_1} A_2^{\sigma_2} A_3^{\sigma_3} A_4^{\sigma_4}  \ket{\sigma_1\sigma_2\sigma_3\sigma_4}
 	\end{align*}
-	where
+	where \pause
 	\begin{align*}
 		A^{0}_1 =\begin{pmatrix}
 			1 & 0
