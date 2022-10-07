@@ -102,7 +102,7 @@ class BEC1_Portal():
             camera_saving_folder_pathname, saving_location_root_pathname, image_specification_list = saver.load_config()
             user_entered_name = self.folder_name
             is_dryrun = user_entered_name == "dryrun"
-            savefolder_pathname = saver.initialize_savefolder(saving_location_root_pathname, user_entered_name, is_dryrun)
+            savefolder_pathname = saver.initialize_savefolder_portal(saving_location_root_pathname, user_entered_name, is_dryrun)
 
             if (os.path.isdir(savefolder_pathname) and not is_dryrun):
                 self.image_saver_status.delete(0,'end')
@@ -264,7 +264,7 @@ class BEC1_Portal():
         camera_saving_folder_pathname, saving_location_root_pathname, image_specification_list = saver.load_config()
         user_entered_name = self.folder_name
         is_dryrun = user_entered_name == "dryrun"
-        savefolder_pathname = saver.initialize_savefolder(saving_location_root_pathname, user_entered_name, is_dryrun)
+        savefolder_pathname = saver.initialize_savefolder_portal(saving_location_root_pathname, user_entered_name, is_dryrun)
 
         if is_dryrun:
             print("Running as a dry run. WARNING: All images will be deleted on termination.\n")
