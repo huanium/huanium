@@ -1,0 +1,230 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.370 - QC}\\
+Problem set: \textbf{\#5}\\
+Due: Wednesday, Oct 26, 2022\\
+Collaborators/References: 
+\end{framed}
+
+
+
+
+\noindent \textbf{1. Teleportation} \\
+
+\noindent Suppose the qubit Alice wants to teleport has state $\ket{\psi}_A = \al\ket{0}+ \be\ket{1}$. If Alice and Bob start with $(1/\sqrt{2})(\ket{01}_{AB} - \ket{10}_{AB})$ then Bob's states for each of Alice's measurement outcome and Bob's required unitary transformations are
+\begin{align*}
+	&\f{1}{\sqrt{2}}(\ket{00} + \ket{11}) \to \ket{\psi}_B = +\al\ket{1} - \be\ket{0} \implies \sigma_y\\
+	&\f{1}{\sqrt{2}}(\ket{01} + \ket{10}) \to \ket{\psi}_B = -\al\ket{0} + \be\ket{1} \implies \sigma_z \\
+	&\f{1}{\sqrt{2}}(\ket{00} - \ket{11}) \to \ket{\psi}_B = +\al\ket{1} + \be\ket{0} \implies \sigma_x\\
+	&\f{1}{\sqrt{2}}(\ket{01} - \ket{10}) \to \ket{\psi}_B = +\al\ket{0} + \be\ket{1} \implies \text{id}\\
+\end{align*}
+Of course, another way to do this problem is to notice that the new EPR pair which Alice and Bob share is the original EPR pair transformed by $\sigma_y$. Therefore, Bob needs to apply a $\sigma_y$ to his original unitary transformations to obtain the new unitary transformations. \\
+
+
+
+\noindent \textbf{2. Deutsch-Jozsa}\\ 
+
+
+In the Deutsch-Jozsa algorithm, the probability for a state $\ket{k}$ to be measured is 
+\begin{align*}
+	\abs{\f{1}{2^n} \sum^{2^n-1}_{j=0}  (-1)^{f(j)}  (-1)^{j\cdot k} }^2
+\end{align*}
+In the algorithm, we are interested in the probability of measuring $k=0$, which is 
+\begin{align*}
+	\Pr = \abs{\f{1}{2^n} \sum^{2^n-1}_{j=0}  (-1)^{f(j)}}^2.
+\end{align*}
+For $f(j)$ constant, this quantity is $1$. For $f(j)$ balanced, this quantity is $0$. \\
+
+In the case that $f(j) = 0$ for $r$ times and $f(j)=1$ for $s$ times, we have:
+\begin{align*}
+	\Pr = \abs{\f{1}{2^n} (r-s)   }^2 = \boxed{\f{(r-s)^2}{2^{2n}}}
+\end{align*}
+
+\newpage
+
+\noindent \textbf{3. Two qubits}
+
+\begin{enumerate}[label=(\alph*)]
+	\item It suffices to check that the states are mutually orthogonal:
+	\begin{align*}
+		&\bra{00}\ket{01} = \braket{0}\bra{0}\ket{1} = 0\\
+		&\bra{00}\ket{1+} = \bra{0}\ket{1}\bra{0}\ket{+} = 0 \\
+		&\bra{00}\ket{1-} = \bra{0}\ket{1}\bra{0}\ket{-} = 0\\
+		&\bra{01}\ket{1+} = \bra{0}\ket{1}\bra{1}\ket{+} = 0 \\
+		&\bra{01}\ket{1-} = \bra{1}\ket{1}\bra{1}\ket{-} = 0\\
+		&\bra{1+}\ket{1-} = \bra{1}\ket{1}\bra{+}\ket{-} =0. 
+	\end{align*}
+	Since the states also span the 4-dimensional Hilbert space for states of a 2-qubit system, the states provided form an orthonormal basis. 
+	
+	\item Since each of the given states are product states, Alice and Bob can make sequential measurements to find what state their qubits are in originally. Consider the following procedure: Alice makes a measurement in the $\{\ket{0},\ket{1}\}$ basis. If she sees $\ket{0}$, she calls Bob and tells him to measure his qubit in the $\{\ket{0}, \ket{1}\}$ basis. Else if Alice sees $\ket{1}$, then she calls and tells Bob to measure his qubit in the $\{ \ket{+}, \ket{-}  \}$ basis. They will be able to unambiguously identify the state they had in the beginning.
+	
+	\item Alice can always tell with certainty the state of her qubit by measuring in the $\{  \ket{0},\ket{1} \}$ basis. However, Bob cannot, simply because $\ket{\pm}$ is a superposition of $\ket{0}$ and $\ket{1}$ and vice versa. There is no measurement basis with which Bob (alone) can use to unambiguously identity the state of his qubit.  
+	
+	\item No? Essentially we want to make a non-local controlled-Hadamard gate. The simultaneous measurement condition disallows us from doing this. \textcolor{purple}{Gut feeling says this is possible but I can't seem to find a way to get an answer.}
+\end{enumerate}
+
+
+\noindent \textbf{4. GHZ}\\
+
+Alice, Bob, and Charlie hold the GHZ state:
+\begin{align*}
+	\f{1}{\sqrt{2}} \lp \ket{000}_{ABC} + \ket{111}_{ABC} \rp
+\end{align*}
+
+
+\begin{enumerate}[label=(\alph*)]
+	
+	\item In order to arrange so that Alice and Charlie share the Bell pair $(1/\sqrt{2})(\ket{00} + \ket{11})$, Alice, Bob, and Charlie must somehow ``factor'' Bob's qubit out of the GHZ state. This requires a controlled-unitary gate or a classical controlled-operation whose control bit is Alice's or Charlie's qubit and target bit is Bob's. This is not possible if the trio are not allowed to communicate.
+	
+	\item For Alice and Charlie to have the Bell pair state in the problem, Bob first applies a Hadamard on his qubit, so that the system becomes
+	\begin{align*}
+		\f{1}{\sqrt{2}}\lp \ket{0+0} + \ket{1-1} \rp = \f{1}{2}\lp \ket{000} + \ket{010} + \ket{101} - \ket{111}  \rp.
+	\end{align*}
+	Now Bob measures his qubit in the $\{ \ket{0}, \ket{1}  \}$ basis. The system after this measurement is in one of the two states:
+	\begin{align*}
+		\f{1}{\sqrt{2}}\lp \ket{00} + \ket{11} \rp_{AC}\ket{0}_B \quad\quad\quad \f{1}{\sqrt{2}}\lp \ket{00} - \ket{11} \rp_{AC} \ket{1}_B
+	\end{align*}
+	with equal probability. If Bob measures $\ket{0}$, he does nothing, Alice and Charlie already share the correct EPR state. If Bob measures $\ket{1}$, then he lets either Charlie or Alice knows so that one of them applies a $\sigma_z$ on their qubit, so that $(\ket{00} - \ket{11})_{AC} \to (\ket{00} + \ket{11})_{AC}$. 
+\end{enumerate}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
