@@ -186,9 +186,44 @@ In the case that $f(j) = 0$ for $r$ times and $f(j)=1$ for $s$ times, the probab
 	
 	\item Since each of the given states are product states, Alice and Bob can make sequential measurements to find what state their qubits are in originally. Consider the following procedure: Alice makes a measurement in the $\{\ket{0},\ket{1}\}$ basis. If she sees $\ket{0}$, she calls Bob and tells him to measure his qubit in the $\{\ket{0}, \ket{1}\}$ basis. Else if Alice sees $\ket{1}$, then she calls and tells Bob to measure his qubit in the $\{ \ket{+}, \ket{-}  \}$ basis. They will be able to unambiguously identify the state they had in the beginning.
 	
-	\item Alice can always tell with certainty the state of her qubit by measuring in the $\{  \ket{0},\ket{1} \}$ basis. However, Bob cannot, simply because $\ket{\pm}$ is a superposition of $\ket{0}$ and $\ket{1}$ and vice versa. There is no measurement basis with which Bob (alone) can use to unambiguously identity the state of his qubit.  
+	\item Alice can always tell with certainty the state of her qubit by measuring in the $\{  \ket{0},\ket{1} \}$ basis. However, Bob cannot, simply because $\ket{\pm}$ is a superposition of $\ket{0}$ and $\ket{1}$ and vice versa. There is no measurement basis with which Bob (alone) can use to unambiguously identify the state of his qubit.  One can also answer this question using density matrices, which I think is less convenient, as one has to assign probabilities to the possibilities given in the problem, etc.
 	
-	\item No? Essentially we want to make a non-local controlled-Hadamard gate. The simultaneous measurement condition disallows us from doing this. \textcolor{purple}{Gut feeling says this is possible but I can't seem to find a way to get an answer.}
+	\item Yes. The strategy is as follows: Bob applies a CNOT on the two qubits that he has. The control qubit is that of his half of the EPR pair, and the target qubit is his qubit. Alice measures her qubit in the $\{\ket{0}, \ket{1}\}$ basis. If she sees that she has a $\ket{0}$ then she measures her half of the EPR pair in the $\{\ket{0}, \ket{1}\}$ basis. Else, she measures her half of the EPR pair in the $\{ \ket{+}, \ket{-} \}$ basis. Meanwhile, Bob measures his qubits in the $\{ \ket{0}, \ket{1}   \}$ basis and his half of the EPR pair in the $\{ \ket{+}, \ket{-}  \}$ basis. To see how this works, we first consider the starting state. The four possible initial states of the problem are (here I am writing everything without normalization... I'm also dropping the kets to clarify everything):
+	\begin{align*}
+		\ket{a}	&= \ket{0_A0_B} (\ket{0_A0_B} + \ket{1_A 1_B}) =  (00)_A (00)_B + (01)_A (01)_B \\
+		\ket{b} &= \ket{0_A1_B} (\ket{0_A0_B} + \ket{1_A 1_B}) =  (00)_A (10)_B + (01)_A (11)_B \\
+		\ket{c} &= \ket{1_A+_B} (\ket{0_A0_B} + \ket{1_A 1_B}) =  (10)_A (+0)_B + (11)_A (+1)_B  \\
+		\ket{d} &= \ket{1_A-_B} (\ket{0_A0_B} + \ket{1_A 1_B}) =  (10)_A (-0)_B + (11)_A (-1)_B 
+	\end{align*}
+	Here, the Alice's second qubit comes from her half of the EPR pair. Bob's second qubit comes from his half of the EPR pair. Now, Bob performs a CNOT where the control qubit is from his half of the EPR pair. After this application, the possible states become:
+	\begin{align*}
+		\ket{a'} &= \ket{0_A0_B} (\ket{0_A0_B} + \ket{1_A 1_B}) =  (00)_A (00)_B + (01)_A (11)_B \\
+		\ket{b'} &= \ket{0_A1_B} (\ket{0_A0_B} + \ket{1_A 1_B}) =  (00)_A (10)_B + (01)_A (01)_B \\
+		\ket{c'} &= \ket{1_A+_B} (\ket{0_A0_B} + \ket{1_A 1_B}) =  (10)_A (+0)_B + (11)_A (+1)_B  \\
+		\ket{d'} &= \ket{1_A-_B} (\ket{0_A0_B} + \ket{1_A 1_B}) =  (10)_A (-0)_B - (11)_A (-1)_B 
+	\end{align*}
+	The table below shows the Bob's resulting states after Alice makes her measurement:\\
+	
+	\begin{center}
+	\begin{tabular}{| c | c | c | c  | c | }
+		\hline
+		 			& $\ket{a'}$ &  $\ket{b'}$ &  $\ket{c'}$ &  $\ket{d'}$ \\
+		 			\hline
+		 $\bra{00}_A$	& $\ket{00}_B$  & $\ket{10}_B$  & $\varnothing$& $\varnothing$\\
+		 $\bra{01}_A$	& $\ket{11}_B$  & $\ket{01}_B$  & $\varnothing$& $\varnothing$\\
+		 $\bra{1+}_A$	& $\varnothing$ & $\varnothing$ & $\ket{++}_B$ & $\ket{--}_B$\\
+		 $\bra{1-}_A$	& $\varnothing$ & $\varnothing$ & $\ket{+-}_B$ & $\ket{-+}_B$\\
+		 \hline
+	\end{tabular}
+\end{center}
+
+Notice that if Bob measures his first qubit (which is the qubit he was given originally) in the $\{ \ket{0}, \ket{1}  \}$ basis and his second qubit (which is his half of the EPR pair) in the $\{ \ket{+}, \ket{-} \}$ basis, then after communicating with Alice after the measurement, they can work out which of the four possibilities $(\ket{a}, \ket{b}, \ket{c}, \ket{d})$ they were given originally, based on the this table. \\
+
+For example, if Bob measures $\ket{0}$ on his first qubit and Alice measures $\ket{01}$, then they know they were given $\ket{0}\ket{1}$, which becomes $\ket{b}$ after we concatenate it with the EPR pair. 
+
+
+	
+	
 \end{enumerate}
 
 
@@ -202,7 +237,7 @@ Alice, Bob, and Charlie hold the GHZ state:
 
 \begin{enumerate}[label=(\alph*)]
 	
-	\item In order to arrange so that Alice and Charlie share the Bell pair $(1/\sqrt{2})(\ket{00} + \ket{11})$, Alice, Bob, and Charlie must somehow ``factor'' Bob's qubit out of the GHZ state. This requires a controlled-unitary gate or a classical controlled-operation whose control bit is Alice's or Charlie's qubit and target bit is Bob's. This is not possible if the trio are not allowed to communicate.
+	\item In order to arrange so that Alice and Charlie share the Bell pair $(1/\sqrt{2})(\ket{00} + \ket{11})$, Alice, Bob, and Charlie must somehow ``factor'' Bob's qubit out of the GHZ state. This requires a controlled-unitary gate or a classical controlled-operation whose control bit is Alice's or Charlie's qubit and target bit is Bob's. This is not possible if the trio are not allowed to communicate. One can also answer this part using density matrices. 
 	
 	\item For Alice and Charlie to have the Bell pair state in the problem, Bob first applies a Hadamard on his qubit, so that the system becomes
 	\begin{align*}
