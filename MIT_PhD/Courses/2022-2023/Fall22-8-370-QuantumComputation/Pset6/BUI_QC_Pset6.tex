@@ -146,8 +146,7 @@ where $\mathcal{P}$ is the Pauli group. Suppose $A,B\in \mathcal{C}$. Then for a
 \begin{align*}
 	AB g (AB)^\dagger =  A \underbrace{ (BgB^\dagger)}_{\in \mathcal{P}} A^\dagger= A g' A^\dagger \in \mathcal{P}.
 \end{align*}
-So $AB\in \mathcal{C}$. \textcolor{purple}{How to do the second part here???}
-So every element of $\mathcal{C}$ has an inverse. The identity element is simply the identity matrix. Associativity is inherited from associativity of matrix multiplication. So, $\mathcal{C}$ is a group. 
+So, $AB\in \mathcal{C}$. Now let $g\in \mathcal{P}$ be given and $A\in \mathcal{C}$. The map $g\to A g A^\dagger$ is a bijection between $\mathcal{P}$ and itself is bijective because it is injective and $\mathcal{P}$ is a finite group. To prove injectivity is easy: if $Ag_1 A^\dagger = A g_2 A^\dagger$ then $g_1 = g_2$ by left-multiplying and right-multiplying by $A^\dagger$ and $A$ respectively. So, we have that $A^\dagger g A = A^\dagger A g' A^\dagger A = g' \in \mathcal{P}$ for some $g' \in \mathcal{P}$. So, every element of $\mathcal{C}$ has an inverse. The identity element is simply the identity matrix. Associativity is inherited from associativity of matrix multiplication. So, $\mathcal{C}$ is a group. 
 	
 	\item The Pauli group for 1 qubit is given by 
 	\begin{align*}
@@ -183,7 +182,16 @@ So every element of $\mathcal{C}$ has an inverse. The identity element is simply
 
 
 
-\noindent \textbf{2. Gotta erase workbits!}\\
+\noindent \textbf{2. Gotta erase workbits in Simon's algorithm!}\\
+
+\noindent Let's consider an example for this problem. Suppose we have 3 qubits in the first register and 3 qubits in the second register, all initialized to zero: $\ket{0^3} \ket{0^3}$. After the first run of Simon's algorithm and measurement, let's set that the second register ends up in some state $\ket{f(j_0)}$. Now suppose we don't reset this state to $\ket{0^n}$ and run the algorithm again. After the Hadamard transform on the first register and application of the oracle, the state of the system is 
+\begin{align*}
+\f{1}{2^{n/2}} \sum_{j=0}^{2^n-1}\ket{j} \ket{f(j_0)\oplus f(j)}.  
+\end{align*}
+After the second Hadamard transform on the first register, the state of the system is 
+\begin{align*}
+\f{1}{2^{n}} \sum_{j=0}^{2^n-1}\lp     \sum_{k=0}^{2^n-1} (-1)^{j\cdot k} \ket{k} \rp \ket{f(j_0)\oplus f(j)} = \f{1}{2^n}  \sum_{k=0}^{2^n-1} \lp \sum_{j=0}^{2^n-1} (-1)^{j\cdot k} \rp \ket{k} \ket{     f(j_0) \oplus f(j)  }. 
+\end{align*}
 
 
 
@@ -224,11 +232,10 @@ So every element of $\mathcal{C}$ has an inverse. The identity element is simply
 	\end{align*} 
 	Here, $L=1$ for $j=d$ and $L = 2^{n-1}-1$ otherwise. This amplitude is nonzero only if $c\cdot k = 0 \mod 2$. The probability associated with finding a $k$ that is perpendicular to $c$ is thus:
 	\begin{align*}
-		\f{1}{2^{2n-2}} \abs{\sum_{i=1}^{2^{n-1}-1} (-1)^{j_i\cdot k}}^2 + \f{1}{2^{2n-2}} =  
+		\f{1}{2^{2n-2}} \abs{\sum_{i=1}^{2^{n-1}-1} (-1)^{j_i\cdot k}}^2 + \f{1}{2^{2n-2}}
 	\end{align*}
 	
-	
-	So, the probability associated with finding a $k$ that is perpendicular to $c$ is $blah$.   How many vectors will we have to sample to find $n-1$ vectors that are linearly independent? 
+	Notice that the sum inside the absolute square has an odd number of terms, so it is nonzero. As a result, if we find any $\ket{k}\ket{f(j)}$ after our measurement, then that $k$ string has the property $k\cdot c = 0$.   The probability for this is also on the order of $1/2^{2n-2}$. Following the same argument as that given in the lecture notes, the number of times we have to run the algorithm is $\mathcal{O}(n^2)$. 
 	
 	
 
