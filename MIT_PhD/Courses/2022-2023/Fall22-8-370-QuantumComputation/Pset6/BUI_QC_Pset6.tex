@@ -146,10 +146,7 @@ where $\mathcal{P}$ is the Pauli group. Suppose $A,B\in \mathcal{C}$. Then for a
 \begin{align*}
 	AB g (AB)^\dagger =  A \underbrace{ (BgB^\dagger)}_{\in \mathcal{P}} A^\dagger= A g' A^\dagger \in \mathcal{P}.
 \end{align*}
-So $AB\in \mathcal{C}$. Moreover, if $A\in \mathcal{C}$, then for any $g\in \mathcal{P}$
-\begin{align*}
-	A^\dagger g A = (A g^\dagger A^\dagger)^\dagger = (  A g A^\dagger)^\dagger \in \mathcal{P}.
-\end{align*}
+So $AB\in \mathcal{C}$. \textcolor{purple}{How to do the second part here???}
 So every element of $\mathcal{C}$ has an inverse. The identity element is simply the identity matrix. Associativity is inherited from associativity of matrix multiplication. So, $\mathcal{C}$ is a group. 
 	
 	\item The Pauli group for 1 qubit is given by 
@@ -192,6 +189,51 @@ So every element of $\mathcal{C}$ has an inverse. The identity element is simply
 
 
 \noindent \textbf{3. Simon's algorithm}
+
+\begin{enumerate}[label=(\alph*)]
+	\item Recall Simon's algorithm. After the second application of the Hadamard transform to the first register, the state of the system is 
+	\begin{align*}
+		\f{1}{2^n} \sum_{k=0}^{2^n-1} \lp \sum_{j=0}^{2^n-1} (-1)^{j\cdot k} \rp \ket{k} \ket{f(j)}.
+	\end{align*}
+	Now we want to compute the probability of seeing a pair of values $\ket{k} \ket{f(j)}$. This is equal to the square of the amplitude on this state. How many values of $j$ produce $f(j)$? Suppose there are $2L$ different $j$'s for which $f(j)$ gives the same output. Then they must be $\{  j_1, j_2,\dots, j_L, j_1\oplus c, j_2\oplus c, \dots, j_L\oplus c \}$ since $\oplus$ is symmetric. This means that the amplitude for $\ket{k}\ket{f(j)}$ has the form
+	\begin{align*}
+		\f{1}{2^n} \sum_{i=1}^L \lp (-1)^{j_1\cdot k} + (-1)^{{(j_1\oplus c)}\cdot k }\rp = \f{1}{2^n}(1 + (-1)^{c\cdot k}) \sum_{i=1}^L (-1)^{j_i\cdot k}
+	\end{align*}
+	This amplitude is nonzero only if $c\cdot k = 0 \mod 2$, so \textbf{YES} the quantum part of Simon's algorithm still always return a binary string with $c\cdot k = 0 \mod 2$. 
+	
+	\item The probability of measuring a state with $f=1$ is 
+	\begin{align*}
+		p = \Pr(f=1) = \f{1}{2^{2n}}\sum_{k=0}^{2^n-1} \abs{ (1+(-1)^{c\cdot k})(-1)^{d\cdot k}}^2 = \f{1}{2^{n-1}}\quad \forall c\neq 0.
+	\end{align*}
+
+	\textcolor{blue}{I'm not exactly sure how to prove the identity above, but according to my calculation in Mathematica this appears to be the answer. There is probably some clever argument which I haven't had enough time to come up with.}\\
+
+	Let the number of failures $k-1$ before the first success. The probability for this event is 
+	\begin{align*}
+		\Pr(X=k) = (1-p)^{k-1}p.
+	\end{align*}
+	The expected value for the random variable $X$, the number of measurements before seeing $f=1$, is 
+	\begin{align*}
+		E[X] = \sum_{k=0}^\infty k \Pr(X=k) = \f{1}{p}.
+	\end{align*}
+	So the answer is that we are expected to measure  $\boxed{2^{n-1}}$  times. \\
+	
+	The amplitude of the pair $\ket{k}\ket{f(j)}$ in the registers is 
+	\begin{align*}
+		\f{1}{2^n}(1 + (-1)^{c\cdot k}) \sum_{i=1}^L (-1)^{j_i\cdot k}
+	\end{align*} 
+	Here, $L=1$ for $j=d$ and $L = 2^{n-1}-1$ otherwise. This amplitude is nonzero only if $c\cdot k = 0 \mod 2$. The probability associated with finding a $k$ that is perpendicular to $c$ is thus:
+	\begin{align*}
+		\f{1}{2^{2n-2}} \abs{\sum_{i=1}^{2^{n-1}-1} (-1)^{j_i\cdot k}}^2 + \f{1}{2^{2n-2}} =  
+	\end{align*}
+	
+	
+	So, the probability associated with finding a $k$ that is perpendicular to $c$ is $blah$.   How many vectors will we have to sample to find $n-1$ vectors that are linearly independent? 
+	
+	
+
+\end{enumerate}
+
 
 
 \noindent \textbf{4. Partial transpose}
