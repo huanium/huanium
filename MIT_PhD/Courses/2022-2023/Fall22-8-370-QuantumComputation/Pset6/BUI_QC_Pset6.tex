@@ -131,7 +131,7 @@
 Course: \textbf{8.370 - QC}\\
 Problem set: \textbf{\#6}\\
 Due: Wednesday, Nov 2, 2022\\
-Collaborators/References: 
+Collaborators/References: discussions with Prof. Shor, Shira Asa-El, and Christina Yu
 \end{framed}
 
 
@@ -182,17 +182,21 @@ So, $AB\in \mathcal{C}$. Now let $g\in \mathcal{P}$ be given and $A\in \mathcal{
 
 
 
-\noindent \textbf{2. Gotta erase workbits in Simon's algorithm!}\\
+\noindent \textbf{2. Gotta erase workbits in Simon's algorithm! (see edited problem)}\\
 
-\noindent Let's consider an example for this problem. Suppose we have 3 qubits in the first register and 3 qubits in the second register, all initialized to zero: $\ket{0^3} \ket{0^3}$. After the first run of Simon's algorithm and measurement, let's set that the second register ends up in some state $\ket{f(j_0)}$. Now suppose we don't reset this state to $\ket{0^n}$ and run the algorithm again. After the Hadamard transform on the first register and application of the oracle, the state of the system is 
+\noindent It's not completely obvious to me that the oracle, in practice, requires extra qubits to implement. But okay. Following the information given in the problem, we have that after applying the Hadamard transform, followed by the circuit, followed by the CNOT's (which copies $f(x)$ into the fourth register), followed by the inverse function, the quantum register takes the form
 \begin{align*}
-\f{1}{2^{n/2}} \sum_{j=0}^{2^n-1}\ket{j} \ket{f(j_0)\oplus f(j)}.  
+	\sum_{x=0}^{2^L-1} \ket{x}\ket{0}\ket{0} \ket{f(x)}.
 \end{align*}
-After the second Hadamard transform on the first register, the state of the system is 
+If we applying the Hadamard transform now we will get Simon's algorithm. However, suppose now that we do not apply the reverse function. Then the state of the system before the second Hadamard transform is 
 \begin{align*}
-\f{1}{2^{n}} \sum_{j=0}^{2^n-1}\lp     \sum_{k=0}^{2^n-1} (-1)^{j\cdot k} \ket{k} \rp \ket{f(j_0)\oplus f(j)} = \f{1}{2^n}  \sum_{k=0}^{2^n-1} \lp \sum_{j=0}^{2^n-1} (-1)^{j\cdot k} \rp \ket{k} \ket{     f(j_0) \oplus f(j)  }. 
+	\sum_{x=0}^{2^L-1} \ket{x}\ket{f(x)}\ket{\text{junk}_x} \ket{f(x)}
 \end{align*}
-
+After the Hadamard transform (on the first register, of course), this becomes
+\begin{align*}
+	\sum_{k=0}^{2^L-1}\sum_{x=0}^{2^L-1}  (-1)^{x\cdot k}\ket{k}\ket{f(x)}\ket{\text{junk}_x} \ket{f(x)}
+\end{align*}
+Here I have dropped all normalization since it is not relevant to this problem. Now, we measure the register, so we look for the amplitudes of the terms $\ket{k}\ket{f(x)}\ket{\text{junk}_x} \ket{f(x)}$. Notice that unlike in the usual Simon's algorithm, the amplitude of the term $\ket{k}\ket{f(j)}$ has two contributions, due to $j$ and $j\oplus c$. Here, the contributions to the term $\ket{k}\ket{f(x)}\ket{\text{junk}_x} \ket{f(x)}$ now depends on the junk terms, which depend on $x$. This means that we can no longer deduce properties of $k$ in relation to $c$ based on our observations of $k$ after the measurement.\\
 
 
 
@@ -211,12 +215,12 @@ After the second Hadamard transform on the first register, the state of the syst
 	
 	\item The probability of measuring a state with $f=1$ is 
 	\begin{align*}
-		p = \Pr(f=1) = \f{1}{2^{2n}}\sum_{k=0}^{2^n-1} \abs{ (1+(-1)^{c\cdot k})(-1)^{d\cdot k}}^2 = \f{1}{2^{n-1}}\quad \forall c\neq 0.
+		p = \Pr(f=1) = \f{1}{2^{2n}}\sum_{k=0}^{2^n-1} \abs{ (1+(-1)^{c\cdot k})(-1)^{d\cdot k}}^2 = 
+		\f{1}{2^{2n}}\sum_{k=0}^{2^n-1} \abs{ (1+(-1)^{c\cdot k})}^2 = \f{1}{2^{n-1}}\quad \forall c\neq 0.
 	\end{align*}
+	The last equality is due to the fact that $c\cdot k = 0$ for half the values of $k$ between $0$ and $2^n-1$, and so the numerator is $2^2\times(2^n/2) = 2\times 2^n$. \\ 
 
-	\textcolor{blue}{I'm not exactly sure how to prove the identity above, but according to my calculation in Mathematica this appears to be the answer. There is probably some clever argument which I haven't had enough time to come up with.}\\
-
-	Let the number of failures $k-1$ before the first success. The probability for this event is 
+	Now, let the number of failures before the first success be $k-1$. The probability for getting $k-1$ failures and a success on the $k$th try is: 
 	\begin{align*}
 		\Pr(X=k) = (1-p)^{k-1}p.
 	\end{align*}
@@ -235,7 +239,10 @@ After the second Hadamard transform on the first register, the state of the syst
 		\f{1}{2^{2n-2}} \abs{\sum_{i=1}^{2^{n-1}-1} (-1)^{j_i\cdot k}}^2 + \f{1}{2^{2n-2}}
 	\end{align*}
 	
-	Notice that the sum inside the absolute square has an odd number of terms, so it is nonzero. As a result, if we find any $\ket{k}\ket{f(j)}$ after our measurement, then that $k$ string has the property $k\cdot c = 0$.   The probability for this is also on the order of $1/2^{2n-2}$. Following the same argument as that given in the lecture notes, the number of times we have to run the algorithm is $\mathcal{O}(n^2)$. 
+	Notice that the sum inside the absolute square has an odd number of terms, so it is nonzero. As a result, if we find any $\ket{k}\ket{f(j)}$ after our measurement, then that $k$ string has the property $k\cdot c = 0$.   The probability for this is also on the order of $1/2^{2n-2}$. Therefore, following the same argument as that given in the lecture notes, the number of times we have to run the algorithm is $\mathcal{O}(n)$. \textcolor{purple}{I think the answer is $\mathcal{O}(n)$ as opposed to $\mathcal{O}(n^2)$ as written the lecture notes. The oracle calls $f$ only once in the circuit, independent of the register size, and we run the circuit $\mathcal{O}(n)$ times.} \\
+	
+	
+	On a classical computer, we will essentially have to evaluate $f$ until we get \textbf{two} outputs that have value 1. Suppose we decided to evaluate all inputs in some order. The worst thing that could happen is that $f=1$ only for the last two outputs. Even if we find $f=1$ on the very first evaluation, we may still have to evaluate to the last input to find $f=1$ again. So, to guarantee success we will have to evaluate $\mathcal{O}(2^n)$ times.  
 	
 	
 
