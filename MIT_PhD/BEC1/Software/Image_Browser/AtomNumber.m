@@ -21,7 +21,5 @@ woa=img(:,:,2)-img(:,:,3);
 num(woa<thres)=0;
 % num(num>50)=0;
 
-
-
 end
 
