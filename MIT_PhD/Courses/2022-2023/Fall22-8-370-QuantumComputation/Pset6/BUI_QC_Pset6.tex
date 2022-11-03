@@ -196,7 +196,7 @@ After the Hadamard transform (on the first register, of course), this becomes
 \begin{align*}
 	\sum_{k=0}^{2^L-1}\sum_{x=0}^{2^L-1}  (-1)^{x\cdot k}\ket{k}\ket{f(x)}\ket{\text{junk}_x} \ket{f(x)}
 \end{align*}
-Here I have dropped all normalization since it is not relevant to this problem. Now, we measure the register, so we look for the amplitudes of the terms $\ket{k}\ket{f(x)}\ket{\text{junk}_x} \ket{f(x)}$. Notice that unlike in the usual Simon's algorithm, the amplitude of the term $\ket{k}\ket{f(j)}$ has two contributions, due to $j$ and $j\oplus c$. Here, the contributions to the term $\ket{k}\ket{f(x)}\ket{\text{junk}_x} \ket{f(x)}$ now depends on the junk terms, which depend on $x$. This means that we can no longer deduce properties of $k$ in relation to $c$ based on our observations of $k$ after the measurement.\\
+Here I have dropped all normalization since it is not relevant to this problem. Now, we measure the first register, so we look for the amplitudes of the terms $\ket{k}\ket{f(x)}\ket{\text{junk}_x} \ket{f(x)}$. Notice that unlike in the usual Simon's algorithm where the amplitude of the term $\ket{k}\ket{f(j)}$ has two contributions due to $j$ and $j\oplus c$, here the contributions to the \textit{probability} of seeing $\ket{k}$ is in general the sum of the squares of the amplitudes of $\ket{k}\ket{f(x)}\ket{\text{junk}_x} \ket{f(x)}$. We no longer get the right kind of interference: since the junk terms can be different for the same $\ket{k}$, we may not add the amplitudes before squaring. This means that we can no longer deduce properties of $k$ in relation to $c$ based on our observations of $k$ after the measurement.\\
 
 
 
@@ -316,7 +316,7 @@ and the analogue of the Pauli matrices are the nine matries $P^aT^b$, with $0 \l
 \end{align*}
 Alice will then send her measurement result (one of the nine possible ones) to Bob, and Bob will apply one of nine unitaries to his qutrit to obtain $\psi$. In particular, if Alice sees a state associated with $P^a T^b$, then Bob applies $P^a T^b$ to his qutrit. Below we will show explicitly.\\
 
-Here we show the nine-element basis for Alice's measurement, the resulting state on Bob's qutrit, and Bob's corrective unitary for each case:
+\noindent Here we show the nine-element basis for Alice's measurement, the resulting state on Bob's qutrit, and Bob's corrective unitary for each case:
 \begin{align*}
 	(1/\sqrt{3})(\Id \otimes P^0 T^0)(\ket{00} + \ket{11} + \ket{22}) &\to \ket{B} = (1/\sqrt{3})\Id(\al\ket{0} + \be\ket{1} + \gamma\ket{2}) \to P^0T^0 \\
 	(1/\sqrt{3})(\Id \otimes P^1 T^0)(\ket{00} + \ket{11} + \ket{22}) &\to \ket{B} = (1/\sqrt{3}) P^2(\al\ket{0} + \be\ket{1} + \gamma\ket{2}) \to P^1 T^0\\
@@ -329,7 +329,102 @@ Here we show the nine-element basis for Alice's measurement, the resulting state
 	(1/\sqrt{3})(\Id \otimes P^2 T^2)(\ket{00} + \ket{11} + \ket{22}) &\to \ket{B} = (1/\sqrt{3}) P T(\al\ket{0} + \be\ket{1} + \gamma\ket{2}) \to P^2 T^2.
 \end{align*}
 
+\noindent All the calculations are done using Mathematica. I have also checked that the basis Alice uses is indeed an orthonormal basis. To do this, I formed a matrix $U$ from the EPR states and verify that $U^\dagger U = \Id$.\\
 
+\noindent Mathematica code:
+
+\begin{lstlisting}
+In[64]:= (*qutrit*)
+
+In[49]:= EPR = 1/Sqrt[3]*{1, 0, 0, 0, 1, 0, 0, 0, 1};
+
+In[15]:= Id3 = IdentityMatrix[3];
+
+In[16]:= w = Exp[2*Pi*I/3];
+
+In[17]:= P = {{1, 0, 0}, {0, w, 0}, {0, 0, w^2}};
+
+In[18]:= T = {{0, 1, 0}, {0, 0, 1}, {1, 0, 0}};
+
+(*EPR basis*)
+
+In[50]:= EPR1 = EPR;
+
+In[51]:= EPR2 = KroneckerProduct[Id3, P] . EPR;
+
+In[52]:= EPR3 = KroneckerProduct[Id3, P . P] . EPR;
+
+In[53]:= EPR4 = KroneckerProduct[Id3, T] . EPR;
+
+In[54]:= EPR5 = KroneckerProduct[Id3, P . T] . EPR;
+
+In[55]:= EPR6 = KroneckerProduct[Id3, P . P . T] . EPR;
+
+In[56]:= EPR7 = KroneckerProduct[Id3, T . T] . EPR;
+
+In[57]:= EPR8 = KroneckerProduct[Id3, P . T . T] . EPR;
+
+In[58]:= EPR9 = KroneckerProduct[Id3, P . P . T . T] . EPR;
+
+In[28]:= (*check ONB*)
+
+In[62]:= (*form a matrix U using the EPRs and compute U.ConjugateTranpose[U]*)
+
+In[63]:= U = {EPR1, EPR2, EPR3, EPR4, EPR5, EPR6, EPR7, EPR8, EPR9};
+
+In[67]:= U . ConjugateTranspose[U] // FullSimplify
+
+Out[67]= {{1, 0, 0, 0, 0, 0, 0, 0, 0}, 
+	       {0, 1, 0, 0, 0, 0, 0, 0, 0}, 
+	       {0, 0, 1, 0, 0, 0, 0, 0, 0}, 
+	       {0, 0, 0, 1, 0, 0, 0, 0, 0}, 
+	       {0, 0, 0, 0, 1, 0, 0, 0, 0}, 
+	       {0, 0, 0, 0, 0, 1, 0, 0, 0}, 
+	       {0, 0, 0, 0, 0, 0, 1, 0, 0}, 
+	       {0, 0, 0, 0, 0, 0, 0, 1, 0}, 
+	       {0, 0, 0, 0, 0, 0, 0, 0, 1}}
+  
+In[80]:= (*full state with 3 qutrits*)
+State = Flatten[KroneckerProduct[{a, b, c}, EPR]];
+
+In[81]:= (*Alice measures. We keep only the first 3 entries since only those are relevant*)
+
+In[82]:= Take[P1 . State, 3]
+
+Out[82]= {a/(3 Sqrt[3]), b/(3 Sqrt[3]), c/(3 Sqrt[3])}
+
+In[83]:= Take[P2 . State, 3]
+
+Out[83]= {a/(3 Sqrt[3]), (b E^(-((2 I \[Pi])/3)))/(3 Sqrt[3]), (c E^((2 I \[Pi])/3))/(3 Sqrt[3])}
+
+In[84]:= Take[P3 . State, 3]
+
+Out[84]= {a/(3 Sqrt[3]), (b E^((2 I \[Pi])/3))/(3 Sqrt[3]), (c E^(-((2 I \[Pi])/3)))/(3 Sqrt[3])}
+
+In[85]:= Take[P4 . State, 3]
+
+Out[85]= {b/(3 Sqrt[3]), c/(3 Sqrt[3]), a/(3 Sqrt[3])}
+
+In[86]:= Take[P5 . State, 3]
+
+Out[86]= {b/(3 Sqrt[3]), (c E^(-((2 I \[Pi])/3)))/(3 Sqrt[3]), (a E^((2 I \[Pi])/3))/(3 Sqrt[3])}
+
+In[87]:= Take[P6 . State, 3]
+
+Out[87]= {b/(3 Sqrt[3]), (c E^((2 I \[Pi])/3))/(3 Sqrt[3]), (a E^(-((2 I \[Pi])/3)))/(3 Sqrt[3])}
+
+In[88]:= Take[P7 . State, 3]
+
+Out[88]= {c/(3 Sqrt[3]), a/(3 Sqrt[3]), b/(3 Sqrt[3])}
+
+In[89]:= Take[P8 . State, 3]
+
+Out[89]= {c/(3 Sqrt[3]), (a E^(-((2 I \[Pi])/3)))/(3 Sqrt[3]), (b E^((2 I \[Pi])/3))/(3 Sqrt[3])}
+
+In[90]:= Take[P9 . State, 3]
+
+Out[90]= {c/(3 Sqrt[3]), (a E^((2 I \[Pi])/3))/(3 Sqrt[3]), (b E^(-((2 I \[Pi])/3)))/(3 Sqrt[3])}
+\end{lstlisting}
 
 
 \end{document}
