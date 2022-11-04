@@ -16,7 +16,7 @@ for i = 1:rows
         c = j-round(columns/2);
         %totalBEC(i,j) = 0.3*(polylog(2, exp(-(r^2+c^2)/(rows/2)^2))) + (max(1-(r^2+c^2)/(rows/3)^2,0)).^(3/2) + noiseAmp*rand(1,1);
         %totalBEC(i,j) = 0.3*exp(-(r^2+c^2)/(rows/2)^2) + (max(1-(r^2+c^2)/(rows/3)^2,0)).^(3/2) + noiseAmp*rand(1,1);
-        totalBEC(i,j) = 0.3*approx_polylog(2,exp(-(r^2+c^2)/(rows/2)^2),polyLog_approx_terms) + (max(1-(r^2+c^2)/(rows/3)^2,0)).^(3/2) + noiseAmp*rand(1,1);
+        totalBEC(i,j) = 0.3*approx_polylog(2,exp(-(r^2+c^2)/(rows/2)^2),polyLog_approx_terms) + (max(1-(r^2+c^2)/(rows/3)^2,0)).^(3/2) + noiseAmp*rand(1,1) + 0.2;
 
     end
 end
@@ -43,21 +43,37 @@ x = 1:1:columns;
 tf = excludedata(x, center_horizontal_slice, 'range', [0.001 Inf]);
 
 % now fit this data:
-fitfunc = fittype("BEC_bimodal_fit_func(a, b, c, d, e, N, x)", ...
+fitfunc = fittype("BEC_bimodal_fit_func(a, b, c, d, e, f, N, x)", ...
     'independent','x','dependent','z','problem','N');
 
 % note that StartPoint's order is alphabetical
-% so StartPoint = [a = therm, b = cond, c = rhoC, d = x_center, e = rhoTh, therm]
+% so StartPoint = [a = therm, b = cond, c = rhoC, d = x_center, e = rhoTh, f = bckgnd]
 BECfit = fit(x.', center_horizontal_slice.', fitfunc, ...
-    'StartPoint', [0.2, 1.1,  rows/3, rows/2, rows/2], ...
+    'StartPoint', [0.2, 1.1,  rows/3, rows/2, rows/2, 0.1], ...
     'Exclude',tf, ...
     'problem', polyLog_approx_terms);
 
 figure(6)
 plot(BECfit, x, center_horizontal_slice);
 
-disp(BECfit);
+coefs = coeffvalues(BECfit);
 
+% display results
+disp(BECfit);
+disp(coefs);
+
+disp('Thermal factor: ')
+disp(coefs(1))
+disp('Condensate factor')
+disp(coefs(2))
+disp('rho condensate: ')
+disp(coefs(3))
+disp('Center location: ')
+disp(coefs(4))
+disp('rho thermal: ')
+disp(coefs(5))
+disp('background: ')
+disp(coefs(6))
 
 
 

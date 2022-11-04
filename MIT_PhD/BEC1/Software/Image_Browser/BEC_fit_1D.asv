@@ -108,7 +108,8 @@ xline(xhigh_bad);
 xline(xlow_bad);
 hold off
 % now fit this with thermal part, exclude the bad center region:
-xbad = ~excludedata(hor, slice_wo_BEC, 'domain', [round(xlow_bad)  round(xhigh_bad)]);
+xbad1 = excludedata(hor, slice_wo_BEC, 'domain', [round(xlow_bad*)  round(1.2*xhigh_bad)]);
+
 slice_wo_BEC(xlow_bad:xhigh_bad) = 0;
 % now fit this data:
 % a = background
@@ -133,11 +134,5 @@ xline(coefs_BEC_fit(4));
 xline(xlow_bad);
 xline(xhigh_bad);
 hold off
-
-% thermal_fit = c1 + c2.*approx_polylog(2,exp(-(x-c3).^2/(2*c4^2)),polyLog_approx_terms);
-% thermal_fit[xbad_low:xbad_high] = 0;
-
-% now compute OD without thermal part:
-% center_horizontal_slice = center_horizontal_slice - thermal_fit;
 
 end
