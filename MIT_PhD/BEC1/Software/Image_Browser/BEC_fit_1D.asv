@@ -78,8 +78,6 @@ disp(coefs_BEC_fit(5))
 disp('1st background: ')
 disp(coefs_BEC_fit(6))
 
-app.BECFitDiameter.Value = round(coefs_BEC_fit(3)*2);
-
 % plotting
 figure(6)
 plot(BECfit, hor, center_horizontal_slice);
@@ -87,29 +85,30 @@ hold on
 xline(coefs_BEC_fit(4));
 xline(coefs_BEC_fit(4)+round(app.BEC_diameter.Value/2));
 xline(coefs_BEC_fit(4)-round(app.BEC_diameter.Value/2));
-TF_fit = coefs_BEC_fit(2)*(max(1-(hor-coefs_BEC_fit(4)).^2/coefs_BEC_fit(3)^2 ,0)).^(3/2) + coefs_BEC_fit(6);
+% calculate TF_fit, with scaling factor S = 1.2
+TF_fit = coefs_BEC_fit(2)*(max(1-(hor-coefs_BEC_fit(4)).^2/(coefs_BEC_fit(3))^2 ,0)).^(3/2) + coefs_BEC_fit(6);
 therm_fit = coefs_BEC_fit(1)*approx_polylog(2,exp(-(hor-coefs_BEC_fit(4)).^2/(2*coefs_BEC_fit(5)^2)),25);
 plot(hor, TF_fit)
 plot(hor, therm_fit)
 hold off
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% (2) subtract BEC contribution from original data:
 
 figure(7)
 slice_wo_BEC = center_horizontal_slice - TF_fit;
 plot(hor, slice_wo_BEC)
 % detect and plot the bad center region:
-xhigh_bad = coefs_BEC_fit(4)+coefs_BEC_fit(3);
-xlow_bad = coefs_BEC_fit(4)-coefs_BEC_fit(3);
+
+S = 1.0;
+xhigh_bad = round(coefs_BEC_fit(4)+S*coefs_BEC_fit(3));
+xlow_bad = round(coefs_BEC_fit(4)-S*coefs_BEC_fit(3));
 hold on
 xline(xhigh_bad);
 xline(xlow_bad);
 hold off
 % now fit this with thermal part, exclude the bad center region:
-xbad1 = excludedata(hor, slice_wo_BEC, 'domain', [round(xlow_bad*)  round(1.2*xhigh_bad)]);
-
+xbad = ~excludedata(hor, slice_wo_BEC, 'domain', [round(xlow_bad)  round(xhigh_bad)]);
 slice_wo_BEC(xlow_bad:xhigh_bad) = 0;
 % now fit this data:
 % a = background
@@ -134,5 +133,78 @@ xline(coefs_BEC_fit(4));
 xline(xlow_bad);
 xline(xhigh_bad);
 hold off
+
+% extract coeffs
+coefs_fit_wo_BEC = coeffvalues(fit_wo_BEC);
+disp('2nd background term: ')
+disp(coefs_fit_wo_BEC(1))
+disp('2nd Thermal factor')
+disp(coefs_fit_wo_BEC(2))
+disp('2nd Center location: ')
+disp(coefs_fit_wo_BEC(3))
+disp('2nd thermal stdev: ')
+disp(coefs_fit_wo_BEC(4))
+
+a1 = coefs_fit_wo_BEC(1);
+a2 = coefs_fit_wo_BEC(2);
+a3 = coefs_fit_wo_BEC(3);
+a4 = coefs_fit_wo_BEC(4);
+
+thermal_fit = a1 + a2.*approx_polylog(2,exp(-(hor-a3).^2/(2*a4^2)),polyLog_approx_terms);
+% now compute OD without thermal part:
+center_horizontal_slice_wo_thermal = center_horizontal_slice - thermal_fit;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% (3) now fit the remaining data to a TF profile:
+
+new_x_center_guess = coefs_fit_wo_BEC(3);
+% exclude weird data, for the final time
+cutoff = 7;
+bad_final = excludedata(hor, center_horizontal_slice_wo_thermal, 'range', [0.001 cutoff]);
+center_cutoff = round((xhigh_bad - xlow_bad)/4);
+bad_center = ~excludedata(hor, center_horizontal_slice_wo_thermal, 'domain', [new_x_center_guess-center_cutoff  new_x_center_guess+center_cutoff]);
+bad_region = bad_final|bad_center;
+
+center_horizontal_slice_wo_thermal(new_x_center_guess-28 : new_x_center_guess+center_cutoff) = 0;
+
+
+% now fit this data:
+fitfunc_BEC = fittype(@(b1,b2,b3,b4,x) ...
+    b1+ b2*(max(1-(x-b3).^2/b4^2 ,0)).^(3/2), ...
+    'independent','x', 'dependent', 'y');
+
+% note that StartPoint's order is alphabetical
+% b1: background
+% b2: condensate factor
+% b3: center_location
+% b4: rho_cond_guess
+fit_BEC_final = fit(hor.', center_horizontal_slice_wo_thermal.', fitfunc_BEC, ...
+    'StartPoint', [0.1, 4, new_x_center_guess, rho_condensate_guess], ...
+    'Exclude',bad_region, ...
+    'Lower',[0,0,0,0]);
+
+
+% extract coeffs
+coefs_fit_BEC_final = coeffvalues(fit_BEC_final);
+disp('3rd background term: ')
+disp(coefs_fit_BEC_final(1))
+disp('3rd condensate factor')
+disp(coefs_fit_BEC_final(2))
+disp('3rd Center location: ')
+disp(coefs_fit_BEC_final(3))
+disp('3rd condensate half width (TF radius): ')
+disp(coefs_fit_BEC_final(4))
+
+app.BECFitDiameter.Value = round(coefs_fit_BEC_final(4)*2);
+
+% plotting
+figure(9)
+plot(fit_BEC_final, hor, center_horizontal_slice_wo_thermal);
+hold on
+xline(coefs_fit_BEC_final(3));
+xline(coefs_fit_BEC_final(3)+round(app.BECFitDiameter.Value));
+xline(coefs_fit_BEC_final(3)-round(app.BECFitDiameter.Value));
+hold off
+
 
 end
