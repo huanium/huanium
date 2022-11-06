@@ -31,7 +31,7 @@ if frame_type == "OD"
     
 else
     if frame_type == "FakeOD"
-        frame=real(((img(:,:,1)-img(:,:,3))./(img(:,:,2)-img(:,:,3))));
+        frame=real((img(:,:,1)-img(:,:,3))./(img(:,:,2)-img(:,:,3)));
         
         image(frame,'Parent',app.UIAxes,'CDataMapping','scaled');
         colormap(app.UIAxes,gray(32768));
