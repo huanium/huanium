@@ -163,7 +163,7 @@ The state $\ket{1\mod 21}$ is then a  superposition of these states $\{ \zeta_k 
 \end{align*}
 
 
-\item Suppose the algorithm returns $k'/r'$ (which is in reduced form) and if $r'$ is even, we compute $2^{r'/2}$ and try to use it to factor. What is the probability that we get the right factors this way? To do this, we first list what we have donee right so far:
+\item Suppose the algorithm returns $k'/r'$ (which is in reduced form) and if $r'$ is even, we compute $2^{r'/2}$ and try to use it to factor. What is the probability that we get the right factors this way? To do this, we first list what we have done right so far:
 \begin{itemize}
 \item $g=2$ is relatively prime to $21$, so it generates the cyclic group of order 21. The order of $g=2$ is $r=6$.
 
@@ -173,7 +173,7 @@ This means that the algorithm fails when $k'/r'$ (in reduced form) cannot be use
 \begin{align*}
 \f{k'}{r'} \in \lc \f{0}{6}, \f{1}{6}, \f{1}{3}, \f{1}{2}, \f{2}{3}, \f{5}{6} \rc.
 \end{align*}
-These values of $k'/r'$ occur with equal probabilities. Of them, we find $r' = 3$ which is odd $1/3$ of the time. When $r'=2$ (which occurs $1/6$ of the time), we also reject it. So, we get the right factors $\boxed{1/2}$ of the time this way.
+These values of $k'/r'$ occur with equal probabilities. Of them, we find $r' = 3$ a third  of the time. When $r'=2$ (which occurs a sixth of the time) or $k=0$ (which also occurs a sixth of the time) we also reject them. So, we get the right factors $\boxed{1/3}$ of the time this way.
 
 \end{enumerate}
 
@@ -187,10 +187,53 @@ and get the correct period r, the factoring algorithm still has some probability
 
 \begin{enumerate}[label=(\alph*)]
 
-\item How bad is this problem for large $N$? To answer this question we first. 
+\item How bad is this problem for large $N$?
+
+\noindent To answer this question suppose that $g$ is chosen so that it is relatively prime to $N$ and has order $r$. Now suppose that the period-finding subroutine gives us $k'/r'$ in irreducible form. If $k'=0$ then we get no information. If $k'\neq 0$, knowing what $r'$ is, we can check whether $r' = r$ by verifying $(2^{r'/2}+1)(2^{r'/2}-1) = N$. Our main concern here is that $r'\neq n$ because $k,n$ are not co-prime. So, we want to ask: about how many times do we have to repeat the process in order to find $k'/r'$ for which $r'=r$? 
+
+The answer is that we have to find $k'/r'$ for which $\gcd(k',r')=1$ and therefore $k'=k, r'=r$ and of course $\gcd(k,r) = 1$. Before we proceed, we note that because of this if $r'\neq r$ then $r'$ divides $r$ unless $k =0$ which occurs with probability $1/r \leq 1/2$, which we can compensate more by iterating the algorithm a few extra times. 
+
+Now we proceed. Also, let's not worry about whether $r$ is odd or even for now:
+\begin{itemize}
+	\item How many states $\ket{k'/r'}\ket{g^k \mod N}$ allow us to find $r$ this way? For each $r$, there are $\phi(r)$ values for $k$ for which $k,r$ are co-prime. Here, $\phi(\cdot)$ denotes the Euler's totient function. Moreover, there can only be $r$ unique values for $g^k \mod N$. So, there are $r\phi(r)$ state $\ket{k'/r'}\ket{g^k \mod N}$ that allows us to find $r$.
+	
+	\item How often do these states occur?  They occur with probability of at least $4/(\pi^2 r^2)$. This means that we can obtain $r$ with at least $4\phi(r)/(\pi^2 r)$ probability. Since $\phi(r) \geq Cr/(\ln \ln r)$ for some constant $C$, we conclude that we find $r$ with probability at least $D/ \ln \ln r$ for some constant $D$.
+	
+	\item How do we put this in terms of $N$? Since $ r \leq N$, so we may conclude that we find $r$ at least a $D/\ln \ln N$ fraction of the time. This means that we may have to repeat the process $\boxed{\mathcal{O}(\ln \ln N)}$ times.   
+\end{itemize}
+Should we worry about the case where $r$ is odd and how likely it occurs? 
+
+    
+
+
+
 
 \item Can you think of anything to do to make the factoring algorithm somewhat more efficient for large N? (Assume that quantum computation is expensive and classical computation is relatively cheap.)
 
+\noindent Due to Nielsen and Chuang, there are at least 03 ways to address the problem that $r'\neq r$ due to $\gcd(k,r)\neq 1$. 
+\begin{itemize}
+	\item For a randomly chosen $k$ between $0$ and $r-1$, it is \textit{quite likely} that $\gcd(k,r) = 1$. This is due to the \textit{prime number theorem} which states that the number of primes less than $r$ is at least $r/2\ln r$. This means that the chance that $s$ is prime, and therefore relatively prime to $N$, is at least $1/2\ln r > 1/2 \ln N$. So, by repeating the algorithm $\boxed{2\ln N}$ times we will most likely get $k,r$ that are co-prime, which is what we want.
+	
+	\item Another way to fix this problem is doing more post-processing. If $r' \neq r$ then we know that $r'$ is a factor of $r$ unless $k=0$. The case where $k=0$ can be ignore because we can always add a few extra iterations (as discussed in Part (a)).  Now, take $a' \equiv a^{r'} \mod N$ and run the algorithm again. The order of $a'$ is then $r/r'$. If we manage to find $r/r'$, then we can compute via $r = r' \times r/r'$. If not, we get some $r''$ which is yet again a factor of $r'$. In this case, we repeat by defining $a'' \equiv a'^{r''}\mod N$ and proceed until termination and compute $r$ at the end. How many iterations does this method require? The answer is at most $\ln r$, which is $\boxed{\mathcal{O}(L)}$, since each repetition the order is reduced by a factor of at least 2. 
+	
+	\item This third method requires a constant number of trials: we start by repeating order-finding algorithm twice to get two tuples $(k_1',r_1')$ and $(k_2',r_2')$. If $k_1', k_2'$ are co-prime, then $r = \text{lcm}(r_1,r_2)$. How likely is this? The probability that $k_1',k_2'$ are co-prime is given by 
+	\begin{align*}
+		1- \sum_q \Pr(q|k_1') \Pr(q| k_2') \geq 1- \sum_q \Pr(q|k_1) \Pr(q| k_2) \geq 1 - \sum_q \f{1}{q^2} 
+	\end{align*}
+	where the sum is over all primes.  The first inequality follows from the fact that if $q$ divides $k_i'$ then it must also divide $k_i$. Moreover, $\Pr(q|k_i) \leq 1/q$. So we get the second inequality. Next, since
+	\begin{align*}
+		\int_{x}^{x+1} \f{dy}{y^2} \geq \f{2}{3x^2} \quad\quad \forall \,\, x \geq 2,
+	\end{align*}
+	we have that
+	\begin{align*}
+		\sum_q \f{1}{q^2} \leq \f{3}{2}\int_2^\infty \f{dy}{y^2} = \f{3}{4}.
+	\end{align*}
+	So, the probability that $k_1', k_2'$ are co-prime is 
+	\begin{align*}
+			1- \sum_q \Pr(q|k_1') \Pr(q| k_2') \geq \f{1}{4}. 
+	\end{align*}
+	This means that the probability of getting the correct $r$ is at least $1/4$. 
+\end{itemize}
 
 \end{enumerate}
 
@@ -212,7 +255,6 @@ and get the correct period r, the factoring algorithm still has some probability
 
 \item Show that no quantum algorithm can identify $a$ with probability $1$.
 
-\textbf{Hint:} there are two techniques that we’ve seen in class that you might use to attack parts (a) and (b). One is the quantum Fourier transform and the other is phase estimation. One of these techniques works substantially better than the other.
 
 
 \end{enumerate}
