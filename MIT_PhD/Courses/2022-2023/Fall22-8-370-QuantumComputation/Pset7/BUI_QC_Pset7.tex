@@ -131,7 +131,7 @@
 Course: \textbf{8.370 - QC}\\
 Problem set: \textbf{\#7}\\
 Due: Wednesday, Nov 9, 2022\\
-Collaborators/References: 
+Collaborators/References: Prof. Shor's Office Hours, Prof. Shor's factoring paper (1995), Nielsen and Chuang, Elba Alonso-Monsalve, Shira Asa-El
 \end{framed}
 
 
@@ -189,9 +189,17 @@ and get the correct period r, the factoring algorithm still has some probability
 
 \item How bad is this problem for large $N$?
 
-\noindent To answer this question suppose that $g$ is chosen so that it is relatively prime to $N$ and has order $r$. Now suppose that the period-finding subroutine gives us $k'/r'$ in irreducible form. If $k'=0$ then we get no information. If $k'\neq 0$, knowing what $r'$ is, we can check whether $r' = r$ by verifying $(2^{r'/2}+1)(2^{r'/2}-1) = N$. Our main concern here is that $r'\neq n$ because $k,n$ are not co-prime. So, we want to ask: about how many times do we have to repeat the process in order to find $k'/r'$ for which $r'=r$? 
+\noindent To answer this question suppose that $g$ is chosen so that it is relatively prime to $N$ and has order $r$. Now suppose that the period-finding subroutine gives us $k'/r'$ in irreducible form. If $k'=0$ then we get no information. If $k'\neq 0$, knowing what $r'$ is, we can check whether $r' = r$ by verifying $(2^{r'/2}+1)(2^{r'/2}-1) = N$. Our main concern here is that $r'\neq n$ because $k,n$ are not co-prime. So, we want to ask: about how many times do we have to repeat the process in order to find $k'/r'$ for which $r'=r$? \\
 
-The answer is that we have to find $k'/r'$ for which $\gcd(k',r')=1$ and therefore $k'=k, r'=r$ and of course $\gcd(k,r) = 1$. Before we proceed, we note that because of this if $r'\neq r$ then $r'$ divides $r$ unless $k =0$ which occurs with probability $1/r \leq 1/2$, which we can compensate more by iterating the algorithm a few extra times. 
+
+
+One way to answer is question is by calculating the probability of find $k\in \{ 0, 1,\dots, r-1 \}$ for which $\gcd(k,r) = 1$. It is easy to see that
+\begin{align*}
+	\Pr(k | \gcd(k,r) = 1) = \f{\phi(r)}{ r} \geq \f{C}{\ln \ln r} \geq \f{C}{\ln \ln N}
+\end{align*}
+since $r\leq N$. So, we are expected to repeat the algorithm $\mathcal{O}(\ln \ln N)$ times to get the right answer.\\
+
+Another method is due to Prof. Shor in his 1995 factoring algorithm paper: We have to find $k'/r'$ for which $\gcd(k',r')=1$ and therefore $k'=k, r'=r$ and of course $\gcd(k,r) = 1$. Before we proceed, we note that because of this if $r'\neq r$ then $r'$ divides $r$ unless $k =0$ which occurs with probability $1/r \leq 1/2$, which we can compensate more by iterating the algorithm a few extra times. 
 
 Now we proceed. Also, let's not worry about whether $r$ is odd or even for now:
 \begin{itemize}
@@ -201,14 +209,20 @@ Now we proceed. Also, let's not worry about whether $r$ is odd or even for now:
 	
 	\item How do we put this in terms of $N$? Since $ r \leq N$, so we may conclude that we find $r$ at least a $D/\ln \ln N$ fraction of the time. This means that we may have to repeat the process $\boxed{\mathcal{O}(\ln \ln N)}$ times.   
 \end{itemize}
-Should we worry about the case where $r$ is odd and how likely it occurs? 
+
+Should we worry about the case where $r$ is odd or $g^{r/2} \equiv -1$ and how likely they occur? It turns out that the answer is \textbf{No}. This is a consequence of Theorem 5.3 of Nielsen and Chuang, which states that
+\begin{align*}
+	\Pr \lp r \text{ even and } g^{r/2} \neq -1 \mod N  \rp \geq 1 - \f{1}{2^m} 
+\end{align*}
+which could be made arbitrarily close to 1. Correspondingly, the probability of the other failure modes ($r$ odd or $g^{r/2} \equiv 1$) can be made arbitrarily small. The point is that we don't have to worry about these. 
 
     
 
-
-
-
 \item Can you think of anything to do to make the factoring algorithm somewhat more efficient for large N? (Assume that quantum computation is expensive and classical computation is relatively cheap.)
+
+
+\noindent A quick way to get improvement is this: Since we know that $r'$ is a factor of $r$, we can simply check $r'$ times small factors, $r', 2r', 3r', \dots$ until we get the right answer. For how long do we have to do this? This question is not relevant to the problem, but I think the answer is "not long," i.e., maybe $\mathcal{O}(\log N)$.
+
 
 \noindent Due to Nielsen and Chuang, there are at least 03 ways to address the problem that $r'\neq r$ due to $\gcd(k,r)\neq 1$. 
 \begin{itemize}
@@ -244,17 +258,63 @@ Should we worry about the case where $r$ is odd and how likely it occurs?
 
 \noindent \textbf{3. } For a prime $p$ and two numbers $a,b$ with $1 < a, b < p$, consider the quantum state
 \begin{align*}
-\f{1}{\sqrt{p}} \sum^{p-1}_{j=0} \ket{ j \mod p } \ket{(aj + b) \mod p}
+\f{1}{\sqrt{p}} \sum^{p-1}_{j=0} \ket{ j \mod p } \ket{(aj + b) \mod p}.
 \end{align*}
+
+\noindent The approach to this problem is via the Quantum Fourier Transform (QFT), which we will use to find the period of the map $j \mod p \to (aj + b) \mod p$, which is determined only by $a$. So, the goal is to use the QFT to find $a$. In fact, using only the QFT, we can only find $a$ since the FT is translationally invariant, i.e., the shift due to $b$ will not show up.   
 
 \begin{enumerate}[label=(\alph*)]
 
 \item Show that if you are given one copy of this quantum state, then with a quantum computer, you can find $a$ with high probability (i.e., with probability going to $1$ as $p$ goes to $\infty$). 
 
-\item Show that you can also find $b$ with high probability (i.e., with probability going to $1$ as $p$ goes to $\infty$).
+\noindent To start, we apply QFT on the second register and inverse QFT on the first register:
+\begin{align*}
+	\ket{j} \to  \f{1}{\sqrt{Q}} \sum_{k=0}^{Q-1} e^{-2\pi i jk/Q} \ket{k}.
+\end{align*}
+\begin{align*}
+	\ket{aj + b} \to  \f{1}{\sqrt{Q}} \sum_{\ell=0}^{Q-1} e^{2\pi i (aj+b) \ell / Q} \ket{\ell}. 
+\end{align*}
+The output of this operation is 
+\begin{align*}
+	\f{1}{Q\sqrt{p}}   \sum_{k=0}^{Q-1} \sum_{\ell=0}^{Q-1} e^{2\pi i [ (aj+b)\ell - jk]  /Q } \ket{k} \ket{\ell}.
+\end{align*}
+Now we measure both registers in the standard basis. The probability of seeing the output $\ket{k}\ket{\ell}$ is proportional to
+\begin{align*}
+	\f{1}{p}\abs{\sum_{j=0}^{p-1} e^{2\pi i [ (aj+b)\ell - jk]  /Q }}^2 =  \f{1}{p}	\abs{\sum_{j=0}^{p-1} e^{2\pi i j [ a\ell - k]  /Q }}^2
+\end{align*}
+which is sharply peaked and dominated by the term with $a\ell - k \equiv 0$.  In the spirit of quantum phase estimation, we can find what $a$ is given $\ell$ and $k$. This algorithm fails if $k$ or $\ell$ is zero, and it is easy to see that the probability of finding $k\ell = 0$ vanishes as $p \to \infty$.
+
+\item Show that you can also find $b$ with high probability (i.e., with probability going to $1$ as $p$ goes to $\infty$). 
+
+\noindent To do this problem, we must somehow interchange the roles of $a$ and $b$. To do this, we first need a unitary that sends $j$ to $j^{-1}$. This is not hard since we know $p$ already. The only problem is $j=0$, but since 0 is its own inverse, we just send $0$ to itself. We also have to send $aj+b$ to $a + bj^{-1}$. We can do this by multiplying $aj+b$ by $j^{-1}$ if $j\neq 0$. We cannot do this if $j=0$. \\
+
+One way to overcome the $j=0$ problem is to project out the component $\ket{0} \ket{a 0 + b} = \ket{0}\ket{b}$. This can be done via a subspace measurement. After this process, the input state becomes
+\begin{align*}
+	\f{1}{\sqrt{p-1}}\sum_{j=1}^{p-1} \ket{j \mod p} \ket{aj + b \mod p}.
+\end{align*}
+The unitary $U_1$ for the first register can be constructed fairly easily once $p$ is known. The unitary for the second register is simply one that does multiplication where the factor $j$ comes from the first register: $U_2 \ket{x}\ket{y}= \ket{x}\ket{xy}$.  The application of $U_1$, followed by $U_2$, gives
+\begin{align*}
+		\f{1}{\sqrt{p-1}}\sum_{j=1}^{p-1} \ket{j^{-1} \mod p} \ket{a + b j^{-1} \mod p} = \f{1}{\sqrt{p-1}}\sum_{j'=1}^{p-1} \ket{j' \mod p} \ket{a + b j' \mod p}.
+\end{align*}
+From here, we use the method outlined in Part (a) in order to find $b$. We note that due to the missing $\ket{0a}$ component, the algebra isn't exactly the same. However, the principles apply: after the QFT on the second register and inverse QFT on the first register, we have the quantum state
+\begin{align*}
+	\f{1}{Q\sqrt{p-1}} \sum_{k=0}^{Q-1} \sum_{\ell = 0}^{Q-1} e^{2\pi i [(aj+b)\ell - jk]/Q} \ket{k} \ket{\ell}.
+\end{align*}
+Now we measure both registers in the standard basis. The probability of seeing the output $\ket{k}, \ket{\ell}$ is proportional to 
+\begin{align*}
+	\f{1}{p-1}\abs{\sum_{j=0}^{p-1} e^{2\pi i [ (aj+b)\ell - jk]  /Q }}^2 =  \f{1}{p-1}	\abs{\sum_{j=0}^{p-1} e^{2\pi i j [ a\ell - k]  /Q }}^2
+\end{align*}
+which peaks whenever $a\ell - l \equiv 0$. Once again in the spirit of quantum phase estimation, we can find that $a$ is given $\ell$ and $k$. For the same reason as Part (a), the probability that the algorithm fails vanishes as $p\to \infty$. 
 
 \item Show that no quantum algorithm can identify $a$ with probability $1$.
 
+\noindent No quantum algorithm can identify $a$ with probability 1 because some inputs cannot be distinguished from each other with certainty. Consider two pairs $(a_1, b_1) \neq (a_2, b_2)$. Let us compute the overlap between two quantum states associated with these pairs:
+\begin{align*}
+	\f{1}{p}\lp \sum_{j=0}^{p-1} \bra{j} \bra{a_1 j + b_1}  \rp \lp \sum_{k=0}^{p-1} \ket{k} \ket{a_2 k + b_2}  \rp 
+	&= \f{1}{p} \sum_{j=0}^{p-1} \sum_{k=0}^{p-1} \bra{j}\ket{k} \bra{a_1 j + b_1} \ket{a_2 k + b_2} \\
+	&= \f{1}{p} \sum_{j=0}^{p-1}  \bra{a_1 j + b_1} \ket{a_2 j + b_2}.
+\end{align*}
+Now each summand is either 0 or 1. Consider the case where $b_1 = b_2 = 0$. Then each summand is zero except for when $j=0$. This means there is a nonzero overlap between the two input states (i.e., they are not orthogonal). As a result, we cannot distinguish them with probability 1 without breaking unitarity (which is sacred). For cases for $b_1 \neq b_2$, there always exists some $j$ for which $a_1 j + b_1 \equiv a_2 j + b_2$. We can prove this by assuming $b_1 \equiv 0$ and $a_1 > a_2$ for simplicity. Then $j$ is such that $(a_1 - a_2) j \equiv b_2$. In fact, since $p$ is prime, $a_1 - a_2$ must be relatively prime to $p$, and therefore $j = (a_1 - a_2)^{-1} b_2$. And we're done. 
 
 
 \end{enumerate}
