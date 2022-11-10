@@ -282,7 +282,7 @@ Now we measure both registers in the standard basis. The probability of seeing t
 \begin{align*}
 	\f{1}{p}\abs{\sum_{j=0}^{p-1} e^{2\pi i [ (aj+b)\ell - jk]  /Q }}^2 =  \f{1}{p}	\abs{\sum_{j=0}^{p-1} e^{2\pi i j [ a\ell - k]  /Q }}^2
 \end{align*}
-which is sharply peaked and dominated by the term with $a\ell - k \equiv 0$.  In the spirit of quantum phase estimation, we can find what $a$ is given $\ell$ and $k$. This algorithm fails if $k$ or $\ell$ is zero, and it is easy to see that the probability of finding $k\ell = 0$ vanishes as $p \to \infty$. So, the probability of finding $a$ goes to 1 as $p\to \infty$. 
+which is sharply peaked and dominated by the term with $a\ell - k \equiv 0$.  In the spirit of quantum phase estimation, we can find what $a$ is given $\ell$ and $k$. This algorithm fails if $k$ or $\ell$ is zero, and it is easy to see that the probability of finding $k\ell = 0$ is $1/p$ and therefore vanishes as $p \to \infty$. So, the probability of finding $a$ goes to 1 as $p\to \infty$. 
 
 \item Show that you can also find $b$ with high probability (i.e., with probability going to $1$ as $p$ goes to $\infty$). 
 
@@ -304,7 +304,7 @@ Now we measure both registers in the standard basis. The probability of seeing t
 \begin{align*}
 	\f{1}{p-1}\abs{\sum_{j=0}^{p-1} e^{2\pi i [ (aj+b)\ell - jk]  /Q }}^2 =  \f{1}{p-1}	\abs{\sum_{j=0}^{p-1} e^{2\pi i j [ a\ell - k]  /Q }}^2
 \end{align*}
-which peaks whenever $a\ell - l \equiv 0$. Once again in the spirit of quantum phase estimation, we can find that $a$ is given $\ell$ and $k$. For the same reason as Part (a), the probability that the algorithm fails vanishes as $p\to \infty$: the probability that we measure the input state and find it in $\ket{0}\ket{b}$ decreases as $1/p$ which vanishes as $p\to \infty$. So, the probability of finding $b$ goes to 1 as $p\to \infty$. 
+which peaks whenever $a\ell - l \equiv 0$. Once again in the spirit of quantum phase estimation, we can find that $a$ is given $\ell$ and $k$. For the same reason as Part (a), the probability that the algorithm fails vanishes as $p\to \infty$: the probability that we measure the input state and find it in $\ket{0}\ket{b}$ scales as $1/p$ which vanishes as $p\to \infty$. So, the probability of finding $b$ goes to 1 as $p\to \infty$. 
 
 \item Show that no quantum algorithm can identify $a$ with probability $1$.
 
@@ -314,7 +314,9 @@ which peaks whenever $a\ell - l \equiv 0$. Once again in the spirit of quantum p
 	&= \f{1}{p} \sum_{j=0}^{p-1} \sum_{k=0}^{p-1} \bra{j}\ket{k} \bra{a_1 j + b_1} \ket{a_2 k + b_2} \\
 	&= \f{1}{p} \sum_{j=0}^{p-1}  \bra{a_1 j + b_1} \ket{a_2 j + b_2}.
 \end{align*}
-Now each summand is either 0 or 1. Consider the case where $b_1 = b_2 = 0$. Then each summand is zero except for when $j=0$. This means there is a nonzero overlap between the two input states (i.e., they are not orthogonal). As a result, we cannot distinguish them with probability 1 without breaking unitarity (which is sacred). For cases for $b_1 \neq b_2$, there always exists some $j$ for which $a_1 j + b_1 \equiv a_2 j + b_2$. We can prove this by assuming $b_1 \equiv 0$ and $a_1 > a_2$ for simplicity. Then $j$ is such that $(a_1 - a_2) j \equiv b_2$. In fact, since $p$ is prime, $a_1 - a_2$ must be relatively prime to $p$, and therefore $j = (a_1 - a_2)^{-1} b_2$. And we're done. 
+Now each summand is either 0 or 1. We claim that there always exists some $j$ for which $a_1 j + b_1 \equiv a_2 j + b_2$. To see this, notice that since $p$ is prime, $a_1 - a_2$ must be relatively prime to $p$, and therefore $j = (a_1 - a_2)^{-1} (b_2-b1)$. And we're done. Note that I'm using the $(a_1 -a_2)$ and $(b_1 - b_2)$ notations quite loosely. All of the operations above must be in modular arithmetic of course.  \\
+
+For this reason, the input states spanned by values of $a$ and $b$ are not necessarily mutually orthogonal. No quantum algorithm can therefore distinguish them (i.e. find $a$) with probability 1 without breaking unitarity.  
 
 
 \end{enumerate}
