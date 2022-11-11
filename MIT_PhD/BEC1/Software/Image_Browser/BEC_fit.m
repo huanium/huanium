@@ -191,6 +191,9 @@ fit_BEC_final = fit(hor.', center_horizontal_slice_wo_thermal.', fitfunc_BEC, ..
     'Exclude',bad_region, ...
     'Lower',[0,0,0]);
 
+% print out fit results to verify:
+disp(fit_BEC_final)
+
 % extract coeffs
 coefs_fit_BEC_final = coeffvalues(fit_BEC_final);
 app.BECFitDiameter.Value = round(coefs_fit_BEC_final(3)*2);
