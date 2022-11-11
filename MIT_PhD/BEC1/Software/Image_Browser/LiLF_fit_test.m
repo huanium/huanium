@@ -5,25 +5,30 @@ rows = 256;
 columns = 250;
 totalLiLF = zeros(rows, columns);
 
-noiseAmp = 0.0;
-N = 5;
+noiseAmp = 0.5;
+N = 10;
 
 hor = 1:1:columns;
 vert = 1:1:rows;
 
 % generate some data...
 % this step won't be necessary with real images
-q = 0.05;
+q = 5;
 rho = rows/2;
 
 for i = 1:rows
     for j = 1:columns
-        totalLiLF(i,j) = 3.*approx_polylog(2, exp(q - ((i - round(columns/2)+50).^2/rho^2 + (j-round(rows/2)).^2/rho^2).*f(exp(q))), N)./approx_polylog(2, exp(q) ,N) + noiseAmp*rand(1,1);
+        %totalLiLF(i,j) = 3.*approx_polylog(2, exp(q - ((i - round(columns/2)+50).^2/rho^2 + (j-round(rows/2)).^2/rho^2).*f(exp(q))), N)./approx_polylog(2, exp(q) ,N) + noiseAmp*rand(1,1);
         
-        % simulate flat top capped at OD = 5
-        if totalLiLF(i,j) >= 3
-            totalLiLF(i,j) = min(totalLiLF(i,j), 5) + noiseAmp*rand(1,1);
-        end
+        % just Thomas-Fermi:
+        r = i-round(rows/2);
+        c = j-round(columns/2);
+        totalLiLF(i,j) = 3.*max(1-(r^2+c^2)/rho^2,0).^(3/2) + noiseAmp*rand(1,1);
+
+%         % simulate flat top capped at OD = 5
+%         if totalLiLF(i,j) >= 3
+%             totalLiLF(i,j) = min(totalLiLF(i,j), 5) + noiseAmp*rand(1,1);
+%         end
     end
 end
 
@@ -38,6 +43,9 @@ ax.CLim = [0, 1.3];
 % to find the center from horizontal dist:
 % find sum of matrix columns (integrate along y)
 totalLiLF_columns_summed = sum(totalLiLF, 1);
+
+figure(2)
+plot(hor, totalLiLF_columns_summed)
 
 % now fit something to this to find center in the y-direction:
 % now do gaussian fit this data to find the horizontal center:
@@ -62,12 +70,21 @@ end
 
 tf = excludedata(vert.', center_vertical_slice, 'range', [0.001 Inf]);
 
-fitfunc = fittype(@(a,b,c,d,e,x) a + b*approx_polylog(2, exp(c - ((x-e).^2/d.^2)*f(exp(c))), 5)/approx_polylog(2, exp(c), 5), ...
+% fancy fit:
+% fitfunc = fittype(@(a,b,c,d,e,x) a + b*approx_polylog(2, exp(c - ((x-e).^2/d.^2)*f(exp(c))), 5)/approx_polylog(2, exp(c), 5), ...
+%     'independent','x','dependent','z');
+% 
+% % note that StartPoint's order is alphabetical
+% LiLF_fit = fit(vert.', center_vertical_slice, fitfunc, ...
+%     'StartPoint', [0.0, 3, q, rho, 100]);
+
+% thomas-fermi fit:
+fitfunc = fittype(@(a,b,c,d,x) a + b.*max(1-((x-d).^2)/c.^2,0).^(3/2), ...
     'independent','x','dependent','z');
 
 % note that StartPoint's order is alphabetical
 LiLF_fit = fit(vert.', center_vertical_slice, fitfunc, ...
-    'StartPoint', [0.0, 3, q, rho, 100]);
+    'StartPoint', [0.0, 3, rho, round(rows/2)]);
 
 figure(5)
 plot(LiLF_fit,vert,center_vertical_slice);
