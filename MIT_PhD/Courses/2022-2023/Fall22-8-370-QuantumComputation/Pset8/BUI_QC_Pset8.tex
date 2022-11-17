@@ -131,18 +131,19 @@
 Course: \textbf{8.370 - QC}\\
 Problem set: \textbf{\#8}\\
 Due: Wednesday, Nov 16, 2022\\
-Collaborators/References:
+Collaborators/References: Piazza
 \end{framed}
 
 
 
-\noindent \textbf{1. ???}  A generator $g$ of the multiplicative group modulo $P$ is a number such that $g^{P -1} =
+\noindent \textbf{1. }  A generator $g$ of the multiplicative group modulo $P$ is a number such that $g^{P -1} =
 1 \mod P$, but $gk \neq 1 \mod P$ for any $1 < k < P -1$. As far as I know, we
 	know of no classical algorithms, even probabilistic ones, for testing whether $g$ is
 	a generator mod $P$.\\
 
-\noindent While not explicit, the phrasing of the problem implies that $P$ is prime: since the order of a generator $g$ of $(\mathbb{Z}/P\mathbb{Z})^\times$ is the order of the group, $P-1$, we must have $\phi(P) = P-1$, which is true in general if $P$ is prime. Now, I'm not sure why we have to use the discrete log algorithm here, especially since we do not know of \textit{a} generator $g$ for the multiplicative group modulo $P$  to begin with. Instead, given some element $h\in (\mathbb{Z}/P\mathbb{Z})^\times$, we can use the period-finding algorithm to efficiently compute the order $r$ of $h$. Once done, we simply compare $r$ to the order of  $(\mathbb{Z}/P\mathbb{Z})^\times$, which is $\phi(P) = P-1$. If $r = P-1$ then $h$ is a generator of $(\mathbb{Z}/P\mathbb{Z})^\times$. Otherwise, $h$ is not a generator of  $(\mathbb{Z}/P\mathbb{Z})^\times$.\\
+\noindent While not explicit, the phrasing of the problem implies that $P$ is prime: since the order of a generator $g$ of $(\mathbb{Z}/P\mathbb{Z})^\times$ is the order of the group, $P-1$, we must have $\phi(P) = P-1$, which is true in general if $P$ is prime. Now, I'm not sure why we have to use the discrete log algorithm here, especially since we do not know of \textit{a} generator $g$ for the multiplicative group modulo $P$  to begin with. Instead, given some element $h\in (\mathbb{Z}/P\mathbb{Z})^\times$, we can use the \textbf{period-finding algorithm} to efficiently compute the order $r$ of $h$. Once done, we simply compare $r$ to the order of  $(\mathbb{Z}/P\mathbb{Z})^\times$, which is $\phi(P) = P-1$. If $r = P-1$ then $h$ is a generator of $(\mathbb{Z}/P\mathbb{Z})^\times$. Otherwise, $h$ is not a generator of  $(\mathbb{Z}/P\mathbb{Z})^\times$.\\
 
+\noindent Okay but what if we absolutely have to use the discrete logarithm algorithm? \\
 
 \noindent \textbf{2. The Principle of Deferred Measurement} \\
 
@@ -204,8 +205,32 @@ Here
 	\ket{\be} = \f{1}{\sqrt{M}} \sum_{x \,\in\, S } \ket{x} 
 	\quad \text{and} \quad \cos\f{\theta}{2} = \sqrt{\f{N-M}{N}}
 \end{align*}
-In order to check whether the computer is in a solution state, the impatient runner must first make a copy of the output bit into another register using the quantum FANOUT gate which sends $\ket{0}\ket{0} \to \ket{0}\ket{0}$ and $\ket{1}\ket{0} \to \ket{1}\ket{1}$. Next, he checks whether this state is in a solution state by measuring in the $\ket{\al}, \ket{\be}$ basis. 
+Now, the impatient experimenter checks whether this state is in a solution state by measuring in the $\ket{\al}, \ket{\be}$ basis. The probability that he finds the state to be in the solution space is 
+\begin{align*}
+	p = \sin^2 \lp \f{2k+1}{2} \theta \rp.
+\end{align*}
+If he finds that the state is in the solution space then he stops. Else, he repeats the process. Under the assumption that $M\ll N$ and the additional assumption that $K\theta \ll \pi/2$, we make small-angle approximation on $p$ to obtain 
+\begin{align*}
+	p \approx \lp \f{2k+1}{2}\theta \rp^2.
+\end{align*}
+Now $\theta = 2\acos\lp \sqrt{(N-M)/N} \rp$. Since $M\ll N$, we can expand this in terms of (small) $M/N$ to get
+\begin{align*}
+	\theta \sim \sqrt{\f{M}{N}} + \f{(M/N)^{3/2}}{6} + \mathcal{O}((M/N)^{5/2})
+\end{align*}
+With this, we have
+\begin{align*}
+	p \approx \lp \f{2k+1}{2} \rp^2 \f{M}{N}.
+\end{align*}
 
+Suppose the experimenter measures $j-1$ failures before seeing the first success at the $j$th measurement. Then the probability for this event is 
+\begin{align*}
+	\Pr(X=j) = (1-p)^{j-1}p
+\end{align*}
+The expected value for the random variable $X$, which is the expected number of trials before the first success, is thus
+\begin{align*}
+	E[X] = \f{1}{p}  = \f{N}{M} \lp \f{2}{2k+1} \rp ^2.
+\end{align*}
+Since $K < k < 2K$, the experimenter has to try $\boxed{\mathcal{O}(N/MK^2)}$ times. 
 
 
 \end{document}
