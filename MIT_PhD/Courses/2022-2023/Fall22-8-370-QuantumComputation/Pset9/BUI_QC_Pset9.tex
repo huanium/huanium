@@ -1,0 +1,233 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.370 - QC}\\
+Problem set: \textbf{\#9}\\
+Due: Wednesday, Dec 7, 2022\\
+Collaborators/References: Piazza
+\end{framed}
+
+
+
+\noindent \textbf{1. The SWAP test} \\
+
+
+\noindent The SWAP test tests whether two pure quantum states $\ket{\phi}$ and $\ket{\psi}$ are the same. Before the measurement in the first qubit is made, the circuit does the following (ignoring normalization):
+\begin{align*}
+	\ket{+} \ket{\psi} \ket{\phi}  &\to \ket{0}\ket{\psi}\ket{\phi} + \ket{1}\ket{\phi}\ket{\psi}\\
+	&\to  \ket{+}\ket{\psi}\ket{\phi}+ \ket{-}\ket{\phi}\ket{\psi}
+\end{align*}
+
+\begin{enumerate}[label=(\alph*)]
+	\item If $\ket{\phi} = \ket{\psi}$, then the state of the circuit before the measurement is 
+	\begin{align*}
+		(\ket{+} + \ket{-}) \ket{\psi}\ket{\psi} = \ket{0} \ket{\psi} \ket{\psi}.
+	\end{align*}
+	So the probability that we observe $\ket{0}$ in the first wire is $\boxed{1}$.
+	
+	\item The state of the circuit before the measurement is 
+	\begin{align*}
+		\f{1}{2}\ket{0} \lp \ket{\psi}\ket{\phi} + \ket{\phi}\ket{\psi} \rp + \f{1}{2} \ket{1}\lp \ket{\psi}\ket{\phi} - \ket{\phi}\ket{\psi} \rp.
+	\end{align*}
+	The probability that we observe $\ket{0}$ in the first wire is 
+	\begin{align*}
+		\f{1}{4}\lp \bra{\psi}\bra{\phi} + \bra{\phi}\bra{\psi} \rp \lp \ket{\psi}\ket{\phi} + \ket{\phi}\ket{\psi} \rp
+		= \f{1}{4}\lp 1 + 1 \rp = \boxed{\f{1}{2}} 
+	\end{align*}
+	
+	\item Suppose we apply the SWAP test with the inputs being two identical density matrices:
+	\begin{align*}
+		\rho_1 = \rho_2= p \ket{0}\bra{0} + (1-p) \ket{1}\bra{1}.
+	\end{align*}
+	We can do this problem probabilistically. The initial states of the circuit and associated probabilities are:
+	\begin{align*}
+		\Pr(\ket{+}\ket{0}\ket{0}) &= p^2 \\
+		\Pr(\ket{+}\ket{0}\ket{1}) &= p(1-p) \\
+		\Pr(\ket{+}\ket{1}\ket{0}) &= (1-p)p \\  
+		\Pr(\ket{+}\ket{1}\ket{1}) &= (1-p)(1-p)
+	\end{align*}
+	From the previous parts, the probability that we observe $\ket{0}$ on the top wire is 
+	\begin{align*}
+		p^2 + (1-p)(1-p) + \f{1}{2}\lb p(1-p) + (1-p)p \rb =\boxed{ 1 -p + p^2}.
+	\end{align*}
+	
+\end{enumerate}
+
+
+\noindent \textbf{2. $kl$-qubit code} \\
+
+\noindent The generalization of the 9-qubit code to a $kl$-qubit code has the codewords:
+\begin{align*}
+	\ket{0}_L = \f{1}{2^{l/2}} ( |\underbrace{000\dots 0}_{k}\rangle + |\underbrace{111\dots 1}_{k}\rangle )^{\otimes l} \\
+	\ket{1}_L = \f{1}{2^{l/2}} ( |\underbrace{000\dots 0}_{k}\rangle - |\underbrace{111\dots 1}_{k}\rangle )^{\otimes l}
+\end{align*}
+Here $k,l$ are odd numbers. In the known case where $k=l=3$, we know that the code can correct 1 bit error and 1 phase error. To correct the bit error we need to measure 2 syndrome bits. To correct the phase error we also need to  measure 2 syndrome bits. 
+
+
+
+
+
+\noindent \textbf{3.}
+
+\begin{enumerate}[label=(\alph*)]
+	\item 
+	
+	\item 
+	
+\end{enumerate}
+
+
+\noindent \textbf{4. }
+
+\begin{enumerate}[label=(\alph*)]
+	\item 
+	
+	\item 
+	
+	\item 
+	
+	\item 
+\end{enumerate}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
