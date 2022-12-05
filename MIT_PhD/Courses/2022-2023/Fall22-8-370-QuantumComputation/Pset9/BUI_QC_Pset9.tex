@@ -188,32 +188,99 @@ Collaborators/References: Piazza
 	\ket{0}_L = \f{1}{2^{l/2}} ( |\underbrace{000\dots 0}_{k}\rangle + |\underbrace{111\dots 1}_{k}\rangle )^{\otimes l} \\
 	\ket{1}_L = \f{1}{2^{l/2}} ( |\underbrace{000\dots 0}_{k}\rangle - |\underbrace{111\dots 1}_{k}\rangle )^{\otimes l}
 \end{align*}
-Here $k,l$ are odd numbers. In the known case where $k=l=3$, we know that the code can correct 1 bit error and 1 phase error. To correct the bit error we need to measure 2 syndrome bits. To correct the phase error we also need to  measure 2 syndrome bits. 
+Here $k,l$ are odd numbers. In the known case where $k=l=3$, we know that the code can correct 1 bit error and 1 phase error. To correct the bit error we need to measure 2 syndrome bits. To correct the phase error we also need to  measure 2 syndrome bits. \\
 
 
 
 
 
-\noindent \textbf{3.}
+\noindent \textbf{3. Quantum Hamming code}\\
+
+\noindent Given a qubit $\ket{\psi} = \al\ket{0} + \be\ket{1}$. The 7-qubit Hamming encoded version is 
+\begin{align*}
+	\ket{\psi} \to \al\ket{0_L} + \be\ket{1_L}
+\end{align*}
+where 
+\begin{align*}
+	\ket{0_L} &= \f{1}{\sqrt{8}}(\ket{0000000} + \ket{1010101} + \ket{0110011} + \ket{1100110} + \\
+	&\quad \ket{0001111}+ \ket{1011010} + \ket{0111100} + \ket{1101001}) \\
+	\ket{1_L} &= \f{1}{\sqrt{8}}( \ket{1111111} + \ket{0101010} + \ket{1001100} + \ket{0011001} + \\
+	&\quad \ket{1110000} + \ket{0100101} + \ket{1000011} + \ket{0010110})
+\end{align*}
+as usual. Here, the parity check matrix is (following Nielsen and Chuang's convention):
+\begin{align*}
+	H = \begin{pmatrix}
+		0 & 0 & 0 & 1 & 1 & 1 & 1\\
+		0 & 1 & 1 & 0 & 0 & 1 & 1\\
+		1 & 0 & 1 & 0 & 1 & 0 & 1 
+	\end{pmatrix}.
+\end{align*}
+It is easy to check that $H$ all 7-bit strings in $\ket{0_L}$ and $\ket{1_L}$ are annihilated by $H$. This means we can do parity check on $\al\ket{0_L} + \be\ket{1_L}$ to find the $\sigma_x$ error on qubit 3. This is because the corrupted state takes the form
+\begin{align*}
+	\ket{\psi'} = \sigma_{z,6} (\al \ket{0_L + e_3} + \be\ket{1_L+e_3})
+\end{align*}
+
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item Suppose there is a $\sigma_x$ error on qubit 3 and $\sigma_z$ error on qubit 6. Then the 
 	
-	\item 
+	\item Suppose there is a $\sigma_x$ error on qubit 3 and $\sigma_y$ error on qubit 6. 
 	
 \end{enumerate}
 
 
-\noindent \textbf{4. }
+\noindent \textbf{4. CSS code with distance 2}
 
 \begin{enumerate}[label=(\alph*)]
-	\item 
+	\item We are given a CSS code $CSS(C_1,C_2)$ where
+	\begin{align*}
+		C_1 = \{ 0000,0011,0101,1001,0110,1010,1100,1111  \} \quad\quad C_2 = \{ 0000, 1111 \}
+	\end{align*}
 	
-	\item 
+	The dimension of $CSS(C_1,C_2)$ is $\abs{C_1}/\abs{C_1} = 8/2 = 4$. The $CSS(C_1, C_2)$ is defined by 
+	\begin{align*}
+		CSS(C_1, C_2) =  \{ \ket{x+C_2}  \vert x\in C_1 \}.
+	\end{align*}
+	By inspection, we see that
+	\begin{align*}
+		CSS(C_1,C_2) = \text{span}\{ \ket{0000+C_2} , \ket{0011+C_2} , \ket{0101+C_2} , \ket{1001+C_2}   \}.
+	\end{align*}
 	
-	\item 
 	
-	\item 
+	\item Suppose we apply a $\sigma_x$ to qubits 1 and 2 of this code. Then the we have 
+	\begin{align*}
+		CSS(C_1,C_2) \to \text{span} \{ \ket{1100+C_2} , \ket{1111+C_2} , \ket{1001+C_2} , \ket{0101+C_2}   \} = CSS(C_1,C_2).
+	\end{align*}
+	So, this operation takes codewords to states in the code. Labeling the codewords as 
+	\begin{align*}
+		 \ket{0000+C_2} , \ket{0011+C_2} , \ket{0101+C_2} , \ket{1001+C_2}    =  \ket{a}, \ket{b}, \ket{c}, \ket{d} .
+	\end{align*}
+	we see that applying $\sigma_x$ on qubits 1 and 2 does the following:
+	\begin{align*}
+		\ket{a} \to \ket{b} \quad \ket{b} \to \ket{a} \quad \ket{c} \to \ket{d} \quad \ket{d} \to \ket{c}.
+	\end{align*}
+	
+	
+	\item Since $\sigma_z$ does nothing but change the phases on the basis states of the CSS code, the vector space spanned by the transformed states still remains the same. Because of this, this operation also takes codewords in $CSS(C_1, C_2)$ to codewords in $CSS(C_1, C_2)$. Under this operation, the four basis codewords are mapped to themselves, with potentially a phase flip:
+	\begin{align*}
+		\ket{a} \to \ket{a} \quad \ket{b} \to \ket{b} \quad \ket{c} \to - \ket{c} \quad \ket{d} \to -\ket{d}
+	\end{align*}
+	
+	\item Now suppose we apply $H$ to all four qubits. To answer this question we can be explicit and write down what happens to all the basis states. But we can also obtain a solution as follows. The CSS code above is spanned by 
+	\begin{align*}
+		\{ \ket{0000} + \ket{1111}, \ket{0011}+\ket{1100} , \ket{0101} + \ket{1100}, \ket{1001} + \ket{0110}   \}
+	\end{align*}
+	After applying $H^{\otimes 4}$, the four codewords are transformed to
+	\begin{align*}
+		\{ \ket{++++} + \ket{----}, \ket{++--}+\ket{--++} , \ket{+-+-} + \ket{--++}, \ket{+--+} + \ket{+--+}   \}
+	\end{align*}
+	Is the span of these states the CSS code? To this end, we consider the components $\ket{0000}, \ket{0011}, \ket{0101}, \ket{1001}$. It is not difficult to see that for each of these components, each of the resulting states also has $\ket{1111}, \ket{1100}, \ket{1010}$, and $\ket{0110}$ respectively. Moreover, there are no components with an odd number of 1's, since the amplitudes for these components cancel in the expansion of the states from the $+,-$ basis into the $0,1$ basis. As a result, the operation $H^{\otimes 4}$ also take the four codewords to states in the code. In particular, 
+	\begin{align*}
+		\ket{a} \to \ket{a}+\ket{b}+\ket{c}+\ket{d}\\
+		\ket{b} \to \ket{a}+\ket{b}-\ket{c}-\ket{d}\\ 
+		\ket{c} \to \ket{a}-\ket{b}+\ket{c}-\ket{d}\\
+		\ket{d} \to \ket{a}-\ket{b}-\ket{c}+\ket{d}
+	\end{align*} 
 \end{enumerate}
 
 
