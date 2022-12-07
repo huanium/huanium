@@ -188,8 +188,7 @@ Collaborators/References: Piazza
 	\ket{0}_L = \f{1}{2^{l/2}} ( |\underbrace{000\dots 0}_{k}\rangle + |\underbrace{111\dots 1}_{k}\rangle )^{\otimes l} \\
 	\ket{1}_L = \f{1}{2^{l/2}} ( |\underbrace{000\dots 0}_{k}\rangle - |\underbrace{111\dots 1}_{k}\rangle )^{\otimes l}
 \end{align*}
-Here $k,l$ are odd numbers. In the known case where $k=l=3$, we know that the code can correct 1 bit error and 1 phase error. To correct the bit error we need to measure 2 syndrome bits. To correct the phase error we also need to  measure 2 syndrome bits. \\
-
+Here $k,l$ are odd numbers. In the case where $k=l=3$, we know that this the code can correct 1 bit error and 1 phase error. To correct the bit errors we have to measure $3\times 2 = 6$ syndrome bits. To measure the phase error we have to measure\\
 
 
 
@@ -224,8 +223,26 @@ It is easy to check that $H$ all 7-bit strings in $\ket{0_L}$ and $\ket{1_L}$ ar
 \begin{enumerate}[label=(\alph*)]
 	\item Suppose there is a $\sigma_x$ error on qubit 3 and $\sigma_z$ error on qubit 6. Since the 7-qubit Hamming code can correct one bit flip and one phase flip either on one or different qubits, the one-qubit state that we will obtain after error correction is simply $\ket{\psi'} = \ket{\psi} = \al\ket{0} + \be\ket{1}$.
 	
-	\item Suppose there is a $\sigma_x$ error on qubit 3 and $\sigma_y$ error on qubit 6. 
-	
+	\item Suppose there is a $\sigma_x$ error on qubit 3 and $\sigma_y$ error on qubit 6. Consider a codeword in the CSS code of the form $\ket{x+C_2}$. Then the error modifies this codeword as 
+	\begin{align*}
+		\ket{x+C_2} = \f{1}{\sqrt{C_2}} \sum_{y\in C_2} \ket{x+y} \to \f{1}{\sqrt{C_2}} \sum_{y\in C_2} (-1)^{(x+y)+e_6} \ket{x+y + e_1+e_6}
+	\end{align*}
+	with an overall global phase which we ignore, since $\sigma_y \propto \sigma_x\sigma_z$. Now, when we do parity check on $\ket{x+y+e_1+e_2}$, we get
+	\begin{align*}
+		H(e_1+e_6) = \begin{pmatrix}
+			0 & 0 & 0 & 1 & 1 & 1 & 1\\
+			0 & 1 & 1 & 0 & 0 & 1 & 1\\
+			1 & 0 & 1 & 0 & 1 & 0 & 1 
+		\end{pmatrix} \begin{pmatrix}
+		1 \\ 0 \\ 0 \\ 0 \\ 0 \\ 1 \\ 0
+	\end{pmatrix} = \begin{pmatrix}
+	1 \\ 1 \\ 1
+\end{pmatrix} = He_7.
+	\end{align*}
+So, the error correcting code will act as if there is a single phase flip error on qubit 6 and a bit flip error on qubit 7 and wrongly correct on those. Because of this, in the end the effect of the bit flip correct will be to add $e_1+e_6+e_7$ to the data. Because $e_1+e_6+e_7$ is an odd-weight Hamming codeword, this will induce a flip of the encoded qubit: $\ket{0_L} \leftrightarrow \ket{1_L}$. On the other hand, the phase flip will be correctly fixed. Therefore, in the end, the decoded qubit will be 
+\begin{align*}
+	\ket{\psi'} = \be\ket{0} +  \al \ket{1}.
+\end{align*}
 \end{enumerate}
 
 
