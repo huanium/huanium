@@ -13,26 +13,25 @@ import os
 import warnings
 import glob
 from xml.etree.ElementTree import tostring
-
 import matplotlib
 matplotlib.use("TkAgg")
-
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.widgets import RectangleSelector
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 from astropy.io import fits
 import numpy as np
-
+from threading import Thread
+import time
 
 path_to_file = os.path.dirname(os.path.abspath(__file__))
 path_to_satyendra = path_to_file + "/../../"
 
 sys.path.insert(0, path_to_satyendra)
 
-
 IMAGE_EXTENSION = ".fits"
-ABSORPTION_LIMIT = 2.0
+ABSORPTION_LIMIT = 4.0
 SPECIAL_CHARACTERS = "!@#$%^&*()-+?_=,<>/"
-
 
 class BEC1_Portal():
     def __init__(self, master):
@@ -80,6 +79,11 @@ class BEC1_Portal():
         # Frame type:
         self.frame_type_label = Label(self.tab1, text="Frame type: ").place(x=20, y = 390)
         self.frame_type = 'OD' # OD is the default
+
+        self.frame_type_entry = Entry(self.tab1, text="frame type entry", width=16)
+        self.frame_type_entry.delete(0,'end')
+        self.frame_type_entry.insert(1,self.frame_type)
+        self.frame_type_entry.place(x=100, y = 390)
 
         self.OD_bttn = Button(self.tab1, text="OD", relief="raised",  width=7, command= self.OD_select)
         self.OD_bttn.place(x=20,y=420)
@@ -163,6 +167,12 @@ class BEC1_Portal():
         self.fig = Figure(figsize=(9.5,9.5))
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.tab1)
         self.canvas.get_tk_widget().place(x = 400, y = 5)
+        self.ax = None
+
+        self.toolbar = NavigationToolbar2Tk(self.canvas, self.tab1, pack_toolbar=False)
+        self.toolbar.update()
+        self.toolbar.place(x = 400, y = 5)
+        # self.toolbar.pack(side=tk.TOP, fill=tk.X)
 
         # code for params table:
         self.params_table = ttk.Treeview(self.tab1, columns=("param_names"))
@@ -258,12 +268,12 @@ class BEC1_Portal():
 
         self.Na_Catch_background_X_range_label = Label(self.tab1, text="X range: ")
         self.Na_Catch_background_X_range_label.place(x=1480, y = 180)
-        self.Na_Catch_background_X_min_entry = Entry(self.tab1, text="Na Catch X Min", width=5)
+        self.Na_Catch_background_X_min_entry = Entry(self.tab1, text="Na Catch X Min bkg", width=5)
         self.Na_Catch_background_X_min_entry.place(x=1535, y=180)  
         self.Na_Catch_background_X_min_entry.delete(0,'end')   
         self.Na_Catch_background_X_min_entry.insert(0, "1")
         self.Na_Catch_background_X_min = float(self.Na_Catch_background_X_min_entry.get())
-        self.Na_Catch_background_X_max_entry = Entry(self.tab1, text="Na Catch X max", width=5)
+        self.Na_Catch_background_X_max_entry = Entry(self.tab1, text="Na Catch X max bkg", width=5)
         self.Na_Catch_background_X_max_entry.place(x=1580, y=180)  
         self.Na_Catch_background_X_max_entry.delete(0,'end')   
         self.Na_Catch_background_X_max_entry.insert(0, "512")
@@ -271,12 +281,12 @@ class BEC1_Portal():
 
         self.Na_Catch_background_Y_range_label = Label(self.tab1, text="Y range: ")
         self.Na_Catch_background_Y_range_label.place(x=1630, y = 180)
-        self.Na_Catch_background_Y_min_entry = Entry(self.tab1, text="Na Catch Y Min", width=5)
+        self.Na_Catch_background_Y_min_entry = Entry(self.tab1, text="Na Catch Y Min bkg", width=5)
         self.Na_Catch_background_Y_min_entry.place(x=1535+150, y=180)  
         self.Na_Catch_background_Y_min_entry.delete(0,'end')   
         self.Na_Catch_background_Y_min_entry.insert(0, "1")
         self.Na_Catch_background_Y_min = float(self.Na_Catch_background_Y_min_entry.get())
-        self.Na_Catch_background_Y_max_entry = Entry(self.tab1, text="Na Catch Y max", width=5)
+        self.Na_Catch_background_Y_max_entry = Entry(self.tab1, text="Na Catch Y max bkg", width=5)
         self.Na_Catch_background_Y_max_entry.place(x=1580+150, y=180)  
         self.Na_Catch_background_Y_max_entry.delete(0,'end')   
         self.Na_Catch_background_Y_max_entry.insert(0, "512")
@@ -287,12 +297,12 @@ class BEC1_Portal():
 
         self.Na_Catch_ROI_X_range_label = Label(self.tab1, text="X range: ")
         self.Na_Catch_ROI_X_range_label.place(x=1480, y = 210)
-        self.Na_Catch_ROI_X_min_entry = Entry(self.tab1, text="Na Catch X Min", width=5)
+        self.Na_Catch_ROI_X_min_entry = Entry(self.tab1, text="Na Catch X Min roi", width=5)
         self.Na_Catch_ROI_X_min_entry.place(x=1535, y=210)  
         self.Na_Catch_ROI_X_min_entry.delete(0,'end')   
         self.Na_Catch_ROI_X_min_entry.insert(0, "1")
         self.Na_Catch_ROI_X_min = float(self.Na_Catch_ROI_X_min_entry.get())
-        self.Na_Catch_ROI_X_max_entry = Entry(self.tab1, text="Na Catch X max", width=5)
+        self.Na_Catch_ROI_X_max_entry = Entry(self.tab1, text="Na Catch X max roi", width=5)
         self.Na_Catch_ROI_X_max_entry.place(x=1580, y=210)  
         self.Na_Catch_ROI_X_max_entry.delete(0,'end')   
         self.Na_Catch_ROI_X_max_entry.insert(0, "512")
@@ -300,12 +310,12 @@ class BEC1_Portal():
 
         self.Na_Catch_ROI_Y_range_label = Label(self.tab1, text="Y range: ")
         self.Na_Catch_ROI_Y_range_label.place(x=1630, y = 210)
-        self.Na_Catch_ROI_Y_min_entry = Entry(self.tab1, text="Na Catch Y Min", width=5)
+        self.Na_Catch_ROI_Y_min_entry = Entry(self.tab1, text="Na Catch Y Min roi", width=5)
         self.Na_Catch_ROI_Y_min_entry.place(x=1535+150, y=210)  
         self.Na_Catch_ROI_Y_min_entry.delete(0,'end')   
         self.Na_Catch_ROI_Y_min_entry.insert(0, "1")
-        self.Na_Catch_ROI_Y_min = float(self.Na_Catch_background_Y_min_entry.get())
-        self.Na_Catch_ROI_Y_max_entry = Entry(self.tab1, text="Na Catch Y max", width=5)
+        self.Na_Catch_ROI_Y_min = float(self.Na_Catch_ROI_Y_min_entry.get())
+        self.Na_Catch_ROI_Y_max_entry = Entry(self.tab1, text="Na Catch Y max roi", width=5)
         self.Na_Catch_ROI_Y_max_entry.place(x=1580+150, y=210)  
         self.Na_Catch_ROI_Y_max_entry.delete(0,'end')   
         self.Na_Catch_ROI_Y_max_entry.insert(0, "512")
@@ -331,6 +341,80 @@ class BEC1_Portal():
         self.line2 = Label(self.tab1, text='---------------------------------------------------------------------------------')
         self.line2.place(x=1360, y = 265)
 
+        # Li MT LF atom counting
+        self.Li_LF_atom_count_label = Label(self.tab1, text="Li LF atom counting: ", font=('TkDefaultFont', 10, 'bold'))
+        self.Li_LF_atom_count_label.place(x=1360, y = 290)
+
+        self.LiLF_ROI_Crop_bttn = Button(self.tab1, text="Li LF ROI Crop", relief="raised", width=16, command = self.LiLF_Crop)
+        self.LiLF_ROI_Crop_bttn.place(x=1525, y=287)
+
+        self.LiLF_ROI_label = Label(self.tab1, text="Li LF ROI ")
+        self.LiLF_ROI_label.place(x=1360, y = 320)
+
+        self.LiLF_X_range_label = Label(self.tab1, text="X range: ")
+        self.LiLF_X_range_label.place(x=1480, y = 320)
+        self.LiLF_X_min_entry = Entry(self.tab1, text="Li LF X Min", width=5)
+        self.LiLF_X_min_entry.place(x=1535, y=320)  
+        self.LiLF_X_min_entry.delete(0,'end')   
+        self.LiLF_X_min_entry.insert(0, "1")
+        self.LiLF_X_min = float(self.LiLF_X_min_entry.get())
+        self.LiLF_X_max_entry = Entry(self.tab1, text="Li LF X max", width=5)
+        self.LiLF_X_max_entry.place(x=1580, y=320)  
+        self.LiLF_X_max_entry.delete(0,'end')   
+        self.LiLF_X_max_entry.insert(0, "512")
+        self.LiLF_X_max = float(self.LiLF_X_max_entry.get())
+
+        self.LiLF_Y_range_label = Label(self.tab1, text="Y range: ")
+        self.LiLF_Y_range_label.place(x=1630, y = 320)
+        self.LiLF_Y_min_entry = Entry(self.tab1, text="Li LF Y Min", width=5)
+        self.LiLF_Y_min_entry.place(x=1535+150, y=320)  
+        self.LiLF_Y_min_entry.delete(0,'end')   
+        self.LiLF_Y_min_entry.insert(0, "1")
+        self.LiLF_Y_min = float(self.LiLF_Y_min_entry.get())
+        self.LiLF_Y_max_entry = Entry(self.tab1, text="Li LF Y max", width=5)
+        self.LiLF_Y_max_entry.place(x=1580+150, y=320)  
+        self.LiLF_Y_max_entry.delete(0,'end')   
+        self.LiLF_Y_max_entry.insert(0, "512")
+        self.LiLF_Y_max = float(self.LiLF_Y_max_entry.get())
+
+        self.LiLF_pixel_size_label = Label(self.tab1, text="Pixel size (um^2): ")
+        self.LiLF_pixel_size_label.place(x=1360, y = 350)
+
+        self.LiLF_pixel_size_entry = Entry(self.tab1, text="LiLF pixel size (um^2)", width=6)
+        self.LiLF_pixel_size_entry.place(x=1470, y = 350)
+        self.LiLF_pixel_size_entry.delete(0,'end')   
+        self.LiLF_pixel_size_entry.insert(0, "27.52")
+
+        self.LiLF_cross_section_label = Label(self.tab1, text="Cross section (um^2): ")
+        self.LiLF_cross_section_label.place(x=1535, y = 350)
+
+        self.LiLF_cross_section_entry = Entry(self.tab1, text="Cross section (um^2)", width=6)
+        self.LiLF_cross_section_entry.place(x=1535+150, y = 350)
+        self.LiLF_cross_section_entry.delete(0,'end')   
+        self.LiLF_cross_section_entry.insert(0, "0.215")
+
+        self.LiLF_sat_count_label = Label(self.tab1, text="Saturation Counts: ")
+        self.LiLF_sat_count_label.place(x=1360, y = 380)
+
+        self.LiLF_sat_count_entry = Entry(self.tab1, text="Saturation Counts", width=9)
+        self.LiLF_sat_count_entry.place(x=1470, y = 380)
+        self.LiLF_sat_count_entry.delete(0,'end')   
+        self.LiLF_sat_count_entry.insert(0, "1.336e5")
+
+        self.LiLF_atom_number_label = Label(self.tab1, text="Atom number: ")
+        self.LiLF_atom_number_label.place(x=1535, y = 380)
+
+        self.LiLF_atom_number_entry = Entry(self.tab1, text="Atom number", width=10)
+        self.LiLF_atom_number_entry.place(x=1535+100, y = 380)
+        self.LiLF_atom_number_entry.delete(0,'end')   
+        self.LiLF_atom_number_entry.insert(0, "0")
+
+        self.LiLF_DoIt_bttn = Button(self.tab1, text="Do it", relief="raised",  width=4, command= self.LiLF_DoIt)
+        self.LiLF_DoIt_bttn.place(x=1535+180, y=377)
+
+        self.line3 = Label(self.tab1, text='---------------------------------------------------------------------------------')
+        self.line3.place(x=1360, y = 405)
+
         # SECOND TAB
         # ...
 
@@ -344,7 +428,6 @@ class BEC1_Portal():
         self.refresh()
 
     def refresh(self):
-        # pretty much like browse
         if self.folder_path: # if path is not empty
             self.folder_entry.delete(0,'end')
             self.folder_entry.insert(0, self.folder_path)
@@ -367,10 +450,83 @@ class BEC1_Portal():
             self.scan_bttn.config(text='Scan')
             self.scan_bttn.config(relief="raised")
             self.scan_bttn.config(fg='black') 
+            # if sunken then raise button and stop scan:
         else:
             self.scan_bttn.config(relief="sunken")  
             self.scan_bttn.config(text='Scan')
             self.scan_bttn.config(fg='silver')
+            # if raised then sunken and start scan:
+            t = Thread (target = self.scan_act)
+            t.start()
+
+    def scan_act(self):
+            while True:
+                if self.scan_bttn.config('relief')[-1] == 'sunken':
+                    # if show new button is pressed then show new image:
+                    if self.show_new_bttn.config('relief')[-1] == 'sunken':
+                        print('Scanning and showing new...')
+                        # take last element of new file list
+                        # compare file name
+                        # if different then display, else do nothing
+                        if self.folder_path: # if path is not empty
+                            self.folder_entry.delete(0,'end')
+                            self.folder_entry.insert(0, self.folder_path)
+                            # list all files with .fits extension:
+                            self.file_names_new = []
+                            self.files_fullpath_new = glob.glob(self.folder_path + '/*.fits')
+                            for f in self.files_fullpath_new:
+                                name = f.split(self.folder_path)
+                                self.file_names_new.append(str(name[1]).replace('\\',"")) # make list of file names
+
+                            if self.file_names_new != self.file_names:
+                                # first clear table:
+                                self.file_table.delete(*self.file_table.get_children())
+                                # then repopulate:
+                                for i in range(len(self.file_names_new)):
+                                    id = str(len(self.file_names_new)-i)               
+                                    # then repopulate
+                                    self.file_table.insert("","end",text = id, values = str(self.file_names_new[len(self.file_names_new)-i-1]))
+
+                                if self.file_names_new[-1] != self.file_names[-1]: # display last image if last image different from previous last image
+                                    # show new image:
+                                    self.current_file_name = self.file_names_new[-1]
+                                    # make fullpath of selected file
+                                    self.current_file_fullpath = self.folder_path + '/' + self.current_file_name
+                                    # update selected image textbox:
+                                    self.selected_image_entry.delete(0,'end')
+                                    self.selected_image_entry.insert(0,self.current_file_name)
+                                    # now display image:
+                                    self.display_image()
+                                    # next, show metadata:
+                                    # acquire run id
+                                    run_id = self.current_file_name.split('_')[0] 
+                                    # load run params from json file
+                                    run_parameters_path = self.folder_path + "/run_params_dump.json"
+                                    with open(run_parameters_path, 'r') as json_file:
+                                        run_parameters_dict = json.load(json_file)   
+                                    self.params_for_selected_file = run_parameters_dict[run_id] # all params
+
+                                    for i in range(len(self.metadata_variables)):
+                                        self.metadata_values[i] = str(self.params_for_selected_file[self.metadata_variables[i]])
+                                    # first clear metadata table:
+                                    self.params_table.delete(*self.params_table.get_children())
+                                    # then repopulate it
+                                    for i in range(len(self.metadata_variables)):
+                                        param = str(self.metadata_variables[i])
+                                        value = str(self.metadata_values[i])    
+                                        # then repopulate
+                                        self.params_table.insert("","end",text = param, values = value)
+
+                                self.file_names = self.file_names_new
+                                self.files_fullpath = self.files_fullpath_new                 
+
+                    else:
+                        print('Scanning but not showing new...')
+                        self.refresh()
+                    time.sleep(1) # 1 second rep rate should be good since sequences are much longer
+                else:
+                    break
+        
 
     def show_new(self):
         if self.show_new_bttn.config('relief')[-1] == 'sunken':
@@ -392,22 +548,47 @@ class BEC1_Portal():
         self.frame_type = 'OD'
         if self.current_file_fullpath:
             self.display_image()
+
+        self.frame_type_entry.delete(0,'end')
+        self.frame_type_entry.insert(1,self.frame_type)
+        self.frame_type_entry.place(x=100, y = 390)
+        
     def with_atoms_select(self):
         self.frame_type = 'With atoms'
         if self.current_file_fullpath:
             self.display_image()
+        
+        self.frame_type_entry.delete(0,'end')
+        self.frame_type_entry.insert(1,self.frame_type)
+        self.frame_type_entry.place(x=100, y = 390)
+
     def without_atoms_select(self):
         self.frame_type = 'Without atoms'
         if self.current_file_fullpath:
             self.display_image()
+        
+        self.frame_type_entry.delete(0,'end')
+        self.frame_type_entry.insert(1,self.frame_type)
+        self.frame_type_entry.place(x=100, y = 390)
+
     def dark_select(self):
         self.frame_type = 'Dark'
         if self.current_file_fullpath:
             self.display_image()
+        
+        self.frame_type_entry.delete(0,'end')
+        self.frame_type_entry.insert(1,self.frame_type)
+        self.frame_type_entry.place(x=100, y = 390)
+
     def FakeOD_select(self):
         self.frame_type = 'FakeOD'
         if self.current_file_fullpath:
             self.display_image()
+        
+        self.frame_type_entry.delete(0,'end')
+        self.frame_type_entry.insert(1,self.frame_type)
+        self.frame_type_entry.place(x=100, y = 390)
+
     def selectItem(self, event):
         curItem = self.file_table.focus()
         curItem = self.file_table.item(curItem)
@@ -480,99 +661,256 @@ class BEC1_Portal():
         m = 23*(1.67e-27)
         omega = (2*np.pi*rad*2*np.pi*rad*2*np.pi*ax)**(1/3)
         a = 85*(0.529e-10)
-        # calculate BEc atom count:
+        # calculate BEC atom count:
         self.BEC_count = ((m/2*(2*np.pi*rad)**2/(1 + (2*np.pi*rad*tof)**2))*(umpx*10**(-6)*r)**2)**(5/2)/(15*hbar**2*m**(1/2)*omega**3*a/2**(5/2))
         # display this on BEC count entry:
         self.BEC_count_entry.delete(0,'end')   
         self.BEC_count_entry.insert(0, str('{:.2e}'.format(self.BEC_count)))
 
     def Na_Catch_DoIt(self):
-        return 0
+        
+        # acquire lims for background
+        x_min_bg = self.Na_Catch_background_X_min
+        x_max_bg = self.Na_Catch_background_X_max
+        y_min_bg = self.Na_Catch_background_Y_min
+        y_max_bg = self.Na_Catch_background_Y_max
+
+        # acquire lims for roi
+        x_min_roi = self.Na_Catch_ROI_X_min
+        x_max_roi = self.Na_Catch_ROI_X_max
+        y_min_roi = self.Na_Catch_ROI_Y_min
+        y_max_roi = self.Na_Catch_ROI_Y_max
+
+        bg_area = (y_max_bg - y_min_bg)*(x_max_bg - x_min_bg)
+        roi_area = (y_max_roi - y_min_roi)*(x_max_roi - x_min_roi)
+
+        od_roi = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
+        od_roi = np.nan_to_num(od_roi)
+        od_roi = np.clip(od_roi, 0, ABSORPTION_LIMIT)
+        od_roi_cropped = od_roi[x_min_roi:x_max_roi, y_min_roi:y_max_roi] # just OD, but cropped
+
+        od_bg = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
+        od_bg = np.nan_to_num(od_bg)
+        od_bg = np.clip(od_bg, 0, ABSORPTION_LIMIT)
+        od_bg_cropped = od_bg[x_min_roi:x_max_bg, y_min_roi:y_max_bg] # just OD, but cropped
+
+        # integrate
+        count_od = sum(sum(od_roi_cropped))
+        count_bg = sum(sum(od_bg_cropped))
+
+        # convert to bg corresponding to roi area:
+        count_bg = int(count_bg*(roi_area/bg_area))
+        # then calculate catch score
+        self.Na_Catch_score = count_od - count_bg
+        # display this on catch score entry:
+        self.Na_Catch_score_entry.delete(0,'end')   
+        self.Na_Catch_score_entry.insert(0, str('{:.2e}'.format(self.Na_Catch_score)))
+        
 
     def Na_Catch_BackgroundROI_Crop(self):
-        return 0
+        def line_select_callback(eclick, erelease):
+            'eclick and erelease are the press and release events'
+            x1, y1 = eclick.xdata, eclick.ydata
+            x2, y2 = erelease.xdata, erelease.ydata
+
+            self.Na_Catch_background_X_min = int(min(x1,x2))
+            self.Na_Catch_background_X_max = int(max(x1,x2))
+            self.Na_Catch_background_Y_min = int(min(y1,y2))
+            self.Na_Catch_background_Y_max = int(max(y1,y2))
+
+            self.Na_Catch_background_X_min_entry.delete(0,'end')   
+            self.Na_Catch_background_X_min_entry.insert(0, str(self.Na_Catch_background_X_min))
+            self.Na_Catch_background_X_max_entry.delete(0,'end')   
+            self.Na_Catch_background_X_max_entry.insert(0, str(self.Na_Catch_background_X_max))
+            self.Na_Catch_background_Y_min_entry.delete(0,'end')   
+            self.Na_Catch_background_Y_min_entry.insert(0, str(self.Na_Catch_background_Y_min))
+            self.Na_Catch_background_Y_max_entry.delete(0,'end')   
+            self.Na_Catch_background_Y_max_entry.insert(0, str(self.Na_Catch_background_Y_max))
+
+            # redraw image once done so that user has to clip the crop bttn again to crop
+            self.display_image()
+
+        toggle_selector.RS = RectangleSelector(self.ax, line_select_callback,
+        drawtype='box', useblit=True,
+        button=[1,3], # don't use middle button
+        minspanx=5, minspany=5,
+        spancoords='pixels')
+        plt.connect('key_press_event', toggle_selector)
+        
 
     def Na_Catch_ROI_Crop(self):
-        return 0
+        def line_select_callback(eclick, erelease):
+            'eclick and erelease are the press and release events'
+            x1, y1 = eclick.xdata, eclick.ydata
+            x2, y2 = erelease.xdata, erelease.ydata
 
+            self.Na_Catch_ROI_X_min = int(min(x1,x2))
+            self.Na_Catch_ROI_X_max = int(max(x1,x2))
+            self.Na_Catch_ROI_Y_min = int(min(y1,y2))
+            self.Na_Catch_ROI_Y_max = int(max(y1,y2))
+
+            self.Na_Catch_ROI_X_min_entry.delete(0,'end')   
+            self.Na_Catch_ROI_X_min_entry.insert(0, str(self.Na_Catch_ROI_X_min))
+            self.Na_Catch_ROI_X_max_entry.delete(0,'end')   
+            self.Na_Catch_ROI_X_max_entry.insert(0, str(self.Na_Catch_ROI_X_max))
+            self.Na_Catch_ROI_Y_min_entry.delete(0,'end')   
+            self.Na_Catch_ROI_Y_min_entry.insert(0, str(self.Na_Catch_ROI_Y_min))
+            self.Na_Catch_ROI_Y_max_entry.delete(0,'end')   
+            self.Na_Catch_ROI_Y_max_entry.insert(0, str(self.Na_Catch_ROI_Y_max))
+
+            # redraw image once done so that user has to clip the crop bttn again to crop
+            self.display_image()
+
+        toggle_selector.RS = RectangleSelector(self.ax, line_select_callback,
+        drawtype='box', useblit=True,
+        button=[1,3], # don't use middle button
+        minspanx=5, minspany=5,
+        spancoords='pixels')
+        plt.connect('key_press_event', toggle_selector)
+
+    def LiLF_Crop(self):
+        def line_select_callback(eclick, erelease):
+            'eclick and erelease are the press and release events'
+            x1, y1 = eclick.xdata, eclick.ydata
+            x2, y2 = erelease.xdata, erelease.ydata
+
+            self.LiLF_X_min = int(min(x1,x2))
+            self.LiLF_X_max = int(max(x1,x2))
+            self.LiLF_Y_min = int(min(y1,y2))
+            self.LiLF_Y_max = int(max(y1,y2))
+
+            self.LiLF_X_min_entry.delete(0,'end')   
+            self.LiLF_X_min_entry.insert(0, str(self.LiLF_X_min))
+            self.LiLF_X_max_entry.delete(0,'end')   
+            self.LiLF_X_max_entry.insert(0, str(self.LiLF_X_max))
+            self.LiLF_Y_min_entry.delete(0,'end')   
+            self.LiLF_Y_min_entry.insert(0, str(self.LiLF_Y_min))
+            self.LiLF_Y_max_entry.delete(0,'end')   
+            self.LiLF_Y_max_entry.insert(0, str(self.LiLF_Y_max))
+
+            # redraw image once done so that user has to clip the crop bttn again to crop
+            self.display_image()
+
+        toggle_selector.RS = RectangleSelector(self.ax, line_select_callback,
+        drawtype='box', useblit=True,
+        button=[1,3], # don't use middle button
+        minspanx=5, minspany=5,
+        spancoords='pixels')
+        plt.connect('key_press_event', toggle_selector)
+
+    def LiLF_DoIt(self):
+        # acquire lims:
+        x_min = self.LiLF_X_min
+        x_max = self.LiLF_X_max
+        y_min = self.LiLF_Y_min
+        y_max = self.LiLF_Y_max
+
+        # params
+        pixelsize = float(self.LiLF_pixel_size_entry.get())
+        sigma = float(self.LiLF_cross_section_entry.get())
+        Nsat = float(self.LiLF_sat_count_entry.get())
+
+        od = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
+        ic = (self.img[1,:,:] - self.img[0,:,:])/Nsat
+
+        # now clean od and ic:
+        od = np.nan_to_num(od)
+        # fix clipping
+        od = np.clip(od, 0, ABSORPTION_LIMIT)
+
+        od_cropped = od[x_min:x_max, y_min:y_max] # just OD, but cropped
+        ic_cropped = ic[x_min:x_max, y_min:y_max]
+        atomnumber_map = (ic_cropped+od_cropped)*pixelsize/sigma
+        Li_atomnumber = sum(sum(atomnumber_map))
+        self.LiLF_atom_number_entry.delete(0,'end')   
+        self.LiLF_atom_number_entry.insert(0, str('{:.2e}'.format(Li_atomnumber)))
 
     def display_image(self):
         fits_image = fits.open(self.current_file_fullpath)
         # fits_image.info() # display fits image info
-        img = fits_image[0].data
+        self.img = fits_image[0].data
         fits_image.close()
 
         # now show image:
         frame_type = self.frame_type
         if frame_type == 'OD':
-            frame = np.real(-np.log((img[0,:,:]-img[2,:,:])/(img[1,:,:]-img[2,:,:])))
+            self.frame = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
             # clean image: using nan_to_num
-            frame = np.nan_to_num(frame)
+            self.frame = np.nan_to_num(self.frame)
             # fix clipping
-            frame = np.clip(frame, 0, ABSORPTION_LIMIT)
+            self.frame = np.clip(self.frame, 0, ABSORPTION_LIMIT)
 
             self.fig.clear()
-            h = self.fig.add_subplot(111)
-            h.imshow(frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
-            h.invert_yaxis()
+            self.ax = self.fig.add_subplot(111)
+            self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
+            self.ax.invert_yaxis()
             self.fig.subplots_adjust(left=0.05, bottom=0.04, right=0.96, top=0.96, wspace=0, hspace=0)
             self.canvas.draw_idle()
         else:
             if frame_type == 'FakeOD':
-                frame = np.real((img[0,:,:]-img[2,:,:])/(img[1,:,:]-img[2,:,:]))
+                self.frame = np.real((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:]))
                 # clean image: using nan_to_num
-                frame = np.nan_to_num(frame)
+                self.frame = np.nan_to_num(self.frame)
                 # fix clipping
-                frame = np.clip(frame, 0, ABSORPTION_LIMIT)
+                self.frame = np.clip(self.frame, 0, ABSORPTION_LIMIT)
 
                 self.fig.clear()
-                h = self.fig.add_subplot(111)
-                h.imshow(frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
-                h.invert_yaxis()
+                self.ax = self.fig.add_subplot(111)
+                self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
+                self.ax.invert_yaxis()
                 self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
                 self.canvas.draw_idle()
             else:
                 if frame_type == 'With atoms':
-                    frame = img[0,:,:]
+                    self.frame = self.img[0,:,:]
                     # clean image: using nan_to_num
-                    frame = np.nan_to_num(frame)
+                    self.frame = np.nan_to_num(self.frame)
                     
                     self.fig.clear()
-                    h = self.fig.add_subplot(111)
-                    h.imshow(frame, cmap='gray', vmin=0, vmax=2**self.brightness)  # need to adjust gray scale/colormap here with BRIGHTNESS variable
-                    h.invert_yaxis()
+                    self.ax = self.fig.add_subplot(111)
+                    self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**self.brightness)  # need to adjust gray scale/colormap here with BRIGHTNESS variable
+                    self.ax.invert_yaxis()
                     self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
                     self.canvas.draw_idle()
                 elif frame_type == 'Without atoms':
-                    frame = img[1,:,:]
+                    self.frame = self.img[1,:,:]
                     # clean image: using nan_to_num
-                    frame = np.nan_to_num(frame)
+                    self.frame = np.nan_to_num(self.frame)
                     self.fig.clear()
-                    h = self.fig.add_subplot(111)
-                    h.imshow(frame, cmap='gray', vmin=0, vmax=2**self.brightness)  # need to adjust gray scale/colormap here with BRIGHTNESS variable
-                    h.invert_yaxis()
+                    self.ax = self.fig.add_subplot(111)
+                    self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**self.brightness)  # need to adjust gray scale/colormap here with BRIGHTNESS variable
+                    self.ax.invert_yaxis()
                     self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
                     self.canvas.draw_idle()
                 elif frame_type == 'Dark':
-                    frame = img[2,:,:]
+                    self.frame = self.img[2,:,:]
                     # clean image: using nan_to_num
-                    frame = np.nan_to_num(frame)
+                    self.frame = np.nan_to_num(self.frame)
                     self.fig.clear()
-                    h = self.fig.add_subplot(111)
-                    h.imshow(frame, cmap='gray', vmin=0, vmax=2**self.brightness)  # need to adjust gray scale/colormap here with BRIGHTNESS variable
-                    h.invert_yaxis()
+                    self.ax = self.fig.add_subplot(111)
+                    self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**self.brightness)  # need to adjust gray scale/colormap here with BRIGHTNESS variable
+                    self.ax.invert_yaxis()
                     self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
                     self.canvas.draw_idle()
                 else:
-                    frame = np.real(-np.log((img[0,:,:]-img[2,:,:])/(img[1,:,:]-img[2,:,:])))
+                    self.frame = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
                     # clean image: using nan_to_num
-                    frame = np.nan_to_num(frame)
+                    self.frame = np.nan_to_num(self.frame)
                     self.fig.clear()
-                    h = self.fig.add_subplot(111)
-                    h.imshow(frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
-                    h.invert_yaxis()
+                    self.ax = self.fig.add_subplot(111)
+                    self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
+                    self.ax.invert_yaxis()
                     self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
                     self.canvas.draw_idle()
+
+def toggle_selector(event):
+            print (' Key pressed.')
+            if event.key in ['Q', 'q'] and toggle_selector.RS.active:
+                print (' RectangleSelector deactivated.')
+                toggle_selector.RS.set_active(False)
+            if event.key in ['A', 'a'] and not toggle_selector.RS.active:
+                print (' RectangleSelector activated.')
+                toggle_selector.RS.set_active(True)
 
 def main():
     root = Tk()
