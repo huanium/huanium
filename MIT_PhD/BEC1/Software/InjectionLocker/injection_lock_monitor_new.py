@@ -45,21 +45,16 @@ slowerLocked = 0
 repumpLocked = 0
 MOTLocked = 0
 
-boosterMAX = 2400
-slowerMAX = 1100
-repumpMAX = 1500
-MOTMAX = 2400
+boosterMAX = 2100
+slowerMAX = 800
+repumpMAX = 1800
+MOTMAX = 2100
 
-boosterPeakMax = 2600
+boosterPeakMax = 4000
 
-quality = 0.97
+quality = 0.90
 qualityRAW = quality + 0.015
 peakToThres = 0.85
-
-peakThresholdBooster = round(boosterMAX * peakToThres)
-peakThresholdSlower = round(slowerMAX * peakToThres)
-peakThresholdRepump = round(repumpMAX * peakToThres)
-peakThresholdMOT = round(MOTMAX * peakToThres)
 
 # use these to compare between consecutive runs
 boosterPeakOld = 0
@@ -98,21 +93,11 @@ def updateMAXRAW(boosterPeak, slowerPeak, repumpPeak, MOTPeak):
     global repumpMAX
     global MOTMAX
 
-    if (boosterPeak >= boosterMAX):
-        boosterMAX = round(qualityRAW * boosterPeak)
-        peakThresholdBooster = round(peakToThres * boosterPeak)
-    
-    if (slowerPeak >= slowerMAX):
-        slowerMAX = round(qualityRAW * slowerPeak)
-        peakThresholdSlower = round(peakToThres * slowerPeak)
-    
-    if (repumpPeak >= repumpMAX):
-        repumpMAX = round(qualityRAW * repumpPeak)
-        peakThresholdRepump = round(peakToThres * repumpPeak)
-
-    if (MOTPeak >= MOTMAX):
-        MOTMAX = round(qualityRAW * MOTPeak)
-        peakThresholdMOT = round(peakToThres * MOTPeak)
+    boosterMAX = round(qualityRAW * boosterPeak)
+    peakThresholdBooster = round(peakToThres * boosterPeak)
+    slowerMAX = round(qualityRAW * slowerPeak)
+    repumpMAX = round(qualityRAW * repumpPeak)
+    MOTMAX = round(qualityRAW * MOTPeak)
 
 def updateMAX(boosterPeak, slowerPeak, repumpPeak, MOTPeak):
     global boosterMAX
@@ -122,16 +107,12 @@ def updateMAX(boosterPeak, slowerPeak, repumpPeak, MOTPeak):
 
     if (boosterPeak >= boosterMAX and boosterPeak <= 1.005 * boosterMAX): # safety mechanism
         boosterMAX = boosterPeak
-        peakThresholdBooster = round(peakToThres * boosterPeak)
     if (slowerPeak >= slowerMAX and slowerPeak <= 1.005 * slowerMAX): # safety mechanism
         slowerMAX = slowerPeak
-        peakThresholdSlower = round(peakToThres * slowerPeak)
     if (repumpPeak >= repumpMAX and repumpPeak <= 1.005 * repumpMAX): # safety mechanism
         repumpMAX = repumpPeak
-        peakThresholdRepump = round(peakToThres * repumpPeak)
     if (MOTPeak >= MOTMAX and MOTPeak <= 1.005 * MOTMAX): # safety mechanism
         MOTMAX = MOTPeak
-        peakThresholdMOT = round(peakToThres * MOTPeak)
 
 def printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak, boosterLoc, FParray_length):
     # print status
@@ -148,11 +129,11 @@ def printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak, boosterLoc, FP
     # MOT
     print("MOT peak: " + str(MOTPeak))
 
-    if (slowerLocked == 3):
+    if (slowerLocked == 5):
         print("Slower unlocked!")
-    if (repumpLocked == 3):
+    if (repumpLocked == 5):
         print("Repump unlocked!")
-    if (MOTLocked == 3):
+    if (MOTLocked == 5):
         print("MOT unlocked!")
     
     print("-------------------------")
@@ -189,14 +170,9 @@ def main():
             ############################################
             FParray = []
             arduino_printout = read_arduino()       
-            while arduino_printout != 2400 and arduino_printout != '': 
+            while arduino_printout != 4000 and arduino_printout != '': 
                 FParray.append(arduino_printout)
                 arduino_printout = read_arduino()
-            #for s in FParray:
-            #    if s != '':
-            #       print(s)
-            #if arduino_printout != '':
-            #    print("=====================")
 
             ############################################
             ########## DATA READING FROM SERIAL ########
@@ -243,7 +219,7 @@ def main():
                 boosterLocAvg = 0; # reset
             
             ##### MONITORING ####
-            if (boosterPeak <= boosterPeakMax and len(FParray) >= 340): # if booster exceeds boosterPeakMax --> do nothing
+            if (boosterPeak <= boosterPeakMax and boosterPeak >= 100 and len(FParray) >= 330): # if booster exceeds boosterPeakMax --> do nothing
                 # get peak values
                 slowerPeak = peakValBetween(FParray, boosterI + slowerOffset, boosterF + slowerOffset)
                 repumpPeak = peakValBetween(FParray, boosterI + repumpOffset, boosterF + repumpOffset)
@@ -254,11 +230,8 @@ def main():
                 global repumpLocked
                 global MOTLocked
                 global slowerPeakOld
-                global peakThresholdSlower
                 global repumpPeakOld
-                global peakThresholdRepump
                 global MOTPeakOld
-                global peakThresholdMOT
                 # in the first 20 triggers, update MAX values
                 if (prepCounter < 20):
                     prepCounter+=1
@@ -272,9 +245,9 @@ def main():
                     ####################################
 
                     # SLOWER
-                    if (slowerPeak < peakThresholdSlower):
-                        if (slowerLocked < 3):
-                            if (slowerPeakOld < peakThresholdSlower):
+                    if (slowerPeak < quality*slowerMAX):
+                        if (slowerLocked < 5):
+                            if (slowerPeakOld < quality*slowerMAX):
                                 slowerLocked+=1 # only add if previous shot also bad
                             else:
                                 slowerLocked = 0 # if last shot was good then reset, probably noise                 
@@ -282,9 +255,9 @@ def main():
                         slowerLocked = 0
                         
                     # repump
-                    if (repumpPeak < peakThresholdRepump):
-                        if (repumpLocked < 3):
-                            if (repumpPeakOld < peakThresholdRepump):
+                    if (repumpPeak < quality*repumpMAX):
+                        if (repumpLocked < 5):
+                            if (repumpPeakOld < quality*repumpMAX):
                                 repumpLocked+=1 # only add if previous shot also bad
                             else:
                                 repumpLocked = 0 # if last shot was good then reset, probably noise                 
@@ -292,9 +265,9 @@ def main():
                         repumpLocked = 0
 
                     # MOT
-                    if (MOTPeak < peakThresholdMOT):
-                        if (MOTLocked < 3):
-                            if (MOTPeakOld < peakThresholdMOT):
+                    if (MOTPeak < quality*MOTMAX):
+                        if (MOTLocked < 5):
+                            if (MOTPeakOld < quality*MOTMAX):
                                 MOTLocked+=1 # only add if previous shot also bad
                             else:
                                 MOTLocked = 0 # if last shot was good then reset, probably noise                 
@@ -312,25 +285,25 @@ def main():
                         printLockStatus(boosterPeak, slowerPeak, repumpPeak, MOTPeak, boosterLoc, len(FParray))
                         printLockStatus_COUNTER = 0; # reset
 
-                        if slowerLocked == 3:
-                            if repumpLocked == 3: 
-                                if MOTLocked == 3:
+                        if slowerLocked == 5:
+                            if repumpLocked == 5: 
+                                if MOTLocked == 5:
                                     play_for(sum([sine_wave(slower_freq, 8192), sine_wave(repump_freq, 8192), sine_wave(MOT_freq, 8192)]), beep_duration)
                                 else:
                                     play_for(sum([sine_wave(slower_freq, 8192), sine_wave(repump_freq, 8192)]), beep_duration)
                             else:
-                                if MOTLocked == 3:
+                                if MOTLocked == 5:
                                     play_for(sum([sine_wave(slower_freq, 8192), sine_wave(MOT_freq, 8192)]), beep_duration)
                                 else:
                                     play_for(sum([sine_wave(slower_freq, 8192)]), beep_duration)
                         else:
-                            if repumpLocked == 3: 
-                                if MOTLocked == 3:
+                            if repumpLocked == 5: 
+                                if MOTLocked == 5:
                                     play_for(sum([sine_wave(repump_freq, 8192), sine_wave(MOT_freq, 8192)]), beep_duration)
                                 else:
                                     play_for(sum([sine_wave(repump_freq, 8192)]), beep_duration)
                             else:
-                                if MOTLocked == 3:
+                                if MOTLocked == 5:
                                     play_for(sum([sine_wave(MOT_freq, 8192)]), beep_duration)
                                 # else everything's still ok
                     else:

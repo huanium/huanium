@@ -1,6 +1,7 @@
 # Huan Q Bui
-# Dec 2022
 # BEC1@MIT
+# First updated: Dec 2022
+# Last updated: Jan 07, 2023 @ 00:31 am
 
 import tkinter as tk
 from tkinter import *
@@ -27,6 +28,10 @@ from astropy.io import fits
 import numpy as np
 from threading import Thread
 import time
+import logging
+import pickle
+
+logger = logging.getLogger(__name__)
 
 path_to_file = os.path.dirname(os.path.abspath(__file__))
 path_to_satyendra = path_to_file + "/../../"
@@ -38,7 +43,7 @@ from satyendra.code.image_watchdog import ImageWatchdog
 #from BEC1_Analysis.scripts import imaging_resonance_processing, rf_spect_processing, hybrid_top_processing
 
 IMAGE_EXTENSION = ".fits"
-ABSORPTION_LIMIT = 4.0
+ABSORPTION_LIMIT = 5.0
 SPECIAL_CHARACTERS = "!@#$%^&*()-+?_=,<>/"
 
 ALLOWED_RESONANCE_TYPES = ["12_AB", "12_BA",  "21_AB", "21_BA", 
@@ -105,8 +110,7 @@ class BEC1_Portal():
 
         # Frame type:
         self.frame_type_label = Label(self.tab1, text="Frame type: ").place(x=20, y = 390)
-        self.frame_type = 'OD' # OD is the default
-
+        self.frame_type = 'FakeOD' # FakeOD is the default
         self.frame_type_entry = Entry(self.tab1, text="frame type entry", width=16)
         self.frame_type_entry.delete(0,'end')
         self.frame_type_entry.insert(1,self.frame_type)
@@ -160,12 +164,14 @@ class BEC1_Portal():
 
         # current folder name:
         self.folder_path = ''
+        self.folder_path_old = self.folder_path
         # list of fullpaths:
         self.files_fullpath = []
         # current file name:
         self.current_file_name = ''
         self.current_file_fullpath = ''
         self.file_names = []
+        self.file_names_old = []
 
         # code the table with file names:
         # 1/ to make table with scrollbar, need frame:
@@ -191,14 +197,43 @@ class BEC1_Portal():
         style.map('Treeview', background=[('selected','#7ABBFF')])
 
         # code for the figure
-        self.fig = Figure(figsize=(9.5,9.5))
+        self.fig = Figure(figsize=(9.5,10))
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.tab1)
         self.canvas.get_tk_widget().place(x = 400, y = 5)
-        self.ax = None
-
+        self.ax = self.fig.add_subplot(111)
+        [self.XMIN, self.XMAX] = self.ax.get_xlim()
+        [self.YMIN, self.YMAX] = self.ax.get_ylim()
+        self.oldSizeX = 0
+        self.oldSizeY = 0
         self.toolbar = NavigationToolbar2Tk(self.canvas, self.tab1, pack_toolbar=False)
         self.toolbar.update()
         self.toolbar.place(x = 400, y = 5)
+        # reset view button:
+        self.reset_view_bttn = Button(self.tab1, text="Reset view", relief="raised",  width=8, command= self.reset_view_button)
+        self.reset_view_bttn.place(x=760,y=12)
+
+        # ROI poly button
+        self.ROI_poly_bttn = Button(self.tab1, text="ROI Poly", relief="raised",  width=8, command= self.ROI_poly_button)
+        self.ROI_poly_bttn.place(x=840,y=12)
+        self.roi = None
+        self.roi_xs = None
+        self.roi_ys = None
+        # clear ROI poly
+        self.clear_ROI_poly_bttn = Button(self.tab1, text="Clear", relief="raised",  width=5, command= self.clear_ROI_poly_button)
+        self.clear_ROI_poly_bttn.place(x=920,y=12)
+        # load ROI poly
+        self.load_ROI_poly_bttn = Button(self.tab1, text="Load ROI", relief="raised",  width=8, command= self.load_ROI_poly_button)
+        self.load_ROI_poly_bttn.place(x=1000,y=12)
+        self.load_ROI_poly_entry = Entry(self.tab1, text='load roi entry', width=12, bg='lightgray')
+        self.load_ROI_poly_entry.place(x=1000+72,y=16)
+        # save ROI poly
+        self.save_ROI_poly_bttn = Button(self.tab1, text="Save ROI as", relief="raised",  width=10, command= self.save_ROI_poly_button)
+        self.save_ROI_poly_bttn.place(x=1170,y=12)
+        self.save_ROI_poly_entry = Entry(self.tab1, text='save roi entry', width=12, bg = 'lightgray')
+        self.save_ROI_poly_entry.place(x=1170+85,y=16)
+        self.save_ROI_poly_entry.delete(0,'end')
+        self.save_ROI_poly_entry.insert(1,'roi_drawn')
+
         # self.toolbar.pack(side=tk.TOP, fill=tk.X)
 
         # code for params table:
@@ -494,7 +529,6 @@ class BEC1_Portal():
         self.line3.place(x=1360, y = 405)
 
         # imaging resonance processing
-
         self.imaging_resonance_processing_label = Label(self.tab1, text="Imaging resonance processing: ", font=('TkDefaultFont', 10, 'bold'))
         self.imaging_resonance_processing_label.place(x=1360, y = 430)
 
@@ -535,7 +569,6 @@ class BEC1_Portal():
         self.line5.place(x=1360, y = 495+25)
 
         # rf spectroscopy
-
         self.rf_resonance_processing_label = Label(self.tab1, text="RF resonance processing: ", font=('TkDefaultFont', 10, 'bold'))
         self.rf_resonance_processing_label.place(x=1360, y = 540)
 
@@ -572,7 +605,6 @@ class BEC1_Portal():
         self.line6.place(x=1360, y = 700+25)
 
         # hybrid top analysis:
-
         self.hybrid_top_analysis_label = Label(self.tab1, text="Hybrid Top Analysis: ", font=('TkDefaultFont', 10, 'bold'))
         self.hybrid_top_analysis_label.place(x=1360, y = 750)
 
@@ -609,6 +641,11 @@ class BEC1_Portal():
         self.folder_path = filedialog.askdirectory()
         self.refresh()
 
+        if self.folder_path:
+            if self.scan_bttn.config('relief')[-1] == 'sunken':
+                t = Thread (target = self.scan_act)
+                t.start()
+
     def refresh(self):
         if self.folder_path: # if path is not empty
             self.folder_entry.delete(0,'end')
@@ -619,13 +656,20 @@ class BEC1_Portal():
             for f in self.files_fullpath:
                 name = f.split(self.folder_path)
                 self.file_names.append(str(name[1]).replace('\\',"")) # make list of file names
-            # first clear table:
-            self.file_table.delete(*self.file_table.get_children())
-            # then repopulate:
-            for i in range(len(self.file_names)):
-                id = str(len(self.file_names)-i)               
-                # then repopulate
-                self.file_table.insert("","end",text = id, values = str(self.file_names[len(self.file_names)-i-1]))
+            if self.file_names != self.file_names_old: # only act if file_names has changed
+                # first clear table:
+                self.file_table.delete(*self.file_table.get_children())
+                # then repopulate:
+                for i in range(len(self.file_names)):
+                    id = str(len(self.file_names)-i)               
+                    # then repopulate
+                    self.file_table.insert("","end",text = id, values = str(self.file_names[len(self.file_names)-i-1]))
+                self.file_names_old = self.file_names
+            # udpate backup folder path
+            self.folder_path_old = self.folder_path
+        else:
+            # if folder path is empty then revert to old folder path
+            self.folder_path = self.folder_path_old
 
     def scan(self):
         if self.folder_path:
@@ -657,49 +701,82 @@ class BEC1_Portal():
                             # list all files with .fits extension:
                             self.file_names_new = []
                             self.files_fullpath_new = glob.glob(self.folder_path + '/*.fits')
-                            for f in self.files_fullpath_new:
-                                name = f.split(self.folder_path)
-                                self.file_names_new.append(str(name[1]).replace('\\',"")) # make list of file names
 
-                            if self.file_names_new != self.file_names:
-                                # first clear table:
-                                self.file_table.delete(*self.file_table.get_children())
-                                # then repopulate:
-                                for i in range(len(self.file_names_new)):
-                                    id = str(len(self.file_names_new)-i)               
-                                    # then repopulate
-                                    self.file_table.insert("","end",text = id, values = str(self.file_names_new[len(self.file_names_new)-i-1]))
-
-                                if self.file_names_new[-1] != self.file_names[-1]: # display last image if last image different from previous last image
-                                    # show new image:
-                                    self.current_file_name = self.file_names_new[-1]
-                                    # make fullpath of selected file
-                                    self.current_file_fullpath = self.folder_path + '/' + self.current_file_name
-                                    # update selected image textbox:
-                                    self.selected_image_entry.delete(0,'end')
-                                    self.selected_image_entry.insert(0,self.current_file_name)
-                                    # now display image:
-                                    self.display_image()
-                                    # next, show metadata:
-                                    # acquire run id
-                                    run_id = self.current_file_name.split('_')[0] 
-                                    # load run params from json file
-                                    run_parameters_path = self.folder_path + "/run_params_dump.json"
-                                    with open(run_parameters_path, 'r') as json_file:
-                                        run_parameters_dict = json.load(json_file)   
-                                    self.params_for_selected_file = run_parameters_dict[run_id] # all params
-
-                                    for i in range(len(self.metadata_variables)):
-                                        self.metadata_values[i] = str(self.params_for_selected_file[self.metadata_variables[i]])
-                                    # first clear metadata table:
-                                    self.params_table.delete(*self.params_table.get_children())
-                                    # then repopulate it
-                                    for i in range(len(self.metadata_variables)):
-                                        param = str(self.metadata_variables[i])
-                                        value = str(self.metadata_values[i])    
+                            if len(self.files_fullpath_new) > 0:
+                                for f in self.files_fullpath_new:
+                                    name = f.split(self.folder_path)
+                                    self.file_names_new.append(str(name[1]).replace('\\',"")) # make list of file names
+                                if self.file_names_new != self.file_names: # if file_names has changed:
+                                    # first clear table:
+                                    self.file_table.delete(*self.file_table.get_children())
+                                    # then repopulate:
+                                    for i in range(len(self.file_names_new)):
+                                        id = str(len(self.file_names_new)-i)               
                                         # then repopulate
-                                        self.params_table.insert("","end",text = param, values = value)
+                                        self.file_table.insert("","end",text = id, values = str(self.file_names_new[len(self.file_names_new)-i-1]))
 
+                                    if len(self.file_names) > 0:
+                                        if self.file_names_new[-1] != self.file_names[-1]: # display last image if last image different from previous last image
+                                            # show new image:
+                                            self.current_file_name = self.file_names_new[-1]
+                                            # make fullpath of selected file
+                                            self.current_file_fullpath = self.folder_path + '/' + self.current_file_name
+                                            # update selected image textbox:
+                                            self.selected_image_entry.delete(0,'end')
+                                            self.selected_image_entry.insert(0,self.current_file_name)
+                                            # now display image:
+                                            self.display_image()
+                                            print(self.current_file_name)
+                                            # next, show metadata:
+                                            # acquire run id
+                                            run_id = self.current_file_name.split('_')[0] 
+                                            # load run params from json file
+                                            run_parameters_path = self.folder_path + "/run_params_dump.json"
+                                            with open(run_parameters_path, 'r') as json_file:
+                                                run_parameters_dict = json.load(json_file)   
+                                            self.params_for_selected_file = run_parameters_dict[run_id] # all params
+
+                                            for i in range(len(self.metadata_variables)):
+                                                self.metadata_values[i] = str(self.params_for_selected_file[self.metadata_variables[i]])
+                                            # first clear metadata table:
+                                            self.params_table.delete(*self.params_table.get_children())
+                                            # then repopulate it
+                                            for i in range(len(self.metadata_variables)):
+                                                param = str(self.metadata_variables[i])
+                                                value = str(self.metadata_values[i])    
+                                                # then repopulate
+                                                self.params_table.insert("","end",text = param, values = value)
+                                    else: # if there is no file_names yet, then just display the last of file_names_new
+                                        # show new image:
+                                        self.current_file_name = self.file_names_new[-1]
+                                        # make fullpath of selected file
+                                        self.current_file_fullpath = self.folder_path + '/' + self.current_file_name
+                                        # update selected image textbox:
+                                        self.selected_image_entry.delete(0,'end')
+                                        self.selected_image_entry.insert(0,self.current_file_name)
+                                        # now display image:
+                                        self.display_image()
+                                        print(self.current_file_name)
+                                        # next, show metadata:
+                                        # acquire run id
+                                        run_id = self.current_file_name.split('_')[0] 
+                                        # load run params from json file
+                                        run_parameters_path = self.folder_path + "/run_params_dump.json"
+                                        with open(run_parameters_path, 'r') as json_file:
+                                            run_parameters_dict = json.load(json_file)   
+                                        self.params_for_selected_file = run_parameters_dict[run_id] # all params
+
+                                        for i in range(len(self.metadata_variables)):
+                                            self.metadata_values[i] = str(self.params_for_selected_file[self.metadata_variables[i]])
+                                        # first clear metadata table:
+                                        self.params_table.delete(*self.params_table.get_children())
+                                        # then repopulate it
+                                        for i in range(len(self.metadata_variables)):
+                                            param = str(self.metadata_variables[i])
+                                            value = str(self.metadata_values[i])    
+                                            # then repopulate
+                                            self.params_table.insert("","end",text = param, values = value)
+                                        
                                 self.file_names = self.file_names_new
                                 self.files_fullpath = self.files_fullpath_new                 
 
@@ -708,7 +785,7 @@ class BEC1_Portal():
                         self.refresh()
                     time.sleep(1) # 1 second rep rate should be good since sequences are much longer
                 else:
-                    break
+                    break 
         
     def show_new(self):
         if self.folder_path:
@@ -867,19 +944,19 @@ class BEC1_Portal():
         bg_area = (y_max_bg - y_min_bg)*(x_max_bg - x_min_bg)
         roi_area = (y_max_roi - y_min_roi)*(x_max_roi - x_min_roi)
 
-        od_roi = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
+        od_roi = (-np.log(safe_subtract(self.img[0,:,:], self.img[2,:,:])/safe_subtract(self.img[1,:,:], self.img[2,:,:])))
         od_roi = np.nan_to_num(od_roi)
         od_roi = np.clip(od_roi, 0, ABSORPTION_LIMIT)
         od_roi_cropped = od_roi[x_min_roi:x_max_roi, y_min_roi:y_max_roi] # just OD, but cropped
 
-        od_bg = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
+        od_bg = (-np.log(safe_subtract(self.img[0,:,:], self.img[2,:,:])/safe_subtract(self.img[1,:,:], self.img[2,:,:])))
         od_bg = np.nan_to_num(od_bg)
         od_bg = np.clip(od_bg, 0, ABSORPTION_LIMIT)
         od_bg_cropped = od_bg[x_min_roi:x_max_bg, y_min_roi:y_max_bg] # just OD, but cropped
 
         # integrate
-        count_od = sum(sum(od_roi_cropped))
-        count_bg = sum(sum(od_bg_cropped))
+        count_od = sum(sum(float(od_roi_cropped)))
+        count_bg = sum(sum(float(od_bg_cropped)))
 
         # convert to bg corresponding to roi area:
         count_bg = int(count_bg*(roi_area/bg_area))
@@ -910,7 +987,7 @@ class BEC1_Portal():
             self.Na_Catch_background_Y_max_entry.delete(0,'end')   
             self.Na_Catch_background_Y_max_entry.insert(0, str(self.Na_Catch_background_Y_max))
 
-            # redraw image once done so that user has to clip the crop bttn again to crop
+            # redraw image once done so that user has to click the crop bttn again to crop
             self.display_image()
 
         toggle_selector.RS = RectangleSelector(self.ax, line_select_callback,
@@ -993,8 +1070,8 @@ class BEC1_Portal():
         sigma = float(self.LiLF_cross_section_entry.get())
         Nsat = float(self.LiLF_sat_count_entry.get())
 
-        od = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
-        ic = (self.img[1,:,:] - self.img[0,:,:])/Nsat
+        od = (-np.log(safe_subtract(self.img[0,:,:], self.img[2,:,:])/safe_subtract(self.img[1,:,:], self.img[2,:,:])))
+        ic =  safe_subtract(self.img[1,:,:], self.img[0,:,:])/Nsat
 
         # now clean od and ic:
         od = np.nan_to_num(od)
@@ -1008,40 +1085,117 @@ class BEC1_Portal():
         self.LiLF_atom_number_entry.delete(0,'end')   
         self.LiLF_atom_number_entry.insert(0, str('{:.2e}'.format(Li_atomnumber)))
 
+    def reset_view_button(self):
+        if self.img.any():
+            # get dims of image
+            dims = self.img[0,:,:].shape 
+            x_limit = dims[1]
+            y_limit = dims[0]
+
+            self.fig.clf()
+            self.ax = self.fig.add_subplot(111)
+            self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
+            self.ax.invert_yaxis()
+            self.ax.set_xlim([0, x_limit])
+            self.ax.set_ylim([0, y_limit])
+            self.fig.subplots_adjust(left=0.05, bottom=0.04, right=0.98, top=0.94, wspace=0, hspace=0)
+            self.canvas.draw_idle()
+
+    def ROI_poly_button(self):
+        # first clear all rois:
+        self.clear_ROI_poly_button()
+        # now generate new one:
+        self.roi = RoiPoly(fig = self.fig, ax = self.ax, color='r')
+        # stop scan and show new:
+        self.scan_bttn.config(relief="raised")
+        self.scan_bttn.config(fg='black')
+        self.show_new_bttn.config(relief="raised")
+        self.show_new_bttn.config(fg='black')
+
+    def clear_ROI_poly_button(self):
+        self.roi  = None 
+        self.display_roi()
+        self.display_image()
+
+    def load_ROI_poly_button(self):
+        roi_load_filename = filedialog.askopenfilename()
+        if roi_load_filename:
+            file = open(roi_load_filename, 'rb')
+            self.roi = pickle.load(file)
+            file.close()
+            self.load_ROI_poly_entry.delete(0,'end')
+            self.load_ROI_poly_entry.insert(1,os.path.basename(roi_load_filename))
+
+    def save_ROI_poly_button(self):
+        if self.folder_path and self.roi:
+            roi_save_file_name = self.save_ROI_poly_entry.get()
+            name = self.folder_path+ "/" + roi_save_file_name
+            fileObj = open(name, 'wb')
+            pickle.dump(self.roi, fileObj)
+            fileObj.close()
+
     def display_image(self):
         fits_image = fits.open(self.current_file_fullpath)
         # fits_image.info() # display fits image info
         self.img = fits_image[0].data
         fits_image.close()
 
+        # get dims of image
+        dims = self.img[0,:,:].shape 
+        x_limit = dims[1]
+        y_limit = dims[0]
+        # get dims of current axes:
+        [self.XMIN, self.XMAX] = self.ax.get_xlim()
+        [self.YMIN, self.YMAX] = self.ax.get_ylim()
+
         # now show image:
         frame_type = self.frame_type
         if frame_type == 'OD':
-            self.frame = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
+            self.frame = (-np.log(safe_subtract(self.img[0,:,:], self.img[2,:,:])/safe_subtract(self.img[1,:,:], self.img[2,:,:])))
             # clean image: using nan_to_num
-            self.frame = np.nan_to_num(self.frame)
+            self.frame = np.nan_to_num(self.frame, nan=ABSORPTION_LIMIT)
             # fix clipping
             self.frame = np.clip(self.frame, 0, ABSORPTION_LIMIT)
 
-            self.fig.clear()
+            self.fig.clf()
             self.ax = self.fig.add_subplot(111)
             self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
             self.ax.invert_yaxis()
-            self.fig.subplots_adjust(left=0.05, bottom=0.04, right=0.96, top=0.96, wspace=0, hspace=0)
+            # zoom/pan perspective
+            if (self.oldSizeX == x_limit) and (self.oldSizeY == y_limit):
+                self.ax.set_xlim([self.XMIN, self.XMAX])
+                self.ax.set_ylim([self.YMIN, self.YMAX])
+            else:
+                self.ax.set_xlim([0, x_limit])
+                self.ax.set_ylim([0, y_limit])
+            self.oldSizeX = x_limit
+            self.oldSizeY = y_limit
+            # end of zoom/pan perspective
+            self.fig.subplots_adjust(left=0.05, bottom=0.04, right=0.98, top=0.94, wspace=0, hspace=0)
             self.canvas.draw_idle()
         else:
             if frame_type == 'FakeOD':
-                self.frame = np.real((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:]))
+                self.frame = (safe_subtract(self.img[0,:,:], self.img[2,:,:])/safe_subtract(self.img[1,:,:], self.img[2,:,:]))
                 # clean image: using nan_to_num
                 self.frame = np.nan_to_num(self.frame)
                 # fix clipping
                 self.frame = np.clip(self.frame, 0, ABSORPTION_LIMIT)
 
-                self.fig.clear()
+                self.fig.clf()
                 self.ax = self.fig.add_subplot(111)
                 self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
                 self.ax.invert_yaxis()
-                self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
+                # zoom/pan perspective
+                if (self.oldSizeX == x_limit) and (self.oldSizeY == y_limit):
+                    self.ax.set_xlim([self.XMIN, self.XMAX])
+                    self.ax.set_ylim([self.YMIN, self.YMAX])
+                else:
+                    self.ax.set_xlim([0, x_limit])
+                    self.ax.set_ylim([0, y_limit])
+                self.oldSizeX = x_limit
+                self.oldSizeY = y_limit
+                # end of zoom/pan perspective
+                self.fig.subplots_adjust(left=0.05, bottom=0.04, right=0.98, top=0.94, wspace=0, hspace=0)
                 self.canvas.draw_idle()
             else:
                 if frame_type == 'With atoms':
@@ -1049,42 +1203,98 @@ class BEC1_Portal():
                     # clean image: using nan_to_num
                     self.frame = np.nan_to_num(self.frame)
                     
-                    self.fig.clear()
+                    self.fig.clf()
                     self.ax = self.fig.add_subplot(111)
                     self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**self.brightness)  # need to adjust gray scale/colormap here with BRIGHTNESS variable
                     self.ax.invert_yaxis()
-                    self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
+                    # zoom/pan perspective
+                    if (self.oldSizeX == x_limit) and (self.oldSizeY == y_limit):
+                        self.ax.set_xlim([self.XMIN, self.XMAX])
+                        self.ax.set_ylim([self.YMIN, self.YMAX])
+                    else:
+                        self.ax.set_xlim([0, x_limit])
+                        self.ax.set_ylim([0, y_limit])
+                    self.oldSizeX = x_limit
+                    self.oldSizeY = y_limit
+                    # end of zoom/pan perspective
+                    self.fig.subplots_adjust(left=0.05, bottom=0.04, right=0.98, top=0.94, wspace=0, hspace=0)
                     self.canvas.draw_idle()
                 elif frame_type == 'Without atoms':
                     self.frame = self.img[1,:,:]
                     # clean image: using nan_to_num
                     self.frame = np.nan_to_num(self.frame)
-                    self.fig.clear()
+
+                    self.fig.clf()
                     self.ax = self.fig.add_subplot(111)
                     self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**self.brightness)  # need to adjust gray scale/colormap here with BRIGHTNESS variable
                     self.ax.invert_yaxis()
-                    self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
+                    # zoom/pan perspective
+                    if (self.oldSizeX == x_limit) and (self.oldSizeY == y_limit):
+                        self.ax.set_xlim([self.XMIN, self.XMAX])
+                        self.ax.set_ylim([self.YMIN, self.YMAX])
+                    else:
+                        self.ax.set_xlim([0, x_limit])
+                        self.ax.set_ylim([0, y_limit])
+                    self.oldSizeX = x_limit
+                    self.oldSizeY = y_limit
+                    # end of zoom/pan perspective
+                    self.fig.subplots_adjust(left=0.05, bottom=0.04, right=0.98, top=0.94, wspace=0, hspace=0)
                     self.canvas.draw_idle()
                 elif frame_type == 'Dark':
                     self.frame = self.img[2,:,:]
                     # clean image: using nan_to_num
                     self.frame = np.nan_to_num(self.frame)
-                    self.fig.clear()
+
+                    self.fig.clf()
                     self.ax = self.fig.add_subplot(111)
                     self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**self.brightness)  # need to adjust gray scale/colormap here with BRIGHTNESS variable
                     self.ax.invert_yaxis()
-                    self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
+                    # zoom/pan perspective
+                    if (self.oldSizeX == x_limit) and (self.oldSizeY == y_limit):
+                        self.ax.set_xlim([self.XMIN, self.XMAX])
+                        self.ax.set_ylim([self.YMIN, self.YMAX])
+                    else:
+                        self.ax.set_xlim([0, x_limit])
+                        self.ax.set_ylim([0, y_limit])
+                    self.oldSizeX = x_limit
+                    self.oldSizeY = y_limit
+                    # end of zoom/pan perspective
+                    self.fig.subplots_adjust(left=0.05, bottom=0.04, right=0.98, top=0.94, wspace=0, hspace=0)
                     self.canvas.draw_idle()
                 else:
-                    self.frame = np.real(-np.log((self.img[0,:,:]-self.img[2,:,:])/(self.img[1,:,:]-self.img[2,:,:])))
+                    self.frame = (-np.log(safe_subtract(self.img[0,:,:], self.img[2,:,:])/safe_subtract(self.img[1,:,:], self.img[2,:,:])))
                     # clean image: using nan_to_num
                     self.frame = np.nan_to_num(self.frame)
-                    self.fig.clear()
+
+                    self.fig.clf()
                     self.ax = self.fig.add_subplot(111)
                     self.ax.imshow(self.frame, cmap='gray', vmin=0, vmax=2**15).set_clim(self.min_scale, self.max_scale)
                     self.ax.invert_yaxis()
-                    self.fig.subplots_adjust(left=0.05, bottom=0.02, right=0.98, top=0.98, wspace=0, hspace=0)
+                    # zoom/pan perspective
+                    if (self.oldSizeX == x_limit) and (self.oldSizeY == y_limit):
+                        self.ax.set_xlim([self.XMIN, self.XMAX])
+                        self.ax.set_ylim([self.YMIN, self.YMAX])
+                    else:
+                        self.ax.set_xlim([0, x_limit])
+                        self.ax.set_ylim([0, y_limit])
+                    self.oldSizeX = x_limit
+                    self.oldSizeY = y_limit
+                    # end of zoom/pan perspective
+                    self.fig.subplots_adjust(left=0.05, bottom=0.04, right=0.98, top=0.94, wspace=0, hspace=0)
                     self.canvas.draw_idle()
+        # now display roi if there is one:
+        self.display_roi()
+    
+    def display_roi(self):
+        if self.roi:
+            #coords = list(zip(self.roi.x, self.roi.y))
+            #print(coords)
+            self.roi_xs = self.roi.x
+            self.roi_ys = self.roi.y
+            self.roi_xs.append(self.roi_xs[0])
+            self.roi_ys.append(self.roi_ys[0])
+            self.ax.plot(self.roi_xs, self.roi_ys, color = 'r')
+            self.canvas.draw_idle()
 
     def run_button(self):
         self.confirm_bttn["state"] = DISABLED
@@ -1144,7 +1354,7 @@ class BEC1_Portal():
                     # run acquisition: custom
                     self.acquisition_state = "RUNNING"
                     # t = Thread (target = self.acquire)
-                    t = Thread (target = self.acquire_test)
+                    t = Thread (target = self.acquire)
                     t.start()
 
                 else:
@@ -1178,12 +1388,12 @@ class BEC1_Portal():
                 # run acquisition: dryrun
                 self.acquisition_state = "RUNNING"
                 # t = Thread (target = self.acquire)
-                t = Thread (target = self.acquire_test)
+                t = Thread (target = self.acquire)
                 t.start()
 
     def acquire_test(self):
         while True:
-            print('acquiring...')
+            print('fake acquiring...')
             time.sleep(5)
             if self.acquisition_state == "STOPPED":  
                 break
@@ -1392,7 +1602,6 @@ class BEC1_Portal():
             self.side_lf_bttn["state"] = DISABLED
             self.TopA_bttn["state"] = DISABLED
             self.TopAB_bttn["state"] = DISABLED
-
             self.analyze_bttn["state"] = NORMAL
 
     def TopAB(self):
@@ -1419,7 +1628,6 @@ class BEC1_Portal():
         imaging_mode_string = self.resonance_imaging_mode
         # talk to imaging_resonance_processing
         imaging_resonance_processing.main_after_inputs(measurement_directory_path,imaging_mode_string)
-
     
     # rf resonance processing:
     def browse_rf_button(self):
@@ -1432,21 +1640,17 @@ class BEC1_Portal():
             self.rf_analyze_with_guess_bttn["state"] = NORMAL
 
     def rf_analyze_button(self):        
-        rf_spect_processing.main_after_inputs(self.rf_processing_folder_path, self.rf_resonance_key)
+        rf_spect_processing.main_after_inputs(self.rf_processing_folder_path, self.rf_resonance_key)       
 
     def rf_analyze_with_guess_button(self):        
         # need add guesses here
         Rabi_guess = self.Rabi_guess_var.get()
         RF_center_guess = self.RF_center_guess_var.get()
-
-        print(Rabi_guess)
-        print(RF_center_guess)
-
         if Rabi_guess == '':
             Rabi_guess = None
         if RF_center_guess == '':
             RF_center_guess = None
-        rf_spect_processing.main_after_inputs(self.rf_processing_folder_path, self.rf_resonance_key, RF_center_guess, Rabi_guess)
+        rf_spect_processing.main_after_inputs(self.rf_processing_folder_path, self.rf_resonance_key, RF_center_guess, Rabi_guess)        
 
     def RF_imaging_options(self, event):
         RF_direction = self.RF_direction.get()
@@ -1455,7 +1659,6 @@ class BEC1_Portal():
                 self.rf_resonance_key = ALL
         print(self.rf_resonance_key)
 
-    
     # hybrid top analysis
     def browse_hybrid_button(self):
         self.hybrid_processing_folder_path = filedialog.askdirectory()
@@ -1465,7 +1668,11 @@ class BEC1_Portal():
             self.abs_img_bttn["state"] = NORMAL
             self.polrot_img_bttn["state"] = NORMAL
 
-    def hybrid_analyze_button(self):        
+    def hybrid_analyze_button(self):  
+        t = Thread (target = self.hybrid_analyze_button_act)
+        t.start()
+
+    def hybrid_analyze_button_act(self):
         hybrid_top_processing.main_after_inputs(self.hybrid_processing_folder_path, self.hybrid_imaging_mode)
 
     def abs_img(self):
@@ -1500,7 +1707,6 @@ class BEC1_Portal():
             self.abs_img_bttn["state"] = DISABLED
             self.hybrid_analyze_bttn["state"] = NORMAL
 
-
 def toggle_selector(event):
             print (' Key pressed.')
             if event.key in ['Q', 'q'] and toggle_selector.RS.active:
@@ -1510,10 +1716,165 @@ def toggle_selector(event):
                 print (' RectangleSelector activated.')
                 toggle_selector.RS.set_active(True)
 
+'''
+Credit: Eric A. Wolf, BEC1@MIT, 2022. 
+
+Convenience function for safely subtracting two arrays of unsigned type.
+Minimum cast: A numpy dtype which represents the ‘minimal datatype’ to which the
+minuend and subtrahend must be cast. For unsigned type, np.byte is the default,
+enforcing a signed type without data loss.
+Please note: if the differences returned by safe_subtract are later manipulated,
+it may be necessary to use a ‘larger’ minimum cast for safety. np.byte only guarantees
+that no overflows are obtained when two unsigned integers are subtracted.
+'''
+
+def safe_subtract(x, y, minimum_cast = np.byte):
+    newtype = np.result_type(x, y, minimum_cast)
+    return x.astype(newtype) - y.astype(newtype)
+
+#####################################################################
+#####################################################################
+
+#### code for free hand tool... taken from github.com/jdoepfert/roipoly.py/blob/master/roipoly/roipoly.py
+#### why not install package? Because code is cursed... some methods don't work properly
+
+class RoiPoly:
+
+    def __init__(self, fig=None, ax=None, color='b',
+                 roicolor=None, show_fig=True, close_fig=True):
+        """
+        Parameters
+        ----------
+        fig: matplotlib figure
+            Figure on which to create the ROI
+        ax: matplotlib axes
+            Axes on which to draw the ROI
+        color: str
+           Color of the ROI
+        roicolor: str
+            deprecated, use `color` instead
+        show_fig: bool
+            Display the figure upon initializing a RoiPoly object
+        close_fig: bool
+            Close the figure after finishing ROI drawing
+        """
+
+        if roicolor is not None:
+            color = roicolor
+
+        if fig is None:
+            fig = plt.gcf()
+        if ax is None:
+            ax = plt.gca()
+
+        self.start_point = []
+        self.end_point = []
+        self.previous_point = []
+        self.x = []
+        self.y = []
+        self.line = None
+        self.completed = False  # Has ROI drawing completed?
+        self.color = color
+        self.fig = fig
+        self.ax = ax
+        self.close_figure = close_fig
+
+        # Mouse event callbacks
+        self.__cid1 = self.fig.canvas.mpl_connect(
+            'motion_notify_event', self.__motion_notify_callback)
+        self.__cid2 = self.fig.canvas.mpl_connect(
+            'button_press_event', self.__button_press_callback)
+
+        if show_fig:
+            self.show_figure()
+
+    @staticmethod
+    def show_figure():
+        if sys.flags.interactive:
+            plt.show(block=False)
+        else:
+            plt.show(block=True)
+
+    def __motion_notify_callback(self, event):
+        if event.inaxes == self.ax:
+            x, y = event.xdata, event.ydata
+            if ((event.button is None or event.button == 1) and
+                    self.line is not None):
+                # Move line around
+                x_data = [self.previous_point[0], x]
+                y_data = [self.previous_point[1], y]
+                logger.debug("draw line x: {} y: {}".format(x_data, y_data))
+                self.line.set_data(x_data, y_data)
+                self.fig.canvas.draw()
+
+    def __button_press_callback(self, event):
+        if event.inaxes == self.ax:
+            x, y = event.xdata, event.ydata
+            ax = event.inaxes
+            if event.button == 1 and not event.dblclick:
+                logger.debug("Received single left mouse button click")
+                if self.line is None:  # If there is no line, create a line
+                    self.line = plt.Line2D([x, x], [y, y],
+                                           marker='.', color=self.color)
+                    self.start_point = [x, y]
+                    self.previous_point = self.start_point
+                    self.x = [x]
+                    self.y = [y]
+
+                    ax.add_line(self.line)
+                    self.fig.canvas.draw()
+                    # Add a segment
+                else:
+                    # If there is a line, create a segment
+                    x_data = [self.previous_point[0], x]
+                    y_data = [self.previous_point[1], y]
+                    logger.debug(
+                        "draw line x: {} y: {}".format(x_data, y_data))
+                    self.line = plt.Line2D(x_data, y_data,
+                                           marker='.', color=self.color)
+                    self.previous_point = [x, y]
+                    self.x.append(x)
+                    self.y.append(y)
+
+                    event.inaxes.add_line(self.line)
+                    self.fig.canvas.draw()
+
+            elif (((event.button == 1 and event.dblclick) or
+                   (event.button == 3 and not event.dblclick)) and
+                  self.line is not None):
+                # Close the loop and disconnect
+                logger.debug("Received single right mouse button click or "
+                             "double left click")
+                self.fig.canvas.mpl_disconnect(self.__cid1)
+                self.fig.canvas.mpl_disconnect(self.__cid2)
+
+                self.line.set_data([self.previous_point[0],
+                                    self.start_point[0]],
+                                   [self.previous_point[1],
+                                    self.start_point[1]])
+                ax.add_line(self.line)
+                self.fig.canvas.draw()
+                self.line = None
+                self.completed = True
+
+                if not sys.flags.interactive and self.close_figure:
+                    #  Figure has to be closed so that code can continue
+                    plt.close(self.fig)
+
+
+
+
+#####################################################################
+#####################################################################
+#####################################################################
+#####################################################################
+#####################################################################
+
+
 def main():
     root = Tk()
     root.title('BEC1 Image Browser')
-    root.geometry("1800x1000")
+    root.geometry("1920x1080")
     BEC1_exp_portal = BEC1_Portal(root)
     root.mainloop()
 
