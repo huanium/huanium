@@ -1,0 +1,375 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.422 - AMO II}\\
+Problem set: \textbf{\#1}\\
+Due: Friday, Feb 17, 2022.
+\end{framed}
+	
+	
+\noindent \textbf{1. Origin of Radiation Reaction.} 
+
+\noindent In this problem we derive a candidate expression for the radiative reaction force $\vec{F}_\text{rad}$. We begin with Larmor's formula for the radiated power of an accelerating charge:
+\begin{align*}
+P = \f{1}{6\pi \epsilon_0} \f{q^2}{c^3} \dot{\vec{v}} \cdot \dot{ \vec{v}}.
+\end{align*}
+Assume that this loss of energy is due to $\vec{F}_\text{rad}$, then the word done by this force between times $t_1$ and $t_2$ must be equal to negative the energy radiated in that time:
+\begin{align*}
+\int_{t_1}^{t_2} \vec{F}_\text{rad}\cdot \vec{v} \,dt = - \int_{t_1}^{t_2} P \,dt = -\int_{t_1}^{t_2} \f{1}{6\pi \epsilon_0} \f{q^2}{c^3} \dot{\vec{v}} \cdot \dot{\vec{v}} \,dt
+\end{align*}
+We would like to \textit{massage} the right hand side so that it has the form $[...] \cdot \vec{v}\,dt$ so that we could move it to the left hand side. To do this, we integrate the right hand side by parts to get
+\begin{align*}
+\int_{t_1}^{t_2} \vec{F}_\text{rad}\cdot \vec{v} \,dt = -  \f{1}{6\pi \epsilon_0} \f{q^2}{c^3} 
+\lb \cancel{  \dot{\vec{v}} \cdot \vec{v}\bigg\vert_{t_1}^{t_2}}  -    \int_{t_1}^{t_2}\ddot{\vec{v}} \cdot {\vec{v}} \,dt \rb =   \f{1}{6\pi \epsilon_0} \f{q^2}{c^3} \int_{t_1}^{t_2} \ddot{\vec{v}} \cdot \vec{v}\,dt
+\end{align*}
+where the boundary term is zero by the assumption that $\dot{\vec{v}}\cdot \vec{v} = 0$ at $t_1$ and $t_2$. Rearranging and simplifying the result above give us a candidate expression for $\vec{F}_\text{rad}$:
+\begin{align*}
+\boxed{\vec{F}_\text{rad}  =  \f{1}{6\pi\epsilon_0} \frac{q^2}{c^3}  \ddot{\vec{v}} }
+\end{align*}
+
+
+
+\noindent \textbf{2. Cross section for scattering of radiation in the Lorentz model.}
+
+\noindent In this problem we derive the total scattering cross section $\sigma(\omega)$ of the electron whose motion is driven by a monochromatic wave of frequency $\omega$. Suppose that the electron undergoes forced motion along the $z$-axis with amplitude $a$ and frequency $\omega$, then its motion is $z(t) = a\cos(\omega t)$. The time-averaged radiated power is 
+\begin{align*}
+P = \f{1}{3} \f{q^2}{4\pi \epsilon_0} \f{a^2 \omega^4}{c^3}. 
+\end{align*}
+The associated radiation force is 
+\begin{align*}
+F_\text{rad} = \f{2}{3} \f{r_0}{\lambdabar_0} \f{m \dddot{z}}{\omega_0}.
+\end{align*}
+where $\lambdabar_0 = c/\omega_0$ and $r_0 = q^2/4\pi \epsilon_0 mc^2$ is the classical electron radius. 
+
+
+
+\begin{enumerate}[label=\alph*)]
+	\item In the absence of the incident radiation, the electron undergoes damped harmonic motion which is 		described the following differential equation:
+	\begin{align*}
+	m\ddot{z} = - m\omega_0^2 z + \f{2}{3} \f{r_0}{\lambdabar_0} \f{m \dddot{z}}{\omega_0}.
+	\end{align*}
+	Here, since the radiation force is proportional to $r_0/\lambdabar_0 \ll 1$ it can be treated as a perturbation. Consider the ansatz $z(t) = ae^{i\Omega t}$ which converts the differential equation above into an algebraic equation in only $\Omega$. 
+	\begin{align*}
+	\Omega^2  - \omega_0^2 = \f{2}{3} \f{r_0}{\lambdabar_0 } \f{i}{\omega_0} \Omega^3.
+	\end{align*}
+	Finding solutions to this equation amounts to finding $\Omega$, since $a$ is independent and is determined only by the initial conditions. What is $\Omega$ to first order in $r_0/\lambdabar_0$? To find this, we know that to zeroth order in $r_0/\lambdabar_0$, $\Omega = \pm \omega_0$. To find the first order correction, we replace $\Omega^3$ by the cube of $\omega_0$ and approximate $\Omega^2 - \omega_0^2 \approx  \pm 2 \omega_0 (\Omega \mp \omega_0)$. The result is 
+	\begin{align*}
+	\pm 2 \omega_0 (\Omega \mp \omega_0) = \pm \f{2}{3} \f{r_0}{\lambdabar_0} \f{i}{\omega_0} \omega_0^3.
+	\end{align*}
+	Solving this gives
+	\begin{align*}
+	\Omega =  \pm \omega_0 + \f{i}{3} \f{r_0}{\lambdabar_0}  \omega_0.
+	\end{align*}
+	By putting $\Omega =  \pm \omega_0 + i\gamma_0/2$, we have identified 
+	\begin{align*}
+	\boxed{\gamma_0 = \f{2}{3} \f{r_0}{\lambdabar_0}  \omega_0  = \f{2}{3} \f{r_0}{c} \omega_0^2}
+	\end{align*}
+	Since $\gamma_0$ is associated with the decay rate of the amplitude of the (damped) electron motion, the time $\tau_0 = \gamma_0^{-1}$ is the characteristic time scale for this damping process.  
+	
+	
+	\item Now we consider the presence of an incident field polarized along the $z$-axis whose amplitude at the origin is $E \cos (\omega t)$. The equation of motion for the electron is then:
+	\begin{align*}
+	m \ddot{z} = -m \omega_0^2 z  + \f{2}{3} \f{r_0}{\lambdabar_0} \f{m \dddot{z}}{\omega_0} + qE\cos(\omega t).
+	\end{align*}
+	
+	We now make the ansatz $z = z_0 e^{i\omega t}$ and solve the equation above. To make things easier, let us assume that the driving field has the form $E e^{i\omega t}$, and then take the real part of everything after. The algebraic equation gotten from the ansatz is 
+	\begin{align*}
+	\omega^2 = \omega_0^2 + \f{2i}{3} \f{r_0}{\lambdabar_0} \f{\omega^3}{\omega_0} - \f{qE}{mz_0} .
+	\end{align*}
+	Finding the forced oscillatory motion of the electron amounts to finding $z_0$:
+	\begin{align*}
+	\boxed{z_0 = \f{ - \f{q E}{m}    }{   (\omega^2 - \omega_0^2) - \f{2i}{3}  \f{r_0}{\lambdabar_0} \f{ \omega^3}{\omega_0}}}
+	\end{align*}
+	This suffices since $z_0$ contains both amplitude and phase information. By replacing $a^2$ with $\abs{z_0}^2$ in the equation for $P$, we find the expression for the power radiated by the electron:
+	\begin{align*}
+	\boxed{P_\text{out} = \f{1}{3 } \f{q^2}{4\pi \epsilon_0} \f{q^2 E^2}{m^2 c^3} 
+	\f{\omega^4}{\lp \omega^2 - \omega_0^2\rp^2 + \lp \f{2}{3} \f{r_0}{\lambdabar_0} \frac{\omega^3}{\omega_0} \rp^2}  }
+	\end{align*}
+
+	
+	\item The incoming flux of energy is $\phi_\text{in} = \epsilon_0 c E^2/2$. From this and $P_\text{out}$, we can calculate the total cross section: 
+	\begin{align*}
+	\phi_\text{in} = \f{P_\text{out}}{\sigma(\omega)} \implies 
+	\sigma(\omega) = \f{P_\text{out}}{\phi_\text{in}} = \f{2}{3}\f{1}{4\pi\epsilon_0^2} \f{q^4}{m^2 c^4}  
+	\f{\omega^4}{\lp \omega^2 - \omega_0^2\rp^2 +  \lp \gamma_0 \frac{\omega^3}{\omega_0^2} \rp^2} 
+	\end{align*}
+	where we have used $\gamma_0 = 2r_0 \omega_0/ 3 \lambdabar_0$. Now, since $r_0 = q^2/4\pi \epsilon_0 mc^2 $, we have
+	\begin{align*}
+	\boxed{ \sigma(\omega) = \f{8\pi r_0^2}{3} \f{\omega^4}{\lp \omega^2 - \omega_0^2\rp^2 + \lp \gamma_0 \frac{\omega^3}{\omega_0^2} \rp^2} }
+	\end{align*}
+	
+	\item Now we assume Rayleigh scattering, i.e., $\omega \ll \omega_0$. Then,
+	\begin{align*}
+	\sigma_\text{out, $\omega \ll \omega_0$}(\omega) = 	\f{8\pi r_0^2}{3} 
+	\f{\omega^4}{\omega_0^4 + \cancel{\gamma_0^2 \omega^2 (\omega/\omega_0)^2}} \to \f{8\pi r_0^2}{3} \f{\omega^4}{\omega_0^4} \propto \omega^4
+	\end{align*}
+	The scattering cross section is proportional to $\omega$ to the \textbf{fourth} power, as expected. 
+
+	\item Next we assume Thomson scattering, i.e., $\omega_0 \ll \omega \ll c/r_0$. Then,
+	\begin{align*}
+	\sigma_\text{out, $\omega_0 \ll \omega \ll c/r_0$}(\omega) \to \f{8\pi r_0^2}{3} \f{\omega^4}{\omega^4 + \lp \f{2}{3} \f{r_0}{c} \omega^3 \rp^2} \to \f{8\pi r_0^2}{3}
+	\end{align*}
+	which is a constant.
+	
+	\item Finally assume that $\omega \approx \omega_0$, then we have
+	\begin{align*}
+	\sigma_{\omega \approx \omega_0}(\omega) &= \f{8\pi r_0^2}{3} \f{\omega_0^4}{4\omega^2(\omega - \omega_0)^2 + \omega^2 \gamma_0^2} \\
+	& = \f{8\pi r_0^2}{3}  \f{\omega_0^2/4}{ (\omega - \omega_0)^2 + \gamma_0^2/4} \\
+	&= \boxed{\f{8\pi r_0^2}{3} 
+	\f{\omega_0^2}{\gamma_0^2}  \f{\gamma_0^2/4}{ (\omega - \omega_0)^2 + \gamma_0^2/4}}
+	\end{align*}
+	The cross section exhibits a resonance at $\omega = \omega_0$ with width $\boxed{\gamma_0}$. The resonant cross section is 
+	\begin{align*}
+	\boxed{\sigma(\omega_0) = \f{8\pi r_0^2}{3} \f{\omega_0^2}{\gamma_0^2}}
+	\end{align*}
+	
+	
+\end{enumerate}
+
+
+\noindent \textbf{3. Classical Model of the Light Force.} 
+
+
+\noindent In this problem we will perform a semiclassical derivation of the light force based on the Lorentz model where we assume that a hydrogen atom can be modeled classically as an electron harmonically bound to a nucleus with a resonant frequency $\omega_0$ and damping coefficient $\gamma$. The nucleus is fixed at $\vec{r}_0$ and the electron's position is $\vec{r}$. Suppose the atom is illuminated with an electromagnetic wave of the form 
+\begin{align*}
+\vec{E}(\vec{r}, t) = \hat{\varepsilon}  E(\vec{r},t) = \hat{\varepsilon}  E_0(\vec{r}) \cos(\omega t + \theta(\vec{r})).
+\end{align*}
+where $\theta(\vec{r})$ is the phase of the wave as a function of position $\vec{r}$ at time $t=0$. The dipole moment may be written as 
+\begin{align*}
+\vec{d}(\vec{r},t) = \vec{d}_0 \lp u \cos(\omega t + \theta(\vec{r}))  + v\sin(\omega t + \theta(\vec{r})) \rp,
+\end{align*}
+with $u,v$ are in- and out-of-phase components to the driving field, respectively. The force of the light on the atom is 
+\begin{align*}
+\vec{F} = (\vec{d}\cdot \hat{\varepsilon}) \grad E(\vec{r},t)
+\end{align*}
+
+\begin{enumerate}[label=\alph*)]
+
+	\item We first calculate the driving force explicitly, then apply the dipole approximation under which $\vec{E}(\vec{r}) \approx \vec{E}(\vec{r}_0)$. 
+	\begin{align*}
+	\vec{F} &= (\vec{d}_0 \cdot \hat{\varepsilon}) \lb u \cos(\omega t + \theta(\vec{r}_0))  + v\sin(\omega t + \theta(\vec{r}_0)) \rb \\
+	&\quad\quad\quad \times \lb \grad E_0(\vec{r}_0)  \cos(\omega t + \theta(\vec{r}_0)) - E_0(\vec{r}_0)\sin (\omega t  + \theta(\vec{r}_0)) \grad \theta(\vec{r}_0)\rb.
+	\end{align*}
+	Now we take the time average of this quantity. By inspection, we see that the $\cos^2$ and $\sin^2$ terms average out to $1/2$, while the cross terms $\cos \sin$ average out to zero. So, the time-averaged force is 
+	\begin{align*}
+	\langle \vec{F}\rangle = \f{1}{2} (\vec{d}_0 \cdot \hat{\varepsilon}) \lp u \grad E_0(\vec{r}_0)  - vE_0(\vec{r}_0) \grad \theta (\vec{r}_0)  \rp,
+	\end{align*}
+	as desired. Here, the first term is the dipole (stimulated) force, and the second term is the scattering (spontaneous) force. 
+	
+	\item \textbf{The potential picture.} Here we recalculate the time averaged force on the atom from the instantaneous potential energy of a dipole in an electric field. The potential energy is given by 
+	\begin{align*}
+	U = -\vec{d}\cdot \vec{E}(\vec{r},t) = -(\vec{d}_0 \cdot \hat{\varepsilon})     \lb u \cos(\omega t + \theta(\vec{r}))  + v\sin(\omega t + \theta(\vec{r})) \rb   E_0(\vec{r}) \cos(\omega t + \theta(\vec{r}))
+	\end{align*} 
+	from which we can calculate the force, under the dipole approximation, to be 
+	\begin{align*}
+	\vec{F}_{U} &= -\grad U \\
+	&= (\vec{d}_0\cdot \hat{\varepsilon}) \lb - u\sin(\omega t + \theta(\vec{r}_0)) + v \cos(\omega t + \theta(\vec{r}_0) ) \rb  \grad \theta(\vec{r}_0) E_0(\vec{r}_0) \cos(\omega t + \theta(\vec{r}_0)) \\
+	& \,+ (\vec{d}_0\cdot \hat{\varepsilon}) \lb u \cos(\omega t + \theta(\vec{r}_0))  + v\sin(\omega t + \theta(\vec{r}_0)) \rb \\
+	&\quad\quad\quad  \times \lb \grad E_0(\vec{r}_0)  \cos(\omega t + \theta(\vec{r}_0)) - E_0(\vec{r}_0)\sin (\omega t  + \theta(\vec{r}_0)) \grad \theta(\vec{r}_0)\rb.
+	\end{align*}
+	Now we do the time-averaging. Once again, we only keep terms that contain factors of $\cos^2$ and $\sin^2$ and replacing them with a factor of $1/2$. The result is 
+	\begin{align*}
+	\langle \vec{F}_U\rangle 
+	&= \f{1}{2}(\vec{d}_0\cdot \hat{\varepsilon}) \lb \cancel{v E_0(\vec{r}_0) \grad \theta(\vec{r}_0) } + u\grad E_0(\vec{r}_0) \, \cancel{- \,v E_0(\vec{r}_0)\grad \theta (\vec{r}_0) }\rb = \boxed{\f{1}{2}(\vec{d}_0\cdot \hat{\varepsilon})  u \grad E_0(\vec{r}_0) }
+	\end{align*}
+	We notice a discrepancy between the expression here and the one found in part (a). Here we only have the stimulated force term while the spontaneous force term is missing. \\
+	
+	Why doesn't this result agree with what we have for the expression for the force given above?  If we look closely at the expression for the potential energy of the dipole, we see that we are treating the model dipole $\vec{d}$ as a permanent one that is independent of the electric field $\vec{E}$, while it should be an induced one.  Under the induced dipole picture, let us re-derive the expression for the force.  To start, we write down the interaction energy between the electric field $\vec{E}$ and the induced dipole $\vec{d}_\text{induced} = \alpha \vec{E} = e \vec{r}$:
+	\begin{align*}
+	U_\text{induced} = -\f{1}{2} \, e \vec{r} \cdot \vec{E} =  -\f{1}{2} \alpha E^2 
+	\end{align*}
+	where $\alpha$ is the polarizability of the atom. The force is  
+	\begin{align*}
+	\vec{F}= - \grad U_\text{induced} = \al E(\vec{r},t) \grad E(\vec{r},t) = d(\vec{r},t) \grad E(\vec{r},t)
+	\end{align*}
+	Since the dipole vector is along the direction of the electric field (under our assumption), we may as well re-write this as 
+	\begin{align*}
+	\vec{F} = (\vec{d} \cdot \hat{\varepsilon}) \grad E(\vec{r},t)
+	\end{align*}
+	which matches the expression for the force given in the problem. 
+	
+	\item \textbf{Dipole moment of the atom.} Now we will solve explicitly for the dipole moment of the model atom. In complex notation, the equation of motion is
+	\begin{align*}
+	m \ddot{\vec{r}}^+ + m\gamma \dot{\vec{r}}^+ + m \omega_0^2 \vec{r}^+ = -e \hat{\varepsilon} E_0^+ (\vec{r}_0) e^{i( \theta(\vec{r}_0)  + \omega t )}.
+	\end{align*}
+	We now solve this equation to find $\vec{d} = -e \vec{r}$. To do this, we assume that $\vec{r}$ only changes in the direction of $\vec{E}$, so that the polarization vector can be dropped, and consider the ansatz $r^+ = r_0^+ e^{i \omega t}$. The algebraic equation gotten from the differential equation above after substituting in this ansatz is 
+	\begin{align*}
+	- \omega^2+ i\gamma   \omega + \omega_0^2   = -\f{e}{r_0^+ m} E_0^+(\vec{r}_0) e^{i\theta(\vec{r}_0)}
+	\end{align*}
+	Solving this for $r_0^+$ gives
+	\begin{align*}
+	r_0^+ = -\f{e E_0^+(\vec{r}_0) e^{i\theta(\vec{r}_0)}}{m}  \f{1}{ \omega_0^2 - \omega^2 + i\gamma \omega  }
+	\end{align*}
+	With this, we find 
+	\begin{align*}
+	\vec{d} &= \f{e^2 E_0(\vec{r}_0) e^{i(\omega t + \theta(\vec{r}_0))}}{m} \f{1}{\omega_0^2 - \omega^2 + i \gamma \omega} \\
+	&= \f{e^2 E_0(\vec{r}_0)}{m} (\cos(\omega t + \theta(\vec{r}_0) )+ i \sin(\omega t + \theta(\vec{r}_0))) \f{\omega_0^2 - \omega^2 - i\gamma \omega  }{(\omega_0^2 - \omega^2)^2 + (\gamma \omega)^2}
+	\end{align*}
+	where we have dropped all of the $^+$'s. The real part of $\vec{d}$ is 
+	\begin{align*}
+	\boxed{\Re(\vec{d}) = \f{e^2 E_0(\vec{r}_0)}{m} \lb  \f{\omega_0^2 - \omega^2}{(\omega_0^2 - \omega^2)^2 + (\gamma \omega)^2}  \cos(\omega t + \theta(\vec{r}_0)) + \f{\gamma \omega}{ (\omega_0^2 - \omega^2)^2 + (\gamma \omega)^2 } \sin(\omega t + \theta(\vec{r}_0)) \rb}
+	\end{align*}
+	We can now read off the quadrature components $u$ and $v$:
+	\begin{align*}
+	u =  \f{\omega_0^2 - \omega^2}{(\omega_0^2 - \omega^2)^2 + (\gamma \omega)^2}  \quad\quad 
+	v = \f{\gamma \omega}{ (\omega_0^2 - \omega^2)^2 + (\gamma \omega)^2 } 
+	\end{align*}
+	Settings $\delta = \omega - \omega_0$ and approximating $\omega \approx \omega_0$, we have
+	\begin{align*}
+	u \approx \f{1}{\omega_0} \f{-2 \delta }{4 \delta^2 + \gamma^2} \quad\quad 
+	v \approx \f{1}{\omega_0}\f{\gamma}{4\delta^2 + \gamma^2}
+	\end{align*}
+	
+	Now we substitute the expressions for $u$ and $v$ into the force equation from Part (a) to find 
+	\begin{align*}
+	\langle \vec{F} \rangle 
+	&= \f{1}{2}(\vec{d}_0 \cdot \hat{\varepsilon}) \f{1}{\omega_0} \lb \f{-2\delta}{4\delta^2 + \gamma^2}  \grad E_0(\vec{r}_0) -  \f{\gamma}{ 4 \delta^2 + \gamma^2} E_0(\vec{r}_0) \grad \theta(\vec{r}_0) \rb  \\
+	&= -\f{e^2 E_0(\vec{r}_0)}{2 m \omega_0} \f{2\delta \grad E_0(\vec{r}_0) + \gamma E_0(\vec{r}_0) \grad \theta(\vec{r}_0)}{4\delta^2 + \gamma^2} \\
+	&= -\f{e^2}{2m\omega_0} \f{\delta \grad E_0^2 + \gamma E_0^2\grad \theta}{4\delta^2 + \gamma^2},
+	\end{align*}
+	as desired. Here, we have used the fact that $2E_0 \grad E_0 = \grad E_0^2$. 
+\end{enumerate}
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
