@@ -1,0 +1,476 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+
+
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.422 - AMO II}\\
+Problem set: \textbf{\#2}\\
+Due: Friday, Feb 24, 2022.
+\end{framed}
+	
+	
+
+
+
+
+\noindent \textbf{2. When the mechanical momentum is not the canonical momentum}
+
+\noindent In this problem we will see that the motion of neutral atoms in a rotating frame can be described as the motion of a charged particle experiencing a scalar potential and an effective magnetic field. Consider free motion in the $xy$-plane. The transformation from the lab from to a frame rotating at angular frequency $\Omega$ about the $z$-axis is 
+\begin{align*}
+	\begin{pmatrix}
+		\tilde{x}(t) \\  \tilde{y}(t)
+	\end{pmatrix}
+	= 
+	\begin{pmatrix}
+		\cos \Omega t  & \sin\Omega t \\ -\sin\Omega t & \cos\Omega t 
+	\end{pmatrix}
+	\begin{pmatrix}
+		x(t) \\ y(t)
+	\end{pmatrix}
+	&\implies 
+	\begin{pmatrix}
+		{x}(t) \\  {y}(t)
+	\end{pmatrix}
+	= 
+	\begin{pmatrix}
+		\cos \Omega t  & -\sin\Omega t \\ \sin\Omega t & \cos\Omega t 
+	\end{pmatrix}
+	\begin{pmatrix}
+		\tilde{x}(t) \\ \tilde{y}(t)
+	\end{pmatrix} \\
+	& \implies
+	\begin{pmatrix}
+		\dot{x}(t) \\  \dot{y}(t)
+	\end{pmatrix}
+	= 
+	\begin{pmatrix}
+		-\Omega \sin \Omega t  & -\Omega \cos\Omega t \\ \Omega \cos\Omega t & \Omega \sin\Omega t 
+	\end{pmatrix} \begin{pmatrix}
+	\tilde{x}(t) \\ \tilde{y}(t)
+\end{pmatrix}
+	+ 
+	\begin{pmatrix}
+	\cos \Omega t  & -\sin\Omega t \\ \sin\Omega t & \cos\Omega t 
+	\end{pmatrix}
+	\begin{pmatrix}
+	\dot{\tilde{x}}(t) \\ \dot{\tilde{y}}(t)
+	\end{pmatrix}
+\end{align*}
+
+
+
+\begin{enumerate}[label=\alph*)]
+	\item The kinetic energy of a particle of mass $m$ in terms of the coordinates and velocities in the rotating frame is 
+	\begin{align*}
+		T 
+		&= \f{1}{2} m (\dot{x}^2 + \dot{y}^2)\\ 
+		&= \f{1}{2}m \lb \Omega^2 (\tilde{x}^2 + \tilde{y}^2) + 2\Omega (\tilde{x}\dot{\tilde{y}} - \dot{\tilde{x}}\tilde{y}) + (\dot{\tilde{x}}^2 + \dot{\tilde{y}}^2)  \rb \\
+		&= {\f{1}{2}m \lb  ( \dot{\tilde{x}} - \Omega \tilde{y})^2 + (\dot{\tilde{y}} + \Omega \tilde{x} )^2 \rb}.
+	\end{align*}
+	
+	\item The Lagrangian is just the kinetic energy from above:
+	\begin{align*}
+		\lag(\tilde{x}, \tilde{y}, \dot{\tilde{x}}, \dot{\tilde{y}}, t) =  {\f{1}{2}m \lb  ( \dot{\tilde{x}} - \Omega \tilde{y})^2 + (\dot{\tilde{y}} + \Omega \tilde{x} )^2 \rb}.
+	\end{align*}
+	The canonical momenta are therefore
+	\begin{align*}
+		\tilde{p}_x &= \f{\p \lag}{\p \dot{\tilde{x}}} = m(\dot{\tilde{x}} - \Omega \tilde{y}) \\
+		\tilde{p}_y &= \f{\p \lag}{\p \dot{\tilde{y}}} = m(\dot{\tilde{y}} + \Omega \tilde{x}).
+	\end{align*}
+	
+	\item By inspection, $\{\tilde{x}, \tilde{p}_x\} = 1$ and $\{ \tilde{p}_i, \tilde{p}_j \} = \delta_{ij}$. Now we look at  
+	\begin{align*}
+		\{ m\dot{\tilde{x}}, m\dot{\tilde{y}} \} &= m\lp \f{\p \dot{\tilde{x}} }{\p \tilde{x}}
+		{\f{\p \dot{\tilde{y}} }{\p \tilde{p}_x}} - \f{\p \dot{\tilde{y}}}{\p \tilde{x}}\f{\p \dot{\tilde{x}}}{\p \tilde{p}_x}\rp + 
+		m\lp \f{\p \dot{\tilde{x}} }{\p \tilde{y}}\f{\p \dot{\tilde{y}} }{\p \tilde{p}_y} - \f{\p \dot{\tilde{y}}}{\p \tilde{y}} {\f{\p \dot{\tilde{x}}}{\p \tilde{p}_y}}\rp.
+	\end{align*}
+	From $m\dot{\tilde{x}} = \tilde{p}_x + m\Omega \tilde{y}$ and $m\dot{\tilde{y}} = \tilde{p}_y - m\Omega \tilde{x}$ we find 
+	\begin{align*}
+		\{ m\dot{\tilde{x}}, m\dot{\tilde{y}} \} 
+		&= m\lp \f{\p \dot{\tilde{x}} }{\p \tilde{x}}
+		\cancel{\f{\p \dot{\tilde{y}} }{\p \tilde{p}_x}} - \f{\p \dot{\tilde{y}}}{\p \tilde{x}}\f{\p \dot{\tilde{x}}}{\p \tilde{p}_x}\rp + 
+		m\lp \f{\p \dot{\tilde{x}} }{\p \tilde{y}}\f{\p \dot{\tilde{y}} }{\p \tilde{p}_y} - \f{\p \dot{\tilde{y}}}{\p \tilde{y}} \cancel{\f{\p \dot{\tilde{x}}}{\p \tilde{p}_y}}\rp\\
+		&= m\lp-\f{-\Omega}{m}\rp + m\lp \f{\Omega}{m} \rp \\
+		&= \boxed{2\Omega \neq 0 \text{ if } \Omega \neq 0}
+	\end{align*}
+	
+	\item The Hamiltonian is the Legendre transform of the Lagrangian:
+	\begin{align*}
+		\ham 
+		= \lp \dot{\tilde{x}}\tilde{p}_x + \dot{\tilde{y}}\tilde{p}_y \rp - \lag 
+		= \f{\tilde{p}_x^2}{2m} +\f{\tilde{p}_y^2}{2m} - \Omega (\tilde{x}  \tilde{p}_y  -  \tilde{y} \tilde{p}_x)
+	\end{align*}
+	where we have written $\dot{\tilde{x}}$ and $\dot{\tilde{y}}$ in terms of $\tilde{p}_x,\tilde{p}_y,\tilde{x},\tilde{y}$. We shall complete the squares to get
+	\begin{align*}
+		\ham 
+		&= \f{\tilde{p}_x^2 + 2 m\Omega \tilde{p}_x\tilde{y} + m^2\Omega^2 \tilde{y}^2}{2m} + 
+		\f{\tilde{p}_y^2 - 2 m\Omega \tilde{p}_y\tilde{x} + m^2\Omega^2 \tilde{x}^2}{2m} - \f{1}{2}m\Omega^2 (\tilde{x}^2 + \tilde{y}^2) \\ 
+		&= \f{(\tilde{p}_x + m\Omega \tilde{y})^2 + (\tilde{p}_y - m\Omega \tilde{x})^2}{2m} - \f{1}{2}m\Omega^2 (\tilde{x}^2 + \tilde{y}^2) \\
+		&= \f{(\vec{\tilde{p}} - q\vec{A})^2}{2m}  - \f{1}{2}m\Omega^2 (\tilde{x}^2 + \tilde{y}^2)\\
+		&= \f{(\vec{\tilde{p}} - q\vec{A})^2}{2m} + V_\text{eff}(\tilde{x}, \tilde{y}).
+	\end{align*}
+	Here, we have re-written the Hamiltonian in terms of the vector potential $\vec{A}$ where $q\vec{A} = m \vec{\Omega} \times \vec{\tilde{r}} = (-m\Omega \tilde{y}, m\Omega \tilde{x},0)$ and an effective scalar potential $V_\text{eff}(\tilde{x}, \tilde{y}) = -m\Omega^2 (\tilde{x}^2 + \tilde{y}^2)/2$, which we may refer to as the anti-trapping or centrifugal potential. In terms of electromagnetic theory, this "mechanical" potential can be rewritten as $V_\text{eff}= q \phi$ where $\phi(\tilde{x},\tilde{y}) =  -m\Omega^2 (\tilde{x}^2 + \tilde{y}^2)/2q$ is the electric (scalar) potential. The effective magnetic field $\vec{B}$ associated with the vector potential $\vec{A}$ is 
+	\begin{align*}
+		\vec{B} = \grad \times \vec{A} = \f{2m\Omega}{q} \hat{z} = \f{2m\Omega}{q} \hat{\tilde{z}}.
+	\end{align*}
+	The electric field associated with $\phi$ and $\vec{A}$ is 
+	\begin{align*}
+		\vec{E} =  - \grad \phi - \f{\p \vec{A}}{\p t} = \f{m\Omega^2}{q}\begin{pmatrix}
+			\tilde{x} \\ \tilde{y} \\ 0
+		\end{pmatrix}
+	- \begin{pmatrix}
+		\p_t A_x \\ \p_t A_y \\ 0
+	\end{pmatrix}
+	\end{align*}
+
+
+	\item The Hamiltonian not in terms of $\vec{A}$ and $V_\text{eff}$ is 
+	\begin{align*}
+		\ham = \f{\tilde{p}_x^2}{2m} +\f{\tilde{p}_y^2}{2m} - \Omega (\tilde{x}  \tilde{p}_y  -  \tilde{y} \tilde{p}_x)
+	\end{align*}
+	Compared to the original Hamiltonian, $\ham_\text{inertial} = p_x^2/2m + p_y^2/2m$, we see that all that is needed to describe the motion of a particle in the frame rotating about the $z$-axis at angular frequency $\Omega$ is adding the operator 
+	\begin{align*}
+		W(\tilde{x},\tilde{y}, \tilde{p}_x, \tilde{p}_y) = - \Omega (\tilde{x}  \tilde{p}_y  -  \tilde{y} \tilde{p}_x)
+	\end{align*}
+	This operator suffices because $L_z = \tilde{x}  \tilde{p}_y  -  \tilde{y} \tilde{p}_x$ is the generator of rotation about the $z$-axis. Since there is no other difference between the inertial and rotating frame apart from the fact that the latter is \textit{rotating}, this operator should account for the all the differences between the two frames. \textcolor{purple}{Not sure what else to say here? The algebra says $-\Omega L_z$ has to be in the new Hamiltonian, so there it must be.}
+	
+	\item The equations of motion for the particle in the rotating frame are gotten from Hamilton's equations of motion:
+	\begin{align*}
+		m\dot{\tilde{x}} &= m\f{\p \ham}{\p \tilde{p}_x} = \tilde{p}_x - q A_x \\ 
+		m\dot{\tilde{y}} &= m\f{\p \ham}{\p \tilde{p}_y} = \tilde{p}_y - q  A_y \\
+		\dot{\tilde{p}}_x &= -\f{\p \ham}{\p \tilde{x}} = \Omega \tilde{p}_y \\
+		\dot{\tilde{p}}_y &= -\f{\p \ham}{\p \tilde{y}} = -\Omega \tilde{p}_x.
+	\end{align*}
+	From these we find 
+	\begin{align*}
+	m\ddot{\tilde{r}} 
+	&= 	m\f{d^2}{dt^2} \begin{pmatrix}
+			\tilde{x} \\ \tilde{y}
+		\end{pmatrix}\\
+	&= \begin{pmatrix}
+		\Omega \tilde{p}_y - q\p_t A_x\\
+		-\Omega \tilde{p}_x - q\p_t A_y
+	\end{pmatrix}\\
+	&= \begin{pmatrix}
+		m\Omega (\dot{\tilde{y}} + \Omega \tilde{x}) - q \p_t A_x \\ 
+		-m\Omega(\dot{\tilde{x}} - \Omega \tilde{y}) -q \p_t A_y
+	\end{pmatrix} \\
+	&= \begin{pmatrix}
+		m\Omega \dot{\tilde{y}} \\ -m\Omega \dot{\tilde{x}}
+	\end{pmatrix}
+	+ \begin{pmatrix}
+		m\Omega^2 \tilde{x} - q\p_t A_x \\ m\Omega^2 \tilde{y} - q \p_t A_y
+	\end{pmatrix}\\
+	&= q \tilde{\vec{v}} \times \vec{B} + q \vec{E}
+	\end{align*}
+	Here we have ignored writing the $z$-components in the vector quantities since they are not relevant. The expressions for $\vec{B}$ and $\vec{E}$ in terms of the quantities that appear in these equations come from Part (d). 
+	
+	
+	We see that in the rotating frame, the particle behaves like a charged particle experiencing a Lorentz force (combination of the electric force ($q\vec{E}$) and magnetic force $q\tilde{\vec{v}} \times \vec{B}$) due to a scalar potential and an effective magnetic field. 
+	
+	
+\end{enumerate}
+
+
+
+\noindent \textbf{2. Quantum description of a charged particle in a uniform magnetic field - Landau levels.}
+
+\noindent The Hamiltonian for a charged particle of charge $q>0$ moving freely in the $x-y$ plane in a uniform magneti field $\vec{B} = B\hat{z}$ pointing along the $z$-axis is
+\begin{align*}
+	\ham = \f{1}{2m}\lp \vec{p} - q\vec{A} \rp^2
+\end{align*}
+Let us ignore motion along $z$ and use the symmetric gauge $\vec{A} = -\vec{r}\times \vec{B}/2 = (-yB/2, xB/2,0)$. 
+
+\begin{enumerate}[label=\alph*)]
+	
+	\item we obtain the classical equations of motion using the Lorentz force:
+	\begin{align*}
+		m\ddot{r} = q\vec{E} + q \vec{v}\times \vec{B} = q \vec{v} \times \vec{B}
+	\end{align*}
+	since we have implicitly assumed $\phi = 0$ by writing the Hamiltonian that way. In component form, this equation is 
+	\begin{align*}
+		\begin{pmatrix}
+			\ddot{x} \\ \ddot{y}
+		\end{pmatrix}
+	= \f{qB}{m}\begin{pmatrix}
+		\dot{y} \\ -\dot{x}  
+	\end{pmatrix} 
+	\end{align*}
+	From here we get two second-order equations for $v_x$ and $v_y$: 
+	\begin{align*}
+		\ddot{v}_x = -\omega_c^2 v_x \quad\quad \ddot{v}_y = -\omega_c^2 v_y.
+	\end{align*}
+	where $\omega_c = qB/m$ is the cyclotron frequency. From the setup, we see that $v_x$ and $v_y$ are 90-degree out of phase, so the motion is circular. The classical equations of motion are therefore
+	\begin{align*}
+		\ddot{x} = -\omega_c x \quad\quad \ddot{y} = -\omega_c^2 y 
+	\end{align*}
+	where $x^2 + y^2 = (v_0/\omega_c)^2 $ where $v_0$ is the initial speed of the particle. Assuming that the center of the orbit is $x_0$ and $y_0$, the classical trajectory of the particle is given by 
+	\begin{align*}
+		x(t) = x_0 + \f{v_0}{\omega_c}\cos(\omega_c t + \delta) \quad\quad 
+		y(t) = y_0 + \f{v_0}{\omega_c}\sin(\omega_c t + \delta)
+	\end{align*}
+
+	
+	\item By completing the squares, we can transform the original Hamiltonian to that of a standard 2d harmonic oscillator with additional coupling to the angular momentum $L_z = xp_y - yp_x$:
+	\begin{align*}
+		\ham 
+		&= \f{1}{2m}\lp \vec{p} - q\vec{A} \rp^2 \\
+		&=  \f{({p}_x + q yB/2)^2 + ({p}_y - q x B/2)^2}{2m} \\
+		&= \f{p_x^2}{2m} + \f{p_y^2}{2m} + \f{1}{2m}\f{q^2B^2}{4}(x^2 + y^2) - \f{qB}{2m} (xp_y - yp_x)\\
+		&= \f{p_x^2}{2m} + \f{p_y^2}{2m} + \f{1}{2} m \lp \f{\omega_c}{2} \rp^2 (x^2 + y^2) - \f{\omega_c}{2}L_z.
+	\end{align*}
+	
+	\item Now we introduce the annihilation operators
+	\begin{align*}
+		&a_x = \f{1}{\sqrt{2}}\lp \f{x}{l_B} + i \f{p_x l_B}{\hbar} \rp \\ 
+		&a_y = \f{1}{\sqrt{2}}\lp \f{y}{l_B} + i \f{p_y l_B}{\hbar} \rp
+	\end{align*}
+	with $[a_x,a^\dagger_x] = [a_y,a^\dagger_y] = 1$  and other commutators zero. Consider the Hamiltonian of the form 
+	\begin{align*}
+		\ham_{\text{h.o.}} 
+		&= \f{\hbar \omega_c}{2} \lp a_x^\dagger a_x + a_y^\dagger a_y + 1 \rp\\
+		&= \f{\hbar \omega_c}{2} \lb \f{1}{2}\lp \f{x^2}{l_B^2} + \f{p_x^2 l_B^2}{\hbar^2} - 1 \rp + \f{1}{2}\lp \f{y^2}{l_B^2} + \f{p_y^2 l_B^2}{\hbar^2} -1 \rp + 1 \rb \\ 
+		&= \f{\hbar \omega_c}{4}\lb \f{x^2 + y^2}{l_B^2} + \f{l_B^2}{\hbar^2}(p_x^2 + p_y^2) \rb,
+	\end{align*}
+	where we have used the commutation relation $[x,p_x] = [y,p_y] = i\hbar$. It is clear that the appropriate choice for $l_B$ is such that
+	\begin{align*}
+		\f{\hbar \omega_c}{4l_B^2} = \f{1}{2}m\lp \f{\omega_c}{2} \rp^2 \implies l_B = \sqrt{\f{2\hbar }{m\omega_c}}.
+	\end{align*}
+	With this choice for $l_B$, we can write
+	\begin{align*}
+		\ham = \ham_\text{h.o.} - \f{\omega_c}{2}L_z.
+	\end{align*}
+	It remains to express $L_z$ in terms of $a_x,a_y,a_x^\dagger, a_y^\dagger$. To do this, we simply need to write $x,y,p_x,p_y$ in terms of $a_x,a_y,a_x^\dagger, a_y^\dagger$:
+	\begin{align*}
+		x = \f{l_B}{\sqrt{2}}\lp a_x + a_x^\dagger \rp, \quad y = \f{l_B}{\sqrt{2}}\lp a_y + a_y^\dagger \rp, \quad 
+		p_x = \f{\hbar}{\sqrt{2} il_B} \lp a_x - a_x^\dagger \rp, \quad p_y = \f{\hbar}{\sqrt{2} il_B} \lp a_y - 		a_y^\dagger\rp.
+	\end{align*}
+	With these,
+	\begin{align*}
+		L_z = xp_y - yp_x = \f{\hbar}{2i}\lp a_x + a_x^\dagger \rp\lp a_y - a_y^\dagger\rp - \f{\hbar}{2i}\lp a_y + a_y^\dagger \rp \lp a_x - a_x^\dagger \rp = i\hbar(a_xa_y^\dagger - a_x^\dagger a_y)
+	\end{align*}
+	
+	\item Introduce annihilation operators for left-handed and right-handed circular motion about $z$:
+	\begin{align*}
+		a = \f{a_x + ia_y}{\sqrt{2}} \quad\quad b = \f{a_x - i a_y}{\sqrt{2}}
+	\end{align*}
+	We will now put $L_z$ in terms of $\hat{n}_{a} = a^\dagger a $ and $\hat{n}_b = b^\dagger b$. By instinct, consider the expression $a^\dagger a - b^\dagger b$:
+	\begin{align*}
+		a^\dagger a - b^\dagger b 
+		&= \f{1}{2}\lp a_x^\dagger - i a_y^\dagger \rp \lp a_x + i a_y \rp - \f{1}{2}\lp a_x^\dagger + ia_y^\dagger \rp \lp a_x -ia_y \rp\\
+		&= \f{i}{2}\lp a_x^\dagger a_y - a_y^\dagger a_x - a_y^\dagger a_x + a_x^\dagger a_y \rp \\
+		&= i\lp a_x^\dagger a_y - a_y^\dagger a_x \rp\\
+		&= -\f{L_z}{\hbar}.
+	\end{align*}
+	So,
+	\begin{align*}
+		L_z = \hbar (\hat{n}_b - \hat{n}_a).
+	\end{align*}
+	
+	
+	\item From the previous parts, we find
+	\begin{align*}
+		\ham = \ham_\text{h.o.} - \f{\hbar\omega_c}{2} (\hat{n}_b - \hat{n}_a).
+	\end{align*}
+	Notice further that we can relate $\hat{n}_x$ and $\hat{n}_y$ to $\hat{n}_a$ and $\hat{n}_b$. This is not hard to see:
+	\begin{align*}
+		\hat{n}_a + \hat{n}_b =  \hat{n}_x + \hat{n}_y.
+	\end{align*}	
+	So, we have
+	\begin{align*}
+		\ham = \f{\hbar \omega_c}{2}\lp \hat{n}_x + \hat{n}_y + 1\rp - \f{\hbar \omega_c}{2}\lp \hat{n}_b - \hat{n}_a \rp = \f{\hbar \omega_c}{2}\lp \hat{n}_a + \hat{n}_b  -  \hat{n}_b + \hat{n}_a + 1\rp = \hbar \omega_c \lp \hat{n}_a + \f{1}{2} \rp. 
+	\end{align*}
+	The eigenenergies are thus $\hbar \omega_c/2, 3\hbar \omega_c/2, 5\hbar \omega_c/2,\dots$ since $n_a = 0,1,2,\dots$ Within each Landau level there is a vast degeneracy. Each quantum state is characterized by $n_a$ and $m_z$, where $m_z \hbar$ is an eigenvalue of $L_z$. Notice that the energy does not depend on $m_z$, and that $m_z$ appears implicitly in the Hamiltonian as the difference between $n_a$ and $n_b$, with $n_b$ also not appearing in the Hamiltonian. This tells us that there is a vast degeneracy for each value of $n_a$. Physically, the degeneracy can be seen from the classical solution: our system is infinite (the motion of the electron is unbounded in $\mathbb{R}^2$).
+
+	\item Now we express observables $x,y,v_x,v_y$ and the center of orbit variables $x_0,y_0$ in terms of $a,a^\dagger,b,b^\dagger$. 
+	
+	\item 
+	
+	\item 
+\end{enumerate}
+
+
+\noindent \textbf{3. Properties of the coherent state $\ket{\al}$}
+
+\begin{enumerate}[label=\alph*)]
+	\item Consider two coherent states $\ket{\al}, \ket{\be}$, where $\al,\be\in \mathbb{C}$. Their overlap is 
+	\begin{align*}
+		\bra{\al}\ket{\be} = 
+	\end{align*}
+
+
+	\item Here we show that coherent states form an over-complete basis:
+	\begin{align*}
+		\int \f{d^2\al}{\pi} \ketbra{\al} = 
+	\end{align*}
+	
+	\item The displacement operator $D(\al)$ is defined by $D(\al)\ket{0} = \ket{\al}$. Here we prove that 
+	\begin{align*}
+		D(\al) = \exp\lb \al a^\dagger - \al^* a \rb
+	\end{align*}
+	
+	\item Consider the electric field operator $E_x = i\mathcal{E}\lp ae^{ikz} - a^\dagger e^{-ikz} \rp$ where $\mathcal{E} = \sqrt{\hbar\omega/2\epsilon_0V}$ is the electric field amplitude for one photon inside the cavity volume $V$. For a freely evolving coherent state $\ket{\al} = \ket{\al(t)}$, we first calculate the average electric field:
+	\begin{align*}
+		\langle E_x \rangle = \bra{\al} E_x \ket{\al} 
+	\end{align*}
+	Next, we calculate the rms deviation of the electric field:
+	\begin{align*}
+		\sqrt{\langle \Delta E_x \rangle^2} = \sqrt{\bra{\al} E_x^2 \ket{\al} - \abs{\langle E_x \rangle}^2}
+	\end{align*}
+
+	Why is $\sqrt{\langle \Delta E_x^2\rangle} $ independent of time and field strength $\abs{\al}$? Why is the result the same as for the vacuum state $\al = 0$?
+\end{enumerate}
+
+
+
+
+\noindent \textbf{4. Pseudo-probability distribution plots.}
+
+\begin{enumerate}[label=\alph*)]
+	\item 
+	
+	\item 
+	
+	\item 
+	
+	\item 
+	
+	\item 
+\end{enumerate}
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
