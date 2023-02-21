@@ -329,10 +329,15 @@ Let us ignore motion along $z$ and use the symmetric gauge $\vec{A} = -\vec{r}\t
 	\begin{align*}
 		\ddot{x} = -\omega_c x \quad\quad \ddot{y} = -\omega_c^2 y 
 	\end{align*}
-	where $x^2 + y^2 = (v_0/\omega_c)^2 $ where $v_0$ is the initial speed of the particle. Assuming that the center of the orbit is $x_0$ and $y_0$, the classical trajectory of the particle is given by 
+	where $x^2 + y^2 = r_0^2 $ is constant. Assuming that the center of the orbit is $x_0$ and $y_0$, the classical trajectory of the particle is given by 
 	\begin{align*}
-		x(t) = x_0 + \f{v_0}{\omega_c}\cos(\omega_c t + \delta) \quad\quad 
-		y(t) = y_0 + \f{v_0}{\omega_c}\sin(\omega_c t + \delta)
+		x(t) = x_0 + r_0\cos(\omega_c t ) \quad\quad 
+		y(t) = y_0 + r_0\sin(\omega_c t ).
+	\end{align*}
+	The velocities are
+	\begin{align*}
+		v_x(t) = -r_0\omega_c \sin(\omega_c t ) \quad\quad 
+		v_y(t) = r_0\omega_c \cos(\omega_c t ).
 	\end{align*}
 
 	
@@ -407,9 +412,35 @@ Let us ignore motion along $z$ and use the symmetric gauge $\vec{A} = -\vec{r}\t
 	\end{align*}
 	The eigenenergies are thus $\hbar \omega_c/2, 3\hbar \omega_c/2, 5\hbar \omega_c/2,\dots$ since $n_a = 0,1,2,\dots$ Within each Landau level there is a vast degeneracy. Each quantum state is characterized by $n_a$ and $m_z$, where $m_z \hbar$ is an eigenvalue of $L_z$. Notice that the energy does not depend on $m_z$, and that $m_z$ appears implicitly in the Hamiltonian as the difference between $n_a$ and $n_b$, with $n_b$ also not appearing in the Hamiltonian. This tells us that there is a vast degeneracy for each value of $n_a$. Physically, the degeneracy can be seen from the classical solution: our system is infinite (the motion of the electron is unbounded in $\mathbb{R}^2$).
 
-	\item Now we express observables $x,y,v_x,v_y$ and the center of orbit variables $x_0,y_0$ in terms of $a,a^\dagger,b,b^\dagger$. 
+	\item Now we express observables $x,y,v_x,v_y$ and the center of orbit variables $x_0,y_0$ in terms of $a,a^\dagger,b,b^\dagger$. By inspection, we have
+	\begin{align*}
+	x &= \f{l_B}{\sqrt{2}}(a_x + a_x^\dagger) = \f{l_B}{2}(a+a^\dagger + b + b^\dagger) \\
+	y &= \f{l_B}{\sqrt{2}}(a_y + a_y^\dagger) = \f{l_B}{2i}(a-a^\dagger - b + b^\dagger) \\
+	p_x &= \\
+	p_y &= \\
+	v_x &= \f{p_x - qA_x}{m} = \f{p_x}{m} + \f{\omega_c}{2}y = \\
+	v_y &= \f{p_y - qA_y}{m} = \f{p_y}{m} - \f{\omega_c}{2}x =
+	\end{align*}
+	Now we define the guiding center variables (based on the classical solution) and express them in terms of $a,a^\dagger,b,b^\dagger$:
+	\begin{align*}
+	x_0 &= x - \f{v_y}{\omega_c} = \\
+	y_0 &= y + \f{v_x}{\omega_c} = 
+	\end{align*}
 	
-	\item 
+	
+	\item Now we compute the commutator of the center of orbit operators:
+	\begin{align*}
+	[x_0, y_0] = 
+	\end{align*}
+	Since $[x_0,y_0] \neq 0$, motion of the guiding centers of cyclotron orbits is thus motion in non-commutative geometry. \\
+	
+	\noindent Next, we compute $[\xi,\eta]$ and finally $[x,y]$:
+	\begin{align*}
+	[\xi,\eta] = 
+	\end{align*}
+	\begin{align*}
+	[x,y] = 
+	\end{align*}
 	
 	\item 
 \end{enumerate}
@@ -420,23 +451,52 @@ Let us ignore motion along $z$ and use the symmetric gauge $\vec{A} = -\vec{r}\t
 \begin{enumerate}[label=\alph*)]
 	\item Consider two coherent states $\ket{\al}, \ket{\be}$, where $\al,\be\in \mathbb{C}$. Their overlap is 
 	\begin{align*}
-		\bra{\al}\ket{\be} = 
+		\bra{\al}\ket{\be} = \sum_n \braket{\al}{n}\braket{n}{\be} 
+		= e^{-\abs{\al}^2/2 -\abs{\be}^2/2 }  \sum_n \f{(\al^* \be)^n}{n!} = \exp\lp -\f{\abs{\al}^2}{2} -\f{\abs{\be}^2}{2} + \al^*\be  \rp.
 	\end{align*}
 
 
 	\item Here we show that coherent states form an over-complete basis:
 	\begin{align*}
-		\int \f{d^2\al}{\pi} \ketbra{\al} = 
+		\int \f{d^2\al}{\pi} \ketbra{\al} = \int \f{d^2\al}{\pi} e^{-\abs{\al}^2} \sum_{m,n} \f{\al^m (\al^*)^n}{\sqrt{m!n!}} \ketbra{m}{n}.
 	\end{align*}
+	Let $\al = re^{i\theta}$. Then $d^2\al = r drd\theta$ and each of the summands indexed by $m,n$ becomes
+	\begin{align*}
+	\f{1}{\pi}\int_0^\infty dr r  e^{-r^2}  \f{r^{m+n}}{\sqrt{m!n!}} \underbrace{ \int_{0}^{2\pi} d\theta\, e^{i(m-n)\theta} }_{2\pi \delta_{m,n}} = \f{2\pi}{2\pi}\f{\Gamma(m+1)}{m!} = 1  \quad  \text{if $m=n$, and $0$ otherwise}.
+	\end{align*}
+	So, 
+	\begin{align*}
+	\int \f{d^2 \al}{\pi} \ketbra{\al} = \mathbb{I},
+	\end{align*}
+	as desired. 
 	
 	\item The displacement operator $D(\al)$ is defined by $D(\al)\ket{0} = \ket{\al}$. Here we prove that 
 	\begin{align*}
-		D(\al) = \exp\lb \al a^\dagger - \al^* a \rb
+		D(\al) = \exp\lb \al a^\dagger - \al^* a \rb.
 	\end{align*}
+	Starting from 
+	\begin{align*}
+	\ket{\al} = e^{-\f{\abs{\al}^2}{2}} \sum_{n} \f{a\l^n}{\sqrt{n!}}\ket{n} = e^{-\f{\abs{\al}^2}{2}} \sum_{n} \f{\al\l^n}{\sqrt{n!}}\ket{n} = e^{-\f{\abs{\al}^2}{2}} \sum_n \f{\al^n (a^\dagger)^n}{n!} \ket{0} = e^{-\f{\abs{\al}^2}{2}} e^{\al a^\dagger} \ket{0}.
+	\end{align*}
+	Since $a\ket{0} = 0$, we may write $\ket{0} = e^{-\al^* \al} \ket{0}$, so that
+	\begin{align*}
+	\ket{a} = e^{-\f{\abs{\al}^2}{2} } e^{\al a^\dagger} e^{-\al^* a} \ket{0} = e^{\al a^\dagger} e^{-\al^* a} e^{-\f{\abs{\al}^2}{2}} \ket{0}.
+	\end{align*}
+	From $[\al a^\dagger, -\al^* a] = \abs{\al}^2$ and the BCH formula $e^{A+B} = e^A e^B e^{-[A,B]/2}$ with $[A,B]$ being a $c$-number, we can write 
+	\begin{align*}
+	\ket{a} = e^{\al a^\dagger - \al^* a} \ket{0} = D(\al)\ket{0}.
+	\end{align*}
+	So,
+	\begin{align*}
+	D(\al) = e^{\al a^\dagger - \al^* a},
+	\end{align*}
+	 as desired. 
 	
+	
+		
 	\item Consider the electric field operator $E_x = i\mathcal{E}\lp ae^{ikz} - a^\dagger e^{-ikz} \rp$ where $\mathcal{E} = \sqrt{\hbar\omega/2\epsilon_0V}$ is the electric field amplitude for one photon inside the cavity volume $V$. For a freely evolving coherent state $\ket{\al} = \ket{\al(t)}$, we first calculate the average electric field:
 	\begin{align*}
-		\langle E_x \rangle = \bra{\al} E_x \ket{\al} 
+		\langle E_x \rangle = \bra{\al} E_x \ket{\al}  = i\mathcal{E} \bra{\al}  ae^{ikz} - a^\dagger e^{-ikz}   \ket{\al}
 	\end{align*}
 	Next, we calculate the rms deviation of the electric field:
 	\begin{align*}
