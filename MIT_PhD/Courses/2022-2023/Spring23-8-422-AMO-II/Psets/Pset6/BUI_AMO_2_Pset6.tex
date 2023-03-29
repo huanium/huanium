@@ -414,33 +414,77 @@ With this, we can evaluate the ground state energy shift:
 \begin{align*}
 \Delta E 
 &= \sum_{i_a i_b \neq g_a g_b} \f{  \bra{g_a g_b}  H_\text{el} \ket{i_a i_b } \bra{i_a i_b}  H_\text{el} \ket{g_a g_b} }{E_{ga} + E_{gb}  - E_{ia} - E_{ib}} \\
-&= \f{e^2}{R^6} \sum_{i_ai_b \neq g_a b_b} 
+&= \f{e^4}{R^6} \sum_{i_ai_b \neq g_a b_b} 
 \f{ 
  \bra{g_a g_b}  x_a x_b + y_a y_b - 2 z_a z_b   \ket{i_a i_b}   
  \bra{i_a i_b}  x_a x_b + y_a y_b - 2 z_a z_b  \ket{g_a g_b}   
 }{E_{ga} + E_{gb}  - E_{ia} - E_{ib}}.
 \end{align*}
-How do we express this in terms of oscillator strengths? To do this, let us consider the case where the ground state wavefunction is of the orbital $s$ which is spherically symmetric. By this symmetry, the $x$ and $y$ terms drop out (can check this explicitly using the wavefunctions of Hydrogen), and we find 
+How do we express this in terms of oscillator strengths? This seems rather complicated with multiple cross terms, so to detangle things let us look at an example where we have two hydrogen atoms, and then generalize from there. \\
+
+\textcolor{blue}{Hydrogen example: Let us consider the case where the ground states are $\ket{nlm} = \ket{100}$ and excited states are $\ket{nlm} = \ket{200}, \ket{210}, \ket{21\pm1}$. Let us compute the complicated-looking numerator using the hydrogen wavefunctions in Mathematica.  First, we note that $\bra{100} r_{j,a} r_{j,b} \ket{200} = 0$ for all $j=x,y,z$. So we simply ignore this contribution. Moreover, if one of the $i_a$ or $i_b$ is $g_a$ or $g_b$ then the numerator also vanishes. Thus we only consider cases where $i_a, i_b \in \{ \ket{210}, \ket{21\pm 1} \}$. There are nine cases, but since the computed values will be real, we need to consider only 6 cases, then symmetrize. \\
+\,\,\\ 
+\noindent This our example, all the excited state energies are the same, so we can bring the denominator outside of the sum. Furthermore, the ground state energy is also roughly 4 times larger than the excited state energies, so let us just ignore that and keep only the ground state energies. In the numerator, we find that contributions come from $\ket{i_a i_b} = \ket{210}\otimes\ket{210}, \ket{211}\otimes\ket{21-1}, \ket{21-1}\otimes \ket{211}$. Calling the first contribution $k^2$, then the other contributions are $k^2/4$. Summing this up, we find that the numerator is $3k^2 /2$. \\
+\,\,\\
+\noindent Before writing down the final answers, let's look at what contributes to $k^2$. By explicit calculation in Mathematica, one finds that the only term that contributes is $z_a z_b$. As a result, we may write:
 \begin{align*}
-\Delta E = \f{4e^2}{R^6} \sum_{i_ai_b \neq g_a g_b} \f{  \abs{\bra{g_a} z_a \ket{i_a}}^2  \abs{\bra{g_b} z_b \ket{i_b}}^2 }{E_{ga} + E_{gb} - E_{ia} - E_{ib}}.
+\Delta E = \f{3e^4}{2R^6} \f{ 
+\abs{\bra{g_a} z_a \ket{i_a}}^2 
+\abs{ \bra{g_b} z_b \ket{i_b} }^2
+}{E_{ga} + E_{gb}}
 \end{align*}
-Alternatively, we could also say that the only relevant direction for photon exchange is along $z$, so we can simply drop the terms involving $x,y$. In any case, in terms of the oscillator strengths $f_{ig} = 2 m \omega_{ig} \abs{ \bra{i} z \ket{g}}^2 / \hbar $, we have
+where $\ket{i_a} = \ket{i_b} = \ket{210}$ and $\ket{g_a} = \ket{g_b} \ket{100}$.  In order to generalize this to the problem at hand, let us just say that the sum $\sum_{i_ai_b}$ is over relevant angular momentum states that effective gives us the same expression. \\
+\,\,\\
+\noindent Mathematica code for calculating the numerator:}
+\begin{lstlisting}
+In[475]:= State1Wfn = Psi100;
+State2aWfn = Psi211m;
+State2bWfn = Psi211p;
+Xa = Integrate[
+   x*Psi100*Conjugate[State2aWfn]*r^2*Sin[\[Theta]], {r, 0, 
+    Infinity}, {\[Theta], 0, Pi}, {\[Phi], 0, 2 Pi}];
+Xb = Integrate[
+   x*Psi100*Conjugate[State2bWfn]*r^2*Sin[\[Theta]], {r, 0, 
+    Infinity}, {\[Theta], 0, Pi}, {\[Phi], 0, 2 Pi}];
+Ya = Integrate[
+   y*Psi100*Conjugate[State2aWfn]*r^2*Sin[\[Theta]], {r, 0, 
+    Infinity}, {\[Theta], 0, Pi}, {\[Phi], 0, 2 Pi}];
+Yb = Integrate[
+   y*Psi100*Conjugate[State2bWfn]*r^2*Sin[\[Theta]], {r, 0, 
+    Infinity}, {\[Theta], 0, Pi}, {\[Phi], 0, 2 Pi}];
+Za = Integrate[
+   z*Psi100*Conjugate[State2aWfn]*r^2*Sin[\[Theta]], {r, 0, 
+    Infinity}, {\[Theta], 0, Pi}, {\[Phi], 0, 2 Pi}];
+Zb = Integrate[
+   z*Psi100*Conjugate[State2bWfn]*r^2*Sin[\[Theta]], {r, 0, 
+    Infinity}, {\[Theta], 0, Pi}, {\[Phi], 0, 2 Pi}];
+Abs[Xa*Xb + Ya*Yb - 2*Za*Zb]^2 // FullSimplify
+\end{lstlisting}
+
+Under the generalization considerations above, let us rewrite the expression for $\Delta E$ as:
+\begin{align*}
+\Delta E = \f{3}{2}\f{e^4}{R^6} \sum_{i_ai_b \neq g_a g_b} \f{  \abs{\bra{g_a} z_a \ket{i_a}}^2  \abs{\bra{g_b} z_b \ket{i_b}}^2 }{E_{ga} + E_{gb} - E_{ia} - E_{ib}}.
+\end{align*}
+In any case, in terms of the oscillator strengths $f_{ig} = 2 m \omega_{ig} \abs{ \bra{i} z \ket{g}}^2 / \hbar $, we have
 \begin{align*}
 \Delta E 
-&= \f{4 \hbar^2  e^2 }{4 R^6 m^2 } \sum_{i_a i_b \neq g_a g_b} 
+&= \f{4 \hbar^2  e^4 }{4 R^6 m^2 } \sum_{i_a i_b \neq g_a g_b} 
 \f{1}{E_{ga} + E_{gb} - E_{ia} - E_{ib}} \f{ f_{i_a g_a} f_{i_bg_b}}{  \omega_{i_a g_a} \omega_{i_b g_b}} \\
-&= \f{\hbar^4 e^2 }{R^6 m^2} \sum_{i_a i_b \neq g_a g_b} 
+&= \f{\hbar^4 e^4 }{R^6 m^2} \sum_{i_a i_b \neq g_a g_b} 
 \f{1}{ (E_{ga} - E_{ia}) + (E_{gb} - E_{ib})} \f{ f_{i_a g_a} f_{i_bg_b}}{  (E_{ga} - E_{ia}) (E_{gb} - E_{ib})}.
 \end{align*}
+We could make the approximation that the excited state energies are smaller compared to the ground state energies in order to bring the denominator out of the sum, but okay we don't have to do that here. \\
 
 
-Before proceeding, we shall look at how $E_{ia}, E_{ib}$ compare to the ground state energies. For Hydrogen, for instance, $E_g \sim \text{Ryd}$, while $E_i \sim \text{Ryd}/n^2$ which is typically smaller than $E_g$ for states with significant matrix elements. For $E_i \sim E_g$ or larger, the matrix elements are smaller. As a result, we can simply set the denominator a bit to get:
+\textcolor{purple}{Another way to arrive at this answer, without resorting to the generalization of the hydrogen atom, is to make the approximation that the excited state energies are all the same, so that we can pull the denominator to outside the summation. Once this is done, we can invoke the closure relation over the excited states, so that we have
 \begin{align*}
-\Delta E = \f{\hbar^4 e^2 }{R^6 m^2} \f{1}{E_{ga} + E_{gb}} 
-\sum_{i_a i_b \neq g_a g_b} 
-\f{ f_{i_a g_a} f_{i_bg_b}}{  (E_{ga} - E_{ia}) (E_{gb} - E_{ib})}.
+\sum_{i_a i_b \neq g_a g_b}
+&\bra{g_a g_b}  x_a x_b + y_a y_b - 2 z_a z_b   \ket{i_a i_b}   
+ \bra{i_a i_b}  x_a x_b + y_a y_b - 2 z_a z_b  \ket{g_a g_b}   \\
+&\approx \bra{g_a g_b} (x_a x_b + y_a y_b - 2z_a z_b)^2 \ket{g_a g_b}.
 \end{align*}
-
+Now further assume that the ground state is spherically symmetry, then all the expectation values of the cross terms are zero. All that's left are contributions due to the $x_a^2, y_a^2,\dots$ terms, which are simply a \textit{third} of the expectation values of $r^2_a, r_b^2$. We can then relate these quantities back to oscillator strengths and complete the problem. I haven't done this carefully but this is what I initially had in mind when the problem tells me to somehow eliminate the "annoying cross terms."
+}
 
 
 \item We can estimate $C_6$ using the approximation that the oscillator strength $f_{ig}$ is large for only one transition $\ket{g} \to \ket{i}$. The $\ket{nS} \to \ket{(n+1)P}$ transitions in alkali atoms are the classic examples, with $f \approx 0.98$. In terms of the static polarizability:
@@ -451,12 +495,16 @@ we write, under the approximation $E_{ia}, E_{ib}$ small relative to $E_{ga}, E_
 \begin{align*}
 \Delta E 
 = 
-\f{ 4e^2 }{R^6} \f{1}{E_{ga} + E_{gb}} 
+\f{ 4e^4 }{R^6} \f{1}{E_{ga} + E_{gb}} 
 \sum_{ia} \abs{ \bra{g_a} z_a \ket{i_a}}^2   \sum_{ib} \abs{ \bra{g_b} z_b \ket{i_b}}^2 
-=  \f{1}{e^2} \f{E_{ga}E_{gb}}{E_{ga} + E_{gb}} 
+=  \f{E_{ga}E_{gb}}{E_{ga} + E_{gb}} 
 \f{\al_g^{(a)} \al_g^{(b)}}{R^6}.
 \end{align*}
-We note that the ground state energies are negative (which could also be defined as \textit{minus} the ionization energy, which is positive). From here, we see that the Van der Waals interaction \textit{lowers} energy of the system. 
+We note that the ground state energies are negative (which could also be defined as \textit{minus} the ionization energy, which is positive). From here, we see that the Van der Waals interaction \textit{lowers} energy of the system. If we don't make the assumption that the excited state energies are small compared to the ground state energies then our final answer looks like:
+\begin{align*}
+\Delta E = \f{(E_{ga} - E_{ia})(E_{gb} - E_{ib})}{E_{ga} + E_{gb} - E_{ia} - E_{ib}}   
+\f{\al_g^{(a)} \al_g^{(b)}}{R^6}.
+\end{align*}
 
 
 
@@ -470,18 +518,67 @@ We note that the ground state energies are negative (which could also be defined
 \begin{enumerate}[label=(\alph*)]
 
 
-\item 
+\item Since the states $\ket{i_a g_b}$ and $\ket{g_a i_b}$ are (near) degenerate, we must use degenerate first order perturbation theory. If we obtain non-zero shifts here, then we already know how the energy shifts depend on $R$: since the interaction appears only once in the calculation, we will have a $\boxed{1/R^3}$ dependence as opposed to $1/R^6$ which we have found before. This means that one there is one atom in the excited state and one in the ground state, the Van der Waals force is enhanced. \\
+
+To make progress on this problem, let us set it up concretely. There are two (nearly) degenerate states which are $\ket{1} = \ket{i_a g_b}$ and $\ket{2} = \ket{i_b g_a}$. We need to diagonalize the matrix
+\begin{align*}
+\begin{pmatrix}
+\bra{1} H_0 + H_\text{el} \ket{1} & \bra{1} H_0 + H_\text{el} \ket{2} \\
+\bra{2} H_0 + H_\text{el} \ket{1} & \bra{2} H_0 + H_\text{el} \ket{2}
+\end{pmatrix} = 
+\begin{pmatrix}
+\bra{1} H_0 + H_\text{el} \ket{1} & \bra{1} H_\text{el} \ket{2} \\
+\bra{2}  H_\text{el} \ket{1} & \bra{2} H_0 + H_\text{el} \ket{2}
+\end{pmatrix} 
+\end{align*}
+Let's evaluate the matrix elements. Due to the near degeneracy, the diagonal elements are not identical. But let's not worry about that right now. Why? The point is that even though the diagonal elements are not zero, the near-degeneracy ensures that they are close to each other, which means we can simply take the average of the two energies to be the "degenerate level" and treat the corrections (to give us back the correct energies) as perturbations. In any case, since what we care about is the energy \textit{shift} due to the dipole-dipole interaction let's just compute the off-diagonal matrix elements. Without further assumptions, we won't be able to calculate further, but okay let's just write everything out:
+\begin{align*}
+\bra{1} H_\text{el} \ket{2} = \bra{i_a g_b} H_\text{el} \ket{g_a i_b} = 
+\f{e^2}{R^3} \bra{i_a g_b} x_a x_b + y_a y_b - 2z_a z_b \ket{g_a i_b} = \f{k^2}{R^3}.
+\end{align*}
+Diagonalizing the matrix above gives eigenvalues with some offset and an energy shift due to the dipole-dipole interaction that goes like $\pm k/R^3$ where the associated eigenstates are some superposition of the initial states $\ket{i_a g_b}$ and $\ket{g_a i_b}$. The specifics will be determined after we have assumed what the ground and excited states actually are, but the point is that the interaction energy goes with separation distance like $1/R^3$. This interaction could be either repulsive or attractive, depending on the parity of the wavefunctions. \\
+
+At which separation does perturbation theory become invalid? Perturbation theory becomes invalid when the magnitude of the perturbation is bigger than the energy scale set by the system (because then the basis $\{\ket{i}, \ket{g} \}$ is no longer a "good" basis). Here, we have that the energy scale of the system is the excitation energy, which is $\hbar \omega_{ge}^{(a)} \approx \hbar \omega_{ge}^{(b)}$. The separation at which perturbation fails is therefore roughly
+\begin{align*}
+R_0 \sim \lp \f{\hbar \omega_{ge}^{(a)}}{ e^2 k^2} \rp^{1/3}. 
+\end{align*}
+We also know that $k\sim a_0$, the Bohr radius, so we get
+\begin{align*}
+R_0 \sim \lp \f{\hbar \omega_{ge}^{(a)}}{ e^2 k^2} \rp^{1/3}.
+\end{align*}
+
+
+\item For this part of the problem let us consider the hydrogen atom again. To further make our lives easier let us choose the two-state system to be given by $\ket{nlm} = \ket{100}$ and $\ket{nlm} = \ket{210}$. The setup is that we have two hydrogen atoms, one in the ground state $\ket{100}$ and one in the excited state $\ket{210}$. Our system of two atoms in two-fold generate: the energy of the state $\ket{100}_a \otimes \ket{210}_b$ is equal to the energy of the state $\ket{210}_a \otimes \ket{100}_b$. From (truly) degenerate perturbation, the matrix we need to diagonalize is a $2\times 2$ matrix with zeros on the diagonal and off-diagonal values of
+\begin{align*}
+\bra{i_a g_b} H_\text{el} \ket{g_a i_b} = \f{e^2}{R^3} \bra{(210)_a (100)_b} x_a x_b + y_a y_b - 2 z_a z_b \ket{(100)_a (210)_b} = -\f{e^2}{R^3} \f{2^{16}}{3^{10}} a_0^2 
+\end{align*}
+
+The eigenvalues for this matrix are thus $\pm \f{e^2}{R^3} \f{2^{16}}{3^{10}} a_0^2 $. We notice here the $\pm$ sign. What does this mean? This simply means that depending on the state of the system, the atoms could be attracted or repelled from each other. In particular, if the atoms start out in the symmetric state $\ket{+}  = (\ket{(100)_a (210)_b} + \ket{(210)_a (100)_b})/\sqrt{2}$ then they are repelled. And if the atoms start out in the antisymmetric state $\ket{-} = (\ket{(100)_a (210)_b} - \ket{(210)_a (100)_b})/\sqrt{2}$, then they attract. \\
+
+Now the state $\ket{(210)_a (100)_b}$ is a super position of these two eigenstates: $(\ket{+} - \ket{-})/\sqrt{2}$. Then after some time $\tau$ (which is dependent on $R$), the Hamiltonian time evolution tells us that the two-atom system will become $\ket{(100)_a (210)_b}$. The oscillation between this final state and the initial state continues, of course. \\
+
+While I don't have a concrete proof, I believe that the specific case of the $1S \leftrightarrow 2P^0$ in hydrogen can be generalized to $nS \leftrightarrow (n+1)P$. 
 
 
 
 
-\item 
-
-
-
-
-\item
-
+\item In this problem we want to relate the spontaneous decay rate of the atom and its long-range interaction coefficient. Let's just consider the transition $nS \leftrightarrow (n+1)P$ in an atom, let's say in some alkali or hydrogen-like atom. Recall from class that the rate of spontaneous emission from the $(n+1)P^0$, say, to the $nS$ state is given by 
+\begin{align*}
+\Gamma = \f{\abs{\bra{nS} e z {\ket{(n+1)P^0}}}^2 \omega^3}{ 3\pi \epsilon_0 \hbar c^3}. 
+\end{align*}
+Let's consider the case where $n=1$, for ease of computation. Then we can calculate the dipole matrix element explicitly:
+\begin{align*}
+\abs{\bra{1S} z {\ket{2P^0}}}^2 = \f{2^{15}}{3^{10}} a_0^2,
+\end{align*}
+which is $1/2$ of the long-range interaction coefficient in Part (b), up to some constants. Calling the interaction coefficient in Part (b) $C_3$, where $C_3 = e^2 a_0^2 (2^{16} / 3^{10})$, we find that
+\begin{align*}
+C_3 = e^2 \f{3\pi \epsilon_0 \hbar c^3 }{\omega^3} 2\Gamma.
+\end{align*}
+This is actually not quite right since $e^2$ here is in cgs units, which is actually $e^2/4\pi\epsilon_0$ in SI units. So the result is really:
+\begin{align*}
+C_3 = \f{3}{2}  \f{e^2 \hbar c^3}{\omega^3} \Gamma.
+\end{align*}
+\textcolor{purple}{Since we made an assumption about the excited states, there might be some numerical factor in the answer that is dependent upon this assumption. However, the point is that $C_3$ is linearly dependent on $\Gamma$ and is inversely proportional to $\omega^3$ where $\omega$ is the frequency associated with the energy separation between the ground and excited states. }
 
 
 \end{enumerate}
