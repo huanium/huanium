@@ -303,7 +303,7 @@ As a result, we can't just ignore $\hbar \omega$. Rather, we have to expand the 
  \bra{a} \mathbf{p}\cdot \mathbf{\epsilon'}  \ket{b} \bra{b}  \mathbf{p}\cdot \mathbf{\epsilon} \ket{a} (-1-s-s^2)
  +
  \bra{a}  \mathbf{p}\cdot \mathbf{\epsilon} \ket{b}\bra{b}  \mathbf{p}\cdot \mathbf{\epsilon'}  \ket{a} (-1+s-s^2)
- \rb \\
+ \rb
 \end{align*}
 The zeroth order terms in the expansion of the denominators are cancelled by the $\mathcal{T}_{fi}^{H_{I2}}$ for the same reason why we have to perform this expansion in the first place. The first order terms in the expansion cancel each other, so we're left with only the second order terms. By replacing $\bra{b} \mathbf{p}\cdot \mathbf{\epsilon} \ket{a}$ by $(m/i\hbar) (E_b - E_a) \bra{b}  \mathbf{r}\cdot \mathbf{\epsilon}  \ket{a} $ and invoking the closure relation over $b$, we find 
 \begin{align*}
@@ -424,14 +424,14 @@ How do we express this in terms of oscillator strengths? This seems rather compl
 
 \textcolor{blue}{Hydrogen example: Let us consider the case where the ground states are $\ket{nlm} = \ket{100}$ and excited states are $\ket{nlm} = \ket{200}, \ket{210}, \ket{21\pm1}$. Let us compute the complicated-looking numerator using the hydrogen wavefunctions in Mathematica.  First, we note that $\bra{100} r_{j,a} r_{j,b} \ket{200} = 0$ for all $j=x,y,z$. So we simply ignore this contribution. Moreover, if one of the $i_a$ or $i_b$ is $g_a$ or $g_b$ then the numerator also vanishes. Thus we only consider cases where $i_a, i_b \in \{ \ket{210}, \ket{21\pm 1} \}$. There are nine cases, but since the computed values will be real, we need to consider only 6 cases, then symmetrize. \\
 \,\,\\ 
-\noindent This our example, all the excited state energies are the same, so we can bring the denominator outside of the sum. Furthermore, the ground state energy is also roughly 4 times larger than the excited state energies, so let us just ignore that and keep only the ground state energies. In the numerator, we find that contributions come from $\ket{i_a i_b} = \ket{210}\otimes\ket{210}, \ket{211}\otimes\ket{21-1}, \ket{21-1}\otimes \ket{211}$. Calling the first contribution $k^2$, then the other contributions are $k^2/4$. Summing this up, we find that the numerator is $3k^2 /2$. \\
+\noindent In our example, all the excited state energies are the same, so we can bring the denominator outside of the sum. In the numerator, we find that contributions come from $\ket{i_a i_b} = \ket{210}\otimes\ket{210}, \ket{211}\otimes\ket{21-1}, \ket{21-1}\otimes \ket{211}$. Calling the first contribution $k^2$, then the other contributions are $k^2/4$. Summing this up, we find that the numerator is $3k^2 /2$. \\
 \,\,\\
-\noindent Before writing down the final answers, let's look at what contributes to $k^2$. By explicit calculation in Mathematica, one finds that the only term that contributes is $z_a z_b$. As a result, we may write:
+\noindent Before writing down the final answers, let's look at what contributes to $k^2$. By explicit calculation in Mathematica, one finds that the only term that contributes is $z_a z_b$. From here, we see that the other terms $x_a x_b$ and $y_a y_b$ can be written as a multiple of the $z_a z_b$ terms. As a result, we may write:
 \begin{align*}
 \Delta E = \f{3e^4}{2R^6} \f{ 
 \abs{\bra{g_a} z_a \ket{i_a}}^2 
 \abs{ \bra{g_b} z_b \ket{i_b} }^2
-}{E_{ga} + E_{gb}}
+}{E_{ga} + E_{gb} - E_{ia} - E_{ib}}
 \end{align*}
 where $\ket{i_a} = \ket{i_b} = \ket{210}$ and $\ket{g_a} = \ket{g_b} \ket{100}$.  In order to generalize this to the problem at hand, let us just say that the sum $\sum_{i_ai_b}$ is over relevant angular momentum states that effective gives us the same expression. \\
 \,\,\\
@@ -473,7 +473,7 @@ In any case, in terms of the oscillator strengths $f_{ig} = 2 m \omega_{ig} \abs
 &= \f{\hbar^4 e^4 }{R^6 m^2} \sum_{i_a i_b \neq g_a g_b} 
 \f{1}{ (E_{ga} - E_{ia}) + (E_{gb} - E_{ib})} \f{ f_{i_a g_a} f_{i_bg_b}}{  (E_{ga} - E_{ia}) (E_{gb} - E_{ib})}.
 \end{align*}
-We could make the approximation that the excited state energies are smaller compared to the ground state energies in order to bring the denominator out of the sum, but okay we don't have to do that here. \\
+We could make the approximation that the excited state energies are smaller compared to the ground state energies in order to bring the denominator out of the sum, but we don't have to do that here. \\
 
 
 \textcolor{purple}{Another way to arrive at this answer, without resorting to the generalization of the hydrogen atom, is to make the approximation that the excited state energies are all the same, so that we can pull the denominator to outside the summation. Once this is done, we can invoke the closure relation over the excited states, so that we have
@@ -483,11 +483,11 @@ We could make the approximation that the excited state energies are smaller comp
  \bra{i_a i_b}  x_a x_b + y_a y_b - 2 z_a z_b  \ket{g_a g_b}   \\
 &\approx \bra{g_a g_b} (x_a x_b + y_a y_b - 2z_a z_b)^2 \ket{g_a g_b}.
 \end{align*}
-Now further assume that the ground state is spherically symmetry, then all the expectation values of the cross terms are zero. All that's left are contributions due to the $x_a^2, y_a^2,\dots$ terms, which are simply a \textit{third} of the expectation values of $r^2_a, r_b^2$. We can then relate these quantities back to oscillator strengths and complete the problem. I haven't done this carefully but this is what I initially had in mind when the problem tells me to somehow eliminate the "annoying cross terms."
+Now further assume that the ground state is spherically symmetric, then all the expectation values of the cross terms are zero. All that's left are contributions due to the $x_a^2, y_a^2,\dots$ terms, which are simply a \textit{third} of the expectation values of $r^2_a, r_b^2$. We can then relate these quantities back to oscillator strengths and complete the problem. I haven't done this carefully but this is what I initially had in mind when the problem tells me to somehow eliminate the "annoying cross terms."
 }
 
 
-\item We can estimate $C_6$ using the approximation that the oscillator strength $f_{ig}$ is large for only one transition $\ket{g} \to \ket{i}$. The $\ket{nS} \to \ket{(n+1)P}$ transitions in alkali atoms are the classic examples, with $f \approx 0.98$. In terms of the static polarizability:
+\item We can estimate $C_6$ using the approximation that the oscillator strength $f_{ig}$ is large for only one transition $\ket{g} \to \ket{i}$. The $\ket{nS} \to \ket{(n+1)P}$ transitions in alkali atoms are the classic examples, with $f \approx 0.98$. Under the approximation that $f\sim 1$ for this transition, the summation over the excited states is superficial, up to the degeneracy of the $(n+1)P$ state. The same goes for the expression for  static polarizability:
 \begin{align*}
 \al_g = 2e^2 \sum_i \f{\abs{ \bra{i}z \ket{g} }^2}{E_i - E_g},
 \end{align*}
@@ -518,7 +518,7 @@ We note that the ground state energies are negative (which could also be defined
 \begin{enumerate}[label=(\alph*)]
 
 
-\item Since the states $\ket{i_a g_b}$ and $\ket{g_a i_b}$ are (near) degenerate, we must use degenerate first order perturbation theory. If we obtain non-zero shifts here, then we already know how the energy shifts depend on $R$: since the interaction appears only once in the calculation, we will have a $\boxed{1/R^3}$ dependence as opposed to $1/R^6$ which we have found before. This means that one there is one atom in the excited state and one in the ground state, the Van der Waals force is enhanced. \\
+\item Since the states $\ket{i_a g_b}$ and $\ket{g_a i_b}$ are (near) degenerate, we must use degenerate first order perturbation theory. If we obtain non-zero shifts here, then we already know how the energy shifts depend on $R$: since the interaction appears only once in the calculation, we will have a $\boxed{1/R^3}$ dependence as opposed to $1/R^6$ which we have found before. This means that one there is one atom in the excited state and one in the ground state, the Van der Waals force is enhanced from the $1/R^6$ for two atoms in the ground state. \\
 
 To make progress on this problem, let us set it up concretely. There are two (nearly) degenerate states which are $\ket{1} = \ket{i_a g_b}$ and $\ket{2} = \ket{i_b g_a}$. We need to diagonalize the matrix
 \begin{align*}
@@ -544,7 +544,7 @@ R_0 \sim \lp \f{\hbar \omega_{ge}^{(a)}}{ e^2 k^2} \rp^{1/3}.
 \end{align*}
 We also know that $k\sim a_0$, the Bohr radius, so we get
 \begin{align*}
-R_0 \sim \lp \f{\hbar \omega_{ge}^{(a)}}{ e^2 k^2} \rp^{1/3}.
+R_0 \sim \lp \f{\hbar \omega_{ge}^{(a)}}{ e^2 a_0^2} \rp^{1/3}.
 \end{align*}
 
 
@@ -557,12 +557,22 @@ The eigenvalues for this matrix are thus $\pm \f{e^2}{R^3} \f{2^{16}}{3^{10}} a_
 
 Now the state $\ket{(210)_a (100)_b}$ is a super position of these two eigenstates: $(\ket{+} - \ket{-})/\sqrt{2}$. Then after some time $\tau$ (which is dependent on $R$), the Hamiltonian time evolution tells us that the two-atom system will become $\ket{(100)_a (210)_b}$. The oscillation between this final state and the initial state continues, of course. \\
 
-While I don't have a concrete proof, I believe that the specific case of the $1S \leftrightarrow 2P^0$ in hydrogen can be generalized to $nS \leftrightarrow (n+1)P$. 
+While I don't have concrete proof, I believe that this result for the specific case of the $1S \leftrightarrow 2P^0$ in hydrogen can be generalized to $nS \leftrightarrow (n+1)P$ for hydrogen-like atoms as well.
 
 
 
 
-\item In this problem we want to relate the spontaneous decay rate of the atom and its long-range interaction coefficient. Let's just consider the transition $nS \leftrightarrow (n+1)P$ in an atom, let's say in some alkali or hydrogen-like atom. Recall from class that the rate of spontaneous emission from the $(n+1)P^0$, say, to the $nS$ state is given by 
+\item In this problem we want to relate the spontaneous decay rate of the atom and its long-range interaction coefficient. It is clear that the relationship is through the dipole matrix element squared, but how exactly? The rate of spontaneous emission goes like $d^2 \omega^3$ where $d^2$ is the dipole matrix element squared. The coefficient of interaction due to the Van der Waals force for setup in Part (b) is $k / R^3$, where $k$ also goes like $\langle r^2 \rangle$. To give a better answer, let's look at $k$ in detail:
+\begin{align*}
+k \sim \bra{i_a g_b}   x_a x_b + y_a y_b - 2z_a z_b \ket{g_a i_b}.
+\end{align*}
+Because the two atoms are identical and there are only two states for each atom, we have that $i_a = i_b$ and $g_a = g_b$. If we make this replacement then after eliminating the cross terms what we have is actually 
+\begin{align*}
+k \sim \abs{ \bra{i_a}  z_a \ket{g_a } }^2
+\end{align*}
+which is nothing but some constant times the dipole matrix element! So, already at this point we can conclude that the coefficient for the $1/R^3$ interaction is proportional to $\Gamma / \omega^3$. \\
+
+To get some near-exact answers to feel better about our arguments above, let's just consider the transition $nS \leftrightarrow (n+1)P$ in an atom, let's say in some alkali or hydrogen-like atom. Recall from class that the rate of spontaneous emission from the $(n+1)P^0$, say, to the $nS$ state is given by 
 \begin{align*}
 \Gamma = \f{\abs{\bra{nS} e z {\ket{(n+1)P^0}}}^2 \omega^3}{ 3\pi \epsilon_0 \hbar c^3}. 
 \end{align*}
@@ -578,7 +588,7 @@ This is actually not quite right since $e^2$ here is in cgs units, which is actu
 \begin{align*}
 C_3 = \f{3}{2}  \f{e^2 \hbar c^3}{\omega^3} \Gamma.
 \end{align*}
-\textcolor{purple}{Since we made an assumption about the excited states, there might be some numerical factor in the answer that is dependent upon this assumption. However, the point is that $C_3$ is linearly dependent on $\Gamma$ and is inversely proportional to $\omega^3$ where $\omega$ is the frequency associated with the energy separation between the ground and excited states. }
+\textcolor{purple}{Since we made an assumption about the excited states, there might be some numerical factor in the answer that is dependent upon this assumption. We also made assumptions about the principal quantum number $n$, which could have created different numerical factors. However, we have to do this in order to get an answer that is in terms of the what we found in Part (b). In any case, the point is that $C_3$ is linearly dependent on $\Gamma$ and is inversely proportional to $\omega^3$ where $\omega$ is the frequency associated with the energy separation between the ground and excited states. }
 
 
 \end{enumerate}
