@@ -1,0 +1,291 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.422 - AMO II}\\
+Problem set: \textbf{\#7}\\
+Due: Friday, Apr 7, 2022\\
+Collaborators:  Minh-Thi Nguyen
+\end{framed}
+	
+
+
+
+
+\noindent \textbf{1. Long-range interaction between an excited atom and a ground-state atom.} In this problem we consider the case where one atom is in the excited state and one is in the ground state. For simplicity we model each atom as a two level system with one ground state and one excited state. 
+
+\begin{enumerate}[label=(\alph*)]
+
+
+\item Since the states $\ket{i_a g_b}$ and $\ket{g_a i_b}$ are (near) degenerate, we must use degenerate first order perturbation theory. If we obtain non-zero shifts here, then we already know how the energy shifts depend on $R$: since the interaction appears only once in the calculation, we will have a $\boxed{1/R^3}$ dependence as opposed to $1/R^6$ which we have found before. This means that one there is one atom in the excited state and one in the ground state, the Van der Waals force is enhanced from the $1/R^6$ for two atoms in the ground state. \\
+
+To make progress on this problem, let us set it up concretely. There are two (nearly) degenerate states which are $\ket{1} = \ket{i_a g_b}$ and $\ket{2} = \ket{i_b g_a}$. We need to diagonalize the matrix
+\begin{align*}
+\begin{pmatrix}
+\bra{1} H_0 + H_\text{el} \ket{1} & \bra{1} H_0 + H_\text{el} \ket{2} \\
+\bra{2} H_0 + H_\text{el} \ket{1} & \bra{2} H_0 + H_\text{el} \ket{2}
+\end{pmatrix} = 
+\begin{pmatrix}
+\bra{1} H_0 + H_\text{el} \ket{1} & \bra{1} H_\text{el} \ket{2} \\
+\bra{2}  H_\text{el} \ket{1} & \bra{2} H_0 + H_\text{el} \ket{2}
+\end{pmatrix} 
+\end{align*}
+Let's evaluate the matrix elements. Due to the near degeneracy, the diagonal elements are not identical. But let's not worry about that right now. Why? The point is that even though the diagonal elements are not zero, the near-degeneracy ensures that they are close to each other, which means we can simply take the average of the two energies to be the "degenerate level" and treat the corrections $\pm \delta$  (to give us back the correct energies) as perturbations. In any case, since what we care about is the energy \textit{shift} due to the dipole-dipole interaction let's just compute the off-diagonal matrix elements. Without further assumptions, we won't be able to calculate further, but okay let's just write everything out:
+\begin{align*}
+\bra{1} H_\text{el} \ket{2} = \bra{i_a g_b} H_\text{el} \ket{g_a i_b} = 
+\f{e^2}{R^3} \bra{i_a g_b} x_a x_b + y_a y_b - 2z_a z_b \ket{g_a i_b} = \f{k^2}{R^3}.
+\end{align*}
+Diagonalizing the matrix above gives eigenvalues with some offset and an energy shift due to the dipole-dipole interaction that goes like $\pm k^2/R^3$: 
+\begin{align*}
+\lambda = E_0 \pm \sqrt{\delta^2 + \f{k^4}{R^6}} \sim \propto \pm \f{k^2}{R^3}
+\end{align*}
+where the associated eigenstates are some superposition of the initial states $\ket{i_a g_b}$ and $\ket{g_a i_b}$. The specifics will be determined after we have assumed what the ground and excited states actually are, but the point is that the interaction energy goes with separation distance like $1/R^3$. We note that this interaction could be either \textbf{repulsive or attractive, depending on the parity of the wavefunctions.} \\
+
+At which separation does perturbation theory become invalid? Perturbation theory becomes invalid when the magnitude of the perturbation is bigger than the energy scale set by the system (because then the basis $\{\ket{i}, \ket{g} \}$ is no longer a "good" basis). Here, we have that the energy scale of the system is the excitation energy, which is $\hbar \omega_{ge}^{(a)} \approx \hbar \omega_{ge}^{(b)}$. The separation at which perturbation fails is therefore roughly
+\begin{align*}
+R_0 \sim \lp \f{\hbar \omega_{ge}^{(a)}}{ e^2 k^2} \rp^{1/3}. 
+\end{align*}
+We also know that $k\sim a_0$, the Bohr radius, so we get
+\begin{align*}
+R_0 \sim \lp \f{\hbar \omega_{ge}^{(a)}}{ e^2 a_0^2} \rp^{1/3}.
+\end{align*}
+
+
+\item For this part of the problem let us consider the hydrogen atom again. To further make our lives easier let us choose the two-state system to be given by $\ket{nlm} = \ket{100}$ and $\ket{nlm} = \ket{210}$. The setup is that we have two hydrogen atoms, one in the ground state $\ket{100}$ and one in the excited state $\ket{210}$. Our system of two atoms in two-fold generate: the energy of the state $\ket{100}_a \otimes \ket{210}_b$ is equal to the energy of the state $\ket{210}_a \otimes \ket{100}_b$. From (truly) degenerate perturbation, the matrix we need to diagonalize is a $2\times 2$ matrix with zeros on the diagonal and off-diagonal values of
+\begin{align*}
+\bra{i_a g_b} H_\text{el} \ket{g_a i_b} = \f{e^2}{R^3} \bra{(210)_a (100)_b} x_a x_b + y_a y_b - 2 z_a z_b \ket{(100)_a (210)_b} = -\f{e^2}{R^3} \f{2^{16}}{3^{10}} a_0^2 
+\end{align*}
+
+The eigenvalues for this matrix are thus $\pm \f{e^2}{R^3} \f{2^{16}}{3^{10}} a_0^2 $. We notice here the $\pm$ sign. What does this mean? This simply means that depending on the state of the system, the atoms could be attracted or repelled from each other. In particular, if the atoms start out in the symmetric state $\ket{+}  = (\ket{(100)_a (210)_b} + \ket{(210)_a (100)_b})/\sqrt{2}$ then they are repelled. And if the atoms start out in the antisymmetric state $\ket{-} = (\ket{(100)_a (210)_b} - \ket{(210)_a (100)_b})/\sqrt{2}$, then they attract. \\
+
+Now the state $\ket{(210)_a (100)_b}$ is a super position of these two eigenstates: $(\ket{+} - \ket{-})/\sqrt{2}$. Then after some time $\tau$ (which is dependent on $R$), the Hamiltonian time evolution tells us that the two-atom system will become $\ket{(100)_a (210)_b}$. The oscillation between this final state and the initial state continues, of course. \\
+
+While I don't have concrete proof, I believe that this result for the specific case of the $1S \leftrightarrow 2P^0$ in hydrogen can be generalized to $nS \leftrightarrow (n+1)P$ for hydrogen-like atoms as well.
+
+
+
+
+\item In this problem we want to relate the spontaneous decay rate of the atom and its long-range interaction coefficient. It is clear that the relationship is through the dipole matrix element squared, but how exactly? The rate of spontaneous emission goes like $d^2 \omega^3$ where $d^2$ is the dipole matrix element squared. The coefficient of interaction due to the Van der Waals force for setup in Part (b) is $k / R^3$, where $k$ also goes like $\langle r^2 \rangle$. To give a better answer, let's look at $k$ in detail:
+\begin{align*}
+k \sim \bra{i_a g_b}   x_a x_b + y_a y_b - 2z_a z_b \ket{g_a i_b}.
+\end{align*}
+Because the two atoms are identical and there are only two states for each atom, we have that $i_a = i_b$ and $g_a = g_b$. If we make this replacement then after eliminating the cross terms what we have is actually 
+\begin{align*}
+k \sim \abs{ \bra{i_a}  z_a \ket{g_a } }^2
+\end{align*}
+which is nothing but some constant times the dipole matrix element! So, already at this point we can conclude that the coefficient for the $1/R^3$ interaction is proportional to $\Gamma / \omega^3$. \\
+
+To get some near-exact answers to feel better about our arguments above, let's just consider the transition $nS \leftrightarrow (n+1)P$ in an atom, let's say in some alkali or hydrogen-like atom. Recall from class that the rate of spontaneous emission from the $(n+1)P^0$, say, to the $nS$ state is given by 
+\begin{align*}
+\Gamma = \f{\abs{\bra{nS} e z {\ket{(n+1)P^0}}}^2 \omega^3}{ 3\pi \epsilon_0 \hbar c^3}. 
+\end{align*}
+Let's consider the case where $n=1$, for ease of computation. Then we can calculate the dipole matrix element explicitly:
+\begin{align*}
+\abs{\bra{1S} z {\ket{2P^0}}}^2 = \f{2^{15}}{3^{10}} a_0^2,
+\end{align*}
+which is $1/2$ of the long-range interaction coefficient in Part (b), up to some constants. Calling the interaction coefficient in Part (b) $C_3$, where $C_3 = e^2 a_0^2 (2^{16} / 3^{10})$, we find that
+\begin{align*}
+C_3 = e^2 \f{3\pi \epsilon_0 \hbar c^3 }{\omega^3} 2\Gamma.
+\end{align*}
+This is actually not quite right since $e^2$ here is in cgs units, which is actually $e^2/4\pi\epsilon_0$ in SI units. So the result is really:
+\begin{align*}
+C_3 = \f{3}{2}  \f{e^2 \hbar c^3}{\omega^3} \Gamma.
+\end{align*}
+\textcolor{purple}{Since we made an assumption about the excited states, there might be some numerical factor in the answer that is dependent upon this assumption. We also made assumptions about the principal quantum number $n$, which could have created different numerical factors. However, we have to do this in order to get an answer that is in terms of the what we found in Part (b). In any case, the point is that $C_3$ is linearly dependent on $\Gamma$ and is inversely proportional to $\omega^3$ where $\omega$ is the frequency associated with the energy separation between the ground and excited states. }
+
+
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+
+
+\noindent \textbf{2. Casimir model of the electron.} In this problem we model the electron as two parallel plates of area $a^2$ separated by a distance $a$ and carrying charge $q = e/2$. By balancing the Casimir and electrostatic forces, we will determine a value for the fine-structure constant $\al \equiv e^2/ \hbar c$ in cgs units.  \\
+
+
+\noindent Roughly speaking the repulsive electrostatic force between the two plates is 
+\begin{align*}
+F_e = \f{q_1 q_2}{r^2} =  \f{e^2}{4 a^2}. 
+\end{align*}
+Here $q_1 = q_2 = e/2 $ are the charges on each plate. \\
+
+\noindent What about the Casimir force? From class lectures, we know that the energy shift due to the Casimir effect is given by 
+\begin{align*}
+U(z) = -\f{\pi^2 \hbar c}{720 } \f{a^2 }{z^3}.
+\end{align*}
+So the magnitude of the Casimir force is 
+\begin{align*}
+F_C(a) =  \f{\pi^2 \hbar c }{240 a^2}.
+\end{align*}
+Equating $F_C$ and $F_e$ we find 
+\begin{align*}
+\f{e^2}{\hbar c} = \f{\pi^2}{60} \approx 0.16, 
+\end{align*}
+which is quite far from $1/137 \approx 0.0073$. \\
+
+
+We could do a more precise calculation on the repulsive force between the two plates. Suppose that the two plates are square, with one (plate 1) fixed on the $z=0$ plane and the other (plate 2) on the $z=a$ plane.The force that one plate exerts on the other is given by
+\begin{align*}
+F_E 
+&= \int dq_1 dE_2 \\
+&= \int \f{dq_1 dq_2}{r^2} \\
+&= \int \f{e}{2A_1} \f{e}{2A_2 }  \f{\cos\theta}{r^2}  \, dA_1  dA_2 \\
+&= \f{e^2}{4a^4} \int_{-a/2}^{a/2}\int_{-a/2}^{a/2}\int_{-a/2}^{a/2}\int_{-a/2}^{a/2} \f{a}{ [ (x_2 - x_1)^2 + (y_2 - y_1)^2 + a^2 ]^{3/2}} \, dx_0 dy_0 dx_1 dy_1 \\
+&= \f{e^2}{4a^2} \times 0.696743  \\
+&\approx 0.174186 \f{e^2}{a^2}
+\end{align*}
+where we're only integrating over the $z$-component of the forces by symmetry. From here, we obtain a value for the fine-structure constant:
+\begin{align*}
+\f{e^2}{\hbar c} = \f{\pi^2}{240 \times 0.174186 }  =  0.2361,
+\end{align*}
+still pretty far off from 1/137. \\
+
+
+\noindent Mathematica code for computing the integral. We note that the value of the integral normalized by $a^2$ is a constant. 
+\begin{lstlisting}
+In[80]:= a = 1000;
+
+In[81]:= ans = 
+ NIntegrate[
+   Efield[x1, y1, x0, y0, 
+     a]*(a/Sqrt[(x1 - x0)^2 + (y1 - y0)^2 + a^2]), {x0, -a/2, 
+    a/2}, {y0, -a/2, a/2}, {x1, -a/2, a/2}, {y1, -a/2, a/2}]/a^2
+
+Out[81]= 0.696743
+\end{lstlisting}
+
+
+\end{document}
+
+
+
+
+
+
+
+

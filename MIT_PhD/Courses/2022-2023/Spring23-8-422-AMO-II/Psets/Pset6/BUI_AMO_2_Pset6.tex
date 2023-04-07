@@ -426,9 +426,9 @@ How do we express this in terms of oscillator strengths? This seems rather compl
 \,\,\\ 
 \noindent In our example, all the excited state energies are the same, so we can bring the denominator outside of the sum. In the numerator, we find that contributions come from $\ket{i_a i_b} = \ket{210}\otimes\ket{210}, \ket{211}\otimes\ket{21-1}, \ket{21-1}\otimes \ket{211}$. Calling the first contribution $k^2$, then the other contributions are $k^2/4$. Summing this up, we find that the numerator is $3k^2 /2$. \\
 \,\,\\
-\noindent Before writing down the final answers, let's look at what contributes to $k^2$. By explicit calculation in Mathematica, one finds that the only term that contributes is $z_a z_b$. From here, we see that the other terms $x_a x_b$ and $y_a y_b$ can be written as a multiple of the $z_a z_b$ terms. As a result, we may write:
+\noindent Before writing down the final answers, let's look at what contributes to $k^2$. By explicit calculation in Mathematica, one finds that the only term that contributes is $z_a z_b$, where $\langle z_a z_b\rangle^2 = k^2/4$. From here, we see that the other terms $x_a x_b$ and $y_a y_b$ can be written as a multiple of the $z_a z_b$ terms. As a result, we may write:
 \begin{align*}
-\Delta E = \f{3e^4}{2R^6} \f{ 
+\Delta E = \f{6e^4}{R^6} \f{ 
 \abs{\bra{g_a} z_a \ket{i_a}}^2 
 \abs{ \bra{g_b} z_b \ket{i_b} }^2
 }{E_{ga} + E_{gb} - E_{ia} - E_{ib}}
@@ -437,6 +437,30 @@ where $\ket{i_a} = \ket{i_b} = \ket{210}$ and $\ket{g_a} = \ket{g_b} \ket{100}$.
 \,\,\\
 \noindent Mathematica code for calculating the numerator:}
 \begin{lstlisting}
+Psi100 = 
+  ResourceFunction["HydrogenWavefunction"][{1, 0, 0}, 
+   1, {r, \[Theta], \[Phi]}];
+
+Psi200 = 
+  ResourceFunction["HydrogenWavefunction"][{2, 0, 0}, 
+   1, {r, \[Theta], \[Phi]}];
+
+Psi210 = 
+  ResourceFunction["HydrogenWavefunction"][{2, 1, 0}, 
+   1, {r, \[Theta], \[Phi]}];
+
+Psi211p = 
+  ResourceFunction["HydrogenWavefunction"][{2, 1, 1}, 
+   1, {r, \[Theta], \[Phi]}];
+
+Psi211m = 
+  ResourceFunction["HydrogenWavefunction"][{2, 1, -1}, 
+   1, {r, \[Theta], \[Phi]}];
+
+x = r*Sin[\[Theta]]*Cos[\[Phi]];
+y = r*Sin[\[Theta]]*Sin[\[Phi]];
+z = r*Cos[\[Theta]];
+
 In[475]:= State1Wfn = Psi100;
 State2aWfn = Psi211m;
 State2bWfn = Psi211p;
@@ -461,16 +485,18 @@ Zb = Integrate[
 Abs[Xa*Xb + Ya*Yb - 2*Za*Zb]^2 // FullSimplify
 \end{lstlisting}
 
-Under the generalization considerations above, let us rewrite the expression for $\Delta E$ as:
+Assuming that we could use the hydrogen to model the behavior of our atoms where the ground state is spherically symmetric, let us rewrite the expression for $\Delta E$ as:
 \begin{align*}
-\Delta E = \f{3}{2}\f{e^4}{R^6} \sum_{i_ai_b \neq g_a g_b} \f{  \abs{\bra{g_a} z_a \ket{i_a}}^2  \abs{\bra{g_b} z_b \ket{i_b}}^2 }{E_{ga} + E_{gb} - E_{ia} - E_{ib}}.
+\Delta E = \f{6e^4}{R^6} \sum_{i_ai_b \neq g_a g_b} \f{  \abs{\bra{g_a} z_a \ket{i_a}}^2  \abs{\bra{g_b} z_b \ket{i_b}}^2 }{E_{ga} + E_{gb} - E_{ia} - E_{ib}}.
 \end{align*}
-In any case, in terms of the oscillator strengths $f_{ig} = 2 m \omega_{ig} \abs{ \bra{i} z \ket{g}}^2 / \hbar $, we have
+Is there a way to get to this answer without using the hydrogen atom? The answer has to be (and it is) YES, but we may still require the assumption that the ground state is spherically symmetric (so, most likely an $l=0$ state) and the excited state is $l=1$. Of course, we could also choose the ground state and excited state to be such that $\Delta l = 0$, so that the dipole moment operator connects them, but the situation gets more complicated without the spherical symmetry consideration. In any case, under the assumption of a spherically ground state, then let's say the ground state is $\ket{nS}$ and the excited state is the $\ket{(n+1)P}$ manifold. What we will do is re-express our formulas in terms of spherical tensors. Once done, we will then invoke Wigner-Eckart's theorem to obtain the result that all contributions to the $\langle r_j \rangle$ terms could be expressed as some multiple of the $\langle z \rangle$ terms -- which is what we observed in the hydrogen example. This gives us the ability to re-express all dipole matrix elements in terms of those with $z$ which we can then write in terms of the oscillator strengths.  
+
+But okay back to our problem. In terms of the oscillator strengths $f_{ig} = 2 m \omega_{ig} \abs{ \bra{i} z \ket{g}}^2 / \hbar $, we have
 \begin{align*}
 \Delta E 
-&= \f{4 \hbar^2  e^4 }{4 R^6 m^2 } \sum_{i_a i_b \neq g_a g_b} 
+&= \f{6\hbar^2  e^4 }{4 R^6 m^2 } \sum_{i_a i_b \neq g_a g_b} 
 \f{1}{E_{ga} + E_{gb} - E_{ia} - E_{ib}} \f{ f_{i_a g_a} f_{i_bg_b}}{  \omega_{i_a g_a} \omega_{i_b g_b}} \\
-&= \f{\hbar^4 e^4 }{R^6 m^2} \sum_{i_a i_b \neq g_a g_b} 
+&= \f{3}{2}\f{\hbar^4 e^4 }{R^6 m^2} \sum_{i_a i_b \neq g_a g_b} 
 \f{1}{ (E_{ga} - E_{ia}) + (E_{gb} - E_{ib})} \f{ f_{i_a g_a} f_{i_bg_b}}{  (E_{ga} - E_{ia}) (E_{gb} - E_{ib})}.
 \end{align*}
 We could make the approximation that the excited state energies are smaller compared to the ground state energies in order to bring the denominator out of the sum, but we don't have to do that here. \\
@@ -483,7 +509,7 @@ We could make the approximation that the excited state energies are smaller comp
  \bra{i_a i_b}  x_a x_b + y_a y_b - 2 z_a z_b  \ket{g_a g_b}   \\
 &\approx \bra{g_a g_b} (x_a x_b + y_a y_b - 2z_a z_b)^2 \ket{g_a g_b}.
 \end{align*}
-Now further assume that the ground state is spherically symmetric, then all the expectation values of the cross terms are zero. All that's left are contributions due to the $x_a^2, y_a^2,\dots$ terms, which are simply a \textit{third} of the expectation values of $r^2_a, r_b^2$. We can then relate these quantities back to oscillator strengths and complete the problem. I haven't done this carefully but this is what I initially had in mind when the problem tells me to somehow eliminate the "annoying cross terms."
+Now further assume that the ground state is spherically symmetric, then all the expectation values of the cross terms are zero. All that's left are contributions due to the $x_a^2, y_a^2,\dots$ terms, which are simply a \textit{third} of the expectation values of $r^2_a, r_b^2$ due to spherical symmetry. We can then relate these quantities back to oscillator strengths and complete the problem. I haven't done this carefully but this is what I initially had in mind when the problem tells me to somehow eliminate the "annoying cross terms." 
 }
 
 
@@ -495,15 +521,15 @@ we write, under the approximation $E_{ia}, E_{ib}$ small relative to $E_{ga}, E_
 \begin{align*}
 \Delta E 
 = 
-\f{ 4e^4 }{R^6} \f{1}{E_{ga} + E_{gb}} 
+\f{ 6 e^4 }{R^6} \f{1}{E_{ga} + E_{gb}} 
 \sum_{ia} \abs{ \bra{g_a} z_a \ket{i_a}}^2   \sum_{ib} \abs{ \bra{g_b} z_b \ket{i_b}}^2 
-=  \f{E_{ga}E_{gb}}{E_{ga} + E_{gb}} 
-\f{\al_g^{(a)} \al_g^{(b)}}{R^6}.
+= \f{3}{2} \f{E_{ga}E_{gb}}{E_{ga} + E_{gb}} 
+\f{\al_g^{(a)} \al_g^{(b)}}{R^6} \equiv -\f{C_6}{R^6}
 \end{align*}
 We note that the ground state energies are negative (which could also be defined as \textit{minus} the ionization energy, which is positive). From here, we see that the Van der Waals interaction \textit{lowers} energy of the system. If we don't make the assumption that the excited state energies are small compared to the ground state energies then our final answer looks like:
 \begin{align*}
-\Delta E = \f{(E_{ga} - E_{ia})(E_{gb} - E_{ib})}{E_{ga} + E_{gb} - E_{ia} - E_{ib}}   
-\f{\al_g^{(a)} \al_g^{(b)}}{R^6}.
+\Delta E = \f{3}{2} \f{(E_{ga} - E_{ia})(E_{gb} - E_{ib})}{E_{ga} + E_{gb} - E_{ia} - E_{ib}}   
+\f{\al_g^{(a)} \al_g^{(b)}}{R^6} \equiv -\f{C_6}{R^6}
 \end{align*}
 
 
@@ -512,6 +538,9 @@ We note that the ground state energies are negative (which could also be defined
 
 
 %%%%%%%%%
+\,\, \\
+\noindent \textbf{\textcolor{purple}{NOTE TO THE GRADER: Problem 3 has been postponed to Pset \#7. Please do NOT grade}}\\
+
 
 \noindent \textbf{3. Long-range interaction between an excited atom and a ground-state atom.} In this problem we consider the case where one atom is in the excited state and one is in the ground state. For simplicity we model each atom as a two level system with one ground state and one excited state. 
 
@@ -531,12 +560,16 @@ To make progress on this problem, let us set it up concretely. There are two (ne
 \bra{2}  H_\text{el} \ket{1} & \bra{2} H_0 + H_\text{el} \ket{2}
 \end{pmatrix} 
 \end{align*}
-Let's evaluate the matrix elements. Due to the near degeneracy, the diagonal elements are not identical. But let's not worry about that right now. Why? The point is that even though the diagonal elements are not zero, the near-degeneracy ensures that they are close to each other, which means we can simply take the average of the two energies to be the "degenerate level" and treat the corrections (to give us back the correct energies) as perturbations. In any case, since what we care about is the energy \textit{shift} due to the dipole-dipole interaction let's just compute the off-diagonal matrix elements. Without further assumptions, we won't be able to calculate further, but okay let's just write everything out:
+Let's evaluate the matrix elements. Due to the near degeneracy, the diagonal elements are not identical. But let's not worry about that right now. Why? The point is that even though the diagonal elements are not zero, the near-degeneracy ensures that they are close to each other, which means we can simply take the average of the two energies to be the "degenerate level" and treat the corrections $\pm \delta$  (to give us back the correct energies) as perturbations. In any case, since what we care about is the energy \textit{shift} due to the dipole-dipole interaction let's just compute the off-diagonal matrix elements. Without further assumptions, we won't be able to calculate further, but okay let's just write everything out:
 \begin{align*}
 \bra{1} H_\text{el} \ket{2} = \bra{i_a g_b} H_\text{el} \ket{g_a i_b} = 
 \f{e^2}{R^3} \bra{i_a g_b} x_a x_b + y_a y_b - 2z_a z_b \ket{g_a i_b} = \f{k^2}{R^3}.
 \end{align*}
-Diagonalizing the matrix above gives eigenvalues with some offset and an energy shift due to the dipole-dipole interaction that goes like $\pm k/R^3$ where the associated eigenstates are some superposition of the initial states $\ket{i_a g_b}$ and $\ket{g_a i_b}$. The specifics will be determined after we have assumed what the ground and excited states actually are, but the point is that the interaction energy goes with separation distance like $1/R^3$. This interaction could be either repulsive or attractive, depending on the parity of the wavefunctions. \\
+Diagonalizing the matrix above gives eigenvalues with some offset and an energy shift due to the dipole-dipole interaction that goes like $\pm k^2/R^3$: 
+\begin{align*}
+\lambda = E_0 \pm \sqrt{\delta^2 + \f{k^4}{R^6}} \sim \propto \pm \f{k^2}{R^3}
+\end{align*}
+where the associated eigenstates are some superposition of the initial states $\ket{i_a g_b}$ and $\ket{g_a i_b}$. The specifics will be determined after we have assumed what the ground and excited states actually are, but the point is that the interaction energy goes with separation distance like $1/R^3$. We note that this interaction could be either \textbf{repulsive or attractive, depending on the parity of the wavefunctions.} \\
 
 At which separation does perturbation theory become invalid? Perturbation theory becomes invalid when the magnitude of the perturbation is bigger than the energy scale set by the system (because then the basis $\{\ket{i}, \ket{g} \}$ is no longer a "good" basis). Here, we have that the energy scale of the system is the excitation energy, which is $\hbar \omega_{ge}^{(a)} \approx \hbar \omega_{ge}^{(b)}$. The separation at which perturbation fails is therefore roughly
 \begin{align*}
