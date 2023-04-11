@@ -230,9 +230,9 @@ C_3 = \f{3}{2}  \f{e^2 \hbar c^3}{\omega^3} \Gamma.
 
 \noindent Roughly speaking the repulsive electrostatic force between the two plates is 
 \begin{align*}
-F_e = \f{q_1 q_2}{r^2} =  \f{e^2}{4 a^2}. 
+F_e = q_1 E_2 = \f{e}{2} \f{e}{2a^2\epsilon_0} = \lp \f{e^2}{4\pi \epsilon_0} \rp \f{\pi }{2a^2} = \f{\pi e^2}{2a^2} \approx 1.6 \sigma
 \end{align*}
-Here $q_1 = q_2 = e/2 $ are the charges on each plate. \\
+Here $q_1 = q_2 = e/2 $ are the charges on each plate. In the last equality we have gone to cgs units.\\
 
 \noindent What about the Casimir force? From class lectures, we know that the energy shift due to the Casimir effect is given by 
 \begin{align*}
@@ -244,27 +244,27 @@ F_C(a) =  \f{\pi^2 \hbar c }{240 a^2}.
 \end{align*}
 Equating $F_C$ and $F_e$ we find 
 \begin{align*}
-\f{e^2}{\hbar c} = \f{\pi^2}{60} \approx 0.16, 
+\f{e^2}{\hbar c} = \f{\pi}{120} \approx 3.6 \times \f{1}{137},
 \end{align*}
-which is quite far from $1/137 \approx 0.0073$. \\
+which is not very good.\\
 
 
-We could do a more precise calculation on the repulsive force between the two plates. Suppose that the two plates are square, with one (plate 1) fixed on the $z=0$ plane and the other (plate 2) on the $z=a$ plane.The force that one plate exerts on the other is given by
+We could do a more precise calculation on the repulsive force between the two plates, to see how good our "infinite parallel plates" assumption is -- I suspect that it is pretty bad. Suppose that the two plates are square, with one (plate 1) fixed on the $z=0$ plane and the other (plate 2) on the $z=a$ plane.The force that one plate exerts on the other is given by
 \begin{align*}
 F_E 
 &= \int dq_1 dE_2 \\
-&= \int \f{dq_1 dq_2}{r^2} \\
-&= \int \f{e}{2A_1} \f{e}{2A_2 }  \f{\cos\theta}{r^2}  \, dA_1  dA_2 \\
-&= \f{e^2}{4a^4} \int_{-a/2}^{a/2}\int_{-a/2}^{a/2}\int_{-a/2}^{a/2}\int_{-a/2}^{a/2} \f{a}{ [ (x_2 - x_1)^2 + (y_2 - y_1)^2 + a^2 ]^{3/2}} \, dx_0 dy_0 dx_1 dy_1 \\
-&= \f{e^2}{4a^2} \times 0.696743  \\
+&= \f{1}{4\pi \epsilon_0} \int \f{dq_1 dq_2}{r^2} \\
+&= \f{1}{4\pi \epsilon_0} \int \f{e}{2A_1} \f{e}{2A_2 }  \f{\cos\theta}{r^2}  \, dA_1  dA_2 \\
+&= \f{1}{4\pi \epsilon_0} \f{e^2}{4a^4} \int_{-a/2}^{a/2}\int_{-a/2}^{a/2}\int_{-a/2}^{a/2}\int_{-a/2}^{a/2} \f{a}{ [ (x_2 - x_1)^2 + (y_2 - y_1)^2 + a^2 ]^{3/2}} \, dx_0 dy_0 dx_1 dy_1 \\
+&= \f{1}{4\pi \epsilon_0} \f{e^2}{4a^2} \times 0.696743  \\
+&=  \f{e^2}{4a^2} \times 0.696743  \\
 &\approx 0.174186 \f{e^2}{a^2}
 \end{align*}
-where we're only integrating over the $z$-component of the forces by symmetry. From here, we obtain a value for the fine-structure constant:
+where we're only integrating over the $z$-component of the forces by symmetry. Also, in the second to last equality we have gone to cgs units. From here, we obtain a value for the fine-structure constant:
 \begin{align*}
-\f{e^2}{\hbar c} = \f{\pi^2}{240 \times 0.174186 }  =  0.2361,
+\f{e^2}{\hbar c} = \f{\pi^2}{240 \times 0.174186 }  =  0.2361 \approx 32 \times \f{1}{137},
 \end{align*}
-still pretty far off from 1/137. \\
-
+which is actually quite bad, which also means that we can't quite assume the plates are infinite. In fact, realistically speaking it is much more accurate, given the geometry, to assume that the plates are point charges. \\
 
 \noindent Mathematica code for computing the integral. We note that the value of the integral normalized by $a^2$ is a constant. 
 \begin{lstlisting}
@@ -278,6 +278,8 @@ In[81]:= ans =
 
 Out[81]= 0.696743
 \end{lstlisting}
+
+Of course, if we hold the distance $a$ between the two plates and make them bigger, so send their dimension to some value $L \gg a$, then we recover the result under the assumption of infinite large plates. To see this, suppose that $a=1$ and $L=100$, then even though the geometric factor is correct -- the nasty integral normalized by $L^2$ is now $\pi/2$, the charge density $e/2L^2$ becomes too small, and the estimate for the fine-structure constant simply diverges. This means that we will also have to modify our charge density as well in order to make the calculation work, but then the total charge on the plates is no longer $e$. 
 
 
 \end{document}
