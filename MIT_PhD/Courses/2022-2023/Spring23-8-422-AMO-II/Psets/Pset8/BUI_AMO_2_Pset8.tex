@@ -184,13 +184,13 @@ This is an eigenvalue equation for the energy $E$.
 with a momentum cutoff $\Lambda$ corresponding to the cutoff energy $E_\Lambda  = \hbar^2 \Lambda^2 / 2m$, to the result of Part (a) to find that
 \begin{align*}
 \abs{E} + \delta 
-&=  \f{\mathcal{V} g^2 }{2\pi^2} \int_0^\Lambda \f{k^2}{2\epsilon_k + \abs{E}}  \\
-&=  \f{\mathcal{V} g^2 }{2\pi^2} \int_0^\Lambda \f{k^2}{\hbar^2 k^2/m + \abs{E}}  \\
+&=  \f{\mathcal{V} g^2 }{2\pi^2} \int_0^\Lambda \f{k^2}{2\epsilon_k + \abs{E}} \, dk \\
+&=  \f{\mathcal{V} g^2 }{2\pi^2} \int_0^\Lambda \f{k^2}{\hbar^2 k^2/m + \abs{E}} \, dk  \\
 &=  \f{\mathcal{V} g^2 }{2\pi^2} \f{m}{\hbar^2} \int_0^\Lambda  \f{k^2}{m \abs{E} / \hbar^2 + k^2}  \,dk  \\
-&=  \f{\mathcal{V} g^2 }{2\pi^2} \f{m\Lambda}{\hbar^2} \lb 1 - \sqrt{\f{m\abs{E}}{\hbar^2\Lambda^2}} \text{arctan}\lp \f{1}{\sqrt{m\abs{E} / 2\hbar^2\Lambda^2}}  \rp \rb \\ 
+&=  \f{\mathcal{V} g^2 }{2\pi^2} \f{m\Lambda}{\hbar^2} \lb 1 - \sqrt{\f{m\abs{E}}{\hbar^2\Lambda^2}} \text{arctan}\lp \f{1}{\sqrt{m\abs{E} / \hbar^2\Lambda^2}}  \rp \rb \\ 
 &= \f{\mathcal{V} g^2 }{2\pi^2} \f{m\Lambda}{\hbar^2} \lb 1 -  \sqrt{\f{\abs{E}}{2E_\Lambda}} \text{arctan}\lp 
 \sqrt{\f{2E_\Lambda}{\abs{E}}}
-\rp \rb \\ 
+\rp \rb.
 \end{align*}
 What is the pre-factor? From the problem statement:
 \begin{align*}
@@ -229,12 +229,12 @@ E
 since we remember that $E<0$. This is the dressed energy of the molecular state, due to the coupling to the continuum. \\
 
 
-Here we plot the energies $E$ as a function of $\delta$. While it is possible to plot the curve $E(\delta)$ using the result of Part (c), it is more interesting to just numerically diagonalize the full Hamiltonian and plot the eigenvalues as a function of $\delta$. This allows us to see explicitly how the molecular state gets dissolved in the continuum. The red lines are the eigenvalues, with the lowest being the dressed energy of the molecular state. The blue dash line is the bare molecular energy. The black dash lines are the bare continuum energies. Here, by "detuning" we mean the detuning of the bare molecular state energy from $E=0$. Later on we will talk about the detuning from $\delta_0$.
+Here we plot the energies $E$ as a function of $\delta$. While it is possible to plot the curve $E(\delta)$ using the result of Part (c), it is more interesting to just numerically diagonalize the full Hamiltonian and plot the eigenvalues as a function of $\delta$. This allows us to see explicitly how the molecular state gets dissolved in the continuum. The red lines are the eigenvalues, with the lowest being the dressed energy of the molecular state. The blue dash line is the bare molecular energy. The black dash lines are the bare continuum energies. Here, by "detuning" we mean the detuning of the bare molecular state energy from $E=0$. Later on we will talk about the detuning from $\delta_0$. The dressed energy of molecular state is quadratic in the regime $\delta \leq \delta_0$, becomes zero at $\delta_0$, and becomes complex at $\delta > \delta_0$. We say that for $\delta > \delta_0$, the molecular state acquires a width. Note that the position of $\delta_0$ here is rather arbitrary.
 
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.7\textwidth]{Feshbach_resonance.eps}
+\includegraphics[width=0.7\textwidth]{Feshbach_resonance_new.eps}
 \end{figure}
 
 
@@ -293,15 +293,13 @@ E = 0 \iff \delta = \delta_0.
 This value is no longer at $\delta = 0$ because, like we have seen, the energy of the molecular state relative to $E=0$ has been shifted by $\delta_0$ as a result to the coupling to the continuum. 
 
 
-\item Consider the near-resonance case on the scaling of the coupling energy scale $E_0$, so $\delta - \delta_0 \ll E_0$. Here we want to find a useful approximation of $E <0$ by figuring out its scaling with the detuning from resonance. To do this, we simply Taylor expand our answer from Part (c). This can be done by hand or in Mathematica:
+\item Consider the near-resonance case on the scaling of the coupling energy scale $E_0$, so $\delta_0 - \delta \ll E_0$. Here we want to find a useful approximation of $E <0$ by figuring out its scaling with the detuning from resonance. To do this, we simply Taylor expand our answer from Part (c). This can be done by hand or in Mathematica:
 \begin{align*}
- E \approx -\f{1}{2E_0}(\delta - \delta_0)^2
+ E \approx -\f{1}{2E_0}(\delta - \delta_0)^2.
 \end{align*}
 Mathematica code:
 \begin{lstlisting}
-In[10]:= FullSimplify[
- Series[-E0 + x + Sqrt[(E0 - x)^2 - x^2], {x, 0, 2}], 
- Assumptions -> {E0 > 0}]
+In[10]:= FullSimplify[Series[-E0 + x + Sqrt[(E0 - x)^2 - x^2], {x, 0, 2}],  Assumptions -> {E0 > 0}]
 
 Out[10]= SeriesData[x, 0, {Rational[-1, 2]/E0}, 2, 3, 1]
 \end{lstlisting}
@@ -311,12 +309,57 @@ Out[10]= SeriesData[x, 0, {Rational[-1, 2]/E0}, 2, 3, 1]
 continuum, and it acquires a width. Here we will obtain $\Gamma$ from Fermi’s Golden rule, and in particular
 bring out the dependence of $\Gamma$ on the bare molecular energy $\delta$. \\
 
-\noindent From Fermi's Golden Rule, we find 
+\noindent From Fermi's Golden Rule, 
 \begin{align*}
-\Gamma = \f{2\pi}{\hbar}  \abs{     }^2 \rho()
+\Gamma = \f{2\pi}{\hbar}  \big\vert   \bra*{m}  V  \ket*{\vec{k}}  \big\vert^2 \rho(\epsilon) = 
+\f{2\pi }{\hbar}  \f{g^2}{\sqrt{2} \pi^2} \f{\sqrt{\epsilon}}{\Delta^{3/2}} .
+\end{align*}
+What is $\epsilon$? This has to be the energy of the molecular state but for $E>0$. To get an expression for $E>0$ we solve the eigenvalue equation again  but under the assumption that $E>0$:
+\begin{align*}
+E - \delta = \sum_k \f{g^2}{E - 2\epsilon_k}
+\end{align*}
+Converting the sum to an integral, we calculate like before:
+\begin{align*}
+{E} - \delta 
+&=  \f{\mathcal{V} g^2 }{2\pi^2} \int_0^\Lambda \f{k^2}{E - 2\epsilon_k } \, dk \\
+&=  \f{\mathcal{V} g^2 }{2\pi^2} \int_0^\Lambda \f{k^2}{E - \hbar^2 k^2/m } \, dk  \\
+&=  \f{\mathcal{V} g^2 }{2\pi^2} \f{m}{\hbar^2} \int_0^\Lambda  \f{k^2}{m {E} / \hbar^2 - k^2}  \,dk  \\
+&=  -\f{\mathcal{V} g^2 }{2\pi^2} \f{m\Lambda}{\hbar^2} \lb 1 - \sqrt{\f{m{E}}{\hbar^2\Lambda^2}} \text{arccoth}\lp \f{1}{\sqrt{m{E} / \hbar^2\Lambda^2}}  \rp \rb \\ 
+&= -\f{\mathcal{V} g^2 }{2\pi^2} \f{m\Lambda}{\hbar^2} \lb 1 -  \sqrt{\f{{E}}{2E_\Lambda}} \text{arccoth}\lp 
+\sqrt{\f{2E_\Lambda}{{E}}}
+\rp \rb\\
+&= -\delta_0\lb 1 -  \sqrt{\f{{E}}{2E_\Lambda}} \text{arccoth}\lp 
+\sqrt{\f{2E_\Lambda}{{E}}}
+\rp \rb.
+\end{align*}
+Here, we have evaluated the integral by taking its Cauchy principal value in Mathematica:
+\begin{lstlisting}
+In[4]:= Integrate[x^2/(a - x^2), {x, 0, L}, PrincipalValue -> True]
+
+Out[4]= ConditionalExpression[-L + Sqrt[a] ArcCoth[L/Sqrt[a]], L > 0 && 0 < Re[a] < L^2 && a == Re[a]]
+\end{lstlisting}
+
+
+In the limit $E \ll E_\Lambda$, we can do a Taylor expansion of the arccoth term:
+\begin{align*}
+E - \delta \approx -\delta_0 \lb 1 - \f{E}{2E_\Lambda} - \f{1}{3}\lp \f{E}{2E_\Lambda} \rp^3 + \dots \rb \approx -\delta_0.
+\end{align*}
+So $\epsilon = E = \delta - \delta_0$, and to first order we  have
+\begin{align*}
+\Gamma = \Gamma(\delta) = \f{2\pi }{\hbar}  \f{g^2}{\sqrt{2} \pi^2} \f{\sqrt{\delta - \delta_0}}{\Delta^{3/2}} .
 \end{align*}
 
+
+
+
+
+
 \end{enumerate}
+
+
+
+
+
 
 
 \end{document}

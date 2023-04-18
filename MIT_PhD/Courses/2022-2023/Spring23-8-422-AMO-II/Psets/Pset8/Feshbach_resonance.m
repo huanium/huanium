@@ -1,6 +1,6 @@
 
 clear
-delta = -4:0.025:8;
+delta = -4:0.01:8;
 dim = 8;
 V = zeros(dim);
 v = 0.6;
@@ -46,7 +46,7 @@ annotation('textarrow',xm,ym,'String','|m>')
 % annotations:
 xp = [0.5 0.5];
 yp = [0.3 0.4];
-annotation('textarrow',xp,yp,'String','|\phi>')
+annotation('textarrow',xp,yp,'String','|\Psi>')
       
 % annotations:
 xk = [0.85 0.85];
