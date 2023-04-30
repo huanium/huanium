@@ -1,0 +1,441 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+
+\begin{document}
+\begin{framed}
+\noindent Name: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.422 - AMO II}\\
+Problem set: \textbf{\#10}\\
+Due: Friday, April 28, 2022\\
+Collaborators:  Minh-Thi Nguyen
+\end{framed}
+	
+\noindent \textbf{1. Optical Bloch Equations: weak and short-time limits.} The time-independent form of the optical Bloch equations, including spontaneous emission and RWA, is 
+\begin{align*}
+\dot{\rho}_{ee} &= i \f{\Omega}{2} (\rho_{eg} - \rho_{ge}) - \Gamma \rho_{ee} \\ 
+\dot{\rho}_{ge} &= i (\omega_0 - \omega_L) \rho_{ge} - i \f{\Omega}{2} (\rho_{ee} - \rho_{gg} ) - \f{\Gamma}{2} \rho_{ge},
+\end{align*}
+where the remaining two components of the density matrix are given by $\rho_{gg} = 1 - \rho_{ee}$ and $\rho_{eg} = \rho^*_{ge}$. We will study these equations in the limit of weak interactions and short evolution times. 
+
+\begin{enumerate}[label=(\alph*)]
+
+\item Consider the initial conditions $\rho_{ee}(0) = 0, \rho_{ge}(0) = 0$. We will assume weak drive $\abs{\Omega} \ll \Gamma$. Let us solve these equations for $\rho_{ee}$ to lowest order in $\abs{\Omega}$. We will argue why the solution has to be in the form given in the problem. First, the solution must become the steady-state solution in the large time limit. As a result of this, to lowest order in $\Omega$, the solution will go like $\abs{\Omega}^2$ and any time dependence does not depend on $\Omega$.  Second, without the effect of the coherence terms, it must exhibit exponential decay with rate $\Gamma$. These two pieces of information give us two terms. Finally, due to coherence, it must exhibit some oscillations which should be at a rate given by the generalized Rabi frequency $\Omega$. But in the limit of weak drive, we can simply set this generalized frequency to just $\delta$ the detuning. The coherence piece must also contain an exponential decay, and as we know it must be such that the rate is half the exponential decay of the population. The final piece of information determines whether the oscillation (or quantum beats?) is due to the coherence follows a sine or a cosine. The correct choice is a cosine, as it matches best with the initial condition. Putting everything together, we can construct the solution:
+\begin{align*}
+\rho_{ee}(t) = \f{\abs{\Omega}^2/4}{(\omega_0 - \omega_L)^2 + (\Gamma/2)^2} \lb 1 + e^{-\Gamma t} -2 \cos [(\omega_0 - \omega_L)t] e^{-\Gamma/2} \rb.
+\end{align*}
+But okay, let's justify this argument by doing real approximations and some algebra. Under the weak drive assumption, the populations are such that $\rho_{ee} \approx 1$ and $\rho_{gg} = 0$. This simplifies the second equation to 
+\begin{align*}
+\dot{\rho}_{ge} = i (\omega_0 - \omega_L) \rho_{ge} - i \f{\Omega}{2} - \f{\Gamma}{2} \rho_{ge}
+\end{align*}
+From this equation we can solve for $\rho_{ge}$ with the initial condition $\rho_{ge}(0) = 0$:
+\begin{align*}
+\rho_{ge} =  \f{{\Omega}}{2\delta + i\Gamma} e^{i \delta t } e^{-\Gamma t /2}. 
+\end{align*}
+Plugging this into the first differential equation and solve it under the initial condition $\rho_{ee}(0) = 0$ we find:
+\begin{align*}
+\rho_{ee}(t) 
+&= \f{\abs{\Omega}^2 /4 }{\delta^2 + (\Gamma/2)^2} \lb -\cosh (\Gamma t / 2) e^{- \Gamma t /2}  2 \cos \delta t e^{-\Gamma t / 2} \rb \\
+&=  \f{\abs{\Omega}^2/4}{(\omega_0 - \omega_L)^2 + (\Gamma/2)^2} \lb 1 + e^{-\Gamma t} -2 \cos [(\omega_0 - \omega_L)t] e^{-\Gamma/2} \rb.
+\end{align*}
+as desired. Mathematica code for solving differential equations:
+\begin{lstlisting}
+In[22]:= 
+DSolve[{x'[t] == 
+    I*d*x[t] - I*\[CapitalOmega]/2 - (\[CapitalGamma]/2)*x[t], 
+   x[0] == 0}, x[t], t] // FullSimplify
+
+Out[22]= {{x[t] -> (\[CapitalOmega] - 
+    E^(I d t - (t \[CapitalGamma])/2) \[CapitalOmega])/(
+   2 d + I \[CapitalGamma])}}
+
+In[24]:= 
+DSolve[{y'[t] == 
+    I*(\[CapitalOmega]/
+        2)*((\[CapitalOmega] - 
+         E^(-(1/2) t (2 I d + \[CapitalGamma])) \[CapitalOmega])/(
+        2 d - I \[CapitalGamma]) - (\[CapitalOmega] - 
+         E^(I d t - (t \[CapitalGamma])/2) \[CapitalOmega])/(
+        2 d + I \[CapitalGamma])) - \[CapitalGamma]*y[t], y[0] == 0}, 
+  y[t], t] // FullSimplify
+
+Out[24]= {{y[t] -> (
+   2 E^(-((t \[CapitalGamma])/
+     2)) \[CapitalOmega]^2 (Cos[d t] - Cosh[(t \[CapitalGamma])/2]))/(
+   4 d^2 + \[CapitalGamma]^2)}}
+\end{lstlisting}
+
+In the limit where $\Gamma \to 0$, we can Taylor expand the solution above to lowest order (without $\Gamma$) to obtain:
+\begin{align*}
+\rho_{ee}(t) \approx \f{\abs{\Omega}^2}{4 \delta^2} \lb 2 - 2\cos [(\omega_0 - \omega_L)t] \rb = \f{\abs{\Omega}^2}{\delta^2} \sin^2 \f{(\omega_0 - \omega_L)t}{2},
+\end{align*}
+which is just Rabi oscillations in the limit $\Gamma \to 0$. 
+
+
+
+\item Now we will show that to lowest order in $\abs{\Omega}$ in the limit $\abs{\Omega} t \ll 1$ with the same initial conditions, the solution is $\rho_{ee} = \abs{\Omega}^2 t^2 /4$.  This is just the small-$t$ limit of the solution above, so let us expand it:
+\begin{align*}
+\rho_{ee}(t) = \f{\abs{\Omega}^2/4}{(\omega_0 - \omega_L)^2 + (\Gamma/2)^2} \lb 1 + e^{-\Gamma t} -2 \cos [(\omega_0 - \omega_L)t] e^{-\Gamma/2} \rb 
+\approx \f{\abs{\Omega}^2 t^2}{4} - \f{1}{8} g \abs{\Omega}^2 t^3 + \dots  = \f{\abs{\Omega}^2 t^2}{4}, 
+\end{align*}
+as desired. The Taylor expansion could be done by hand or by inspection really, but Mathematica gives us many orders in $t$ in a split second:
+\begin{lstlisting}
+In[120]:= Series[(O^2/ 4)*(1 + Exp[-g*t] - 2 Cos[d*t]*Exp[-g*t/2])/(d^2 + g^2/4), {t, 0, 3}]
+
+Out[120]= SeriesData[t, 0, {Rational[1, 4] O^2, Rational[-1, 8] g O^2}, 2, 4, 1]
+\end{lstlisting}
+
+Why does this solution not depend on both the detuning $\delta_L$ and the decay rate $\Gamma$? Intuitively, we can think of this situation in terms of linear response. The atom, in the limit of short time and weak drive, simply follows the drive and has too little time to resolve the frequency of the drive or to realize that its excited state population can decay. There is also too little time for coherence to be established, and so we also see another reason why the detuning does not come into the solution.
+
+
+
+
+\end{enumerate}
+
+\noindent \textbf{2. One atom and one photon: spontaneous emission.} In this problem we model the interaction of one atom with a single optical mode using the Jaynes-Cummings interaction,
+\begin{align*}
+H = \hbar \omega a^\dagger a + \delta \sigma_z + g(a^\dagger \sigma_- + a\sigma_+)
+\end{align*}
+where $\delta$ is the detuning of the cavity from the atom, $\omega$ is the cavity frequency, and $g$ is the coupling of the atom to the field. Restricted to the case where at most one quantum is exchanged with the
+optical mode, we may write this Hamiltonian as a matrix:
+\begin{align*}
+H = -\begin{pmatrix}
+\delta & 0 & 0 \\ 0 & \delta & g \\ 0 & g & -\delta 
+\end{pmatrix}
+\end{align*}
+where the basis states are $\ket{0g}, \ket{0e, \ket{1g}}$. We note that this Hamiltonian is in the rotating frame. 
+
+\begin{enumerate}[label=(\alph*)]
+
+\item We first compute the time-evolution operator $U = \exp(i H t)$. This is straightforward to do in Mathematica, although it is also not difficult to do by hand. We notice that $H$ is already in block-diagonal. So, it remains to only exponentiate the lower block. To do this, we first diagonalize the lower block, exponentiate the diagonals, then un-diagonalize the result:
+\begin{align*}
+H_\text{low} = -\begin{pmatrix}
+\delta & g \\ g & -\delta
+\end{pmatrix} 
+=
+M^{-1} \begin{pmatrix}
+-\sqrt{g^2 + \delta^2} & 0 \\ 0 & \sqrt{g^2 + \delta^2}
+\end{pmatrix}
+M
+\implies 
+e^{i H_\text{low} t} = 
+M^{-1} 
+\begin{pmatrix}
+e^{-it\sqrt{g^2 + \delta^2}} & 0 \\ 0 & e^{it\sqrt{g^2 + \delta^2}}
+\end{pmatrix}
+M.
+\end{align*}
+Finding $\mathcal{M}$ is easy and the last line is only to show how one would do this without Mathematica, so I won't write out all the steps here, but in case the result is 
+\begin{align*}
+U = e^{iHt} = 
+\left(
+\begin{array}{ccc}
+ e^{-i \delta  t} & 0 & 0 \\
+ 0 & \cos \left(t \sqrt{\delta ^2+g^2}\right)-\frac{i \delta  \sin \left(t \sqrt{\delta
+   ^2+g^2}\right)}{\sqrt{\delta ^2+g^2}} & -\frac{i g \sin \left(t \sqrt{\delta
+   ^2+g^2}\right)}{\sqrt{\delta ^2+g^2}} \\
+ 0 & -\frac{i g \sin \left(t \sqrt{\delta ^2+g^2}\right)}{\sqrt{\delta ^2+g^2}} & \cos
+   \left(t \sqrt{\delta ^2+g^2}\right)+\frac{i \delta  \sin \left(t \sqrt{\delta
+   ^2+g^2}\right)}{\sqrt{\delta ^2+g^2}} \\
+\end{array}
+\right).
+\end{align*}
+
+Mathematica code that generates the result above (including the TeX output):
+\begin{lstlisting}
+H = -{{\[Delta], 0, 0}, {0, \[Delta], g}, {0, g, -\[Delta]}};
+
+MatrixExp[I*H*t] // FullSimplify // MatrixForm // TeXForm
+\end{lstlisting}
+
+
+Given that the basis is $\{ \ket{0g}, \ket{1g}, \ket{0e} \}$, we can easily decompose the result in terms of the projectors: 
+\begin{align*}
+U &= e^{-i\delta t} \ketbra{0g} + \lp \cos \Omega t + i \f{\delta}{\Omega} \sin\Omega t \rp \ketbra{0e}  \\ 
+&\quad + 
+\lp \cos \Omega t - i \f{\delta}{\Omega} \sin\Omega t \rp \ketbra{1g} - i \f{g}{\Omega} \sin \Omega t \lp \ket{0e}\bra{1g} + \ket{1g}\bra{0e} \rp
+\end{align*}
+where $\Omega = \sqrt{\delta^2 + g^2}$ is the generalized Rabi frequency. 
+
+
+\item Suppose the atoms starts out in the state $\ket{0e}$. After time $t$, the state of the system is 
+\begin{align*}
+U\ket{0e} = \lp \cos \Omega t + i \f{\delta}{\Omega} \sin\Omega t \rp \ket{0e} - i \f{g}{\Omega} \sin\Omega t \ket{1g}.
+\end{align*}
+If the cavity is measured and found to have no photon, then the atom is in the ground state $\ket{g}$. If the cavity is measured and found to have a photon, then the atom is in the excited state $\ket{e}$. 
+
+\item Here we compute the reduced density matrix describing the state of the atom at time $t$. Suppose that the atom starts out as $\ket{0e}$, then the full density matrix of the system at time $t$ is 
+\begin{align*}
+\rho = U \ket{0e} \bra{0e} U^\dagger &= 
+\begin{pmatrix}
+0  \\ -i \f{g}{\Omega} \sin \Omega t \\ \cos \Omega t + i \f{\delta}{\Omega} \sin \Omega t 
+\end{pmatrix}
+\begin{pmatrix}
+0 &  i \f{g}{\Omega}\sin \Omega t & \cos \Omega t - i \f{\delta}{\Omega} \sin \Omega t 
+\end{pmatrix} \\ 
+&=
+\begin{pmatrix}
+0 & 0 & 0 \\
+0 & \f{g^2}{\Omega^2} \sin^2 \Omega t & -i \f{g}{\Omega} \sin\Omega t \lp \cos \Omega t - i \f{\delta}{\Omega} \sin \Omega t  \rp \\
+0 & i \f{g}{\Omega} \sin \Omega t \lp \cos \Omega t + i \f{\delta}{\Omega} \sin \Omega t \rp & \cos^2\Omega t + \f{\delta^2}{\Omega^2}\sin^2 \Omega t 
+\end{pmatrix} \\ 
+&=  \f{g^2}{\Omega^2} \sin^2 \Omega t \ketbra{1g} + \lp \cos^2\Omega t + \f{\delta^2}{\Omega^2}\sin^2 \Omega t   \rp \ketbra{0e} \\
+& \quad\quad\quad -i \f{g}{\Omega} \sin\Omega t \lp \cos \Omega t - i \f{\delta}{\Omega} \sin \Omega t  \rp \ket{0e}\bra{1g} \\
+& \quad\quad\quad +   i \f{g}{\Omega} \sin \Omega t \lp \cos \Omega t + i \f{\delta}{\Omega} \sin \Omega t \rp \ket{1g}\bra{0e}.
+\end{align*}
+From here, we find the reduced density matrix for the atom at time $t$: 
+\begin{align*}
+\rho_A = \Tr_P \rho = \bra{0} \rho \ket{0} + \bra{1} \rho \ket{1} =   \f{g^2}{\Omega^2} \sin^2 \Omega t \ketbra{g} + \lp \cos^2\Omega t + \f{\delta^2}{\Omega^2}\sin^2 \Omega t   \rp   \ketbra{e}.
+\end{align*}
+
+
+
+
+
+
+\item Let $\ket{e}$ and $\ket{g}$ be the south and north poles of a Bloch sphere representation of the atom.  We first plot the states $( \ket{e} + \ket{g} )/\sqrt{2}$, $(\ket{e} - \ket{g})/\sqrt{2}$, and $\ket{e}$ on the Bloch sphere. To do this, we need a way to convert wavefunctions into coordinates on the unit sphere $(\theta,\phi)$, but it is just:
+\begin{align*}
+\cos \f{\theta}{2} \ket{g} + e^{i\phi} \sin\f{\theta}{2} \ket{e}. 
+\end{align*}
+So, $\ket{e}$ corresponds to the point $(\pi, 0)$. $(\ket{e} + \ket{g})/\sqrt{2}$ corresponds to the point $(\pi/2,0)$. $(\ket{e} - \ket{g})/\sqrt{2}$ corresponds to $(\pi/2, \pi)$. A slightly more general way to connect the Bloch sphere picture to the density matrix is 
+\begin{align*}
+\rho = \f{I + \vec{r}\cdot \vec{\sigma}}{2}. 
+\end{align*}
+Here $\vec{r} = (x,y,z)$ is a point inside on the Bloch sphere. \\
+
+Let's first consider the evolution of $\ket{0e}$ under $U$ for small $t$. From before, we know that if we start at $\ket{0e}$ then after some time $t$ the state is 
+\begin{align*}
+U\ket{0e} = \lp \cos \Omega t + i \f{\delta}{\Omega} \sin\Omega t \rp \ket{0e} - i \f{g}{\Omega} \sin \Omega t  \ket{1g}. 
+\end{align*}
+The reduced density matrix for this state is found in Part (c). In the small $t$ approximation, this reduced density matrix is, to second order in $t$:
+\begin{align*}
+\rho_A \approx g^2 t^2 \ketbra{1g} + \lp 1 - \Omega^2 t + \delta^2 t^2 \rp \ketbra{0e} = g^2 t^2 \ketbra{1g} + \lp  1 - g^2 t^2 \rp \ketbra{0e}. 
+\end{align*}
+By setting the state of the cavity to $\ket{0}$, the atom is left in the excited state, but with a decreased in magnitude by a factor of $\sqrt{1 - g^2 t^2}$. By doing this continuously, we see something akin to an exponential decay in the excited state population. Without drawing the Bloch sphere, we see that the Bloch vector shrinks towards the origin, following a straight trajectory from the point associated with the state $\ket{e}$ (the south pole) to zero. \\
+
+
+
+Now consider the evolution of $( \ket{e} + \ket{g} )/\sqrt{2}$ under $U$ for small $t$. First, the state of the system is $( \ket{0e} + \ket{0g} )/\sqrt{2}$. The state after some time $t$ is 
+\begin{align*}
+U\f{\ket{0e} + \ket{0g}}{\sqrt{2}} = \f{1}{\sqrt{2}}\lp \cos \Omega t + i \f{\delta}{\Omega} \sin\Omega t \rp \ket{0e} - \f{i}{\sqrt{2}} \f{g}{\Omega} \sin\Omega t \ket{1g} + \f{1}{\sqrt{2}} e^{-i \delta t } \ket{0g}.
+\end{align*}
+The reduced density matrix for the atom, after setting the cavity state to $\ket{0}$, is such that the $\ketbra{e}$ term looks like:
+\begin{align*}
+\rho_A =  \dots + \lp \cos^2 \Omega t + \f{\delta^2}{\Omega^2}\sin^2 \Omega t \rp 
+\ketbra{e} \approx \dots + \f{1}{2} (1 - g^2 t^2 ) \ketbra{e},
+\end{align*}
+for small $t$, similar to what we found before. From here, we quickly find that $\rho_{gg}$ using $\rho_{gg} = 1 - \rho_{ee}$. Also, since we know the decoherence has to decay at half the rate at which $\rho_{ee}$ decays, we must have
+\begin{align*}
+\rho_{ge} = \rho_{eg}^* = \f{1}{{2}} \lp 1 - \f{g^2 t^2}{2}\rp.  
+\end{align*}
+
+
+Let's investigate how the Bloch vector evolves as we continuously make measurements. Suppose we make a measurement every $t = \epsilon \ll 1/\abs{\Omega}, 1/\delta$. The state of the density matrix after $N$ continuous measurements in quick successions is given by taking $N$ powers of the matrix elements. We see that the coherence terms decays exponentially at half the rate at which the excited population term decays, and the ground state population term approaches 1. \\
+
+Without repeating this process for the $(\ket{e}  - \ket{g})/\sqrt{2}$ state, we already know the answer. Even though the starting point for each state at time $t=0$ is different (the $\ket{e}$ at the south pole, the $\ket{+}$ state at the point $(1,0,0)$ and the $\ket{-}$ state at $(-1,0,0)$), the fixed point for all three cases is the ground state of the system $\ket{g}$, which corresponds to the north pole of the Bloch sphere. The trajectories of the Bloch vector in each case follows a geodesic on the sphere, in the limit where the time between measurements is infinitesimal. 
+
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+\noindent \textbf{3. Driven two-level atom: dressed states.} Let the Hamiltonian for the classically driven atom be
+\begin{align*}
+H = \f{\hbar \omega_0 }{2}Z + \f{\hbar \Omega_1}{2} \lb X \cos \omega_L t + Y \sin \omega_L t \rb
+= \f{\hbar }{2} 
+\begin{pmatrix}
+\omega_0 & \Omega_1 e^{-i \omega_L t} \\ 
+\Omega_1 e^{i \omega_L t} & -\omega_0 
+\end{pmatrix}.
+\end{align*}
+ 
+\begin{enumerate}[label=(\alph*)]
+
+\item Consider the ansatz $\ket{\psi(t)} = a(t) e^{i \omega_L t} \ket{g} + b(t) e^{i \omega_L t} \ket{e}$. We want to choose $\omega_1, \omega_2$ such that the solution we get out is steady-state, in the sense that there are no oscillating terms. This is equivalent to going to the rotating frame. We remember that the operator needed to do this goes something like $e^{-i \sigma_z \theta /2}$ where $\theta = \omega_L t$ is the angle swept by the drive at frequency $\omega_L$ over time $t$. So, a good choice for $\omega_1$ and $\omega_2$ is $-\omega_L/2$ and $\omega_L/2$, respectively. \\
+
+Under this choice, we can do some algebra to get:
+\begin{align*}
+i\hbar \begin{pmatrix}
+\dot{a} \\ \dot{b}
+\end{pmatrix}
+=
+\f{\hbar}{2}
+\begin{pmatrix}
+\omega_0  - \omega_L & \Omega_1 \\
+\Omega_1 & -\omega_0 + \omega_L 
+\end{pmatrix}
+\begin{pmatrix}
+a \\ b
+\end{pmatrix}.
+\end{align*}
+
+
+
+\item The Schr\"{o}dinger we just wrote down identical to those for system with a Hamiltonian that is a function of the Rabi frequency and detuning $\delta_L = \omega_L - \omega_0$. This Hamiltonian is, of course,
+\begin{align*}
+H' = \f{\hbar}{2} \begin{pmatrix}
+-\delta_L & \Omega_1 \\ \Omega_1 & \delta_L
+\end{pmatrix}.
+\end{align*}
+
+\item Let $\sin 2\theta = \Omega_1/\Omega$ where $\Omega = \sqrt{\Omega_1^2 + \delta_L^2}$ is the effective Rabi frequency. Then we can rewrite the Hamiltonian above as
+\begin{align*}
+H' =  \f{\hbar \Omega}{2} \begin{pmatrix}
+-\cos 2\theta & \sin 2 \theta \\ \sin 2 \theta & \cos 2\theta
+\end{pmatrix}. 
+\end{align*}
+
+
+\item The associated eigenvalues and eigenvectors of $H'$ are:
+\begin{align*}
+&\lambda_- = - \f{\hbar \Omega}{2}  \quad\quad \ket{\Psi_-} = \begin{pmatrix}
+-\cos \theta \\ \sin\theta
+\end{pmatrix}\\
+&\lambda_+ = + \f{\hbar \Omega}{2} \quad\quad \ket{\Psi_+} = \begin{pmatrix}
+\sin\theta \\ \cos\theta
+\end{pmatrix}
+\end{align*}
+
+\item With these results we can find the time-dependent solutions to the Schr\"{o}dinger equations for $H$ in the original frame of reference. Assuming that the initial conditions are such that $a(0) = 1$ and $b(0) =0$, we find that
+\begin{align*}
+a(t) &= \cos \f{\Omega t}{2} + \f{i\delta_L}{\Omega} \sin \f{\Omega t}{2} = \cos \f{\Omega t}{2} + i \cos 2 \theta \sin \f{\Omega t}{2}\\ 
+b(t) &= - \f{i\Omega_1}{\Omega} \sin \f{\Omega t}{2} = -i \sin 2\theta \sin \f{\Omega t}{2} .
+\end{align*}
+Putting this back into the ansatz, we find the desired time-dependent solutions. 
+
+\end{enumerate}
+
+
+\end{document}
+
+
+
+
+
+
+
+

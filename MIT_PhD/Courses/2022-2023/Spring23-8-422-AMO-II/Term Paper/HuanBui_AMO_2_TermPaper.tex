@@ -111,11 +111,10 @@ The object of study in linear response theory is the linear response function. I
 \begin{align}\label{eq:linear_response}
 x(t) = \int_{-\infty}^{\infty} \chi(t-t') h(t') \,dt'.
 \end{align}
-For nonlinear systems, $x(t)$ contains higher orders of the perturbation. This leads to the full Volterra expansion. \textcolor{red}{citation here}. 
+In general, $\chi$ solves the equation $ L \chi(t-t') = \delta(t-t')$ where $L$ is the linear differential operator associated with the system under consideration. It is identically the Green's function associated with $L$ and characterizes the system's response to an external impulse. 
 
-In analysis of classical systems, linear response theory is standard: $\chi$ solves the equation $ L \chi(t-t') = \delta(t-t')$ where $L$ is the linear differential operator associated with the system. It is identically the Green's function associated with $L$ and characterizes the system's response to an external impulse. As Section \textcolor{red}{blah} will show, the response function often contains rich physics. For the case of the damped harmonic oscillator, we can fully characterize its resonance behavior and energy dissipation based solely on the (complex) response function. 
+As Section \textcolor{purple}{blah} will show, linear response theory provides a means for extracting rich physics. For the case of the damped harmonic oscillator, we can fully characterize its resonance behavior and energy dissipation based solely on the (complex) response function. Linear response theory also finds applications in statistical mechanics: When it is in statistical mechanics, we can understand and derive the famous fluctuation-dissipation theorem. In Section \textcolor{purple}{blah}, we will also see how linear response theory, when applied to quantum many-body systems, provides us with \textcolor{blue}{things to measure to find out about properties of system etc. I don't know how to phrase this yet.}
 
-For quantum systems, an analogous framework exists...
 
 
 This paper is structured as follows: 
@@ -130,10 +129,9 @@ A non-trivial example is how does one study, say, sound in a BEC or a Fermi gas?
 
 \section{Classical Linear Response}
 
-
+%
 \subsection{Causality}
-
-The response function tells us how a system responds \textit{as a consequence} of some perturbation, which means that it respects causality, i.e., $\chi(t) = 0$ for all $t < t_0 = 0$ when the perturbation is turned on. Now consider the Fourier expansion of $\chi(t)$:
+The response function tells us how a system responds \textit{as a consequence} of some perturbation, which means that it respects causality, i.e., $\chi(t) = 0$ for all $t < t_0 = 0$ when the perturbation is turned on. Consider the Fourier expansion of $\chi(t)$:
 \begin{align*}
 \chi(t) = \int_{-\infty}^\infty  e^{-i\omega t } \tilde{\chi}(\omega) \,d\omega.
 \end{align*}
@@ -148,10 +146,10 @@ If $\chi(\omega)$ decays faster than $1/\abs{\omega}$ as $\omega \to \infty$ in 
 \begin{align*}
 \chi(\omega) = \int_{-\infty}^\infty \f{d\omega'}{\pi} \f{\Im \chi'(\omega')}{\omega' - \omega - i\epsilon}.
 \end{align*}
-In the following two examples from classical mechanics, we will see that the imaginary part of the response function describes the dissipative behavior of the system. It turns out that a similar result holds in quantum mechanics, with a bonus that is the fluctuation-dissipation theorem.
 
-\subsection{Example 1: Damped driven harmonic oscillator}
-Consider the damped driven harmonic oscillator. Fourier-transforming the equation of motion and using  \eqref{eq:linear_response} gives the response function in frequency domain:
+%
+\subsection{Example: Damped driven harmonic oscillator}
+Consider the damped driven harmonic oscillator. Fourier-transforming the equation of motion and using  \eqref{eq:linear_response} give the response function in frequency domain:
 \begin{align*}
 \ddot{x} + \gamma \dot{x} + \omega_0^2 x = h(t) \implies 
 \tilde{\chi}(\omega) = ( \omega_0^2 - \omega^2 - i \gamma \omega)^{-1}.
@@ -162,37 +160,45 @@ The static response function is $\tilde{\chi}(\omega = 0) = 1/\omega_0^2$, givin
 \end{align*}
 When the oscillator is underdamped $(\gamma/2 < \omega_0)$, the poles have both real and imaginary parts and are in the lower half-plane. When the oscillator is overdamped $(\gamma/2 > \omega_0)$, the poles are on the negative imaginary axis. In both cases, $\tilde{\chi}(\omega)$ is analytic in the upper half-plane, consistent with causality. 
 
-Suppose the drive is $h(t) = h_0 \Re(e^{-i\omega t})$,  then the average power dissipated by the system\footnote{which we find by calculating the average power absorbed by the system, since the system is in steady state.} is 
+Suppose the drive is $h(t) = h_0 \Re(e^{-i\omega t})$ and that the system is in steady state. The average power dissipated by the system is the average power absorbed: 
 \begin{align*}
-\langle P \rangle = 2h_0^2 \omega \Im\chi(\omega) = 2h_0^2  \gamma \omega^2 [(\omega_0^2 - \omega^2)^2 + \gamma^2 \omega^2]^{-1}.
+\langle P \rangle = 2h_0^2 \omega \Im\chi(\omega) = 2h_0^2  \gamma \omega^2 [(\omega_0^2 - \omega^2)^2 + \gamma^2 \omega^2]^{-1},
 \end{align*}
-which has a Lorentzian line shape with FWHM $\gamma$ near resonance. Note that the first equality holds in general and depends only on the imaginary part of the response function. 
+which has a Lorentzian line shape with FWHM $\gamma$ near resonance. Note that the first equality holds in general and depends only on the imaginary part of the response function. As we will see, there is a deeper reason for the dependence on $\Im \tilde{\chi}(\omega)$.
 
-\subsection{Example 2: Hydrodynamics}
-
-In this example, the dynamical variables (mass density $\rho$ and current $\vec{J}$) are functions of both space and time. Consider a simple model of a fluid with diffusion:
+\subsection{Fluctuation-Dissipation Theorem}
+Let us apply the idea of linear response theory to a statistical ensemble that is slightly perturbed out of equilibrium. Suppose the unperturbed Hamiltonian is $\mathcal{H}$ and consider some dynamical variable $A$, which is a function defined over the phase space for the system. The equilibrium average for $A$ is:
 \begin{align*}
-\p_t \rho + \vec\nabla \cdot \vec{J} = 0 \implies \p_t \rho - D \nabla^2 \rho = - \vec\nabla \cdot \vec{F}.
+\langle A \rangle =  \mathcal{Z}^{-1}(\mathcal{H}) \int e^{-\be \mathcal{H}} A\, d\Omega,
 \end{align*}
-where the current is due to the diffusion process (with diffusion coefficient $D$) and a driving force $\vec{F}$: $\vec{J} = -D \vec\nabla \rho + \vec{F}$. To understand how the density and current responds to $\vec{F}$, we introduce their respective linear response functions $\chi_{\rho J}(t'-t, x'-x)$ and $\chi_{JJ}(t'-t,x'-x)$\footnote{The subscript $J$ denotes the fact that $\vec{F}$ acts on the current $\vec{J}$}. Note that by writing the arguments as $t'-t$ and $x'-x$, we are assuming that the response functions are invariant under both time and spatial translations. 
+where $\mathcal{Z}(\mathcal{H}) = \int e^{-\be \mathcal{H}} \, d\Omega$, and $\int \cdot \,d\Omega$ is an integral over phase space. Next, suppose the system is initially perturbed by $\Delta \mathcal{H} = -f A$ where $f$ is some external field. We are interested in seeing what happens when the perturbation is turned off. The initial ensemble average for $A$ is thus 
 \begin{align*}
-\rho(t,x) &= \int \chi_{\rho J} (t'-t,x'-x) F(t',x') \,dt' \, dx'  \\
-J(t,x) &= \int \chi_{J J} (t'-t,x'-x) F(t',x') \,dt' \, dx' 
+\overline{A}(0) = \mathcal{Z}^{-1}(\mathcal{H} + \Delta \mathcal{H})  \int e^{-\be (\mathcal{H} + \Delta \mathcal{H})} A \, d\Omega 
 \end{align*}
-In frequency and momentum space, we have 
+For $t>0$, $\Delta \mathcal{H}$ vanishes, so $A(0)$ evolves into $A(t)$ by $\mathcal{H}$. However, we are still interested in how $\overline{A}(t)$, the ensemble average of $A(t)$ under the non-equilibrium distribution due to $\Delta \mathcal{H}$:
 \begin{align*}
-\tilde{\rho}(\omega, k) &= \tilde{\chi}_{\rho J}(\omega,k) \tilde{F}(\omega,k) \implies \tilde{\chi}_{\rho J}(\omega,k) =  \f{ ik}{-i\omega + Dk^2} \\
-\tilde{J}(\omega, k) &= \tilde{\chi}_{J J}(\omega,k) \tilde{F}(\omega,k) \implies \chi_{JJ}(\omega,k) = \f{-i\omega}{i\omega + Dk^2}.
+\overline{A}(t) = \mathcal{Z}^{-1}(\mathcal{H} + \Delta \mathcal{H})  \int e^{-\be(\mathcal{H} + \Delta \mathcal{H})} A(t) \, d\Omega. 
 \end{align*}
+Assuming that the perturbations are small, i.e. $A(t)$ does not deviate much from $\angle A \rangle$, we can find $\overline{A}(t)$ in terms of $A$ with corrections due to $\Delta \mathcal{H}$:
+\begin{align*}
+\overline{A}(t) 
+%&= \f{\int e^{-\be \mathcal{H} (1- \be \Delta \mathcal{H} + \dots )A(t) \,d\Omega}}{\int e^{-\be \mathcal{H} (1 - \be \Delta \mathcal{H}) + \dots } \, d\Omega } \\ 
+&\approx \mathcal{Z}^{-1}(\mathcal{H})  \int d\Omega \, e^{-\be \mathcal{H}} A(t)   \lb 1 - \be \Delta \mathcal{H}  + \langle  \be \Delta \mathcal{H}  \rangle  \rb \\ 
+&= \langle A \rangle - \be \lb \langle \Delta \mathcal{H} A(t) \rangle - \langle A \rangle \langle \Delta \mathcal{H} \rangle  \rb.
+\end{align*}
+Finally, we insert the expression for $\mathcal{H}$ into the result above to find:
+\begin{align*}
+\Delta \overline{A}(t) = \be f \langle \delta A(t) \delta A(0) \rangle,
+\end{align*}
+where $\Delta \overline{A}(t) = \overline{A}(t) - \langle A \rangle$ and $\delta A(t) = A(t) - \langle A \rangle$ are the spontaneous and instantaneous fluctuation at time $t$, the former being an averaged, thus macroscopic quantity, while the latter microscopic. This is a remarkable result that we just showed: the spontaneous fluctuations is related to the time correlation function of instantaneous fluctuations. Since generally, $\langle \delta A \rangle = 0$ but $\langle A^2 \rangle \neq 0$, we see that $\Delta \overline{A}(t)$ decays in time. This is the essence of Onsanger's remarkable \textit{regression hypothesis} which was later realized to be a consequence of the fluctuation-dissipation theorem. 
 
-
-
-
-
-
-
+If we take an extra step and express the fluctuations in the spontaneous response in terms of external perturbations, then we get the fluctuation dissipation theorem...
 
 \section{Quantum Linear Response}
+
+
+
+
 
 \subsection{The Kubo formula}
 

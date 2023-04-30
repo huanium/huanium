@@ -38,8 +38,8 @@ path_to_satyendra = path_to_file + "/../../"
 
 sys.path.insert(0, path_to_satyendra)
 
-import image_saver_script as saver
-from satyendra.code.image_watchdog import ImageWatchdog
+# import image_saver_script as saver
+# from satyendra.code.image_watchdog import ImageWatchdog
 #from BEC1_Analysis.scripts import imaging_resonance_processing, rf_spect_processing, hybrid_top_processing
 
 IMAGE_EXTENSION = ".fits"
