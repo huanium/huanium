@@ -89,7 +89,7 @@ aps]{revtex4-1}
 	
 	
 
-\title{Linear response theory and applications in many-body quantum physics}
+\title{Linear response theory and applications in AMO physics}
 \author{Huan Q. Bui}
 \email{huanbui@mit.edu}
 \affiliation{
@@ -108,27 +108,16 @@ aps]{revtex4-1}
 
 
 
-It is often possible to solve for the dynamics of single-body $N$-level systems exactly, either analytically or numerically. For example, Rabi oscillations perfectly describe the dynamics of a two-level system. However, many-body systems such as non-ideal Bose-Einstein condensates or the unitary Fermi gas often exhibit complicated interactions, making exact descriptions of these systems unattainable in most cases. \textcolor{purple}{Examples sound, vortices, something... give some examples here, transport phenomena, etc. .} As a result, solutions typically come from linear response theory. 
+It is often possible to solve for the dynamics of single-body $N$-level systems exactly, either analytically or numerically. For example, Rabi oscillations perfectly describe the dynamics of a two-level system. However, many-body systems such as non-ideal Bose-Einstein condensates or the unitary Fermi gas often exhibit complicated interactions, making exact descriptions of these systems unattainable in most cases. As a result, solutions typically come from linear response theory. 
 
-The object of study in linear response theory is the linear response function. In the simplest case, the response function is simply a proportionality constant $\chi$ relating the response of a system $x(t)$ due to a perturbation $h(t)$ at that instant $t$. For linear, time-invariant systems with memory, the response $x(t)$ gets contributions due to past perturbations $h(t')$ and is given by the convolution of the response function with the perturbation:
+The object of study in linear response theory is the response function. In the simplest case, the response function is a proportionality constant $\chi$ relating the response of a system $x(t)$ due to a perturbation $h(t)$ at that instant $t$. For linear, time-invariant systems with memory, the response $x(t)$ is the convolution of the response function with the perturbation:
 \begin{align}\label{eq:linear_response}
 x(t) = \int_{-\infty}^{\infty} \chi(t-t') h(t') \,dt'.
 \end{align}
-In general, $\chi$ solves the equation $ L \chi(t-t') = \delta(t-t')$ where $L$ is the linear differential operator associated with the system under consideration. It is identically the Green's function associated with $L$ and characterizes the system's response to an external impulse. 
-
-As Section \textcolor{purple}{blah} will show, linear response theory provides a means for extracting rich physics. For the case of the damped harmonic oscillator, we can fully characterize its resonance behavior and energy dissipation based solely on the (complex) response function. Linear response theory also finds applications in statistical mechanics: When it is in statistical mechanics, we can understand and derive the famous fluctuation-dissipation theorem (FDT). In Section \textcolor{purple}{blah}, we will also see how linear response theory, when applied to quantum many-body systems, provides us with \textcolor{blue}{things to measure to find out about properties of system etc. I don't know how to phrase this yet.}
+In general, $\chi$ solves the equation $ L \chi(t-t') = \delta(t-t')$ where $L$ is the linear differential operator associated with the system under consideration. It is identically the Green's function associated with $L$ and characterizes the system's response to an external impulse. As Sections \ref{sec:classical} and \ref{sec:quantum} will show, linear response theory provides a means for extracting rich physics for a range of physical systems from a damped harmonic oscillator to a canonical ensemble in statistical physics to quantum gases with many-body interactions. 
 
 
-
-This paper is structured as follows: 
-
-Talk about magnetic susceptibility, which is how much the magnetization change as a function of the applied/external magnetic field. Of course, talk about the trivial example of the damped (driven) harmonic oscillator. s
-
-A non-trivial example is how does one study, say, sound in a BEC or a Fermi gas? Typically the setup is such that one has the Hamiltonian governing the dynamics of some quantum gas and then turn on perturbation: like shaking the trapping potential or stirring the BEC with a laser or something like that. How do we predict the response of the gas under such perturbations, as a function of parameters of the perturbation and as a function of other state variables? 
-
-
-
-\section{Classical Linear Response}
+\section{Classical Linear Response}\label{sec:classical}
 
 %
 \subsection{Causality}
@@ -142,13 +131,12 @@ For $t<0$, we integrate by closing the contour in the upper half-plane. Since th
 \end{align*}
 Let $\chi'(\omega) = \Re \chi(\omega)$ and $\chi''(\omega) = \Im \chi(\omega)$. $\chi'(\omega)$ is called the \textit{reactive part} of the response, and $\chi''(\omega)$ the \textit{dissipative part}. SInce $\chi(t)$ is invariance under time translations, one can show that $\chi'(\omega)$ and $\chi''(\omega)$ are even and odd functions, respectively.
 
-
 If $\chi(\omega)$ decays faster than $1/\abs{\omega}$ as $\omega \to \infty$ in addition to being analytic in the upper half-plane, then $\chi'(\omega)$ and $\chi''(\omega)$ are related via the Kramer-Kronig relations. In particular, one can reconstruct the full complex response function knowing only its imaginary part:
 \begin{align*}
 \chi(\omega) = \int_{-\infty}^\infty \f{d\omega'}{\pi} \f{\Im \chi'(\omega')}{\omega' - \omega - i\epsilon}.
 \end{align*}
 
-As an example, let us consider the damped driven harmonic oscillator. Fourier-transforming the equation of motion and using  \eqref{eq:linear_response} give the response function in frequency domain:
+As an example, let us consider the damped driven harmonic oscillator. We can fully characterize its resonance behavior and energy dissipation based solely on the (complex) response function. Fourier-transforming the equation of motion and using  \eqref{eq:linear_response} give the response function in frequency domain:
 \begin{align*}
 \ddot{x} + \gamma \dot{x} + \omega_0^2 x = h(t) \implies 
 \tilde{\chi}(\omega) = ( \omega_0^2 - \omega^2 - i \gamma \omega)^{-1}.
@@ -161,13 +149,12 @@ When the oscillator is underdamped $(\gamma/2 < \omega_0)$, the poles have both 
 
 Suppose the drive is $h(t) = h_0 \Re(e^{-i\omega t})$ and that the system is in steady state. The average power dissipated by the system is the average power absorbed: 
 \begin{align*}
-\langle P \rangle = 2h_0^2 \omega \Im\chi(\omega) = 2h_0^2  \gamma \omega^2 [(\omega_0^2 - \omega^2)^2 + \gamma^2 \omega^2]^{-1},
+\langle P \rangle = 2h_0^2 \omega \Im\widetilde{\chi}(\omega) = 2h_0^2  \gamma \omega^2 [(\omega_0^2 - \omega^2)^2 + \gamma^2 \omega^2]^{-1},
 \end{align*}
-which has a Lorentzian line shape with FWHM $\gamma$ near resonance. Note that the first equality holds in general and depends only on the imaginary part of the response function. As we will see, there is a deeper reason for the dependence on $\Im \tilde{\chi}(\omega)$.
-
+which has a Lorentzian line shape with FWHM $\gamma$ near resonance. Note that the first equality holds in general and depends only on $\Im \widetilde{\chi}(\omega)$.
 %
 \subsection{Response functions and correlation functions}
-Let us generalize a bit and apply the idea of linear response theory to a canonical ensemble that is perturbed out of equilibrium. Let $\mathcal{H}$ be the unperturbed Hamiltonian and consider some dynamical variable $A$, which is a function defined over the phase space for the system. The equilibrium average for $A$ is:
+The following discussion follows  Chapter 8 of \cite{chandler1988introduction} and Chapter 7 of \cite{chaikin1995principles}. Let us generalize a bit and apply the idea of linear response theory to a canonical ensemble that is perturbed out of equilibrium. Let $\mathcal{H}$ be the unperturbed Hamiltonian and consider some dynamical variable $A$, which is a function defined over the phase space for the system. The equilibrium average for $A$ is:
 \begin{align*}
 \langle A \rangle =  \mathcal{Z}^{-1}(\mathcal{H}) \int e^{-\be \mathcal{H}} A\, d\Omega,
 \end{align*}
@@ -187,9 +174,9 @@ Insert the expression for $\Delta \mathcal{H}$ into the result above to get
 \label{eq:fluctuation}
 \Delta \overline{A}(t) = \be f \langle \delta A(t) \delta A(0) \rangle + {O}(f^2),
 \end{align}
-where $\Delta \overline{A}(t) = \overline{A}(t) - \langle A \rangle$ is the (averaged, thus macroscopic) spontaneous fluctuation, and $\delta A(t) = A(t) - \langle A \rangle$ is the (microscopic) instantaneous fluctuation at time $t$. This is a remarkable result that we just showed: the spontaneous fluctuations is related to the time correlation function of instantaneous fluctuations. Since generally, $\langle \delta A \rangle = 0$ but $\langle A^2 \rangle \neq 0$, we see that $\Delta \overline{A}(t)$ decays in time. This is the essence of Onsanger's remarkable \textit{regression hypothesis} which was later realized to be a consequence of the fluctuation-dissipation theorem, which we will brief discuss in Section \textcolor{red}{blah}.
+where $\Delta \overline{A}(t) = \overline{A}(t) - \langle A \rangle$ is the (averaged, thus macroscopic) spontaneous fluctuation, and $\delta A(t) = A(t) - \langle A \rangle$ is the (microscopic) instantaneous fluctuation at time $t$. This is a remarkable result that we just showed: the spontaneous fluctuations is related to the time correlation function of instantaneous fluctuations. Since generally, $\langle \delta A \rangle = 0$ but $\langle A^2 \rangle \neq 0$, we see that $\Delta \overline{A}(t)$ decays in time. This is the essence of Onsanger's remarkable \textit{regression hypothesis} which was later realized to be a consequence of the fluctuation-dissipation theorem (FDT), which we will briefly discuss in Section \ref{sec:quantum}.
 
-Next, we write the spontaneous fluctuation $\Delta \overline{A}(t)$ in terms of the linear response function $\chi(t-t')$:
+We now write $\Delta \overline{A}(t)$ in terms of $\chi(t-t')$:
 \begin{align}
 \label{eq:fluctuation_response_function}
 \Delta \overline{A}(t) = \int_{-\infty}^\infty dt' \chi(t-t') f(t'). 
@@ -204,7 +191,11 @@ By comparing this with \eqref{eq:fluctuation}, we find that
 \end{align*}
 We see that the response function for a non-equilibrium system is related to the correlations between spontaneous fluctuations at different times as they occur in the equilibrium system.
 
-\section{Quantum Linear Response}
+
+%
+\section{Quantum Linear Response}\label{sec:quantum}
+
+The following discussion follows Chapter 8 of \cite{chandler1988introduction}, Chapter 7 of \cite{chaikin1995principles}, and notes by Professor David Tong \cite{tong2012kinetic} and Professor Habib Rostami \cite{rostamilecture}.
 
 \subsection{Overview}
 The treatment of linear response theory in quantum mechanics is similar to the classical case, with the exception that functions become operators, which do not commute in general. Let the dynamics of a generic quantum system be governed by a bare Hamiltonian $\mathcal{H}$ and let a small perturbation be $\mathcal{H}'(t)$ which turns on for $t\geq t_0$. In the interaction picture, the states evolve as $\ket{\psi(t)}_I = U(t,t_0) \ket{\psi(t_0)}_I$, where
@@ -236,7 +227,7 @@ which is a more specific version of the Kubo's formula. By further assuming that
 \f{(\mathcal{O}_i)_{mn}(\mathcal{O}_j)_{mn}}{\omega + \omega_{nm} + i\epsilon} 
 \rb.
 \end{align*}
-Formal properties of $\widetilde{\chi}$ can be studied from this representation. While they are beyond the scope of this review, the reader may refer to \textcolor{blue}{blah blah} for more details.  
+Formal properties of $\widetilde{\chi}$ can be studied from this representation. While they are beyond the scope of this review, the reader may refer to \cite{pitaevskii2016bose} for more details.  
 
 
 \subsection{Measurements, correlation functions, and FDT}
@@ -248,7 +239,7 @@ where $P_m$ is some equilibrium distribution to account for finite temperature. 
 \begin{align*}
 S(\tau) = (2\pi)^{-1}\langle \mathcal{O}(\tau) \mathcal{O}^\dagger(0) \rangle. 
 \end{align*}
-In general, one can \textit{define} $\widetilde{S}(\omega)$, called the \textit{dynamical structure factor} as:
+In general, one can \textit{define} $\widetilde{S}(\omega)$, called the \textit{dynamic structure factor} as:
 \begin{align*}
 \widetilde{S}(\omega) 
 &= \f{1}{2\pi}\int_{-\infty}^\infty \langle \mathcal{O}(t) \mathcal{O}^\dagger (0) \rangle e^{i \omega t }\,dt\\
@@ -258,9 +249,9 @@ where $ \mathcal{O} = \mathcal{O}_0 + \delta \mathcal{O}$, and $\langle \delta \
 \begin{align*}
 \Im \widetilde{\chi}(\omega) = \pi[\widetilde{S}(\omega) - \widetilde{S}(-\omega)] = \pi (1 - e^{-\be \omega}) S(\omega),
 \end{align*}
-which relates fluctuations, captured by $\widetilde{S}(\omega)$, to dissipation in the system, captured by the imaginary part of the response function, just like in the damped harmonic oscillator example. 
+which relates fluctuations, captured by $\widetilde{S}(\omega)$, to dissipation in the system, captured by the imaginary part of the response function, just like in the damped harmonic oscillator example. \textcolor{purple}{Interpret the dynamic structure factor, mention condensed-matter physics stuff...}
 
-We notice that while at zero temperature, $\Im \widetilde{\chi}(\omega)$ and $S(\omega)$ for all $\omega >0$, the two functions differ significantly for $T \neq 0$ with $\widetilde{S}(\omega)$ having stronger $T$-dependence. As a result, the dynamical structure factor is a more fundamental quantity for many-body theory. 
+We notice that while at zero temperature, $\Im \widetilde{\chi}(\omega)$ and $S(\omega)$ for all $\omega >0$, the two functions differ significantly for $T \neq 0$ with $\widetilde{S}(\omega)$ having stronger $T$-dependence. As a result, the dynamic structure factor is a more fundamental quantity for many-body theory. 
 
 
 
@@ -270,13 +261,101 @@ In this section, we review some applications of linear response theory in ultrac
  
 \subsection{Density response of a Bose gas}
 
-Consider the density operator for a Bose gas $n(\mathbf{r}) = \sum_i \delta(\mathbf{r} - \mathbf{r}_i)$. The $\mathbf{q}$-component of this operator in Fourier space is $\widetilde{n}_\mathbf{q} = \sum_i e^{-i \mathbf{q}\cdot \mathbf{r}}$. From the formalism in the Section \textcolor{purple}{blah}, the density response function in Fourier space is
+This section closely follows Chapter 7 of \cite{pitaevskii2016bose}. Consider the density operator for a Bose gas $n(\mathbf{r}) = \sum_i \delta(\mathbf{r} - \mathbf{r}_i)$. The $\mathbf{q}$-component of this operator in Fourier space is $\widetilde{n}_\mathbf{q} = \sum_i e^{-i \mathbf{q}\cdot \mathbf{r}}$. From the formalism in the Section \ref{sec:quantum}, the Fourier-space density response function is
 \begin{align*}
-\chi(\mathbf{q},\omega) = 
+\widetilde{\chi}(\mathbf{q},\omega) = \sum_{m,n} e^{-\be E_m} 
+\lb 
+\f{\abs{\delta \widetilde{n}_{\mathbf{q},mn}}^2}{\omega - \omega_{mn} + i\eta} 
+- 
+\f{\abs{\delta \widetilde{n}_{\mathbf{q},mn}^\dagger}^2}{\omega + \omega_{mn} + i\eta} 
+\rb
 \end{align*}
+Here we have dropped the normalization pre-factor $-1/(\hbar \mathcal{Z})$ for convenience and $\delta \widetilde{n}_{\mathbf{q},mn} = \bra{m} \delta \widetilde{n}_{\mathbf{q}} \ket{n}$, where $\delta \widetilde{n}_\mathbf{q} = \widetilde{n}_\mathbf{q} - \langle \widetilde{n}_\mathbf{q} \rangle_\text{eq}$ is the deviation from equilibrium. Similarly, the dynamic structure factor is 
+\begin{align*}
+\widetilde{S}(\mathbf{q},\omega) = \sum_{m,n} e^{-\be E_m} \abs{\delta \widetilde{n}_{\mathbf{q},mn}}^2 \delta(\hbar \omega - \hbar \omega_{mn}).
+\end{align*}
+
 \subsubsection{Ideal Bose gas}
 
+The density response function of an ideal Bose gas can be calculated analytically. The key is simply to calculate the matrix element $\delta \widetilde{n}_{\mathbf{q},mn}$. This can be done by rewriting $\widetilde{n}_\mathbf{q}$ in second-quantization: $\widetilde{n}_\mathbf{q} = \sum_\mathbf{p} a^\dagger_{\mathbf{p} - \hbar \mathbf{q}} a_\mathbf{p} $. Since the eigenstates of the Hamiltonian describing the ideal Bose gas are fixed by occupation numbers $f_\mathbf{q}$ of each single-particle state, the matrix element $\bra{m} a^\dagger_{\mathbf{p} - \hbar \mathbf{q}} a_\mathbf{p} \ket{n}$ vanishes unless the energy difference $E_n - E_m$ is equal to the difference in single-particle energies $\epsilon(\mathbf{p} + \hbar \mathbf{q}) - \epsilon(\mathbf{p})$. From here, one can show that the dynamic structure factor and the imaginary part of the density response function are, respectively:
+\begin{align*}
+\widetilde{S}(\mathbf{q},\omega) &= \sum_\mathbf{p} f_\mathbf{p}(1 + f_{\mathbf{p} + \hbar \mathbf{q}}) \delta 
+\lp
+\hbar \omega - \f{\hbar^2 q^2}{ 2m} - \f{\hbar }{m} \mathbf{q}\cdot \mathbf{p}
+\rp \\
+\widetilde{\chi}''(\mathbf{q},\omega) 
+&= 
+\pi \sum_\mathbf{p} (f_\mathbf{p} - f_{\mathbf{p} + \hbar \mathbf{q}}) \delta 
+\lp  
+\hbar \omega - \f{\hbar^2 q^2}{ 2m} - \f{\hbar }{m} \mathbf{q}\cdot \mathbf{p}
+\rp.
+\end{align*}
+Here, $f_\mathbf{p} = \langle a^\dagger_\mathbf{p} a_\mathbf{p}\rangle = [e^{\be(p^2/2m - \mu)} - 1]^{-1}$, the Bose-Einstein distribution. 
+
+In the presence of the BEC, one separates the contribution from the condensate as usual and integrate the rest over $\mathbf{p}$ to get
+\begin{align*}
+\widetilde{\chi}''(\mathbf{q},\omega) &= \pi  N_0(T) \delta \lp \hbar \omega - \f{\hbar^2 q^2}{2m} \rp  \\
+ + \, \pi &\int d\mathbf{p} f'_\mathbf{p} \delta \lp \hbar \omega - \f{\hbar^2 q^2}{2m} - \f{\hbar}{m} \mathbf{p}\cdot \mathbf{p} \rp - [\omega \to -\omega], 
+\end{align*}
+where $f'_\mathbf{p} = f_\mathbf{p} - N_0 \delta(\mathbf{p})$ is the momentum distribution for particles not in the condensate. $\widetilde{\chi}(\mathbf{q},\omega)$ has two $\delta$-function peaks at $\omega = \pm \hbar q^2/2m$ and a continuum of excitations from the thermal part of the gas. For $T \ll T_c$, we have $N_0(T) \approx N$, implying $\widetilde{\chi}''(\mathbf{q},\omega)$ is reduced to just the $\delta$-functions parts and  
+\begin{align*}
+\widetilde{S}(\mathbf{q},\omega) = \f{N}{1 - e^{-\hbar \omega / k_BT}} \lb \delta\lp \omega - \f{\hbar q^2}{2m} \rp - \delta \lp  \omega + \f{\hbar q^2}{2m} \rp \rb.
+\end{align*}
+which has strong temperature dependence, unlike $\widetilde{\chi}''(\mathbf{q},\omega)$.  Integrating out the $\omega$-dependence of $\widetilde{S}(\mathbf{q},\omega)$ gives the \textit{static structure factor}
+\begin{align*}
+\widetilde{S}(\mathbf{q}) = \coth \f{\hbar^2 q^2}{4mk_BT},
+\end{align*}
+which approaches $1$ for large $q$ and diverges for small $q$, reflecting the infinite compressibility for the ideal Bose gas at the BEC transition. \textcolor{purple}{Maybe explain why, in terms of the correlation functions???} As we will see in the next section, $\widetilde{S}(\mathbf{q})$ approaches a finite value in the presence of interactions. 
+
+\begin{figure}[!htb]
+\label{fig:ideal}
+\centering
+\includegraphics[width=0.35\textwidth]{figures/ideal.png}
+\caption{$\widetilde{S}(\mathbf{q})$ for the Bose gas as a function of non-dimensionalized $q$ at $k_BT / mc^2 = 4$. The black (dashed) line corresponds to the case with(out) interactions \cite{pitaevskii2016bose}.}
+\end{figure}
+
+
 \subsubsection{Weakly-interacting Bose gas}
+Bogoliubov theory provides a good treatment for the Bose gas with weak interactions $(na^3\ll1)$ where the gas is mostly the condensate $(T\ll T_c)$ and . The derivation of the dynamic and static structure factors follows the same path as in the previous section, with the exception that density operator is redefined in terms of the creation and annihilation operators are those for quasiparticles. While Bogoliubov theory is beyond the scope of this paper, we are interested in the result for the imaginary part of the density response function:
+\begin{align*}
+\widetilde{\chi}''(\mathbf{q},\omega) = \pi \f{\hbar^2 q^2 N}{2m \epsilon(\mathbf{\hbar q})} 
+[\delta(\hbar \omega - \epsilon(\mathbf{\hbar q})) - \delta(\hbar \omega + \epsilon(\mathbf{\hbar q}))],
+\end{align*}
+where $\epsilon(\mathbf{q})$ is the Bogoliubov energy of elementary excitations $\epsilon(p) = \sqrt{gNp^2/mV + (p^2/2m)^2}$ with $g$ being the coupling strength. The dynamic structure factor thus takes the form
+\begin{align*}
+\widetilde{S}(\mathbf{q},\omega) 
+&= \f{\hbar^2 q^2 N}{2m\epsilon(\mathbf{\hbar q})} \f{1}{1-e^{-\hbar \omega/k_BT}} \\
+&\quad\times[\delta(\hbar \omega - \epsilon(\mathbf{\hbar q})) - \delta(\hbar \omega + \epsilon(\mathbf{\hbar q}))],
+\end{align*}
+The static structure factor is thus 
+\begin{align*}
+\widetilde{S}(\mathbf{q}) = \f{\hbar^2 q^2}{2m\epsilon(\mathbf{\hbar q})} \coth \f{\epsilon(\hbar\mathbf{q})}{2k_BT}
+\end{align*}
+which generalizes the result for the ideal Bose gas and reduces to $\hbar^2 q^2/2m\epsilon(\hbar \mathbf{q})$ for $T = 0$. For large $q$, the static structure factor saturates to unity as $\widetilde{S}(\mathbf{q}) \sim 1 - 2m^2c^2 / \hbar^2 q^2$ where $c = \sqrt{gn/m}$ is the speed of sound. For finite $T$ but low $q$, $\widetilde{S}(\mathbf{q})$ approaches $k_BT / mc^2$ rather than diverging like in the case of the ideal Bose gas. This is due to interactions: thermal excitations of phonons become important at small $q$, keeping $\widetilde{S}(\mathbf{q})$ finite in accordance with the fluctuation-dissipation theorem. For a more detailed derivation of these results (beyond the level of detailed provided by \cite{pitaevskii2016bose}), see \cite{yukalov2007structure}. 
+
+An interesting feature is that for $T \ll T_c$, $\widetilde{\chi}''(\mathbf{q},\omega)$ is essentially its $T=0$ value. However, $\widetilde{S}(\mathbf{q})$ still has a strong dependence on temperature, as shown in Figures \ref{fig:ideal} and \ref{fig:interacting}. 
+
+\begin{figure}[!htb]
+\label{fig:interacting}
+\centering
+\includegraphics[width=0.35\textwidth]{figures/interacting.png}
+\caption{$\widetilde{S}(\mathbf{q})$ for a weakly-interacting BEC as a function of non-dimensionalized $q$. The dashed and black lines correspond to $k_BT/mc^2=0$ and $k_BT/mc^2 = 1/4$, respectively \cite{pitaevskii2016bose}.}
+\end{figure}
+
+
+
+
+
+
+\subsubsection{Experimental results}
+
+In experiment carried out by \cite{hung2011extracting}, the static structure factor for different values of the coupling constant was measured for the two-dimensional Bose gas using \textit{in situ} imaging. The results show explicitly the different behavior of $\widetilde{S}(\mathbf{q})$ at small $q$ for different values of $k_BT / mc^2$, similar to what we see in Figures \ref{fig:ideal} and \ref{fig:interacting}, Figure \ref{fig:hung2011} shows the \textit{in situ} density fluctuations and the static structure factors for the weakly-interacting 2D Bose gas extracted from these images. 
+\begin{figure}[!htb]
+\label{fig:hung2011}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/hung2011.png}
+\caption{Density fluctuations and the static structure factors. (a), (b), (c): image noise for 2D Bose gases with coupling constant $g = 0.05, g = 0.26,$ and $g_\text{eff} = 1.0$. (d) shows $\widetilde{S}(\mathbf{q})$ extracted from the noise power spectra from (a) (black circles), (b) (red squares), and (c) (blue triangles). Open circles denote $\widetilde{S}(\mathbf{q})$ of an ideal thermal gas at $n\lambda_{dB}^2$ = 0.5. }
+\end{figure}
 
 
 \subsection{RF spectroscopy of degenerate Fermi mixtures}
@@ -299,7 +378,7 @@ Consider the density operator for a Bose gas $n(\mathbf{r}) = \sum_i \delta(\mat
 
 
 \bibliographystyle{apsrev4-1}
-% \bibliography{HuanBui_AMO_refs} 
+\bibliography{HuanBui_AMO2_TermPaper_refs} 
 
 
 \end{document}
