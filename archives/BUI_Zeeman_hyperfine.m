@@ -3,17 +3,17 @@
 %%% April 17, 2021 %%%%%%%%
 
 
-% looking at 5P3/2 in K39
+% looking at 4S1/2 in K40
 
 clear
 
-J = 3/2;
-I = 3/2;
-L = 1; 
+J = 1/2;
+I = 4.0;
+L = 0; 
 S = 1/2;
-B = 0:0.01:1.5; % units is Gauss
-Ahf = 1.973e6; % Ahf coef in Hz 
-Bhf = 0.870e6; % Bhf coef in Hz
+B = 100:0.1:101; % units is Gauss
+Ahf = -285.7308e6; % Ahf coef in Hz 
+Bhf = 0; % Bhf coef in Hz
 
 mJ = J:-1:-J;
 mI = I:-1:-I;
@@ -41,15 +41,15 @@ for b = B % loop over field strengths
             mjj = basis(c,1);  
             mii = basis(c,2);
             
-            H(r,c) = Ahf*A_hfs(J, I, mj, mi, mjj, mii)...
-                + Bhf*B_hfs(J, I, mj, mi, mjj, mii)...
-                + mag(b, J, L, S, mj, mi, mjj, mii);
+            H(r,c) = Ahf*A_hfs(J, I, mj, mi, mjj, mii) + mag(b, J, L, S, mj, mi, mjj, mii);
+                % + Bhf*B_hfs(J, I, mj, mi, mjj, mii)...
+                
         end
     end
     % diagonalize and plot eigenvalues associated with field strength b
     energies = eig(H)/1e6; % fix units to MHz
     hold on 
-    plot(b*ones(size), energies, 'o', 'Color', 'red', 'MarkerSize',1);
+    plot(b*ones(size), energies, 'o', 'Color', 'red', 'MarkerSize',5);
 end
 hold off
 title('Hyperfine Zeeman splitting')
@@ -104,11 +104,13 @@ function mag = mag(B, J, L, S, mj, mi, mjj, mii)
     gL = 1 - me/mn; % gyro magnetic factor of the orbital
     gS = 2.0023193043622; % electron spin g-factor
     gJ = gL*(J*(J+1)-S*(S+1)+L*(L+1))/(2*J*(J+1)) + gS*(J*(J+1)+S*(S+1)-L*(L+1))/(2*J*(J+1));
-    gI = -0.00014193489; % this is an experimental value
     
+    gI = 0.00017649034;
+    gJ = 2.00229421;
+
     mag = 0;
     if mj == mjj && mi == mii
-        mag = (muB/hbar)*(gJ*mj + gI*mi)*B*1e-4; % B is in Gauss
+        mag = (muB/(2*pi*hbar))*(gJ*mj + gI*mi)*B*1e-4; % B is in Gauss
     else 
         mag = 0;
     end
