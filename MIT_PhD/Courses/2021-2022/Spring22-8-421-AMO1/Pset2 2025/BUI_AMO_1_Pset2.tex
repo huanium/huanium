@@ -1,0 +1,510 @@
+\documentclass{article}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{authblk}
+\usepackage{empheq}
+\usepackage{amsfonts}
+\usepackage{esint}
+\usepackage[makeroom]{cancel}
+\usepackage{dsfont}
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{bigints}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{sln}{Solution}[section]
+\newtheorem*{prob*}{Problem}
+\newtheorem{exer}{Exercise}[section]
+\newtheorem*{exer*}{Exercise}
+\newtheorem*{sln*}{Solution}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{xcolor}
+%\definecolor{colby}{rgb}{0.0, 0.0, 0.5}
+\definecolor{MIT}{RGB}{163, 31, 52}
+\usepackage[pdftex]{hyperref}
+%\hypersetup{colorlinks,urlcolor=colby}
+\hypersetup{colorlinks,linkcolor={MIT},citecolor={MIT},urlcolor={MIT}}  
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{newpxtext,newpxmath}
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+
+\newcommand{\p}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\ham}{\mathcal{H}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\w}{\omega}
+\newcommand{\lam}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\x}{\xi}
+
+\newcommand{\G}{\mathcal{G}}
+
+\newcommand{\f}[2]{\frac{#1}{#2}}
+
+\newcommand{\ift}{\infty}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\lc}{\left\{}
+\newcommand{\rc}{\right\}}
+
+
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Id}{\mathcal{I}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Z}{\mathcal{Z}}
+
+%\setcounter{chapter}{-1}
+
+
+\usepackage{enumitem}
+
+
+
+\usepackage{listings}
+\captionsetup[lstlisting]{margin=0cm,format=hang,font=small,format=plain,labelfont={bf,up},textfont={it}}
+\renewcommand*{\lstlistingname}{Code \textcolor{violet}{\textsl{Mathematica}}}
+\definecolor{gris245}{RGB}{245,245,245}
+\definecolor{olive}{RGB}{50,140,50}
+\definecolor{brun}{RGB}{175,100,80}
+
+%\hypersetup{colorlinks,urlcolor=colby}
+\lstset{
+	tabsize=4,
+	frame=single,
+	language=mathematica,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{black},
+	backgroundcolor=\color{gris245},
+	commentstyle=\color{gray},
+	showstringspaces=false,
+	emph={
+		r1,
+		r2,
+		epsilon,epsilon_,
+		Newton,Newton_
+	},emphstyle={\color{olive}},
+	emph={[2]
+		L,
+		CouleurCourbe,
+		PotentielEffectif,
+		IdCourbe,
+		Courbe
+	},emphstyle={[2]\color{blue}},
+	emph={[3]r,r_,n,n_},emphstyle={[3]\color{magenta}}
+}
+
+\newcommand{\diag}{\text{diag}}
+\newcommand{\psirot}{\ket{\psi_\text{rot}(t)} }
+\newcommand{\RWA}{\ham_\text{rot}^\text{RWA}}
+
+
+\begin{document}
+\begin{framed}
+\noindent TA: \textbf{Huan Q. Bui}\\
+Course: \textbf{8.421 - AMO I}\\
+Problem set: \textbf{\#2 -- UPDATED SOLUTION}\\
+Due: Feb 21, 2025.
+\end{framed}
+	
+	
+
+\noindent \textbf{1. Atomic Units.}\\
+
+\noindent Let the atomic unit of $E$ field be $E_A = e/a_0^2$, the field of the ground state of the electron at the site of the proton in hydrogen. In the following we use cgs units. To convert to SI, replace $e^2 \to e^2/4\pi\epsilon_0$. Factors of 2 are ignored.
+\begin{enumerate}[label=\alph*)]
+	\item An electron of mass m is confined to a width $\Delta x = a_0$. Using the lower bound for the uncertainty principle (and ignoring factors of 2) we find $\Delta p = \hbar / a_0$ (equivalently its wavevector is $k = 1/a_0$). This confinement imparts a kinetic energy $T$ to the electron	
+	\begin{align*}
+		T \sim \frac{p^2}{m} \sim \frac{\hbar^2 k^2}{m} \sim \frac{\hbar^2}{m a_0^2}
+	\end{align*}
+	Equating this with one Hartree $e^2/a_0$ yields
+	\begin{align*}
+	a_0 = \frac{\hbar^2}{me^2}.
+	\end{align*}
+	
+	\item Classically, the nucleus sees the orbiting electron as a current loop with radius $a_0$,
+carrying current $I = e/T$ where $T = 2\pi a_0/v$ is the period of the electron's orbit. At
+its center, this loop produces magnetic field
+	\begin{align*}
+	B_N = \frac{2\pi I}{ca_0} = \frac{e}{a_0^2}\frac{v}{c} = \al E_A
+	\end{align*}
+	
+	\item A Bohr magneton is
+	\begin{align*}
+	\mu_B = \frac{e\hbar}{2mc}  \sim \alpha ea_0.
+	\end{align*}
+	Equating $\mu_B B_H$ with one Hartree to get
+	\begin{align*}
+	B_H \sim \frac{1}{\alpha}\frac{e}{a_0^2} = \frac{E_A}{\al}.
+	\end{align*}
+	
+	
+	\item See (b) and (c)
+	
+	\item $B_N$ corresponds to the magnetic field produced by the orbiting electron in a hydrogen atom and as such gives the typical scale of magnetic fields due to motion of atomic
+charges. This makes it the preferred choice for an atomic unit of magnetic field.
+
+Since the hydrogen electron moves at velocity $\al$ smaller than the speed of light, the
+magnetic field $B_N$ that it produces is a factor of $\al$ times smaller than its electric field
+$E_A$. In SI units:
+	\begin{align*}
+	B_N = \frac{e}{4\pi\epsilon_0} \frac{\al}{c a_0} = 12.52\, \text{T} 
+	\end{align*}
+	
+	At this practically accessible field, the Zeeman interaction with the external field be-
+comes comparable to even the strongest magnetic coupling in atoms (L · S coupling).
+
+A Bohr magneton corresponds to the magnetic moment of the hydrogen electron’s
+orbital motion. Therefore, $B_H$ corresponds to the magnetic field which interacts with
+this electron on the same energy scale as the nuclear electric field. Since the hydrogen
+electron moves $\al$ times slower than the speed of light, $B_H \geq 10^5 \text{T}$ is $1/\al$ times larger than $E_A$ and $1/\al^2$ times larger than $B_N$ , i.e. more than 4 orders of magnitude larger than both the atomic and the highest laboratory magnetic fields.
+	
+	\end{enumerate}
+
+
+
+\noindent \textbf{2. Determination of the fine structure constant, $\al$ (Solution by Yu-Kun Lu \& HQB)}
+
+
+\begin{enumerate}[label=\alph*)]
+
+\item Our goal is to write $\al$ in terms of $f_\infty = cR_\infty$ and $f_e = m_ec^2/h$. This can be done using the definitions. From $\al =e^2/4\pi \epsilon_0 \hbar c$ we find 
+	\begin{align*}
+	\al^2 = \f{e^4}{(4\pi \epsilon_0)^2 \hbar^2 c^2} = \f{1}{c^2} f_\infty \f{4\pi \hbar}{m_e} = f_\infty \f{2h}{m_ec^2} = \f{2f_\infty}{f_e}
+	\end{align*} 
+	where we have used the definition for the Rydberg constant $R_\infty$:
+	\begin{align*}
+	f_\infty = c R_\infty = c\f{m_ee^4}{8 \epsilon_0^2 h^3 c }  =\f{m_ee^4}{8 \epsilon_0^2 h^3 } = \f{m_ee^4}{(4\pi\epsilon_0 \hbar )^2 4\pi \hbar }.
+	\end{align*}
+	So, 
+	\begin{align*}
+	\boxed{\al = \sqrt{\f{2f_\infty}{f_e} }}
+	\end{align*}
+	From here, we see that 
+	\begin{align*}
+	\al = \sqrt{\f{2cR_\infty}{m_e c^2/h}}
+	\end{align*}
+	which depends only on the experimental values $R_\infty$ and $h/m_e$. The speed of light $c$ is \textit{defined}. 
+
+\item Typically, this experiment would be done with a non-relativistic (thermal) neutron beam as
+its de Broglie wavelength would be much larger and more easily measurable. The momentum
+of such a non-relativistic neutron is related by its de Broglie wavelength as $\lambda_B = h/p$. Since $p = mv$, we get $h/m = \lambda_B v$.
+
+\item The photon of frequency $\nu$ carries momentum $p_\gamma = h\nu/c$. In the absorption process the momentum is conserved so
+\begin{align*}
+mv_R(\nu) = h\nu/c
+\end{align*}
+or 
+\begin{align*}
+h/m = cv_R(\nu)\nu.
+\end{align*}
+
+\item When the atom absorbs the first photon, it is imparted a recoil velocity $v_R(\nu_1)$ given by the expression from part (c). When the atom emits the photon, it emits it into a beam propagating opposite of its direction of motion. This emission is accompanied by another recoil $v_R(\nu_2)$, in the same direction as the first, corresponding to the frequency $\nu_2$. 
+
+Since the atomic light-recoil velocities are much smaller than the speed of light, their effect
+on the atomic resonance is small and $\nu_1 \sim \nu_2 \sim \nu_0$. By the total conservation of energy:
+\begin{align*}
+0 + h\nu_1 &= h\nu_2 + \frac{m}{2} \lb v_R(\nu_1) + v_R(\nu_2) \rb^2 \\
+h(\nu_1 - \nu_2) &= \frac{m}{2}\lp  \frac{h}{cm} \rp^2 (\nu_1 + \nu_2)^2 \\
+\frac{\nu_1 - \nu_2}{(\nu_1 + \nu_2)^2} &= \frac{h}{2mc^2}\\
+\frac{1}{2} \frac{\Delta \nu c^2}{\nu_0^2} &= \frac{h}{m}.
+\end{align*}
+Note the factor of $1/2$ which appears due to the second atomic recoil accompanying the
+emission of the photon (see PRL \textbf{70}, 18, 2706 (1993)).
+
+
+\item The relationship between $h/\Delta m$ and $\lambda$ will depend somewhat on the effect of the recoil of the nucleus. If we neglect the recoil, by mass-energy equivalence we get directly
+\begin{align*}
+\Delta mc^2 = h\nu = \frac{hc}{\lambda} \quad \text{and} \quad  \frac{h}{\Delta m} = \lambda c.
+\end{align*}
+Since $c$ in SI units is a constant, this only depends on the experimental value of $\lambda$ in
+meters. 
+
+Since this is a precision measurement, let’s try to consider the effect of nonrelativistic
+nuclear recoil. By mass-energy equivalence and Newtonian momentum conservation:
+\begin{align*}
+\Delta mc^2 &= \frac{hc}{\lambda} + \frac{(m - \Delta m) v^2}{2}\\
+\frac{h}{\lambda} &= (m - \Delta m)v.
+\end{align*}
+Solving for $\lambda$:
+\begin{align*}
+\frac{h}{\lambda} &= c\lp \Delta m -m + \sqrt{m^2 - \Delta m^2}\rp \\
+\lambda &\approx \frac{h}{c\Delta m} \lb 1 + \frac{\Delta m}{2m } + \mathcal{O}\lp \frac{\Delta m}{m} \rp^2 \rb
+\end{align*}
+
+The next-order contribution from the recoil correction scales as $\Delta m/m$. For the 2.2 MeV
+$\gamma$-ray transition in deuterium (Nature, \textbf{438}, 1096-1097), the above recoil correction is on the order of $1.2\times 10^{-3}$ -- well inside the accuracy of mass balances. Unfortunately, this correction is off by a factor of two as can be verified by a full relativistic treatment:
+\begin{align*}
+\frac{hc}{\lambda} + \frac{m'c^2}{1 -  v^2/c^2} &= mc^2 \\
+\frac{m'v}{\sqrt{1 - v^2/c^2}} &= \frac{h}{\lambda}.
+\end{align*}
+Solving for $\lambda$, with $\delta = \Delta m/m$:
+\begin{align*}
+\lambda &= \frac{h}{2c\Delta m}  \lp 1 + \sqrt{\frac{1 + 3\delta}{1 - \delta}}\rp \\
+&\approx \frac{h}{c\Delta m} (1 + \delta + \delta^3  - \delta^4 + 3\delta^5 + \mathcal{O}(\delta^6)  ) \\
+&= \frac{h}{c\Delta m} \lp 1 + \frac{\Delta m}{m} + \dots \rp
+\end{align*}
+This means that the first recoil correction for the emission of a 2.2 MeV $\gamma$-ray from $^2 H$ is on the order of $3 \times 10^{-3}$.
+
+\end{enumerate}
+
+\noindent \textbf{3. Ground state energy of the helium atom (Solution 1 by Yu-Kun Lu)}\\
+
+\begin{enumerate}[label = \alph*)]
+
+\item If we assume the spin wavefunction to be antisymmetric, the spatial electronic wavefunction
+will be symmetric. If both electrons are in the $1S$ state, we get
+\begin{align*}
+\psi(\mathbf{r}_1, \mathbf{r}_2) = \psi_{1S}(\mathbf{r}_1)\psi_{1S}(\mathbf{r}_2).
+\end{align*}
+The electron-electron interaction energy $\langle e^2/r_{12} \rangle$ can then be written as
+\begin{align*}
+V_{ee} = \bigg\langle \frac{e^2}{r_{12}} \bigg\rangle  
+&= \int d^3 \mathbf{r}_1 \int d^3 \mathbf{r}_2 \, 
+\abs{\psi_{1S}(\mathbf{r}_1)}^2 \abs{\psi_{1S}(\mathbf{r}_2)}^2 \frac{e^2}{\abs{\mathbf{r}_1 - \mathbf{r}_2}} \\
+&= \int d^3 \mathbf{r}_1 \, \abs{\psi_{1S}(\mathbf{r}_1)}^2 eU(\mathbf{r}_1) \\ 
+&= \bra{\psi_{1S}({r}_1)} eU(r_1) \ket{\psi_{1S}(r_2)}
+\end{align*}
+where
+\begin{align*}
+U(\mathbf{r}_1) = \int d^3 \mathbf{r}_2 \, \abs{\psi_{1S} (\mathbf{r}_2)}^2 \frac{e}{\abs{\mathbf{r}_1 - \mathbf{r}_2}}
+\end{align*}
+can be thought of as average electrostatic potential produced by the second electron’s
+effective charge distribution $\rho({\mathbf{r}_2})  = e \abs{\psi_{1S} (\mathbf{r}_2)}^2$. If both electrons are in $S$ orbitals, then $\rho(\mathbf{r}_2)$ is spherically symmetric. Then, $U(\mathbf{r}_1)$ can be obtained simply by adding up the contributions due to each spherical shell with charge $dq = e \abs{\psi_{1S}(r_2)}^2 \,4 \pi r_2^2 \,dr_2$:
+\begin{align*}
+U(r_1) = \int_{r_2 < r_1}  \frac{dq}{r_1}+ \int_{r_2 > r_1} \frac{dq}{r_2}.
+\end{align*}
+Substituting the hydrogenic ground state wavefunction:
+\begin{align*}
+\psi_{1S}(r) = \frac{1}{a^{3/2}\sqrt{\pi}} e^{-r/a}, \quad\quad a = a_0/Z
+\end{align*}
+\begin{align*}
+dq &= \frac{e}{\pi a^3}  e^{-2r_2/a} \, 4\pi r_2^2 \, dr_2  \\
+U(r_1) 
+&= \frac{e}{\pi a^3} 
+\lc  
+\int_{r_2 < r_1}  \frac{1}{r_1} e^{-2r_2/a} \, 4\pi r_2^2 \, dr_2+ \int_{r_2 > r_1} \frac{1}{r_2} e^{-2r_2/a} \, 4\pi r_2^2 \, dr_2.
+\rc\\
+&= \frac{e}{r_1} \lb 1 - e^{-2r_1/a }\lp 1 + \frac{r_1}{a}\rp \rb
+\end{align*}
+Therefore:
+\begin{align*}
+V_{ee} &= 
+\frac{e}{\pi a^3} \int^\infty_0 
+\frac{e}{r_1} \lb 1 - e^{-2r_1/a }\lp 1 + \frac{r_1}{a}\rp \rb
+e^{-2r_1/a} 4\pi r_1^2 \,dr_1 \\ 
+&= \frac{e^2}{a}\int^\infty_0 \frac{1}{x} \lb 1 - e^{-2x}(1+x) \rb e^{-2x} 4x^2 \,dx\\
+&= \frac{e^2}{a}\int^\infty_0 \lb e^{-2x} - e^{-4x}(1+x) \rb 4x\,dx \\
+&= \frac{5}{8}\frac{e^2}{a} = \frac{5Z}{8} \frac{e^2}{a_0} = 34.014 \text{ eV}.
+\end{align*}
+
+Therefore, the first variational estimate for the ground state energy is:
+\begin{align*}
+E = \lp -Z^2 + \frac{5Z}{8} \rp \frac{e^2}{a_0} = -74.831 \text{ eV}.
+\end{align*}
+
+
+\item In He, the nucleus is  about 4000 times heaver than each electron. Therefore, we neglect nuclear
+motion, and rewrite the He Hamiltonian as:
+\begin{align*}
+H = H_1 + H_2 + \frac{(Z'-2)}{r_1}e^2 + \frac{(Z'-2)}{r_2}e^2 + \frac{e^2}{r_{12}}.
+\end{align*}
+where
+\begin{align*}
+H_{1,2} = \frac{p_{1,2}^2}{2m_e} - \frac{Z'e^2}{r_{1,2}}
+\end{align*}
+correspond to hydrogenic Hamiltonians with reduced mass $m_e$, charge $Z'$ and ground state
+eigenfunction $\phi(\mathbf{r})$ with eigenvalue $E_1 = -e^2/2a = -e^2 Z'^2/2a_0$. From class, $\bra{\phi} r \ket{\phi}   = a^{-1} = Z'/a_0$. Finally, from part (a):
+\begin{align*}
+\bra{\phi(r_1)\phi(r_2)} \frac{e^2}{r_{12}}  \ket{\phi(r_1)\phi(r_2)} = \frac{5Z'}{8} \frac{e^2}{a_0}.
+\end{align*}
+Therefore,
+\begin{align*}
+E_0(Z') &= \bra{\phi(r_1)\phi(r_2)} H \ket{\phi(r_1)\phi(r_2)}  \\
+&= 2E_1 + \frac{e^2}{a_0}\lb 2(Z'-2) Z' + \frac{5Z'}{8} \rb \\ 
+&= \frac{e^2}{a_0} \lp  Z'^2 - \frac{27}{8}Z' \rp.
+\end{align*}
+$Z'$ is the effective nuclear charge as seen by each electron. The bare nuclear charge is
+reduced below $Z = 2$ due to the screening effect of the other electron.
+
+\item  Setting $\p_{Z'} E_0 = 0 \implies Z' = 27/16 =1.6875$. In other words, due to shielding,
+each electron sees only 84\% of the nuclear charge. At this optimal $Z'$ value we get the new
+best variational estimate of ground state energy:
+\begin{align*}
+E_0 = -\lp\frac{27}{16}\rp^2 \frac{e^2}{a_0} = -77.489 \text{ eV}.
+\end{align*}
+
+\end{enumerate}
+
+
+\noindent \textbf{3. Ground state energy of the helium atom (Solution 2 by HQB)}
+
+
+\begin{enumerate}[label=(\alph*)]
+	\item Suppose both electrons are in the 1s state and that the spin wavefunction is anti-symmetric, then the two-electron spatial wavefunction is the product of the single-electron wavefunctions $\psi_{100}(\vec{r})$:
+	\begin{align*}
+	\Psi(\vec{r}_1, \vec{r}_2) 
+	&= \psi_{100}(\vec{r}_1)\psi_{100}(\vec{2})\\
+	&= \lb \f{1}{\sqrt{\pi}} \lp \f{Z_\text{He}}{a_0} \rp^{3/2}  e^{-Z_\text{He} r_1/a_0}\rb 
+	\lb \f{1}{\sqrt{\pi}} \lp \f{Z_\text{He}}{a_0} \rp^{3/2}  e^{-Z_\text{He} r_2/a_0} \rb\\
+	&= \f{1}{\pi} \lp \f{Z_\text{He}}{a_0} \rp^3 e^{-Z_\text{He}(r_1 + r_2)/a_0}.
+	\end{align*}
+	With this, we may calculate the interaction energy $\langle e^2/r_{12}\rangle$ as follows: 
+	\begin{align*}
+	\bigg\langle \f{e^2}{r_{12}}\bigg\rangle 
+	&= \f{1}{\pi^2}\lp \f{2}{a_0} \rp^6 \int d\phi_1 d\theta_1 dr_1    d\phi_2 d\theta_2 dr_2 \, r_1^2\sin\theta_1  r_2^2\sin\theta_2 \, \f{1}{\abs{\vec{r}_1 - \vec{r}_2}}\exp\lb \f{-4 (r_1 + r_2)}{a_0} \rb.
+	\end{align*}
+	Since we only care about the difference $\vec{r}_1 - \vec{r}_2$, we may take $\vec{r}_1$ to be the $\hat z$-axis for the $\vec{r}_2$ integration. As we integrate through $\vec{r}_1$, this $\hat{z}$-axis changes, but the variables $\theta_1,\phi_1$ simply integrate out. We thus take:
+	\begin{align*}
+	\abs{\vec{r}_1 - \vec{r}_2} = \sqrt{r_1^2 + r_2^2 - 2r_1r_2\cos(\theta_2)} 
+	\end{align*}
+	The integral can be rewritten and evaluated in Mathematica (or by hand):
+	\begin{align*}
+	\bigg\langle \f{e^2}{r_{12}}\bigg\rangle 
+	= \f{1}{\pi^2}\lp \f{2}{a_0} \rp^6  \int_{\mathbb{R}^3} d\phi_1 d\theta_1 dr_1 r_1^2\sin\theta_1  \int_{\mathbb{R}^3}   \, 
+	\f{d\phi_2 d\theta_2 dr_2 r_2^2\sin\theta_2}{\sqrt{r_1^2 + r_2^2 - 2r_1r_2\cos(\theta_2)}}\exp\lb \f{-4 (r_1 + r_2)}{a_0} \rb
+	= \boxed{\f{5e^2}{4a_0}}
+	\end{align*}  
+	
+	What is this energy in eV? Working in SI units, the energy is given by 
+	\begin{align*}
+	\bigg\langle \f{e^2}{r_{12}}\bigg\rangle = \f{1}{4\pi \epsilon_0} \lp \f{5e^2}{4a_0} \rp \approx 34.014 \text{ eV}. 
+	\end{align*}
+	The ground state energy is therefore 
+	\begin{align*}
+	E_g = -108.848 \text{ eV} + 34.014 \text{ eV} = \boxed{-74.831 \text{ eV}}
+	\end{align*}
+	which is much closer to the measured value of $-79.006 \text{ eV}$.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	(*define \psi_total^2*)
+	In[1]:= f = (1/Sqrt[Pi])*(2/a0)^(3/2)*
+	Exp[-2 r1/a0]*(1/Sqrt[Pi])*(2/a0)^(3/2)*Exp[-2 r2/a0]
+	
+	Out[1]= (8 E^(-((2 r1)/a0) - (2 r2)/a0))/(a0^3 \[Pi])
+	
+	(*Evaluate integral*)
+	In[2]:= e^2*
+	Integrate[
+	f^2*1/Sqrt[r1^2 + r2^2 - 2 r1*r2*Cos[t2]]*r2^2*Sin[t2]*r1^2*
+	Sin[t1], {r1, 0, Infinity}, {r2, 0, Infinity}, {t1, 0, Pi}, {t2, 0,
+	Pi}, {p1, 0, 2*Pi}, {p2, 0, 2*Pi}]
+	
+	Out[2]= ConditionalExpression[(5 e^2)/(4 a0), Re[a0] > 0]
+	\end{lstlisting}
+	
+	
+	
+	
+	
+	\item Let us now use variational method to obtain the ground state energy for helium, assuming only the interaction energy $\langle e^2/r_{12}\rangle$ is present. To this end, we take the trial wavefunction:
+	\begin{align*}
+	\psi(\vec{r}_1, \vec{r}_2) = \phi(\vec{r}_1)\phi{\vec{r}_2} = \lb \f{1}{\sqrt{\pi} } \lp \f{Z'}{a_0}\rp^{3/2} e^{-Z'r_1/a_0} \rb \lb \f{1}{\sqrt{\pi} } \lp \f{Z'}{a_0}\rp^{3/2} e^{-Z'r_2/a_0} \rb = \f{1}{\pi}\lp \f{Z'}{a_0} \rp^3 e^{-Z'(r_1 + r_2)/a_0}.
+	\end{align*}
+	The original Hamiltonian in SI units is 
+	\begin{align*}
+	\ham = -\f{\hbar^2}{2m}\lp \nabla^2_1 + \nabla_2^2  \rp - \f{e^2}{4\pi \epsilon_0}\lp \f{2}{r_1} + \f{2}{r_2}\rp  +  \f{e^2}{4\pi \epsilon_0}\lp \f{1}{\abs{\vec{r}_1 - \vec{r}_2}}\rp .
+	\end{align*}
+	Since we are introducing the variational parameter $Z'$, we may rewrite the Hamiltonian to include $Z'$: 
+	\begin{align*}
+	\ham = \underbrace{-\f{\hbar^2}{2m}\lp \nabla^2_1 + \nabla_2^2  \rp - \f{e^2}{4\pi \epsilon_0}\lp \f{Z'}{r_1} + \f{Z'}{r_2}\rp}_{\ham_0}  +  \f{e^2}{4\pi \epsilon_0}\lp \f{Z'-2}{r_1} + \f{Z'-2}{r_2} + \f{1}{\abs{\vec{r}_1 - \vec{r}_2}}\rp.
+	\end{align*}
+	which has been intentionally put in the form where the trial wavefunction is an eigenstate of $\ham_0$, which we may refer to as the ``unperturbed'' Hamiltonian. With this, we may evaluate the expectation value of the energy, in Gaussian units\footnote{The conversion to Gaussian units is easy: we simply rescale the Hamiltonian so that energy is counted in units of $e^2/a_0$ -- I won't show the details here.}:
+	\begin{align*}
+	\langle \ham \rangle 
+	&= \langle \ham_0 \rangle + e^2 \bigg\langle \f{Z'-2}{r_1} + \f{Z'-2}{r_2} + \f{1}{\abs{\vec{r}_1 - \vec{r}_2}} \bigg\rangle \\
+	&= 2Z'^2 \lp \f{-e^2}{2a_0} \rp + e^2 \lb \f{2Z'(Z'-2)}{a_0} + \f{5Z'}{8a_0}  \rb
+	\end{align*} 
+	where we have evaluated the terms $\langle 1/r_1\rangle = \langle 1/r_2\rangle$ in Mathematica. The interaction term is also evaluated in Mathematica in a similar way as in the preceeding part. 
+	
+	
+	\textbf{Interpretation:} The free parameter $Z'$ can be thought of as an effective nuclear charge. By having $Z' \neq 2$ we are saying that the electrons influence each other not just through the Coulomb interaction but also through the \textit{shielding} of the nucleus: One electron always sees the nucleus plus a negative cloud due to the other electron, hence it sees an effective nuclear charge of less than 2, as we will see in the next part.
+	
+	
+	Mathematica code:
+	\begin{lstlisting}
+	(*evaluate integral for <1/r1> = <1/r2> terms*)
+	
+	In[25]:= e^2*
+	Integrate[
+	g^2*(Z - 2)/r1*r2^2*Sin[t2]*r1^2*Sin[t1], {r1, 0, Infinity}, {r2, 0,
+	Infinity}, {t1, 0, Pi}, {t2, 0, Pi}, {p1, 0, 2*Pi}, {p2, 0, 2*Pi},
+	Assumptions -> {Z/a0 > 0}]
+	
+	Out[25]= (e^2 (-2 + Z) Z)/a0
+	\end{lstlisting}
+	
+	
+	\item We find the improved ground state energy variationally:
+	\begin{align*}
+	E_g = \min_{Z'} \lp -Z'^2 +2Z'(Z'-2) + \f{5 Z'}{8} \rp \f{e^2}{a_0} = -\f{729}{256}\f{e^2}{a_0} \approx \boxed{-77.489 \text{ eV}}
+	\end{align*}
+	This is attained at $Z' = 27/16 = 1.6875 < 2$.\\
+	
+	Mathematica code:
+	\begin{lstlisting}
+	In[27]:= h[Z_] := -Z^2 + (5 Z)/8 + 2 Z (Z - 2);
+	
+	In[29]:= Solve[D[h[z], z] == 0, z]
+	
+	Out[29]= {{z -> 27/16}}
+	
+	In[30]:= h[27/16]
+	
+	Out[30]= -(729/256)
+	
+	In[32]:= N[27/16]
+	
+	Out[32]= 1.6875
+	\end{lstlisting}
+	
+\end{enumerate}
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
